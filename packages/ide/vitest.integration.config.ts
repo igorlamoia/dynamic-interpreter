@@ -3,10 +3,12 @@ import path from "path";
 
 export default defineConfig({
   test: {
-    include: ["src/tests/integration/**/*.spec.ts"],
+    include: [
+      "src/tests/integration/**/*.spec.ts",
+      "src/features/**/*.spec.ts",
+      "src/features/**/*.spec.tsx",
+    ],
     environment: "node",
-    globalSetup: "./src/tests/integration/global-setup.ts",
-    setupFiles: ["./src/tests/integration/test-setup.ts"],
     maxWorkers: 1,
   },
   resolve: {
