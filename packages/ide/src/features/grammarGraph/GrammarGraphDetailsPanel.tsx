@@ -49,11 +49,6 @@ export function GrammarGraphDetailsPanel({
             {node.kind}
           </span>
         </div>
-        {node.description ? (
-          <p className="mt-3 text-sm leading-6 text-slate-400">
-            {node.description}
-          </p>
-        ) : null}
       </div>
 
       <dl className="grid grid-cols-[96px_minmax(0,1fr)] gap-x-3 gap-y-2 border-b border-slate-800 p-4 text-sm">
@@ -65,6 +60,8 @@ export function GrammarGraphDetailsPanel({
         <DetailValue>{node.kind}</DetailValue>
         <DetailTerm>Group</DetailTerm>
         <DetailValue>{node.group}</DetailValue>
+        <DetailTerm>Description</DetailTerm>
+        <DetailValue>{node.description ?? "n/a"}</DetailValue>
         <DetailTerm>Source</DetailTerm>
         <DetailValue>{node.source ?? "n/a"}</DetailValue>
       </dl>
@@ -129,8 +126,8 @@ function ProductionItem({
         <ModeGuard modes={production.modes} />
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
-        {production.symbols.map((symbol) => (
-          <SymbolChip key={symbol.id} symbol={symbol} />
+        {production.symbols.map((symbol, index) => (
+          <SymbolChip key={`${symbol.id}-${index}`} symbol={symbol} />
         ))}
       </div>
     </li>

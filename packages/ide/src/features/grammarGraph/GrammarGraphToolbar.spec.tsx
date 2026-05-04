@@ -73,6 +73,14 @@ describe("GrammarGraphToolbar", () => {
         kinds: expect.any(Set),
       }),
     );
+    const kindUpdate = onChange.mock.calls.find(
+      ([filters]) => filters.kinds instanceof Set,
+    )?.[0];
+    expect(Array.from(kindUpdate?.kinds ?? []).sort()).toEqual([
+      "mode",
+      "option",
+      "terminal",
+    ]);
     expect(container.textContent).toContain("Top Level");
     expect(container.textContent).toContain("nonterminal");
 
