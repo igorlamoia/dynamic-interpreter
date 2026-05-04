@@ -24,7 +24,7 @@ describe("GrammarGraphToolbar", () => {
     document.body.innerHTML = "";
   });
 
-  it("updates search, section, and kind filters", () => {
+  it("updates search and section filters", () => {
     const model = buildGrammarGraphModel();
     const onChange = vi.fn();
     const container = document.createElement("div");
@@ -68,22 +68,56 @@ describe("GrammarGraphToolbar", () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ sectionId: "topLevel" }),
     );
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        kinds: expect.any(Set),
-      }),
-    );
-    const kindUpdate = onChange.mock.calls.find(
-      ([filters]) => filters.kinds instanceof Set,
-    )?.[0];
-    expect(Array.from(kindUpdate?.kinds ?? []).sort()).toEqual([
-      "mode",
-      "option",
-      "terminal",
-    ]);
     expect(container.textContent).toContain("Top Level");
-    expect(container.textContent).toContain("nonterminal");
 
     act(() => root.unmount());
   });
+
+  it.each([
+    ["nonterminal", ["mode", "option", "terminal"]],
+    ["terminal", ["mode", "nonterminal", "option"]],
+    ["option", ["mode", "nonterminal", "terminal"]],
+    ["mode", ["nonterminal", "option", "terminal"]],
+  ] as const)(
+    "emits kind filters without %s when toggled off",
+    (kind, expectedKinds) => {
+      const model = buildGrammarGraphModel();
+      const onChange = vi.fn();
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      const root = createRoot(container);
+
+      act(() => {
+        root.render(
+          <GrammarGraphToolbar
+            model={model}
+            filters={{}}
+            onChange={onChange}
+          />,
+        );
+      });
+
+      const kindCheckbox = container.querySelector(
+        `input[type='checkbox'][value='${kind}']`,
+      );
+      expect(kindCheckbox).not.toBeNull();
+
+      act(() => {
+        kindCheckbox?.dispatchEvent(
+          new MouseEvent("click", { bubbles: true, cancelable: true }),
+        );
+      });
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          kinds: expect.any(Set),
+        }),
+      );
+      const [filters] = onChange.mock.calls[0];
+      expect(Array.from(filters.kinds ?? []).sort()).toEqual(expectedKinds);
+
+      act(() => root.unmount());
+    },
+  );
 });
