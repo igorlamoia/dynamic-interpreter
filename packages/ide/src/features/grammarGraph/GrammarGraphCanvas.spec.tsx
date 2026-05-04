@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildGrammarGraphModel,
   filterGrammarGraphModel,
+  type GrammarGraphReactFlowNode,
 } from "./grammarGraphAdapter";
 import { GrammarGraphCanvas } from "./GrammarGraphCanvas";
 import { GRAMMAR_GRAPH_NODE_SIZE } from "./grammarGraphStyles";
@@ -144,7 +145,10 @@ describe("GrammarGraphCanvas", () => {
       root.render(<GrammarGraphCanvas model={model} />);
     });
 
-    const { nodes } = reactFlowMock.mock.calls.at(-1)?.[0] ?? {};
+    const { nodes } =
+      (reactFlowMock.mock.calls.at(-1)?.[0] as
+        | { nodes: GrammarGraphReactFlowNode[] }
+        | undefined) ?? { nodes: [] };
 
     expect(nodes.length).toBeGreaterThan(0);
     for (const node of nodes) {
