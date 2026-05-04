@@ -25,6 +25,7 @@ import {
   GRAMMAR_GRAPH_DEFAULT_ACCENT,
   GRAMMAR_GRAPH_GROUP_ACCENTS,
   GRAMMAR_GRAPH_KIND_STYLES,
+  GRAMMAR_GRAPH_NODE_SIZE,
 } from "./grammarGraphStyles";
 
 export type GrammarGraphCanvasProps = {
@@ -40,12 +41,18 @@ export function GrammarGraphCanvas({
 
   const nodes = useMemo(
     () =>
-      graph.nodes.map((node) => ({
-        ...node,
-        style: {
-          opacity: node.data.active ? 1 : 0.38,
-        },
-      })),
+      graph.nodes.map((node) => {
+        const { width, height } = GRAMMAR_GRAPH_NODE_SIZE[node.data.kind];
+
+        return {
+          ...node,
+          style: {
+            width,
+            height,
+            opacity: node.data.active ? 1 : 0.38,
+          },
+        };
+      }),
     [graph.nodes],
   );
 
@@ -53,19 +60,25 @@ export function GrammarGraphCanvas({
     () =>
       graph.edges.map((edge) => {
         const edgeData = edge.data;
+        const opacity =
+          edgeData?.active === false ? 0.32 : edgeData?.modes ? 0.74 : 0.92;
+        const labelOpacity = edgeData?.active === false ? 0.42 : 0.9;
 
         return {
           ...edge,
           animated: edgeData?.repeat === "+",
           style: {
-            opacity:
-              edgeData?.active === false
-                ? 0.32
-                : edgeData?.modes
-                  ? 0.74
-                  : 0.92,
+            opacity,
             stroke: edgeData?.modes ? "#f59e0b" : "#64748b",
             strokeWidth: 1.5,
+          },
+          labelStyle: {
+            fill: edgeData?.modes ? "#fbbf24" : "#cbd5e1",
+            opacity: labelOpacity,
+          },
+          labelBgStyle: {
+            fill: "#020617",
+            fillOpacity: labelOpacity,
           },
         };
       }),

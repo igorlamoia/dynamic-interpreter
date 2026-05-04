@@ -9,6 +9,7 @@ import {
   filterGrammarGraphModel,
 } from "./grammarGraphAdapter";
 import { GrammarGraphCanvas } from "./GrammarGraphCanvas";
+import { GRAMMAR_GRAPH_NODE_SIZE } from "./grammarGraphStyles";
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean })
   .IS_REACT_ACT_ENVIRONMENT = true;
@@ -127,6 +128,57 @@ describe("GrammarGraphCanvas", () => {
       }),
     );
     expect(reactFlowEdge.style.opacity).toBeLessThan(0.5);
+
+    act(() => root.unmount());
+  });
+
+  it("passes fixed node dimensions to React Flow nodes", () => {
+    const model = filterGrammarGraphModel(buildGrammarGraphModel(), {
+      search: "program",
+    });
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(<GrammarGraphCanvas model={model} />);
+    });
+
+    const { nodes } = reactFlowMock.mock.calls.at(-1)?.[0] ?? {};
+
+    expect(nodes.length).toBeGreaterThan(0);
+    for (const node of nodes) {
+      const { width, height } = GRAMMAR_GRAPH_NODE_SIZE[node.data.kind];
+      expect(node.style).toEqual(
+        expect.objectContaining({
+          width,
+          height,
+        }),
+      );
+    }
+
+    act(() => root.unmount());
+  });
+
+  it("renders an empty state when the model has no nodes", () => {
+    const model = filterGrammarGraphModel(buildGrammarGraphModel(), {
+      search: "node-that-does-not-exist",
+    });
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    expect(model.nodes).toHaveLength(0);
+
+    act(() => {
+      root.render(<GrammarGraphCanvas model={model} />);
+    });
+
+    expect(container.textContent).toContain(
+      "No grammar nodes match the current filters.",
+    );
+    expect(container.querySelector("[data-testid='react-flow']")).toBeNull();
+    expect(reactFlowMock).not.toHaveBeenCalled();
 
     act(() => root.unmount());
   });
