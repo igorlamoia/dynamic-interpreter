@@ -74,12 +74,14 @@ export function filterGrammarGraphModel(
     ]),
   );
 
-  const activeEdgesByTarget = new Map<string, GrammarGraphModeGuard[]>();
+  const incomingModesByTarget = new Map<
+    string,
+    (GrammarGraphModeGuard | undefined)[]
+  >();
   for (const edge of model.edges) {
-    if (!edge.data.modes) continue;
-    const guards = activeEdgesByTarget.get(edge.target) ?? [];
+    const guards = incomingModesByTarget.get(edge.target) ?? [];
     guards.push(edge.data.modes);
-    activeEdgesByTarget.set(edge.target, guards);
+    incomingModesByTarget.set(edge.target, guards);
   }
 
   const search = filters.search?.trim().toLowerCase();
@@ -87,11 +89,15 @@ export function filterGrammarGraphModel(
     .map((node) => ({
       ...node,
       active: selectedModes
-        ? isNodeModeCompatible(node, selectedModes, activeEdgesByTarget)
+        ? isNodeModeCompatible(node, selectedModes, incomingModesByTarget)
         : true,
     }))
     .filter((node) => matchesSearch(node, search))
-    .filter((node) => !filters.sectionId || node.group === filters.sectionId)
+    .filter(
+      (node) =>
+        !filters.sectionId ||
+        model.sectionByNodeId.get(node.id) === filters.sectionId,
+    )
     .filter((node) => !filters.kinds || filters.kinds.has(node.kind))
     .filter((node) => !filters.hideInactive || node.active);
 
@@ -183,18 +189,31 @@ function matchesSearch(
 function isNodeModeCompatible(
   node: GrammarGraphViewNode,
   selectedModes: SelectedGrammarModes,
-  incomingModeGuardsByNodeId: Map<string, GrammarGraphModeGuard[]>,
+  incomingModeGuardsByNodeId: Map<
+    string,
+    (GrammarGraphModeGuard | undefined)[]
+  >,
 ): boolean {
   const modeGuards = [
     ...(node.productions ?? []).flatMap((production) => [
       production.modes,
-      ...production.symbols.map((symbol) => symbol.modes),
+      ...production.symbols.map((symbol) =>
+        mergeModeGuards(production.modes, symbol.modes),
+      ),
     ]),
     ...(incomingModeGuardsByNodeId.get(node.id) ?? []),
-  ].filter((modes): modes is GrammarGraphModeGuard => Boolean(modes));
+  ];
 
   return (
     modeGuards.length === 0 ||
     modeGuards.some((modes) => isModeCompatible(modes, selectedModes))
   );
+}
+
+function mergeModeGuards(
+  productionModes: GrammarGraphModeGuard | undefined,
+  symbolModes: GrammarGraphModeGuard | undefined,
+): GrammarGraphModeGuard | undefined {
+  if (!productionModes && !symbolModes) return undefined;
+  return { ...(productionModes ?? {}), ...(symbolModes ?? {}) };
 }

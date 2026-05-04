@@ -3,6 +3,7 @@ import { grammarGraph } from "@ts-compilator-for-java/compiler/grammar/ast/gramm
 import {
   buildGrammarGraphModel,
   filterGrammarGraphModel,
+  type GrammarGraphModel,
   isModeCompatible,
   type SelectedGrammarModes,
 } from "./grammarGraphAdapter";
@@ -82,6 +83,31 @@ describe("filterGrammarGraphModel", () => {
     );
   });
 
+  it("filters by section membership from the graph sections", () => {
+    const model = buildGrammarGraphModel();
+    const sectionOnlyModel: GrammarGraphModel = {
+      ...model,
+      sections: [
+        ...model.sections,
+        {
+          id: "sectionMembershipOnly",
+          label: "Section Membership",
+          nodes: ["stmt"],
+        },
+      ],
+      sectionByNodeId: new Map([
+        ...model.sectionByNodeId,
+        ["stmt", "sectionMembershipOnly"],
+      ]),
+    };
+
+    const filtered = filterGrammarGraphModel(sectionOnlyModel, {
+      sectionId: "sectionMembershipOnly",
+    });
+
+    expect(filtered.nodes.map((node) => node.id)).toEqual(["stmt"]);
+  });
+
   it("keeps conflicting mode items visible but inactive by default", () => {
     const model = buildGrammarGraphModel();
 
@@ -112,5 +138,32 @@ describe("filterGrammarGraphModel", () => {
     );
 
     expect(delimitedBlockEdge?.active).toBe(true);
+  });
+
+  it("keeps nodes with unguarded productions active when guarded productions conflict", () => {
+    const model = buildGrammarGraphModel();
+    const stmtTerminator = model.nodeById.get("stmtTerminator");
+    expect(stmtTerminator).toBeDefined();
+
+    const stmtTerminatorOnlyModel: GrammarGraphModel = {
+      ...model,
+      sections: [
+        {
+          id: "statements",
+          label: "Statements",
+          nodes: ["stmtTerminator"],
+        },
+      ],
+      nodes: [stmtTerminator!],
+      edges: [],
+      nodeById: new Map([["stmtTerminator", stmtTerminator!]]),
+      sectionByNodeId: new Map([["stmtTerminator", "statements"]]),
+    };
+
+    const filtered = filterGrammarGraphModel(stmtTerminatorOnlyModel, {
+      selectedModes: { semicolonMode: "required" },
+    });
+
+    expect(filtered.nodeById.get("stmtTerminator")?.active).toBe(true);
   });
 });
