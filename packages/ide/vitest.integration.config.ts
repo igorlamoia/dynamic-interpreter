@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     include: [
       "src/tests/integration/**/*.spec.ts",
+      "src/components/Ast.spec.tsx",
       "src/features/**/*.spec.ts",
       "src/features/**/*.spec.tsx",
     ],
