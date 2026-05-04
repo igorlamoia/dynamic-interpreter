@@ -1,0 +1,199 @@
+import type {
+  GrammarGraphEdge,
+  GrammarGraphModeGuard,
+  GrammarGraphNode,
+  GrammarGraphNodeKind,
+  GrammarGraphSection,
+  GrammarModeName,
+} from "@ts-compilator-for-java/compiler/grammar/ast/grammarGraph";
+import { grammarGraph } from "@ts-compilator-for-java/compiler/grammar/ast/grammarGraph";
+
+export type SelectedGrammarModes = Partial<Record<GrammarModeName, string>>;
+
+export type GrammarGraphViewNode = GrammarGraphNode & {
+  active: boolean;
+};
+
+export type GrammarGraphViewEdge = {
+  id: string;
+  source: string;
+  target: string;
+  label: GrammarGraphEdge["label"];
+  active: boolean;
+  data: GrammarGraphEdge;
+};
+
+export type GrammarGraphModel = {
+  startNodeId: string;
+  sections: GrammarGraphSection[];
+  nodes: GrammarGraphViewNode[];
+  edges: GrammarGraphViewEdge[];
+  nodeById: Map<string, GrammarGraphViewNode>;
+  sectionByNodeId: Map<string, string>;
+};
+
+export type GrammarGraphModelFilters = {
+  search?: string;
+  sectionId?: string;
+  kinds?: Set<GrammarGraphNodeKind>;
+  selectedModes?: SelectedGrammarModes;
+  hideInactive?: boolean;
+};
+
+export function buildGrammarGraphModel(): GrammarGraphModel {
+  return createModel(
+    grammarGraph.start,
+    grammarGraph.sections.map(copySection),
+    grammarGraph.nodes.map((node) => ({ ...copyNode(node), active: true })),
+    grammarGraph.edges.map(copyEdge).map(toViewEdge),
+  );
+}
+
+export function isModeCompatible(
+  modes: GrammarGraphModeGuard | undefined,
+  selectedModes: SelectedGrammarModes,
+): boolean {
+  return (
+    !modes ||
+    (Object.entries(modes) as [GrammarModeName, string][]).every(
+      ([key, value]) => selectedModes[key] === value,
+    )
+  );
+}
+
+export function filterGrammarGraphModel(
+  model: GrammarGraphModel,
+  filters: GrammarGraphModelFilters,
+): GrammarGraphModel {
+  const selectedModes = filters.selectedModes;
+  const edgeActiveById = new Map(
+    model.edges.map((edge) => [
+      edge.id,
+      selectedModes ? isModeCompatible(edge.data.modes, selectedModes) : true,
+    ]),
+  );
+
+  const activeEdgesByTarget = new Map<string, GrammarGraphModeGuard[]>();
+  for (const edge of model.edges) {
+    if (!edge.data.modes) continue;
+    const guards = activeEdgesByTarget.get(edge.target) ?? [];
+    guards.push(edge.data.modes);
+    activeEdgesByTarget.set(edge.target, guards);
+  }
+
+  const search = filters.search?.trim().toLowerCase();
+  const nodes = model.nodes
+    .map((node) => ({
+      ...node,
+      active: selectedModes
+        ? isNodeModeCompatible(node, selectedModes, activeEdgesByTarget)
+        : true,
+    }))
+    .filter((node) => matchesSearch(node, search))
+    .filter((node) => !filters.sectionId || node.group === filters.sectionId)
+    .filter((node) => !filters.kinds || filters.kinds.has(node.kind))
+    .filter((node) => !filters.hideInactive || node.active);
+
+  const visibleNodeIds = new Set(nodes.map((node) => node.id));
+  const edges = model.edges
+    .filter(
+      (edge) =>
+        visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target),
+    )
+    .map((edge) => ({
+      ...edge,
+      active: edgeActiveById.get(edge.id) ?? true,
+    }))
+    .filter((edge) => !filters.hideInactive || edge.active);
+
+  return createModel(model.startNodeId, model.sections, nodes, edges);
+}
+
+function createModel(
+  startNodeId: string,
+  sections: GrammarGraphSection[],
+  nodes: GrammarGraphViewNode[],
+  edges: GrammarGraphViewEdge[],
+): GrammarGraphModel {
+  return {
+    startNodeId,
+    sections,
+    nodes,
+    edges,
+    nodeById: new Map(nodes.map((node) => [node.id, node])),
+    sectionByNodeId: new Map(
+      sections.flatMap((section) =>
+        section.nodes.map((nodeId) => [nodeId, section.id] as const),
+      ),
+    ),
+  };
+}
+
+function copyModes(
+  modes: GrammarGraphModeGuard | undefined,
+): GrammarGraphModeGuard | undefined {
+  return modes ? { ...modes } : undefined;
+}
+
+function copySection(section: GrammarGraphSection): GrammarGraphSection {
+  return { ...section, nodes: [...section.nodes] };
+}
+
+function copyNode(node: GrammarGraphNode): GrammarGraphNode {
+  return {
+    ...node,
+    productions: node.productions?.map((production) => ({
+      ...production,
+      modes: copyModes(production.modes),
+      symbols: production.symbols.map((symbol) => ({
+        ...symbol,
+        modes: copyModes(symbol.modes),
+      })),
+    })),
+  };
+}
+
+function copyEdge(edge: GrammarGraphEdge): GrammarGraphEdge {
+  return { ...edge, modes: copyModes(edge.modes) };
+}
+
+function toViewEdge(edge: GrammarGraphEdge): GrammarGraphViewEdge {
+  return {
+    id: edge.id,
+    source: edge.from,
+    target: edge.to,
+    label: edge.label,
+    active: true,
+    data: edge,
+  };
+}
+
+function matchesSearch(
+  node: GrammarGraphViewNode,
+  search: string | undefined,
+): boolean {
+  if (!search) return true;
+  return (
+    node.id.toLowerCase().includes(search) ||
+    node.label.toLowerCase().includes(search)
+  );
+}
+
+function isNodeModeCompatible(
+  node: GrammarGraphViewNode,
+  selectedModes: SelectedGrammarModes,
+  incomingModeGuardsByNodeId: Map<string, GrammarGraphModeGuard[]>,
+): boolean {
+  const modeGuards = [
+    ...(node.productions ?? []).flatMap((production) => [
+      production.modes,
+      ...production.symbols.map((symbol) => symbol.modes),
+    ]),
+    ...(incomingModeGuardsByNodeId.get(node.id) ?? []),
+  ].filter((modes): modes is GrammarGraphModeGuard => Boolean(modes));
+
+  return (
+    modeGuards.length === 0 ||
+    modeGuards.some((modes) => isModeCompatible(modes, selectedModes))
+  );
+}
