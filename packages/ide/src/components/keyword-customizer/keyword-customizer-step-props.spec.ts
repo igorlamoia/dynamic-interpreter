@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
 import {
   buildIOStepProps,
+  buildReviewStepProps,
   buildRulesStepProps,
   buildStructureStepProps,
   buildTypeStepProps,
@@ -160,5 +161,28 @@ describe("buildRulesStepProps", () => {
         }),
       ]),
     );
+  });
+});
+
+describe("buildReviewStepProps", () => {
+  it("maps customizer modes to grammar graph mode names", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes = {
+      typing: "untyped",
+      block: "indentation",
+      semicolon: "optional-eol",
+      array: "dynamic",
+    };
+
+    const props = buildReviewStepProps(
+      buildContext({ draftCustomization: draft }),
+    );
+
+    expect(props.values.grammarModes).toEqual({
+      typingMode: "untyped",
+      blockMode: "indentation",
+      semicolonMode: "optional-eol",
+      arrayMode: "dynamic",
+    });
   });
 });

@@ -4,6 +4,7 @@ import {
   getKeywordDocumentationId,
   getOperatorDocumentationId,
 } from "@/lib/language-documentation";
+import type { SelectedGrammarModes } from "@/features/grammarGraph/grammarGraphAdapter";
 import { OPERATOR_WORD_FIELDS } from "@/lib/operator-word-map";
 import type { KeywordCustomizerContextValue } from "./keyword-customizer-types";
 import type { IdentityStepProps } from "./steps/identity-step";
@@ -311,6 +312,7 @@ export function buildFlowStepProps(
 export function buildReviewStepProps(
   context: KeywordCustomizerContextValue,
 ): ReviewStepProps {
+  const { modes } = context.draftCustomization;
   const statementTerminator =
     context.draftCustomization.statementTerminatorLexeme.trim() || ";";
   const blockOpen =
@@ -329,10 +331,17 @@ export function buildReviewStepProps(
   const booleanLexemes = (["true", "false"] as const).map(
     (key) => context.draftCustomization.booleanLiteralMap[key]?.trim() || key,
   );
+  const grammarModes: SelectedGrammarModes = {
+    typingMode: modes.typing,
+    blockMode: modes.block,
+    semicolonMode: modes.semicolon,
+    arrayMode: modes.array,
+  };
 
   return {
     values: {
       preview: context.preview,
+      grammarModes,
       vocabularySections: [
         {
           title: "Tipos",
