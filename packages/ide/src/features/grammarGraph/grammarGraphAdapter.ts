@@ -52,7 +52,7 @@ export type GrammarGraphReactFlowNode = Node<
 >;
 
 export type GrammarGraphReactFlowEdge = Edge<
-  GrammarGraphEdge & Record<string, unknown>
+  GrammarGraphEdge & { active: boolean } & Record<string, unknown>
 >;
 
 export type GrammarGraphReactFlowGraph = {
@@ -176,7 +176,10 @@ export function toReactFlowGraph(
       source: edge.source,
       target: edge.target,
       label: formatGrammarGraphEdgeLabel(edge.data),
-      data: edge.data as GrammarGraphReactFlowEdge["data"],
+      data: {
+        ...edge.data,
+        active: edge.active,
+      } as GrammarGraphReactFlowEdge["data"],
     })),
   };
 }

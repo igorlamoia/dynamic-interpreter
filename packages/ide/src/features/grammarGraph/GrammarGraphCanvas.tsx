@@ -56,7 +56,12 @@ export function GrammarGraphCanvas({
           ...edge,
           animated: edgeData?.repeat === "+",
           style: {
-            opacity: edgeData?.modes ? 0.74 : 0.92,
+            opacity:
+              edgeData?.active === false
+                ? 0.32
+                : edgeData?.modes
+                  ? 0.74
+                  : 0.92,
             stroke: edgeData?.modes ? "#f59e0b" : "#64748b",
             strokeWidth: 1.5,
           },
