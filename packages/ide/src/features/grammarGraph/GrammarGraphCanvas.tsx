@@ -31,11 +31,13 @@ import {
 export type GrammarGraphCanvasProps = {
   model: GrammarGraphModel;
   onSelectNode?: (node: GrammarGraphViewNode) => void;
+  className?: string;
 };
 
 export function GrammarGraphCanvas({
   model,
   onSelectNode,
+  className,
 }: GrammarGraphCanvasProps) {
   const graph = useMemo(() => toReactFlowGraph(model), [model]);
 
@@ -103,7 +105,12 @@ export function GrammarGraphCanvas({
 
   if (model.nodes.length === 0) {
     return (
-      <div className="flex min-h-[360px] items-center justify-center rounded-lg border border-slate-800 bg-slate-950/80 px-6 text-center">
+      <div
+        className={cn(
+          "flex min-h-[360px] items-center justify-center rounded-lg border border-slate-800 bg-slate-950/80 px-6 text-center",
+          className,
+        )}
+      >
         <div>
           <p className="text-sm font-medium text-slate-200">
             No grammar nodes match the current filters.
@@ -119,7 +126,12 @@ export function GrammarGraphCanvas({
 
   return (
     <ReactFlowProvider>
-      <div className="h-[640px] min-h-[420px] overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
+      <div
+        className={cn(
+          "h-[640px] min-h-[420px] overflow-hidden rounded-lg border border-slate-800 bg-slate-950",
+          className,
+        )}
+      >
         <ReactFlow
           nodes={nodes}
           edges={edges}

@@ -97,6 +97,7 @@ export function Ast({
           <GrammarGraphCanvas
             model={filteredModel}
             onSelectNode={(node) => setSelectedNodeId(node.id)}
+            className="h-full min-h-0"
           />
         </div>
         <div className="min-h-0 overflow-auto">
