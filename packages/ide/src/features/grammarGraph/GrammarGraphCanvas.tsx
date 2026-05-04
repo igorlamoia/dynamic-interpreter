@@ -4,7 +4,9 @@ import React, { useCallback, useMemo } from "react";
 import {
   Background,
   Controls,
+  Handle,
   MiniMap,
+  Position,
   ReactFlow,
   ReactFlowProvider,
   type NodeProps,
@@ -146,13 +148,23 @@ function GrammarNode({
   return (
     <div
       className={cn(
-        "w-full rounded-md border bg-slate-950/95 p-2.5 text-left shadow-lg shadow-black/20 ring-1 ring-slate-900",
+        "relative w-full rounded-md border bg-slate-950/95 p-2.5 text-left shadow-lg shadow-black/20 ring-1 ring-slate-900",
         kindStyles.border,
         selected && "ring-2 ring-cyan-300",
         !viewNode.active && "grayscale",
       )}
       style={{ borderLeft: `4px solid ${accent}` }}
     >
+      <Handle
+        type="target"
+        position={Position.Left}
+        className="!h-1.5 !w-1.5 !border-0 !bg-transparent opacity-0"
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        className="!h-1.5 !w-1.5 !border-0 !bg-transparent opacity-0"
+      />
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="truncate font-mono text-sm font-semibold text-slate-100">

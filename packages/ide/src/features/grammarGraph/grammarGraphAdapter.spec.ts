@@ -189,5 +189,8 @@ describe("toReactFlowGraph", () => {
     expect(graph.edges[0].data).toEqual(
       expect.objectContaining({ production: expect.any(String) }),
     );
+    expect(
+      graph.edges.find((edge) => edge.data?.active === false)?.data?.active,
+    ).toBe(false);
   });
 });

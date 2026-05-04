@@ -18,9 +18,21 @@ const reactFlowMock = vi.hoisted(() => vi.fn());
 vi.mock("@xyflow/react", () => ({
   Background: () => <div data-testid="flow-background" />,
   Controls: () => <div data-testid="flow-controls" />,
+  Handle: ({ type, position, className }: any) => (
+    <div
+      data-testid={`flow-handle-${type}`}
+      data-position={position}
+      className={className}
+    />
+  ),
   MiniMap: () => <div data-testid="flow-minimap" />,
+  Position: {
+    Left: "left",
+    Right: "right",
+  },
   ReactFlow: ({ nodes, edges, onNodeClick, nodeTypes }: any) => {
     reactFlowMock({ nodes, edges, onNodeClick, nodeTypes });
+    const GrammarNode = nodeTypes?.grammarNode;
 
     return (
       <div
@@ -32,6 +44,11 @@ vi.mock("@xyflow/react", () => ({
           select-node
         </button>
         <div data-has-node-types={Boolean(nodeTypes?.grammarNode)} />
+        {GrammarNode ? (
+          <div data-testid="rendered-grammar-node">
+            <GrammarNode data={nodes[0].data} selected={false} />
+          </div>
+        ) : null}
       </div>
     );
   },
@@ -110,6 +127,39 @@ describe("GrammarGraphCanvas", () => {
       }),
     );
     expect(reactFlowEdge.style.opacity).toBeLessThan(0.5);
+
+    act(() => root.unmount());
+  });
+
+  it("renders React Flow handles for custom grammar nodes", () => {
+    const model = filterGrammarGraphModel(buildGrammarGraphModel(), {
+      search: "program",
+    });
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(<GrammarGraphCanvas model={model} />);
+    });
+
+    const targetHandle = container.querySelector(
+      "[data-testid='flow-handle-target']",
+    );
+    const sourceHandle = container.querySelector(
+      "[data-testid='flow-handle-source']",
+    );
+
+    expect(targetHandle).toEqual(
+      expect.objectContaining({
+        dataset: expect.objectContaining({ position: "left" }),
+      }),
+    );
+    expect(sourceHandle).toEqual(
+      expect.objectContaining({
+        dataset: expect.objectContaining({ position: "right" }),
+      }),
+    );
 
     act(() => root.unmount());
   });
