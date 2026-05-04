@@ -1,3 +1,5 @@
+import dagre from "dagre";
+import type { Edge, Node } from "@xyflow/react";
 import type {
   GrammarGraphEdge,
   GrammarGraphModeGuard,
@@ -7,6 +9,10 @@ import type {
   GrammarModeName,
 } from "@ts-compilator-for-java/compiler/grammar/ast/grammarGraph";
 import { grammarGraph } from "@ts-compilator-for-java/compiler/grammar/ast/grammarGraph";
+import {
+  GRAMMAR_GRAPH_LAYOUT,
+  GRAMMAR_GRAPH_NODE_SIZE,
+} from "./grammarGraphStyles";
 
 export type SelectedGrammarModes = Partial<Record<GrammarModeName, string>>;
 
@@ -38,6 +44,20 @@ export type GrammarGraphModelFilters = {
   kinds?: Set<GrammarGraphNodeKind>;
   selectedModes?: SelectedGrammarModes;
   hideInactive?: boolean;
+};
+
+export type GrammarGraphReactFlowNode = Node<
+  GrammarGraphViewNode & Record<string, unknown>,
+  "grammarNode"
+>;
+
+export type GrammarGraphReactFlowEdge = Edge<
+  GrammarGraphEdge & Record<string, unknown>
+>;
+
+export type GrammarGraphReactFlowGraph = {
+  nodes: GrammarGraphReactFlowNode[];
+  edges: GrammarGraphReactFlowEdge[];
 };
 
 export function buildGrammarGraphModel(): GrammarGraphModel {
@@ -116,6 +136,51 @@ export function filterGrammarGraphModel(
   return createModel(model.startNodeId, model.sections, nodes, edges);
 }
 
+export function toReactFlowGraph(
+  viewModel: GrammarGraphModel,
+): GrammarGraphReactFlowGraph {
+  const graph = new dagre.graphlib.Graph();
+  graph.setDefaultEdgeLabel(() => ({}));
+  graph.setGraph(GRAMMAR_GRAPH_LAYOUT);
+
+  for (const node of viewModel.nodes) {
+    const size = GRAMMAR_GRAPH_NODE_SIZE[node.kind];
+    graph.setNode(node.id, size);
+  }
+
+  for (const edge of viewModel.edges) {
+    graph.setEdge(edge.source, edge.target);
+  }
+
+  dagre.layout(graph);
+
+  return {
+    nodes: viewModel.nodes.map((node) => {
+      const size = GRAMMAR_GRAPH_NODE_SIZE[node.kind];
+      const position = graph.node(node.id) as
+        | { x: number; y: number }
+        | undefined;
+
+      return {
+        id: node.id,
+        type: "grammarNode",
+        data: node as GrammarGraphReactFlowNode["data"],
+        position: {
+          x: (position?.x ?? 0) - size.width / 2,
+          y: (position?.y ?? 0) - size.height / 2,
+        },
+      };
+    }),
+    edges: viewModel.edges.map((edge) => ({
+      id: edge.id,
+      source: edge.source,
+      target: edge.target,
+      label: formatGrammarGraphEdgeLabel(edge.data),
+      data: edge.data as GrammarGraphReactFlowEdge["data"],
+    })),
+  };
+}
+
 function createModel(
   startNodeId: string,
   sections: GrammarGraphSection[],
@@ -173,6 +238,36 @@ function toViewEdge(edge: GrammarGraphEdge): GrammarGraphViewEdge {
     active: true,
     data: edge,
   };
+}
+
+function formatGrammarGraphEdgeLabel(edge: GrammarGraphEdge): string {
+  const parts = [edge.production ?? edge.label];
+
+  if (edge.optional) {
+    parts.push("optional");
+  }
+
+  if (edge.repeat) {
+    parts.push(`repeat ${edge.repeat}`);
+  }
+
+  const modeLabel = formatModeGuard(edge.modes);
+  if (modeLabel) {
+    parts.push(modeLabel);
+  }
+
+  return parts.join(" | ");
+}
+
+function formatModeGuard(
+  modes: GrammarGraphModeGuard | undefined,
+): string | undefined {
+  if (!modes) return undefined;
+
+  const entries = Object.entries(modes) as [GrammarModeName, string][];
+  if (entries.length === 0) return undefined;
+
+  return entries.map(([key, value]) => `${key}: ${value}`).join(", ");
 }
 
 function matchesSearch(

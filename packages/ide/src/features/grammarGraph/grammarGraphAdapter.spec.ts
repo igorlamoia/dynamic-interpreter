@@ -5,6 +5,7 @@ import {
   filterGrammarGraphModel,
   type GrammarGraphModel,
   isModeCompatible,
+  toReactFlowGraph,
   type SelectedGrammarModes,
 } from "./grammarGraphAdapter";
 
@@ -165,5 +166,28 @@ describe("filterGrammarGraphModel", () => {
     });
 
     expect(filtered.nodeById.get("stmtTerminator")?.active).toBe(true);
+  });
+});
+
+describe("toReactFlowGraph", () => {
+  it("converts view nodes and edges to React Flow data", () => {
+    const model = buildGrammarGraphModel();
+    const filtered = filterGrammarGraphModel(model, {
+      selectedModes: typedDelimitedModes,
+    });
+
+    const graph = toReactFlowGraph(filtered);
+
+    expect(graph.nodes.length).toBe(filtered.nodes.length);
+    expect(graph.edges.length).toBe(filtered.edges.length);
+    expect(graph.nodes[0].position).toEqual(
+      expect.objectContaining({ x: expect.any(Number), y: expect.any(Number) }),
+    );
+    expect(graph.nodes.find((node) => node.id === "program")?.type).toBe(
+      "grammarNode",
+    );
+    expect(graph.edges[0].data).toEqual(
+      expect.objectContaining({ production: expect.any(String) }),
+    );
   });
 });
