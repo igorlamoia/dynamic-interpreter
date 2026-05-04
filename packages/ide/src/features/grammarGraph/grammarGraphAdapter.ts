@@ -56,7 +56,8 @@ export function isModeCompatible(
   return (
     !modes ||
     (Object.entries(modes) as [GrammarModeName, string][]).every(
-      ([key, value]) => selectedModes[key] === value,
+      ([key, value]) =>
+        selectedModes[key] === undefined || selectedModes[key] === value,
     )
   );
 }

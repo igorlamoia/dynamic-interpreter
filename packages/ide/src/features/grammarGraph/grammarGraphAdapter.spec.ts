@@ -48,6 +48,11 @@ describe("isModeCompatible", () => {
       isModeCompatible({ typingMode: "untyped" }, typedDelimitedModes),
     ).toBe(false);
   });
+
+  it("treats unselected mode keys as neutral", () => {
+    expect(isModeCompatible({ blockMode: "delimited" }, { typingMode: "typed" }))
+      .toBe(true);
+  });
 });
 
 describe("filterGrammarGraphModel", () => {
@@ -93,5 +98,19 @@ describe("filterGrammarGraphModel", () => {
 
     expect(untypedNode?.active).toBe(false);
     expect(untypedEdge?.active).toBe(false);
+  });
+
+  it("does not deactivate graph items guarded only by unselected modes", () => {
+    const model = buildGrammarGraphModel();
+
+    const filtered = filterGrammarGraphModel(model, {
+      selectedModes: { typingMode: "typed" },
+    });
+
+    const delimitedBlockEdge = filtered.edges.find(
+      (edge) => edge.data.modes?.blockMode === "delimited",
+    );
+
+    expect(delimitedBlockEdge?.active).toBe(true);
   });
 });
