@@ -8,6 +8,7 @@ import {
 } from "@/utils/compiler/editor/editor-language";
 import { CodeScrollArea } from "@/components/ui/code-scroll-area";
 import { useKeywordCustomizer } from "./keyword-customizer-context";
+import { PerfectScrollbar } from "../ui/perfect-scrollbar";
 
 type ExampleSnippetProps = {
   title?: string;
@@ -106,14 +107,14 @@ export function ExampleSnippet({
         )}
 
         <div className="grid min-h-12 bg-[#090e1a] text-slate-100">
-          <div className="grid grid-cols-[2.5rem_minmax(0,1fr)]">
+          <PerfectScrollbar className=" max-h-50 grid grid-cols-[2.5rem_minmax(0,1fr)]">
             <div className="border-r border-white/5 bg-black/10 px-2 py-4 text-right font-mono text-[11px] leading-6 text-slate-500">
               {lines.map((_, index) => (
                 <div key={index}>{String(index + 1).padStart(2, "0")}</div>
               ))}
             </div>
 
-            <CodeScrollArea className="min-w-0">
+            <div className="min-w-0">
               <pre className="w-max min-w-full p-4 font-mono text-xs leading-6 text-cyan-100">
                 {highlightedCode ? (
                   <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
@@ -128,8 +129,8 @@ export function ExampleSnippet({
                   </code>
                 )}
               </pre>
-            </CodeScrollArea>
-          </div>
+            </div>
+          </PerfectScrollbar>
 
           {(hasInput || hasOutput) && (
             <div className="flex flex-col border-t border-white/8 bg-[#050914] px-4 py-3">

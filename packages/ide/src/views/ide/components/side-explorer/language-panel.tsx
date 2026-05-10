@@ -9,6 +9,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useEditor } from "@/hooks/useEditor";
 import { useKeywords } from "@/contexts/keyword/KeywordContext";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
@@ -196,15 +202,25 @@ function LanguageDescription({
 }: {
   visibleLanguage: ReturnType<typeof loadSavedKeywordLanguage> | null;
 }) {
+  const description =
+    visibleLanguage?.description ??
+    "Uma linguagem de programação personalizada criada com o Java--.";
+
   return (
     <div className="max-w-[83%]">
       <h2 className="truncate text-xl font-semibold text-white drop-shadow-sm sm:text-2xl">
         {visibleLanguage?.name ?? "Java--"}
       </h2>
-      <p className="mt-1 truncate text-sm text-white/90">
-        {visibleLanguage?.description ??
-          "Uma linguagem de programação personalizada criada com o Java--."}
-      </p>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <p className="mt-1 truncate text-sm text-white/90 cursor-help">
+              {description}
+            </p>
+          </TooltipTrigger>
+          <TooltipContent>{description}</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 }
@@ -229,73 +245,82 @@ function LanguageOptionsMenu(props: LanguageOptionsMenuProps) {
 
   return (
     <div className="relative z-20">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            aria-label="Abrir seleção de linguagem"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:border-white/20 hover:bg-black/35"
-          >
-            <ChevronDown className="h-4 w-4 transition-transform duration-200" />
-          </button>
-        </DropdownMenuTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Abrir seleção de linguagem"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:border-white/20 hover:bg-black/35"
+                >
+                  <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+                </button>
+              </TooltipTrigger>
+            </DropdownMenuTrigger>
+            <TooltipContent>Selecionar linguagem ativa</TooltipContent>
 
-        <DropdownMenuContent
-          align="end"
-          className="w-max max-w-[calc(100vw-2rem)] rounded-2xl border border-white/10 bg-slate-950/70 p-3 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
-        >
-          <div className="mb-3 flex items-center justify-between">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
-              Seleção de linguagem
-            </p>
-            <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
-              {languages.length}
-            </span>
-          </div>
+            <DropdownMenuContent
+              align="end"
+              className="w-max max-w-[calc(100vw-2rem)] rounded-2xl border border-white/10 bg-slate-950/70 p-3 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
+                  Seleção de linguagem
+                </p>
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
+                  {languages.length}
+                </span>
+              </div>
 
-          <PerfectScrollbar axis="y" className="max-h-56 pr-1">
-            <div className="flex flex-col gap-2">
-              {languages.map((language) => {
-                const isSelected = language.slug === selectedSlug;
+              <PerfectScrollbar axis="y" className="max-h-56 pr-1">
+                <div className="flex flex-col gap-2">
+                  {languages.map((language) => {
+                    const isSelected = language.slug === selectedSlug;
 
-                return (
-                  <DropdownMenuItem key={language.slug} asChild>
-                    <button
-                      type="button"
-                      onClick={() => handleSelectLanguage(language.slug)}
-                      className={cn(
-                        "group relative overflow-hidden rounded-xl border px-3 py-2 text-left transition backdrop-blur-sm",
-                        isSelected
-                          ? "border-white/60 bg-white/12 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
-                          : "border-white/10 bg-white/5 text-white/90 hover:border-white/20 hover:bg-white/10",
-                      )}
-                    >
-                      <div className="pointer-events-none absolute inset-0">
-                        <Image
-                          src={getDefaultLanguageImage(language.imageUrl)}
-                          alt={language.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 320px"
-                          className="object-cover opacity-35 transition duration-300 group-hover:scale-[1.03]"
-                        />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,rgba(2,6,23,0.18)_0%,rgba(2,6,23,0.62)_100%)]" />
-                        <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_0%,rgba(34,211,238,0.05)_24%,rgba(34,211,238,0.16)_40%,rgba(34,211,238,0.04)_58%,transparent_78%)] opacity-80 mix-blend-screen" />
-                      </div>
+                    return (
+                      <DropdownMenuItem key={language.slug} asChild>
+                        <button
+                          type="button"
+                          onClick={() => handleSelectLanguage(language.slug)}
+                          className={cn(
+                            "group relative overflow-hidden rounded-xl border px-3 py-2 text-left transition backdrop-blur-sm",
+                            isSelected
+                              ? "border-white/60 bg-white/12 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
+                              : "border-white/10 bg-white/5 text-white/90 hover:border-white/20 hover:bg-white/10",
+                          )}
+                        >
+                          <div className="pointer-events-none absolute inset-0">
+                            <Image
+                              src={getDefaultLanguageImage(language.imageUrl)}
+                              alt={language.name}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 320px"
+                              className="object-cover opacity-35 transition duration-300 group-hover:scale-[1.03]"
+                            />
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,rgba(2,6,23,0.18)_0%,rgba(2,6,23,0.62)_100%)]" />
+                            <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_0%,rgba(34,211,238,0.05)_24%,rgba(34,211,238,0.16)_40%,rgba(34,211,238,0.04)_58%,transparent_78%)] opacity-80 mix-blend-screen" />
+                          </div>
 
-                      <div className="relative z-10 min-w-0">
-                        <p className="text-sm font-medium leading-tight text-white">
-                          {language.name}
-                        </p>
-                        <p className="text-xs text-white/65">{language.slug}</p>
-                      </div>
-                    </button>
-                  </DropdownMenuItem>
-                );
-              })}
-            </div>
-          </PerfectScrollbar>
-        </DropdownMenuContent>
-      </DropdownMenu>
+                          <div className="relative z-10 min-w-0">
+                            <p className="text-sm font-medium leading-tight text-white">
+                              {language.name}
+                            </p>
+                            <p className="text-xs text-white/65">
+                              {language.slug}
+                            </p>
+                          </div>
+                        </button>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </div>
+              </PerfectScrollbar>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 }

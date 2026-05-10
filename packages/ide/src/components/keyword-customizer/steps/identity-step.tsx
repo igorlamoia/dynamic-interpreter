@@ -1,11 +1,11 @@
 "use client";
 
-import { Atom, Code, Languages, Sparkles } from "lucide-react";
+import { Atom, Code, Languages, Sparkles, ChevronDown } from "lucide-react";
 import { OptionCard, OptionCardIconColor } from "../option-card";
 import type { WizardPresetId } from "../wizard-model";
 import { Step } from "./components/step";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   InputWithActions,
   InputActionButton,
@@ -69,6 +69,12 @@ const blockClass = "text-rose-300";
 const typeClass = "text-blue-400";
 const normalClass = "text-slate-200";
 const conditionalClass = "text-amber-300";
+
+const ADVANCED_PRESETS: WizardPresetId[] = [
+  "minimal",
+  "ruby-like",
+  "mineres-like",
+];
 
 const PRESET_OPTIONS: Array<{
   id: WizardPresetId;
@@ -135,6 +141,32 @@ const PRESET_OPTIONS: Array<{
     iconColor: "violet",
   },
   {
+    id: "python-like",
+    title: "Pythonica",
+    subtitle: "INDENTED FLOW",
+    description:
+      "Troca blocos por indentacao e remove terminadores explicitos.",
+    snippet: (
+      <span className="flex flex-col gap-1">
+        <p className="inline-flex flex-wrap gap-1">
+          <span className={typeClass}>int</span>
+          <span className={functionClass}>main</span>
+          <span className={normalClass}>(</span>
+          <span className={normalClass}>)</span>
+          <span className={blockClass}>:</span>
+        </p>
+        <p>
+          <span className={`${functionClass} pl-2`}>print</span>
+          <span className="text-slate-200">(</span>
+          <span className={stringClass}>&quot;Olá mundo&quot;</span>
+          <span className="text-slate-200">)</span>
+        </p>
+      </span>
+    ),
+    icon: <Sparkles className="h-5 w-5" />,
+    iconColor: "rose",
+  },
+  {
     id: "minimal",
     title: "Minimalista",
     subtitle: "ZERO SURFACE",
@@ -163,32 +195,7 @@ const PRESET_OPTIONS: Array<{
     icon: <Code className="h-5 w-5" />,
     iconColor: "emerald",
   },
-  {
-    id: "python-like",
-    title: "Pythonica",
-    subtitle: "INDENTED FLOW",
-    description:
-      "Troca blocos por indentacao e remove terminadores explicitos.",
-    snippet: (
-      <span className="flex flex-col gap-1">
-        <p className="inline-flex flex-wrap gap-1">
-          <span className={typeClass}>int</span>
-          <span className={functionClass}>main</span>
-          <span className={normalClass}>(</span>
-          <span className={normalClass}>)</span>
-          <span className={blockClass}>:</span>
-        </p>
-        <p>
-          <span className={`${functionClass} pl-2`}>print</span>
-          <span className="text-slate-200">(</span>
-          <span className={stringClass}>&quot;Olá mundo&quot;</span>
-          <span className="text-slate-200">)</span>
-        </p>
-      </span>
-    ),
-    icon: <Sparkles className="h-5 w-5" />,
-    iconColor: "rose",
-  },
+
   {
     id: "ruby-like",
     title: "Ruby-like",
@@ -261,6 +268,15 @@ const PRESET_OPTIONS: Array<{
 ];
 
 export function IdentityStep({ values, actions }: IdentityStepProps) {
+  const [showAdvancedMode, setShowAdvancedMode] = useState(false);
+  const isAdvancedModeSelected = ADVANCED_PRESETS.includes(
+    values.selectedPresetId,
+  );
+  const isAdvancedMode = showAdvancedMode || isAdvancedModeSelected;
+  const visiblePresets = isAdvancedMode
+    ? PRESET_OPTIONS
+    : PRESET_OPTIONS.slice(0, 3);
+
   return (
     <section className="space-y-6">
       <Step.Header>
@@ -272,20 +288,42 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
         </Step.Description>
       </Step.Header>
 
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {PRESET_OPTIONS.map((preset) => (
-          <OptionCard
-            key={preset.id}
-            title={preset.title}
-            subtitle={preset.subtitle}
-            description={preset.description}
-            snippet={preset.snippet}
-            icon={preset.icon}
-            iconColor={preset.iconColor}
-            selected={preset.id === values.selectedPresetId}
-            onClick={() => actions.selectPreset(preset.id)}
-          />
-        ))}
+      <div className="space-y-3">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {visiblePresets.map((preset) => (
+            <OptionCard
+              key={preset.id}
+              title={preset.title}
+              subtitle={preset.subtitle}
+              description={preset.description}
+              snippet={preset.snippet}
+              icon={preset.icon}
+              iconColor={preset.iconColor}
+              selected={preset.id === values.selectedPresetId}
+              onClick={() => actions.selectPreset(preset.id)}
+            />
+          ))}
+        </div>
+
+        {isAdvancedMode ? (
+          <button
+            type="button"
+            onClick={() => setShowAdvancedMode(false)}
+            className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
+          >
+            <span>Mostrar menos</span>
+            <ChevronDown className="h-4 w-4 rotate-180" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowAdvancedMode(true)}
+            className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
+          >
+            <span>Mostrar mais</span>
+            <ChevronDown className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       <div className="flex flex-col gap-4">

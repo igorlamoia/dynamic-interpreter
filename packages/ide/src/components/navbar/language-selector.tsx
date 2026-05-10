@@ -36,7 +36,7 @@ export function LanguageSelector() {
           <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[140px]">
+      <DropdownMenuContent align="end" className="min-w-35">
         {SUPPORTED_LOCALES.map((targetLocale) => (
           <DropdownMenuItem key={targetLocale.code} asChild>
             <Link
