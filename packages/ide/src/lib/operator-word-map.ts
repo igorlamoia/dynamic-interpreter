@@ -3,6 +3,7 @@ import type {
   IDEOperatorWordMap,
 } from "@/entities/compiler-config";
 import type { BlockDelimiters, KeywordMapping } from "@/contexts/keyword/types";
+import ui from "@/i18n/locales/pt-BR/ui";
 
 export const OPERATOR_ALIAS_REGEX = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
@@ -49,24 +50,30 @@ export function validateOperatorWordMap(
     }
 
     if (!OPERATOR_ALIAS_REGEX.test(alias)) {
-      return "Use palavras validas para operadores (letras, numeros e _).";
+      return ui.validation_operator_invalid_format;
     }
 
     if (seenAliases.has(alias)) {
-      return `"${alias}" is already used by another operator alias.`;
+      return ui.validation_operator_already_used.replace("{value}", alias);
     }
     seenAliases.set(alias, field.key);
 
     if (keywordSet.has(alias)) {
-      return `"${alias}" conflicts with an existing keyword customization.`;
+      return ui.validation_conflicts_keyword_customization.replace(
+        "{value}",
+        alias,
+      );
     }
 
     if (booleanLiteralSet.has(alias)) {
-      return `"${alias}" conflicts with an existing boolean literal alias.`;
+      return ui.validation_conflicts_boolean_literal_alias.replace(
+        "{value}",
+        alias,
+      );
     }
 
     if (alias === openDelimiter || alias === closeDelimiter) {
-      return `"${alias}" conflicts with the configured block delimiters.`;
+      return ui.validation_conflicts_block_delimiters.replace("{value}", alias);
     }
   }
 

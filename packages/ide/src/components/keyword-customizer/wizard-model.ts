@@ -85,8 +85,8 @@ const DIDACTIC_PT_PRESET: StyledWizardPresetDefinition = {
     switch: "escolha",
     case: "caso",
     default: "padrao",
-    variavel: "variavel_pt",
-    funcao: "funcao_pt",
+    variavel: "variavel",
+    funcao: "funcao",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -103,7 +103,7 @@ const DIDACTIC_PT_PRESET: StyledWizardPresetDefinition = {
     true: "verdadeiro",
     false: "falso",
   },
-  statementTerminatorLexeme: "fim",
+  statementTerminatorLexeme: ";",
   blockDelimiters: { open: "inicio", close: "fim" },
   modes: {
     semicolon: "required",

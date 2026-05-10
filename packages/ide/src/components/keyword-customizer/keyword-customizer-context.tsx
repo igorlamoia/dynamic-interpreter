@@ -97,6 +97,7 @@ export function KeywordCustomizerProvider({
   const [selectedPresetId, setSelectedPresetId] =
     useState<WizardPresetId>("free");
   const [languageName, setLanguageNameState] = useState("");
+  const [languageDescription, setLanguageDescription] = useState("");
   const [languageImageUrl, setLanguageImageUrl] = useState("");
   const [languageImageQuery, setLanguageImageQuery] = useState("");
   const [languageImageResults, setLanguageImageResults] = useState<
@@ -162,6 +163,7 @@ export function KeywordCustomizerProvider({
     setVisitedWizardStepIds(["identity"]);
     setSelectedPresetId("free");
     setLanguageNameState("");
+    setLanguageDescription("");
     setLanguageImageUrl("");
     setLanguageImageQuery("");
     setLanguageImageResults([]);
@@ -539,6 +541,7 @@ export function KeywordCustomizerProvider({
     setVisitedWizardStepIds(["identity"]);
     setSelectedPresetId("free");
     setLanguageNameState("");
+    setLanguageDescription("");
     setLanguageImageUrl("");
     setLanguageImageQuery("");
     setLanguageImageResults([]);
@@ -653,6 +656,7 @@ export function KeywordCustomizerProvider({
     saveSavedKeywordLanguage({
       name: trimmedLanguageName,
       slug: trimmedLanguageName,
+      description: languageDescription.trim(),
       imageUrl: languageImageUrl,
       imageQuery: languageImageQuery.trim(),
       presetId: selectedPresetId,
@@ -671,6 +675,7 @@ export function KeywordCustomizerProvider({
     getOperatorValidationDelimiters,
     languageImageQuery,
     languageImageUrl,
+    languageDescription,
     languageName,
     selectedPresetId,
     setCustomization,
@@ -692,6 +697,7 @@ export function KeywordCustomizerProvider({
     visitedStepIds: visitedWizardStepIds,
     selectedPresetId,
     languageName,
+    languageDescription,
     languageImageUrl,
     languageImageQuery,
     languageImageResults,
@@ -711,6 +717,7 @@ export function KeywordCustomizerProvider({
       goToPreviousWizardStep,
       applyPreset,
       setLanguageName,
+      setLanguageDescription,
       setImageSearchQuery,
       searchLanguageImages,
       selectLanguageImage,

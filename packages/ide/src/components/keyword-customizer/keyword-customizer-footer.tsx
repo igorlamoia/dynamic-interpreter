@@ -29,7 +29,7 @@ export function KeywordCustomizerFooter({
           </HeroButton>
 
           {activeStepIndex < totalSteps - 1 ? (
-            <HeroButton type="button" variant="ghost" onClick={onNext}>
+            <HeroButton type="button" variant="outline" onClick={onNext}>
               Continuar
             </HeroButton>
           ) : (

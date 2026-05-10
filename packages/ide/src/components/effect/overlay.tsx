@@ -18,19 +18,25 @@ function EdgeOverlay({
   size: Size;
 }) {
   const sideClassName =
-    side === "left" ? "left-0 bg-linear-to-r" : "right-0 bg-linear-to-l";
+    side === "left" ? "left-0 bg-gradient-to-r" : "right-0 bg-gradient-to-l";
 
   return (
-    <div className={`${baseClassName} inset-y-0 w-${size} ${sideClassName}`} />
+    <div
+      className={`${baseClassName} inset-y-0 ${sideClassName}`}
+      style={{ width: `${size}px` }}
+    />
   );
 }
 
 function EdgeYOverlay({ side, size }: { side: "bottom" | "top"; size: Size }) {
   const sideClassName =
-    side === "bottom" ? "bottom-0 bg-linear-to-t" : "top-0 bg-linear-to-b";
+    side === "bottom" ? "bottom-0 bg-gradient-to-t" : "top-0 bg-gradient-to-b";
 
   return (
-    <div className={`${baseClassName} inset-x-0 h-${size}  ${sideClassName}`} />
+    <div
+      className={`${baseClassName} inset-x-0 ${sideClassName}`}
+      style={{ height: `${size}px` }}
+    />
   );
 }
 

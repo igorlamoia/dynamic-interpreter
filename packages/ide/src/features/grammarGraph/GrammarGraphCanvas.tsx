@@ -9,6 +9,7 @@ import {
   Position,
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
   type NodeProps,
   type NodeTypes,
 } from "@xyflow/react";
@@ -93,6 +94,9 @@ export function GrammarGraphCanvas({
     [onSelectNode],
   );
 
+  const nodeCount = nodes.length;
+  const edgeCount = edges.length;
+
   const nodeTypes = useMemo<NodeTypes>(
     () => ({
       grammarNode: (props: NodeProps<GrammarGraphReactFlowNode>) => (
@@ -132,6 +136,7 @@ export function GrammarGraphCanvas({
         )}
       >
         <ReactFlow
+          key={`${model.startNodeId}:${nodeCount}:${edgeCount}`}
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
@@ -144,6 +149,11 @@ export function GrammarGraphCanvas({
           proOptions={{ hideAttribution: true }}
         >
           <Background color="#334155" gap={24} size={1} />
+          <AutoFitView
+            nodeCount={nodeCount}
+            edgeCount={edgeCount}
+            padding={0.18}
+          />
           <MiniMap
             nodeColor={(node) =>
               getGroupAccent((node.data as GrammarGraphViewNode).group)
@@ -229,4 +239,26 @@ function getGroupAccent(group: string): string {
       group as keyof typeof GRAMMAR_GRAPH_GROUP_ACCENTS
     ] ?? GRAMMAR_GRAPH_DEFAULT_ACCENT
   );
+}
+
+function AutoFitView({
+  nodeCount,
+  edgeCount,
+  padding,
+}: {
+  nodeCount: number;
+  edgeCount: number;
+  padding: number;
+}) {
+  const { fitView } = useReactFlow();
+
+  React.useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      fitView({ padding, duration: 0 });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [edgeCount, fitView, nodeCount, padding]);
+
+  return null;
 }

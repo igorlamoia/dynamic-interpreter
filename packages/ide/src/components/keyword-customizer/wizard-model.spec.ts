@@ -61,8 +61,8 @@ const DIDACTIC_PT_EXPECTED = {
     switch: "escolha",
     case: "caso",
     default: "padrao",
-    variavel: "variavel_pt",
-    funcao: "funcao_pt",
+    variavel: "variavel",
+    funcao: "funcao",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -76,7 +76,7 @@ const DIDACTIC_PT_EXPECTED = {
     not_equal: "diferente",
   },
   booleanLiteralMap: { true: "verdadeiro", false: "falso" },
-  statementTerminatorLexeme: "fim",
+  statementTerminatorLexeme: ";",
   blockDelimiters: { open: "inicio", close: "fim" },
   modes: {
     semicolon: "required",
@@ -280,7 +280,9 @@ function expectStyledPreset(
   next: ReturnType<typeof getDefaultCustomizationState>,
   expected: StyledPresetExpectation,
 ) {
-  expect(next.mappings.map(({ original, custom }) => [original, custom])).toEqual(
+  expect(
+    next.mappings.map(({ original, custom }) => [original, custom]),
+  ).toEqual(
     STYLED_KEYWORDS.map((keyword) => [keyword, expected.mappings[keyword]]),
   );
   expect(next.operatorWordMap).toEqual(expected.operatorWordMap);

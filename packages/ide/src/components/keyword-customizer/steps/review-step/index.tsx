@@ -4,7 +4,7 @@ import { PreviewCodeComparison } from "../../preview-code-comparison";
 import { TokenPreview } from "../../token-preview";
 import Image from "next/image";
 import LaserFlow from "../../../laser-flow";
-import { Ast } from "@/components/Ast";
+// import { Ast } from "@/components/Ast";
 import { Overlay } from "@/components/effect/overlay";
 import type { SelectedGrammarModes } from "@/features/grammarGraph/grammarGraphAdapter";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -148,7 +148,7 @@ function BoxResult({ values, actions }: ReviewStepProps) {
         afterCode={values.preview.snippet}
       />
       <TokenPreview tokens={values.preview.tokenPreview} />
-      <Ast selectedModes={values.grammarModes} height={620} />
+      {/* <Ast selectedModes={values.grammarModes} height={620} /> */}
       <div className="rounded-lg border border-slate-200/80 bg-white/90 p-4 backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/80">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
           Voltar para editar

@@ -80,6 +80,18 @@ describe("keyword-language-storage", () => {
     );
   });
 
+  it("trims and persists a language description when provided", () => {
+    const savedLanguage = createSavedLanguage({
+      description: "  Linguagem para aulas de logica.  ",
+    });
+
+    saveSavedKeywordLanguage(savedLanguage);
+
+    expect(loadSavedKeywordLanguage(savedLanguage.slug)?.description).toBe(
+      "Linguagem para aulas de logica.",
+    );
+  });
+
   it("filters corrupt registry entries and invalid active languages", () => {
     const validLanguage = createSavedLanguage({
       name: "Mineres Craft",
