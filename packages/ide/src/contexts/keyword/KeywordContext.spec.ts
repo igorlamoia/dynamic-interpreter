@@ -609,10 +609,10 @@ describe("statement terminator customization", () => {
     expect(error).toBe("O terminador não pode conter espaços.");
   });
 
-  it("rejects semicolon as a custom statement terminator", () => {
+  it("accepts semicolon as the default statement terminator", () => {
     const error = validateStatementTerminatorLexeme(";", createCustomization());
 
-    expect(error).toBe("Escolha um terminador diferente de ;.");
+    expect(error).toBeNull();
   });
 
   it("rejects reserved operator characters in statement terminators", () => {

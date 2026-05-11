@@ -424,4 +424,13 @@ describe("buildLexerConfigFromCustomization", () => {
       blockDelimiters: { open: "inicio", close: "fim" },
     });
   });
+
+  it("omits semicolon terminator from the compiler payload because it is built in", () => {
+    const draft = getDefaultCustomizationState();
+    draft.statementTerminatorLexeme = " ; ";
+
+    expect(buildLexerConfigFromCustomization(draft)).not.toHaveProperty(
+      "statementTerminatorLexeme",
+    );
+  });
 });

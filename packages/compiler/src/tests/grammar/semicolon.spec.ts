@@ -260,12 +260,12 @@ describe("Grammar Required Semicolons", () => {
     ).not.toThrow();
   });
 
-  it("rejects literal semicolon in normal statements when custom terminator is active", () => {
+  it("accepts literal semicolon in normal statements when custom terminator is active", () => {
     expect(() =>
       compileToIr("int main() { print(1); }", {
         lexer: { statementTerminatorLexeme: "@@" },
       }),
-    ).toThrow(/Unexpected token/);
+    ).not.toThrow();
   });
 
   it("mentions the configured terminator in required-mode errors", () => {
@@ -295,12 +295,12 @@ describe("Grammar Required Semicolons", () => {
     ).not.toThrow();
   });
 
-  it("rejects literal semicolon in normal statements when a word terminator is active", () => {
+  it("accepts literal semicolon in normal statements when a word terminator is active", () => {
     expect(() =>
       compileToIr("int main() { print(1); }", {
         lexer: { statementTerminatorLexeme: "uai" },
         grammar: { semicolonMode: "required" },
       }),
-    ).toThrow(/Unexpected token/);
+    ).not.toThrow();
   });
 });

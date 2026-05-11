@@ -207,7 +207,7 @@ export function validateStatementTerminatorLexeme(
   }
 
   if (normalized === ";") {
-    return ui.validation_terminator_not_semicolon;
+    return null;
   }
 
   if (

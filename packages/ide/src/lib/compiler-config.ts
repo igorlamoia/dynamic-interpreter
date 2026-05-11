@@ -112,7 +112,9 @@ export function normalizeCompilerConfig(
     languageDocumentation: normalizeLanguageDocumentationMap(
       input.languageDocumentation,
     ),
-    ...(statementTerminatorLexeme ? { statementTerminatorLexeme } : {}),
+    ...(statementTerminatorLexeme && statementTerminatorLexeme !== ";"
+      ? { statementTerminatorLexeme }
+      : {}),
     grammar,
     indentationBlock,
     ...(grammar.blockMode === "delimited" && hasDelimiters
