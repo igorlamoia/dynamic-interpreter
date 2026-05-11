@@ -215,7 +215,7 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
           : "lg:top-18 lg:h-[calc(100vh-4rem)]"
       }`}
     >
-      <div className="relative flex h-full flex-col gap-6 overflow-hidden rounded-lg py-4 pr-4 lg:overflow-y-auto">
+      <div className="relative flex h-full flex-col gap-6 overflow-hidden rounded-lg py-4 pr-4">
         <ExampleSnippet title="Preview do código" code={preview.snippet} />
 
         <CardSnapStack

@@ -156,4 +156,35 @@ describe("buildWizardPreview", () => {
     expect(preview.basedOnLabel).toBe("Minimalista");
     expect(preview.languageImageUrl).toBe("https://img.example/cafe.jpg");
   });
+
+  it("uses a richer full-program example on the review step", () => {
+    const preview = buildWizardPreview(getDefaultCustomizationState(), {
+      activeStepId: "review",
+      presetId: "didactic-pt",
+    });
+
+    expect(preview.baselineSnippet).toContain("int idade = 25");
+    expect(preview.baselineSnippet).toContain('print("Olá Mundo!")');
+    expect(preview.baselineSnippet).toContain("scan(nome)");
+    expect(preview.baselineSnippet).toContain("switch (nivel)");
+    expect(preview.baselineSnippet).toContain("return idade");
+    expect(preview.snippet).toContain("case 1");
+    expect(preview.snippet).toContain("continue");
+    expect(preview.snippet).toContain("break");
+  });
+
+  it("uses the generic variable keyword in review previews for untyped languages", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes.typing = "untyped";
+
+    const preview = buildWizardPreview(draft, {
+      activeStepId: "review",
+      presetId: "python-like",
+    });
+
+    expect(preview.baselineSnippet).toContain('variavel nome = "Kiki"');
+    expect(preview.baselineSnippet).toContain("variavel idade = 25");
+    expect(preview.baselineSnippet).not.toContain("int idade = 25");
+    expect(preview.snippet).toContain("variavel estudante = true");
+  });
 });

@@ -115,6 +115,16 @@ describe("normalizeCompilerConfig", () => {
     expect(normalized.grammar.semicolonMode).toBe("required");
   });
 
+  it("omits semicolon statement terminator because it is built in", () => {
+    const normalized = normalizeCompilerConfig({
+      statementTerminatorLexeme: " ; ",
+      grammar: { semicolonMode: "required" },
+    });
+
+    expect(normalized.statementTerminatorLexeme).toBeUndefined();
+    expect(normalized.grammar.semicolonMode).toBe("required");
+  });
+
   it("preserves language documentation entries in the normalized payload", () => {
     const normalized = normalizeCompilerConfig({
       languageDocumentation: {

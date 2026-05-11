@@ -26,21 +26,19 @@ export function CurrentVocabulary({ values }: Pick<ReviewStepProps, "values">) {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
         Vocabulário atual da linguagem
       </p>
-      <PerfectScrollbar>
-        <div className="px-1 mt-3 max-h-30 gap-2 flex flex-wrap">
-          {values.vocabularySections.map((section) => {
-            const tone = resolveLexemeTone(section.title);
-            if (!section.items.length) return null;
-            return section.items.map((item) => (
-              <span
-                key={`${section.title}-${item}`}
-                className={`${LEXEME_CHIP_BASE} ${tone}`}
-              >
-                {item}
-              </span>
-            ));
-          })}
-        </div>
+      <PerfectScrollbar className="px-1 py-1  mt-3 max-h-30 gap-2 flex flex-wrap">
+        {values.vocabularySections.map((section) => {
+          const tone = resolveLexemeTone(section.title);
+          if (!section.items.length) return null;
+          return section.items.map((item) => (
+            <span
+              key={`${section.title}-${item}`}
+              className={`${LEXEME_CHIP_BASE} ${tone}`}
+            >
+              {item}
+            </span>
+          ));
+        })}
       </PerfectScrollbar>
     </div>
   );

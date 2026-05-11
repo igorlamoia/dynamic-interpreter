@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AlertProvider } from "@/components/alert";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { useAuth } from "@/contexts/AuthContext";
+import "@xyflow/react/dist/style.css";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";

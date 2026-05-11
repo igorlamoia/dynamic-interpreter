@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
 import {
+  buildIdentityStepProps,
   buildIOStepProps,
+  buildReviewStepProps,
   buildRulesStepProps,
   buildStructureStepProps,
   buildTypeStepProps,
@@ -25,6 +27,7 @@ function buildContext(
     visitedStepIds: [],
     selectedPresetId: "free",
     languageName: "",
+    languageDescription: "",
     languageImageUrl: "",
     languageImageQuery: "",
     languageImageResults: [],
@@ -41,6 +44,7 @@ function buildContext(
       goToPreviousWizardStep: () => undefined,
       applyPreset: () => undefined,
       setLanguageName: () => undefined,
+      setLanguageDescription: () => undefined,
       setImageSearchQuery: () => undefined,
       searchLanguageImages: async () => undefined,
       selectLanguageImage: () => undefined,
@@ -58,6 +62,27 @@ function buildContext(
     ...override,
   } as KeywordCustomizerContextValue;
 }
+
+describe("buildIdentityStepProps", () => {
+  it("passes through the language description value and setter", () => {
+    const setLanguageDescription = () => undefined;
+
+    const props = buildIdentityStepProps(
+      buildContext({
+        languageDescription: "Uma linguagem para aulas de logica.",
+        actions: {
+          ...buildContext().actions,
+          setLanguageDescription,
+        },
+      }),
+    );
+
+    expect(props.values.languageDescription).toBe(
+      "Uma linguagem para aulas de logica.",
+    );
+    expect(props.actions.setLanguageDescription).toBe(setLanguageDescription);
+  });
+});
 
 describe("buildStructureStepProps", () => {
   it("fills the structure snippets from the draft", () => {
@@ -160,5 +185,28 @@ describe("buildRulesStepProps", () => {
         }),
       ]),
     );
+  });
+});
+
+describe("buildReviewStepProps", () => {
+  it("maps customizer modes to grammar graph mode names", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes = {
+      typing: "untyped",
+      block: "indentation",
+      semicolon: "optional-eol",
+      array: "dynamic",
+    };
+
+    const props = buildReviewStepProps(
+      buildContext({ draftCustomization: draft }),
+    );
+
+    expect(props.values.grammarModes).toEqual({
+      typingMode: "untyped",
+      blockMode: "indentation",
+      semicolonMode: "optional-eol",
+      arrayMode: "dynamic",
+    });
   });
 });

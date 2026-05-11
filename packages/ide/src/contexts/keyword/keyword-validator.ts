@@ -7,6 +7,7 @@ import type {
 import { DEFAULT_BOOLEAN_LITERAL_MAP } from "@/lib/keyword-map";
 import type { KeywordMapping, BlockDelimiters } from "./types";
 import { ORIGINAL_KEYWORDS } from ".";
+import ui from "@/i18n/locales/pt-BR/ui";
 export { validateOperatorWordMap as validateOperatorWordMap } from "@/lib/operator-word-map";
 
 type StatementTerminatorValidationCustomization = {
@@ -54,11 +55,8 @@ export function createKeywordSchema(
       custom: z
         .string()
         .trim()
-        .min(1, "A palavra não pode ser vazia.")
-        .regex(
-          /^[a-zA-Z_][a-zA-Z0-9_]*$/,
-          "Use apenas letras, números e underscore (começando com letra ou underscore).",
-        ),
+        .min(1, ui.validation_empty_word)
+        .regex(/^[a-zA-Z_][a-zA-Z0-9_]*$/, ui.validation_invalid_word_format),
     })
     .superRefine((value, ctx) => {
       const booleanLiteralWords = new Set(
@@ -70,7 +68,10 @@ export function createKeywordSchema(
       if (booleanLiteralWords.has(value.custom)) {
         ctx.addIssue({
           code: "custom",
-          message: `"${value.custom}" já está sendo usada como literal booleano.`,
+          message: ui.validation_boolean_literal_conflict.replace(
+            "{value}",
+            value.custom,
+          ),
         });
         return;
       }
@@ -81,7 +82,9 @@ export function createKeywordSchema(
       if (conflict) {
         ctx.addIssue({
           code: "custom",
-          message: `"${value.custom}" já está sendo usada para "${conflict.original}".`,
+          message: ui.validation_keyword_already_used
+            .replace("{value}", value.custom)
+            .replace("{original}", conflict.original),
         });
       }
     });
@@ -113,19 +116,19 @@ export function validateBlockDelimiters(value: BlockDelimiters): string | null {
 
   if (!open && !close) return null;
   if (!open || !close) {
-    return "Preencha os delimitadores de abertura e fechamento.";
+    return ui.validation_fill_delimiters;
   }
 
   if (!WORD_REGEX.test(open) || !WORD_REGEX.test(close)) {
-    return "Use palavras válidas (letras, números e _, sem espaços).";
+    return ui.validation_invalid_delimiter_format;
   }
 
   if (open === close) {
-    return "Os delimitadores de abertura e fechamento devem ser diferentes.";
+    return ui.validation_delimiters_must_differ;
   }
 
   if (ORIGINAL_KEYWORDS.includes(open) || ORIGINAL_KEYWORDS.includes(close)) {
-    return "Delimitadores não podem reutilizar palavras reservadas.";
+    return ui.validation_delimiters_reserved;
   }
 
   return null;
@@ -154,28 +157,31 @@ export function validateBooleanLiteralAliases(
     const alias = typeof rawAlias === "string" ? rawAlias.trim() : "";
 
     if (!alias) {
-      return "Preencha os literais true e false.";
+      return ui.validation_fill_boolean_literals;
     }
 
     if (!WORD_REGEX.test(alias)) {
-      return "Use palavras válidas para literais booleanos (letras, números e _).";
+      return ui.validation_invalid_boolean_literal_format;
     }
 
     if (seenAliases.has(alias)) {
-      return "Os literais booleanos precisam ser diferentes.";
+      return ui.validation_boolean_literals_must_differ;
     }
     seenAliases.add(alias);
 
     if (keywordSet.has(alias)) {
-      return `"${alias}" conflicts with an existing keyword customization.`;
+      return ui.validation_conflicts_keyword_customization.replace(
+        "{value}",
+        alias,
+      );
     }
 
     if (operatorAliases.has(alias)) {
-      return `"${alias}" conflicts with an existing operator alias.`;
+      return ui.validation_conflicts_operator_alias.replace("{value}", alias);
     }
 
     if (alias === openDelimiter || alias === closeDelimiter) {
-      return `"${alias}" conflicts with the configured block delimiters.`;
+      return ui.validation_conflicts_block_delimiters.replace("{value}", alias);
     }
   }
 
@@ -193,15 +199,15 @@ export function validateStatementTerminatorLexeme(
   const normalized = value.trim();
 
   if (!normalized) {
-    return "Informe um terminador.";
+    return ui.validation_fill_statement_terminator;
   }
 
   if (/\s/.test(normalized)) {
-    return "O terminador não pode conter espaços.";
+    return ui.validation_terminator_no_spaces;
   }
 
   if (normalized === ";") {
-    return "Escolha um terminador diferente de ;.";
+    return null;
   }
 
   if (
@@ -209,7 +215,7 @@ export function validateStatementTerminatorLexeme(
       RESERVED_STATEMENT_TERMINATOR_CHARS.has(char),
     )
   ) {
-    return "O terminador não pode reutilizar símbolos ou operadores fixos da linguagem.";
+    return ui.validation_terminator_reserved_chars;
   }
 
   const keywordSet = new Set(
@@ -236,19 +242,31 @@ export function validateStatementTerminatorLexeme(
   const closeDelimiter = delimitersToValidate.close.trim();
 
   if (keywordSet.has(normalized)) {
-    return `"${normalized}" conflicts with an existing keyword customization.`;
+    return ui.validation_conflicts_keyword_customization.replace(
+      "{value}",
+      normalized,
+    );
   }
 
   if (operatorAliases.has(normalized)) {
-    return `"${normalized}" conflicts with an existing operator alias.`;
+    return ui.validation_conflicts_operator_alias.replace(
+      "{value}",
+      normalized,
+    );
   }
 
   if (booleanAliases.has(normalized)) {
-    return `"${normalized}" conflicts with an existing boolean literal alias.`;
+    return ui.validation_conflicts_boolean_literal_alias.replace(
+      "{value}",
+      normalized,
+    );
   }
 
   if (normalized === openDelimiter || normalized === closeDelimiter) {
-    return `"${normalized}" conflicts with the configured block delimiters.`;
+    return ui.validation_conflicts_block_delimiters.replace(
+      "{value}",
+      normalized,
+    );
   }
 
   return null;

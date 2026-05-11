@@ -36,6 +36,7 @@ describe("IdentityStep", () => {
           values={{
             selectedPresetId: "free",
             languageName: "",
+            languageDescription: "",
             imageSearchQuery: "",
             imageSearchResults: [],
             selectedImageUrl: "",
@@ -45,6 +46,7 @@ describe("IdentityStep", () => {
           actions={{
             selectPreset: vi.fn(),
             setLanguageName: vi.fn(),
+            setLanguageDescription: vi.fn(),
             setImageSearchQuery: vi.fn(),
             searchImages: vi.fn(),
             selectImage: vi.fn(),
@@ -67,6 +69,7 @@ describe("IdentityStep", () => {
     document.body.appendChild(container);
     const root = createRoot(container);
     const setLanguageName = vi.fn();
+    const setLanguageDescription = vi.fn();
     const setImageSearchQuery = vi.fn();
     const searchImages = vi.fn();
     const selectImage = vi.fn();
@@ -77,6 +80,7 @@ describe("IdentityStep", () => {
           values={{
             selectedPresetId: "didactic-pt",
             languageName: "Didatica Neon",
+            languageDescription: "Uma linguagem para aulas de logica.",
             imageSearchQuery: "neon",
             imageSearchResults: [
               {
@@ -94,6 +98,7 @@ describe("IdentityStep", () => {
           actions={{
             selectPreset: vi.fn(),
             setLanguageName,
+            setLanguageDescription,
             setImageSearchQuery,
             searchImages,
             selectImage,
@@ -108,6 +113,9 @@ describe("IdentityStep", () => {
     const imageSearchInput = container.querySelector(
       'input[aria-label="Buscar imagem da linguagem"]',
     ) as HTMLInputElement | null;
+    const languageDescriptionInput = container.querySelector(
+      'textarea[aria-label="Descrição da linguagem"]',
+    ) as HTMLTextAreaElement | null;
     const searchButton = Array.from(container.querySelectorAll("button")).find(
       (button) => button.textContent?.includes("Buscar imagens"),
     );
@@ -116,6 +124,7 @@ describe("IdentityStep", () => {
     ).find((button) => button.textContent?.includes("Selecionada"));
 
     expect(languageNameInput).toBeInstanceOf(HTMLInputElement);
+    expect(languageDescriptionInput).toBeInstanceOf(HTMLTextAreaElement);
     expect(imageSearchInput).toBeInstanceOf(HTMLInputElement);
     expect(searchButton).toBeDefined();
     expect(selectedImageButton).toBeDefined();
@@ -128,6 +137,17 @@ describe("IdentityStep", () => {
       )?.set;
       valueSetter?.call(languageNameInput, "Mineres Neon");
       languageNameInput?.dispatchEvent(
+        new Event("input", { bubbles: true, cancelable: true }),
+      );
+      const textareaValueSetter = Object.getOwnPropertyDescriptor(
+        HTMLTextAreaElement.prototype,
+        "value",
+      )?.set;
+      textareaValueSetter?.call(
+        languageDescriptionInput,
+        "Linguagem focada em algoritmos.",
+      );
+      languageDescriptionInput?.dispatchEvent(
         new Event("input", { bubbles: true, cancelable: true }),
       );
       valueSetter?.call(imageSearchInput, "compiler");
@@ -143,6 +163,9 @@ describe("IdentityStep", () => {
     });
 
     expect(setLanguageName).toHaveBeenCalledWith("Mineres Neon");
+    expect(setLanguageDescription).toHaveBeenCalledWith(
+      "Linguagem focada em algoritmos.",
+    );
     expect(setImageSearchQuery).toHaveBeenCalledWith("compiler");
     expect(searchImages).toHaveBeenCalledTimes(1);
     expect(selectImage).toHaveBeenCalledWith("https://img.example/full.png");

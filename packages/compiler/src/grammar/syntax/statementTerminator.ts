@@ -12,7 +12,7 @@ export function consumeStmtTerminator(
   const configuredTerminator = iterator.getStatementTerminatorLexeme();
   const expectedLexeme = configuredTerminator || undefined;
 
-  if (iterator.match(TOKENS.SYMBOLS.semicolon, expectedLexeme)) {
+  if (iterator.match(TOKENS.SYMBOLS.semicolon)) {
     iterator.consume(TOKENS.SYMBOLS.semicolon);
     return;
   }

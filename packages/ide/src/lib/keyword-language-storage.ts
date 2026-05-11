@@ -18,6 +18,7 @@ export type SavedKeywordLanguageIndexEntry = {
 export type SavedKeywordLanguage = {
   name: string;
   slug: string;
+  description?: string;
   imageUrl: string;
   imageQuery: string;
   presetId: WizardPresetId;
@@ -137,6 +138,9 @@ export function saveSavedKeywordLanguage(
   const normalizedLanguage: SavedKeywordLanguage = {
     ...language,
     slug,
+    ...(language.description === undefined
+      ? {}
+      : { description: language.description.trim() }),
   };
 
   if (typeof window === "undefined") {

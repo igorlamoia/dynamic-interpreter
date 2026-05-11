@@ -58,17 +58,19 @@ export function buildLexerConfigFromCustomization(
             open,
             close,
           },
-        }
+      }
       : {};
+  const statementTerminatorLexeme =
+    normalized.statementTerminatorLexeme === ";"
+      ? ""
+      : normalized.statementTerminatorLexeme;
 
   return {
     keywordMap,
     operatorWordMap: normalized.operatorWordMap,
     booleanLiteralMap: normalized.booleanLiteralMap,
     languageDocumentation: normalized.languageDocumentation,
-    ...(normalized.statementTerminatorLexeme
-      ? { statementTerminatorLexeme: normalized.statementTerminatorLexeme }
-      : {}),
+    ...(statementTerminatorLexeme ? { statementTerminatorLexeme } : {}),
     grammar: {
       semicolonMode: normalized.modes.semicolon,
       blockMode: normalized.modes.block,
