@@ -1,0 +1,371 @@
+
+\section{Compiladores}
+
+Este capitulo contém o referencial que embasa os principais aspectos abordados ao longo
+do trabalho.
+
+\label{sec:compiladores}
+
+\subsection{Compiladores e seus Fundamentos}
+
+Para a fundamentação teórica acerca do funcionamento, das fases e da arquitetura dos tradutores de linguagem, esta subseção adota como base estrutural a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de ciência da computação como a principal referência para o projeto de compiladores. Com o intuito de manter a fluidez da leitura, todas as definições conceituais de análise, síntese e estrutura de compilação apresentadas a seguir refletem estritamente as diretrizes estabelecidas por estes autores.
+
+Posto de forma simples, um compilador é um programa de computador que lê um programa escrito em uma linguagem fonte e o traduz para um programa equivalente em uma linguagem alvo. O modelo de compilação moderno é estruturado dividindo esse processo em duas partes fundamentais: a análise e a síntese. A fase de análise, frequentemente associada ao \textit{Front-End}, divide o programa fonte em suas partes constituintes e cria uma representação intermediária do mesmo. Por outro lado, a fase de síntese, ou \textit{Back-End}, constrói o programa alvo desejado a partir dessa representação intermediária gerada.
+
+A Figura \ref{fig:fluxo_compilador} ilustra essa separação lógica e a progressão da transformação do código.
+
+\begin{figure}[H]
+    \centering
+    \caption{Arquitetura de um compilador moderno.}
+    \label{fig:fluxo_compilador}
+    \includegraphics[width=0.8\textwidth]{Figuras/compiler.png}
+    
+    \legend{Fonte: \citeonline{alcantara2024}.}
+\end{figure}
+
+Conceitualmente, um compilador opera em fases sequenciais, cada uma das quais transforma o programa fonte de uma representação abstrata para outra. As primeiras fases formam o núcleo de análise e englobam a análise léxica, a análise sintática e a análise semântica. A partir daí, o fluxo avança para as etapas de geração de código intermediário, otimização e geração de código alvo. 
+
+Interagindo com todas essas seis fases de compilação, encontra-se o gerenciamento da tabela de símbolos. Essa estrutura de dados é essencial para o compilador, pois atua registrando todos os identificadores usados no programa e coletando informações cruciais sobre seus atributos, permitindo rápida recuperação de escopos e validação semântica ao longo de todo o processo de tradução.
+
+% -------------------------------------------------------------------------------------------------
+\subsection{O Modelo de Análise e Síntese (Fases da Compilação)}
+
+Toda a estruturação das fases da compilação e os conceitos detalhados nesta seção fundamentam-se nas obras clássicas da área, notadamente nos estudos de \citeonline{aho1995}, \citeonline{price2001} e \citeonline{cooper2012}.
+
+O processo de compilação é tradicionalmente dividido em duas partes principais: a análise e a síntese.
+A fase de análise, frequentemente chamada de \textit{front-end}, concentra-se em compreender o programa fonte dividindo o código em seus elementos constituintes para criar uma representação intermediária abstrata.
+Em contrapartida, a fase de síntese, ou \textit{back-end}, foca em mapear e construir o programa alvo desejado a partir dessa representação intermediária.
+A separação entre \textit{front-end} e \textit{back-end} atua como uma interface que facilita a adaptação e o suporte a múltiplas linguagens e arquiteturas.
+
+Para dominar a complexidade da tradução de uma linguagem de alto nível, o fluxo geral é subdividido em módulos lógicos menores, conhecidos como fases, onde cada uma transforma a representação do programa para a etapa seguinte.
+Em uma implementação prática, as atividades lógicas dessas fases podem ser agrupadas em "passagens" (\textit{passes}), otimizando o uso de memória durante o processo.
+As principais fases que compõem o núcleo de um compilador são:
+
+\begin{itemize}
+    \item \textbf{Análise Léxica (\textit{Scanner}):} Constitui a primeira fase da compilação, fazendo a leitura do programa fonte caractere por caractere.
+    Sua função é traduzir o texto para uma sequência de agrupamentos lógicos chamados de \textit{tokens}, ao mesmo tempo em que descarta caracteres não significativos, como espaços em branco e comentários.
+
+    \item \textbf{Análise Sintática (\textit{Parser}):} Recebe a cadeia de \textit{tokens} do analisador léxico e verifica se a estrutura gramatical do programa está correta.
+    O \textit{parser} agrupa os \textit{tokens} hierarquicamente, produzindo uma estrutura de dados conhecida como árvore de derivação ou árvore de sintaxe, seja através de estratégias \textit{top-down} (descendentes) ou \textit{bottom-up} (redutivas).
+
+    \item \textbf{Análise Semântica:} Vai além da verificação estrutural sintática, realizando checagens para garantir que os componentes do programa fazem sentido e combinam-se de forma válida durante a execução.
+    Um componente crítico desta fase é a verificação de tipos (\textit{type checking}), que assegura a consistência lógica do uso de variáveis e operadores.
+
+    \item \textbf{Geração de Código Intermediário:} Após as análises, o compilador gera uma representação intermediária explícita que abstrai os detalhes específicos da máquina alvo, sendo o "código de três endereços" um de seus formatos clássicos.
+    Essa etapa simplifica a implementação geral quebrando a barreira de complexidade entre a linguagem de alto nível e as instruções de baixo nível.
+
+    \item \textbf{Otimização de Código:} Atua sobre o código intermediário com o objetivo de reescrevê-lo e melhorá-lo.
+    Essa fase foca em reduzir o tempo global de execução e minimizar o espaço de memória consumido pelo programa compilado.
+
+    \item \textbf{Geração de Código Objeto:} É a fase final de síntese, responsável por mapear o código intermediário para a linguagem alvo (código de máquina absoluto, relocável ou \textit{assembly}).
+    Ela exige uma seleção cuidadosa das instruções nativas da máquina, das posições de memória e a alocação eficiente dos registradores.
+\end{itemize}
+
+Ao longo de todas as fases, o compilador interage ininterruptamente com dois módulos de suporte vitais: o gerenciador da \textbf{Tabela de Símbolos} e o \textbf{Atendimento a Erros}.
+A tabela de símbolos registra os identificadores encontrados e armazena atributos essenciais (como escopo, tipo e métodos de transmissão de parâmetros) de maneira que permita uma recuperação extremamente rápida nas etapas posteriores.
+Já o módulo de erros atua detectando falhas léxicas, sintáticas ou lógicas em todas as fases, utilizando mecanismos de recuperação que re-sincronizam o analisador e permitem que a compilação prossiga na tentativa de descobrir falhas adicionais no código fonte.
+
+% ----------------------------------------------------------------------------------------------
+
+\subsection{A Análise Léxica e o Reconhecimento de \textit{Tokens}}
+
+Os conceitos e definições inerentes à fase de análise léxica, detalhados a seguir, fundamentam-se fortemente nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+
+A análise léxica, frequentemente denominada \textit{scanner}, constitui a primeira fase do processo de compilação. A função primária deste módulo é realizar a leitura do programa fonte, caractere por caractere, e agrupá-los logicamente em unidades com significado gramatical, denominadas lexemas, conforme exemplificado na Figura \ref{fig:lexemas_nystrom}. 
+
+\begin{figure}[htb]
+    \centering
+    \caption{Exemplificação de agrupamento de caracteres em lexemas.}
+    \label{fig:lexemas_nystrom}
+    \includegraphics[width=0.8\textwidth]{Figuras/lex.png}
+    \legend{Fonte: \citeonline[p. 43]{nystrom2021}.}
+\end{figure}
+
+Durante essa varredura, o analisador léxico também atua filtrando informações que não possuem relevância para as fases posteriores, descartando ativamente espaços em branco, tabulações e comentários inseridos pelo programador.
+
+Neste contexto, é imprescindível estabelecer a distinção teórica entre dois conceitos fundamentais: o lexema e o \textit{token}. Um lexema é a sequência exata de caracteres no código-fonte que representa uma unidade léxica, ou seja, é a \textit{string} literal que foi digitada pelo usuário, como por exemplo a sequência ``123'' ou ``var''. Por outro lado, o \textit{token} é a representação lógica ou estrutura de dados gerada a partir desse lexema. Ele encapsula a classificação da unidade (sua classe ou categoria sintática, como identificador, palavra reservada ou operador) e, frequentemente, o valor original do lexema e sua posição no texto (linha e coluna) para auxiliar na emissão de erros sintáticos e semânticos.
+
+Para que o analisador léxico consiga identificar e classificar esses lexemas corretamente, a micro-sintaxe da linguagem de programação precisa ser formalmente descrita. Isso é realizado através de expressões regulares, que fornecem uma notação matemática concisa e poderosa para especificar a estrutura exata de cada tipo de \textit{token} (como, por exemplo, a regra que define que um identificador deve começar com uma letra seguida de letras ou dígitos). As expressões regulares descrevem conjuntos de cadeias de caracteres chamados de linguagens regulares, que figuram entre as linguagens mais simples na hierarquia das linguagens formais.
+
+Embora as expressões regulares sejam excelentes para a especificação humana, o reconhecimento mecânico em tempo de execução exige um formalismo executável. Para a implementação computacional, as expressões regulares são traduzidas para autômatos finitos. Um autômato finito é uma máquina abstrata de transição de estados que atua como um reconhecedor. Ele processa a fita de entrada caractere por caractere, mudando de estado lógico; se, ao final da leitura de um lexema, o autômato atingir um estado de aceitação (estado final), o \textit{token} é validado e encaminhado para o analisador sintático.
+
+O uso de autômatos finitos permite que a análise léxica seja extremamente eficiente, com custo de tempo linear em relação ao tamanho do código-fonte. Na prática, geradores de analisadores léxicos, como a clássica ferramenta \textit{Lex}, recebem as expressões regulares definidas pelo projetista da linguagem e geram automaticamente o código fonte de um autômato finito determinístico capaz de reconhecer os \textit{tokens} da linguagem de forma otimizada.
+
+% -------------------------------------------------------------------------------------------------------------
+
+\subsection{Estratégias de Análise Sintática: \textit{Top-Down} e \textit{Bottom-Up}}
+
+As definições e conceitos apresentados nesta seção baseiam-se nos fundamentos estabelecidos por \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
+
+A fase de análise sintática (ou \textit{parsing}) tem a responsabilidade central de determinar se a cadeia de \textit{tokens} fornecida pelo analisador léxico pode ser validamente gerada pela gramática formal da linguagem fonte. Para realizar essa verificação e construir a árvore de derivação, os compiladores adotam abordagens matemáticas que se enquadram majoritariamente em duas categorias fundamentais de algoritmos: a análise descendente (\textit{top-down}) e a análise ascendente ou redutiva (\textit{bottom-up}).
+
+\subsubsection*{Análise Sintática Descendente (\textit{Top-Down})}
+A estratégia descendente consiste na tentativa de construir a árvore de derivação a partir da sua raiz (o símbolo inicial da gramática) em direção às folhas (os \textit{tokens} terminais da cadeia de entrada). Em cada passo do processo, o analisador substitui o símbolo não-terminal mais à esquerda por um de seus lados direitos correspondentes nas regras de produção, realizando o que se denomina rigorosamente como uma derivação mais à esquerda (\textit{leftmost derivation}).
+
+Os analisadores \textit{top-down} dividem-se tradicionalmente em preditivos tabulares (como o algoritmo LL(1)) e recursivos descendentes. A técnica de descida recursiva é amplamente utilizada em compiladores de produção modernos em virtude de sua elegância, facilidade de codificação manual e excelente capacidade de detectar e relatar erros de sintaxe. Contudo, para que um analisador descendente funcione de maneira eficiente e evite o custoso retrocesso (\textit{backtracking}), a gramática subjacente da linguagem deve atender a restrições estritas. Especificamente, a gramática não pode conter recursividade à esquerda e deve estar fatorada à esquerda, de modo que o próximo \textit{token} da entrada seja suficiente para guiar univocamente o analisador na escolha da produção correta.
+
+\subsubsection*{Análise Sintática Ascendente ou Redutiva (\textit{Bottom-Up})}
+Em contrapartida à técnica anterior, a análise ascendente processa a estrutura do programa de baixo para cima, iniciando a construção da árvore a partir das folhas (os \textit{tokens} fornecidos pelo \textit{scanner}) e trabalhando estruturalmente em direção à raiz. 
+
+A denominação ``redutiva'' deve-se à natureza do processo: o analisador busca identificar uma sequência de símbolos na pilha que corresponda exatamente ao lado direito de uma regra de produção (o \textit{handle}) e a substitui (reduz) pelo símbolo não-terminal correspondente ao lado esquerdo daquela regra. Esse mecanismo iterativo constrói sistematicamente uma derivação mais à direita ao reverso.
+
+A família mais proeminente e poderosa de analisadores \textit{bottom-up} é a dos analisadores da classe LR (como SLR, LALR e o Canônico), que operam através de uma arquitetura do tipo empilha-reduz (\textit{shift-reduce}) orientada por tabelas de transição de estados. Ao contrário da abordagem descendente, os analisadores \textit{bottom-up} não impõem a restrição de ausência de recursão à esquerda, acomodando e processando com eficiência tanto a recursividade à direita quanto à esquerda. Ademais, são capazes de reconhecer virtualmente todas as construções sintáticas que podem ser descritas por gramáticas livres de contexto. 
+
+Entretanto, devido à enorme complexidade matemática requerida para a construção manual das tabelas de transição de estados LR, esses analisadores não costumam ser codificados à mão; ao invés disso, recorre-se a geradores automáticos de analisadores sintáticos, como a clássica ferramenta YACC, que produzem o código-fonte do \textit{parser} a partir de uma especificação gramatical.
+
+% ---------------------------------------------------
+\subsection{Análise Semântica e Verificação de Tipos}
+
+Esta seção apresenta os fundamentos da análise semântica e da verificação de tipos, consolidando os conceitos e definições propostos por \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
+
+Uma vez que a estrutura gramatical do código é validada pela análise sintática, o processo de compilação evolui para a fase semântica. O objetivo central aqui é garantir que as construções do programa, embora sintaticamente corretas, possuam coerência lógica para a futura execução. Enquanto o \textit{parser} se limita a verificar se a "forma" do código respeita as regras da linguagem, o analisador semântico atua como um inspetor que examina o significado das combinações entre os elementos do programa. Um dos pilares desse estágio é a resolução de nomes (ou amarrações), procedimento no qual o compilador mapeia cada identificador à sua declaração correspondente, respeitando as regras de escopo.
+
+A verificação de tipos constitui outro componente vital da análise semântica. Utilizando a árvore de derivação e as informações armazenadas na tabela de símbolos, o compilador checa se os operadores estão sendo aplicados a operandos compatíveis. Durante essa inspeção, o sistema infere os tipos das expressões e detecta interpretações de valores que seriam semanticamente inválidas. Caso a linguagem permita, o analisador também pode aplicar coerções, que são conversões implícitas de tipos (como transformar um inteiro em ponto flutuante) para viabilizar operações entre tipos distintos.
+
+\subsubsection*{Tipos de Erros Semânticos}
+
+Diferente dos erros de sintaxe, as falhas semânticas ocorrem em códigos que possuem uma estrutura gramatical perfeita, mas que violam as regras de contexto ou significado da linguagem. O foco do tratamento de erros nesta fase é capturar inconsistências lógicas, destacando-se:
+
+\begin{itemize}
+    \item \textbf{Incompatibilidade de Tipos:} Manifesta-se quando um operador é utilizado com operandos cujos tipos não podem interagir entre si, seja por falta de suporte da linguagem ou por ausência de regras de conversão. Um caso típico em linguagens fortemente tipadas é a tentativa de realizar operações aritméticas entre textos (\textit{strings}) e valores lógicos (booleanos).
+    
+    \item \textbf{Identificadores Não Declarados e Violações de Escopo:} Este erro surge quando o programa tenta acessar uma variável, função ou objeto que não foi definido ou que não está visível no bloco de código atual. Um exemplo comum é a tentativa de utilizar uma variável local fora dos limites do seu escopo de definição.
+    
+    \item \textbf{Inconsistências de Aridade e Estruturais:} Refere-se a falhas na conformidade numérica de elementos. Isso inclui chamadas de funções com um número de parâmetros diferente do que foi estabelecido na assinatura original, ou o acesso a um \textit{array} utilizando um número de dimensões que não condiz com sua declaração.
+\end{itemize}
+
+% -------------------------------------------------------------------------------------------------------------
+\subsection{Geração de Código Intermediário}
+
+Os conceitos e as técnicas referentes à geração de código intermediário e à tradução dirigida pela sintaxe, detalhados nesta seção, fundamentam-se nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+
+A geração de código intermediário atua como um elo estrutural entre as fases de análise (\textit{front-end}) e síntese (\textit{back-end}) de um compilador. Após a verificação estrutural e semântica do código fonte, o compilador normalmente gera uma representação intermediária explícita, cujo formato é projetado para ser largamente independente das especificidades da linguagem fonte e da arquitetura da máquina alvo. A principal vantagem dessa estratégia em múltiplos passos é resolver, de maneira gradativa, a barreira de complexidade existente na conversão direta de comandos de alto nível para instruções de baixo nível. Ademais, essa etapa viabiliza a otimização de código e facilita a portabilidade, permitindo que a mesma representação interna seja traduzida para diversas arquiteturas diferentes.
+
+Dentre as formas de representação linear utilizadas na literatura, destaca-se o uso do código de três endereços, que se assemelha a uma linguagem de montagem (\textit{assembly}) genérica e abstrata. Nesta notação, as expressões matemáticas e lógicas são desmembradas em instruções elementares que possuem, no máximo, três operandos. A grande distinção teórica entre o código intermediário e o código objeto final reside no fato de que o intermediário se abstém de especificar detalhes físicos de \textit{hardware}, como os registradores exatos e as posições absolutas de memória a serem alocadas.
+
+Para ilustrar o mecanismo, uma instrução aritmética convencional de atribuição, tal como \texttt{A := X + Y * Z}, seria mapeada em instruções \textit{pseudo-assembly} mais simples, por meio da criação automática de variáveis temporárias pelo compilador. O fluxo de código de três endereços resultante desta operação seria composto por passos sequenciais lógicos:
+\begin{enumerate}
+    \item \texttt{T1 := Y * Z}
+    \item \texttt{T2 := X + T1}
+    \item \texttt{A := T2}
+\end{enumerate}
+
+\subsubsection*{Método de Geração Dirigida pela Sintaxe}
+
+Para que essa conversão ocorra de forma automatizada e correta, os compiladores comumente empregam a técnica denominada \textbf{tradução dirigida pela sintaxe}. Esse método estende os conceitos matemáticos das gramáticas livres de contexto, permitindo a associação direta de atributos aos símbolos gramaticais e a vinculação de ações semânticas específicas às regras de produção.
+
+Na prática, isso significa que a geração de código pode ocorrer concomitantemente com a fase de análise sintática. À medida que o analisador (\textit{parser}) agrupa as unidades léxicas e reconhece uma construção gramatical válida, ele executa em paralelo a ação semântica correspondente a essa regra. Essa execução processa os atributos passados pelos nós filhos da árvore gramatical e sintetiza as informações, permitindo a emissão gradativa e ordenada dos trechos de código intermediário.
+
+%--------------------------------------------------------------------------------------------------------------
+\subsection{Otimização de Código e Eficiência Computacional}
+
+As discussões e definições apresentadas nesta seção fundamentam-se nas obras de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
+
+Situada geralmente como a etapa intermediária do processo de compilação, a otimização visa refinar a representação interna do programa para torná-la mais performática. Esse aprimoramento busca não apenas acelerar a execução e reduzir o consumo de memória, mas também, em contextos tecnológicos modernos, diminuir o gasto energético do hardware. Durante esse estágio, o compilador substitui instruções genéricas por variantes mais ágeis e semanticamente equivalentes. Um exemplo clássico é o dobramento de constantes (\textit{constant folding}), que antecipa cálculos de valores fixos para o tempo de compilação, evitando que sejam processados repetidamente durante a execução.
+
+Para que uma técnica de otimização seja considerada válida, ela deve respeitar dois pilares fundamentais: a integridade (segurança) e a utilidade (rentabilidade). O princípio da segurança exige que qualquer modificação preserve o comportamento original do algoritmo, garantindo que o resultado final do programa não seja alterado. Já o princípio da rentabilidade assegura que a mudança estrutural resulte em um ganho de desempenho real e mensurável, justificando o tempo adicional despendido pelo compilador para realizar tal transformação.
+
+Quanto à sua abrangência, o processo de otimização opera em diferentes níveis de profundidade, sendo categorizado em quatro escopos principais:
+
+\begin{itemize}
+    \item \textbf{Otimização Local:} Concentra-se na análise de blocos básicos, que são sequências de instruções sem desvios internos. Nesse nível, é comum o uso de Grafos Acíclicos Dirigidos (GADs) para identificar e remover subexpressões redundantes e otimizar o uso de variáveis locais.
+    
+    \item \textbf{Otimização Regional:} Estende a análise para grupos de blocos básicos, focando prioritariamente em laços de repetição (\textit{loops}). Como a maior parte do tempo de execução de um software costuma ocorrer dentro desses ciclos, melhorias aplicadas aqui geram impactos significativos no desempenho global.
+    
+    \item \textbf{Otimização Global (Intraprocedural):} Examina o contexto completo de uma função ou procedimento. Através de análises detalhadas de fluxo de dados, o compilador consegue identificar oportunidades de melhoria que não seriam visíveis em uma inspeção puramente local.
+    
+    \item \textbf{Otimização Interprocedural:} Atua de forma macro, atravessando as fronteiras entre os diferentes módulos e funções do programa. Isso possibilita técnicas agressivas como a substituição em linha (\textit{inlining}), onde o corpo de uma função é inserido diretamente no local da chamada, eliminando os custos computacionais associados ao desvio de execução e troca de contexto.
+\end{itemize}
+
+De maneira geral, a maioria das rotinas de otimização ocorre em duas fases complementares: primeiro, uma análise estática para mapear o fluxo de controle e dependências; segundo, a transformação sintática que efetivamente reescreve o código. Entre as manobras mais frequentes, destacam-se a eliminação de código morto (instruções inacessíveis), o deslocamento de cálculos para fora de laços e a simplificação de redundâncias aritméticas.
+
+\subsection{Geração de Código Objeto e Mapeamento de Arquitetura}
+
+Os conceitos, desafios e estratégias referentes à fase de geração de código objeto e mapeamento de arquitetura, descritos nesta seção, fundamentam-se nas obras de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+
+A fase de geração de código objeto (ou geração de código de máquina) constitui a etapa final do processo de compilação, englobando as atividades finais do \textit{back-end}. O principal objetivo desta fase é mapear a representação intermediária otimizada para a linguagem nativa da máquina alvo, garantindo que o código gerado seja logicamente correto, faça uso efetivo dos recursos de \textit{hardware} disponíveis e execute de forma altamente eficiente.
+
+Um dos maiores desafios enfrentados na geração de código objeto advém da diversidade arquitetônica dos processadores. Cada família de processadores (como as arquiteturas x86, ARM ou SPARC) dispõe de um conjunto próprio de instruções de máquina, também conhecido como Arquitetura do Conjunto de Instruções (ISA - \textit{Instruction Set Architecture}). Isso implica que as operações de baixo nível e suas respectivas codificações binárias diferem radicalmente de um computador para outro.
+
+Para transpor essa barreira e evitar a necessidade de se construir um compilador inteiramente novo para cada arquitetura de \textit{hardware} existente, os compiladores modernos adotam o princípio da \textit{retargetabilidade} (capacidade de redirecionamento). Essa estratégia é viabilizada pelo uso do código intermediário: o \textit{front-end} atua de forma independente de máquina para gerar a representação intermediária, permitindo que a adaptação para um novo computador exija apenas a reescrita ou a substituição do módulo gerador de código (\textit{back-end}).
+
+O processo de geração de código específico para uma máquina baseia-se fortemente em duas atividades interligadas: a seleção de instruções e a alocação de registradores. A seleção de instruções atua como um reconhecedor de padrões que analisa a árvore ou a sequência linear do código intermediário e seleciona a sequência exata de operações na ISA do processador capaz de implementar aquele comportamento com o menor custo de execução possível. Em paralelo, a alocação de registradores gerencia o escasso conjunto de registradores físicos da Unidade Central de Processamento (UCP), decidindo quais valores em tempo de execução serão mantidos nestes componentes de altíssima velocidade e quais precisarão ser transferidos para a memória principal.
+
+% -------------------------------------------------------------------------------------------------------------
+\subsection{Engenharia de Software}
+
+A discussão a seguir, que detalha a dinâmica de execução do código de máquina e o papel do sistema operacional e do \textit{hardware} nesse processo, fundamenta-se nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+
+Após o processo de síntese do compilador, o programa objeto resultante é composto por uma sequência densa e linear de operações elementares codificadas diretamente em formato binário.
+Diferentemente da representação hierárquica e abstrata manipulada nas fases iniciais da compilação, como a árvore de derivação, o código de máquina não possui estruturas de alto nível; ele é estritamente de baixo nível, composto por instruções rudimentares que ocupam poucos \textit{bytes} e determinam ações diretas no \textit{hardware}, como a movimentação de valores entre endereços de memória e registradores, ou a adição de inteiros.
+
+Para que esse código binário seja efetivamente processado, o programa precisa ser carregado na memória principal, momento em que um \textit{software} carregador (\textit{loader}) e o sistema operacional preparam o ambiente de tempo de execução, dividindo a memória em segmentos específicos, como a área do código estruturado e as áreas de dados.
+A partir desse ponto, a execução do algoritmo é ditada pela Unidade Central de Processamento (UCP), que utiliza um registrador especial da arquitetura, frequentemente chamado de Contador de Programa (\textit{Program Counter} - PC) ou Ponteiro de Instrução (\textit{Instruction Pointer} - IP), para rastrear rigorosamente a próxima instrução a ser executada.
+
+A dinâmica de execução da máquina ocorre através de um ciclo mecânico e contínuo. O processador avança através da fita de instruções, decodificando o código de operação (\textit{opcode}) de cada uma para compreender a semântica da ação requerida e, em seguida, executando-a em ordem.
+Nesse ambiente de baixo nível, o fluxo de controle, que em linguagens fontes é caracterizado por laços de repetição e desvios condicionais elaborados, é resolvido de maneira muito mais simples.
+A alteração do fluxo é realizada puramente por meio de operações de saltos (\textit{jumps} ou \textit{branches}), que escrevem um novo endereço de memória diretamente no Contador de Programa, desviando a execução de um ponto do código de máquina para outro.
+
+
+\subsubsection{Gestão de Tarefas e Metodologias Ágeis}
+
+Para a fundamentação teórica acerca da gestão de escopo e da adoção de metodologias ágeis neste trabalho, esta subseção baseia-se primordialmente nas diretrizes do \textit{framework} Scrum detalhadas por \citeonline{sabbagh2014}, bem como nos princípios de desenvolvimento iterativo e incremental discutidos por \citeonline{agile2012}. Com o intuito de manter a fluidez da leitura, os conceitos de planejamento, empirismo e gerenciamento de tarefas apresentados a seguir refletem a consolidação das práticas e das ideias desses autores. %
+
+O gerenciamento clássico de projetos de software, frequentemente baseado no modelo em cascata (\textit{waterfall}), assume que o desenvolvimento pode ser tratado como uma sequência previsível e linear de atividades. No entanto, a engenharia de software lida com sistemas intrinsecamente complexos e com alto grau de incerteza, onde o engessamento de requisitos em fases iniciais costuma resultar em enorme desperdício e na entrega de produtos que não atendem às reais necessidades do cliente. Em contraponto a essa visão, as metodologias ágeis assumem a imprevisibilidade natural do desenvolvimento, baseando-se no empirismo e em ciclos de \textit{feedback} constante para promover a adaptação contínua e a entrega contínua de valor. %
+
+Neste contexto de ambientes complexos e mutáveis, o Scrum destaca-se como um \textit{framework} ágil, simples e focado na eficácia. Em vez de depender de cronogramas rígidos de longo prazo (como os tradicionais gráficos de Gantt), a gestão de tarefas ocorre de forma empírica e adaptativa. Todo o trabalho a ser realizado no produto é centralizado e organizado em uma lista dinâmica, ordenada e emergente, denominada \textit{Product Backlog}. Esta estrutura substitui os extensos e estáticos documentos de requisitos tradicionais, garantindo que o escopo seja gradualmente detalhado apenas com o nível de informação estritamente necessário para o momento da execução, evitando documentações prematuras. %
+
+Para viabilizar essa execução com excelência, o desenvolvimento é fatiado em ciclos curtos e de duração fixa, chamados de \textit{Sprints}. A cada início de ciclo, as tarefas mais prioritárias são extraídas do topo do \textit{Product Backlog} e detalhadas de forma atômica no \textit{Sprint Backlog}. Essa divisão iterativa e atômica do trabalho permite que uma equipe multidisciplinar e auto-organizada foque exclusivamente em metas de negócio de curto prazo. Consequentemente, o projeto avança passo a passo, mitigando os riscos tecnológicos, abraçando a mudança como uma vantagem competitiva e permitindo a reavaliação contínua das prioridades do software. %
+
+
+\subsubsection{Testes Automatizados e \textit{Test-Driven Development} (TDD)}
+
+Para a fundamentação da estratégia de testes e da adoção do \textit{Test-Driven Development} (TDD) descritas nesta subseção, este trabalho baseia-se nos princípios de qualidade e profissionalismo de \citeonline{martin_coder}, na estruturação arquitetural dos testes defendida por \citeonline{martin_clean}, e na literatura específica de testes e \textit{design} de software de \citeonline{aniche2012} e \citeonline{silveira2012}. Com o intuito de manter a fluidez textual, os conceitos sobre a pirâmide de testes, o ciclo de desenvolvimento e o impacto no acoplamento apresentados a seguir refletem a consolidação das ideias desses autores. %
+
+A garantia da qualidade de um software exige a validação contínua de seus comportamentos. Em projetos modernos, a automação de testes substitui a exaustiva e falha verificação manual, fornecendo uma rede de segurança que permite aos desenvolvedores alterar, refatorar e evoluir o código com a certeza de que as funcionalidades preexistentes não foram comprometidas. Essa prevenção contra a quebra de comportamentos já consolidados é conhecida como teste de regressão. Além de atestar o funcionamento da aplicação, os testes automatizados atuam como uma documentação viva e executável das regras de negócio do sistema. %
+
+Nesse contexto, destaca-se a prática do \textit{Test-Driven Development} (Desenvolvimento Guiado por Testes). O TDD inverte o ciclo tradicional de engenharia, exigindo que o desenvolvedor escreva um teste automatizado antes mesmo de implementar a funcionalidade do sistema. 
+
+O processo segue um ciclo de três etapas fundamentais, muitas vezes chamado de ciclo vermelho-verde-refatora (\textit{Red-Green-Refactor}), conforme ilustrado na Figura \ref{fig:ciclo_tdd}. Primeiro, escreve-se um teste que falha, definindo o comportamento desejado; em seguida, escreve-se o código mais simples possível para fazer o teste passar; por fim, o código de produção é refatorado para remover duplicações e melhorar sua estrutura.
+
+\begin{figure}[htb]
+    \centering
+    \caption{Ciclo de Desenvolvimento Guiado por Testes (TDD).}
+    \label{fig:ciclo_tdd}
+    \includegraphics[width=0.8\textwidth]{Figuras/TDD.png}
+    \legend{Fonte: \citeonline{firminiq2024}.}
+\end{figure}
+
+Mais do que uma simples técnica de verificação, o TDD é uma poderosa ferramenta de \textit{design} de software. Ao escrever o teste primeiro, o desenvolvedor atua como o primeiro cliente do próprio código, o que o obriga a pensar na interface pública da classe, em suas dependências e em sua responsabilidade. Dificuldades na escrita de um teste — como a necessidade de configurações complexas ou o uso excessivo de dependências simuladas (\textit{mock objects}) — são indícios claros de problemas arquiteturais, denunciando alto acoplamento e baixa coesão estrutural. %
+
+Para maximizar a eficiência de execução e manutenção, a estratégia de testes de um sistema deve ser distribuída em diferentes níveis de granularidade, conceito frequentemente ilustrado pela Pirâmide de Testes. A base da pirâmide é composta pelos testes de unidade, que são extremamente rápidos, isolados e verificam o comportamento de pequenas partes do código, como classes ou métodos específicos. O nível intermediário abriga os testes de integração, responsáveis por garantir a correta comunicação entre os componentes internos e sistemas de infraestrutura externos, como bancos de dados ou serviços de terceiros. No topo da pirâmide estão os testes de ponta a ponta (\textit{end-to-end}) e de aceitação, que validam o sistema inteiro através da interface com o usuário, simulando o comportamento real da aplicação de forma mais custosa e lenta. %
+
+Por fim, do ponto de vista arquitetural, os testes devem ser tratados como componentes essenciais do sistema. Contudo, para que não se tornem frágeis e difíceis de manter, eles devem ser desacoplados de elementos voláteis, como a Interface de Usuário (UI) ou as ferramentas de persistência. Uma arquitetura limpa e bem projetada permite que as regras de negócio centrais sejam exaustivamente testadas de forma isolada, garantindo execuções rápidas e \textit{feedback} imediato para a equipe de desenvolvimento. %
+
+\subsubsection{Arquitetura Limpa e Separação de Responsabilidades}
+
+Para a fundamentação das decisões arquiteturais e dos padrões de projeto adotados neste trabalho, esta subseção baseia-se primordialmente nos preceitos de Arquitetura Limpa propostos por \citeonline{martin_clean} e nas diretrizes de design de software estruturadas por \citeonline{silveira2012}. Com o intuito de manter a fluidez textual, os conceitos de separação de camadas, isolamento de domínio e baixo acoplamento discutidos a seguir refletem a consolidação das ideias desses autores. % [1, 2]
+
+O projeto arquitetural do sistema foi concebido sob a ótica da Separação de Responsabilidades (\textit{Separation of Concerns} - SoC), dividindo o software em camadas isoladas com papéis independentes e bem definidos. A interface de usuário no \textit{Frontend} foca exclusivamente na experiência de uso e integração visual, enquanto a lógica de execução do negócio permanece no \textit{Backend}. Isso respeita a premissa fundamental da Arquitetura Limpa de que as regras centrais da aplicação jamais devem depender de detalhes periféricos de entrega, considerando que a tecnologia \textit{Web} ou a interface de usuário são apenas detalhes de implementação % [3, 4].
+
+No que tange à camada de dados, a persistência foi totalmente abstraída por meio de ferramentas de Mapeamento Objeto-Relacional (ORMs, como \textit{Prisma} e \textit{SQLAlchemy}). O uso de ORMs atua como uma ponte que suaviza a discrepância entre o paradigma relacional e o orientado a objetos, mitigando a dependência direta de consultas SQL. Essa prática garante que o banco de dados seja tratado estritamente como um detalhe de infraestrutura de baixo nível, impedindo que sua estrutura tabular polua a lógica central e as regras de negócio do domínio % [3, 6].
+
+Por fim, a maturidade da arquitetura expressa-se também pela adoção de Padrões de Projeto (\textit{Design Patterns}) na construção do compilador. O uso do padrão \textit{Factory}, por exemplo, foi empregado para encapsular a lógica complexa de instanciação dos componentes de análise (\textit{Lexer} e \textit{Scanners}). Essa abordagem centraliza a decisão de criação de objetos, favorecendo a coesão e reduzindo drasticamente o acoplamento global do sistema % [5, 7, 8].
+
+\subsubsection{Qualidade de Código e \textit{Clean Code}}
+
+Para o detalhamento conceitual e a definição das práticas de \textit{Clean Code} (Código Limpo) descritas nesta subseção, este trabalho fundamenta-se nas consolidadas diretrizes de \citeonline{martin_clean_code} e na literatura de apoio sobre metodologias ágeis abordada por \citeonline{agile2012}. Para garantir a fluidez da leitura, toda a argumentação estrutural, as definições de qualidade e as regras de formatação apresentadas a seguir derivam da visão e das heurísticas desses autores. % [1-6]
+
+A construção de um software ágil e sustentável esbarra invariavelmente na qualidade de sua base de código. O código-fonte é a linguagem formal na qual os requisitos de um sistema são expressos e detalhados de modo que a máquina possa executá-los. No entanto, sob a pressão de prazos, é comum que as equipes produzam códigos desorganizados, resultando em uma degradação estrutural contínua que, a longo prazo, faz a produtividade despencar, podendo até mesmo inviabilizar a evolução do projeto. % [2, 4, 7]
+
+Para combater essa entropia, a adoção das práticas de Código Limpo torna-se essencial. A escrita de um código limpo exige disciplina, o uso consciente de padrões e uma sensibilidade aguçada para reconhecer a desorganização e aplicar refatorações. Um código limpo deve ser elegante, simples, direto e, sobretudo, legível para os seres humanos. O profissionalismo no desenvolvimento de software pressupõe que o código não deve apenas funcionar, mas deve ser fácil de entender, alterar e estender por outros desenvolvedores. % [2, 3, 5-8]
+
+Dentre as diretrizes estruturais básicas e inegociáveis para a manutenção dessa clareza na base de código, destacam-se: % [3]
+
+\begin{itemize}
+    \item \textbf{Nomes Significativos:} A nomenclatura de variáveis, funções, parâmetros e classes deve revelar claramente a sua intenção e responder ao porquê de sua existência e ao que o componente faz. Deve-se evitar o uso de siglas obscuras, codificações desnecessárias ou trocadilhos que exijam mapeamentos mentais, facilitando assim a leitura fluida e a busca no código. % [3, 9-12]
+
+    \item \textbf{Funções Pequenas e Focadas:} Uma função deve ser extremamente concisa e projetada para fazer estritamente uma única coisa, mantendo um único nível de abstração. Funções extensas que realizam múltiplas tarefas, agrupam várias seções lógicas ou que misturam tratamento de erros com a lógica de negócio violam a organização e dificultam o entendimento e a testabilidade. % [3, 13-15]
+
+    \item \textbf{Uso Consciente de Comentários:} O uso de comentários costuma compensar a incapacidade do programador de se expressar claramente através do próprio código. Eles não devem ser utilizados para encobrir ou justificar um código ruim ou confuso. A energia da equipe deve ser direcionada para tornar o código tão claro e autoexplicativo que elimine a necessidade de anotações redudantes. % [3, 16-19]
+
+    \item \textbf{Eliminação de Duplicidade e Refatoração contínua:} A repetição de código é o grande inimigo de um sistema bem desenvolvido, pois representa trabalho, risco e complexidade desnecessária. Deve-se melhorar o design do código de forma contínua, aplicando refatorações que tornem o sistema mais enxuto e compreensível, sem alterar o seu comportamento externo. % [2, 8, 20-22]
+\end{itemize}
+
+\subsubsection{FastAPI: Framework para APIs de Alto Desempenho}
+
+Os conceitos, as características e os fundamentos arquiteturais referentes ao \textit{framework} FastAPI, detalhados nesta subseção, fundamentam-se na documentação oficial do \citeonline{fastapi2026}, nas análises comparativas de \citeonline{dasroot2026} e no material didático de \citeonline{dunossauro2026}.
+
+O FastAPI é um \textit{framework} web moderno e de alto desempenho projetado para a construção de Interfaces de Programação de Aplicações (APIs) utilizando a linguagem Python. Sua arquitetura foi desenhada para ser simples, rápida e eficiente, tirando proveito das funcionalidades modernas da linguagem, como as anotações de tipo explícitas (\textit{type hints}) e o suporte nativo a operações da programação assíncrona.
+
+Um dos pilares que garantem a alta performance do FastAPI é a sua fundação sobre a especificação ASGI (\textit{Asynchronous Server Gateway Interface}) e o \textit{framework} Starlette. Diferentemente de \textit{frameworks} web tradicionais que utilizam o modelo síncrono (WSGI), a arquitetura assíncrona do FastAPI permite que o servidor gerencie milhares de conexões simultâneas de forma eficiente, processando operações de entrada e saída (I/O) sem bloquear a \textit{thread} de execução. Em ambientes de produção, aliado a servidores de aplicação como o Uvicorn, o FastAPI é capaz de suportar picos de mais de 20.000 requisições por segundo, apresentando desempenho comparável a linguagens compiladas como Go e plataformas como o NodeJS.
+
+Outra característica central do \textit{framework} é a integração profunda com a biblioteca Pydantic, que assume a responsabilidade pela validação e serialização rigorosa dos dados. Ao invés de exigir a aprendizagem de uma nova micro-linguagem de validação, o desenvolvedor utiliza os tipos de dados padrão do próprio Python. A ferramenta converte automaticamente os dados de entrada (como o corpo de uma requisição em formato JSON) para os tipos corretos e gera mensagens de erro estruturadas e detalhadas caso a validação falhe, garantindo uma maior segurança e consistência no processamento.
+
+Além disso, a plataforma é construída estritamente em torno de padrões abertos, notadamente a especificação OpenAPI e o JSON Schema. Essa aderência aos padrões permite que o FastAPI gere de forma automática e dinâmica a documentação interativa da API, disponibilizando interfaces prontas para o consumo do desenvolvedor, como o Swagger UI e o ReDoc. Isso reduz drasticamente o tempo gasto com a documentação manual, facilita a integração com sistemas de \textit{frontend} e permite a geração automática de clientes (\textit{SDKs}) em diversas linguagens.
+
+Por fim, o \textit{framework} incorpora um sistema de Injeção de Dependência poderoso, porém intuitivo, que simplifica a integração do código da aplicação com bancos de dados relacionais (através de ORMs como o SQLAlchemy), além de prover mecanismos nativos e facilitados para a implementação de segurança e autenticação, como fluxos OAuth2 e \textit{tokens} JWT. Toda essa gama de funcionalidades faz do FastAPI uma escolha robusta, tanto para a criação rápida de protótipos quanto para sistemas corporativos altamente escaláveis.
+
+\section{Softwares Educativos e Tecnologias de Apoio à Aprendizagem}
+
+Para a fundamentação conceitual acerca do uso de tecnologias no ambiente escolar abordada nesta subseção, este trabalho apoia-se nas perspectivas sobre plataformas educativas delineadas por \citeonline{benedetti2025} e nas diretrizes de inovação em tecnologia educacional da \citeonline{mindmakers2025}. Com o intuito de garantir a fluidez da leitura, os conceitos de mediação tecnológica, personalização do ensino e sistemas de apoio apresentados a seguir refletem a consolidação das ideias desses autores.
+
+Uma plataforma educativa é um ambiente virtual desenvolvido para apoiar processos de ensino e aprendizagem, oferecendo recursos, ferramentas e conteúdos que facilitam a interação entre alunos, professores e instituições de ensino . Nesse cenário de transformação, a escolha da ferramenta certa não é apenas uma questão tecnológica, mas um fator determinante para o engajamento, a motivação e o sucesso educacional .
+
+Contudo, para aproveitar o potencial das novas tecnologias, a instituição de ensino precisa ir além da simples adoção de ferramentas digitais . É essencial entender o propósito pedagógico por trás de cada inovação, garantindo que a tecnologia esteja sempre a serviço da aprendizagem e não o contrário . Afinal, a tecnologia educacional atua como um meio que exige professores preparados para usar recursos digitais de forma criativa e estratégica, conectando os alunos a um aprendizado relevante, dinâmico e significativo .
+
+Quando projetada com esse foco pedagógico, uma plataforma educativa bem estruturada permite a personalização do aprendizado, ajustando-se ao ritmo e ao estilo de cada aluno, o que maximiza seu potencial e promove uma assimilação muito mais eficaz do conteúdo . Essa abordagem valoriza o tempo de cada estudante e amplia as suas capacidades ao longo de toda a jornada educacional . Além disso, a integração de dinâmicas interativas nas ferramentas de ensino, como a gamificação e a aprendizagem baseada em desafios, transforma a educação em um processo envolvente de recompensas . Esses sistemas lúdicos ajudam a despertar o interesse contínuo dos alunos e a desenvolver habilidades socioemocionais indispensáveis, como persistência e colaboração .
+
+
+\label{sec:softwares-apoio}
+ 
+
+
+\section{Trabalhos relacionados}
+
+\subsection{Portugol Studio e Portugol Webstudio}
+
+A fundamentação teórica e as características referentes ao ambiente Portugol Studio e sua versão web, discutidas nesta subseção, baseiam-se nas publicações de \citeonline{gomes2020}, \citeonline{martins2025} e nos materiais oficiais da \citeonline{univali2026}.
+
+O Portugol Studio é um Ambiente de Desenvolvimento Integrado (IDE) educacional de código aberto, projetado e mantido pelo Laboratório de Inovação Tecnológica na Educação (LITE) da UNIVALI. Seu principal objetivo é facilitar o aprendizado da lógica de programação para iniciantes, abstraindo a complexidade de ambientes profissionais. A ferramenta permite que os alunos escrevam algoritmos utilizando o Portugol, uma linguagem com sintaxe baseada em C e PHP, porém com comandos totalmente estruturados na língua portuguesa.
+
+Para auxiliar a compreensão do comportamento da máquina por parte do estudante, o software oferece recursos didáticos visuais fundamentais, destacando-se a execução passo a passo (depurador), um inspetor de variáveis em tempo real e uma árvore estrutural do código. Ademais, visando a acessibilidade e a redução de barreiras tecnológicas, o projeto evoluiu para o Portugol Webstudio, uma versão que permite a compilação e a execução dos códigos diretamente no navegador, dispensando qualquer necessidade de instalação no computador do usuário. Outro ponto de destaque é o suporte nativo a bibliotecas gráficas e de som, o que possibilita a criação de jogos completos com interface gráfica e aumenta significativamente o engajamento dos estudantes.
+
+
+% -------------------------------------------------------------------------------------------------------------
+
+\subsection{Laila: Gerador de Analisadores Léxicos e Sintáticos Online}
+
+A descrição arquitetural, as funcionalidades e os resultados da aplicação da plataforma web Laila, discutidos nesta subseção, fundamentam-se inteiramente na pesquisa desenvolvida por \citeonline{ladgelson2021}.
+
+A plataforma Laila foi concebida para mitigar as dificuldades práticas enfrentadas por estudantes na disciplina de Compiladores. Tradicionalmente, o ensino prático dessa matéria exige a instalação e configuração de ferramentas complexas, como o GCC (coleção de compiladores C), o FLEX e o Bison, tarefas que costumam ser árduas em sistemas operacionais não baseados em Linux. Para solucionar esse gargalo, a ferramenta oferece um ambiente de desenvolvimento integrado (IDE) totalmente online, permitindo que o aluno projete, escreva e teste seus analisadores léxicos e sintáticos sem a necessidade de configurações locais.
+
+A arquitetura do sistema foi desenvolvida utilizando tecnologias web modernas. O módulo de interação com o usuário (\textit{front-end}) foi construído em JavaScript com o \textit{framework} VueJS e a biblioteca CodeMirror, garantindo uma edição de código com destaque de sintaxe e identificação de erros em tempo real. A comunicação e o processamento ocorrem por meio de uma API REST desenvolvida em Python (\textit{back-end}), que recebe os códigos do usuário, executa as ferramentas de geração FLEX e Bison no servidor, captura eventuais falhas (como laços infinitos ou erros de compilação) e retorna as saídas diretamente para o navegador do estudante.
+
+Em estudos de caso realizados com turmas de Ciência da Computação, a ferramenta demonstrou resultados altamente positivos. O uso da plataforma eliminou os problemas de compatibilidade e engajou os estudantes, que relataram uma melhoria significativa na compreensão dos algoritmos de análise léxica e sintática devido à praticidade de testar as linguagens em tempo real.
+
+\subsection{Quorum: Linguagem de Programação Baseada em Evidências}
+
+Os conceitos, os estudos empíricos de sintaxe e as características arquiteturais da linguagem Quorum, detalhados nesta subseção, fundamentam-se nas pesquisas de \citeonline{stefik2013}, nos relatos de \citeonline{ladner2019} e na documentação oficial do projeto \citeonline{quorum2025}.
+
+A linguagem Quorum foi inicialmente concebida pelo pesquisador Andreas Stefik com o objetivo de ser nativamente acessível para estudantes cegos ou com deficiência visual. Para atingir esse objetivo, a linguagem foi projetada para ter uma leitura amigável e clara em leitores de tela. Com o passar do tempo e o ganho de popularidade, o projeto evoluiu para uma linguagem de propósito geral, mantendo sua premissa principal: ser a primeira linguagem de programação orientada a evidências. Isso significa que suas regras sintáticas e semânticas não foram escolhidas com base em tradição ou intuição, mas sim através de testes rigorosos e ensaios clínicos randomizados com usuários novatos e experientes.
+
+Durante a concepção da linguagem, estudos empíricos demonstraram que a sintaxe tradicional baseada na linguagem C (amplamente adotada pelo Java, Perl e outras) atua como uma barreira significativa para estudantes iniciantes. Os experimentos utilizaram métricas como o Mapa de Precisão de Tokens e compararam o desempenho de novatos utilizando linguagens comerciais contra uma linguagem "placebo", cujas palavras-chave foram geradas aleatoriamente. Os resultados comprovaram que a remoção de símbolos obscuros (como chaves, colchetes e pontos e vírgulas) e a substituição por palavras de uso comum reduzem drasticamente as taxas de erro sintático. Como resultado prático, no Quorum, em vez de se utilizar um laço de repetição complexo, o programador escreve comandos diretos como "repeat 10 times", o que diminui a carga cognitiva necessária para a memorização da estrutura.
+
+Para suportar o desenvolvimento, a equipe do projeto criou o Quorum Studio, um Ambiente de Desenvolvimento Integrado (IDE) nativamente acessível que permite a edição, compilação e depuração de códigos. A infraestrutura do Quorum é flexível, permitindo que a linguagem seja executada offline, gerando bytecodes para a Máquina Virtual Java (JVM), ou online diretamente no navegador do usuário, suportando desde lógicas simples até a criação de jogos, processamento de áudio e robótica.
+
+
+\subsection{chibicc: Uma Abordagem Incremental para o Ensino de Compiladores}
+
+As características arquiteturais e a metodologia educacional do compilador \textit{chibicc}, abordadas nesta subseção, fundamentam-se no projeto e na documentação de \citeonline{ueyama2020}.
+
+O \textit{chibicc} é um compilador C de pequeno porte, desenvolvido especificamente como uma implementação de referência para o ensino de construção de compiladores e programação de baixo nível. Apesar de ser categorizado como um compilador educacional, ele suporta uma ampla variedade de recursos da especificação C11, sendo capaz de compilar corretamente programas de grande porte do mundo real, como o sistema de controle de versão Git e o banco de dados SQLite, sem a necessidade de modificações no código-fonte dessas aplicações.
+
+O grande diferencial pedagógico dessa ferramenta reside na sua abordagem de ensino incremental. Em vez de apresentar ao estudante uma arquitetura monolítica e complexa desde o início, o projeto orienta a construção do compilador passo a passo. O aluno começa desenvolvendo um tradutor rudimentar capaz de aceitar e processar apenas um único número como linguagem válida. A partir dessa base mínima, novos recursos gramaticais e semânticos são adicionados de forma isolada em cada etapa do estudo, até que a linguagem aceita pelo compilador corresponda à especificação completa do C11. Esse método construtivo desmistifica a transição do código-fonte para o código de máquina e oferece uma compreensão profunda sobre o funcionamento interno das linguagens.
+
+\subsection{Beecrowd: Prática de Algoritmos e Avaliação Automatizada}
+
+As análises sobre a plataforma Beecrowd, suas características de avaliação automatizada e seu impacto como tecnologia de informação e comunicação no ensino de algoritmos, discutidas nesta subseção, fundamentam-se no estudo de caso de \citeonline{ferreira2025}, no artigo de \citeonline{garcia2024} e nos materiais de \citeonline{maonocodigo2022}.
+
+O Beecrowd, anteriormente conhecido como URI Online Judge, é uma plataforma online amplamente utilizada no meio acadêmico e em treinamentos para maratonas de programação competitiva. Seu acervo conta com milhares de desafios algorítmicos divididos por categorias e níveis de dificuldade, desde lógicas fundamentais até estruturas de dados complexas. A plataforma permite que estudantes e profissionais submetam soluções utilizando diversas linguagens de programação de mercado, como C++, Python, Java e JavaScript.
+
+A principal característica da ferramenta é o seu sistema de juiz online (\textit{Online Judge}). O fluxo de uso consiste em o aluno ler a especificação de um problema, desenvolver o código e submetê-lo na plataforma. Em questão de segundos, o sistema compila, executa e testa a solução contra diversos casos de teste fechados, fornecendo um \textit{feedback} imediato, como ``\textit{Accepted}'' para sucesso ou ``\textit{Wrong Answer}'' e ``\textit{Presentation Error}'' para falhas. Essa validação em tempo real, aliada a elementos de gamificação como fóruns e \textit{rankings} (a chamada \textit{Vibe Coding}), estimula a prática contínua, tirando o aluno de uma posição passiva e colocando-o ativamente na resolução de problemas.
+
+
+\subsection{Análise Crítica e o Diferencial da Solução Proposta}
+
+A análise comparativa e as conclusões desenvolvidas a seguir fundamentam-se no contraste entre a arquitetura proposta neste Trabalho de Conclusão de Curso e as ferramentas educacionais discutidas nas subseções anteriores, com base nas pesquisas de \citeonline{ladgelson2021}, \citeonline{stefik2013}, \citeonline{ueyama2020}, \citeonline{ferreira2025} e nos materiais da \citeonline{univali2026}.
+
+Ao observar o estado da arte das ferramentas de apoio ao ensino de programação e de compiladores, nota-se que as soluções existentes tendem a seguir dois caminhos distintos, ambos com limitações estruturais significativas para o aluno iniciante. O primeiro caminho é o das ferramentas com foco em lógica e prática contínua, como o Portugol Studio, a linguagem Quorum e a plataforma Beecrowd. Embora o Quorum comprove cientificamente que a sintaxe tradicional é uma barreira real de aprendizado e o Portugol traduza os comandos para a língua nativa, todas essas plataformas compartilham um obstáculo comum: a imposição de uma gramática estática e rigorosa. O aluno continua obrigado a memorizar palavras-chave fixas e a se adequar a avaliadores automáticos inflexíveis, que rejeitam lógicas corretas devido a erros mínimos de formatação ou digitação.
+
+O segundo caminho engloba as ferramentas criadas especificamente para o ensino prático da disciplina de compiladores, como a plataforma Laila e o projeto \textit{chibicc}. Apesar de serem soluções de excelência em seus respectivos nichos seja abstraindo configurações de ambiente por meio de plataformas web, ou ensinando a construção incremental de um tradutor, elas possuem um enfoque estritamente sistêmico e de baixo nível. São metodologias voltadas para alunos avançados de Ciência da Computação, exigindo o domínio prévio de linguagens complexas (como C11) e de ferramentas geradoras pesadas (como FLEX e Bison), o que as torna inadequadas para a quebra da barreira linguística introdutória.
+
+É exatamente na intersecção e na superação dessas lacunas que o presente projeto se destaca de forma inovadora. O interpretador dinâmico construído neste trabalho desloca toda a complexidade arquitetural da análise léxica e sintática para os bastidores, oferecendo uma IDE web focada inteiramente na flexibilidade cognitiva do usuário iniciante. Em vez de impor uma "sintaxe ideal única" ou de focar no mapeamento de instruções para o \textit{hardware}, a plataforma delega a criação estrutural da linguagem ao próprio estudante.
+
+Ao permitir que o aluno personalize as palavras-chave, os comandos e as regras de sua própria linguagem de forma dinâmica no navegador, o sistema atua como um laboratório seguro de experimentação algorítmica. Essa abordagem suprime a necessidade de adaptação imediata a um idioma comercial fixo, mitigando drasticamente a carga cognitiva e a frustração atrelada aos erros gramaticais. Dessa forma, o software proposto consolida-se não apenas como um ambiente de execução, mas como uma ponte pedagógica: uma ferramenta que prioriza a estrutura do pensamento computacional e suaviza a curva de aprendizado, preparando o estudante com muito mais confiança antes de sua transição para as linguagens estritas e juízes online do mercado de software.
+
+
+
+\label{sec:trabalhos-relacionados}
+
+

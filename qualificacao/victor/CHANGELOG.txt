@@ -1,0 +1,7 @@
+--v1.0--
+Criação do Modelo
+
+--V1.0.1--
+> Adição da biblioteca Acronym
+> Adição da biblioteca abntex2cite, com suporte para arquivo .bib
+> Correção da numeração das seções, subseções e figuras dos Apêndices e Anexos
