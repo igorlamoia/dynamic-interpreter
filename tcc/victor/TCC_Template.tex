@@ -1,0 +1,341 @@
+\documentclass[
+        oneside,      %%coloque  % no in\'icio desta linha para imprimir frente e verso 
+        english,			
+%	french,				
+%	spanish, 
+        brazil			 
+        ]{configcefetmglpd}
+
+
+\usepackage[T1]{fontenc}		
+\usepackage[utf8]{inputenc}		%% Para converter automaticamente acentos como digitados normalmente no teclado. Mude utf8 para latin1 se precisar. 
+
+%\usepackage{lmodern} %no caso do modelo Latex, pode-se usar a família de fontes lmodern como aqui indicado, no lugar de Arial e Times New Roman.
+\usepackage{times}
+\usepackage{lastpage}
+\usepackage{indentfirst}		
+\usepackage{color}			
+\usepackage{graphicx}		
+\usepackage{float}
+\usepackage{svg}
+\usepackage{microtype} 
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{pdflscape}
+\usepackage[printonlyused]{acronym}
+\usepackage{multirow}
+
+\renewcommand{\appendixname}{Anexo}
+\usepackage{listings}
+\usepackage{subcaption} % Permite adicionar legendas para subfiguras
+% Configuração para exibir código .toml
+{\makeatletter\catcode`\#=12\relax
+\lstdefinelanguage{toml}{
+    keywords={true, false},
+    sensitive=true,
+    comment=[l]{#},
+    morecomment=[s]{"""}{"""},
+    string=[b]",
+}
+\makeatother}
+
+\lstset{
+    language=toml,
+    basicstyle=\ttfamily\small,        % Fonte monoespaçada e menor
+    keywordstyle=\color{blue},         % Palavras-chave em azul
+    commentstyle=\color{gray},         % Comentários em cinza
+    stringstyle=\color{red},           % Strings em vermelho
+    breaklines=true,                   % Quebra de linhas automáticas
+    frame=single,                      % Adiciona uma moldura ao redor do código
+    numbers=left,                      % Adiciona numeração das linhas
+    numberstyle=\tiny\color{gray},     % Estilo dos números das linhas
+    tabsize=2,                         % Tamanho do tabulação
+    showstringspaces=false             % Não mostra espaços em strings
+}
+
+\usepackage{lipsum}    % gera texto aleatório (remover)
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath} 
+\usepackage{amssymb}
+
+\graphicspath{{Figuras/}} % Diretório onde estão localizadas as figuras
+
+%% -----------------------------------------------------------------------------
+
+%% Obs.: Alguns acentos foram omitidos.
+
+\titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}. 
+% \subtitulo{Subtítulo, se houver}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}. 
+
+\tituloIngles{Evacuation Modeling of Environments Using the Social Forces Method} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
+% \subtituloIngles{subtitle (se tiver)}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo em inglês do trabalho deve ser colocado dentro das chaves {}.
+
+\autor{Victor de Souza Vilela da Silva} %%O nome completo do autor deve ser colocado dentro das chaves {}
+\autorVirg{Victor de Souza Vilela da Silva} %%Acrescentar o sobrenome do autor, separado por vírgula, antes do restante do nome do autor. Ex.: Silva, José da
+\autorSobrenome{Vilela} %% Apenas o último sobrenome dever ser acrescentado dentro das chaves
+\matricula{20193014482} %%Matrícula do aluno autor do trabalho
+
+\local{Leopoldina} %%Não alterar
+\mesentrega{02} %%Colocar o mes da entrega dentro das chaves {}, em número. Por exemplo, 1 para janeiro; 2 para fevereiro ...
+\data{2026} %%Colocar APENAS o ano da entrega dentro das chaves {}. Por exemplo, 2019.
+
+\orientador[Orientador]{Luís Augusto Mattos Mendes} %%Colocar o nome completo do orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
+\coorientador[Coorientador]{Eduardo Gabriel Reis Miranda} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
+\orientadorTitulo{Prof.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
+\coorientadorTitulo{Prof. Dsc.} %%Colocar a titulação do(a) co-orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
+\siglaInstituicaoCoorientador{CEFET-MG} %% Alterar caso o coorientado não seja do CEFET-MG
+
+\instituicao{Centro Federal de Educação Tecnológica de Minas Gerais} %% Não alterar
+\siglaInstituicao{CEFET-MG} %% Não alterar
+
+\faculdade{Unidade Leopoldina} %% Não alterar
+
+\programa{Engenharia de Computação} %% Não alterar
+\objeto{Trabalho de Conclusão de Curso}  %% Trabalho de Conclusão de Curso - graduação ; Dissertação - mestrado
+\natureza{\printaobjeto ~apresentado ao Curso de \printaprograma ~do \printainstituicao, do Campus Leopoldina, como parte do requisito para obtenção do título de Bacharel em Engenharia de Computação.} %% Não alterar
+
+% Data da aprovação
+\aprovacaoDia{14} %% Colocar dentro das chaves {} o NÚMERO do dia da Data de aprovação. Ex: 15
+\aprovacaoMes{fevereiro} %% Colocar dentro das chaves {} o mês por extenso da Data de aprovação. Ex: janeiro
+\aprovacaoAno{2025} %%  Colocar dentro das chaves {} o NÚMERO do ano da Data de aprovação. Ex: 2021
+
+% Dados do Avaliador 1
+\avaliadorUm{Matheus Ávila Moreira de Paula} % Nome e sobrenome
+\titulacaoAvaliadorUm{Prof. Msc.} % Titulação
+\siglaInstituicaoAvaliadorUm{CEFET-MG} % Sigla da institução de ensino vinculado
+
+% Dados do Avaliador 2
+\avaliadorDois{Alex da Silva Temoteo} % Nome e sobrenome
+\titulacaoAvaliadorDois{Prof. Dsc.} % Titulação
+\siglaInstituicaoAvaliadorDois{CEFET-MG} % Sigla da institução de ensino vinculado
+
+% Dados do Avaliador 3 (Se houver, apagar o "%" da frente das próximas 3 linhas)
+\avaliadorTres{Diego Ascanio Santos} % Nome e sobrenome
+\titulacaoAvaliadorTres{Prof. Msc.} % Titulação
+\siglaInstituicaoAvaliadorTres{CEFET-MG} % Sigla da institução de ensino vinculado
+
+% Dados da ficha catalográfica
+\NumCatalog{A326m} % Disponibilizado pela biblioteca.
+\CDU{CDU 004.414.23} % Disponibilizado pela biblioteca.
+
+%% Abaixo, prencher com os dados da parte final da ficha catalografica
+\finalcatalog{1. Modelagem. 2. Simulação de evacuação. 3. Modelo de forças sociais. I. Miranda, Eduardo Gabriel Reis II. Lopes, Henrique Barros. III. Modelagem de evacuação de ambientes utilizando o método de forças sociais.} % alterar com os dados do trabalho 
+
+
+% Pacotes para referência bibliográfica. Não alterar as linhas abaixo
+% \usepackage[round, numbers]{natbib} % Referência númérica (não usado nesse trabalho) 
+  % \usepackage{natbib} % Referência utilizando o sistema autor-data
+\usepackage[alf,abnt-emphasize=bf]{abntex2cite}
+
+\linespread{1.5}
+\begin{document}
+
+%%---------------- Elementos Pré-textuais -----------------------------
+
+
+%% Capa do Trabalho. (Não alterar)
+\printacapa
+
+%% Folha de rosto (Não alterar)
+%\printafolhaderosto
+
+%% O aluno deverá solicitar a ficha na página da Biblioteca de Leopoldina. 
+%% Ficha catalográfica. AO IMPRIMIR, DEIXAR NO VERSO DA FOLHA DE ROSTO. (Não alterar)
+\printacatalog  
+
+
+%% Folha de Aprovação. (Não alterar)
+\printafolhaaprov
+
+
+%% Dedicatória. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{dedicatoria}
+ % \begin{dedicatoria}
+ %  		A dedicatória deve ser escrita com o estilo de texto "Dedicatória" e ficar no final da página. Neste local colocam-se pequenos parágrafos (não muitos) homenageando as pessoas importantes da sua trajetória acadêmica.\\  		
+ %  		Este não é um item obrigatório do TCC conforme NBR 14724 \cite{bib:abnt14724}. Caso opte por não colocar dedicatória, deve-se retirar esta seção.
+ % \end{dedicatoria}
+
+ 
+%% Agradecimentos. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{agradecimentos}
+\begin{agradecimentos}
+Agradeço à minha família pelo apoio incondicional, incentivo e paciência ao longo desta jornada. Sem vocês, nada disso seria possível.
+Meu sincero agradecimento também ao meu orientador, Eduardo Gabriel Reis Miranda, e ao meu coorientador, Henrique Barros Lopes, pela orientação, dedicação e ensinamentos valiosos que tornaram este trabalho possível.
+A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrigado.
+
+\end{agradecimentos}
+
+
+%% Epígrafe. ELEMENTO OPCIONAL. Deve conter os dados do autor. A obra usada na epígrafe deve constar nas referências.
+% \begin{epigrafemais}
+% 	`` a epígrafe não é obrigatória conforme a NBR 10520 \cite{bib:abnt10520}, portanto esta página pode ser retirada. Toda epígrafe deve estar entre aspas e no final da página.''\\
+% 	\raggedleft Colocar aqui o nome do autor
+% \end{epigrafemais}
+
+
+%% RESUMOS
+
+%% Resumo em Português. ELEMENTO OBRIGATÓRIO.
+\begin{resumo_cefetmg}
+	
+\begin{center}
+    \textbf{RESUMO} 
+\end{center}
+%\aplicaresumo
+
+
+Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador. Aplicações preliminares em sala de aula sugerem resultados educacionais positivos, incluindo redução do tempo necessário para que os alunos compreendam conceitos fundamentais de programação, diminuição das taxas de reprovação em disciplinas introdutórias de programação e aumento do engajamento dos estudantes. Ao permitir a definição flexível de comandos e sintaxe, a plataforma reduz barreiras linguísticas e incentiva a experimentação, ajudando os alunos a focarem no raciocínio algorítmico em vez de memorizar estruturas rígidas de linguagem.
+
+% Escrever o resumo do TCC. Este é um item obrigatório de acordo com a NBR 14724 \cite{bib:abnt14724}. 
+% Quanto a sua extensão os resumos devem ter de 150 a 500 palavras. 
+% A elaboração deste resumo deve seguir a NBR 6028 \cite{bib:abnt6028}. 
+% O texto do resumo deve estar em parágrafo único. Todas as palavras devem estar com letras minúsculas com exceção dos substantivos
+% próprios e nomes científicos, separadas por ponto e vírgula. 
+% As palavras-chave são inseridas abaixo do resumo com uma linha de 1,5 em branco separando-as.
+
+\noindent
+\textbf{Palavras-chave}: Interpretador dinâmico; Educação em Programação Introdutória; Programação Orientada à Linguagem; Ambiente de Programação Interativo.
+
+\end{resumo_cefetmg}
+ 
+ 
+%% Resumo em Inglês. Opcional, mas recomndável.
+\begin{abstract_cefetmg}
+ \begin{otherlanguage*}{english}
+
+%\aplicaabstract
+
+\begin{center}
+    \textbf{ABSTRACT} 
+\end{center} 
+
+Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules.This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows users to customize language syntax, commands, and structural rules. The project is developed through literature review, system architecture design, implementation of a web IDE and interpreter (including lexical and syntactic analysis), and integration with real-time execution in the browser. Preliminary classroom applications suggest positive educational outcomes, including reduced time required for students to grasp fundamental programming concepts, lower failure rates in introductory programming courses, and increased student engagement.By allowing flexible definition of commands and syntax, the platform reduces linguistic barriers and encourages experimentation, helping students focus on algorithmic reasoning rather than memorizing rigid language structures.
+\noindent
+\textbf{Keywords:} Evacuation Simulation. Social Force Model. Computational Modeling.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
+
+  \end{otherlanguage*}
+\end{abstract_cefetmg}
+
+
+% \printatermo
+
+%% Lista de ilustrações.Sao consideradas ilustrações: desenhos, esquemas, fluxogramas, figuras, fotografias, gr\'aficos, mapas, organogramas, plantas, quadros, entre outros. Tabelas não são consideradas ilustrações.
+
+\pdfbookmark[0]{\listfigurename}{lof}
+
+%Caso as ilustrações do trabalho sejam todas do mesmo tipo (por exemplo, todas do tipo organograma), coloque % no início das duas linhas abaixo. 
+\figvariadas   %Use este comando somente caso as ilustrações não sejam todas do mesmo tipo. 
+\listfigvariadas  %Use este comando somente caso as ilustrações não sejam todas do mesmo tipo e caso queira inserir a lista delas. 
+
+%\listoffigures*  %Use este comando quando todas as ilustrações são do mesmo tipo e caso queira inserir a lista delas. Em geral, se mantém comentado
+
+\cleardoublepage
+
+\pdfbookmark[0]{\listtablename}{lot}
+
+%% Lista de tabelas. Se NÃO houver tabela nenhuma, colocar % na frente da linha debaixo.
+ \listoftables*   
+
+\cleardoublepage
+
+
+%% Lista de abreviaturas e siglas. Não deve haver sinal grafico entre as siglas e abreviaturas e o significado. 
+
+% \begin{siglas} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
+% 	\acro{EX}{Example}
+% 	\acro{HiRDLS}{High-Resolution Dynamics Limb Sounder}
+% 	\acro{MLS}{Microwave Limb Sounder}
+% 	\acro{TES}{Tropospheric EmissioFn Sounder}
+ 
+% %  Deve obedecer a ordem alfabética. A sigla, quando mencionada pela primeira vez no texto, deve ser indicada entre parênteses, precedida do nome completo (ABNT 14724, 2011). Exemplo: Interface Homem Máquina (IHM).
+%   \end{siglas}
+
+
+% Lista de símbolos. Nao deve haver sinal grafico entre o simbolo e o seu significado.
+\begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
+  \item[$ \doteq $] Igualdade pontilhada (aproximação ou definição)
+  \item[$ := $] Definição (usado para definir variáveis ou funções)
+  \item[$ \alpha $] Índice que representa um pedestre específico dentro da simulação
+  \item[$ \beta $] Índice que representa outro pedestre dentro da simulação, usado nas interações entre pedestres.
+  \item[$ \triangledown $] Gradiente vetorial (derivada espacial de uma função escalar)
+  \item [$\sum$] Somatório (soma de uma sequência de termos)
+
+
+  
+
+  
+%  Observação: Em trabalhos cuja formulação matemática requerer um número muito grande de símbolos e variáveis (geralmente letras gregas), sugere-se a colocação de uma seção de lista de símbolos. Devem obedecer a ordem com que aparecem no texto.
+ \end{simbolos}
+
+ 
+%% Sumário. Não alterar
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+%% ------------------- Elementos Textuais -------------------------
+
+\textual %Não alterar
+
+
+\chapter{INTRODUÇÃO} %% Título do Capítulo dentro das chaves {}
+\label{cap:introducao_modelo} %% Palavra chave para referência cruzada no texto. SUGERE-SE colocar ser "cap:" como demostrado no modelo para melhor organização em textos maiores
+
+A segurança em locais, como estádios, centros comerciais, aeroportos, e eventos públicos é um grande desafio. Situações emergenciais, como incêndios, ataques terroristas e desastres naturais, demandam estratégias eficientes de evacuação e locais projetados para minimizar riscos e salvar vidas. A realização de simulações em ambientes reais ocupados por pessoas envolvem diversas questões que as tornam impraticáveis. Entre os principais desafios estão o alto custo para realizá-las, a dificuldade na captação de dados precisos e questões éticas e legais relacionadas a experimentos com seres humanos \cite{carneiro2012simulaccao}. Esses fatores tornam complexa a implementação de simulações realistas em situações cotidianas, limitando a capacidade de testar e validar estratégias de evacuação de forma eficaz. 
+
+Conforme apresentado por \cite{carvalho2023analise}, os problemas na infraestrutura, a falta de rotas de fuga desobstruídas ou até mesmo a ausência de rotas de fuga e saídas de emergência foram alguns dos fatores que contribuíram significativamente para a perda de vidas no trágico acidente da Boate Kiss. Esses aspectos críticos da segurança influenciaram diretamente a capacidade dos frequentadores de evacuarem o local com segurança durante o incêndio. Nesse contexto, a simulação computacional de evacuação de ambientes emerge como uma ferramenta essencial para a compreensão de dinâmicas de movimento, otimização de rotas de fuga e estruturação adequada do local. A compreensão dessas dinâmicas evita que tragédias e acidentes se repitam.
+
+A simulação computacional permite a criação de modelos detalhados que reproduzem o comportamento humano em situações de emergência. Esses modelos são capazes de levar em consideração fatores como a densidade populacional, a velocidade de movimento, a percepção de risco e as características arquitetônicas do ambiente. Ferramentas como o software Pathfinder\footnote{https://www.thunderheadeng.com/pathfinder/} e a plataforma AnyLogic\footnote{https://www.anylogic.com} têm sido amplamente utilizadas para desenvolver simulações realistas e precisas. Oferecendo a possibilidade de identificar gargalos em rotas de saída, avaliar a eficácia de diferentes planos de evacuação e desenvolver recomendações para melhorar a infraestrutura de segurança em locais públicos.
+
+Este trabalho tem como objetivo desenvolver e analisar um modelo de simulação de evacuação de ambientes com diferentes densidades de pedestres, utilizando o método de forças sociais proposto por \citeonline{helbing1995social}, que é baseado em uma sólida fundamentação de forças físicas, tornando-se mais fiel à realidade ao representar de maneira precisa as interações entre os indivíduos e o ambiente em situações de movimentação e evacuação. O estudo irá abordar desde a fundamentação teórica do método, passando pelo desenvolvimento do modelo computacional, correção de possíveis lacunas do modelo e por fim a análise de resultados em diferentes cenários simulados. Nos capítulos seguintes, serão apresentados o referencial teórico e a metodologia a ser empregada na modelagem e simulação.
+
+% os resultados obtidos e uma discussão sobre as implicações dos achados.
+
+%Exemplo para utilizar página no formato paisagem
+\begin{landscape}
+\section{Objetivos}
+
+\begin{enumerate}
+    \item Estudar o modelo de forças sociais;
+    \item Encontrar uma solução para o problema que envolve cenários multi-salas do modelo de forças sociais; 
+    \item Modelar situações de evacuações em ambientes de alta/média densidade populacional;
+    \item Discutir os resultados encontrados.
+\end{enumerate}
+
+\end{landscape}
+
+\chapter{REFERENCIAL TEÓRICO} \label{cap:referencial}
+\input{texto/referencial}
+
+\chapter{METODOLOGIA E MATERIAIS}
+\input{texto/metodologia}
+
+
+
+
+\chapter{ESTUDOS DE CASO}
+
+\chapter{RESULTADOS}
+
+
+% \chapter{CONCLUSÕES E TRABALHOS FUTUROS}
+
+% Neste capítulo, são apresentadas as conclusões, as considerações sobre o trabalho desenvolvido e, também, são discutidas propostas para trabalhos futuros.
+
+% \section{Conclusões}
+% A utilização deste modelo visa padronizar a parte editorial dos trabalhos de conclusão de curso (TCC). Os orientadores darão mais dicas além das colocadas neste documento, principalmente no tocante ao conteúdo e sequência de apresentação.
+
+% \section{Trabalhos futuros}
+% Colocar aqui sugestões de trabalhos futuros.
+
+%% -----------Elementos  Pós-Textuais --------------
+
+\postextual 
+
+\bibliography{referencias.bib}
+
+
+
+%%% ---
+\end{document}
