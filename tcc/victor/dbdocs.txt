@@ -1,0 +1,124 @@
+// Esquema do banco de dados - Dynamic Interpreter
+// Docs: https://dbml.dbdiagram.io/docs
+
+Enum userrole {
+  student
+  teacher
+  admin
+}
+
+Enum submissionstatus {
+  pending
+  correct
+  incorrect
+  partial
+}
+
+Enum classstatus {
+  active
+  archived
+}
+
+Table organizations {
+  id serial [primary key]
+  name varchar [not null]
+  created_at timestamp [not null]
+}
+
+Table users {
+  id serial [primary key]
+  organization_id integer [not null, ref: > organizations.id]
+  role userrole [not null]
+  email varchar [not null, unique]
+  password varchar [not null]
+  name varchar [not null]
+  avatar_url varchar
+  bio varchar
+}
+
+Table exercises {
+  id serial [primary key]
+  teacher_id integer [not null, ref: > users.id]
+  title varchar [not null]
+  description varchar [not null]
+  attachments varchar [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table test_cases {
+  id serial [primary key]
+  exercise_id integer [not null, ref: > exercises.id]
+  label varchar [not null]
+  input varchar [not null]
+  expected_output varchar [not null]
+  order_index integer [not null]
+}
+
+Table exercise_lists {
+  id serial [primary key]
+  teacher_id integer [not null, ref: > users.id]
+  title varchar [not null]
+  description varchar [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table exercise_list_items {
+  exercise_list_id integer [not null, ref: > exercise_lists.id]
+  exercise_id integer [not null, ref: > exercises.id]
+  grade_weight double [not null]
+  order_index integer [not null]
+
+  indexes {
+    (exercise_list_id, exercise_id) [pk]
+  }
+}
+
+Table classes {
+  id serial [primary key]
+  organization_id integer [not null, ref: > organizations.id]
+  teacher_id integer [not null, ref: > users.id]
+  name varchar [not null]
+  description varchar [not null]
+  access_code varchar [not null, unique]
+  created_at timestamp [not null]
+  status classstatus [not null]
+}
+
+Table class_members {
+  class_id integer [not null, ref: > classes.id]
+  student_id integer [not null, ref: > users.id]
+  joined_at timestamp [not null]
+
+  indexes {
+    (class_id, student_id) [pk]
+  }
+}
+
+Table class_exercise_lists {
+  exercise_list_id integer [not null, ref: > exercise_lists.id]
+  class_id integer [not null, ref: > classes.id]
+  deadline timestamp [not null]
+  total_grade double [not null]
+  min_required integer [not null]
+  published_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  indexes {
+    (exercise_list_id, class_id) [pk]
+  }
+}
+
+Table submissions {
+  id serial [primary key]
+  exercise_id integer [not null, ref: > exercises.id]
+  exercise_list_id integer [not null, ref: > exercise_lists.id]
+  class_id integer [not null, ref: > classes.id]
+  student_id integer [not null, ref: > users.id]
+  code_snapshot varchar [not null]
+  status submissionstatus [not null]
+  score double
+  teacher_feedback varchar
+  submitted_at timestamp [not null]
+}
