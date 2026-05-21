@@ -68,13 +68,13 @@
 %% Obs.: Alguns acentos foram omitidos.
 
 \titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}. 
-% \subtitulo{Subtítulo, se houver}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}. 
+\subtitulo{Implementação de análise léxica e sintática, geração e interpretação de código intermediário em ambiente web}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}. 
 
-\tituloIngles{Evacuation Modeling of Environments Using the Social Forces Method} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
+\tituloIngles{Dynamic Interpreter for Programming Education: Implementation of lexical and syntactic analysis, intermediate code generation and interpretation in a web environment} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
 % \subtituloIngles{subtitle (se tiver)}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo em inglês do trabalho deve ser colocado dentro das chaves {}.
 
 \autor{Victor de Souza Vilela da Silva} %%O nome completo do autor deve ser colocado dentro das chaves {}
-\autorVirg{Victor de Souza Vilela da Silva} %%Acrescentar o sobrenome do autor, separado por vírgula, antes do restante do nome do autor. Ex.: Silva, José da
+\autorVirg{Silva, Victor de Souza Vilela da} %%Acrescentar o sobrenome do autor, separado por vírgula, antes do restante do nome do autor. Ex.: Silva, José da
 \autorSobrenome{Vilela} %% Apenas o último sobrenome dever ser acrescentado dentro das chaves
 \matricula{20193014482} %%Matrícula do aluno autor do trabalho
 
@@ -98,9 +98,9 @@
 \natureza{\printaobjeto ~apresentado ao Curso de \printaprograma ~do \printainstituicao, do Campus Leopoldina, como parte do requisito para obtenção do título de Bacharel em Engenharia de Computação.} %% Não alterar
 
 % Data da aprovação
-\aprovacaoDia{14} %% Colocar dentro das chaves {} o NÚMERO do dia da Data de aprovação. Ex: 15
-\aprovacaoMes{fevereiro} %% Colocar dentro das chaves {} o mês por extenso da Data de aprovação. Ex: janeiro
-\aprovacaoAno{2025} %%  Colocar dentro das chaves {} o NÚMERO do ano da Data de aprovação. Ex: 2021
+% \aprovacaoDia{14} %% Colocar dentro das chaves {} o NÚMERO do dia da Data de aprovação. Ex: 15
+% \aprovacaoMes{fevereiro} %% Colocar dentro das chaves {} o mês por extenso da Data de aprovação. Ex: janeiro
+% \aprovacaoAno{2025} %%  Colocar dentro das chaves {} o NÚMERO do ano da Data de aprovação. Ex: 2021
 
 % Dados do Avaliador 1
 \avaliadorUm{Matheus Ávila Moreira de Paula} % Nome e sobrenome
@@ -108,21 +108,16 @@
 \siglaInstituicaoAvaliadorUm{CEFET-MG} % Sigla da institução de ensino vinculado
 
 % Dados do Avaliador 2
-\avaliadorDois{Alex da Silva Temoteo} % Nome e sobrenome
+\avaliadorDois{Gabriella Castro Barbosa Costa} % Nome e sobrenome
 \titulacaoAvaliadorDois{Prof. Dsc.} % Titulação
 \siglaInstituicaoAvaliadorDois{CEFET-MG} % Sigla da institução de ensino vinculado
 
-% Dados do Avaliador 3 (Se houver, apagar o "%" da frente das próximas 3 linhas)
-\avaliadorTres{Diego Ascanio Santos} % Nome e sobrenome
-\titulacaoAvaliadorTres{Prof. Msc.} % Titulação
-\siglaInstituicaoAvaliadorTres{CEFET-MG} % Sigla da institução de ensino vinculado
-
 % Dados da ficha catalográfica
-\NumCatalog{A326m} % Disponibilizado pela biblioteca.
-\CDU{CDU 004.414.23} % Disponibilizado pela biblioteca.
+\NumCatalog{AXXX} % Disponibilizado pela biblioteca.
+\CDU{CDU XXX.X} % Disponibilizado pela biblioteca.
 
 %% Abaixo, prencher com os dados da parte final da ficha catalografica
-\finalcatalog{1. Modelagem. 2. Simulação de evacuação. 3. Modelo de forças sociais. I. Miranda, Eduardo Gabriel Reis II. Lopes, Henrique Barros. III. Modelagem de evacuação de ambientes utilizando o método de forças sociais.} % alterar com os dados do trabalho 
+\finalcatalog{1. Interpretador dinâmico. 2. Ensino de programação. 3. Compiladores. 4. Análise léxica. 5. Código intermediário. I. Mendes, Luís Augusto Mattos. II. Miranda, Eduardo Gabriel Reis. III. Interpretador dinâmico para ensino de programação: implementação de análise léxica e sintática, geração e interpretação de código intermediário em ambiente web.} % alterar com os dados do trabalho 
 
 
 % Pacotes para referência bibliográfica. Não alterar as linhas abaixo
@@ -140,7 +135,7 @@
 \printacapa
 
 %% Folha de rosto (Não alterar)
-%\printafolhaderosto
+\printafolhaderosto
 
 %% O aluno deverá solicitar a ficha na página da Biblioteca de Leopoldina. 
 %% Ficha catalográfica. AO IMPRIMIR, DEIXAR NO VERSO DA FOLHA DE ROSTO. (Não alterar)
@@ -148,7 +143,7 @@
 
 
 %% Folha de Aprovação. (Não alterar)
-\printafolhaaprov
+%\printafolhaaprov
 
 
 %% Dedicatória. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{dedicatoria}
@@ -253,20 +248,9 @@ Teaching programming presents several challenges, partly due to the use of langu
 
 
 % Lista de símbolos. Nao deve haver sinal grafico entre o simbolo e o seu significado.
-\begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-  \item[$ \doteq $] Igualdade pontilhada (aproximação ou definição)
-  \item[$ := $] Definição (usado para definir variáveis ou funções)
-  \item[$ \alpha $] Índice que representa um pedestre específico dentro da simulação
-  \item[$ \beta $] Índice que representa outro pedestre dentro da simulação, usado nas interações entre pedestres.
-  \item[$ \triangledown $] Gradiente vetorial (derivada espacial de uma função escalar)
-  \item [$\sum$] Somatório (soma de uma sequência de termos)
-
-
-  
-
-  
-%  Observação: Em trabalhos cuja formulação matemática requerer um número muito grande de símbolos e variáveis (geralmente letras gregas), sugere-se a colocação de uma seção de lista de símbolos. Devem obedecer a ordem com que aparecem no texto.
- \end{simbolos}
+% \begin{simbolos}
+%   \item[$ \ldots $] Reticências, utilizadas para indicar a continuação de uma sequência; empregadas no texto para denotar a progressão das variáveis temporárias (\texttt{\_\_temp0}, \texttt{\_\_temp1}, $\ldots$) e dos rótulos de controle de fluxo (\texttt{\_\_label0}, \texttt{\_\_label1}, $\ldots$) gerados pelo emissor de código intermediário
+%  \end{simbolos}
 
  
 %% Sumário. Não alterar

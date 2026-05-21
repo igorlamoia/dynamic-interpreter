@@ -43,7 +43,7 @@ As etapas nucleares que integram um compilador são detalhadas a seguir:
 \begin{itemize}
     \item \textbf{Análise Léxica (\textit{Scanner}):} Atua como o portal de entrada da compilação, processando o código-fonte caractere a caractere. Sua missão é converter o fluxo de texto em uma sucessão de unidades lógicas conhecidas como \textit{tokens}, eliminando simultaneamente elementos irrelevantes para o processamento, como comentários e espaços redundantes.
 
-    \item \textbf{Análise Sintática (\textit{Parser}):} Utiliza a sequência de \textit{tokens} para validar a conformidade gramatical do programa em relação às regras da linguagem. O \textit{parser} organiza esses elementos em estruturas hierárquicas — as árvores sintáticas ou de derivação —, empregando métodos descendentes (\textit{top-down}) ou redutivos (\textit{bottom-up}).
+    \item \textbf{Análise Sintática (\textit{Parser}):} Utiliza a sequência de \textit{tokens} para validar a conformidade gramatical do programa em relação às regras da linguagem. O \textit{parser} organiza esses elementos em estruturas hierárquicas (as árvores sintáticas ou de derivação), empregando métodos descendentes (\textit{top-down}) ou redutivos (\textit{bottom-up}).
 
     \item \textbf{Análise Semântica:} Esta fase transcende a forma gramatical para assegurar que as instruções possuam coerência lógica e operacional. Uma atividade vital aqui é a checagem de tipos (\textit{type checking}), que valida se a interação entre operadores, variáveis e funções respeita as definições da linguagem.
 
@@ -78,7 +78,7 @@ Simultaneamente a essa organização, o analisador léxico realiza uma "limpeza"
 
 É fundamental, todavia, não confundir os conceitos de \textbf{lexema} e \textbf{\textit{token}}. O lexema refere-se à sequência literal de caracteres encontrada no texto original (a \textit{string} propriamente dita, como "if", "soma" ou "42"). Já o \textit{token} é um objeto abstrato produzido pelo compilador para representar esse lexema. O \textit{token} carrega consigo a categoria sintática da unidade (identificador, operador, palavra-chave) e, frequentemente, metadados adicionais, como o valor convertido e as coordenadas de linha e coluna, cruciais para o rastreio de erros em fases subsequentes.
 
-Para que o reconhecimento desses padrões ocorra de forma rigorosa, a micro-sintaxe da linguagem é definida por meio de \textbf{expressões regulares}. Este formalismo matemático permite descrever, de maneira concisa, as regras de formação de cada categoria de \textit{token} — definindo, por exemplo, quais combinações de símbolos constituem um número real ou um nome de variável válido dentro daquela linguagem.
+Para que o reconhecimento desses padrões ocorra de forma rigorosa, a micro-sintaxe da linguagem é definida por meio de \textbf{expressões regulares}. Este formalismo matemático permite descrever, de maneira concisa, as regras de formação de cada categoria de \textit{token}, definindo, por exemplo, quais combinações de símbolos constituem um número real ou um nome de variável válido dentro daquela linguagem.
 
 Contudo, expressões regulares são ferramentas de especificação, não de execução. Para que o computador processe essas regras, elas são convertidas em \textbf{autômatos finitos}. Um autômato funciona como uma máquina de estados: ele consome a entrada caractere por caractere, transitando entre estados lógicos até atingir um "estado de aceitação". Quando isso ocorre, o lexema é validado e o \textit{token} correspondente é despachado para o analisador sintático.
 
@@ -168,7 +168,7 @@ Na implementação prática, a emissão do código intermediário ocorre de form
 
 A exploração dos princípios de otimização de código aqui delineada encontra seu lastro teórico nos tratados fundamentais de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
 
-Posicionada estrategicamente como um estágio de refinamento no \textit{pipeline} de compilação, a otimização busca elevar a qualidade da representação interna do software. Este aprimoramento transcende o ganho de velocidade e a economia de memória, abrangendo também a redução do consumo energético — um requisito crítico na computação contemporânea. Durante esta fase, o compilador atua substituindo construções genéricas por equivalentes semânticos mais ágeis. Um exemplo notório é o \textbf{dobramento de constantes} (\textit{constant folding}), que antecipa operações entre valores fixos ainda em tempo de compilação, eliminando o custo desse processamento durante a execução do programa.
+Posicionada estrategicamente como um estágio de refinamento no \textit{pipeline} de compilação, a otimização busca elevar a qualidade da representação interna do software. Este aprimoramento transcende o ganho de velocidade e a economia de memória, abrangendo também a redução do consumo energético, um requisito crítico na computação contemporânea. Durante esta fase, o compilador atua substituindo construções genéricas por equivalentes semânticos mais ágeis. Um exemplo notório é o \textbf{dobramento de constantes} (\textit{constant folding}), que antecipa operações entre valores fixos ainda em tempo de compilação, eliminando o custo desse processamento durante a execução do programa.
 
 
 
@@ -179,7 +179,7 @@ Quanto à abrangência das intervenções, a otimização é classificada em qua
 
 
 \begin{itemize}
-    \item \textbf{Otimização Local:} Restringe-se à análise de blocos básicos — sequências de instruções sem desvios de controle. Neste nível, utilizam-se frequentemente Grafos Acíclicos Dirigidos (GADs) para detectar e remover subexpressões redundantes e gerir variáveis locais de forma eficiente.
+    \item \textbf{Otimização Local:} Restringe-se à análise de blocos básicos, isto é, sequências de instruções sem desvios de controle. Neste nível, utilizam-se frequentemente Grafos Acíclicos Dirigidos (GADs) para detectar e remover subexpressões redundantes e gerir variáveis locais de forma eficiente.
     
     \item \textbf{Otimização Regional:} Expande o foco para conjuntos de blocos básicos, concentrando esforços prioritariamente em \textbf{laços de repetição} (\textit{loops}). Dado que a maior parte da carga de processamento ocorre nestes ciclos, melhorias como o deslocamento de código invariante geram impactos substanciais na performance global.
     
@@ -198,7 +198,7 @@ A fase de geração de código objeto (ou geração de código de máquina) repr
 
 
 
-Um dos obstáculos primordiais nesta fase reside na acentuada heterogeneidade das arquiteturas de hardware. Cada família de processadores — a exemplo das arquiteturas x86, ARM ou RISC-V — possui sua própria Arquitetura do Conjunto de Instruções (ISA - \textit{Instruction Set Architecture}). Consequentemente, as operações de baixo nível e suas respectivas codificações binárias variam drasticamente entre diferentes sistemas, exigindo um mapeamento preciso para cada caso.
+Um dos obstáculos primordiais nesta fase reside na acentuada heterogeneidade das arquiteturas de hardware. Cada família de processadores, a exemplo das arquiteturas x86, ARM ou RISC-V, possui sua própria Arquitetura do Conjunto de Instruções (ISA - \textit{Instruction Set Architecture}). Consequentemente, as operações de baixo nível e suas respectivas codificações binárias variam drasticamente entre diferentes sistemas, exigindo um mapeamento preciso para cada caso.
 
 Para mitigar a complexidade de desenvolver um compilador do zero para cada novo processador, a engenharia de software moderna adota o princípio da \textbf{\textit{retargetabilidade}} (redirecionamento). Essa modularidade é viabilizada pelo papel central da representação intermediária: enquanto o \textit{front-end} opera de forma agnóstica em relação ao hardware, a adaptação para uma nova arquitetura exige apenas a substituição ou reconfiguração do módulo gerador de código (\textit{back-end}).
 
@@ -216,7 +216,7 @@ A síntese do código para uma máquina específica fundamenta-se em duas ativid
 
 A dinâmica operacional do código de máquina e a simbiose entre o \textit{hardware} e o sistema operacional, discutidas a seguir, encontram seu fundamento teórico nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
 
-Ao término do processo de síntese, o que emerge é uma sucessão binária, densa e linear de operações primitivas. Diferente das abstrações hierárquicas manipuladas nas etapas iniciais da compilação — como as árvores sintáticas —, o código de máquina é desprovido de estruturas de alto nível. Trata-se de uma linguagem de baixíssimo nível, constituída por instruções rudimentares que ocupam apenas alguns \textit{bytes} e ditam ações imediatas nos circuitos: movimentação de dados entre células de memória e registradores ou a execução de operações aritméticas básicas.
+Ao término do processo de síntese, o que emerge é uma sucessão binária, densa e linear de operações primitivas. Diferente das abstrações hierárquicas manipuladas nas etapas iniciais da compilação, como as árvores sintáticas, o código de máquina é desprovido de estruturas de alto nível. Trata-se de uma linguagem de baixíssimo nível, constituída por instruções rudimentares que ocupam apenas alguns \textit{bytes} e ditam ações imediatas nos circuitos: movimentação de dados entre células de memória e registradores ou a execução de operações aritméticas básicas.
 
 Para que essa massa de dados binários ganhe vida, o programa deve ser transferido para a memória principal. Neste estágio, o sistema operacional, auxiliado por um \textit{software} carregador (\textit{loader}), prepara o ambiente de tempo de execução (\textit{runtime}). Este processo envolve a segmentação da memória em áreas distintas, isolando o setor de código estruturado das regiões destinadas ao armazenamento de dados.
 
