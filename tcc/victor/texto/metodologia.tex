@@ -14,13 +14,59 @@ O fluxo de processamento entre os módulos foi estruturado em estágios sequenci
     \centering
     \caption{Fluxo de execução entre os módulos do interpretador dinâmico.}
     \label{fig:arquitetura-geral-interpretador}
-    % \includegraphics[width=0.95\textwidth]{Figuras/arquitetura-geral.png}
+    \includegraphics[width=0.95\textwidth]{Figuras/design.jpeg}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
 A comunicação entre a IDE e o núcleo do interpretador foi viabilizada por meio de rotas HTTP expostas pela aplicação Next.js. As rotas \texttt{/api/lexer} e \texttt{/api/intermediator} oferecem ao usuário visões intermediárias do processo de tradução, retornando, respectivamente, a tabela de \textit{tokens} reconhecidos e a lista de instruções intermediárias geradas. A rota \texttt{/api/submissions/validate}, por sua vez, executa o ciclo completo de compilação e interpretação para fins de avaliação automática de exercícios, instanciando o analisador léxico, o iterador de \textit{tokens} e o interpretador diretamente no processo do servidor. Essa rota também é responsável por interagir com o serviço de persistência, implementado em FastAPI sobre SQLAlchemy assíncrono, conforme caracterizado por \citeonline{fastapi2026}, mantendo a separação rígida entre a camada de regras de negócio e a infraestrutura de armazenamento.
 
 Para a construção dos componentes de análise, foi adotado o padrão de projeto \textit{Factory} discutido por \citeonline{silveira2012}, materializado pela classe \texttt{LexerScannerFactory}. Esta abstração centraliza a decisão sobre qual analisador especializado deve ser invocado a cada caractere lido, encapsulando a complexidade de instanciação e reduzindo o acoplamento global entre os \textit{scanners} de comentários, identificadores, números, \textit{strings} e símbolos. O mesmo princípio guiou a organização do analisador sintático, no qual cada não-terminal da gramática foi materializado em um arquivo independente, refletindo diretamente a estrutura formal da linguagem e favorecendo tanto a legibilidade quanto a testabilidade do código.
+
+\subsection{Modelagem do Banco de Dados}
+\label{subsec:modelagem-banco}
+
+A camada de persistência da plataforma foi projetada em conformidade com os princípios de normalização relacional discutidos por \citeonline{elmasri2015}, adotando o gerenciador de banco de dados PostgreSQL e o esquema lógico ilustrado na Figura \ref{fig:esquema-banco}. O modelo organiza as entidades em torno de três eixos principais: a gestão institucional, representada pelas entidades \texttt{organizations}, \texttt{users} e \texttt{classes}; a gestão de conteúdo pedagógico, compreendendo \texttt{exercises}, \texttt{exercise\_lists} e \texttt{test\_cases}; e o registro de atividades dos estudantes, materializado pelas entidades \texttt{submissions} e pelas tabelas de associação \texttt{class\_members}, \texttt{exercise\_list\_items} e \texttt{class\_exercise\_lists}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Esquema relacional do banco de dados da plataforma.}
+    \label{fig:esquema-banco}
+    \includegraphics[width=0.95\textwidth]{Figuras/esquema_banco.png}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+A entidade \texttt{organizations} representa as instituições de ensino cadastradas na plataforma, agrupando professores e alunos sob um contexto administrativo comum. A entidade \texttt{users} unifica os dois perfis de usuário da plataforma --- professor e estudante --- por meio de um atributo de papel (\texttt{role}), cujos valores possíveis são definidos pelo tipo enumerado \texttt{userrole}, mantendo uma única tabela de autenticação e evitando a duplicação de atributos compartilhados como nome, endereço de correio eletrônico e imagem de perfil. Cada usuário é obrigatoriamente associado a uma organização, garantindo o isolamento multilocatário dos dados.
+
+A entidade \texttt{classes} representa as turmas criadas por professores e é identificada externamente por um código de acesso único (\texttt{access\_code}), utilizado pelos estudantes para se matricularem. O ciclo de vida de uma turma é controlado pelo tipo enumerado \texttt{classstatus}, que distingue turmas ativas, encerradas ou arquivadas. A relação de matrícula é mantida pela tabela associativa \texttt{class\_members}, que registra o estudante e o instante de ingresso na turma.
+
+Os exercícios individuais são cadastrados na entidade \texttt{exercises}, vinculados ao professor responsável pela sua criação. Cada exercício pode possuir múltiplos casos de teste, armazenados em \texttt{test\_cases}, que registram a entrada fornecida ao programa e a saída esperada para fins de avaliação automática, conforme o ciclo de validação descrito na Seção \ref{sec:integracao-plataforma}. A relação de dependência entre exercício e casos de teste é implementada com exclusão em cascata, de modo que a remoção de um exercício elimine automaticamente seus respectivos casos de teste, preservando a integridade referencial do esquema.
+
+As listas de exercícios são modeladas pela entidade \texttt{exercise\_lists}, criadas pelo professor e compostas por itens representados pela tabela \texttt{exercise\_list\_items}. Esta tabela associativa, além de referenciar o exercício e a lista, armazena o peso da nota (\texttt{grade\_weight}) e o índice de ordenação (\texttt{order\_index}), permitindo que o professor controle tanto a distribuição de pontos quanto a sequência de apresentação dos itens aos estudantes. A publicação de uma lista para uma turma específica é gerenciada pela tabela \texttt{class\_exercise\_lists}, que registra o prazo de entrega (\texttt{deadline}), a nota total (\texttt{total\_grade}), o número mínimo de exercícios exigidos (\texttt{min\_required}) e os instantes de publicação e de última atualização, conferindo ao professor controle granular sobre a disponibilização do conteúdo.
+
+A entidade \texttt{submissions} registra cada tentativa de envio realizada por um estudante, capturando um instantâneo imutável do código submetido (\texttt{code\_snapshot}), o resultado da avaliação automática expresso pelo tipo enumerado \texttt{submissionstatus} e a pontuação calculada com base nos casos de teste aprovados. O campo de retroalimentação do professor (\texttt{teacher\_feedback}) permite a complementação qualitativa da avaliação automática. A referência simultânea ao exercício, à lista de exercícios e à turma possibilita consultas agregadas de desempenho tanto por estudante quanto por turma ou por lista, sem exigir junções adicionais. Índices secundários foram definidos sobre os campos \texttt{(exercise\_list\_id, class\_id)} e \texttt{student\_id} para otimizar as consultas de maior frequência, como a listagem de submissões por turma e a visualização do histórico de um estudante, em conformidade com as diretrizes de desempenho discutidas por \citeonline{elmasri2015}.
+
+O versionamento do esquema relacional é gerenciado pelo Alembic, cujo estado corrente de migração é rastreado pela tabela \texttt{alembic\_version}. Essa abordagem permite a evolução incremental do banco de dados sem perda de dados em implantações sucessivas, em consonância com a estratégia de entrega contínua adotada no projeto.
+\subsection{Especificação das Rotas da API}
+\label{subsec:rotas-api}
+
+A interface de comunicação entre os clientes e os serviços da plataforma envolve dois modelos distintos de invocação do compilador, combinados com um conjunto de rotas HTTP expostas pelo serviço de persistência. Uma decisão central de arquitetura foi a de que as fases de análise léxica e de geração de código intermediário, cujo resultado é exibido interativamente na IDE, são executadas inteiramente no navegador do usuário, sem qualquer requisição HTTP. Os \textit{hooks} \texttt{useLexerAnalyse} e \texttt{useIntermediatorCode} importam e instanciam diretamente as classes \texttt{Lexer} e \texttt{TokenIterator} do pacote \texttt{compiler}, o que é viável porque esse pacote é escrito em TypeScript puro, sem dependências exclusivas de Node.js para essas operações. Essa abordagem elimina a latência de rede nas interações pedagógicas mais frequentes e mantém o servidor da IDE desonerado das requisições de análise.
+
+A única rota HTTP do pacote \texttt{ide} diretamente relacionada ao compilador é \texttt{POST /api/submissions/validate}. Essa rota, executada no processo do servidor Next.js, recebe o código-fonte e a configuração corrente da linguagem, executa o ciclo completo de análise léxica, geração de código intermediário e interpretação, e avalia o resultado contra os casos de teste do exercício recuperados do serviço de persistência. O isolamento dessa operação em uma rota de servidor, e não no navegador, é motivado pela necessidade de controlar o tempo máximo de execução por meio de um mecanismo de \textit{timeout} e de registrar a submissão de forma autenticada no banco de dados. Ao término da execução, a rota envia os resultados consolidados ao serviço FastAPI e devolve ao \textit{frontend} a estrutura \texttt{TValidationResult}, contendo o status de cada caso de teste, a pontuação obtida e eventuais avisos de compilação.
+
+As demais rotas HTTP da plataforma pertencem ao serviço de persistência, implementado em Python com o \textit{framework} FastAPI e o ORM SQLAlchemy assíncrono. A documentação completa e interativa dessas rotas é gerada automaticamente pelo próprio \textit{framework}, conforme descrito por \citeonline{fastapi2026}, e está disponível nos endereços \url{https://api.dynamicinterpreter.com.br/docs} (interface Swagger UI) e \url{https://api.dynamicinterpreter.com.br/redoc} (interface ReDoc). Essas rotas organizam-se nos seguintes grupos de recursos:
+
+\begin{itemize}
+    \item \textbf{Autenticação} (\texttt{/auth}) --- gerencia o registro e o \textit{login} de usuários, emitindo tokens JWT utilizados nas demais requisições protegidas;
+    \item \textbf{Organizações} (\texttt{/organizations}) --- gerencia as instituições de ensino cadastradas na plataforma, às quais professores e alunos são vinculados;
+    \item \textbf{Usuários} (\texttt{/users}) --- expõe operações de consulta e atualização de perfil para os dois papéis suportados, professor e estudante, com controle de acesso baseado no atributo \texttt{role};
+    \item \textbf{Turmas} (\texttt{/classes}) --- permite ao professor criar, editar, encerrar e arquivar turmas; a matrícula de estudantes é realizada por meio do código de acesso único da turma, gerenciado pela sub-rota \texttt{/classes/join};
+    \item \textbf{Exercícios} (\texttt{/exercises}) --- centraliza a criação e a manutenção dos enunciados de exercícios, incluindo seus casos de teste, com restrição de escrita ao professor responsável;
+    \item \textbf{Listas de exercícios} (\texttt{/exercise-lists}) --- gerencia a composição e a ordenação dos exercícios em uma lista, com controle de pesos de nota por item;
+    \item \textbf{Publicação de listas} (\texttt{/class-exercise-lists}) --- controla a associação de uma lista a uma turma, registrando prazo, nota total e mínimo de exercícios exigidos;
+    \item \textbf{Submissões} (\texttt{/submissions}) --- armazena e recupera os registros de submissão dos estudantes, incluindo o instantâneo do código, a pontuação e a retroalimentação do professor.
+\end{itemize}
+
+Essa organização reflete diretamente a divisão arquitetural do projeto: o compilador opera localmente no navegador para as interações pedagógicas de baixa latência, em uma rota de servidor para a avaliação controlada de submissões, e o serviço FastAPI permanece inteiramente agnóstico em relação ao compilador, concentrando-se exclusivamente na gestão das entidades de domínio pedagógico.
 
 \section{Especificação da Linguagem e Comandos Dinâmicos}
 \label{sec:especificacao-linguagem}
