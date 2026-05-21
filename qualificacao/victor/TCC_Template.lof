@@ -1,0 +1,9 @@
+\babel@toc {brazil}{}\relax 
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{16}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{18}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes (TDD).\relax }}{29}{figure.caption.39}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Fluxo de execução entre os módulos do interpretador dinâmico.\relax }}{44}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Esquema relacional do banco de dados da plataforma.\relax }}{46}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Funções de validação prévia da configuração léxica da linguagem.\relax }}{51}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Decomposição da instrução \texttt {var language = "lox";} em \textit {tokens} pelo analisador léxico.\relax }}{52}{figure.caption.63}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes aplicado ao projeto.\relax }}{58}{figure.caption.70}%

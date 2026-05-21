@@ -1,0 +1,57 @@
+\changetocdepth {4}
+\babel@toc {brazil}{}\relax 
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{12}{chapter.11}%
+\contentsline {section}{\numberline {1.1}Justificativa}{12}{section.12}%
+\contentsline {section}{\numberline {1.2}Objetivos}{13}{section.13}%
+\contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{13}{subsection.14}%
+\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{13}{subsection.15}%
+\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{13}{section.16}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO}{15}{chapter.17}%
+\contentsline {section}{\numberline {2.1}Compiladores}{15}{section.18}%
+\contentsline {subsection}{\numberline {{2.1}.1}Compiladores e seus Fundamentos}{15}{subsection.19}%
+\contentsline {subsection}{\numberline {{2.1}.2}O Modelo de Análise e Síntese (Fases da Compilação)}{16}{subsection.21}%
+\contentsline {subsection}{\numberline {{2.1}.3}A Análise Léxica e o Reconhecimento de \textit {Tokens}}{18}{subsection.22}%
+\contentsline {subsection}{\numberline {{2.1}.4}Estratégias de Análise Sintática: \textit {Top-Down} e \textit {Bottom-Up}}{19}{subsection.24}%
+\contentsline {subsection}{\numberline {{2.1}.5}Análise Semântica e Verificação de Tipos}{21}{subsection.27}%
+\contentsline {subsection}{\numberline {{2.1}.6}Geração de Código Intermediário}{22}{subsection.29}%
+\contentsline {subsection}{\numberline {{2.1}.7}Otimização de Código e Eficiência Computacional}{24}{subsection.34}%
+\contentsline {subsection}{\numberline {{2.1}.8}Geração de Código Objeto e Mapeamento de Arquitetura}{25}{subsection.35}%
+\contentsline {subsection}{\numberline {{2.1}.9}Engenharia de Software}{26}{subsection.36}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.1}Gestão de Tarefas e Metodologias Ágeis}{27}{subsubsection.37}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{28}{subsubsection.38}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.3}Arquitetura Limpa e Separação de Responsabilidades}{30}{subsubsection.40}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.4}Qualidade de Código e \textit {Clean Code}}{30}{subsubsection.41}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.5}FastAPI: Framework para APIs de Alto Desempenho}{32}{subsubsection.42}%
+\contentsline {section}{\numberline {2.2}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{33}{section.43}%
+\contentsline {section}{\numberline {2.3}Trabalhos relacionados}{34}{section.44}%
+\contentsline {subsection}{\numberline {{2.3}.1}Portugol Studio e Portugol Webstudio}{34}{subsection.45}%
+\contentsline {subsection}{\numberline {{2.3}.2}Laila: Gerador de Analisadores Léxicos e Sintáticos Online}{35}{subsection.46}%
+\contentsline {subsection}{\numberline {{2.3}.3}Quorum: Linguagem de Programação Baseada em Evidências}{35}{subsection.47}%
+\contentsline {subsection}{\numberline {{2.3}.4}chibicc: Uma Abordagem Incremental para o Ensino de Compiladores}{36}{subsection.48}%
+\contentsline {subsection}{\numberline {{2.3}.5}Beecrowd: Prática de Algoritmos e Avaliação Automatizada}{37}{subsection.49}%
+\contentsline {subsection}{\numberline {{2.3}.6}Análise Crítica e o Diferencial da Solução Proposta}{38}{subsection.50}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{40}{chapter.51}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {4}MODELAGEM}{43}{chapter.53}%
+\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura do Projeto}{43}{section.54}%
+\contentsline {subsection}{\numberline {{4.1}.1}Modelagem do Banco de Dados}{45}{subsection.56}%
+\contentsline {subsection}{\numberline {{4.1}.2}Especificação das Rotas da API}{48}{subsection.58}%
+\contentsline {section}{\numberline {4.2}Especificação da Linguagem e Comandos Dinâmicos}{49}{section.59}%
+\contentsline {section}{\numberline {4.3}Interpretador}{51}{section.61}%
+\contentsline {subsection}{\numberline {{4.3}.1}Análise Léxica}{52}{subsection.62}%
+\contentsline {subsection}{\numberline {{4.3}.2}Análise Sintática}{53}{subsection.64}%
+\contentsline {subsection}{\numberline {{4.3}.3}Análise Semântica}{54}{subsection.65}%
+\contentsline {subsection}{\numberline {{4.3}.4}Geração de Código Intermediário}{55}{subsection.66}%
+\contentsline {subsection}{\numberline {{4.3}.5}Interpretação e Tratamento de Erros em Tempo de Execução}{55}{subsection.67}%
+\contentsline {section}{\numberline {4.4}Integração entre a Plataforma e o Interpretador}{57}{section.68}%
+\contentsline {section}{\numberline {4.5}Estratégia de Testes Automatizados}{57}{section.69}%
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{REFERÊNCIAS}{60}{chapter*.72}%

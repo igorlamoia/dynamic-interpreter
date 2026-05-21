@@ -67,14 +67,14 @@
 
 %% Obs.: Alguns acentos foram omitidos.
 
-\titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}. 
-% \subtitulo{Subtítulo, se houver}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}. 
+\titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}.
+\subtitulo{Implementação de análise léxica e sintática, geração e interpretação de código intermediário em ambiente web}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}.
 
-\tituloIngles{Evacuation Modeling of Environments Using the Social Forces Method} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
+\tituloIngles{Dynamic Interpreter for Programming Education: Implementation of lexical and syntactic analysis, intermediate code generation and interpretation in a web environment} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
 % \subtituloIngles{subtitle (se tiver)}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo em inglês do trabalho deve ser colocado dentro das chaves {}.
 
 \autor{Victor de Souza Vilela da Silva} %%O nome completo do autor deve ser colocado dentro das chaves {}
-\autorVirg{Victor de Souza Vilela da Silva} %%Acrescentar o sobrenome do autor, separado por vírgula, antes do restante do nome do autor. Ex.: Silva, José da
+\autorVirg{Silva, Victor de Souza Vilela da} %%Acrescentar o sobrenome do autor, separado por vírgula, antes do restante do nome do autor. Ex.: Silva, José da
 \autorSobrenome{Vilela} %% Apenas o último sobrenome dever ser acrescentado dentro das chaves
 \matricula{20193014482} %%Matrícula do aluno autor do trabalho
 
@@ -122,7 +122,7 @@
 \CDU{CDU 004.414.23} % Disponibilizado pela biblioteca.
 
 %% Abaixo, prencher com os dados da parte final da ficha catalografica
-\finalcatalog{1. Modelagem. 2. Simulação de evacuação. 3. Modelo de forças sociais. I. Miranda, Eduardo Gabriel Reis II. Lopes, Henrique Barros. III. Modelagem de evacuação de ambientes utilizando o método de forças sociais.} % alterar com os dados do trabalho 
+\finalcatalog{1. Interpretador dinâmico. 2. Ensino de programação. 3. Compiladores. 4. Análise léxica. 5. Código intermediário. I. Mendes, Luís Augusto Mattos. II. Miranda, Eduardo Gabriel Reis. III. Interpretador dinâmico para ensino de programação: implementação de análise léxica e sintática, geração e interpretação de código intermediário em ambiente web.} % alterar com os dados do trabalho 
 
 
 % Pacotes para referência bibliográfica. Não alterar as linhas abaixo
@@ -161,7 +161,7 @@
 %% Agradecimentos. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{agradecimentos}
 \begin{agradecimentos}
 Agradeço à minha família pelo apoio incondicional, incentivo e paciência ao longo desta jornada. Sem vocês, nada disso seria possível.
-Meu sincero agradecimento também ao meu orientador, Eduardo Gabriel Reis Miranda, e ao meu coorientador, Henrique Barros Lopes, pela orientação, dedicação e ensinamentos valiosos que tornaram este trabalho possível.
+Meu sincero agradecimento também ao meu orientador, Luís Augusto Mattos Mendes, e ao meu coorientador, Eduardo Gabriel Reis Miranda, pela orientação, dedicação e ensinamentos valiosos que tornaram este trabalho possível.
 A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrigado.
 
 \end{agradecimentos}
@@ -212,7 +212,7 @@ Ensinar programação apresenta diversos desafios, em parte devido ao uso de lin
 
 Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules.This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows users to customize language syntax, commands, and structural rules. The project is developed through literature review, system architecture design, implementation of a web IDE and interpreter (including lexical and syntactic analysis), and integration with real-time execution in the browser. Preliminary classroom applications suggest positive educational outcomes, including reduced time required for students to grasp fundamental programming concepts, lower failure rates in introductory programming courses, and increased student engagement.By allowing flexible definition of commands and syntax, the platform reduces linguistic barriers and encourages experimentation, helping students focus on algorithmic reasoning rather than memorizing rigid language structures.
 \noindent
-\textbf{Keywords:} Evacuation Simulation. Social Force Model. Computational Modeling.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
+\textbf{Keywords:} Dynamic Interpreter. Introductory Programming Education. Language-Oriented Programming. Interactive Programming Environment.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
 
   \end{otherlanguage*}
 \end{abstract_cefetmg}
@@ -253,19 +253,8 @@ Teaching programming presents several challenges, partly due to the use of langu
 
 
 % Lista de símbolos. Nao deve haver sinal grafico entre o simbolo e o seu significado.
-\begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-  \item[$ \doteq $] Igualdade pontilhada (aproximação ou definição)
-  \item[$ := $] Definição (usado para definir variáveis ou funções)
-  \item[$ \alpha $] Índice que representa um pedestre específico dentro da simulação
-  \item[$ \beta $] Índice que representa outro pedestre dentro da simulação, usado nas interações entre pedestres.
-  \item[$ \triangledown $] Gradiente vetorial (derivada espacial de uma função escalar)
-  \item [$\sum$] Somatório (soma de uma sequência de termos)
-
-
-  
-
-  
-%  Observação: Em trabalhos cuja formulação matemática requerer um número muito grande de símbolos e variáveis (geralmente letras gregas), sugere-se a colocação de uma seção de lista de símbolos. Devem obedecer a ordem com que aparecem no texto.
+\begin{simbolos}
+  \item[$ \ldots $] Reticências, utilizadas para indicar a continuação de uma sequência; empregadas no texto para denotar a progressão das variáveis temporárias (\texttt{\_\_temp0}, \texttt{\_\_temp1}, $\ldots$) e dos rótulos de controle de fluxo (\texttt{\_\_label0}, \texttt{\_\_label1}, $\ldots$) gerados pelo emissor de código intermediário
  \end{simbolos}
 
  
@@ -279,44 +268,17 @@ Teaching programming presents several challenges, partly due to the use of langu
 \textual %Não alterar
 
 
-\chapter{INTRODUÇÃO} %% Título do Capítulo dentro das chaves {}
-\label{cap:introducao_modelo} %% Palavra chave para referência cruzada no texto. SUGERE-SE colocar ser "cap:" como demostrado no modelo para melhor organização em textos maiores
-
-A segurança em locais, como estádios, centros comerciais, aeroportos, e eventos públicos é um grande desafio. Situações emergenciais, como incêndios, ataques terroristas e desastres naturais, demandam estratégias eficientes de evacuação e locais projetados para minimizar riscos e salvar vidas. A realização de simulações em ambientes reais ocupados por pessoas envolvem diversas questões que as tornam impraticáveis. Entre os principais desafios estão o alto custo para realizá-las, a dificuldade na captação de dados precisos e questões éticas e legais relacionadas a experimentos com seres humanos \cite{carneiro2012simulaccao}. Esses fatores tornam complexa a implementação de simulações realistas em situações cotidianas, limitando a capacidade de testar e validar estratégias de evacuação de forma eficaz. 
-
-Conforme apresentado por \cite{carvalho2023analise}, os problemas na infraestrutura, a falta de rotas de fuga desobstruídas ou até mesmo a ausência de rotas de fuga e saídas de emergência foram alguns dos fatores que contribuíram significativamente para a perda de vidas no trágico acidente da Boate Kiss. Esses aspectos críticos da segurança influenciaram diretamente a capacidade dos frequentadores de evacuarem o local com segurança durante o incêndio. Nesse contexto, a simulação computacional de evacuação de ambientes emerge como uma ferramenta essencial para a compreensão de dinâmicas de movimento, otimização de rotas de fuga e estruturação adequada do local. A compreensão dessas dinâmicas evita que tragédias e acidentes se repitam.
-
-A simulação computacional permite a criação de modelos detalhados que reproduzem o comportamento humano em situações de emergência. Esses modelos são capazes de levar em consideração fatores como a densidade populacional, a velocidade de movimento, a percepção de risco e as características arquitetônicas do ambiente. Ferramentas como o software Pathfinder\footnote{https://www.thunderheadeng.com/pathfinder/} e a plataforma AnyLogic\footnote{https://www.anylogic.com} têm sido amplamente utilizadas para desenvolver simulações realistas e precisas. Oferecendo a possibilidade de identificar gargalos em rotas de saída, avaliar a eficácia de diferentes planos de evacuação e desenvolver recomendações para melhorar a infraestrutura de segurança em locais públicos.
-
-Este trabalho tem como objetivo desenvolver e analisar um modelo de simulação de evacuação de ambientes com diferentes densidades de pedestres, utilizando o método de forças sociais proposto por \citeonline{helbing1995social}, que é baseado em uma sólida fundamentação de forças físicas, tornando-se mais fiel à realidade ao representar de maneira precisa as interações entre os indivíduos e o ambiente em situações de movimentação e evacuação. O estudo irá abordar desde a fundamentação teórica do método, passando pelo desenvolvimento do modelo computacional, correção de possíveis lacunas do modelo e por fim a análise de resultados em diferentes cenários simulados. Nos capítulos seguintes, serão apresentados o referencial teórico e a metodologia a ser empregada na modelagem e simulação.
-
-% os resultados obtidos e uma discussão sobre as implicações dos achados.
-
-%Exemplo para utilizar página no formato paisagem
-\begin{landscape}
-\section{Objetivos}
-
-\begin{enumerate}
-    \item Estudar o modelo de forças sociais;
-    \item Encontrar uma solução para o problema que envolve cenários multi-salas do modelo de forças sociais; 
-    \item Modelar situações de evacuações em ambientes de alta/média densidade populacional;
-    \item Discutir os resultados encontrados.
-\end{enumerate}
-
-\end{landscape}
+\chapter{INTRODUÇÃO}
+\input{texto/introducao}
 
 \chapter{REFERENCIAL TEÓRICO} \label{cap:referencial}
 \input{texto/referencial}
 
-\chapter{METODOLOGIA E MATERIAIS}
+\chapter{PROPOSTA} \label{cap:proposta}
+\input{texto/proposta}
+
+\chapter{MODELAGEM} \label{cap:modelagem}
 \input{texto/metodologia}
-
-
-
-
-\chapter{ESTUDOS DE CASO}
-
-\chapter{RESULTADOS}
 
 
 % \chapter{CONCLUSÕES E TRABALHOS FUTUROS}

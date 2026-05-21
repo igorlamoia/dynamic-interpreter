@@ -1,0 +1,49 @@
+
+Este capítulo apresenta, em forma sintetizada, o escopo do trabalho e o cronograma de desenvolvimento que orienta a execução do projeto ao longo das duas etapas do Trabalho de Conclusão de Curso. A proposta consiste no desenvolvimento de uma plataforma web educacional composta por um Ambiente de Desenvolvimento Integrado (IDE) acoplado a um interpretador dinâmico, capaz de oferecer ao usuário a personalização do vocabulário da linguagem, dos delimitadores de bloco, dos operadores em forma de palavra, dos literais booleanos e das regras de finalização de instrução. Almeja-se, com essa abordagem, atenuar a sobrecarga cognitiva inicial inerente ao aprendizado de linguagens de programação tradicionais, deslocando o foco do estudante das particularidades sintáticas para o raciocínio algorítmico.
+
+Para alcançar esse objetivo, o desenvolvimento foi estruturado em seis macroatividades sequenciais e parcialmente sobrepostas: (I) revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais; (II) definição dos requisitos e da arquitetura do sistema; (III) implementação da análise léxica e sintática com suporte a regras gramaticais configuráveis; (IV) geração e execução do código intermediário, bem como verificação semântica das construções da linguagem; (V) integração entre o núcleo do interpretador e a plataforma web; e (VI) realização de testes, validação com usuários e coleta de retroalimentação para subsidiar a discussão dos resultados. Essas atividades estão distribuídas no horizonte temporal apresentado na Tabela~\ref{tab:cronograma}, na qual cada coluna numerada representa um mês corrido das duas fases do trabalho (TCC~I e TCC~II), e cada célula marcada com ``X'' indica a previsão de execução da atividade no mês correspondente.
+
+\begin{table}[H]
+    \centering
+    \caption{Cronograma de desenvolvimento do trabalho de conclusão de curso.}
+    \label{tab:cronograma}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.2}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{6.5cm}|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \multirow{2}{*}{\textbf{Atividade}} & \multicolumn{6}{c|}{\textbf{TCC I}} & \multicolumn{6}{c|}{\textbf{TCC II}} \\
+        \cline{2-13}
+         & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{06} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{11} & \textbf{12} \\
+        \hline
+        Revisão Bibliográfica & X & X & X & X & & & & & & & & \\
+        \hline
+        Escrita da Introdução e Revisão de Literatura & & X & X & X & & & & & & & & \\
+        \hline
+        Predefinição de escopo e Especificação dos comandos dinâmicos & & & X & X & & & & & & & & \\
+        \hline
+        Escrita da Metodologia & & & X & & X & X & X & & & & & \\
+        \hline
+        Arquitetura e Modelagem do Interpretador & & & X & X & & & & & & & & \\
+        \hline
+        Implementação da Análise Léxica e Sintática & & & & X & X & & & & & & & \\
+        \hline
+        Geração de Código Intermediário e Análise Semântica & & & & X & X & X & & & & & & \\
+        \hline
+        Integração entre a plataforma e interpretador & & & & & X & X & X & & & & & \\
+        \hline
+        Testes, Validação com Usuários e Coleta de \textit{Feedback} & & & & & & & & & X & X & X & \\
+        \hline
+        Escrita do TCC (Resultados, Discussão e Conclusão) & & & & & & & & & X & X & X & X \\
+        \hline
+    \end{tabular}%
+    }
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Cabe ressaltar que o presente trabalho integra um esforço conjunto desenvolvido em dupla, em conformidade com a pré-proposta aprovada, na qual está expressamente prevista a \textbf{participação conjunta em todas as etapas} do projeto. A construção do núcleo do sistema, que compreende o compilador, o interpretador, a análise léxica, a análise sintática, a geração e a execução do código intermediário, foi conduzida de forma colaborativa pelos dois integrantes, com revisão mútua de código, decisões arquiteturais compartilhadas e contribuições recíprocas em todos os estágios do desenvolvimento. Igualmente, a integração desses módulos com a plataforma web e a definição dos contratos de comunicação entre o interpretador e a IDE foram resultado de um trabalho conjunto, no qual ambos os autores participaram tanto da especificação quanto da implementação.
+
+A divisão complementar de responsabilidades, conforme previsto na pré-proposta, refere-se aos eixos de aprofundamento individual de cada autor para os capítulos de redação acadêmica e para as evoluções incrementais subsequentes. O presente autor concentra-se na descrição aprofundada do núcleo de tradução, em especial na evolução das fases de análise léxica, sintática e semântica, na geração de código intermediário e na execução pelo interpretador; o discente Igor Lamoia Queiroz, por sua vez, aprofunda-se na concepção e na evolução do Ambiente de Desenvolvimento Integrado web, incluindo a interface de personalização dos comandos definidos pelo usuário, a usabilidade da plataforma e a coleta de retroalimentação dos estudantes. A condução em dupla justifica-se pela amplitude e pela complexidade do escopo proposto, que, individualmente, resultaria em um interpretador simplificado ou em uma plataforma de execução incompleta restrita a um terminal isolado.
+
+Encerrada esta primeira fase do trabalho, dedicada à fundamentação teórica, à modelagem da arquitetura e à implementação das fases iniciais do compilador, a etapa subsequente concentrar-se-á na realização dos estudos de caso, na coleta de evidências empíricas em ambiente educacional e na análise comparativa entre a plataforma desenvolvida e as ferramentas existentes na literatura. O capítulo seguinte detalha a modelagem efetivamente realizada até o encerramento do TCC~I.
