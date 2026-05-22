@@ -29,15 +29,163 @@ A organização interna do código da IDE seguiu a topologia clássica de aplica
 
 A funcionalidade central da plataforma, que consiste na possibilidade de o usuário personalizar dinamicamente a sintaxe e o vocabulário da linguagem, foi materializada em um conjunto coordenado de componentes, \textit{contexts} e utilitários. O elemento central dessa funcionalidade é o \texttt{KeywordContext}, um \textit{context} do React que mantém, em memória e na camada de armazenamento local do navegador, o estado completo da customização ativa, incluindo o mapeamento de palavras-chave personalizadas, os operadores em forma de palavra, os literais booleanos, os delimitadores de bloco e o terminador de instrução.
 
+O contrato técnico que sustenta a customização é definido pelo módulo \texttt{config.ts} do pacote \texttt{compiler}, que declara, por meio de tipos TypeScript, todos os elementos da linguagem passíveis de personalização. O Trecho de Código~\ref{lst:lexer-config} apresenta esses tipos, que funcionam como a interface formal entre a camada de interface, responsável pela coleta das preferências do usuário, e o núcleo do tradutor, responsável pela construção da gramática efetiva no momento da varredura léxica.
+
+\begin{lstlisting}[language=typescript, caption={Tipos que descrevem a configuração customizável do lexer.}, label={lst:lexer-config}, captionpos=b]
+export type KeywordMap = Record<string, number>;
+
+export type OperatorWordMap = {
+  logical_or?: string;     logical_and?: string;
+  logical_not?: string;    less?: string;
+  less_equal?: string;     greater?: string;
+  greater_equal?: string;  equal_equal?: string;
+  not_equal?: string;
+};
+
+export type BooleanLiteralMap = {
+  true?: string;
+  false?: string;
+};
+
+export type LexerBlockDelimiters = {
+  open: string;
+  close: string;
+};
+
+export type LexerConfig = {
+  customKeywords?: KeywordMap;
+  operatorWordMap?: OperatorWordMap;
+  booleanLiteralMap?: BooleanLiteralMap;
+  statementTerminatorLexeme?: string;
+  blockDelimiters?: LexerBlockDelimiters;
+  locale?: string;
+  indentationBlock?: boolean;
+  tabWidth?: number;
+};
+\end{lstlisting}
+
 A definição de quais elementos da linguagem seriam exibidos como configuráveis foi guiada pelos achados empíricos de \citeonline{stefik2013}, segundo os quais a sintaxe tradicional derivada da família C atua como uma barreira significativa para estudantes iniciantes. Foram disponibilizadas para customização as palavras-chave de declarações de tipo (\texttt{int}, \texttt{float}, \texttt{bool}, \texttt{string}), de controle de fluxo (\texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{break}, \texttt{continue}, \texttt{return}, \texttt{switch}, \texttt{case}), as operações de entrada e saída (\texttt{print}, \texttt{scan}), os operadores lógicos (\texttt{\&\&}, \texttt{||}, \texttt{!}) e relacionais (\texttt{==}, \texttt{!=}, \texttt{>}, \texttt{>=}, \texttt{<}, \texttt{<=}), os literais booleanos (\texttt{true}, \texttt{false}), os delimitadores de bloco (chaves ou indentação) e o terminador de instrução. Essas opções abrangem precisamente os elementos que oneram a carga cognitiva inicial discutidos por \citeonline{stefik2013}, mantendo intactos os aspectos estruturais responsáveis pela consistência das demais fases do compilador.
 
-A interface de customização foi implementada como um assistente progressivo no formato \textit{wizard}, materializado no componente \texttt{keyword-customizer}, que conduz o usuário por etapas independentes, cada uma responsável por um aspecto específico da personalização. O fluxo é controlado pelo \texttt{wizard-model}, que mantém o estado de navegação e valida cada passo antes de permitir o avanço. A cada alteração proposta pelo usuário, o componente \texttt{preview-builder} produz, em tempo real, um trecho de código exemplificativo que reflete a customização corrente, oferecendo uma visualização imediata do impacto das mudanças sobre a aparência dos programas. Essa estratégia de \textit{feedback} contínuo segue as recomendações de \citeonline{nystrom2021} para ambientes interativos de aprendizagem, reduzindo a distância cognitiva entre a configuração e o resultado observável.
+A consolidação do estado da customização no \texttt{KeywordContext} é exposta às demais camadas da aplicação por meio do utilitário \texttt{buildLexerConfig}, apresentado no Trecho de Código~\ref{lst:build-lexer-config}. Esse utilitário traduz o estado em memória, contendo os mapeamentos de palavras-chave, os operadores, os literais booleanos, os delimitadores de bloco e o terminador de instrução, em um descritor compatível com o tipo \texttt{LexerConfig} do pacote \texttt{compiler}, atuando como a fronteira efetiva entre o estado da interface e a invocação do tradutor.
+
+\begin{lstlisting}[language=typescript, caption={Utilitário \texttt{buildLexerConfig} do \texttt{KeywordContext}, que materializa a configuração corrente em um descritor consumível pelo lexer.}, label={lst:build-lexer-config}, captionpos=b]
+const buildKeywordMap = useCallback((): Record<string, number> => {
+  const map: Record<string, number> = {};
+  for (const m of customization.mappings) {
+    map[m.custom] = m.tokenId;
+  }
+  return map;
+}, [customization.mappings]);
+
+const buildLexerConfig = useCallback((): IDECompilerConfigPayload => {
+  return buildLexerConfigFromCustomization(customization);
+}, [customization]);
+\end{lstlisting}
+
+A interface de customização foi implementada como um assistente progressivo no formato \textit{wizard}, materializado no componente \texttt{keyword-customizer}, que conduz o usuário por etapas independentes, cada uma responsável por um aspecto específico da personalização. O fluxo é controlado pelo \texttt{wizard-model}, que mantém o estado de navegação e valida cada passo antes de permitir o avanço. A declaração formal das etapas do assistente é apresentada no Trecho de Código~\ref{lst:wizard-steps}, no qual cada elemento do arranjo \texttt{WIZARD\_STEPS} associa um identificador, um título exibido na barra de progresso, uma descrição textual e um ícone semântico, oferecendo ao usuário um mapa visual contínuo do fluxo de personalização.
+
+\begin{lstlisting}[language=typescript, caption={Declaração do arranjo \texttt{WIZARD\_STEPS}, que organiza as etapas do assistente de personalização.}, label={lst:wizard-steps}, captionpos=b]
+export const WIZARD_STEPS = [
+  { id: "identity",  title: "Identidade",
+    description: "Escolha o ponto de partida da linguagem.",
+    icon: "fingerprint" },
+  { id: "IO",        title: "Entrada/Saida",
+    description: "Defina saida, leitura e a linguagem das variaveis.",
+    icon: "cable" },
+  { id: "types",     title: "Tipagem",
+    description: "Defina leitura, escrita e o vocabulario usado para declarar variaveis.",
+    icon: "book-open-text" },
+  { id: "structure", title: "Estrutura",
+    description: "Configure blocos, delimitadores e o fim das instrucoes.",
+    icon: "blocks" },
+  { id: "rules",     title: "Operadores",
+    description: "Ajuste os operadores, literais booleanos e regras de decisao.",
+    icon: "sigma" },
+  { id: "flow",      title: "Fluxo",
+    description: "Customize o vocabulario de controle.",
+    icon: "route" },
+  { id: "review",    title: "Revisao",
+    description: "Confira o resumo final antes de salvar.",
+    icon: "clipboard-check" },
+] as const;
+\end{lstlisting}
+
+A cada alteração proposta pelo usuário, o componente \texttt{preview-builder} produz, em tempo real, um trecho de código exemplificativo que reflete a customização corrente, oferecendo uma visualização imediata do impacto das mudanças sobre a aparência dos programas. O Trecho de Código~\ref{lst:preview-builder} ilustra a função \texttt{buildDelimiterSnippet}, responsável por interpolar, em um molde fixo, as palavras-chave e os delimitadores efetivamente escolhidos pelo usuário, produzindo um pequeno programa exemplificativo coerente com a configuração corrente.
+
+\begin{lstlisting}[language=typescript, caption={Função \texttt{buildDelimiterSnippet}, que gera o \textit{preview} dinâmico exibido durante a personalização.}, label={lst:preview-builder}, captionpos=b]
+export function buildDelimiterSnippet(
+  draft: StoredKeywordCustomization,
+): string {
+  const print = getKeyword(draft, "print");
+  const scan = getKeyword(draft, "scan");
+  const lineEnding = buildLineEnding(draft);
+  const funcao = getKeyword(draft, "funcao");
+  const baseCodeSnippet = `${funcao} main()`;
+
+  const open = draft.blockDelimiters.open.trim() || "{";
+  const close = draft.blockDelimiters.close.trim() || "}";
+
+  return `${baseCodeSnippet}${open}\n\t${print}("Ola Mundo!")${lineEnding}
+  ${scan}(nome)${lineEnding}\n\t${print}("Me chamo:", nome)\n${close}`;
+}
+\end{lstlisting} Essa estratégia de \textit{feedback} contínuo segue as recomendações de \citeonline{nystrom2021} para ambientes interativos de aprendizagem, reduzindo a distância cognitiva entre a configuração e o resultado observável.
 
 A validação das customizações é centralizada em um conjunto de funções utilitárias dedicadas, hospedadas no diretório \texttt{contexts/keyword/keyword-validator.ts}. A função \texttt{validateCustomKeyword} garante que palavras-chave personalizadas atendam às restrições léxicas elementares e não colidam entre si; \texttt{validateBlockDelimiters} verifica a consistência dos delimitadores de bloco; \texttt{sanitizeOperatorWordMap} e \texttt{sanitizeBooleanLiteralMap} normalizam os mapeamentos de operadores e literais antes de sua aplicação. Toda a verificação ocorre de forma preventiva, no momento da alteração pelo usuário, impedindo que configurações inválidas sejam persistidas ou propagadas ao analisador léxico, em conformidade com os princípios de detecção precoce de erros discutidos por \citeonline{cooper2012}.
 
+O Trecho de Código~\ref{lst:validate-delimiters} ilustra a estratégia de verificação aplicada aos delimitadores de bloco. A função encadeia as restrições elementares (ambos os delimitadores preenchidos, conformidade com o formato de identificadores, distinção entre o delimitador de abertura e o de fechamento e ausência de colisão com palavras reservadas), devolvendo, em caso de violação, a mensagem internacionalizada correspondente. Quando todas as restrições são atendidas, a função retorna \texttt{null}, sinalizando à interface que a configuração pode ser persistida.
+
+\begin{lstlisting}[language=typescript, caption={Função \texttt{validateBlockDelimiters}, responsável pela verificação preventiva dos delimitadores de bloco.}, label={lst:validate-delimiters}, captionpos=b]
+export function validateBlockDelimiters(
+  value: BlockDelimiters,
+): string | null {
+  const open = value.open.trim();
+  const close = value.close.trim();
+
+  if (!open && !close) return null;
+  if (!open || !close) {
+    return ui.validation_fill_delimiters;
+  }
+
+  if (!WORD_REGEX.test(open) || !WORD_REGEX.test(close)) {
+    return ui.validation_invalid_delimiter_format;
+  }
+
+  if (open === close) {
+    return ui.validation_delimiters_must_differ;
+  }
+
+  if (
+    ORIGINAL_KEYWORDS.includes(open) ||
+    ORIGINAL_KEYWORDS.includes(close)
+  ) {
+    return ui.validation_delimiters_reserved;
+  }
+
+  return null;
+}
+\end{lstlisting}
+
 A persistência da customização foi modelada em duas camadas complementares. As configurações ativas no editor são salvas localmente, no \textit{localStorage} do navegador, por meio do utilitário \texttt{keyword-language-storage}, garantindo que o estado da personalização sobreviva ao recarregamento da página e à navegação entre rotas da aplicação. Linguagens nomeadas e exportadas pelo usuário, por sua vez, são persistidas no \textit{backend} via API, viabilizando o compartilhamento entre dispositivos e a vinculação de linguagens específicas a exercícios oferecidos pelo professor. O utilitário \texttt{language-creator-navigation} orquestra as transições entre as etapas de criação, gravação e ativação de linguagens, mantendo coesão entre o estado em memória, o estado no \textit{localStorage} e o estado remoto.
 
-Por fim, o impacto visual imediato da customização sobre o editor Monaco é mediado pela função \texttt{updateJavaMMKeywords}, hospedada no módulo \texttt{utils/compiler/editor/editor-language.ts}. Essa função reconstrói dinamicamente a gramática léxica registrada no editor cada vez que o \texttt{KeywordContext} sinaliza uma alteração na customização, refletindo de imediato o realce de sintaxe, a sugestão automática de palavras-chave e a documentação contextual exibida pelo Monaco. Essa abordagem evita a necessidade de reinicializar o editor a cada mudança e oferece ao usuário uma sensação de continuidade absoluta no ato de personalização.
+Por fim, o impacto visual imediato da customização sobre o editor Monaco é mediado pela função \texttt{updateJavaMMKeywords}, hospedada no módulo \texttt{utils/compiler/editor/editor-language.ts}. Essa função reconstrói dinamicamente a gramática léxica registrada no editor cada vez que o \texttt{KeywordContext} sinaliza uma alteração na customização, refletindo de imediato o realce de sintaxe, a sugestão automática de palavras-chave e a documentação contextual exibida pelo Monaco. O Trecho de Código~\ref{lst:update-monaco} apresenta sua assinatura, evidenciando o desacoplamento entre o módulo de personalização e o módulo de edição: a função recebe a instância do Monaco, o conjunto atualizado de mapeamentos e as opções de linguagem, delegando à função interna \texttt{registerJavaMMLanguage} o reregistro completo do dialeto sob o identificador \texttt{java--}. Essa abordagem evita a necessidade de reinicializar o editor a cada mudança e oferece ao usuário uma sensação de continuidade absoluta no ato de personalização.
+
+\begin{lstlisting}[language=typescript, caption={Função \texttt{updateJavaMMKeywords}, ponto de integração entre o estado da customização e o Monaco Editor.}, label={lst:update-monaco}, captionpos=b]
+export const JAVAMM_LANGUAGE_ID = "java--";
+
+export type JavaMMKeywordMapping = {
+  original: string;
+  custom: string;
+  tokenId: number;
+};
+
+export function updateJavaMMKeywords(
+  monaco: typeof monacoEditor,
+  keywordMappings: JavaMMKeywordMapping[],
+  options: JavaMMLanguageOptions = {},
+) {
+  registerJavaMMLanguage(monaco, keywordMappings, options);
+}
+\end{lstlisting}
 
 \section{Edição de Código e Sistema de Arquivos Virtual}
 \label{sec:edicao-codigo}
@@ -54,6 +202,40 @@ A persistência local dos arquivos do usuário foi modelada pelo \textit{hook} \
 A invocação das análises do compilador a partir da IDE foi modelada por meio de \textit{hooks} dedicados que encapsulam toda a interação entre a camada de interface e o núcleo de tradução. Diferentemente da estratégia adotada por ferramentas como a plataforma Laila, discutida no referencial teórico, na qual o código submetido pelo usuário é encaminhado a um serviço remoto para processamento, neste trabalho a execução das análises foi modelada inteiramente no navegador, sem intermediação de rotas HTTP. Essa decisão arquitetural foi viabilizada pela organização \textit{monorepo} descrita na Seção~\ref{sec:arquitetura-plataforma}, que permite à IDE consumir o pacote \texttt{compiler} como dependência local e instanciar suas classes diretamente no contexto de execução do cliente.
 
 O \textit{hook} \texttt{useLexerAnalyse} concentra a orquestração da fase léxica. A cada solicitação do usuário, o \textit{hook} recupera o código-fonte corrente, consulta o \texttt{KeywordContext} para obter a configuração ativa da linguagem dinâmica, normaliza o mapeamento efetivo de palavras-chave por meio do utilitário \texttt{buildEffectiveKeywordMap} e instancia uma nova classe \texttt{Lexer} do pacote \texttt{compiler}, passando como parâmetros o mapa de palavras-chave personalizadas, os operadores em forma de palavra, os literais booleanos, o terminador de instrução, os delimitadores de bloco e o \textit{locale} ativo. A varredura é então executada pelo método \texttt{scanTokens}, e a coleção de \textit{tokens} resultante, juntamente com eventuais avisos e mensagens informativas coletadas pelo sistema de \textit{issues}, é devolvida diretamente ao componente que originou a invocação, sem qualquer ida ao servidor.
+
+O Trecho de Código~\ref{lst:run-lexer} evidencia essa instanciação direta. Observa-se a importação do símbolo \texttt{Lexer} a partir do pacote local \texttt{@ts-compilator-for-java/compiler}, viabilizada pela organização em \textit{monorepo}, e a construção do analisador com a configuração derivada do \texttt{KeywordContext}, sem qualquer chamada HTTP intermediária.
+
+\begin{lstlisting}[language=typescript, caption={Função \texttt{runLexerAnalyse}, que instancia o lexer diretamente no cliente.}, label={lst:run-lexer}, captionpos=b]
+import { Lexer } from "@ts-compilator-for-java/compiler/src/lexer";
+
+async function runLexerAnalyse(
+  input: RunLexerAnalyseInput,
+): Promise<TLexerAnalyseData> {
+  try {
+    const effectiveKeywordMap = buildEffectiveKeywordMap(input.keywordMap);
+    const lexer = new Lexer(input.sourceCode, {
+      customKeywords: effectiveKeywordMap,
+      operatorWordMap: input.operatorWordMap,
+      booleanLiteralMap: input.booleanLiteralMap,
+      statementTerminatorLexeme: input.statementTerminatorLexeme,
+      blockDelimiters: input.blockDelimiters,
+      locale: input.locale,
+      indentationBlock: input.indentationBlock,
+    });
+    const tokens = lexer.scanTokens();
+    return {
+      message: "Lexical Analysis completed",
+      tokens,
+      warnings: lexer.warnings,
+      infos: lexer.infos,
+      error: null,
+    };
+  } catch (error) {
+    if (error instanceof IssueError) throw error;
+    throw new Error((error as Error).message || "Codigo nao suportado");
+  }
+}
+\end{lstlisting}
 
 Os \textit{tokens} obtidos por essa execução local são renderizados na IDE como cartões interativos pelo componente \texttt{token-card}, oferecendo ao usuário uma visualização direta do resultado da fase léxica, incluindo o lexema original, sua categoria e sua posição no código-fonte. Essa exposição direta atende ao propósito pedagógico de tornar visíveis as etapas internas do processo de tradução, característica diferencial da plataforma em relação às ferramentas analisadas no referencial teórico. Eventuais erros lançados pelo lexer, encapsulados pela classe \texttt{IssueError}, são interceptados pelo \textit{hook} e materializados tanto no terminal quanto no editor, por meio dos utilitários \texttt{showLineIssues} e do mecanismo de marcadores discutido na Seção~\ref{sec:terminal-feedback}.
 

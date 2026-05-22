@@ -42,20 +42,20 @@
 \contentsline {chapter}{\chapternumberline {4}MODELAGEM}{41}{chapter.51}%
 \contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{41}{section.52}%
 \contentsline {section}{\numberline {4.2}Customização Dinâmica de Tokens e Sintaxe}{43}{section.54}%
-\contentsline {section}{\numberline {4.3}Edição de Código e Sistema de Arquivos Virtual}{45}{section.55}%
-\contentsline {section}{\numberline {4.4}Execução das Análises Léxica e Sintática a partir da IDE}{45}{section.56}%
-\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{47}{section.57}%
-\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{49}{section.58}%
-\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{50}{section.59}%
-\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{51}{section.60}%
-\contentsline {subsection}{\numberline {{4.8}.1}Página Inicial e Identidade Visual}{51}{subsection.61}%
-\contentsline {subsection}{\numberline {{4.8}.2}Painel do Aluno}{52}{subsection.63}%
-\contentsline {subsection}{\numberline {{4.8}.3}Painel do Professor}{53}{subsection.66}%
-\contentsline {subsection}{\numberline {{4.8}.4}Fluxo de Personalização da Linguagem Dinâmica}{55}{subsection.72}%
-\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{58}{section.78}%
+\contentsline {section}{\numberline {4.3}Edição de Código e Sistema de Arquivos Virtual}{50}{section.183}%
+\contentsline {section}{\numberline {4.4}Execução das Análises Léxica e Sintática a partir da IDE}{50}{section.184}%
+\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{53}{section.215}%
+\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{55}{section.216}%
+\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{56}{section.217}%
+\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{57}{section.218}%
+\contentsline {subsection}{\numberline {{4.8}.1}Página Inicial e Identidade Visual}{57}{subsection.219}%
+\contentsline {subsection}{\numberline {{4.8}.2}Painel do Aluno}{58}{subsection.221}%
+\contentsline {subsection}{\numberline {{4.8}.3}Painel do Professor}{59}{subsection.224}%
+\contentsline {subsection}{\numberline {{4.8}.4}Fluxo de Personalização da Linguagem Dinâmica}{61}{subsection.230}%
+\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{64}{section.236}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}ESTUDOS DE CASO}{59}{chapter.79}%
+\contentsline {chapter}{\chapternumberline {5}ESTUDOS DE CASO}{65}{chapter.237}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}RESULTADOS}{60}{chapter.81}%
+\contentsline {chapter}{\chapternumberline {6}RESULTADOS}{66}{chapter.239}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{61}{chapter*.84}%
+\contentsline {chapter}{REFERÊNCIAS}{67}{chapter*.242}%

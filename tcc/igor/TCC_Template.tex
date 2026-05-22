@@ -38,6 +38,23 @@
     string=[b]",
 }
 
+% Configuração para exibir código TypeScript
+\lstdefinelanguage{typescript}{
+    keywords={break, case, catch, class, const, continue, debugger, default, delete, do, else, enum, export, extends, false, finally, for, function, if, import, in, instanceof, interface, let, new, null, of, return, super, switch, this, throw, true, try, type, typeof, var, void, while, with, yield, async, await, as, from, namespace, readonly, public, private, protected, static, abstract, declare, implements, package},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywords={string, number, boolean, any, unknown, never, Record, Array, Promise, ReactNode},
+    ndkeywordstyle=\color{teal}\bfseries,
+    identifierstyle=\color{black},
+    sensitive=true,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    string=[b]',
+    morestring=[b]",
+    morestring=[b]`,
+}
+
 \lstset{
     language=toml,
     basicstyle=\ttfamily\small,        % Fonte monoespaçada e menor
