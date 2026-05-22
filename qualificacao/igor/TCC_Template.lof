@@ -1,16 +1,16 @@
 \babel@toc {brazil}{}\relax 
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{16}{figure.caption.20}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{18}{figure.caption.23}%
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura geral da plataforma e fluxos de comunicação entre as camadas.\relax }}{42}{figure.caption.53}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Página inicial da plataforma em suas duas variações de tema.\relax }}{58}{figure.caption.220}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Painel principal do aluno, com acesso às turmas, listas e exercícios.\relax }}{58}{figure.caption.222}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Composições da experiência do aluno: visão da turma e visão da lista de exercícios.\relax }}{59}{figure.caption.223}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Painel principal do professor.\relax }}{59}{figure.caption.225}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Composições da experiência do professor: visão da turma e visão das listas associadas.\relax }}{60}{figure.caption.226}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Fluxo de criação e gestão de listas de exercícios pelo professor.\relax }}{60}{figure.caption.228}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Fluxo de criação e acompanhamento dos enunciados pelo professor.\relax }}{61}{figure.caption.229}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Etapas iniciais do assistente de personalização da linguagem.\relax }}{62}{figure.caption.231}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Etapa 3 do assistente, dedicada às palavras-chave de controle de fluxo.\relax }}{62}{figure.caption.232}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Etapa 4 do assistente, dedicada à substituição de operadores por palavras.\relax }}{63}{figure.caption.233}%
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Etapa 5: personalização dos literais booleanos.\relax }}{63}{figure.caption.234}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Etapa 6 do assistente, dedicada aos delimitadores, ao terminador de instrução e à pré-visualização da linguagem personalizada.\relax }}{63}{figure.caption.235}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{14}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{16}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura geral da plataforma e fluxos de comunicação entre as camadas.\relax }}{40}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Página inicial da plataforma em suas duas variações de tema.\relax }}{56}{figure.caption.219}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Painel principal do aluno, com acesso às turmas, listas e exercícios.\relax }}{56}{figure.caption.221}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Composições da experiência do aluno: visão da turma e visão da lista de exercícios.\relax }}{57}{figure.caption.222}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Painel principal do professor.\relax }}{57}{figure.caption.224}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Composições da experiência do professor: visão da turma e visão das listas associadas.\relax }}{58}{figure.caption.225}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Fluxo de criação e gestão de listas de exercícios pelo professor.\relax }}{58}{figure.caption.227}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Fluxo de criação e acompanhamento dos enunciados pelo professor.\relax }}{59}{figure.caption.228}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Etapas iniciais do assistente de personalização da linguagem.\relax }}{60}{figure.caption.230}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Etapa 3 do assistente, dedicada às palavras-chave de controle de fluxo.\relax }}{60}{figure.caption.231}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Etapa 4 do assistente, dedicada à substituição de operadores por palavras.\relax }}{61}{figure.caption.232}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Etapa 5: personalização dos literais booleanos.\relax }}{61}{figure.caption.233}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Etapa 6 do assistente, dedicada aos delimitadores, ao terminador de instrução e à pré-visualização da linguagem personalizada.\relax }}{61}{figure.caption.234}%
