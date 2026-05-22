@@ -44,14 +44,14 @@
 \contentsline {section}{\numberline {4.2}Customização Dinâmica de Tokens e Sintaxe}{43}{section.54}%
 \contentsline {section}{\numberline {4.3}Edição de Código e Sistema de Arquivos Virtual}{45}{section.55}%
 \contentsline {section}{\numberline {4.4}Execução das Análises Léxica e Sintática a partir da IDE}{45}{section.56}%
-\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{46}{section.57}%
-\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{47}{section.58}%
-\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{48}{section.59}%
-\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{50}{section.60}%
-\contentsline {subsection}{\numberline {{4.8}.1}Página Inicial e Identidade Visual}{50}{subsection.61}%
-\contentsline {subsection}{\numberline {{4.8}.2}Painel do Aluno}{50}{subsection.63}%
-\contentsline {subsection}{\numberline {{4.8}.3}Painel do Professor}{51}{subsection.66}%
-\contentsline {subsection}{\numberline {{4.8}.4}Fluxo de Personalização da Linguagem Dinâmica}{54}{subsection.72}%
-\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{56}{section.78}%
+\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{47}{section.57}%
+\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{49}{section.58}%
+\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{50}{section.59}%
+\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{51}{section.60}%
+\contentsline {subsection}{\numberline {{4.8}.1}Página Inicial e Identidade Visual}{51}{subsection.61}%
+\contentsline {subsection}{\numberline {{4.8}.2}Painel do Aluno}{52}{subsection.63}%
+\contentsline {subsection}{\numberline {{4.8}.3}Painel do Professor}{53}{subsection.66}%
+\contentsline {subsection}{\numberline {{4.8}.4}Fluxo de Personalização da Linguagem Dinâmica}{55}{subsection.72}%
+\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{58}{section.78}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{58}{chapter*.80}%
+\contentsline {chapter}{REFERÊNCIAS}{59}{chapter*.80}%
