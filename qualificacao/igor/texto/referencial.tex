@@ -43,7 +43,7 @@ As etapas nucleares que integram um compilador são detalhadas a seguir:
 \begin{itemize}
     \item \textbf{Análise Léxica (\textit{Scanner}):} Atua como o portal de entrada da compilação, processando o código-fonte caractere a caractere. Sua missão é converter o fluxo de texto em uma sucessão de unidades lógicas conhecidas como \textit{tokens}, eliminando simultaneamente elementos irrelevantes para o processamento, como comentários e espaços redundantes.
 
-    \item \textbf{Análise Sintática (\textit{Parser}):} Utiliza a sequência de \textit{tokens} para validar a conformidade gramatical do programa em relação às regras da linguagem. O \textit{parser} organiza esses elementos em estruturas hierárquicas — as árvores sintáticas ou de derivação —, empregando métodos descendentes (\textit{top-down}) ou redutivos (\textit{bottom-up}).
+    \item \textbf{Análise Sintática (\textit{Parser}):} Utiliza a sequência de \textit{tokens} para validar a conformidade gramatical do programa em relação às regras da linguagem. O \textit{parser} organiza esses elementos em estruturas hierárquicas (as árvores sintáticas ou de derivação), empregando métodos descendentes (\textit{top-down}) ou redutivos (\textit{bottom-up}).
 
     \item \textbf{Análise Semântica:} Esta fase transcende a forma gramatical para assegurar que as instruções possuam coerência lógica e operacional. Uma atividade vital aqui é a checagem de tipos (\textit{type checking}), que valida se a interação entre operadores, variáveis e funções respeita as definições da linguagem.
 
@@ -78,7 +78,7 @@ Simultaneamente a essa organização, o analisador léxico realiza uma "limpeza"
 
 É fundamental, todavia, não confundir os conceitos de \textbf{lexema} e \textbf{\textit{token}}. O lexema refere-se à sequência literal de caracteres encontrada no texto original (a \textit{string} propriamente dita, como "if", "soma" ou "42"). Já o \textit{token} é um objeto abstrato produzido pelo compilador para representar esse lexema. O \textit{token} carrega consigo a categoria sintática da unidade (identificador, operador, palavra-chave) e, frequentemente, metadados adicionais, como o valor convertido e as coordenadas de linha e coluna, cruciais para o rastreio de erros em fases subsequentes.
 
-Para que o reconhecimento desses padrões ocorra de forma rigorosa, a micro-sintaxe da linguagem é definida por meio de \textbf{expressões regulares}. Este formalismo matemático permite descrever, de maneira concisa, as regras de formação de cada categoria de \textit{token} — definindo, por exemplo, quais combinações de símbolos constituem um número real ou um nome de variável válido dentro daquela linguagem.
+Para que o reconhecimento desses padrões ocorra de forma rigorosa, a micro-sintaxe da linguagem é definida por meio de \textbf{expressões regulares}. Este formalismo matemático permite descrever, de maneira concisa, as regras de formação de cada categoria de \textit{token}, definindo, por exemplo, quais combinações de símbolos constituem um número real ou um nome de variável válido dentro daquela linguagem.
 
 Contudo, expressões regulares são ferramentas de especificação, não de execução. Para que o computador processe essas regras, elas são convertidas em \textbf{autômatos finitos}. Um autômato funciona como uma máquina de estados: ele consome a entrada caractere por caractere, transitando entre estados lógicos até atingir um "estado de aceitação". Quando isso ocorre, o lexema é validado e o \textit{token} correspondente é despachado para o analisador sintático.
 
@@ -168,7 +168,7 @@ Na implementação prática, a emissão do código intermediário ocorre de form
 
 A exploração dos princípios de otimização de código aqui delineada encontra seu lastro teórico nos tratados fundamentais de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
 
-Posicionada estrategicamente como um estágio de refinamento no \textit{pipeline} de compilação, a otimização busca elevar a qualidade da representação interna do software. Este aprimoramento transcende o ganho de velocidade e a economia de memória, abrangendo também a redução do consumo energético — um requisito crítico na computação contemporânea. Durante esta fase, o compilador atua substituindo construções genéricas por equivalentes semânticos mais ágeis. Um exemplo notório é o \textbf{dobramento de constantes} (\textit{constant folding}), que antecipa operações entre valores fixos ainda em tempo de compilação, eliminando o custo desse processamento durante a execução do programa.
+Posicionada estrategicamente como um estágio de refinamento no \textit{pipeline} de compilação, a otimização busca elevar a qualidade da representação interna do software. Este aprimoramento transcende o ganho de velocidade e a economia de memória, abrangendo também a redução do consumo energético, um requisito crítico na computação contemporânea. Durante esta fase, o compilador atua substituindo construções genéricas por equivalentes semânticos mais ágeis. Um exemplo notório é o \textbf{dobramento de constantes} (\textit{constant folding}), que antecipa operações entre valores fixos ainda em tempo de compilação, eliminando o custo desse processamento durante a execução do programa.
 
 
 
@@ -179,7 +179,7 @@ Quanto à abrangência das intervenções, a otimização é classificada em qua
 
 
 \begin{itemize}
-    \item \textbf{Otimização Local:} Restringe-se à análise de blocos básicos — sequências de instruções sem desvios de controle. Neste nível, utilizam-se frequentemente Grafos Acíclicos Dirigidos (GADs) para detectar e remover subexpressões redundantes e gerir variáveis locais de forma eficiente.
+    \item \textbf{Otimização Local:} Restringe-se à análise de blocos básicos, isto é, sequências de instruções sem desvios de controle. Neste nível, utilizam-se frequentemente Grafos Acíclicos Dirigidos (GADs) para detectar e remover subexpressões redundantes e gerir variáveis locais de forma eficiente.
     
     \item \textbf{Otimização Regional:} Expande o foco para conjuntos de blocos básicos, concentrando esforços prioritariamente em \textbf{laços de repetição} (\textit{loops}). Dado que a maior parte da carga de processamento ocorre nestes ciclos, melhorias como o deslocamento de código invariante geram impactos substanciais na performance global.
     
@@ -198,7 +198,7 @@ A fase de geração de código objeto (ou geração de código de máquina) repr
 
 
 
-Um dos obstáculos primordiais nesta fase reside na acentuada heterogeneidade das arquiteturas de hardware. Cada família de processadores — a exemplo das arquiteturas x86, ARM ou RISC-V — possui sua própria Arquitetura do Conjunto de Instruções (ISA - \textit{Instruction Set Architecture}). Consequentemente, as operações de baixo nível e suas respectivas codificações binárias variam drasticamente entre diferentes sistemas, exigindo um mapeamento preciso para cada caso.
+Um dos obstáculos primordiais nesta fase reside na acentuada heterogeneidade das arquiteturas de hardware. Cada família de processadores, a exemplo das arquiteturas x86, ARM ou RISC-V, possui sua própria Arquitetura do Conjunto de Instruções (ISA - \textit{Instruction Set Architecture}). Consequentemente, as operações de baixo nível e suas respectivas codificações binárias variam drasticamente entre diferentes sistemas, exigindo um mapeamento preciso para cada caso.
 
 Para mitigar a complexidade de desenvolver um compilador do zero para cada novo processador, a engenharia de software moderna adota o princípio da \textbf{\textit{retargetabilidade}} (redirecionamento). Essa modularidade é viabilizada pelo papel central da representação intermediária: enquanto o \textit{front-end} opera de forma agnóstica em relação ao hardware, a adaptação para uma nova arquitetura exige apenas a substituição ou reconfiguração do módulo gerador de código (\textit{back-end}).
 
@@ -216,7 +216,7 @@ A síntese do código para uma máquina específica fundamenta-se em duas ativid
 
 A dinâmica operacional do código de máquina e a simbiose entre o \textit{hardware} e o sistema operacional, discutidas a seguir, encontram seu fundamento teórico nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
 
-Ao término do processo de síntese, o que emerge é uma sucessão binária, densa e linear de operações primitivas. Diferente das abstrações hierárquicas manipuladas nas etapas iniciais da compilação — como as árvores sintáticas —, o código de máquina é desprovido de estruturas de alto nível. Trata-se de uma linguagem de baixíssimo nível, constituída por instruções rudimentares que ocupam apenas alguns \textit{bytes} e ditam ações imediatas nos circuitos: movimentação de dados entre células de memória e registradores ou a execução de operações aritméticas básicas.
+Ao término do processo de síntese, o que emerge é uma sucessão binária, densa e linear de operações primitivas. Diferente das abstrações hierárquicas manipuladas nas etapas iniciais da compilação, como as árvores sintáticas, o código de máquina é desprovido de estruturas de alto nível. Trata-se de uma linguagem de baixíssimo nível, constituída por instruções rudimentares que ocupam apenas alguns \textit{bytes} e ditam ações imediatas nos circuitos: movimentação de dados entre células de memória e registradores ou a execução de operações aritméticas básicas.
 
 Para que essa massa de dados binários ganhe vida, o programa deve ser transferido para a memória principal. Neste estágio, o sistema operacional, auxiliado por um \textit{software} carregador (\textit{loader}), prepara o ambiente de tempo de execução (\textit{runtime}). Este processo envolve a segmentação da memória em áreas distintas, isolando o setor de código estruturado das regiões destinadas ao armazenamento de dados.
 
@@ -300,5 +300,59 @@ Quando projetada com esse foco pedagógico, uma plataforma educativa bem estrutu
 
 \section{Trabalhos relacionados}
 \label{sec:trabalhos-relacionados}
+
+A presente seção tem por finalidade situar a plataforma desenvolvida neste trabalho no panorama das soluções tecnológicas voltadas ao ensino introdutório de programação e de construção de compiladores. Para isso, examinam-se cinco iniciativas representativas do estado da arte, observando-se, em cada uma delas, as escolhas de interface, os recursos pedagógicos e as estratégias de interação com o estudante. Ao final, apresenta-se uma análise comparativa que evidencia as lacunas remanescentes e o diferencial da abordagem proposta.
+
+\subsection{Portugol Studio e Portugol Webstudio}
+
+Os elementos descritivos e funcionais do Portugol Studio e de sua contraparte executada em navegador, expostos nesta subseção, apoiam-se nos estudos de \citeonline{gomes2020} e \citeonline{martins2025}, bem como na documentação institucional disponibilizada pela \citeonline{univali2026}.
+
+Concebido pelo Laboratório de Inovação Tecnológica na Educação (LITE) da Universidade do Vale do Itajaí, o Portugol Studio é distribuído como um ambiente de desenvolvimento integrado de código aberto cujo público-alvo são estudantes em contato inicial com a lógica de programação. A plataforma apoia-se em uma linguagem inspirada nas construções sintáticas de C e PHP, porém com palavras-chave totalmente vertidas para o português brasileiro, o que dispensa o aprendiz de transitar simultaneamente entre dois idiomas durante o estudo das estruturas elementares de controle de fluxo e de dados.
+
+Do ponto de vista da experiência do usuário, a ferramenta investe em recursos didáticos de visualização interna do programa: depurador com execução passo a passo, inspetor de variáveis sincronizado com a linha em execução e uma árvore que representa a estrutura sintática do código produzido. A migração subsequente para o Portugol Webstudio reforça a preocupação com acessibilidade tecnológica, pois transfere a totalidade da edição, da compilação e da execução para o navegador, eliminando a barreira da instalação local em laboratórios escolares heterogêneos. Soma-se a isso o suporte nativo a bibliotecas gráficas e sonoras, recurso que viabiliza projetos lúdicos como pequenos jogos e que tende a elevar o engajamento dos discentes durante o semestre letivo.
+
+\subsection{Laila: Gerador de Analisadores Léxicos e Sintáticos Online}
+
+A caracterização arquitetural e os resultados pedagógicos da plataforma Laila, discutidos a seguir, ancoram-se integralmente na pesquisa conduzida por \citeonline{ladgelson2021}.
+
+A motivação central da proposta de Laila é remover o atrito de configuração que historicamente acompanha a disciplina de Compiladores. A instalação coordenada de geradores como FLEX e Bison junto a uma cadeia compatível do GCC frequentemente consome parte significativa da carga horária de laboratório, sobretudo em ambientes operacionais que não derivam do Linux. Em resposta a esse obstáculo, a ferramenta oferece um IDE inteiramente executado no navegador, no qual o estudante especifica gramáticas, redige analisadores léxicos e sintáticos e executa os experimentos sem dependências locais.
+
+A arquitetura adotada estrutura-se em uma camada de \textit{front-end} construída em JavaScript com o \textit{framework} VueJS, complementada pela biblioteca CodeMirror, responsável pelo destaque de sintaxe e pela sinalização inline de inconsistências. A camada de \textit{back-end} corresponde a uma API REST em Python, encarregada de orquestrar a invocação de FLEX e Bison no servidor, capturar comportamentos anômalos como laços infinitos ou erros de compilação e devolver os respectivos diagnósticos ao cliente. Estudos de caso conduzidos junto a turmas de Ciência da Computação relataram ganhos perceptíveis de engajamento e de compreensão prática dos algoritmos de análise, atribuídos ao ciclo curto entre edição, submissão e retorno do resultado.
+
+\subsection{Quorum: Linguagem de Programação Baseada em Evidências}
+
+Os princípios de projeto, os resultados experimentais e os recursos de ambiente da linguagem Quorum, abordados nesta subseção, fundamentam-se nas investigações de \citeonline{stefik2013}, no relato de \citeonline{ladner2019} e na documentação oficial do projeto \citeonline{quorum2025}.
+
+O Quorum nasce como resposta a uma preocupação específica: tornar a programação nativamente acessível a estudantes com deficiência visual, cuja interação com a linguagem se dá majoritariamente por meio de leitores de tela. A partir desse compromisso inicial, o projeto amadureceu para uma linguagem de propósito geral cuja característica distintiva consiste em adotar decisões de sintaxe e de semântica respaldadas por estudos empíricos, em contraposição às escolhas tradicionalmente herdadas por imitação ou por familiaridade histórica.
+
+Os ensaios conduzidos pela equipe responsável incluíram comparações entre linguagens consolidadas no mercado e uma linguagem de controle cujas palavras-chave foram geradas aleatoriamente, recurso metodológico que permitiu isolar o efeito da forma sintática sobre o desempenho de novatos. As evidências reunidas indicaram que a substituição de símbolos como chaves, colchetes e pontos e vírgulas por palavras de vocabulário comum reduz de modo consistente as taxas de erro sintático. Tal resultado se materializa em construções como \texttt{repeat 10 times}, cuja leitura aproxima-se de uma instrução em linguagem natural. Para sustentar essa proposta no cotidiano de uso, o ecossistema disponibiliza o Quorum Studio, IDE acessível por concepção, capaz de operar tanto em modo \textit{offline}, com geração de \textit{bytecode} para a JVM, quanto em modo executável no navegador, com suporte a aplicações que vão de exercícios introdutórios a projetos de áudio, gráficos e robótica.
+
+\subsection{chibicc: Uma Abordagem Incremental para o Ensino de Compiladores}
+
+A caracterização do compilador \textit{chibicc} e de sua estratégia educacional baseia-se no projeto e na documentação técnica disponibilizados por \citeonline{ueyama2020}.
+
+O \textit{chibicc} configura-se como um pequeno compilador para a linguagem C, projetado deliberadamente para servir como referência didática no ensino de construção de compiladores e de programação de sistemas. A despeito do enfoque pedagógico, o projeto cobre uma fatia expressiva da especificação C11, sendo capaz de compilar, sem adaptações, projetos de complexidade considerável, como o sistema de controle de versão Git e o gerenciador de banco de dados SQLite.
+
+O traço pedagógico mais relevante da ferramenta reside em sua organização incremental. Em vez de expor o aprendiz, desde o princípio, a uma arquitetura completa com múltiplos passes e estruturas internas elaboradas, o projeto propõe uma trajetória escalonada em que cada etapa adiciona uma única capacidade gramatical ou semântica ao compilador. O ponto de partida é um tradutor mínimo que reconhece apenas um número como entrada válida; sobre essa base inicial, são acoplados, em iterações sucessivas, suporte a expressões, declarações, controle de fluxo, ponteiros, estruturas e demais elementos do C11. Essa progressão favorece a observação direta da relação entre as escolhas de implementação e o comportamento final do compilador, oferecendo uma porta de entrada mais palatável ao estudo de baixo nível.
+
+\subsection{Beecrowd: Prática de Algoritmos e Avaliação Automatizada}
+
+A descrição da plataforma Beecrowd, de seus mecanismos de avaliação automatizada e de seus efeitos no aprendizado de algoritmos, apresentada nesta subseção, fundamenta-se no estudo de caso de \citeonline{ferreira2025}, no artigo de \citeonline{garcia2024} e no material complementar de \citeonline{maonocodigo2022}.
+
+Antes denominada URI Online Judge, a Beecrowd consolidou-se como um juiz online amplamente adotado no ambiente acadêmico brasileiro e em treinamentos voltados às maratonas de programação. Seu acervo contempla milhares de problemas categorizados por temas e por níveis de dificuldade, abrangendo desde estruturas básicas de seleção e repetição até tópicos avançados como grafos e programação dinâmica, e admite submissões em diversas linguagens consolidadas no mercado, incluindo C++, Python, Java e JavaScript.
+
+A dinâmica de uso da plataforma articula-se em torno de um ciclo curto de submissão e \textit{feedback}: o estudante lê o enunciado, redige uma solução e a envia ao sistema, que executa o código contra um conjunto fechado de casos de teste e retorna, em poucos segundos, um veredito como ``\textit{Accepted}'', ``\textit{Wrong Answer}'' ou ``\textit{Presentation Error}''. Esse retorno imediato, combinado a elementos de gamificação como \textit{rankings} públicos, fóruns e contagem de submissões aceitas, sustenta um regime de prática deliberada que tende a manter o estudante em posição ativa e a estimular a exploração contínua de novos problemas.
+
+\subsection{Análise Crítica e o Diferencial da Solução Proposta}
+
+A apreciação crítica desenvolvida nesta subseção articula-se ao redor das características discutidas anteriormente, tomando como apoio os trabalhos de \citeonline{ladgelson2021}, \citeonline{stefik2013}, \citeonline{ueyama2020}, \citeonline{ferreira2025} e a documentação institucional da \citeonline{univali2026}.
+
+Quando observadas em conjunto, as ferramentas analisadas organizam-se em dois grandes grupos cujas limitações repercutem diretamente no público iniciante. O primeiro grupo reúne soluções dedicadas à prática algorítmica e à formação inicial em programação, do qual fazem parte o Portugol Studio, o Quorum e a Beecrowd. Embora apresentem avanços relevantes, seja por meio da tradução das palavras-chave para o português, da adoção de uma sintaxe respaldada por evidências ou da prática contínua sustentada por avaliação automatizada, todas operam sob uma gramática fixa, definida \textit{a priori} pelos seus mantenedores. O estudante permanece, portanto, na condição de quem se adapta à linguagem, e não de quem participa de sua modelagem; pequenas dissonâncias entre o vocabulário esperado e o vocabulário internalizado podem invalidar soluções logicamente corretas e reintroduzir, ainda que de forma atenuada, a barreira sintática que se buscava remover.
+
+O segundo grupo agrega plataformas e projetos voltados ao ensino de compiladores propriamente dito, exemplificados pela Laila e pelo \textit{chibicc}. Ambos oferecem contribuições expressivas em seus nichos, sobretudo no que diz respeito à eliminação do atrito de configuração ou à apresentação incremental da arquitetura de um compilador. Contudo, o público pressuposto é, em grande medida, o de discentes em estágio avançado de cursos de Computação, com domínio prévio de linguagens estritas como C11 e de geradores como FLEX e Bison, o que afasta esses recursos do estudante que ainda enfrenta a barreira inicial de entrada no pensamento computacional.
+
+É no interstício entre esses dois grupos que se inscreve a plataforma proposta. Em lugar de oferecer uma gramática previamente fixada ou de exigir a configuração local de cadeias de ferramentas, este trabalho disponibiliza uma IDE web acoplada a um interpretador dinâmico cuja função primordial é deslocar o controle estrutural da linguagem para o próprio estudante. Por meio da interface, é possível redefinir palavras-chave, delimitadores de bloco, operadores expressos por palavras, literais booleanos e regras de finalização de instrução, sem que o aprendiz precise lidar com a complexidade interna das fases de análise léxica, sintática e semântica.
+
+Do ponto de vista da experiência do usuário, a personalização proporcionada pela plataforma converte o ato de programar em uma atividade na qual a linguagem se molda ao repertório cognitivo do aprendiz, e não o contrário. Esse arranjo configura um laboratório seguro de experimentação algorítmica, no qual a frustração associada a erros de digitação ou de memorização de palavras reservadas é substituída pela investigação consciente das estruturas de controle e de dados. Consolida-se, assim, uma ponte pedagógica entre a primeira aproximação ao raciocínio computacional e o eventual encontro do estudante com as linguagens estritas e com os juízes automatizados que predominam no mercado e nas etapas mais avançadas da formação.
 
 

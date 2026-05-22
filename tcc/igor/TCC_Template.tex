@@ -69,7 +69,7 @@
 \titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}. 
 % \subtitulo{Subtítulo, se houver}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}. 
 
-\tituloIngles{Evacuation Modeling of Environments Using the Social Forces Method} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
+\tituloIngles{Dynamic Interpreter for Programming Education: A Web IDE with Configurable Language Grammar} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
 % \subtituloIngles{subtitle (se tiver)}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo em inglês do trabalho deve ser colocado dentro das chaves {}.
 
 \autor{Igor Lamoia Queiroz} %%O nome completo do autor deve ser colocado dentro das chaves {}
@@ -82,7 +82,7 @@
 \data{2025} %%Colocar APENAS o ano da entrega dentro das chaves {}. Por exemplo, 2019.
 
 \orientador[Orientador]{Luís Augusto Mattos Mendes} %%Colocar o nome completo do orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
-\coorientador[Coorientador]{ Eduardo Gabriel Reis Mirand} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
+\coorientador[Coorientador]{Eduardo Gabriel Reis Miranda} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
 \orientadorTitulo{Prof.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
 \coorientadorTitulo{Prof. Dsc.} %%Colocar a titulação do(a) co-orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
 \siglaInstituicaoCoorientador{CEFET-MG} %% Alterar caso o coorientado não seja do CEFET-MG
@@ -121,7 +121,7 @@
 \CDU{CDU 004.414.23} % Disponibilizado pela biblioteca.
 
 %% Abaixo, prencher com os dados da parte final da ficha catalografica
-\finalcatalog{1. Modelagem. 2. Simulação de evacuação. 3. Modelo de forças sociais. I. Miranda, Eduardo Gabriel Reis II. Lopes, Henrique Barros. III. Modelagem de evacuação de ambientes utilizando o método de forças sociais.} % alterar com os dados do trabalho 
+\finalcatalog{1. Interpretador dinâmico. 2. Ensino de programação. 3. Compiladores. 4. Ambiente de Desenvolvimento Integrado. I. Mendes, Luís Augusto Mattos. II. Miranda, Eduardo Gabriel Reis. III. Interpretador Dinâmico para Ensino de Programação.} % alterar com os dados do trabalho
 
 
 % Pacotes para referência bibliográfica. Não alterar as linhas abaixo
@@ -211,7 +211,7 @@ Ensinar programação apresenta diversos desafios, em parte devido ao uso de lin
 
 Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules.This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows users to customize language syntax, commands, and structural rules. The project is developed through literature review, system architecture design, implementation of a web IDE and interpreter (including lexical and syntactic analysis), and integration with real-time execution in the browser. Preliminary classroom applications suggest positive educational outcomes, including reduced time required for students to grasp fundamental programming concepts, lower failure rates in introductory programming courses, and increased student engagement.By allowing flexible definition of commands and syntax, the platform reduces linguistic barriers and encourages experimentation, helping students focus on algorithmic reasoning rather than memorizing rigid language structures.
 \noindent
-\textbf{Keywords:} Evacuation Simulation. Social Force Model. Computational Modeling.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
+\textbf{Keywords:} Dynamic Interpreter; Introductory Programming Education; Language-Oriented Programming; Interactive Programming Environment.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
 
   \end{otherlanguage*}
 \end{abstract_cefetmg}
@@ -253,12 +253,7 @@ Teaching programming presents several challenges, partly due to the use of langu
 
 % Lista de símbolos. Nao deve haver sinal grafico entre o simbolo e o seu significado.
 \begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-  \item[$ \doteq $] Igualdade pontilhada (aproximação ou definição)
-  \item[$ := $] Definição (usado para definir variáveis ou funções)
-  \item[$ \alpha $] Índice que representa um pedestre específico dentro da simulação
-  \item[$ \beta $] Índice que representa outro pedestre dentro da simulação, usado nas interações entre pedestres.
-  \item[$ \triangledown $] Gradiente vetorial (derivada espacial de uma função escalar)
-  \item [$\sum$] Somatório (soma de uma sequência de termos)
+  \item[$ \ldots $] Reticências (omissão de elementos em uma sequência)
 
 
   
@@ -279,17 +274,16 @@ Teaching programming presents several challenges, partly due to the use of langu
 
 
 \chapter{INTRODUÇÃO}
-\label{cap:introducao_modelo}
 \input{texto/introducao}
 
 \chapter{REFERENCIAL TEÓRICO} \label{cap:referencial}
 \input{texto/referencial}
 
-\chapter{METODOLOGIA E MATERIAIS}
+\chapter{PROPOSTA} \label{cap:proposta}
+\input{texto/proposta}
+
+\chapter{MODELAGEM} \label{cap:modelagem}
 \input{texto/metodologia}
-
-
-
 
 \chapter{ESTUDOS DE CASO}
 \input{texto/estudos_de_caso}

@@ -1,0 +1,39 @@
+\label{cap:introducao_modelo}
+A contextualização do problema de pesquisa e as premissas referentes às dificuldades vivenciadas pelo público iniciante no estudo de programação, que dão sustentação a esta introdução e às suas subseções, ancoram-se nas investigações de \citeonline{stefik2013} e \citeonline{ferreira2025}.
+
+O domínio mínimo da programação tornou-se requisito transversal em diversas áreas profissionais, ultrapassando o universo restrito dos cursos de Computação. Apesar dessa centralidade crescente, a iniciação ao desenvolvimento de software ainda é marcada por elevada evasão e por reprovações sucessivas em disciplinas introdutórias. Parte significativa dessa dificuldade não decorre de limitações do raciocínio lógico do estudante, mas sim da forma como esse raciocínio precisa ser comunicado à máquina por meio de uma sintaxe formal estrita, escrita em um idioma estrangeiro e cercada de símbolos cuja função somente se torna clara após meses de prática.
+
+Em linguagens consolidadas no mercado, a ausência de um ponto e vírgula, o uso indevido de uma chave ou o desconhecimento de uma palavra reservada bastam para interromper a compilação e produzir mensagens de erro que, para o iniciante, soam herméticas. Esse atrito de superfície, embora secundário sob o ponto de vista algorítmico, desloca o foco do estudante da formulação do problema para a adequação textual, comprometendo a percepção de progresso e amplificando a frustração nos primeiros contatos com a programação.
+
+Diante desse cenário, este trabalho organiza-se em torno do seguinte questionamento: em que medida uma plataforma de programação que permita ao estudante reconfigurar dinamicamente o vocabulário e as regras estruturais da linguagem pode atenuar a barreira sintática e favorecer a concentração no pensamento algorítmico durante o aprendizado introdutório?
+
+A hipótese assumida sustenta que, ao oferecer ao discente uma IDE web na qual ele próprio define palavras-chave, delimitadores de bloco, operadores expressos por palavras, literais booleanos e regras de finalização de instrução, há redução substantiva da carga cognitiva associada ao aprendizado simultâneo da lógica e da forma, com consequente ganho na fluidez da assimilação dos conceitos fundamentais.
+
+\section{Justificativa}
+
+A justificativa para a realização desta pesquisa apoia-se em uma lacuna observada no conjunto de ferramentas atualmente disponíveis para o ensino introdutório de programação. Embora existam plataformas educativas maduras e linguagens projetadas para iniciantes, a maior parte delas oferece, ao usuário final, uma gramática estática, definida \textit{a priori} por seus mantenedores e impermeável às particularidades linguísticas e cognitivas de cada estudante.
+
+Desenvolver uma ferramenta que inverta essa lógica e adapte a linguagem ao aluno, sem comprometer o rigor formal do interpretador subjacente, representa uma contribuição relevante no campo da informática na educação. A plataforma proposta neste trabalho atua, simultaneamente, em duas frentes: na camada de interpretação, ao acolher gramáticas personalizadas; e na camada de interface, ao oferecer uma IDE web cuja experiência de uso busca aproximar-se daquela de ambientes profissionais, porém com mediações pedagógicas voltadas ao discente em formação inicial.
+
+\section{Objetivos}
+
+A seguir, são apresentados o objetivo geral e os objetivos específicos que orientaram a concepção da plataforma e a redação deste documento.
+
+\subsection{Objetivo Geral}
+
+Projetar e desenvolver uma plataforma educacional composta por uma IDE web e por um interpretador dinâmico capaz de aceitar regras gramaticais configuráveis pelo usuário, com vistas a apoiar o ensino e a aprendizagem de algoritmos para estudantes em estágio introdutório.
+
+\subsection{Objetivos Específicos}
+
+Para sustentar o alcance do objetivo geral, foram definidos os seguintes objetivos específicos:
+
+\begin{itemize}
+    \item Investigar fundamentos de construção de compiladores e analisar criticamente ferramentas educacionais correlatas;
+    \item Especificar e implementar as fases de análise léxica, sintática e semântica do interpretador, com suporte à injeção dinâmica de regras gramaticais;
+    \item Conceber e implementar uma IDE web que disponibilize, ao usuário, mecanismos para personalização da linguagem e para a execução do código no navegador;
+    \item Avaliar a plataforma por meio de estudos de caso, com ênfase nos aspectos de usabilidade, de viabilidade técnica e de potencial pedagógico.
+\end{itemize}
+
+\section{Estrutura do Trabalho}
+
+Com o intuito de oferecer ao leitor uma visão geral do documento, este texto organiza-se da seguinte maneira: o Capítulo~\ref{cap:referencial} apresenta o referencial teórico, contemplando os fundamentos de compiladores, as práticas associadas ao desenvolvimento da plataforma web e os trabalhos relacionados. O Capítulo~\ref{cap:proposta} descreve a proposta do trabalho, o escopo previsto e o cronograma de execução nas duas etapas do Trabalho de Conclusão de Curso. O Capítulo~\ref{cap:modelagem} detalha a modelagem realizada e a implementação consolidada até o encerramento desta primeira etapa, contemplando a arquitetura do interpretador, a integração com a IDE web e a estratégia de testes adotada.
