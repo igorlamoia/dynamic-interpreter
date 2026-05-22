@@ -7,10 +7,10 @@
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{10}{chapter.10}%
-\contentsline {section}{\numberline {1.1}Justificativa}{10}{section.11}%
+\contentsline {section}{\numberline {1.1}Justificativa}{11}{section.11}%
 \contentsline {section}{\numberline {1.2}Objetivos}{11}{section.12}%
 \contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{11}{subsection.13}%
-\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{11}{subsection.14}%
+\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{12}{subsection.14}%
 \contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{12}{section.15}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO}{13}{chapter.16}%
