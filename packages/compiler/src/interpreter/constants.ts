@@ -35,6 +35,44 @@ export interface SourceLocation {
   statementId?: string;
 }
 
+export type DebugStatus =
+  | "idle"
+  | "running"
+  | "paused"
+  | "waiting-for-input"
+  | "completed"
+  | "error";
+export type DebugStopReason =
+  | "entry"
+  | "breakpoint"
+  | "step"
+  | "input"
+  | "completed"
+  | "error"
+  | "stopped";
+
+export interface DebugVariableSnapshot {
+  name: string;
+  type: string;
+  value: unknown;
+  scope: "global" | "local";
+}
+
+export interface DebugCallFrameSnapshot {
+  name: string;
+  returnAddress: number;
+}
+
+export interface DebugSnapshot {
+  status: DebugStatus;
+  stopReason: DebugStopReason | null;
+  instructionPointer: number;
+  currentSource: SourceLocation | null;
+  variables: DebugVariableSnapshot[];
+  callStack: DebugCallFrameSnapshot[];
+  error: string | null;
+}
+
 export interface Instruction {
   op: OpName;
   result: string;

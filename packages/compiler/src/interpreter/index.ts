@@ -11,10 +11,16 @@ import {
 } from "./utils";
 import {
   ARITHMETICS,
+  DebugCallFrameSnapshot,
+  DebugSnapshot,
+  DebugStatus,
+  DebugStopReason,
+  DebugVariableSnapshot,
   Instruction,
   LOGICALS,
   RELATIONALS,
   RuntimeSlot,
+  SourceLocation,
   TArithmetics,
   TLogical,
   TRelational,
@@ -22,6 +28,7 @@ import {
 import { RuntimeError } from "./runtime-error";
 import { translate } from "../i18n";
 interface CallFrame {
+  name: string;
   returnAddress: number;
   returnVariable: string | null;
   localScope: Map<string, RuntimeSlot>;
@@ -32,6 +39,11 @@ export class Interpreter {
   private labels: Map<string, number>;
   private variables: Map<string, RuntimeSlot>;
   private callStack: CallFrame[];
+  private debugBreakpoints = new Set<number>();
+  private debugStatus: DebugStatus = "idle";
+  private debugStopReason: DebugStopReason | null = null;
+  private lastDebugError: string | null = null;
+  private lastDebugStoppedInstructionPointer: number | null = null;
   private instructionPointer: number;
   private program: Instruction[];
 
@@ -309,6 +321,7 @@ export class Interpreter {
 
           // Criar novo frame para a função
           const frame: CallFrame = {
+            name: functionName,
             returnAddress: this.instructionPointer + 1,
             returnVariable: returnVar,
             localScope: new Map<string, RuntimeSlot>(),
@@ -471,6 +484,104 @@ export class Interpreter {
       const status = await this.stepInstruction(commandRef);
       if (status === "stopped") break;
     }
+  }
+
+  public startDebug(options: { breakpoints?: number[] } = {}): DebugSnapshot {
+    this.resetRuntimeState();
+    this.indexLabels();
+    this.initializeAtMain();
+    this.debugBreakpoints = new Set(options.breakpoints ?? []);
+    this.debugStatus = "paused";
+    this.debugStopReason = "entry";
+    this.lastDebugError = null;
+    this.lastDebugStoppedInstructionPointer = null;
+    return this.getDebugSnapshot();
+  }
+
+  public async continueDebug(
+    commandRef = { current: "" },
+  ): Promise<DebugSnapshot> {
+    this.debugStatus = "running";
+    while (this.reading()) {
+      const instruction = this.getCurrentInstruction();
+      const isSameStoppedInstruction =
+        this.lastDebugStoppedInstructionPointer === this.instructionPointer;
+
+      if (
+        instruction.source &&
+        this.debugBreakpoints.has(instruction.source.line) &&
+        !isSameStoppedInstruction
+      ) {
+        this.debugStatus = "paused";
+        this.debugStopReason = "breakpoint";
+        this.lastDebugStoppedInstructionPointer = this.instructionPointer;
+        return this.getDebugSnapshot();
+      }
+
+      if (isSameStoppedInstruction) {
+        this.lastDebugStoppedInstructionPointer = null;
+      }
+
+      const result = await this.stepInstruction(commandRef);
+      if (result === "stopped") {
+        this.debugStatus = "completed";
+        this.debugStopReason = "completed";
+        return this.getDebugSnapshot();
+      }
+    }
+    this.debugStatus = "completed";
+    this.debugStopReason = "completed";
+    return this.getDebugSnapshot();
+  }
+
+  public getDebugSnapshot(): DebugSnapshot {
+    return {
+      status: this.debugStatus,
+      stopReason: this.debugStopReason,
+      instructionPointer: this.instructionPointer,
+      currentSource: this.getCurrentSource(),
+      variables: this.getVariableSnapshots(),
+      callStack: this.getCallStackSnapshots(),
+      error: this.lastDebugError,
+    };
+  }
+
+  private getCurrentSource(): SourceLocation | null {
+    return this.getCurrentInstruction().source ?? null;
+  }
+
+  private getVariableSnapshots(): DebugVariableSnapshot[] {
+    const globalSnapshots = [...this.variables.entries()].map(
+      ([name, slot]) => ({
+        name,
+        type: slot.type,
+        value: slot.value,
+        scope: "global" as const,
+      }),
+    );
+
+    if (this.callStack.length === 0) {
+      return globalSnapshots;
+    }
+
+    const currentFrame = this.callStack[this.callStack.length - 1];
+    const localSnapshots = [...currentFrame.localScope.entries()].map(
+      ([name, slot]) => ({
+        name,
+        type: slot.type,
+        value: slot.value,
+        scope: "local" as const,
+      }),
+    );
+
+    return [...globalSnapshots, ...localSnapshots];
+  }
+
+  private getCallStackSnapshots(): DebugCallFrameSnapshot[] {
+    return this.callStack.map((frame) => ({
+      name: frame.name,
+      returnAddress: frame.returnAddress,
+    }));
   }
 
   private getLabelIndex(label: string): number {
