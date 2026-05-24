@@ -16,7 +16,13 @@ export class Emitter {
     operand2: any,
     source?: SourceLocation,
   ) {
-    this.instructions.push({ op, result, operand1, operand2, source });
+    const instruction: Instruction = { op, result, operand1, operand2 };
+
+    if (source !== undefined) {
+      instruction.source = source;
+    }
+
+    this.instructions.push(instruction);
   }
 
   emitFromToken(
