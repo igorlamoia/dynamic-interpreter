@@ -104,4 +104,66 @@ int main() {
     expect(result.stopReason).toBe("completed");
     expect(output).toEqual(["2"]);
   });
+
+  it("steps into user functions", async () => {
+    const interpreter = createInterpreter(`
+int inc(int value) {
+  return value + 1;
+}
+
+int main() {
+  int x = inc(1);
+  print(x);
+}
+`);
+
+    interpreter.startDebug();
+    const first = await interpreter.stepIntoDebug();
+    expect(first.currentSource?.line).toBe(7);
+
+    const second = await interpreter.stepIntoDebug();
+    expect(second.currentSource?.line).toBe(3);
+  });
+
+  it("steps over user functions", async () => {
+    const interpreter = createInterpreter(`
+int inc(int value) {
+  return value + 1;
+}
+
+int main() {
+  int x = inc(1);
+  print(x);
+}
+`);
+
+    interpreter.startDebug();
+    await interpreter.stepIntoDebug();
+    const snapshot = await interpreter.stepOverDebug();
+    expect(snapshot.currentSource?.line).toBe(8);
+  });
+
+  it("steps out to the caller and stops debug sessions", async () => {
+    const interpreter = createInterpreter(`
+int inc(int value) {
+  return value + 1;
+}
+
+int main() {
+  int x = inc(1);
+  print(x);
+}
+`);
+
+    interpreter.startDebug();
+    await interpreter.stepIntoDebug();
+    await interpreter.stepIntoDebug();
+
+    const steppedOut = await interpreter.stepOutDebug();
+    expect(steppedOut.currentSource?.line).toBe(8);
+
+    const stopped = interpreter.stopDebug();
+    expect(stopped.status).toBe("idle");
+    expect(stopped.stopReason).toBe("stopped");
+  });
 });

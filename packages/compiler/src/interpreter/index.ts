@@ -32,6 +32,7 @@ interface CallFrame {
   name: string;
   returnAddress: number;
   returnVariable: string | null;
+  callSource: SourceLocation | null;
   localScope: Map<string, RuntimeSlot>;
   parameters: string[];
 }
@@ -325,6 +326,7 @@ export class Interpreter {
             name: functionName,
             returnAddress: this.instructionPointer + 1,
             returnVariable: returnVar,
+            callSource: currentInstruction.source ?? null,
             localScope: new Map<string, RuntimeSlot>(),
             parameters: [],
           };
@@ -535,6 +537,91 @@ export class Interpreter {
     return this.getDebugSnapshot();
   }
 
+  public async stepIntoDebug(
+    commandRef = { current: "" },
+  ): Promise<DebugSnapshot> {
+    const previousSource = this.getCurrentSteppableSource();
+    return this.runDebugStepUntil(
+      () =>
+        this.isDifferentSourceLine(
+          previousSource,
+          this.getCurrentSteppableSource(),
+        ),
+      commandRef,
+    );
+  }
+
+  public async stepOverDebug(
+    commandRef = { current: "" },
+  ): Promise<DebugSnapshot> {
+    const previousSource = this.getCurrentSteppableSource();
+    const startingDepth = this.getCallDepth();
+    return this.runDebugStepUntil(
+      () =>
+        this.getCallDepth() <= startingDepth &&
+        this.isDifferentSourceLine(
+          previousSource,
+          this.getCurrentSteppableSource(),
+        ),
+      commandRef,
+    );
+  }
+
+  public async stepOutDebug(
+    commandRef = { current: "" },
+  ): Promise<DebugSnapshot> {
+    const startingDepth = this.getCallDepth();
+    if (startingDepth === 0) {
+      return this.stepOverDebug(commandRef);
+    }
+
+    const callerSource =
+      this.callStack[this.callStack.length - 1].callSource ?? null;
+
+    return this.runDebugStepUntil(() => {
+      if (this.getCallDepth() >= startingDepth) return false;
+      const currentSource = this.getCurrentSteppableSource();
+      if (!currentSource) return false;
+      return this.isDifferentSourceLine(callerSource, currentSource);
+    }, commandRef);
+  }
+
+  public stopDebug(): DebugSnapshot {
+    this.debugStatus = "idle";
+    this.debugStopReason = "stopped";
+    this.lastDebugError = null;
+    this.lastDebugStoppedInstructionPointer = null;
+    return this.getDebugSnapshot();
+  }
+
+  private async runDebugStepUntil(
+    shouldPause: () => boolean,
+    commandRef = { current: "" },
+  ): Promise<DebugSnapshot> {
+    this.debugStatus = "running";
+    this.lastDebugStoppedInstructionPointer = null;
+
+    while (this.reading()) {
+      const result = await this.stepInstruction(commandRef);
+      if (result === "stopped") {
+        this.debugStatus = "completed";
+        this.debugStopReason = "completed";
+        return this.getDebugSnapshot();
+      }
+
+      if (shouldPause()) {
+        this.debugStatus = "paused";
+        this.debugStopReason = "step";
+        this.lastDebugStoppedInstructionPointer = this.instructionPointer;
+        return this.getDebugSnapshot();
+      }
+    }
+
+    this.debugStatus = "completed";
+    this.debugStopReason = "completed";
+    return this.getDebugSnapshot();
+  }
+
   public getDebugSnapshot(): DebugSnapshot {
     return {
       status: this.debugStatus,
@@ -549,6 +636,27 @@ export class Interpreter {
 
   private getCurrentSource(): SourceLocation | null {
     return this.getCurrentInstruction().source ?? null;
+  }
+
+  private getCurrentSteppableSource(): SourceLocation | null {
+    const instruction = this.getCurrentInstruction();
+    if (instruction.op === "LABEL") return null;
+    return instruction.source ?? null;
+  }
+
+  private getCallDepth(): number {
+    return this.callStack.length;
+  }
+
+  private isDifferentSourceLine(
+    previous: SourceLocation | null,
+    next: SourceLocation | null,
+  ): boolean {
+    if (!next) return false;
+    if (!previous) return true;
+    return (
+      previous.line !== next.line || previous.statementId !== next.statementId
+    );
   }
 
   private getVariableSnapshots(): DebugVariableSnapshot[] {
