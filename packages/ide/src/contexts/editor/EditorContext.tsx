@@ -45,7 +45,13 @@ export function EditorProvider({ children }: { children: ReactNode }) {
   const editorInstanceRef =
     useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
 
-  const { selectedDebugLines, clearDebugLines, toggleDebugLine } = useDebugger({
+  const {
+    selectedDebugLines,
+    clearDebugLines,
+    toggleDebugLine,
+    setCurrentDebugLine,
+    clearCurrentDebugLine,
+  } = useDebugger({
     editorInstanceRef,
     monacoRef,
   });
@@ -239,6 +245,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         fileData?.content ?? storedCode ?? initialCode ?? INITIAL_CODE;
 
       clearDebugLines();
+      clearCurrentDebugLine();
 
       setCurrentFilePath(filePath);
       setSourceCode(content);
@@ -276,6 +283,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         updateSourceCode,
         toggleDebugLine,
         clearDebugLines,
+        setCurrentDebugLine,
+        clearCurrentDebugLine,
         setConfig,
         showLineIssues,
         initializeEditor,

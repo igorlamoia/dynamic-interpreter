@@ -14,6 +14,8 @@ export function useDebugger({
   const [selectedDebugLines, setSelectedDebugLines] = useState<number[]>([]);
   const debugLineDecorationsRef =
     useRef<monacoEditor.editor.IEditorDecorationsCollection | null>(null);
+  const currentDebugLineDecorationsRef =
+    useRef<monacoEditor.editor.IEditorDecorationsCollection | null>(null);
 
   const applyDebugLineDecorations = useCallback(
     (lines: number[]) => {
@@ -43,9 +45,54 @@ export function useDebugger({
     [editorInstanceRef, monacoRef],
   );
 
+  const applyCurrentDebugLineDecoration = useCallback(
+    (lineNumber: number | null) => {
+      const editor = editorInstanceRef.current;
+      const monaco = monacoRef.current;
+      if (!editor || !monaco) return;
+
+      const decorations =
+        lineNumber && lineNumber > 0
+          ? [
+              {
+                range: new monaco.Range(lineNumber, 1, lineNumber, 1),
+                options: {
+                  isWholeLine: true,
+                  className: "monaco-current-debug-line",
+                  glyphMarginClassName: "monaco-current-debug-line-glyph",
+                  stickiness:
+                    monaco.editor.TrackedRangeStickiness
+                      .NeverGrowsWhenTypingAtEdges,
+                },
+              },
+            ]
+          : [];
+
+      if (!currentDebugLineDecorationsRef.current) {
+        currentDebugLineDecorationsRef.current =
+          editor.createDecorationsCollection(decorations);
+        return;
+      }
+
+      currentDebugLineDecorationsRef.current.set(decorations);
+    },
+    [editorInstanceRef, monacoRef],
+  );
+
   const clearDebugLines = useCallback(() => {
     setSelectedDebugLines([]);
   }, []);
+
+  const setCurrentDebugLine = useCallback(
+    (lineNumber: number | null) => {
+      applyCurrentDebugLineDecoration(lineNumber);
+    },
+    [applyCurrentDebugLineDecoration],
+  );
+
+  const clearCurrentDebugLine = useCallback(() => {
+    applyCurrentDebugLineDecoration(null);
+  }, [applyCurrentDebugLineDecoration]);
 
   const toggleDebugLine = useCallback((lineNumber: number) => {
     if (lineNumber < 1) return;
@@ -67,5 +114,7 @@ export function useDebugger({
     selectedDebugLines,
     clearDebugLines,
     toggleDebugLine,
+    setCurrentDebugLine,
+    clearCurrentDebugLine,
   };
 }
