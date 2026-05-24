@@ -1,0 +1,74 @@
+// @vitest-environment jsdom
+
+import { act } from "react";
+import { createRoot } from "react-dom/client";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { DebugPanel } from "./debug-panel";
+
+(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean })
+  .IS_REACT_ACT_ENVIRONMENT = true;
+
+vi.mock("lucide-react", () => ({
+  CircleDot: () => <span>status</span>,
+  Pause: () => <span>pause</span>,
+  Play: () => <span>play</span>,
+  RotateCcw: () => <span>restart</span>,
+  Square: () => <span>stop</span>,
+  StepForward: () => <span>step</span>,
+  StepInto: () => <span>into</span>,
+  StepOut: () => <span>out</span>,
+}));
+
+afterEach(() => {
+  document.body.innerHTML = "";
+});
+
+describe("DebugPanel", () => {
+  it("renders debug controls, breakpoints, variables, and output", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <DebugPanel
+          breakpoints={[3]}
+          boundBreakpoints={[3]}
+          unboundBreakpoints={[9]}
+          output={["hello"]}
+          snapshot={{
+            status: "paused",
+            stopReason: "breakpoint",
+            instructionPointer: 4,
+            currentSource: { line: 3, column: 3 },
+            variables: [
+              { name: "x", type: "int", value: 1, scope: "global" },
+            ],
+            callStack: [{ name: "main", returnAddress: 0 }],
+            error: null,
+          }}
+        />,
+      );
+    });
+
+    expect(
+      container.querySelector('button[aria-label="Start debug"]'),
+    ).toBeTruthy();
+    expect(
+      container.querySelector('button[aria-label="Continue"]'),
+    ).toBeTruthy();
+    expect(container.textContent).toContain("Breakpoints");
+    expect(container.textContent).toContain("Line 3");
+    expect(container.textContent).toContain("Line 9");
+    expect(container.textContent).toContain("unbound");
+    expect(container.textContent).toContain("Variables");
+    expect(container.textContent).toContain("x");
+    expect(container.textContent).toContain("Call Stack");
+    expect(container.textContent).toContain("main");
+    expect(container.textContent).toContain("hello");
+
+    act(() => {
+      root.unmount();
+    });
+  });
+});

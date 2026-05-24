@@ -1,4 +1,5 @@
 import { SideExplorer } from "./index";
+import { DebugPanel } from "./debug-panel";
 import { LanguagePanel } from "./language-panel";
 import { SearchPanel } from "./search-panel";
 
@@ -6,7 +7,7 @@ export type SidebarView =
   | "explorer"
   | "search"
   | "language"
-  | "source-control"
+  | "debug"
   | "settings";
 
 interface SidebarPanelProps {
@@ -45,12 +46,8 @@ export function SidebarPanel({
       return <SearchPanel onFileSelect={handleFileSelect} />;
     case "language":
       return <LanguagePanel />;
-    case "source-control":
-      return (
-        <div className="flex h-full items-center justify-center p-4 text-xs text-muted-foreground">
-          Controle de fonte em breve...
-        </div>
-      );
+    case "debug":
+      return <DebugPanel />;
     case "settings":
       return (
         <div className="flex h-full items-center justify-center p-4 text-xs text-muted-foreground">

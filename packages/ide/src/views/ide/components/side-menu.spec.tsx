@@ -34,8 +34,10 @@ vi.mock("@/components/buttons/icon-button", () => ({
 }));
 
 vi.mock("lucide-react", () => ({
+  BugPlay: () => <span>debug</span>,
   FileCode2: () => <span>files</span>,
   GitBranch: () => <span>git</span>,
+  Languages: () => <span>languages</span>,
   Search: () => <span>search</span>,
   Settings: () => <span>settings</span>,
 }));
@@ -82,6 +84,46 @@ describe("SideMenu", () => {
 
     expect(sessionStorage.getItem("language-creator:return")).toBe("1");
     expect(router.push).toHaveBeenCalledWith("/language-creator");
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("opens the debug sidebar from the former source-control slot", () => {
+    useRouterMock.mockReturnValue({ push: vi.fn() });
+    const setActiveView = vi.fn();
+    const setIsSidebarOpen = vi.fn();
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <SideMenu
+          isSidebarOpen
+          setIsSidebarOpen={setIsSidebarOpen}
+          activeView="explorer"
+          setActiveView={setActiveView}
+        />,
+      );
+    });
+
+    expect(container.textContent).toContain("debug");
+    expect(container.textContent).not.toContain("git");
+
+    const debugButton = container.querySelector('button[aria-label="Debug"]');
+    expect(debugButton).toBeTruthy();
+
+    act(() => {
+      debugButton?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      );
+    });
+
+    expect(setActiveView).toHaveBeenCalledWith("debug");
+    expect(setIsSidebarOpen).toHaveBeenCalledWith(true);
 
     act(() => {
       root.unmount();

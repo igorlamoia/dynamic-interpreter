@@ -13,6 +13,8 @@ export default defineConfig({
       "src/hooks/**/*.spec.tsx",
       "src/features/**/*.spec.ts",
       "src/features/**/*.spec.tsx",
+      "src/views/**/*.spec.ts",
+      "src/views/**/*.spec.tsx",
     ],
     environment: "node",
     maxWorkers: 1,
