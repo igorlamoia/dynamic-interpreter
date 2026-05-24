@@ -23,7 +23,9 @@ import { EditorContext, EditorProvider } from "@/contexts/editor/EditorContext";
 import { QuickFileSearch } from "@/components/quick-file-search";
 import { useIntermediatorCode } from "@/hooks/useIntermediatorCode";
 import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
-import { KeywordProvider } from "@/contexts/keyword/KeywordContext";
+import { KeywordProvider, useKeywords } from "@/contexts/keyword/KeywordContext";
+import { useRouter } from "next/router";
+import { useDebugSession } from "@/hooks/useDebugSession";
 
 const DEFAULT_FILES = [
   { path: "src/main.?", initialCode: "// Main file\n" },
@@ -48,12 +50,34 @@ export function IDEView() {
   );
 }
 export function IDE() {
+  const { locale } = useRouter();
+  const { buildLexerConfig } = useKeywords();
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
   const { handleRun, analyseData, showScrollArrow, setShowScrollArrow } =
     useLexerAnalyse();
   const { isTerminalOpen, setIsTerminalOpen } = useTerminalContext();
-  const { fileSystem, loadFileContent } = useContext(EditorContext);
+  const {
+    clearCurrentDebugLine,
+    fileSystem,
+    getEditorCode,
+    loadFileContent,
+    selectedDebugLines,
+    setCurrentDebugLine,
+  } = useContext(EditorContext);
+  const lexerConfig = buildLexerConfig();
+  const debugSession = useDebugSession({
+    breakpoints: selectedDebugLines,
+    keywordMap: lexerConfig.keywordMap,
+    blockDelimiters: lexerConfig.blockDelimiters,
+    indentationBlock: lexerConfig.indentationBlock,
+    grammar: lexerConfig.grammar,
+    operatorWordMap: lexerConfig.operatorWordMap,
+    booleanLiteralMap: lexerConfig.booleanLiteralMap,
+    statementTerminatorLexeme: lexerConfig.statementTerminatorLexeme,
+    locale,
+    onCurrentLineChange: setCurrentDebugLine,
+  });
 
   const [activeFile, setActiveFile] = useState("src/main.?");
   const [openTabs, setOpenTabs] = useState<string[]>(["src/main.?"]);
@@ -99,6 +123,19 @@ export function IDE() {
       await handleIntermediateCodeGeneration(tokens);
     if (!isIntermediateGenerated) return;
     setIsTerminalOpen(true);
+  };
+
+  const startDebug = () => {
+    void debugSession.start(getEditorCode());
+  };
+
+  const restartDebug = () => {
+    void debugSession.restart(getEditorCode());
+  };
+
+  const stopDebug = () => {
+    debugSession.stop();
+    clearCurrentDebugLine();
   };
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -149,6 +186,30 @@ export function IDE() {
                       <SidebarPanel
                         activeView={activeView}
                         activeFile={activeFile}
+                        debugPanelProps={{
+                          breakpoints: selectedDebugLines,
+                          boundBreakpoints: debugSession.boundBreakpoints,
+                          unboundBreakpoints: debugSession.unboundBreakpoints,
+                          output: debugSession.output,
+                          snapshot: debugSession.snapshot,
+                          error: debugSession.error,
+                          isStale: debugSession.isStale,
+                          onStart: startDebug,
+                          onContinue: () => {
+                            void debugSession.continueExecution();
+                          },
+                          onStepInto: () => {
+                            void debugSession.stepInto();
+                          },
+                          onStepOver: () => {
+                            void debugSession.stepOver();
+                          },
+                          onStepOut: () => {
+                            void debugSession.stepOut();
+                          },
+                          onRestart: restartDebug,
+                          onStop: stopDebug,
+                        }}
                         setActiveFile={setActiveFile}
                         setOpenTabs={setOpenTabs}
                       />

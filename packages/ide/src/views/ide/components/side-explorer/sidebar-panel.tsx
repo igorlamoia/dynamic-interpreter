@@ -1,5 +1,5 @@
 import { SideExplorer } from "./index";
-import { DebugPanel } from "./debug-panel";
+import { DebugPanel, type DebugPanelProps } from "./debug-panel";
 import { LanguagePanel } from "./language-panel";
 import { SearchPanel } from "./search-panel";
 
@@ -13,6 +13,7 @@ export type SidebarView =
 interface SidebarPanelProps {
   activeView: SidebarView;
   activeFile: string;
+  debugPanelProps?: DebugPanelProps;
   setActiveFile: (path: string) => void;
   setOpenTabs: (paths: string[] | ((prev: string[]) => string[])) => void;
 }
@@ -20,6 +21,7 @@ interface SidebarPanelProps {
 export function SidebarPanel({
   activeView,
   activeFile,
+  debugPanelProps,
   setActiveFile,
   setOpenTabs,
 }: SidebarPanelProps) {
@@ -47,7 +49,7 @@ export function SidebarPanel({
     case "language":
       return <LanguagePanel />;
     case "debug":
-      return <DebugPanel />;
+      return <DebugPanel {...debugPanelProps} />;
     case "settings":
       return (
         <div className="flex h-full items-center justify-center p-4 text-xs text-muted-foreground">

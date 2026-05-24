@@ -11,7 +11,7 @@ import {
   StepOut,
 } from "lucide-react";
 
-interface DebugPanelProps {
+export interface DebugPanelProps {
   breakpoints?: number[];
   boundBreakpoints?: number[];
   unboundBreakpoints?: number[];
