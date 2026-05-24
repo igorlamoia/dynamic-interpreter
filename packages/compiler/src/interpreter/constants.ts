@@ -26,11 +26,21 @@ export type OpName =
   | TDeclaration
   | TArrayOp;
 
+export interface SourceLocation {
+  file?: string;
+  line: number;
+  column: number;
+  endLine?: number;
+  endColumn?: number;
+  statementId?: string;
+}
+
 export interface Instruction {
   op: OpName;
   result: string;
   operand1: unknown;
   operand2: unknown;
+  source?: SourceLocation;
 }
 
 export interface RuntimeArrayValue {

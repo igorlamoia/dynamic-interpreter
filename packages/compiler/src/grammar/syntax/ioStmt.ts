@@ -16,7 +16,7 @@ const { RESERVEDS, SYMBOLS, LITERALS } = TOKENS;
  * @derivation `<printStmt> -> 'print' '(' <argList> ')' ';'`
  */
 export function printStmt(iterator: TokenIterator): void {
-  iterator.consume(RESERVEDS.print);
+  const printToken = iterator.consume(RESERVEDS.print);
   iterator.consume(SYMBOLS.left_paren);
 
   const values = argumentListStmt(iterator);
@@ -24,9 +24,21 @@ export function printStmt(iterator: TokenIterator): void {
   for (const val of values) {
     // Heurística simples: se for aspas, é string; se número, também é literal
     if (val.place.startsWith('"') || !isNaN(Number(val.place))) {
-      iterator.emitter.emit("CALL", "PRINT", val.place, null);
+      iterator.emitter.emitFromToken(
+        "CALL",
+        "PRINT",
+        val.place,
+        null,
+        printToken,
+      );
     } else {
-      iterator.emitter.emit("CALL", "PRINT", null, val.place); // identificador
+      iterator.emitter.emitFromToken(
+        "CALL",
+        "PRINT",
+        null,
+        val.place,
+        printToken,
+      ); // identificador
     }
   }
 
