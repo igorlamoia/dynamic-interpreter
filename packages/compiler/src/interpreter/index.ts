@@ -19,6 +19,7 @@ import {
   Instruction,
   LOGICALS,
   RELATIONALS,
+  RuntimeArrayValue,
   RuntimeSlot,
   SourceLocation,
   TArithmetics,
@@ -555,7 +556,7 @@ export class Interpreter {
       ([name, slot]) => ({
         name,
         type: slot.type,
-        value: slot.value,
+        value: this.serializeDebugSnapshotValue(slot.value),
         scope: "global" as const,
       }),
     );
@@ -569,12 +570,65 @@ export class Interpreter {
       ([name, slot]) => ({
         name,
         type: slot.type,
-        value: slot.value,
+        value: this.serializeDebugSnapshotValue(slot.value),
         scope: "local" as const,
       }),
     );
 
     return [...globalSnapshots, ...localSnapshots];
+  }
+
+  private serializeDebugSnapshotValue(
+    value: unknown,
+    seen = new WeakMap<object, unknown>(),
+  ): unknown {
+    if (value === null || typeof value !== "object") {
+      return value;
+    }
+
+    if (seen.has(value)) {
+      return seen.get(value);
+    }
+
+    if (isRuntimeArrayValue(value)) {
+      const snapshot: RuntimeArrayValue = {
+        kind: "array",
+        arrayMode: value.arrayMode,
+        baseType: value.baseType,
+        dimensions: value.dimensions,
+        sizes: value.sizes.map((size) => size),
+        elements: [],
+      };
+      seen.set(value, snapshot);
+      snapshot.elements = this.serializeDebugSnapshotValue(
+        value.elements,
+        seen,
+      ) as unknown[];
+      return snapshot;
+    }
+
+    if (Array.isArray(value)) {
+      const snapshot: unknown[] = [];
+      seen.set(value, snapshot);
+      snapshot.push(
+        ...value.map((item) => this.serializeDebugSnapshotValue(item, seen)),
+      );
+      return snapshot;
+    }
+
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) {
+      return String(value);
+    }
+
+    const snapshot: Record<string, unknown> = {};
+    seen.set(value, snapshot);
+    for (const [key, nestedValue] of Object.entries(
+      value as Record<string, unknown>,
+    )) {
+      snapshot[key] = this.serializeDebugSnapshotValue(nestedValue, seen);
+    }
+    return snapshot;
   }
 
   private getCallStackSnapshots(): DebugCallFrameSnapshot[] {
