@@ -128,15 +128,14 @@ export class Interpreter {
     return initialValue;
   }
 
-  public async execute(commandRef = { current: "" }): Promise<void> {
+  private resetRuntimeState(): void {
     this.labels.clear();
     this.variables.clear();
     this.callStack = [];
     this.instructionPointer = 0;
+  }
 
-    // console.log(this.program);
-
-    // Primeiro passo: mapear todos os labels
+  private indexLabels(): void {
     this.program.forEach((instruction, index) => {
       if (instruction.op !== "LABEL") return;
       const labelName = instruction.result;
@@ -149,8 +148,9 @@ export class Interpreter {
         );
       this.labels.set(labelName, index);
     });
+  }
 
-    // Segundo passo: iniciar execução no label 'main'
+  private initializeAtMain(): void {
     if (!this.labels.has("main")) {
       this.throwRuntimeError(
         "interpreter.no_main_function",
@@ -160,306 +160,316 @@ export class Interpreter {
       );
     }
     this.instructionPointer = this.getLabelIndex("main");
+  }
 
-    while (this.reading()) {
-      const currentInstruction = this.getCurrentInstruction();
-      const { op, result, operand1, operand2 } = currentInstruction;
+  private async stepInstruction(
+    commandRef = { current: "" },
+  ): Promise<"running" | "stopped"> {
+    const currentInstruction = this.getCurrentInstruction();
+    const { op, result, operand1, operand2 } = currentInstruction;
 
-      try {
-        if (op === "CALL" && result === "STOP") break;
-        if (op === "LABEL") {
-          this.instructionPointer++;
-          continue;
-        } else if (ARITHMETICS.includes(op as TArithmetics)) {
-          if (operand2 !== null) {
-            const val1 = this.parseOrGetVariableWithScope(operand1);
-            const val2 = this.parseOrGetVariableWithScope(operand2);
+    try {
+      if (op === "CALL" && result === "STOP") return "stopped";
+      if (op === "LABEL") {
+        this.instructionPointer++;
+      } else if (ARITHMETICS.includes(op as TArithmetics)) {
+        if (operand2 !== null) {
+          const val1 = this.parseOrGetVariableWithScope(operand1);
+          const val2 = this.parseOrGetVariableWithScope(operand2);
 
-            if (typeof val1 !== "number" || typeof val2 !== "number")
-              this.throwRuntimeError(
-                "interpreter.arithmetic_requires_numeric",
-                { op, val1, val2 },
-                currentInstruction,
-              );
-
-            this.setVariable(
-              result,
-              makeOperation(op as TArithmetics, val1, val2, (code, params) =>
-                this.throwRuntimeError(code, params, currentInstruction),
-              ),
+          if (typeof val1 !== "number" || typeof val2 !== "number")
+            this.throwRuntimeError(
+              "interpreter.arithmetic_requires_numeric",
+              { op, val1, val2 },
+              currentInstruction,
             );
-          } else {
-            const val1 = this.parseOrGetVariableWithScope(operand1);
-            if (typeof val1 !== "number")
-              this.throwRuntimeError(
-                "interpreter.unary_arithmetic_requires_numeric",
-                { op, val1 },
-                currentInstruction,
-              );
 
-            if (op === "+") this.setVariable(result, +val1);
-            else if (op === "-") this.setVariable(result, -val1);
-            else
-              this.throwRuntimeError(
-                "interpreter.invalid_unary_operator",
-                { op },
-                currentInstruction,
-              );
-          }
-          this.instructionPointer++;
-        } else if (op === "unary+" || op === "unary-") {
+          this.setVariable(
+            result,
+            makeOperation(op as TArithmetics, val1, val2, (code, params) =>
+              this.throwRuntimeError(code, params, currentInstruction),
+            ),
+          );
+        } else {
           const val1 = this.parseOrGetVariableWithScope(operand1);
           if (typeof val1 !== "number")
             this.throwRuntimeError(
-              "interpreter.unary_operation_requires_numeric",
+              "interpreter.unary_arithmetic_requires_numeric",
               { op, val1 },
               currentInstruction,
             );
-          this.setVariable(result, op === "unary+" ? +val1 : -val1);
-          this.instructionPointer++;
-        } else if (LOGICALS.includes(op as TLogical)) {
-          if (op === "!") {
-            const val1 = this.parseOrGetVariableWithScope(operand1);
-            this.setVariable(result, !Boolean(val1));
-          } else {
-            const val1 = Boolean(this.parseOrGetVariableWithScope(operand1));
-            const val2 = Boolean(this.parseOrGetVariableWithScope(operand2));
-            let out: boolean;
-            if (op === "||") out = val1 || val2;
-            else out = val1 && val2;
-            this.setVariable(result, out);
-          }
-          this.instructionPointer++;
-        } else if (RELATIONALS.includes(op as TRelational)) {
-          const val1 = this.parseOrGetVariableWithScope(operand1);
-          const val2 = this.parseOrGetVariableWithScope(operand2);
-          this.setVariable(
-            result,
-            makeRelation(
-              op as TRelational,
-              val1 as number,
-              val2 as number,
-              (code, params) =>
-                this.throwRuntimeError(code, params, currentInstruction),
-            ),
-          );
-          this.instructionPointer++;
-        } else if (op === "=") {
-          const val1 = this.parseOrGetVariableWithScope(operand1);
-          this.setVariable(result, val1);
-          this.instructionPointer++;
-        } else if (op === "IF") {
-          const conditionVal = this.parseOrGetVariableWithScope(result);
-          const labelTrue = operand1;
-          const labelFalse = operand2;
 
-          if (typeof labelTrue !== "string" || typeof labelFalse !== "string")
+          if (op === "+") this.setVariable(result, +val1);
+          else if (op === "-") this.setVariable(result, -val1);
+          else
             this.throwRuntimeError(
-              "interpreter.if_requires_labels",
-              { labelTrue, labelFalse },
+              "interpreter.invalid_unary_operator",
+              { op },
               currentInstruction,
             );
-
-          if (Boolean(conditionVal))
-            this.instructionPointer = this.getLabelIndex(labelTrue);
-          else this.instructionPointer = this.getLabelIndex(labelFalse);
-        } else if (op === "JUMP") {
-          const labelName = result;
-          this.instructionPointer = this.getLabelIndex(labelName);
-        } else if (op === "CALL") {
-          const callType = result.toUpperCase();
-          if (callType === "PRINT") {
-            let output = String(
-              operand1 ?? this.parseOrGetVariableWithScope(operand2),
-            );
-            // Remove surrounding double quotes from string literals
-            if (output.startsWith('"') && output.endsWith('"')) {
-              output = output.slice(1, -1);
-            }
-            this.stdout(output.replace(/\\n/g, "\r\n"));
-            this.instructionPointer++;
-          } else if (callType === "SCAN") {
-            if (typeof operand2 !== "string")
-              this.throwRuntimeError(
-                "interpreter.scan_requires_string_variable",
-                { operand2 },
-                currentInstruction,
-              );
-
-            const scanHint =
-              operand1 === "int" || operand1 === "float" ? operand1 : null;
-            const userInput = await this.stdin();
-            commandRef.current = "";
-            this.setVariable(operand2, parseScanInput(scanHint, userInput));
-            this.instructionPointer++;
-          } else if (callType === "STOP") {
-            break;
-          } else {
-            // Chamada de função definida pelo usuário
-            const functionName = result;
-            const args = operand1 as string[];
-            const returnVar = operand2 as string;
-
-            // Avaliar argumentos no escopo atual
-            const evaluatedArgs = args
-              ? args.map((arg) => this.parseOrGetVariableWithScope(arg))
-              : [];
-
-            // Criar novo frame para a função
-            const frame: CallFrame = {
-              returnAddress: this.instructionPointer + 1,
-              returnVariable: returnVar,
-              localScope: new Map<string, RuntimeSlot>(),
-              parameters: [],
-            };
-
-            this.callStack.push(frame);
-
-            // Pular para a função
-            this.instructionPointer = this.getLabelIndex(functionName);
-
-            // Os parâmetros serão inicializados pelas instruções DECLARE da função
-            // e depois precisam receber os valores dos argumentos
-            // Vamos armazenar os argumentos avaliados temporariamente
-            (frame as any).evaluatedArgs = evaluatedArgs;
-          }
-        } else if (op === "DECLARE") {
-          if (typeof result !== "string")
-            this.throwRuntimeError(
-              "interpreter.declare_requires_string",
-              { result },
-              currentInstruction,
-            );
-
-          const declaredType =
-            typeof operand1 === "string" ? operand1 : "dynamic";
-          const initialValue = this.consumePendingParameterValue(result);
-
-          this.declareVariable(result, declaredType, initialValue);
-
-          this.instructionPointer++;
-          continue;
-        } else if (op === "DECLARE_ARRAY") {
-          if (typeof result !== "string")
-            this.throwRuntimeError(
-              "interpreter.declare_requires_string",
-              { result },
-              currentInstruction,
-            );
-
-          const declaredType =
-            typeof operand1 === "string" ? operand1 : "dynamic";
-          const arrayDeclaration = this.parseArrayDeclaration(
-            operand2,
+        }
+        this.instructionPointer++;
+      } else if (op === "unary+" || op === "unary-") {
+        const val1 = this.parseOrGetVariableWithScope(operand1);
+        if (typeof val1 !== "number")
+          this.throwRuntimeError(
+            "interpreter.unary_operation_requires_numeric",
+            { op, val1 },
             currentInstruction,
           );
-          const initialValue = this.consumePendingParameterValue(result);
-
-          this.declareVariable(
-            result,
-            declaredType,
-            isRuntimeArrayValue(initialValue)
-              ? initialValue
-              : arrayDeclaration.mode === "fixed"
-                ? createFixedArrayValue(declaredType, arrayDeclaration.sizes)
-                : createDynamicArrayValue(
-                    declaredType,
-                    arrayDeclaration.dimensions,
-                  ),
-          );
-          this.instructionPointer++;
-          continue;
-        } else if (op === "ARRAY_GET") {
-          if (typeof operand1 !== "string" || !Array.isArray(operand2)) {
-            this.throwRuntimeError(
-              "interpreter.runtime_error",
-              { operand1, operand2 },
-              currentInstruction,
-            );
-          }
-
-          const arraySlot = this.getVariableSlot(operand1);
-          if (!isRuntimeArrayValue(arraySlot.value)) {
-            this.throwRuntimeError(
-              "interpreter.runtime_error",
-              { operand1 },
-              currentInstruction,
-            );
-          }
-
-          const indexes = operand2.map((index) =>
-            Number(this.parseOrGetVariableWithScope(index)),
-          );
-          const value = readArrayValue(arraySlot.value, indexes, (code, params) =>
-            this.throwRuntimeError(code, params, currentInstruction),
-          );
-          this.setVariable(result, value);
-          this.instructionPointer++;
-          continue;
-        } else if (op === "ARRAY_SET") {
-          if (typeof result !== "string" || !Array.isArray(operand1)) {
-            this.throwRuntimeError(
-              "interpreter.runtime_error",
-              { result, operand1, operand2 },
-              currentInstruction,
-            );
-          }
-
-          const arraySlot = this.getVariableSlot(result);
-          if (!isRuntimeArrayValue(arraySlot.value)) {
-            this.throwRuntimeError(
-              "interpreter.runtime_error",
-              { result },
-              currentInstruction,
-            );
-          }
-
-          const indexes = operand1.map((index) =>
-            Number(this.parseOrGetVariableWithScope(index)),
-          );
-          const nextValue = this.parseOrGetVariableWithScope(operand2);
-          writeArrayValue(
-            arraySlot.value,
-            indexes,
-            nextValue,
+        this.setVariable(result, op === "unary+" ? +val1 : -val1);
+        this.instructionPointer++;
+      } else if (LOGICALS.includes(op as TLogical)) {
+        if (op === "!") {
+          const val1 = this.parseOrGetVariableWithScope(operand1);
+          this.setVariable(result, !Boolean(val1));
+        } else {
+          const val1 = Boolean(this.parseOrGetVariableWithScope(operand1));
+          const val2 = Boolean(this.parseOrGetVariableWithScope(operand2));
+          let out: boolean;
+          if (op === "||") out = val1 || val2;
+          else out = val1 && val2;
+          this.setVariable(result, out);
+        }
+        this.instructionPointer++;
+      } else if (RELATIONALS.includes(op as TRelational)) {
+        const val1 = this.parseOrGetVariableWithScope(operand1);
+        const val2 = this.parseOrGetVariableWithScope(operand2);
+        this.setVariable(
+          result,
+          makeRelation(
+            op as TRelational,
+            val1 as number,
+            val2 as number,
             (code, params) =>
               this.throwRuntimeError(code, params, currentInstruction),
-          );
-          this.instructionPointer++;
-          continue;
-        } else if (op === "RETURN") {
-          const returnValue = this.parseOrGetVariableWithScope(result);
-          const returnType =
-            typeof operand1 === "string" ? operand1 : "dynamic";
-          const coercedReturnValue = coerceValueForType(
-            returnType,
-            returnValue,
-          );
+          ),
+        );
+        this.instructionPointer++;
+      } else if (op === "=") {
+        const val1 = this.parseOrGetVariableWithScope(operand1);
+        this.setVariable(result, val1);
+        this.instructionPointer++;
+      } else if (op === "IF") {
+        const conditionVal = this.parseOrGetVariableWithScope(result);
+        const labelTrue = operand1;
+        const labelFalse = operand2;
 
-          if (this.callStack.length === 0) {
-            // Return do main - terminar execução
-            return;
-          }
-
-          // Pop do call stack
-          const frame = this.callStack.pop()!;
-
-          // Armazenar valor de retorno no escopo do caller se houver variável
-          if (frame.returnVariable) {
-            this.setVariable(frame.returnVariable, coercedReturnValue);
-          }
-
-          // Voltar para endereço de retorno
-          this.instructionPointer = frame.returnAddress;
-        } else
+        if (typeof labelTrue !== "string" || typeof labelFalse !== "string")
           this.throwRuntimeError(
-            "interpreter.unknown_operation",
-            { op, instructionPointer: this.instructionPointer },
+            "interpreter.if_requires_labels",
+            { labelTrue, labelFalse },
             currentInstruction,
           );
-      } catch (error) {
-        throw this.toRuntimeError(error, currentInstruction);
-      }
+
+        if (Boolean(conditionVal))
+          this.instructionPointer = this.getLabelIndex(labelTrue);
+        else this.instructionPointer = this.getLabelIndex(labelFalse);
+      } else if (op === "JUMP") {
+        const labelName = result;
+        this.instructionPointer = this.getLabelIndex(labelName);
+      } else if (op === "CALL") {
+        const callType = result.toUpperCase();
+        if (callType === "PRINT") {
+          let output = String(
+            operand1 ?? this.parseOrGetVariableWithScope(operand2),
+          );
+          // Remove surrounding double quotes from string literals
+          if (output.startsWith('"') && output.endsWith('"')) {
+            output = output.slice(1, -1);
+          }
+          this.stdout(output.replace(/\\n/g, "\r\n"));
+          this.instructionPointer++;
+        } else if (callType === "SCAN") {
+          if (typeof operand2 !== "string")
+            this.throwRuntimeError(
+              "interpreter.scan_requires_string_variable",
+              { operand2 },
+              currentInstruction,
+            );
+
+          const scanHint =
+            operand1 === "int" || operand1 === "float" ? operand1 : null;
+          const userInput = await this.stdin();
+          commandRef.current = "";
+          this.setVariable(operand2, parseScanInput(scanHint, userInput));
+          this.instructionPointer++;
+        } else if (callType === "STOP") {
+          return "stopped";
+        } else {
+          // Chamada de função definida pelo usuário
+          const functionName = result;
+          const args = operand1 as string[];
+          const returnVar = operand2 as string;
+
+          // Avaliar argumentos no escopo atual
+          const evaluatedArgs = args
+            ? args.map((arg) => this.parseOrGetVariableWithScope(arg))
+            : [];
+
+          // Criar novo frame para a função
+          const frame: CallFrame = {
+            returnAddress: this.instructionPointer + 1,
+            returnVariable: returnVar,
+            localScope: new Map<string, RuntimeSlot>(),
+            parameters: [],
+          };
+
+          this.callStack.push(frame);
+
+          // Pular para a função
+          this.instructionPointer = this.getLabelIndex(functionName);
+
+          // Os parâmetros serão inicializados pelas instruções DECLARE da função
+          // e depois precisam receber os valores dos argumentos
+          // Vamos armazenar os argumentos avaliados temporariamente
+          (frame as any).evaluatedArgs = evaluatedArgs;
+        }
+      } else if (op === "DECLARE") {
+        if (typeof result !== "string")
+          this.throwRuntimeError(
+            "interpreter.declare_requires_string",
+            { result },
+            currentInstruction,
+          );
+
+        const declaredType =
+          typeof operand1 === "string" ? operand1 : "dynamic";
+        const initialValue = this.consumePendingParameterValue(result);
+
+        this.declareVariable(result, declaredType, initialValue);
+
+        this.instructionPointer++;
+      } else if (op === "DECLARE_ARRAY") {
+        if (typeof result !== "string")
+          this.throwRuntimeError(
+            "interpreter.declare_requires_string",
+            { result },
+            currentInstruction,
+          );
+
+        const declaredType =
+          typeof operand1 === "string" ? operand1 : "dynamic";
+        const arrayDeclaration = this.parseArrayDeclaration(
+          operand2,
+          currentInstruction,
+        );
+        const initialValue = this.consumePendingParameterValue(result);
+
+        this.declareVariable(
+          result,
+          declaredType,
+          isRuntimeArrayValue(initialValue)
+            ? initialValue
+            : arrayDeclaration.mode === "fixed"
+              ? createFixedArrayValue(declaredType, arrayDeclaration.sizes)
+              : createDynamicArrayValue(
+                  declaredType,
+                  arrayDeclaration.dimensions,
+                ),
+        );
+        this.instructionPointer++;
+      } else if (op === "ARRAY_GET") {
+        if (typeof operand1 !== "string" || !Array.isArray(operand2)) {
+          this.throwRuntimeError(
+            "interpreter.runtime_error",
+            { operand1, operand2 },
+            currentInstruction,
+          );
+        }
+
+        const arraySlot = this.getVariableSlot(operand1);
+        if (!isRuntimeArrayValue(arraySlot.value)) {
+          this.throwRuntimeError(
+            "interpreter.runtime_error",
+            { operand1 },
+            currentInstruction,
+          );
+        }
+
+        const indexes = operand2.map((index) =>
+          Number(this.parseOrGetVariableWithScope(index)),
+        );
+        const value = readArrayValue(arraySlot.value, indexes, (code, params) =>
+          this.throwRuntimeError(code, params, currentInstruction),
+        );
+        this.setVariable(result, value);
+        this.instructionPointer++;
+      } else if (op === "ARRAY_SET") {
+        if (typeof result !== "string" || !Array.isArray(operand1)) {
+          this.throwRuntimeError(
+            "interpreter.runtime_error",
+            { result, operand1, operand2 },
+            currentInstruction,
+          );
+        }
+
+        const arraySlot = this.getVariableSlot(result);
+        if (!isRuntimeArrayValue(arraySlot.value)) {
+          this.throwRuntimeError(
+            "interpreter.runtime_error",
+            { result },
+            currentInstruction,
+          );
+        }
+
+        const indexes = operand1.map((index) =>
+          Number(this.parseOrGetVariableWithScope(index)),
+        );
+        const nextValue = this.parseOrGetVariableWithScope(operand2);
+        writeArrayValue(
+          arraySlot.value,
+          indexes,
+          nextValue,
+          (code, params) =>
+            this.throwRuntimeError(code, params, currentInstruction),
+        );
+        this.instructionPointer++;
+      } else if (op === "RETURN") {
+        const returnValue = this.parseOrGetVariableWithScope(result);
+        const returnType =
+          typeof operand1 === "string" ? operand1 : "dynamic";
+        const coercedReturnValue = coerceValueForType(
+          returnType,
+          returnValue,
+        );
+
+        if (this.callStack.length === 0) {
+          // Return do main - terminar execução
+          return "stopped";
+        }
+
+        // Pop do call stack
+        const frame = this.callStack.pop()!;
+
+        // Armazenar valor de retorno no escopo do caller se houver variável
+        if (frame.returnVariable) {
+          this.setVariable(frame.returnVariable, coercedReturnValue);
+        }
+
+        // Voltar para endereço de retorno
+        this.instructionPointer = frame.returnAddress;
+      } else
+        this.throwRuntimeError(
+          "interpreter.unknown_operation",
+          { op, instructionPointer: this.instructionPointer },
+          currentInstruction,
+        );
+    } catch (error) {
+      throw this.toRuntimeError(error, currentInstruction);
+    }
+
+    return "running";
+  }
+
+  public async execute(commandRef = { current: "" }): Promise<void> {
+    this.resetRuntimeState();
+    this.indexLabels();
+    this.initializeAtMain();
+
+    while (this.reading()) {
+      const status = await this.stepInstruction(commandRef);
+      if (status === "stopped") break;
     }
   }
 
