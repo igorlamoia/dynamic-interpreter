@@ -143,4 +143,63 @@ int main() {
       ),
     ).toBe(true);
   });
+
+  it("maps switch dispatch and section instructions to source lines", () => {
+    const instructions = compile(`
+int main() {
+  int x = 2;
+  switch (x) {
+    case 1:
+      print(1);
+    case 2:
+      break;
+    default:
+      print(0);
+  }
+}
+`);
+
+    const jumpTargets = new Set(
+      instructions
+        .filter(
+          (instruction) =>
+            instruction.op === "JUMP" && instruction.source?.line === 4,
+        )
+        .map((instruction) => instruction.result),
+    );
+    const switchLabels = instructions.filter(
+      (instruction) =>
+        instruction.op === "LABEL" &&
+        instruction.source?.line === 4 &&
+        jumpTargets.has(instruction.result),
+    );
+
+    expect(switchLabels.length).toBeGreaterThan(0);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "IF" && instruction.source?.line === 7,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "LABEL" && instruction.source?.line === 9,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "JUMP" && instruction.source?.line === 8,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "==" &&
+          instruction.source?.line === 7 &&
+          instruction.source.column === 10,
+      ),
+    ).toBe(true);
+  });
 });

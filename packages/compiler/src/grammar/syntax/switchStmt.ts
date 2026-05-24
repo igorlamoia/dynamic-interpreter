@@ -6,7 +6,8 @@ import { stmt } from "./stmt";
 type CaseEntry = {
   literal: string;
   label: string;
-  token: { line: number; column: number };
+  caseToken: { line: number; column: number };
+  literalToken: { line: number; column: number };
 };
 
 /**
@@ -101,7 +102,8 @@ export function switchStmt(iterator: TokenIterator): void {
           cases.push({
             literal: literalToken.lexeme,
             label: caseLabel,
-            token: caseToken,
+            caseToken,
+            literalToken,
           });
           iterator.emitter.emitFromToken(
             "LABEL",
@@ -118,7 +120,8 @@ export function switchStmt(iterator: TokenIterator): void {
           cases.push({
             literal: literalToken.lexeme,
             label: caseLabel,
-            token: caseToken,
+            caseToken,
+            literalToken,
           });
           iterator.emitter.emitFromToken(
             "LABEL",
@@ -133,7 +136,8 @@ export function switchStmt(iterator: TokenIterator): void {
         cases.push({
           literal: literalToken.lexeme,
           label: caseLabel,
-          token: caseToken,
+          caseToken,
+          literalToken,
         });
         iterator.emitter.emitFromToken(
           "LABEL",
@@ -284,14 +288,14 @@ function emitSwitchDispatch(
       equalsTemp,
       switchValue,
       current.literal,
-      current.token,
+      current.literalToken,
     );
     iterator.emitter.emitFromToken(
       "IF",
       equalsTemp,
       current.label,
       falseLabel,
-      current.token,
+      current.caseToken,
     );
 
     if (!isLast) {
@@ -300,7 +304,7 @@ function emitSwitchDispatch(
         falseLabel,
         null,
         null,
-        current.token,
+        current.caseToken,
       );
     }
   }
