@@ -16,7 +16,7 @@ export function notStmt(iterator: TokenIterator): ExprResult {
     const inner = notStmt(iterator); // chamada recursiva
     const temp = iterator.emitter.newTemp();
 
-    iterator.emitter.emit("!", temp, inner.place, null);
+    iterator.emitter.emitFromToken("!", temp, inner.place, null, token);
     iterator.registerTemp(temp, "bool");
     return iterator.createExprResult(temp, "bool", token);
   }

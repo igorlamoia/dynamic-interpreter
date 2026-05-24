@@ -29,11 +29,17 @@ export function attributeStmt(iterator: TokenIterator): void {
 
   // Prefix increment statement: ++identifier
   if (iterator.peek().type === plus && iterator.peek().lexeme === "++") {
-    iterator.consume(plus, "++");
+    const operatorToken = iterator.consume(plus, "++");
     const identifier = iterator.consume(TOKENS.LITERALS.identifier);
     assertTypedAssignableIdentifier(iterator, identifier);
     const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emit("+", incremented, identifier.lexeme, "1");
+    iterator.emitter.emitFromToken(
+      "+",
+      incremented,
+      identifier.lexeme,
+      "1",
+      operatorToken,
+    );
     iterator.registerTemp(incremented, iterator.resolveSymbol(identifier.lexeme));
     iterator.emitter.emitFromToken(
       "=",
@@ -57,9 +63,15 @@ export function attributeStmt(iterator: TokenIterator): void {
         { lexeme: target.name, line: target.token.line, column: target.token.column },
       );
     }
-    iterator.consume(plus, "++");
+    const operatorToken = iterator.consume(plus, "++");
     const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emit("+", incremented, target.name, "1");
+    iterator.emitter.emitFromToken(
+      "+",
+      incremented,
+      target.name,
+      "1",
+      operatorToken,
+    );
     iterator.registerTemp(incremented, iterator.resolveSymbol(target.name));
     iterator.emitter.emitFromToken(
       "=",

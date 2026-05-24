@@ -32,13 +32,31 @@ export function factorStmt(iterator: TokenIterator): ExprResult {
       iterator.peek().type === TOKENS.ARITHMETICS.plus &&
       iterator.peek().lexeme === "++"
     ) {
-      iterator.consume(TOKENS.ARITHMETICS.plus, "++");
+      const operatorToken = iterator.consume(TOKENS.ARITHMETICS.plus, "++");
       assertTypedAssignableIdentifier(iterator, identifier);
       const previous = iterator.emitter.newTemp();
       const incremented = iterator.emitter.newTemp();
-      iterator.emitter.emit("=", previous, identifier.lexeme, null);
-      iterator.emitter.emit("+", incremented, identifier.lexeme, "1");
-      iterator.emitter.emit("=", identifier.lexeme, incremented, null);
+      iterator.emitter.emitFromToken(
+        "=",
+        previous,
+        identifier.lexeme,
+        null,
+        identifier,
+      );
+      iterator.emitter.emitFromToken(
+        "+",
+        incremented,
+        identifier.lexeme,
+        "1",
+        operatorToken,
+      );
+      iterator.emitter.emitFromToken(
+        "=",
+        identifier.lexeme,
+        incremented,
+        null,
+        identifier,
+      );
       const type = iterator.resolveSymbol(identifier.lexeme);
       iterator.registerTemp(previous, type);
       iterator.registerTemp(incremented, type);
@@ -139,7 +157,13 @@ function parseArrayAccess(
   }
 
   const temp = iterator.emitter.newTemp();
-  iterator.emitter.emit("ARRAY_GET" as never, temp, identifier.lexeme, indexes);
+  iterator.emitter.emitFromToken(
+    "ARRAY_GET" as never,
+    temp,
+    identifier.lexeme,
+    indexes,
+    identifier,
+  );
   iterator.registerTemp(temp, descriptor.baseType);
   return iterator.createExprResult(temp, descriptor.baseType, identifier);
 }

@@ -22,7 +22,7 @@ export function restAddStmt(
     iterator.consume(token.type); // consume '+' or '-'
     const right = multStmt(iterator);
     const temp = iterator.emitter.newTemp();
-    iterator.emitter.emit(op, temp, inherited.place, right.place);
+    iterator.emitter.emitFromToken(op, temp, inherited.place, right.place, token);
     const type = iterator.mergeArithmeticTypes(inherited.type, right.type);
     iterator.registerTemp(temp, type);
     inherited = iterator.createExprResult(temp, type, token);

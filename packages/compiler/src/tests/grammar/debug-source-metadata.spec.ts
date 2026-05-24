@@ -104,4 +104,43 @@ int main() {
       ),
     ).toBe(true);
   });
+
+  it("maps control flow instructions to source lines", () => {
+    const instructions = compile(`
+int main() {
+  int i = 0;
+  while (i < 2) {
+    if (i == 1) {
+      break;
+    }
+    i++;
+  }
+}
+`);
+
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "IF" && instruction.source?.line === 4,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "IF" && instruction.source?.line === 5,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "JUMP" && instruction.source?.line === 6,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "+" && instruction.source?.line === 8,
+      ),
+    ).toBe(true);
+  });
 });

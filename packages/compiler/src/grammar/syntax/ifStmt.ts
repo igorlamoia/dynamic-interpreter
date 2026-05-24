@@ -10,7 +10,7 @@ import { elsePartStmt } from "./elsePartStmt";
  * @derivation `<ifStmt> → if '(' <expr> ')' <stmt> <elsePart>`
  */
 export function ifStmt(iterator: TokenIterator): void {
-  iterator.consume(TOKENS.RESERVEDS.if);
+  const ifToken = iterator.consume(TOKENS.RESERVEDS.if);
   iterator.consume(TOKENS.SYMBOLS.left_paren);
 
   const condResult = exprStmt(iterator); // resultado da condição
@@ -22,19 +22,25 @@ export function ifStmt(iterator: TokenIterator): void {
   const labelEnd = iterator.emitter.newLabel();
 
   // Gerar instrução condicional: IF condResult ? labelTrue : labelFalse
-  iterator.emitter.emit("IF", condResult.place, labelTrue, labelFalse);
+  iterator.emitter.emitFromToken(
+    "IF",
+    condResult.place,
+    labelTrue,
+    labelFalse,
+    ifToken,
+  );
 
   // Início do bloco "if"
-  iterator.emitter.emit("LABEL", labelTrue, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelTrue, null, null, ifToken);
   stmt(iterator); // bloco do if
 
   // Pular o else após executar o if
-  iterator.emitter.emit("JUMP", labelEnd, null, null);
+  iterator.emitter.emitFromToken("JUMP", labelEnd, null, null, ifToken);
 
   // Início do bloco "else"
-  iterator.emitter.emit("LABEL", labelFalse, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelFalse, null, null, ifToken);
   elsePartStmt(iterator); // bloco do else (se houver)
 
   // Label final
-  iterator.emitter.emit("LABEL", labelEnd, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelEnd, null, null, ifToken);
 }
