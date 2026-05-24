@@ -46,6 +46,7 @@ export class Interpreter {
   private debugStopReason: DebugStopReason | null = null;
   private lastDebugError: string | null = null;
   private lastDebugStoppedInstructionPointer: number | null = null;
+  private debugInputQueue: string[] = [];
   private instructionPointer: number;
   private program: Instruction[];
 
@@ -140,6 +141,13 @@ export class Interpreter {
     const initialValue = evaluatedArgs[frame.parameters.length];
     frame.parameters.push(parameterName);
     return initialValue;
+  }
+
+  private async readStdin(): Promise<string> {
+    if (this.debugInputQueue.length > 0) {
+      return this.debugInputQueue.shift()!;
+    }
+    return this.stdin();
   }
 
   private resetRuntimeState(): void {
@@ -304,7 +312,7 @@ export class Interpreter {
 
           const scanHint =
             operand1 === "int" || operand1 === "float" ? operand1 : null;
-          const userInput = await this.stdin();
+          const userInput = await this.readStdin();
           commandRef.current = "";
           this.setVariable(operand2, parseScanInput(scanHint, userInput));
           this.instructionPointer++;
@@ -479,6 +487,7 @@ export class Interpreter {
   }
 
   public async execute(commandRef = { current: "" }): Promise<void> {
+    this.debugInputQueue = [];
     this.resetRuntimeState();
     this.indexLabels();
     this.initializeAtMain();
@@ -498,43 +507,52 @@ export class Interpreter {
     this.debugStopReason = "entry";
     this.lastDebugError = null;
     this.lastDebugStoppedInstructionPointer = null;
+    this.debugInputQueue = [];
     return this.getDebugSnapshot();
   }
 
   public async continueDebug(
     commandRef = { current: "" },
   ): Promise<DebugSnapshot> {
-    this.debugStatus = "running";
-    while (this.reading()) {
-      const instruction = this.getCurrentInstruction();
-      const isSameStoppedInstruction =
-        this.lastDebugStoppedInstructionPointer === this.instructionPointer;
+    try {
+      this.debugStatus = "running";
+      while (this.reading()) {
+        const instruction = this.getCurrentInstruction();
+        const isSameStoppedInstruction =
+          this.lastDebugStoppedInstructionPointer === this.instructionPointer;
 
-      if (
-        instruction.source &&
-        this.debugBreakpoints.has(instruction.source.line) &&
-        !isSameStoppedInstruction
-      ) {
-        this.debugStatus = "paused";
-        this.debugStopReason = "breakpoint";
-        this.lastDebugStoppedInstructionPointer = this.instructionPointer;
-        return this.getDebugSnapshot();
-      }
+        if (
+          instruction.source &&
+          this.debugBreakpoints.has(instruction.source.line) &&
+          !isSameStoppedInstruction
+        ) {
+          this.debugStatus = "paused";
+          this.debugStopReason = "breakpoint";
+          this.lastDebugStoppedInstructionPointer = this.instructionPointer;
+          return this.getDebugSnapshot();
+        }
 
-      if (isSameStoppedInstruction) {
-        this.lastDebugStoppedInstructionPointer = null;
-      }
+        if (isSameStoppedInstruction) {
+          this.lastDebugStoppedInstructionPointer = null;
+        }
 
-      const result = await this.stepInstruction(commandRef);
-      if (result === "stopped") {
-        this.debugStatus = "completed";
-        this.debugStopReason = "completed";
-        return this.getDebugSnapshot();
+        if (this.shouldWaitForDebugInput()) {
+          return this.pauseForDebugInput();
+        }
+
+        const result = await this.stepInstruction(commandRef);
+        if (result === "stopped") {
+          this.debugStatus = "completed";
+          this.debugStopReason = "completed";
+          return this.getDebugSnapshot();
+        }
       }
+      this.debugStatus = "completed";
+      this.debugStopReason = "completed";
+      return this.getDebugSnapshot();
+    } catch (error) {
+      return this.toDebugErrorSnapshot(error);
     }
-    this.debugStatus = "completed";
-    this.debugStopReason = "completed";
-    return this.getDebugSnapshot();
   }
 
   public async stepIntoDebug(
@@ -591,34 +609,72 @@ export class Interpreter {
     this.debugStopReason = "stopped";
     this.lastDebugError = null;
     this.lastDebugStoppedInstructionPointer = null;
+    this.debugInputQueue = [];
     return this.getDebugSnapshot();
+  }
+
+  public provideDebugInput(value: string): void {
+    this.debugInputQueue.push(value);
   }
 
   private async runDebugStepUntil(
     shouldPause: () => boolean,
     commandRef = { current: "" },
   ): Promise<DebugSnapshot> {
-    this.debugStatus = "running";
-    this.lastDebugStoppedInstructionPointer = null;
+    try {
+      this.debugStatus = "running";
+      this.lastDebugStoppedInstructionPointer = null;
 
-    while (this.reading()) {
-      const result = await this.stepInstruction(commandRef);
-      if (result === "stopped") {
-        this.debugStatus = "completed";
-        this.debugStopReason = "completed";
-        return this.getDebugSnapshot();
+      while (this.reading()) {
+        if (this.shouldWaitForDebugInput()) {
+          return this.pauseForDebugInput();
+        }
+
+        const result = await this.stepInstruction(commandRef);
+        if (result === "stopped") {
+          this.debugStatus = "completed";
+          this.debugStopReason = "completed";
+          return this.getDebugSnapshot();
+        }
+
+        if (shouldPause()) {
+          this.debugStatus = "paused";
+          this.debugStopReason = "step";
+          this.lastDebugStoppedInstructionPointer = this.instructionPointer;
+          return this.getDebugSnapshot();
+        }
       }
 
-      if (shouldPause()) {
-        this.debugStatus = "paused";
-        this.debugStopReason = "step";
-        this.lastDebugStoppedInstructionPointer = this.instructionPointer;
-        return this.getDebugSnapshot();
-      }
+      this.debugStatus = "completed";
+      this.debugStopReason = "completed";
+      return this.getDebugSnapshot();
+    } catch (error) {
+      return this.toDebugErrorSnapshot(error);
     }
+  }
 
-    this.debugStatus = "completed";
-    this.debugStopReason = "completed";
+  private shouldWaitForDebugInput(): boolean {
+    const instruction = this.getCurrentInstruction();
+    return (
+      instruction.op === "CALL" &&
+      instruction.result.toUpperCase() === "SCAN" &&
+      this.debugInputQueue.length === 0
+    );
+  }
+
+  private pauseForDebugInput(): DebugSnapshot {
+    this.debugStatus = "waiting-for-input";
+    this.debugStopReason = "input";
+    this.lastDebugStoppedInstructionPointer = this.instructionPointer;
+    return this.getDebugSnapshot();
+  }
+
+  private toDebugErrorSnapshot(error: unknown): DebugSnapshot {
+    const runtimeError = this.toRuntimeError(error, this.getCurrentInstruction());
+    this.debugStatus = "error";
+    this.debugStopReason = "error";
+    this.lastDebugError = runtimeError.message;
+    this.lastDebugStoppedInstructionPointer = runtimeError.instructionPointer;
     return this.getDebugSnapshot();
   }
 

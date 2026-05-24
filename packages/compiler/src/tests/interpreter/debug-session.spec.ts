@@ -166,4 +166,48 @@ int main() {
     expect(stopped.status).toBe("idle");
     expect(stopped.stopReason).toBe("stopped");
   });
+
+  it("returns an error snapshot when debug execution fails", async () => {
+    const interpreter = createInterpreter(`
+int main() {
+  int values[1];
+  print(values[2]);
+}
+`);
+
+    interpreter.startDebug();
+    const snapshot = await interpreter.continueDebug();
+
+    expect(snapshot.status).toBe("error");
+    expect(snapshot.stopReason).toBe("error");
+    expect(snapshot.currentSource?.line).toBe(4);
+    expect(snapshot.error).toMatch(/array|bounds|missing|runtime/i);
+  });
+
+  it("waits for debug input and resumes after input is provided", async () => {
+    const output: string[] = [];
+    const interpreter = createInterpreter(
+      `
+int main() {
+  int x;
+  scan(int, x);
+  print(x);
+}
+`,
+      output,
+    );
+
+    interpreter.startDebug();
+    const waiting = await interpreter.continueDebug();
+
+    expect(waiting.status).toBe("waiting-for-input");
+    expect(waiting.stopReason).toBe("input");
+    expect(waiting.currentSource?.line).toBe(4);
+
+    interpreter.provideDebugInput("5");
+    const completed = await interpreter.continueDebug();
+
+    expect(completed.status).toBe("completed");
+    expect(output).toEqual(["5"]);
+  });
 });
