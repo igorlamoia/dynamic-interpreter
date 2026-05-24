@@ -35,7 +35,13 @@ export function attributeStmt(iterator: TokenIterator): void {
     const incremented = iterator.emitter.newTemp();
     iterator.emitter.emit("+", incremented, identifier.lexeme, "1");
     iterator.registerTemp(incremented, iterator.resolveSymbol(identifier.lexeme));
-    iterator.emitter.emit("=", identifier.lexeme, incremented, null);
+    iterator.emitter.emitFromToken(
+      "=",
+      identifier.lexeme,
+      incremented,
+      null,
+      identifier,
+    );
     return;
   }
 
@@ -55,7 +61,13 @@ export function attributeStmt(iterator: TokenIterator): void {
     const incremented = iterator.emitter.newTemp();
     iterator.emitter.emit("+", incremented, target.name, "1");
     iterator.registerTemp(incremented, iterator.resolveSymbol(target.name));
-    iterator.emitter.emit("=", target.name, incremented, null);
+    iterator.emitter.emitFromToken(
+      "=",
+      target.name,
+      incremented,
+      null,
+      target.token,
+    );
     return;
   }
 
@@ -115,7 +127,13 @@ export function emitAssignmentChain(
       currentValue.type,
       currentValue.token,
     );
-    iterator.emitter.emit("=", targets[i].name, currentValue.place, null);
+    iterator.emitter.emitFromToken(
+      "=",
+      targets[i].name,
+      currentValue.place,
+      null,
+      targets[i].token,
+    );
     currentValue = iterator.createExprResult(
       targets[i].name,
       targetType,
@@ -213,16 +231,23 @@ export function emitAssignmentFromValue(
   valuePlace: string,
   valueType: ValueType,
   token: Token,
+  sourceToken: Token = target.token,
 ): void {
   if (target.kind === "scalar") {
     iterator.warnIfLossyIntConversion(target.type, valueType, token);
-    iterator.emitter.emit("=", target.name, valuePlace, null);
+    iterator.emitter.emitFromToken("=", target.name, valuePlace, null, sourceToken);
     return;
   }
 
   assertAssignable(iterator, target.type, valueType, token);
   iterator.warnIfLossyIntConversion(target.type, valueType, token);
-  iterator.emitter.emit("ARRAY_SET" as never, target.name, target.indexes, valuePlace);
+  iterator.emitter.emitFromToken(
+    "ARRAY_SET" as never,
+    target.name,
+    target.indexes,
+    valuePlace,
+    sourceToken,
+  );
 }
 
 function assertAssignable(

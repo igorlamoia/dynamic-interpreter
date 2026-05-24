@@ -77,7 +77,7 @@ function declarationStmtCore(
           token: identToken,
         });
       } else {
-        emitAssignmentChain(iterator, varName);
+        emitAssignmentChain(iterator, varName, identToken);
       }
     }
 
@@ -352,6 +352,7 @@ function emitArrayLiteralEntries(
       node.value.place,
       node.value.type,
       node.value.token,
+      context.token,
     );
     return;
   }

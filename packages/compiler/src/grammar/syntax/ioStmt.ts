@@ -54,7 +54,7 @@ export function printStmt(iterator: TokenIterator): void {
  * @derivation `<scanStmt> -> 'scan' '(' (<type-or-format> ',' )? 'IDENT' ')' ';'`
  */
 export function scanStmt(iterator: TokenIterator): void {
-  iterator.consume(RESERVEDS.scan);
+  const scanToken = iterator.consume(RESERVEDS.scan);
   iterator.consume(SYMBOLS.left_paren);
 
   const typingMode = iterator.getTypingMode();
@@ -76,14 +76,21 @@ export function scanStmt(iterator: TokenIterator): void {
   consumeStmtTerminator(iterator);
 
   if (target.kind === "scalar") {
-    iterator.emitter.emit("CALL", "SCAN", hint, target.name);
+    iterator.emitter.emitFromToken("CALL", "SCAN", hint, target.name, scanToken);
     return;
   }
 
   const temp = iterator.emitter.newTemp();
   iterator.registerTemp(temp, target.type);
-  iterator.emitter.emit("CALL", "SCAN", hint, temp);
-  emitAssignmentFromValue(iterator, target, temp, target.type, target.token);
+  iterator.emitter.emitFromToken("CALL", "SCAN", hint, temp, scanToken);
+  emitAssignmentFromValue(
+    iterator,
+    target,
+    temp,
+    target.type,
+    target.token,
+    scanToken,
+  );
 }
 
 function parseScanHint(iterator: TokenIterator): ScanHint {

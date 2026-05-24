@@ -20,5 +20,5 @@ export function continueStmt(iterator: TokenIterator): void {
     );
   }
 
-  iterator.emitter.emit("JUMP", continueLabel, null, null);
+  iterator.emitter.emitFromToken("JUMP", continueLabel, null, null, continueToken);
 }

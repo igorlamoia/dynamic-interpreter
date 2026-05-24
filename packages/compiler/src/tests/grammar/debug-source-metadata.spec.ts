@@ -37,4 +37,49 @@ int main() {
 
     expect(emitter.getInstructions()[0]).not.toHaveProperty("source");
   });
+
+  it("maps common statements to their source lines", () => {
+    const instructions = compile(`
+int add(int value) {
+  return value;
+}
+
+int main() {
+  int x = 1;
+  x = x + 1;
+  print(add(x));
+}
+`);
+
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "RETURN" && instruction.source?.line === 3,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "=" &&
+          instruction.result === "x" &&
+          instruction.source?.line === 8,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "CALL" &&
+          instruction.result === "add" &&
+          instruction.source?.line === 9,
+      ),
+    ).toBe(true);
+    expect(
+      instructions.some(
+        (instruction) =>
+          instruction.op === "CALL" &&
+          instruction.result === "PRINT" &&
+          instruction.source?.line === 9,
+      ),
+    ).toBe(true);
+  });
 });

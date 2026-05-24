@@ -9,7 +9,7 @@ import { consumeStmtTerminator } from "./statementTerminator";
  * @derivation `<returnStmt> → return <optExpr> ';'`
  */
 export function returnStmt(iterator: TokenIterator): void {
-  iterator.consume(TOKENS.RESERVEDS.return);
+  const returnToken = iterator.consume(TOKENS.RESERVEDS.return);
 
   // Parsear expressão de retorno (opcional)
   const returnValue = optExprStmt(iterator);
@@ -25,10 +25,11 @@ export function returnStmt(iterator: TokenIterator): void {
 
   consumeStmtTerminator(iterator);
 
-  iterator.emitter.emit(
+  iterator.emitter.emitFromToken(
     "RETURN",
     returnValue?.place || "null",
     functionReturnType,
     null,
+    returnToken,
   );
 }

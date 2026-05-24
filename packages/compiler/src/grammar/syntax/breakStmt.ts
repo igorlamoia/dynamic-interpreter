@@ -20,5 +20,5 @@ export function breakStmt(iterator: TokenIterator): void {
     );
   }
 
-  iterator.emitter.emit("JUMP", breakLabel, null, null);
+  iterator.emitter.emitFromToken("JUMP", breakLabel, null, null, breakToken);
 }
