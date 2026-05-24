@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { Emitter } from "../../ir/emitter";
 import { Lexer } from "../../lexer";
+import { Token } from "../../token";
+import { TOKENS } from "../../token/constants";
 import { TokenIterator } from "../../token/TokenIterator";
+import {
+  AssignmentTarget,
+  emitAssignmentFromValue,
+} from "../../grammar/syntax/attributeStmt";
 
 function compile(source: string) {
   const lexer = new Lexer(source, { locale: "en" });
@@ -36,6 +42,22 @@ int main() {
     emitter.emit("LABEL", "__start", null, null);
 
     expect(emitter.getInstructions()[0]).not.toHaveProperty("source");
+  });
+
+  it("preserves omitted source metadata for direct assignment emits", () => {
+    const iterator = new TokenIterator([], { locale: "en" });
+    const targetToken = new Token(TOKENS.LITERALS.identifier, "x", 2, 3);
+    const valueToken = new Token(TOKENS.LITERALS.integer_literal, "1", 2, 7);
+    const target: AssignmentTarget = {
+      kind: "scalar",
+      name: "x",
+      type: "int",
+      token: targetToken,
+    };
+
+    emitAssignmentFromValue(iterator, target, "1", "int", valueToken);
+
+    expect(iterator.emitter.getInstructions()[0]).not.toHaveProperty("source");
   });
 
   it("maps common statements to their source lines", () => {

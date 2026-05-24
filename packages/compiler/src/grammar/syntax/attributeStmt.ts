@@ -222,7 +222,14 @@ export function emitAssignment(
   }
 
   const value = exprStmt(iterator);
-  emitAssignmentFromValue(iterator, target, value.place, value.type, value.token);
+  emitAssignmentFromValue(
+    iterator,
+    target,
+    value.place,
+    value.type,
+    value.token,
+    target.token,
+  );
 }
 
 export function emitAssignmentFromValue(
@@ -231,7 +238,7 @@ export function emitAssignmentFromValue(
   valuePlace: string,
   valueType: ValueType,
   token: Token,
-  sourceToken: Token = target.token,
+  sourceToken?: Token,
 ): void {
   if (target.kind === "scalar") {
     iterator.warnIfLossyIntConversion(target.type, valueType, token);
