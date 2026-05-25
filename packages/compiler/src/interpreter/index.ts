@@ -890,6 +890,9 @@ export class Interpreter {
 
   private parseOrGetVariableWithScope(value: unknown): unknown {
     if (typeof value === "string") {
+      if (value.startsWith('"') && value.endsWith('"')) {
+        return value.slice(1, -1);
+      }
       const normalized = value.trim().toLowerCase();
       if (normalized === "true") return true;
       if (normalized === "false") return false;

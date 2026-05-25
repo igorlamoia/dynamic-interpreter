@@ -1,6 +1,6 @@
 import { useRuntimeError } from "@/contexts/RuntimeErrorContext";
 import { KeyboardEvent, useCallback, useEffect, useRef } from "react";
-import { createLine, TerminalLine } from ".";
+import { createLine, type DebugTerminalSession, type TerminalLine } from ".";
 import {
   Interpreter,
   RuntimeError,
@@ -20,6 +20,7 @@ interface BodyProps {
   setIsExecuting: React.Dispatch<React.SetStateAction<boolean>>;
   setLines: React.Dispatch<React.SetStateAction<TerminalLine[]>>;
   toggleTerminal: () => void;
+  debugSession?: DebugTerminalSession;
 }
 
 const scheduledExecutionKeys = new Set<string>();
@@ -34,6 +35,10 @@ function getExecutionKey(intermediateCode: Instruction[]): string {
   }
 }
 
+function normalizeSubmittedInput(value: string): string {
+  return value.replace(/[\r\n]/g, "");
+}
+
 export function Body(props: BodyProps) {
   const {
     lines,
@@ -44,6 +49,7 @@ export function Body(props: BodyProps) {
     setIsExecuting,
     setLines,
     toggleTerminal,
+    debugSession,
   } = props;
   const { setRuntimeErrorInstructionPointer } = useRuntimeError();
 
@@ -61,6 +67,13 @@ export function Body(props: BodyProps) {
   const processCommand = useCallback(
     (command: string) => {
       const trimmed = command.trim().toLowerCase();
+
+      if (debugSession?.snapshot?.status === "waiting-for-input") {
+        addLine(`$ ${command}`, "input");
+        debugSession.provideInput(command);
+        void debugSession.continueExecution();
+        return;
+      }
 
       // Se o interpretador está esperando input, resolve a promise
       if (resolveInput.current) {
@@ -102,7 +115,7 @@ export function Body(props: BodyProps) {
           break;
       }
     },
-    [addLine, toggleTerminal],
+    [addLine, debugSession, toggleTerminal],
   );
 
   // Executar interpretador quando receber código intermediário
@@ -197,7 +210,8 @@ export function Body(props: BodyProps) {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const command = currentInput;
+      e.preventDefault();
+      const command = normalizeSubmittedInput(currentInput);
       if (command.trim() !== "") {
         commandHistory.current.push(command);
         historyPointer.current = commandHistory.current.length;

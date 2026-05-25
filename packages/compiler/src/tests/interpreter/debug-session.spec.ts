@@ -210,4 +210,41 @@ int main() {
     expect(completed.status).toBe("completed");
     expect(output).toEqual(["5"]);
   });
+
+  it("compares scanned strings with string literals during debug execution", async () => {
+    const output: string[] = [];
+    const interpreter = new Interpreter(
+      compileToIr(`
+string readName() {
+  string name;
+  scan(int, name);
+  return name;
+}
+
+int main() {
+  string name = readName();
+  if (name == "igor") {
+    print("IGUALZINHO");
+  } else {
+    print("DIFERENTE");
+  }
+}
+`),
+      {
+        stdout: (msg) => output.push(msg),
+        stdin: async () => "",
+      },
+      "en",
+    );
+
+    interpreter.startDebug();
+    const waiting = await interpreter.continueDebug();
+    expect(waiting.status).toBe("waiting-for-input");
+
+    interpreter.provideDebugInput("igor");
+    const completed = await interpreter.continueDebug();
+
+    expect(completed.status).toBe("completed");
+    expect(output).toEqual(["IGUALZINHO"]);
+  });
 });

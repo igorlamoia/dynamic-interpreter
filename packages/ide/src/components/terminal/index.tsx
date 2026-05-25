@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Instruction } from "@ts-compilator-for-java/compiler/interpreter/constants";
+import type {
+  DebugSnapshot,
+  Instruction,
+} from "@ts-compilator-for-java/compiler/interpreter/constants";
 import { Body } from "./body";
 import { Header } from "./header";
 
@@ -13,10 +16,18 @@ export interface TerminalLine {
   type: "output" | "input" | "error" | "success" | "info" | "prompt";
 }
 
+export interface DebugTerminalSession {
+  output: string[];
+  snapshot: DebugSnapshot | null;
+  provideInput: (value: string) => void;
+  continueExecution: () => Promise<DebugSnapshot | null>;
+}
+
 interface ITerminalViewProps {
   isTerminalOpen: boolean;
   toggleTerminal: () => void;
   intermediateCode: Instruction[];
+  debugSession?: DebugTerminalSession;
 }
 
 let lineIdCounter = 0;
@@ -32,6 +43,7 @@ export default function TerminalView({
   isTerminalOpen,
   toggleTerminal,
   intermediateCode,
+  debugSession,
 }: ITerminalViewProps) {
   const [lines, setLines] = useState<TerminalLine[]>([
     createLine("Van Hohenheim! O Henheim da luz", "info"),
@@ -39,6 +51,7 @@ export default function TerminalView({
   const [currentInput, setCurrentInput] = useState("");
   const [isExecuting, setIsExecuting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const debugOutputLengthRef = useRef(0);
 
   // Focar no input quando o terminal abrir
   useEffect(() => {
@@ -46,6 +59,29 @@ export default function TerminalView({
       inputRef.current.focus();
     }
   }, [isTerminalOpen]);
+
+  useEffect(() => {
+    const debugOutput = debugSession?.output;
+    if (!debugOutput) {
+      debugOutputLengthRef.current = 0;
+      return;
+    }
+
+    if (debugOutput.length < debugOutputLengthRef.current) {
+      debugOutputLengthRef.current = 0;
+    }
+
+    const nextOutput = debugOutput.slice(debugOutputLengthRef.current);
+    if (nextOutput.length === 0) return;
+
+    setLines((previousLines) => [
+      ...previousLines,
+      ...nextOutput.flatMap((content) =>
+        createOutputLines(content, "output"),
+      ),
+    ]);
+    debugOutputLengthRef.current = debugOutput.length;
+  }, [debugSession?.output]);
 
   return (
     <>
@@ -77,10 +113,19 @@ export default function TerminalView({
               setCurrentInput={setCurrentInput}
               setLines={setLines}
               toggleTerminal={toggleTerminal}
+              debugSession={debugSession}
             />
           </motion.div>
         )}
       </AnimatePresence>
     </>
   );
+}
+
+function createOutputLines(
+  content: string,
+  type: TerminalLine["type"],
+): TerminalLine[] {
+  const normalizedContent = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  return normalizedContent.split("\n").map((line) => createLine(line, type));
 }

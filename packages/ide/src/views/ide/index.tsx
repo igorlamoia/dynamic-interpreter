@@ -132,10 +132,12 @@ export function IDE() {
   };
 
   const startDebug = () => {
+    setIsTerminalOpen(true);
     void debugSession.start(getEditorCode());
   };
 
   const restartDebug = () => {
+    setIsTerminalOpen(true);
     void debugSession.restart(getEditorCode());
   };
 
@@ -196,7 +198,6 @@ export function IDE() {
                           breakpoints: selectedDebugLines,
                           boundBreakpoints: debugSession.boundBreakpoints,
                           unboundBreakpoints: debugSession.unboundBreakpoints,
-                          output: debugSession.output,
                           snapshot: debugSession.snapshot,
                           error: debugSession.error,
                           isStale: debugSession.isStale,
@@ -229,6 +230,7 @@ export function IDE() {
                     isTerminalOpen={isTerminalOpen}
                     toggleTerminal={toggleTerminal}
                     intermediateCode={intermediateCode}
+                    debugSession={debugSession}
                   />
                 </div>
               </AnimatePresence>

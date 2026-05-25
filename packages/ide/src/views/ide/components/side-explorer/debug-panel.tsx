@@ -15,7 +15,6 @@ export interface DebugPanelProps {
   breakpoints?: number[];
   boundBreakpoints?: number[];
   unboundBreakpoints?: number[];
-  output?: string[];
   snapshot?: DebugSnapshot | null;
   error?: string | null;
   isStale?: boolean;
@@ -37,7 +36,6 @@ export function DebugPanel({
   breakpoints = [],
   boundBreakpoints = [],
   unboundBreakpoints = [],
-  output = [],
   snapshot = null,
   error = null,
   isStale = false,
@@ -178,16 +176,6 @@ export function DebugPanel({
             </div>
           ) : (
             <EmptyState>No stack frames</EmptyState>
-          )}
-        </PanelSection>
-
-        <PanelSection title="Output">
-          {output.length ? (
-            <pre className="max-h-32 overflow-auto rounded-md bg-slate-950 px-2 py-2 text-[11px] leading-relaxed text-slate-100">
-              {output.join("\n")}
-            </pre>
-          ) : (
-            <EmptyState>No output</EmptyState>
           )}
         </PanelSection>
       </div>

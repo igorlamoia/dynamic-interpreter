@@ -6,6 +6,7 @@ export default defineConfig({
     include: [
       "src/tests/integration/**/*.spec.ts",
       "src/components/Ast.spec.tsx",
+      "src/components/terminal/**/*.spec.tsx",
       "src/components/keyword-customizer/keyword-customizer-step-props.spec.ts",
       "src/components/keyword-customizer/steps/review-step/review-step.spec.tsx",
       "src/contexts/editor/useDebugger.spec.tsx",

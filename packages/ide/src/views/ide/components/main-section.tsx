@@ -5,6 +5,7 @@ import { HomeScreen } from "@/components/home-screen";
 import { useContext } from "react";
 import { EditorContext } from "@/contexts/editor/EditorContext";
 import { Instruction } from "@ts-compilator-for-java/compiler/interpreter/constants";
+import type { DebugTerminalSession } from "@/components/terminal";
 
 const TerminalView = dynamic(() => import("@/components/terminal"), {
   ssr: false,
@@ -18,6 +19,7 @@ interface MainSectionProps {
   isTerminalOpen: boolean;
   toggleTerminal: () => void;
   intermediateCode?: { instructions: Instruction[] };
+  debugSession?: DebugTerminalSession;
 }
 
 export function MainSection({
@@ -28,6 +30,7 @@ export function MainSection({
   isTerminalOpen,
   toggleTerminal,
   intermediateCode,
+  debugSession,
 }: MainSectionProps) {
   const editorContext = useContext(EditorContext);
 
@@ -64,6 +67,7 @@ export function MainSection({
         </div>
         {openTabs.length === 0 && <HomeScreen />}
         <TerminalView
+          debugSession={debugSession}
           intermediateCode={intermediateCode?.instructions || []}
           isTerminalOpen={isTerminalOpen}
           toggleTerminal={toggleTerminal}

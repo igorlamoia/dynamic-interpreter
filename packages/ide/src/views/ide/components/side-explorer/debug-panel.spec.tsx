@@ -24,7 +24,7 @@ afterEach(() => {
 });
 
 describe("DebugPanel", () => {
-  it("renders debug controls, breakpoints, variables, and output", () => {
+  it("renders debug controls, breakpoints, variables, and call stack without output", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
     const root = createRoot(container);
@@ -35,7 +35,6 @@ describe("DebugPanel", () => {
           breakpoints={[3]}
           boundBreakpoints={[3]}
           unboundBreakpoints={[9]}
-          output={["hello"]}
           snapshot={{
             status: "paused",
             stopReason: "breakpoint",
@@ -65,7 +64,8 @@ describe("DebugPanel", () => {
     expect(container.textContent).toContain("x");
     expect(container.textContent).toContain("Call Stack");
     expect(container.textContent).toContain("main");
-    expect(container.textContent).toContain("hello");
+    expect(container.textContent).not.toContain("Output");
+    expect(container.textContent).not.toContain("hello");
 
     act(() => {
       root.unmount();
