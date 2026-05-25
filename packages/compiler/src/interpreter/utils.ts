@@ -141,6 +141,14 @@ export function parseScanInput(hint: ScanHint, rawInput: string): unknown {
     return Number.isNaN(parsed) ? parsePiece(trimmed) : parsed;
   }
 
+  if (hint === "string") {
+    return rawInput;
+  }
+
+  if (hint === "bool") {
+    return normalizeBooleanLike(parsePiece(trimmed));
+  }
+
   return parsePiece(trimmed);
 }
 

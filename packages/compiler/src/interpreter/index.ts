@@ -21,6 +21,7 @@ import {
   RELATIONALS,
   RuntimeArrayValue,
   RuntimeSlot,
+  ScanHint,
   SourceLocation,
   TArithmetics,
   TLogical,
@@ -310,8 +311,11 @@ export class Interpreter {
               currentInstruction,
             );
 
-          const scanHint =
-            operand1 === "int" || operand1 === "float" ? operand1 : null;
+          const scanHint = ["int", "float", "string", "bool"].includes(
+            operand1 as string,
+          )
+            ? (operand1 as ScanHint)
+            : null;
           const userInput = await this.readStdin();
           commandRef.current = "";
           this.setVariable(operand2, parseScanInput(scanHint, userInput));
@@ -441,22 +445,14 @@ export class Interpreter {
           Number(this.parseOrGetVariableWithScope(index)),
         );
         const nextValue = this.parseOrGetVariableWithScope(operand2);
-        writeArrayValue(
-          arraySlot.value,
-          indexes,
-          nextValue,
-          (code, params) =>
-            this.throwRuntimeError(code, params, currentInstruction),
+        writeArrayValue(arraySlot.value, indexes, nextValue, (code, params) =>
+          this.throwRuntimeError(code, params, currentInstruction),
         );
         this.instructionPointer++;
       } else if (op === "RETURN") {
         const returnValue = this.parseOrGetVariableWithScope(result);
-        const returnType =
-          typeof operand1 === "string" ? operand1 : "dynamic";
-        const coercedReturnValue = coerceValueForType(
-          returnType,
-          returnValue,
-        );
+        const returnType = typeof operand1 === "string" ? operand1 : "dynamic";
+        const coercedReturnValue = coerceValueForType(returnType, returnValue);
 
         if (this.callStack.length === 0) {
           // Return do main - terminar execução
@@ -670,7 +666,10 @@ export class Interpreter {
   }
 
   private toDebugErrorSnapshot(error: unknown): DebugSnapshot {
-    const runtimeError = this.toRuntimeError(error, this.getCurrentInstruction());
+    const runtimeError = this.toRuntimeError(
+      error,
+      this.getCurrentInstruction(),
+    );
     this.debugStatus = "error";
     this.debugStopReason = "error";
     this.lastDebugError = runtimeError.message;

@@ -7,6 +7,7 @@ import {
 } from "./attributeStmt";
 import { argumentListStmt } from "./argumentListStmt";
 import { consumeStmtTerminator } from "./statementTerminator";
+import { typeStmt } from "./typeStmt";
 
 const { RESERVEDS, SYMBOLS, LITERALS } = TOKENS;
 
@@ -96,10 +97,19 @@ export function scanStmt(iterator: TokenIterator): void {
 function parseScanHint(iterator: TokenIterator): ScanHint {
   const token = iterator.peek();
 
-  if (token.type === RESERVEDS.int || token.type === RESERVEDS.float) {
-    iterator.consume(token.type);
-    const semanticType = iterator.mapTokenTypeToSemanticType(token.type);
-    if (semanticType === "int" || semanticType === "float") {
+  if (
+    token.type === RESERVEDS.int ||
+    token.type === RESERVEDS.float ||
+    token.type === RESERVEDS.string ||
+    token.type === RESERVEDS.bool
+  ) {
+    const semanticType = typeStmt(iterator);
+    if (
+      semanticType === "int" ||
+      semanticType === "float" ||
+      semanticType === "string" ||
+      semanticType === "bool"
+    ) {
       return semanticType;
     }
   }

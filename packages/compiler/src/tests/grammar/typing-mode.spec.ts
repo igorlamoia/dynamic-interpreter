@@ -62,6 +62,51 @@ describe("Grammar Typing Mode", () => {
     ).not.toThrow();
   });
 
+  it("accepts string and bool scan type-token syntax in typed mode", () => {
+    const instructions = compileToIr(
+      `
+        int main() {
+          string nome = "";
+          bool active = false;
+          scan(string, nome);
+          scan(bool, active);
+        }
+      `,
+      { grammar: { typingMode: "typed" } },
+    );
+
+    expect(instructions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          op: "CALL",
+          result: "SCAN",
+          operand1: "string",
+          operand2: "nome",
+        }),
+        expect.objectContaining({
+          op: "CALL",
+          result: "SCAN",
+          operand1: "bool",
+          operand2: "active",
+        }),
+      ]),
+    );
+  });
+
+  it("rejects void scan type-token syntax in typed mode", () => {
+    expect(() =>
+      compileToIr(
+        `
+          int main() {
+            int x = 0;
+            scan(void, x);
+          }
+        `,
+        { grammar: { typingMode: "typed" } },
+      ),
+    ).toThrow();
+  });
+
   it("accepts scan format syntax in typed mode", () => {
     expect(() =>
       compileToIr(

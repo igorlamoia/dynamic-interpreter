@@ -707,6 +707,25 @@ describe("Type semantics runtime", () => {
     expect(result.output).toBe("3");
   });
 
+  it("reads string and bool values with typed scan hints", async () => {
+    const result = await executeProgram(
+      `
+        int main() {
+          string nome = "";
+          bool active = false;
+          scan(string, nome);
+          scan(bool, active);
+          print(nome);
+          print(active);
+          return 0;
+        }
+      `,
+      { stdin: createStdin(["Maria", "true"]) },
+    );
+
+    expect(result.output).toBe("Mariatrue");
+  });
+
   it("truncates negative floats toward zero for int", async () => {
     const result = await executeProgram(`
       int main() {

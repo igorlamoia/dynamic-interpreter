@@ -8,7 +8,7 @@ export type TSystemCalls = "CALL"; // e.g. PRINT, SCAN
 export type TLabel = "LABEL";
 export type TDeclaration = "DECLARE" | "DECLARE_ARRAY";
 export type TArrayOp = "ARRAY_GET" | "ARRAY_SET";
-export type ScanHint = "int" | "float" | null;
+export type ScanHint = "int" | "float" | "string" | "bool" | null;
 
 export const ARITHMETICS: TArithmetics[] = ["+", "-", "*", "/", "%", "//"];
 export const LOGICALS: TLogical[] = ["||", "&&", "!"];
