@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement } from "react";
 import { createRoot, Root } from "react-dom/client";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { useDebugSession, UseDebugSessionResult } from "./useDebugSession";
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean })
@@ -126,6 +126,50 @@ int main() {
 
     expect(getResult().snapshot).toBeNull();
     expect(getResult().error).toBeTruthy();
+  });
+
+  it("reports compile errors as structured issues when debug start fails", async () => {
+    const onCompileError = vi.fn();
+    const { getResult } = renderHook({ breakpoints: [], onCompileError });
+
+    await act(async () => {
+      await getResult().start(`
+int main() {
+  int x = ;
+}
+`);
+    });
+
+    expect(getResult().snapshot).toBeNull();
+    expect(onCompileError).toHaveBeenCalledWith(
+      expect.objectContaining({
+        line: expect.any(Number),
+        message: expect.any(String),
+        type: "error",
+      }),
+    );
+  });
+
+  it("reports compile warnings when debug start succeeds", async () => {
+    const onIssues = vi.fn();
+    const { getResult } = renderHook({ breakpoints: [], onIssues });
+
+    await act(async () => {
+      await getResult().start(`
+int main() {
+  int x = 1.9;
+  print(x);
+}
+`);
+    });
+
+    expect(getResult().snapshot?.status).toBe("paused");
+    expect(onIssues).toHaveBeenCalledWith([
+      expect.objectContaining({
+        message: expect.any(String),
+        type: "warning",
+      }),
+    ]);
   });
 
   it("marks a started session stale only when the source changes", async () => {

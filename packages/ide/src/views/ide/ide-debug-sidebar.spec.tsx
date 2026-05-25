@@ -16,6 +16,7 @@ const mocks = vi.hoisted(() => ({
   continueExecution: vi.fn(),
   restart: vi.fn(),
   setIsTerminalOpen: vi.fn(),
+  showToast: vi.fn(),
   sidebarPanelProps: [] as Array<{
     activeView: string;
     debugPanelProps?: {
@@ -70,6 +71,12 @@ vi.mock("@/contexts/TerminalContext", () => ({
   useTerminalContext: () => ({
     isTerminalOpen: false,
     setIsTerminalOpen: mocks.setIsTerminalOpen,
+  }),
+}));
+
+vi.mock("@/contexts/ToastContext", () => ({
+  useToast: () => ({
+    showToast: mocks.showToast,
   }),
 }));
 
@@ -299,12 +306,85 @@ describe("IDE debug sidebar wiring", () => {
     });
 
     expect(mocks.start).toHaveBeenCalledWith("debug source");
+    expect(editorContext.cleanIssues).toHaveBeenCalledTimes(2);
     expect(mocks.continueExecution).toHaveBeenCalled();
     expect(mocks.stepInto).toHaveBeenCalled();
     expect(mocks.stepOver).toHaveBeenCalled();
     expect(mocks.stepOut).toHaveBeenCalled();
     expect(mocks.restart).toHaveBeenCalledWith("debug source");
     expect(mocks.stop).toHaveBeenCalled();
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("routes debug compile issues to editor markers and toast notifications", () => {
+    const editorContext = createEditorContext();
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <EditorContext.Provider value={editorContext}>
+          <IDE />
+        </EditorContext.Provider>,
+      );
+    });
+
+    const debugSessionOptions = mocks.useDebugSession.mock.calls[0][0];
+
+    act(() => {
+      debugSessionOptions.onIssues([
+        {
+          column: 7,
+          line: 3,
+          message: "Lossy conversion",
+          type: "warning",
+        },
+      ]);
+    });
+
+    expect(editorContext.showLineIssues).toHaveBeenCalledWith(
+      [
+        expect.objectContaining({
+          message: "Lossy conversion",
+          severity: 4,
+          startColumn: 7,
+          startLineNumber: 3,
+        }),
+      ],
+      false,
+    );
+    expect(mocks.showToast).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "warning" }),
+    );
+
+    act(() => {
+      debugSessionOptions.onCompileError({
+        column: 5,
+        line: 4,
+        message: "Unexpected token",
+        type: "error",
+      });
+    });
+
+    expect(editorContext.showLineIssues).toHaveBeenLastCalledWith(
+      [
+        expect.objectContaining({
+          message: "Unexpected token",
+          severity: 8,
+          startColumn: 5,
+          startLineNumber: 4,
+        }),
+      ],
+      true,
+    );
+    expect(mocks.showToast).toHaveBeenLastCalledWith({
+      message: "Unexpected token",
+      type: "error",
+    });
 
     act(() => {
       root.unmount();

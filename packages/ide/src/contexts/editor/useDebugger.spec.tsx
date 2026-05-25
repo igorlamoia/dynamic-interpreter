@@ -20,6 +20,7 @@ function renderDebugger() {
       .fn()
       .mockReturnValueOnce(breakpointCollection)
       .mockReturnValueOnce(currentLineCollection),
+    revealLineInCenter: vi.fn(),
   };
   const monaco = {
     Range: class Range {
@@ -89,6 +90,7 @@ describe("useDebugger", () => {
     ]);
 
     act(() => getResult().setCurrentDebugLine(4));
+    expect(editor.revealLineInCenter).toHaveBeenCalledWith(4);
     expect(editor.createDecorationsCollection).toHaveBeenCalledTimes(2);
     expect(currentLineCollection.set).not.toHaveBeenCalled();
     expect(editor.createDecorationsCollection).toHaveBeenLastCalledWith([

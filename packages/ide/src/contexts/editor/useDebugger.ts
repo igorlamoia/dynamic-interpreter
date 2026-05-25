@@ -86,8 +86,11 @@ export function useDebugger({
   const setCurrentDebugLine = useCallback(
     (lineNumber: number | null) => {
       applyCurrentDebugLineDecoration(lineNumber);
+      if (lineNumber && lineNumber > 0) {
+        editorInstanceRef.current?.revealLineInCenter(lineNumber);
+      }
     },
-    [applyCurrentDebugLineDecoration],
+    [applyCurrentDebugLineDecoration, editorInstanceRef],
   );
 
   const clearCurrentDebugLine = useCallback(() => {

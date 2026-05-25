@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { EditorContext } from "@/contexts/editor/EditorContext";
 import { Instruction } from "@ts-compilator-for-java/compiler/interpreter/constants";
 import type { DebugTerminalSession } from "@/components/terminal";
+import { IDE_TERMINAL_RESERVED_BOTTOM_PX } from "@/components/terminal/constants";
 
 const TerminalView = dynamic(() => import("@/components/terminal"), {
   ssr: false,
@@ -63,7 +64,11 @@ export function MainSection({
       )}
       <div className="relative flex-1 overflow-x-auto">
         <div className={openTabs.length === 0 ? "hidden" : "h-full w-full"}>
-          <Editor />
+          <Editor
+            bottomPadding={
+              isTerminalOpen ? IDE_TERMINAL_RESERVED_BOTTOM_PX : 0
+            }
+          />
         </div>
         {openTabs.length === 0 && <HomeScreen />}
         <TerminalView

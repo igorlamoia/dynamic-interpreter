@@ -1,0 +1,1 @@
+export const IDE_TERMINAL_RESERVED_BOTTOM_PX = 320;

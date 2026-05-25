@@ -26,6 +26,11 @@ import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
 import { KeywordProvider, useKeywords } from "@/contexts/keyword/KeywordContext";
 import { useRouter } from "next/router";
 import { useDebugSession } from "@/hooks/useDebugSession";
+import type { MarkerSeverity } from "monaco-editor";
+import type { IssueDetails } from "@ts-compilator-for-java/compiler/issue";
+import { ESeverity, type TLineAlert } from "@/@types/editor";
+import { useToast } from "@/contexts/ToastContext";
+import { t } from "@/i18n";
 
 const DEFAULT_FILES = [
   { path: "src/main.?", initialCode: "// Main file\n" },
@@ -51,6 +56,7 @@ export function IDEView() {
 }
 export function IDE() {
   const { locale } = useRouter();
+  const { showToast } = useToast();
   const { buildLexerConfig } = useKeywords();
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
@@ -59,14 +65,33 @@ export function IDE() {
   const { isTerminalOpen, setIsTerminalOpen } = useTerminalContext();
   const {
     clearCurrentDebugLine,
+    cleanIssues,
     fileSystem,
     getEditorCode,
     loadFileContent,
     selectedDebugLines,
     setCurrentDebugLine,
+    showLineIssues,
     sourceCode,
   } = useContext(EditorContext);
   const lexerConfig = buildLexerConfig();
+
+  const showDebugIssues = (
+    issues: IssueDetails[],
+    showDetails: boolean = false,
+  ) => {
+    if (issues.length === 0) return;
+    const allLineIssues: TLineAlert[] = issues.map((issue) => ({
+      message: issue.message,
+      startLineNumber: issue.line,
+      endLineNumber: issue.line,
+      startColumn: issue.column,
+      endColumn: 100,
+      severity: ESeverity[issue.type] as unknown as MarkerSeverity,
+    }));
+    showLineIssues(allLineIssues, showDetails);
+  };
+
   const debugSession = useDebugSession({
     breakpoints: selectedDebugLines,
     keywordMap: lexerConfig.keywordMap,
@@ -78,6 +103,20 @@ export function IDE() {
     statementTerminatorLexeme: lexerConfig.statementTerminatorLexeme,
     locale,
     onCurrentLineChange: setCurrentDebugLine,
+    onIssues: (issues) => {
+      showDebugIssues(issues);
+      showToast({
+        message: t(locale, "toast.lexer_completed_with_warnings"),
+        type: "warning",
+      });
+    },
+    onCompileError: (issue) => {
+      showDebugIssues([issue], true);
+      showToast({
+        message: issue.message || t(locale, "toast.error_occurred"),
+        type: "error",
+      });
+    },
   });
   const markDebugSessionStale = debugSession.markStale;
 
@@ -132,11 +171,13 @@ export function IDE() {
   };
 
   const startDebug = () => {
+    cleanIssues();
     setIsTerminalOpen(true);
     void debugSession.start(getEditorCode());
   };
 
   const restartDebug = () => {
+    cleanIssues();
     setIsTerminalOpen(true);
     void debugSession.restart(getEditorCode());
   };

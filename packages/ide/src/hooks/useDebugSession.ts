@@ -9,6 +9,8 @@ import type {
 import { TokenIterator } from "@ts-compilator-for-java/compiler/token/TokenIterator";
 import type { Token } from "@ts-compilator-for-java/compiler/token";
 import { Interpreter } from "@ts-compilator-for-java/compiler/interpreter";
+import type { IssueDetails } from "@ts-compilator-for-java/compiler/issue";
+import { IssueError } from "@ts-compilator-for-java/compiler/issue";
 import type {
   DebugSnapshot,
   Instruction,
@@ -27,6 +29,8 @@ export type UseDebugSessionOptions = {
   booleanLiteralMap?: BooleanLiteralMap;
   statementTerminatorLexeme?: string;
   onCurrentLineChange?: (line: number | null) => void;
+  onIssues?: (issues: IssueDetails[]) => void;
+  onCompileError?: (issue: IssueDetails) => void;
 };
 
 export type UseDebugSessionResult = {
@@ -51,6 +55,7 @@ type CompiledDebugProgram = {
   instructions: Instruction[];
   boundBreakpoints: number[];
   unboundBreakpoints: number[];
+  issues: IssueDetails[];
 };
 
 function compileDebugProgram(
@@ -74,6 +79,12 @@ function compileDebugProgram(
     statementTerminatorLexeme: options.statementTerminatorLexeme,
   });
   const instructions = iterator.generateIntermediateCode();
+  const issues = [
+    ...lexer.warnings,
+    ...iterator.getWarnings(),
+    ...lexer.infos,
+    ...iterator.getInfos(),
+  ];
   const executableLines = new Set(
     instructions
       .filter((instruction) => instruction.op !== "LABEL")
@@ -92,6 +103,7 @@ function compileDebugProgram(
     unboundBreakpoints: uniqueBreakpoints.filter(
       (line) => !executableLines.has(line),
     ),
+    issues,
   };
 }
 
@@ -137,6 +149,9 @@ export function useDebugSession(
         setError(null);
         setIsStale(false);
         sourceRef.current = sourceCode;
+        if (compiled.issues.length > 0) {
+          options.onIssues?.(compiled.issues);
+        }
 
         const interpreter = new Interpreter(
           compiled.instructions,
@@ -157,6 +172,9 @@ export function useDebugSession(
       } catch (caught) {
         const message =
           caught instanceof Error ? caught.message : "Debug session failed";
+        if (caught instanceof IssueError) {
+          options.onCompileError?.(caught.details);
+        }
         interpreterRef.current = null;
         outputRef.current = [];
         setSnapshot(null);
