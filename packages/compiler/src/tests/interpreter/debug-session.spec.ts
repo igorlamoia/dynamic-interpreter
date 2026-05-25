@@ -186,6 +186,29 @@ int main() {
     expect(stopped.stopReason).toBe("stopped");
   });
 
+  it("steps out from main by running to completion", async () => {
+    const output: string[] = [];
+    const interpreter = createInterpreter(
+      `
+int main() {
+  int x = 1;
+  x = x + 1;
+  print(x);
+}
+`,
+      output,
+    );
+
+    interpreter.startDebug();
+    await interpreter.stepIntoDebug();
+
+    const steppedOut = await interpreter.stepOutDebug();
+
+    expect(steppedOut.status).toBe("completed");
+    expect(steppedOut.stopReason).toBe("completed");
+    expect(output).toEqual(["2"]);
+  });
+
   it("returns an error snapshot when debug execution fails", async () => {
     const interpreter = createInterpreter(`
 int main() {

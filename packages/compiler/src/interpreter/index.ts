@@ -482,7 +482,10 @@ export class Interpreter {
       const instruction = this.getCurrentInstruction();
       if (!this.isPrintInstruction(instruction)) break;
       if (instruction !== firstInstruction) {
-        if (!source || !this.isSameSourceStatement(source, instruction.source)) {
+        if (
+          !source ||
+          !this.isSameSourceStatement(source, instruction.source)
+        ) {
           break;
         }
       }
@@ -498,8 +501,7 @@ export class Interpreter {
 
   private isPrintInstruction(instruction: Instruction): boolean {
     return (
-      instruction.op === "CALL" &&
-      instruction.result.toUpperCase() === "PRINT"
+      instruction.op === "CALL" && instruction.result.toUpperCase() === "PRINT"
     );
   }
 
@@ -632,7 +634,7 @@ export class Interpreter {
   ): Promise<DebugSnapshot> {
     const startingDepth = this.getCallDepth();
     if (startingDepth === 0) {
-      return this.stepOverDebug(commandRef);
+      return this.continueDebug(commandRef);
     }
 
     const callerSource =
