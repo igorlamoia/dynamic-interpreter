@@ -3,6 +3,8 @@ const ui = {
   column: "Coluna",
   lexeme: "Lexema",
   token_selected: "Você selecionou este token: {lexeme}",
+  enter_fullscreen: "Entrar em tela cheia",
+  exit_fullscreen: "Sair da tela cheia",
   run_all: "Executar",
   run_lexer: "Executar Análise Léxica",
   hero_title: "Interpretador dinâmico",

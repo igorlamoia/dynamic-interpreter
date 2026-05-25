@@ -4,6 +4,8 @@ const ui = {
   lexeme: "Lexeme",
   token_selected: "You have selected this token: {lexeme}",
   login: "Login",
+  enter_fullscreen: "Enter fullscreen",
+  exit_fullscreen: "Exit fullscreen",
   run_all: "Run All",
   run_lexer: "Run Lexical Analysis",
   hero_title: "Dynamic Interpreter",

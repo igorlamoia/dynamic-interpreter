@@ -31,6 +31,7 @@ import type { IssueDetails } from "@ts-compilator-for-java/compiler/issue";
 import { ESeverity, type TLineAlert } from "@/@types/editor";
 import { useToast } from "@/contexts/ToastContext";
 import { t } from "@/i18n";
+import { cn } from "@/lib/utils";
 
 const DEFAULT_FILES = [
   { path: "src/main.?", initialCode: "// Main file\n" },
@@ -190,7 +191,9 @@ export function IDE() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeView, setActiveView] = useState<SidebarView>("explorer");
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
+  const toggleFullscreen = () => setIsFullscreen((current) => !current);
   useKeyboardShortcuts(
     toggleTerminal,
     isTerminalOpen,
@@ -202,14 +205,33 @@ export function IDE() {
   return (
     <>
       <RuntimeErrorProvider>
-        <div className="relative rounded-2xl">
-          <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-gray-100/70 dark:bg-black/20 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.8)]">
+        <div
+          data-testid="ide-shell"
+          className={cn(
+            "relative rounded-2xl",
+            isFullscreen &&
+              "fixed inset-0 z-50 flex flex-col rounded-none bg-background p-2 sm:p-4",
+          )}
+        >
+          <div
+            className={cn(
+              "rounded-2xl border border-black/10 dark:border-white/10 bg-gray-100/70 dark:bg-black/20 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.8)]",
+              isFullscreen && "flex min-h-0 flex-1 flex-col rounded-xl",
+            )}
+          >
             <Menu
               handleRun={handleRun}
+              isFullscreen={isFullscreen}
               runAll={runAll}
+              toggleFullscreen={toggleFullscreen}
               toggleTerminal={toggleTerminal}
             />
-            <div className={`flex h-[70vh] overflow-hidden rounded-b-2xl`}>
+            <div
+              className={cn(
+                "flex overflow-hidden rounded-b-2xl",
+                isFullscreen ? "min-h-0 flex-1" : "h-[70vh]",
+              )}
+            >
               <AnimatePresence>
                 <div
                   className={`flex flex-1 flex-col sm:flex-row h-full w-full`}

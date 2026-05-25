@@ -140,7 +140,22 @@ vi.mock("../tokens/list-intermediate-code", () => ({
 }));
 
 vi.mock("./components/menu", () => ({
-  Menu: () => null,
+  Menu: ({
+    isFullscreen,
+    toggleFullscreen,
+  }: {
+    isFullscreen?: boolean;
+    toggleFullscreen?: () => void;
+  }) => (
+    <button
+      aria-label="Toggle fullscreen"
+      data-fullscreen={String(isFullscreen)}
+      onClick={toggleFullscreen}
+      type="button"
+    >
+      Toggle fullscreen
+    </button>
+  ),
 }));
 
 vi.mock("./components/main-section", () => ({
@@ -418,6 +433,42 @@ describe("IDE debug sidebar wiring", () => {
     });
 
     expect(mocks.markStale).toHaveBeenLastCalledWith("changed source");
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("toggles the IDE shell into fullscreen from the menu", () => {
+    const editorContext = createEditorContext();
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <EditorContext.Provider value={editorContext}>
+          <IDE />
+        </EditorContext.Provider>,
+      );
+    });
+
+    const shell = container.querySelector('[data-testid="ide-shell"]');
+    const toggle = container.querySelector(
+      'button[aria-label="Toggle fullscreen"]',
+    );
+
+    expect(shell?.className).not.toContain("fixed");
+    expect(toggle?.getAttribute("data-fullscreen")).toBe("false");
+
+    act(() => {
+      toggle?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      );
+    });
+
+    expect(shell?.className).toContain("fixed");
+    expect(toggle?.getAttribute("data-fullscreen")).toBe("true");
 
     act(() => {
       root.unmount();
