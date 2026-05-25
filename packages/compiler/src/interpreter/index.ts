@@ -294,15 +294,7 @@ export class Interpreter {
       } else if (op === "CALL") {
         const callType = result.toUpperCase();
         if (callType === "PRINT") {
-          let output = String(
-            operand1 ?? this.parseOrGetVariableWithScope(operand2),
-          );
-          // Remove surrounding double quotes from string literals
-          if (output.startsWith('"') && output.endsWith('"')) {
-            output = output.slice(1, -1);
-          }
-          this.stdout(output.replace(/\\n/g, "\r\n"));
-          this.instructionPointer++;
+          this.emitPrintOutput(currentInstruction);
         } else if (callType === "SCAN") {
           if (typeof operand2 !== "string")
             this.throwRuntimeError(
@@ -480,6 +472,60 @@ export class Interpreter {
     }
 
     return "running";
+  }
+
+  private emitPrintOutput(firstInstruction: Instruction): void {
+    let output = "";
+    const source = firstInstruction.source;
+
+    while (this.reading()) {
+      const instruction = this.getCurrentInstruction();
+      if (!this.isPrintInstruction(instruction)) break;
+      if (instruction !== firstInstruction) {
+        if (!source || !this.isSameSourceStatement(source, instruction.source)) {
+          break;
+        }
+      }
+
+      output += this.formatPrintOutput(instruction);
+      this.instructionPointer++;
+
+      if (!source) break;
+    }
+
+    this.stdout(output);
+  }
+
+  private isPrintInstruction(instruction: Instruction): boolean {
+    return (
+      instruction.op === "CALL" &&
+      instruction.result.toUpperCase() === "PRINT"
+    );
+  }
+
+  private isSameSourceStatement(
+    source: SourceLocation,
+    next: SourceLocation | undefined,
+  ): boolean {
+    return (
+      next !== undefined &&
+      source.line === next.line &&
+      source.column === next.column &&
+      source.statementId === next.statementId
+    );
+  }
+
+  private formatPrintOutput(instruction: Instruction): string {
+    let output = String(
+      instruction.operand1 ??
+        this.parseOrGetVariableWithScope(instruction.operand2),
+    );
+
+    if (output.startsWith('"') && output.endsWith('"')) {
+      output = output.slice(1, -1);
+    }
+
+    return output.replace(/\\n/g, "\r\n");
   }
 
   public async execute(commandRef = { current: "" }): Promise<void> {

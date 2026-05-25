@@ -105,6 +105,25 @@ int main() {
     expect(output).toEqual(["2"]);
   });
 
+  it("emits one debug output event for a multi-argument print statement", async () => {
+    const output: string[] = [];
+    const interpreter = createInterpreter(
+      `
+int main() {
+  int idade = 90;
+  print("Idade: ", idade);
+}
+`,
+      output,
+    );
+
+    interpreter.startDebug();
+    const result = await interpreter.continueDebug();
+
+    expect(result.status).toBe("completed");
+    expect(output).toEqual(["Idade: 90"]);
+  });
+
   it("steps into user functions", async () => {
     const interpreter = createInterpreter(`
 int inc(int value) {
