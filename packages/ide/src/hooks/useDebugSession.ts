@@ -212,6 +212,11 @@ export function useDebugSession(
   }, []);
 
   const markStale = useCallback((currentSourceCode?: string): void => {
+    if (sourceRef.current === null) {
+      setIsStale(false);
+      return;
+    }
+
     setIsStale(
       currentSourceCode === undefined || currentSourceCode !== sourceRef.current,
     );

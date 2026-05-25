@@ -81,6 +81,12 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         language: config.language,
       });
 
+      editorInstanceRef.current.onDidChangeModelContent(() => {
+        const nextCode = editorInstanceRef.current?.getValue() ?? "";
+        setSourceCode(nextCode);
+        localStorage.setItem(getSourceCodeStorageKey(currentFilePath), nextCode);
+      });
+
       editorInstanceRef.current.onMouseDown((event) => {
         const monaco = monacoRef.current;
         if (!monaco) return;

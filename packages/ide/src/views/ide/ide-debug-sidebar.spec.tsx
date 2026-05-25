@@ -30,6 +30,7 @@ const mocks = vi.hoisted(() => ({
     };
   }>,
   start: vi.fn(),
+  markStale: vi.fn(),
   stepInto: vi.fn(),
   stepOut: vi.fn(),
   stepOver: vi.fn(),
@@ -223,6 +224,7 @@ describe("IDE debug sidebar wiring", () => {
     mocks.continueExecution.mockResolvedValue(null);
     mocks.restart.mockResolvedValue(null);
     mocks.start.mockResolvedValue(null);
+    mocks.markStale.mockReturnValue(undefined);
     mocks.stepInto.mockResolvedValue(null);
     mocks.stepOut.mockResolvedValue(null);
     mocks.stepOver.mockResolvedValue(null);
@@ -234,6 +236,7 @@ describe("IDE debug sidebar wiring", () => {
       isStale: false,
       output: ["hello"],
       restart: mocks.restart,
+      markStale: mocks.markStale,
       snapshot: null,
       start: mocks.start,
       stepInto: mocks.stepInto,
@@ -302,6 +305,39 @@ describe("IDE debug sidebar wiring", () => {
     expect(mocks.stepOut).toHaveBeenCalled();
     expect(mocks.restart).toHaveBeenCalledWith("debug source");
     expect(mocks.stop).toHaveBeenCalled();
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("marks the debug session stale when the editor source changes", () => {
+    const editorContext = createEditorContext();
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <EditorContext.Provider value={editorContext}>
+          <IDE />
+        </EditorContext.Provider>,
+      );
+    });
+
+    expect(mocks.markStale).toHaveBeenLastCalledWith("debug source");
+
+    act(() => {
+      root.render(
+        <EditorContext.Provider
+          value={{ ...editorContext, sourceCode: "changed source" }}
+        >
+          <IDE />
+        </EditorContext.Provider>,
+      );
+    });
+
+    expect(mocks.markStale).toHaveBeenLastCalledWith("changed source");
 
     act(() => {
       root.unmount();

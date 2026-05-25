@@ -10,13 +10,13 @@ import { DebugPanel } from "./debug-panel";
 
 vi.mock("lucide-react", () => ({
   CircleDot: () => <span>status</span>,
+  LogIn: () => <span>into</span>,
+  LogOut: () => <span>out</span>,
   Pause: () => <span>pause</span>,
   Play: () => <span>play</span>,
   RotateCcw: () => <span>restart</span>,
   Square: () => <span>stop</span>,
   StepForward: () => <span>step</span>,
-  StepInto: () => <span>into</span>,
-  StepOut: () => <span>out</span>,
 }));
 
 afterEach(() => {

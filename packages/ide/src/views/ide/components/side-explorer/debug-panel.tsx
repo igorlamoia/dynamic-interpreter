@@ -2,13 +2,13 @@ import type { DebugSnapshot } from "@ts-compilator-for-java/compiler/interpreter
 import type { ReactNode } from "react";
 import {
   CircleDot,
+  LogIn,
+  LogOut,
   Pause,
   Play,
   RotateCcw,
   Square,
   StepForward,
-  StepInto,
-  StepOut,
 } from "lucide-react";
 
 export interface DebugPanelProps {
@@ -93,13 +93,13 @@ export function DebugPanel({
 
       <div className="flex shrink-0 items-center gap-1 px-3 pb-3">
         <DebugButton label="Step into" onClick={onStepInto} disabled={!canResume}>
-          <StepInto className="h-3.5 w-3.5" />
+          <LogIn className="h-3.5 w-3.5" />
         </DebugButton>
         <DebugButton label="Step over" onClick={onStepOver} disabled={!canResume}>
           <StepForward className="h-3.5 w-3.5" />
         </DebugButton>
         <DebugButton label="Step out" onClick={onStepOut} disabled={!canResume}>
-          <StepOut className="h-3.5 w-3.5" />
+          <LogOut className="h-3.5 w-3.5" />
         </DebugButton>
         <DebugButton label="Restart" onClick={onRestart}>
           <RotateCcw className="h-3.5 w-3.5" />

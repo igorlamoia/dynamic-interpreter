@@ -64,6 +64,7 @@ export function IDE() {
     loadFileContent,
     selectedDebugLines,
     setCurrentDebugLine,
+    sourceCode,
   } = useContext(EditorContext);
   const lexerConfig = buildLexerConfig();
   const debugSession = useDebugSession({
@@ -78,6 +79,11 @@ export function IDE() {
     locale,
     onCurrentLineChange: setCurrentDebugLine,
   });
+  const markDebugSessionStale = debugSession.markStale;
+
+  useEffect(() => {
+    markDebugSessionStale(sourceCode);
+  }, [markDebugSessionStale, sourceCode]);
 
   const [activeFile, setActiveFile] = useState("src/main.?");
   const [openTabs, setOpenTabs] = useState<string[]>(["src/main.?"]);

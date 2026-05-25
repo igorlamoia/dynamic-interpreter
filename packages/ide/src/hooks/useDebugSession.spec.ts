@@ -127,4 +127,32 @@ int main() {
     expect(getResult().snapshot).toBeNull();
     expect(getResult().error).toBeTruthy();
   });
+
+  it("marks a started session stale only when the source changes", async () => {
+    const { getResult } = renderHook({ breakpoints: [] });
+    const source = `
+int main() {
+  print(1);
+}
+`;
+
+    act(() => {
+      getResult().markStale(source);
+    });
+    expect(getResult().isStale).toBe(false);
+
+    await act(async () => {
+      await getResult().start(source);
+    });
+
+    act(() => {
+      getResult().markStale(source);
+    });
+    expect(getResult().isStale).toBe(false);
+
+    act(() => {
+      getResult().markStale(`${source}\n`);
+    });
+    expect(getResult().isStale).toBe(true);
+  });
 });
