@@ -260,6 +260,7 @@ export function IDE() {
                         debugPanelProps={{
                           breakpoints: selectedDebugLines,
                           boundBreakpoints: debugSession.boundBreakpoints,
+                          locale,
                           unboundBreakpoints: debugSession.unboundBreakpoints,
                           snapshot: debugSession.snapshot,
                           error: debugSession.error,

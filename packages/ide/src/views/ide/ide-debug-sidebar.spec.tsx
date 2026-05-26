@@ -21,6 +21,7 @@ const mocks = vi.hoisted(() => ({
     activeView: string;
     debugPanelProps?: {
       breakpoints?: number[];
+      locale?: string;
       onStart?: () => void;
       onContinue?: () => void;
       onStepInto?: () => void;
@@ -188,6 +189,7 @@ vi.mock("./components/side-explorer/sidebar-panel", () => ({
     activeView: string;
     debugPanelProps?: {
       breakpoints?: number[];
+      locale?: string;
       onStart?: () => void;
       onContinue?: () => void;
       onStepInto?: () => void;
@@ -309,6 +311,7 @@ describe("IDE debug sidebar wiring", () => {
 
     const debugSidebarProps = mocks.sidebarPanelProps.at(-1)?.debugPanelProps;
     expect(debugSidebarProps?.breakpoints).toEqual([3]);
+    expect(debugSidebarProps?.locale).toBe("pt-BR");
 
     act(() => {
       debugSidebarProps?.onStart?.();

@@ -34,6 +34,7 @@ describe("DebugPanel", () => {
         <DebugPanel
           breakpoints={[3]}
           boundBreakpoints={[3]}
+          locale="en"
           unboundBreakpoints={[9]}
           snapshot={{
             status: "paused",
@@ -59,13 +60,57 @@ describe("DebugPanel", () => {
     expect(container.textContent).toContain("Breakpoints");
     expect(container.textContent).toContain("Line 3");
     expect(container.textContent).toContain("Line 9");
-    expect(container.textContent).toContain("unbound");
+    expect(container.textContent).toContain("Unbound");
     expect(container.textContent).toContain("Variables");
     expect(container.textContent).toContain("x");
     expect(container.textContent).toContain("Call Stack");
     expect(container.textContent).toContain("main");
     expect(container.textContent).not.toContain("Output");
     expect(container.textContent).not.toContain("hello");
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("translates debug status and labels with the selected locale", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <DebugPanel
+          breakpoints={[12]}
+          locale="es"
+          snapshot={{
+            status: "waiting-for-input",
+            stopReason: "input",
+            instructionPointer: 4,
+            currentSource: { line: 12, column: 3 },
+            variables: [],
+            callStack: [],
+            error: null,
+          }}
+          isStale
+        />,
+      );
+    });
+
+    expect(
+      container.querySelector('button[aria-label="Iniciar depuración"]'),
+    ).toBeTruthy();
+    expect(container.textContent).toContain("Depuración");
+    expect(container.textContent).toContain("Esperando entrada");
+    expect(container.textContent).toContain("Entrada");
+    expect(container.textContent).toContain("Desactualizado");
+    expect(container.textContent).toContain("Puntos de interrupción");
+    expect(container.textContent).toContain("Línea 12");
+    expect(container.textContent).toContain("Enlazado");
+    expect(container.textContent).toContain("Variables");
+    expect(container.textContent).toContain("Sin variables");
+    expect(container.textContent).toContain("Pila de llamadas");
+    expect(container.textContent).toContain("Sin marcos de pila");
 
     act(() => {
       root.unmount();

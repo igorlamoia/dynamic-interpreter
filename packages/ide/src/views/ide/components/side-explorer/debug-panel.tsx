@@ -1,4 +1,9 @@
-import type { DebugSnapshot } from "@ts-compilator-for-java/compiler/interpreter/constants";
+import type {
+  DebugSnapshot,
+  DebugStatus,
+  DebugStopReason,
+} from "@ts-compilator-for-java/compiler/interpreter/constants";
+import { t } from "@/i18n";
 import type { ReactNode } from "react";
 import {
   CircleDot,
@@ -15,6 +20,7 @@ export interface DebugPanelProps {
   breakpoints?: number[];
   boundBreakpoints?: number[];
   unboundBreakpoints?: number[];
+  locale?: string;
   snapshot?: DebugSnapshot | null;
   error?: string | null;
   isStale?: boolean;
@@ -36,6 +42,7 @@ export function DebugPanel({
   breakpoints = [],
   boundBreakpoints = [],
   unboundBreakpoints = [],
+  locale,
   snapshot = null,
   error = null,
   isStale = false,
@@ -48,6 +55,13 @@ export function DebugPanel({
   onStop,
 }: DebugPanelProps) {
   const status = snapshot?.status ?? "idle";
+  const statusParts = [
+    translateDebugStatus(locale, status),
+    snapshot?.stopReason
+      ? translateDebugStopReason(locale, snapshot.stopReason)
+      : null,
+    isStale ? t(locale, "ui.debug_stale") : null,
+  ].filter(Boolean);
   const displayError = error ?? snapshot?.error;
   const breakpointRows = buildBreakpointRows(
     breakpoints,
@@ -63,20 +77,18 @@ export function DebugPanel({
         <div className="min-w-0">
           <div className="flex items-center gap-2 font-semibold uppercase tracking-wide text-slate-900 dark:text-white">
             <CircleDot className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-300" />
-            <span>Debug</span>
+            <span>{t(locale, "ui.debug_title")}</span>
           </div>
           <div className="mt-1 truncate text-[11px] text-muted-foreground">
-            {status}
-            {snapshot?.stopReason ? ` · ${snapshot.stopReason}` : ""}
-            {isStale ? " · stale" : ""}
+            {statusParts.join(" · ")}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-1">
-          <DebugButton label="Start debug" onClick={onStart}>
+          <DebugButton label={t(locale, "ui.debug_start")} onClick={onStart}>
             <Play className="h-3.5 w-3.5" />
           </DebugButton>
           <DebugButton
-            label="Continue"
+            label={t(locale, "ui.debug_continue")}
             onClick={onContinue}
             disabled={!canResume}
           >
@@ -90,19 +102,35 @@ export function DebugPanel({
       </header>
 
       <div className="flex shrink-0 items-center gap-1 px-3 pb-3">
-        <DebugButton label="Step into" onClick={onStepInto} disabled={!canResume}>
+        <DebugButton
+          label={t(locale, "ui.debug_step_into")}
+          onClick={onStepInto}
+          disabled={!canResume}
+        >
           <LogIn className="h-3.5 w-3.5" />
         </DebugButton>
-        <DebugButton label="Step over" onClick={onStepOver} disabled={!canResume}>
+        <DebugButton
+          label={t(locale, "ui.debug_step_over")}
+          onClick={onStepOver}
+          disabled={!canResume}
+        >
           <StepForward className="h-3.5 w-3.5" />
         </DebugButton>
-        <DebugButton label="Step out" onClick={onStepOut} disabled={!canResume}>
+        <DebugButton
+          label={t(locale, "ui.debug_step_out")}
+          onClick={onStepOut}
+          disabled={!canResume}
+        >
           <LogOut className="h-3.5 w-3.5" />
         </DebugButton>
-        <DebugButton label="Restart" onClick={onRestart}>
+        <DebugButton label={t(locale, "ui.debug_restart")} onClick={onRestart}>
           <RotateCcw className="h-3.5 w-3.5" />
         </DebugButton>
-        <DebugButton label="Stop" onClick={onStop} disabled={!snapshot}>
+        <DebugButton
+          label={t(locale, "ui.debug_stop")}
+          onClick={onStop}
+          disabled={!snapshot}
+        >
           <Square className="h-3.5 w-3.5" />
         </DebugButton>
       </div>
@@ -114,9 +142,9 @@ export function DebugPanel({
       )}
 
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <PanelSection title="Breakpoints">
+        <PanelSection title={t(locale, "ui.debug_breakpoints")}>
           {breakpointRows.length === 0 ? (
-            <EmptyState>No breakpoints</EmptyState>
+            <EmptyState>{t(locale, "ui.debug_no_breakpoints")}</EmptyState>
           ) : (
             <div className="space-y-1">
               {breakpointRows.map(({ line, state }) => (
@@ -124,9 +152,9 @@ export function DebugPanel({
                   className="flex items-center justify-between gap-2 rounded-md bg-slate-950/[0.04] px-2 py-1.5 dark:bg-white/[0.06]"
                   key={`${line}-${state}`}
                 >
-                  <span>Line {line}</span>
+                  <span>{t(locale, "ui.debug_line_number", { line })}</span>
                   <span className="text-[10px] uppercase text-muted-foreground">
-                    {state}
+                    {translateBreakpointState(locale, state)}
                   </span>
                 </div>
               ))}
@@ -134,7 +162,7 @@ export function DebugPanel({
           )}
         </PanelSection>
 
-        <PanelSection title="Variables">
+        <PanelSection title={t(locale, "ui.debug_variables")}>
           {snapshot?.variables.length ? (
             <div className="space-y-1">
               {snapshot.variables.map((variable) => (
@@ -155,11 +183,11 @@ export function DebugPanel({
               ))}
             </div>
           ) : (
-            <EmptyState>No variables</EmptyState>
+            <EmptyState>{t(locale, "ui.debug_no_variables")}</EmptyState>
           )}
         </PanelSection>
 
-        <PanelSection title="Call Stack">
+        <PanelSection title={t(locale, "ui.debug_call_stack")}>
           {snapshot?.callStack.length ? (
             <div className="space-y-1">
               {snapshot.callStack.map((frame, index) => (
@@ -175,7 +203,7 @@ export function DebugPanel({
               ))}
             </div>
           ) : (
-            <EmptyState>No stack frames</EmptyState>
+            <EmptyState>{t(locale, "ui.debug_no_stack_frames")}</EmptyState>
           )}
         </PanelSection>
       </div>
@@ -243,6 +271,31 @@ function buildBreakpointRows(
   return [...rows.entries()]
     .sort(([left], [right]) => left - right)
     .map(([line, state]) => ({ line, state }));
+}
+
+function normalizeDebugKey(value: string): string {
+  return value.replace(/[^a-z0-9]+/gi, "_").replace(/^_|_$/g, "");
+}
+
+function translateDebugStatus(
+  locale: string | undefined,
+  status: DebugStatus,
+): string {
+  return t(locale, `ui.debug_status_${normalizeDebugKey(status)}`);
+}
+
+function translateDebugStopReason(
+  locale: string | undefined,
+  stopReason: DebugStopReason,
+): string {
+  return t(locale, `ui.debug_stop_reason_${normalizeDebugKey(stopReason)}`);
+}
+
+function translateBreakpointState(
+  locale: string | undefined,
+  state: "bound" | "unbound",
+): string {
+  return t(locale, `ui.debug_breakpoint_${state}`);
 }
 
 function formatValue(value: unknown): string {
