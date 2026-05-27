@@ -31,8 +31,7 @@ export function resolveCardSnapIndex(
 ): number {
   if (itemCount <= 0) return 0;
 
-  const nextIndex =
-    direction === "next" ? currentIndex + 1 : currentIndex - 1;
+  const nextIndex = direction === "next" ? currentIndex + 1 : currentIndex - 1;
 
   return Math.min(Math.max(nextIndex, 0), itemCount - 1);
 }
@@ -57,8 +56,7 @@ export function resolveCardSnapAccent(key: string): CardSnapAccent {
       };
     case "fluxo":
       return {
-        activeButton:
-          "border-violet-300/60 bg-violet-300/15 text-violet-200",
+        activeButton: "border-violet-300/60 bg-violet-300/15 text-violet-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(196,181,253,0.85)]",
       };
     case "booleanos":
@@ -103,22 +101,25 @@ export function CardSnapStack({
   const lastWheelAtRef = useRef(0);
   const itemKeySignature = items.map((item) => item.key).join("\0");
 
-  const focusCard = useCallback((index: number) => {
-    if (items.length === 0) return;
+  const focusCard = useCallback(
+    (index: number) => {
+      if (items.length === 0) return;
 
-    const boundedIndex = Math.min(Math.max(index, 0), items.length - 1);
-    const scrollArea = scrollAreaRef.current;
-    const card = cardsRef.current[boundedIndex];
+      const boundedIndex = Math.min(Math.max(index, 0), items.length - 1);
+      const scrollArea = scrollAreaRef.current;
+      const card = cardsRef.current[boundedIndex];
 
-    setActiveIndex(boundedIndex);
+      setActiveIndex(boundedIndex);
 
-    if (!scrollArea || !card) return;
+      if (!scrollArea || !card) return;
 
-    scrollArea.scrollTo({
-      top: card.offsetTop,
-      behavior: "smooth",
-    });
-  }, [items.length]);
+      scrollArea.scrollTo({
+        top: card.offsetTop,
+        behavior: "smooth",
+      });
+    },
+    [items.length],
+  );
 
   const handleWheel = useCallback(
     (event: React.WheelEvent<HTMLDivElement>) => {
@@ -158,7 +159,9 @@ export function CardSnapStack({
   };
 
   return (
-    <div className={cn("relative flex min-h-0 flex-1 flex-col gap-3", className)}>
+    <div
+      className={cn("relative flex min-h-0 flex-1 flex-col gap-3", className)}
+    >
       <div
         className="grid grid-cols-6 gap-1.5 pr-6"
         aria-label="Categorias do preview"
@@ -234,37 +237,6 @@ export function CardSnapStack({
             })}
           </div>
         </PerfectScrollbar>
-
-        <div
-          className="absolute right-1 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-1.5 rounded-sm border border-slate-800 bg-slate-950/80 p-1 shadow-[0_18px_40px_-24px_rgba(2,6,23,0.95)] backdrop-blur-md"
-          aria-label="Atalhos das categorias"
-        >
-          {items.map((item, index) => {
-            const isActive = index === activeIndex;
-            const accent = item.accent ?? resolveCardSnapAccent(item.key);
-
-            return (
-              <button
-                key={item.key}
-                type="button"
-                aria-label={`Focar ${item.label}`}
-                aria-pressed={isActive}
-                data-card-snap-side-nav
-                data-active={isActive}
-                onClick={() => focusCard(index)}
-                className={cn(
-                  "flex h-7 w-7 items-center justify-center rounded-sm border text-slate-500 outline-none transition-all",
-                  "focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
-                  isActive
-                    ? `${accent.activeButton} ${accent.activeShadow}`
-                    : "border-transparent hover:border-slate-700 hover:text-slate-200",
-                )}
-              >
-                {renderItemIcon(item)}
-              </button>
-            );
-          })}
-        </div>
       </div>
     </div>
   );
