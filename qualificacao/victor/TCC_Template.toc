@@ -6,11 +6,11 @@
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{11}{chapter.9}%
-\contentsline {section}{\numberline {1.1}Justificativa}{11}{section.10}%
+\contentsline {section}{\numberline {1.1}Justificativa}{12}{section.10}%
 \contentsline {section}{\numberline {1.2}Objetivos}{12}{section.11}%
 \contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{12}{subsection.12}%
-\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{12}{subsection.13}%
-\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{12}{section.14}%
+\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{13}{subsection.13}%
+\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{13}{section.14}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO}{14}{chapter.15}%
 \contentsline {section}{\numberline {2.1}Compiladores}{14}{section.16}%
@@ -54,3 +54,9 @@
 \contentsline {section}{\numberline {4.5}Estratégia de Testes Automatizados}{56}{section.67}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \contentsline {chapter}{REFERÊNCIAS}{59}{chapter*.70}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{61}{appendix.71}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{61}{section.72}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{61}{section.73}%
+\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (este documento)}{61}{subsection.74}%
+\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{62}{subsection.75}%

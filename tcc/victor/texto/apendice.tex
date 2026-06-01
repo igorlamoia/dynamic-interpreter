@@ -1,0 +1,41 @@
+
+\chapter{PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES} \label{ap:plano}
+
+Este apêndice detalha a divisão de responsabilidades entre os dois autores, conforme a pré-proposta aprovada e o plano de trabalho entregue à Coordenação do Curso de Engenharia de Computação do Centro Federal de Educação Tecnológica de Minas Gerais, Unidade Leopoldina.
+
+\section{Atividades Desenvolvidas em Regime Colaborativo}
+
+As atividades listadas a seguir foram conduzidas de forma conjunta por Victor de Souza Vilela da Silva e Igor Lamoia Queiroz, com participação efetiva de ambos os integrantes em todas as etapas de especificação, implementação e revisão:
+
+\begin{itemize}
+    \item Revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais correlatas;
+    \item Definição dos requisitos funcionais e não funcionais e da arquitetura geral do sistema;
+    \item Implementação do núcleo do compilador: análise léxica, análise sintática, geração e execução de código intermediário;
+    \item Especificação e implementação dos mecanismos de injeção dinâmica de regras gramaticais no interpretador;
+    \item Integração do núcleo do interpretador com a plataforma web e definição dos contratos de comunicação entre os módulos;
+    \item Revisão mútua de código e tomada de decisões arquiteturais nas etapas de refatoração e evolução do sistema.
+\end{itemize}
+
+\section{Eixos de Aprofundamento Individual}
+
+A partir da base técnica construída em conjunto, cada autor aprofundou sua análise acadêmica em eixos específicos, conforme previsto na pré-proposta.
+
+\subsection{Victor de Souza Vilela da Silva (este documento)}
+
+\begin{itemize}
+    \item Detalhamento das fases de análise léxica e do sistema de varredura por escâneres especializados (\textit{factory pattern});
+    \item Descrição aprofundada da análise sintática por descida recursiva e da correspondência entre as produções do analisador e a gramática formal da linguagem Java-{}-;
+    \item Documentação da geração de código de três endereços: instrução a instrução, tabela de temporários e tabela de rótulos;
+    \item Análise do funcionamento do interpretador, da tabela de símbolos e do despacho das chamadas de sistema de entrada e saída;
+    \item Estudos de caso centrados na validade técnica do núcleo de tradução e no comportamento do interpretador frente a programas de teste elaborados para cobrir as construções da linguagem.
+\end{itemize}
+
+\subsection{Igor Lamoia Queiroz (documento complementar)}
+
+\begin{itemize}
+    \item Detalhamento da arquitetura da aplicação web (Next.js, Pages Router) e da integração com o Monaco Editor para edição de código com realce de sintaxe dinâmico;
+    \item Documentação do assistente de personalização da linguagem (\textit{wizard}), incluindo o modelo de etapas, a lógica de validação preventiva dos delimitadores de bloco e o mecanismo de pré-visualização em tempo real;
+    \item Análise da experiência de uso da plataforma, dos contextos React que governam o estado da aplicação e das mediações pedagógicas oferecidas pela interface;
+    \item Descrição da infraestrutura de submissão e correção automatizada de exercícios e do sistema de gerenciamento de turmas;
+    \item Estudos de caso centrados na usabilidade, no engajamento dos estudantes e na retroalimentação coletada em ambiente educacional.
+\end{itemize}
