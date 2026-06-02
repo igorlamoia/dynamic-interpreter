@@ -18,7 +18,13 @@ export function restRelationalStmt(
     iterator.consume(token.type);
     const right = addStmt(iterator);
     const temp = iterator.emitter.newTemp();
-    iterator.emitter.emit(operator, temp, inherited.place, right.place);
+    iterator.emitter.emitFromToken(
+      operator,
+      temp,
+      inherited.place,
+      right.place,
+      token,
+    );
     iterator.registerTemp(temp, "bool");
     return iterator.createExprResult(temp, "bool", token);
   }

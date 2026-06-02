@@ -1,7 +1,7 @@
 import IconButton from "@/components/buttons/icon-button";
 import {
+  BugPlay,
   FileCode2,
-  GitBranch,
   Languages,
   Search,
   Settings,
@@ -56,11 +56,11 @@ export function SideMenu({
         <Languages className="h-4 w-4" />
       </IconButton>
       <IconButton
-        selected={isSidebarOpen && activeView === "source-control"}
-        onClick={() => handleViewClick("source-control")}
-        tooltip="Controle de fonte"
+        selected={isSidebarOpen && activeView === "debug"}
+        onClick={() => handleViewClick("debug")}
+        tooltip="Debug"
       >
-        <GitBranch className="h-4 w-4" />
+        <BugPlay className="h-4 w-4" />
       </IconButton>
       <ConfigButton />
     </div>

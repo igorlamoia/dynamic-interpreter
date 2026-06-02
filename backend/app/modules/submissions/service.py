@@ -1,20 +1,41 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from fastapi import HTTPException, status
 
 from app.models.submission import Submission, SubmissionStatus
 from app.models.user import User, UserRole
-from app.models.exercise import Exercise
+from app.models.exercise import Exercise, LanguagePolicy
 from app.schemas.submissions import SubmissionCreate, SubmissionGrade
 
 
 async def create_submission(data: SubmissionCreate, student_id: str, session: AsyncSession) -> Submission:
+    # Load the exercise (with locked_language) so we can override the snapshot
+    # when the exercise is LOCKED.
+    result = await session.execute(
+        select(Exercise)
+        .where(Exercise.id == data.exercise_id)
+        .options(selectinload(Exercise.locked_language))
+    )
+    exercise = result.scalar_one_or_none()
+    if exercise is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+
+    language_snapshot = data.language_snapshot
+    if (
+        exercise.language_policy == LanguagePolicy.LOCKED
+        and exercise.locked_language is not None
+    ):
+        # Server-side override: students cannot bypass the locked language.
+        language_snapshot = dict(exercise.locked_language.customization)
+
     submission = Submission(
         exercise_id=data.exercise_id,
         exercise_list_id=data.exercise_list_id,
         class_id=data.class_id,
         student_id=student_id,
         code_snapshot=data.code_snapshot,
+        language_snapshot=language_snapshot,
         status=data.status,
     )
     session.add(submission)

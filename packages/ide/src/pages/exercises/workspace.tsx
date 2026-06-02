@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SpaceBackground } from "@/components/space-background";
 import { EditorContext, EditorProvider } from "@/contexts/editor/EditorContext";
 import { KeywordProvider } from "@/contexts/keyword/KeywordContext";
+import { LockedLanguageBanner } from "@/components/exercise-workspace/LockedLanguageBanner";
 import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
 import { IDE } from "@/views/ide";
 import { TerminalProvider } from "@/contexts/TerminalContext";
@@ -129,7 +130,22 @@ function WorkspaceContent({
   const { showToast } = useToast();
   const { locale } = useRouter();
   const { getEditorCode } = useContext(EditorContext);
-  const { buildLexerConfig } = useKeywords();
+  const {
+    buildLexerConfig,
+    applyExternalCustomization,
+    restoreActiveCustomization,
+  } = useKeywords();
+
+  // When the exercise locks a specific language, overlay its customization
+  // onto the KeywordContext for the duration of the workspace session.
+  useEffect(() => {
+    const locked = exercise?.lockedLanguage;
+    if (exercise?.languagePolicy === "LOCKED" && locked?.customization) {
+      applyExternalCustomization(locked.customization);
+      return () => restoreActiveCustomization();
+    }
+    return undefined;
+  }, [exercise, applyExternalCustomization, restoreActiveCustomization]);
   const validateSubmission = useValidateSubmissionMutation();
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -295,6 +311,18 @@ function WorkspaceContent({
           )}
         </div>
       </header>
+
+      {exercise?.languagePolicy === "LOCKED" && exercise?.lockedLanguage && (
+        <div className="relative z-10 px-6 py-2">
+          <LockedLanguageBanner
+            language={{
+              id: exercise.lockedLanguage.id,
+              name: exercise.lockedLanguage.name,
+              description: exercise.lockedLanguage.description,
+            }}
+          />
+        </div>
+      )}
 
       {/* Submission Results Panel */}
       {showSubmitPanel && (

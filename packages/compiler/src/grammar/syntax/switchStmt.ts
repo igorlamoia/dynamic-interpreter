@@ -6,6 +6,8 @@ import { stmt } from "./stmt";
 type CaseEntry = {
   literal: string;
   label: string;
+  caseToken: { line: number; column: number };
+  literalToken: { line: number; column: number };
 };
 
 /**
@@ -18,7 +20,7 @@ export function switchStmt(iterator: TokenIterator): void {
   const { RESERVEDS, SYMBOLS, LITERALS } = TOKENS;
   const blockMode = iterator.getBlockMode();
 
-  iterator.consume(RESERVEDS.switch);
+  const switchToken = iterator.consume(RESERVEDS.switch);
   iterator.consume(SYMBOLS.left_paren);
   const switchValue = exprStmt(iterator);
   iterator.consume(SYMBOLS.right_paren);
@@ -43,7 +45,7 @@ export function switchStmt(iterator: TokenIterator): void {
   let defaultLabel: string | null = null;
 
   // Skip case bodies first; dispatch will jump back to matching labels.
-  iterator.emitter.emit("JUMP", dispatchLabel, null, null);
+  iterator.emitter.emitFromToken("JUMP", dispatchLabel, null, null, switchToken);
   iterator.pushSwitchContext(switchEndLabel);
 
   // Check for block end based on mode
@@ -54,7 +56,7 @@ export function switchStmt(iterator: TokenIterator): void {
 
   while (!isBlockEnd()) {
     if (iterator.match(RESERVEDS.case)) {
-      iterator.consume(RESERVEDS.case);
+      const caseToken = iterator.consume(RESERVEDS.case);
       const token = iterator.peek();
       if (
         token.type !== LITERALS.integer_literal &&
@@ -97,20 +99,53 @@ export function switchStmt(iterator: TokenIterator): void {
         if (iterator.peek().type === SYMBOLS.indent) {
           iterator.consume(SYMBOLS.indent);
           const caseLabel = iterator.emitter.newLabel();
-          cases.push({ literal: literalToken.lexeme, label: caseLabel });
-          iterator.emitter.emit("LABEL", caseLabel, null, null);
+          cases.push({
+            literal: literalToken.lexeme,
+            label: caseLabel,
+            caseToken,
+            literalToken,
+          });
+          iterator.emitter.emitFromToken(
+            "LABEL",
+            caseLabel,
+            null,
+            null,
+            caseToken,
+          );
           parseSwitchSectionBody(iterator);
           iterator.consume(SYMBOLS.dedent);
         } else {
           // Empty case (fallthrough), just add the label
           const caseLabel = iterator.emitter.newLabel();
-          cases.push({ literal: literalToken.lexeme, label: caseLabel });
-          iterator.emitter.emit("LABEL", caseLabel, null, null);
+          cases.push({
+            literal: literalToken.lexeme,
+            label: caseLabel,
+            caseToken,
+            literalToken,
+          });
+          iterator.emitter.emitFromToken(
+            "LABEL",
+            caseLabel,
+            null,
+            null,
+            caseToken,
+          );
         }
       } else {
         const caseLabel = iterator.emitter.newLabel();
-        cases.push({ literal: literalToken.lexeme, label: caseLabel });
-        iterator.emitter.emit("LABEL", caseLabel, null, null);
+        cases.push({
+          literal: literalToken.lexeme,
+          label: caseLabel,
+          caseToken,
+          literalToken,
+        });
+        iterator.emitter.emitFromToken(
+          "LABEL",
+          caseLabel,
+          null,
+          null,
+          caseToken,
+        );
         parseSwitchSectionBody(iterator);
       }
       continue;
@@ -140,17 +175,35 @@ export function switchStmt(iterator: TokenIterator): void {
         if (iterator.peek().type === SYMBOLS.indent) {
           iterator.consume(SYMBOLS.indent);
           defaultLabel = iterator.emitter.newLabel();
-          iterator.emitter.emit("LABEL", defaultLabel, null, null);
+          iterator.emitter.emitFromToken(
+            "LABEL",
+            defaultLabel,
+            null,
+            null,
+            defaultToken,
+          );
           parseSwitchSectionBody(iterator);
           iterator.consume(SYMBOLS.dedent);
         } else {
           // Empty default (shouldn't happen, but handle it)
           defaultLabel = iterator.emitter.newLabel();
-          iterator.emitter.emit("LABEL", defaultLabel, null, null);
+          iterator.emitter.emitFromToken(
+            "LABEL",
+            defaultLabel,
+            null,
+            null,
+            defaultToken,
+          );
         }
       } else {
         defaultLabel = iterator.emitter.newLabel();
-        iterator.emitter.emit("LABEL", defaultLabel, null, null);
+        iterator.emitter.emitFromToken(
+          "LABEL",
+          defaultLabel,
+          null,
+          null,
+          defaultToken,
+        );
         parseSwitchSectionBody(iterator);
       }
       continue;
@@ -173,18 +226,19 @@ export function switchStmt(iterator: TokenIterator): void {
 
   iterator.popSwitchContext();
 
-  iterator.emitter.emit("LABEL", switchEndLabel, null, null);
-  iterator.emitter.emit("JUMP", afterSwitchLabel, null, null);
+  iterator.emitter.emitFromToken("LABEL", switchEndLabel, null, null, switchToken);
+  iterator.emitter.emitFromToken("JUMP", afterSwitchLabel, null, null, switchToken);
 
-  iterator.emitter.emit("LABEL", dispatchLabel, null, null);
+  iterator.emitter.emitFromToken("LABEL", dispatchLabel, null, null, switchToken);
   emitSwitchDispatch(
     iterator,
     switchValue.place,
     cases,
     defaultLabel,
     switchEndLabel,
+    switchToken,
   );
-  iterator.emitter.emit("LABEL", afterSwitchLabel, null, null);
+  iterator.emitter.emitFromToken("LABEL", afterSwitchLabel, null, null, switchToken);
 }
 
 function parseSwitchSectionBody(iterator: TokenIterator): void {
@@ -208,9 +262,16 @@ function emitSwitchDispatch(
   cases: CaseEntry[],
   defaultLabel: string | null,
   switchEndLabel: string,
+  switchToken: { line: number; column: number },
 ): void {
   if (cases.length === 0) {
-    iterator.emitter.emit("JUMP", defaultLabel ?? switchEndLabel, null, null);
+    iterator.emitter.emitFromToken(
+      "JUMP",
+      defaultLabel ?? switchEndLabel,
+      null,
+      null,
+      switchToken,
+    );
     return;
   }
 
@@ -222,11 +283,29 @@ function emitSwitchDispatch(
       : iterator.emitter.newLabel();
 
     const equalsTemp = iterator.emitter.newTemp();
-    iterator.emitter.emit("==", equalsTemp, switchValue, current.literal);
-    iterator.emitter.emit("IF", equalsTemp, current.label, falseLabel);
+    iterator.emitter.emitFromToken(
+      "==",
+      equalsTemp,
+      switchValue,
+      current.literal,
+      current.literalToken,
+    );
+    iterator.emitter.emitFromToken(
+      "IF",
+      equalsTemp,
+      current.label,
+      falseLabel,
+      current.caseToken,
+    );
 
     if (!isLast) {
-      iterator.emitter.emit("LABEL", falseLabel, null, null);
+      iterator.emitter.emitFromToken(
+        "LABEL",
+        falseLabel,
+        null,
+        null,
+        current.caseToken,
+      );
     }
   }
 }

@@ -142,12 +142,24 @@ function attrbuteStmtVariant(iterator: TokenIterator): void {
     consumeStmtTerminator(iterator);
   } else if (iterator.peek().type === plus && iterator.peek().lexeme === "++") {
     // É um incremento pós-fixado
-    iterator.consume(plus, "++");
+    const operatorToken = iterator.consume(plus, "++");
     assertTypedAssignableIdentifier(iterator, identifier);
     const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emit("+", incremented, identifier.lexeme, "1");
+    iterator.emitter.emitFromToken(
+      "+",
+      incremented,
+      identifier.lexeme,
+      "1",
+      operatorToken,
+    );
     iterator.registerTemp(incremented, iterator.resolveSymbol(identifier.lexeme));
-    iterator.emitter.emit("=", identifier.lexeme, incremented, null);
+    iterator.emitter.emitFromToken(
+      "=",
+      identifier.lexeme,
+      incremented,
+      null,
+      identifier,
+    );
     consumeStmtTerminator(iterator);
   } else {
     const target = parseAssignmentTarget(iterator, identifier);

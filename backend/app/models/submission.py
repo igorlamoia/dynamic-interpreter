@@ -1,14 +1,20 @@
 import enum
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from sqlalchemy import Integer, String, Float, Enum, ForeignKey, Index, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import JSON
 from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.exercise import Exercise
     from app.models.class_exercise_list import ClassExerciseList
     from app.models.user import User
+
+
+# JSONB on Postgres, JSON elsewhere (tests use SQLite).
+JSONType = JSON().with_variant(JSONB(), "postgresql")
 
 
 class SubmissionStatus(str, enum.Enum):
@@ -31,6 +37,9 @@ class Submission(Base):
     class_id: Mapped[int] = mapped_column(Integer, ForeignKey("classes.id"), nullable=False)
     student_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
     code_snapshot: Mapped[str] = mapped_column(String, nullable=False)
+    language_snapshot: Mapped[dict[str, Any]] = mapped_column(
+        JSONType, nullable=False, default=dict, server_default="{}"
+    )
     status: Mapped[SubmissionStatus] = mapped_column(Enum(SubmissionStatus), default=SubmissionStatus.PENDING, nullable=False)
     score: Mapped[float | None] = mapped_column(Float, nullable=True)
     teacher_feedback: Mapped[str | None] = mapped_column(String, nullable=True)

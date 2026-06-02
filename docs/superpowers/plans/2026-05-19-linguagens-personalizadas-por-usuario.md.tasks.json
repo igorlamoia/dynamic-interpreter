@@ -1,0 +1,33 @@
+{
+  "planPath": "docs/superpowers/plans/2026-05-19-linguagens-personalizadas-por-usuario.md",
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Task 1: Schema — tabela languages e colunas relacionadas",
+      "status": "pending",
+      "description": "Criar tabela languages (JSONB), estender users/exercises/submissions e enum userrole. Seed do usuário-sistema. Ver plano Task 1.\n\n```json:metadata\n{\"files\": [\"backend/app/models/language.py\", \"backend/app/models/user.py\", \"backend/app/models/exercise.py\", \"backend/app/models/submission.py\"], \"verifyCommand\": \"cd backend && uv run alembic upgrade head && uv run pytest tests/modules/test_languages_migration.py -v\", \"acceptanceCriteria\": [\"languages table com UNIQUE(owner,name)\", \"users.active_language_id FK\", \"exercises.language_policy + locked_language_id + CHECK\", \"submissions.language_snapshot JSONB\", \"userrole tem SYSTEM\", \"system user seeded\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 2,
+      "subject": "Task 2: API /languages (CRUD + clone + active)",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "CRUD, read-gate, clone, active-language. Ver plano Task 2.\n\n```json:metadata\n{\"files\": [\"backend/app/modules/languages/router.py\", \"backend/app/modules/languages/service.py\", \"backend/app/schemas/languages.py\", \"backend/app/modules/users/router.py\", \"backend/app/main.py\"], \"verifyCommand\": \"cd backend && uv run pytest tests/modules/test_languages.py -v\", \"acceptanceCriteria\": [\"CRUD com auth do dono\", \"DELETE 409 quando referenciada\", \"POST /clone com read-gate\", \"PUT active-language valida posse\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 3,
+      "subject": "Task 3: Policy em exercises e snapshot em submissions",
+      "status": "pending",
+      "blockedBy": [1],
+      "description": "language_policy + lockedLanguage expandida + language_snapshot + override server-side. Ver plano Task 3.\n\n```json:metadata\n{\"files\": [\"backend/app/schemas/exercises.py\", \"backend/app/modules/exercises/service.py\", \"backend/app/schemas/submissions.py\", \"backend/app/modules/submissions/service.py\"], \"verifyCommand\": \"cd backend && uv run pytest tests/modules/test_exercise_policy.py tests/modules/test_submission_snapshot.py -v\", \"acceptanceCriteria\": [\"policy validada na criação/update\", \"GET expande lockedLanguage\", \"submission grava snapshot, LOCKED sobrescreve server-side\", \"snapshot imutável\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 4,
+      "subject": "Task 4: Front — biblioteca de linguagens + integração no IDE",
+      "status": "pending",
+      "blockedBy": [2, 3],
+      "description": "Modal de linguagens, KeywordContext logado, banner LOCKED no workspace, snapshot no submit. Ver plano Task 4.\n\n```json:metadata\n{\"files\": [\"packages/ide/src/lib/languages-api.ts\", \"packages/ide/src/hooks/useLanguages.ts\", \"packages/ide/src/components/language-library/LanguageLibraryModal.tsx\", \"packages/ide/src/contexts/keyword/KeywordContext.tsx\", \"packages/ide/src/components/exercise-workspace/LockedLanguageBanner.tsx\"], \"verifyCommand\": \"cd packages/ide && npm run lint && npm test -- keyword\", \"acceptanceCriteria\": [\"logado hidrata do backend, deslogado mantém localStorage\", \"modal CRUD/clone/active funciona\", \"exercise LOCKED força language, banner e clone visíveis\", \"submit envia languageSnapshot\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-05-19T00:00:00Z"
+}

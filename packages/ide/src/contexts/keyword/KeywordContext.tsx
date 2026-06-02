@@ -6,7 +6,10 @@ import {
   ReactNode,
   useCallback,
   useMemo,
+  useRef,
 } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useActiveLanguage } from "@/hooks/useLanguages";
 import { useEditor } from "@/hooks/useEditor";
 import { updateJavaMMKeywords } from "@/utils/compiler/editor/editor-language";
 import { normalizeLanguageDocumentationMap } from "@/lib/compiler-config";
@@ -256,9 +259,18 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
   const [customization, setCustomizationState] =
     useState<StoredKeywordCustomization>(getDefaultCustomizationState);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [activeLanguageId, setActiveLanguageId] = useState<number | null>(null);
+  // Snapshot of the user's "own" customization, captured before a LOCKED
+  // exercise overlay is applied. Restored when the overlay is dismissed.
+  const overlaySavedRef = useRef<StoredKeywordCustomization | null>(null);
   const editor = useEditor();
   const monacoRef = editor?.monacoRef;
   const retokenize = editor?.retokenize;
+
+  const auth = useAuth();
+  const isLoggedIn = auth?.isAuthenticated ?? false;
+  const activeLanguageQuery = useActiveLanguage(isLoggedIn);
+  const activeLanguageData = activeLanguageQuery.data;
 
   // Carregar do localStorage após montar no client
   useEffect(() => {
@@ -267,6 +279,23 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     persistCustomization(loadedCustomization);
     setIsHydrated(true);
   }, []);
+
+  // Hidrata a partir da linguagem ativa do backend quando logado.
+  // O rascunho do localStorage segue sendo persistido — a "fonte da verdade"
+  // do usuário logado é a linguagem ativa do backend.
+  useEffect(() => {
+    if (!isHydrated) return;
+    if (!isLoggedIn) {
+      setActiveLanguageId(null);
+      return;
+    }
+    if (activeLanguageData) {
+      setActiveLanguageId(activeLanguageData.id);
+      setCustomizationState(activeLanguageData.customization);
+    } else if (activeLanguageData === null) {
+      setActiveLanguageId(null);
+    }
+  }, [isHydrated, isLoggedIn, activeLanguageData]);
 
   // Persistir no localStorage quando mudar
   useEffect(() => {
@@ -372,6 +401,28 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     setCustomizationState(getDefaultCustomizationState());
   }, []);
 
+  const applyExternalCustomization = useCallback(
+    (next: StoredKeywordCustomization) => {
+      // Save the current customization as the "user own" baseline only once
+      // per overlay session (avoids clobbering it on re-applies).
+      if (overlaySavedRef.current === null) {
+        overlaySavedRef.current = customization;
+      }
+      setCustomizationState(next);
+    },
+    [customization],
+  );
+
+  const restoreActiveCustomization = useCallback(() => {
+    const saved = overlaySavedRef.current;
+    overlaySavedRef.current = null;
+    if (saved) {
+      setCustomizationState(saved);
+    } else if (activeLanguageData) {
+      setCustomizationState(activeLanguageData.customization);
+    }
+  }, [activeLanguageData]);
+
   const buildKeywordMap = useCallback((): Record<string, number> => {
     const map: Record<string, number> = {};
     for (const m of customization.mappings) {
@@ -387,6 +438,9 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
   const contextValue = useMemo(
     () => ({
       customization,
+      activeLanguageId,
+      applyExternalCustomization,
+      restoreActiveCustomization,
       setCustomization,
       setModes,
       setMappings,
@@ -399,6 +453,9 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     }),
     [
       customization,
+      activeLanguageId,
+      applyExternalCustomization,
+      restoreActiveCustomization,
       setCustomization,
       setModes,
       setMappings,

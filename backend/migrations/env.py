@@ -58,6 +58,10 @@ def do_run_migrations(connection: Connection) -> None:
         target_metadata=target_metadata,
         version_table_schema=schema,
         include_schemas=True,
+        # One transaction per migration: lets a migration like
+        # `ALTER TYPE ... ADD VALUE` commit before the next migration tries
+        # to use that new value (Postgres forbids using it in the same tx).
+        transaction_per_migration=True,
     )
 
     with context.begin_transaction():

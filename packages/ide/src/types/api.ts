@@ -1,3 +1,5 @@
+import type { Language } from "@/lib/languages-api"
+
 export type TestCase = {
   id: number
   label: string
@@ -6,6 +8,8 @@ export type TestCase = {
   orderIndex: number
 }
 
+export type LanguagePolicy = "OPEN" | "LOCKED"
+
 export type Exercise = {
   id: number
   teacherId: number
@@ -13,6 +17,9 @@ export type Exercise = {
   description: string
   createdAt: string
   testCases: TestCase[]
+  languagePolicy: LanguagePolicy
+  lockedLanguageId: number | null
+  lockedLanguage: Language | null
 }
 
 export type ExerciseListItem = {

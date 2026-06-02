@@ -32,4 +32,9 @@ export const queryKeys = {
     byExercise: (exerciseId: string | number | undefined) =>
       ["submissions", "exercise", exerciseId] as const,
   },
+  languages: {
+    all: ["languages"] as const,
+    detail: (id: number | undefined) => ["languages", id] as const,
+    active: ["languages", "active"] as const,
+  },
 };

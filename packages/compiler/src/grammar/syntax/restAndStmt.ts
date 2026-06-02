@@ -19,7 +19,13 @@ export function restAndStmt(
     const right = notStmt(iterator);
     const temp = iterator.emitter.newTemp();
 
-    iterator.emitter.emit("&&", temp, inherited.place, right.place);
+    iterator.emitter.emitFromToken(
+      "&&",
+      temp,
+      inherited.place,
+      right.place,
+      token,
+    );
     iterator.registerTemp(temp, "bool");
     inherited = iterator.createExprResult(temp, "bool", token);
   }

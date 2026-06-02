@@ -10,6 +10,7 @@ from app.modules.exercises.router import router as exercises_router
 from app.modules.submissions.router import router as submissions_router
 from app.modules.organizations.router import router as organizations_router
 from app.modules.exercise_lists.router import router as exercise_lists_router
+from app.modules.languages.router import router as languages_router
 
 
 @asynccontextmanager
@@ -40,6 +41,7 @@ app.include_router(exercises_router)
 app.include_router(submissions_router)
 app.include_router(organizations_router)
 app.include_router(exercise_lists_router)
+app.include_router(languages_router)
 
 
 @app.get("/health")

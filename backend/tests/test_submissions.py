@@ -41,6 +41,7 @@ class TestCreateSubmission:
                 "exercise_list_id": ex_list.id,
                 "class_id": cls.id,
                 "code_snapshot": "public void main() {}",
+                "language_snapshot": {},
                 "status": "SUBMITTED",
             },
             headers={"Authorization": f"Bearer {student_token}"},
@@ -77,7 +78,7 @@ class TestListSubmissions:
 
         await async_client.post(
             "/submissions",
-            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "status": "SUBMITTED"},
+            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "language_snapshot": {}, "status": "SUBMITTED"},
             headers={"Authorization": f"Bearer {student_token}"},
         )
 
@@ -107,7 +108,7 @@ class TestGradeSubmission:
 
         sub_resp = await async_client.post(
             "/submissions",
-            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "status": "SUBMITTED"},
+            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "language_snapshot": {}, "status": "SUBMITTED"},
             headers={"Authorization": f"Bearer {student_token}"},
         )
         sub_id = sub_resp.json()["id"]
@@ -141,7 +142,7 @@ class TestGradeSubmission:
 
         sub_resp = await async_client.post(
             "/submissions",
-            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "status": "SUBMITTED"},
+            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "language_snapshot": {}, "status": "SUBMITTED"},
             headers={"Authorization": f"Bearer {student_token}"},
         )
         sub_id = sub_resp.json()["id"]
@@ -171,7 +172,7 @@ class TestGetSubmission:
 
         sub_resp = await async_client.post(
             "/submissions",
-            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "status": "SUBMITTED"},
+            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "x", "language_snapshot": {}, "status": "SUBMITTED"},
             headers={"Authorization": f"Bearer {student_token}"},
         )
         sub_id = sub_resp.json()["id"]
@@ -213,7 +214,7 @@ class TestGetSubmission:
 
         sub_resp = await async_client.post(
             "/submissions",
-            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "s1 code", "status": "SUBMITTED"},
+            json={"exercise_id": exercise.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "s1 code", "language_snapshot": {}, "status": "SUBMITTED"},
             headers={"Authorization": f"Bearer {s1_token}"},
         )
         sub_id = sub_resp.json()["id"]

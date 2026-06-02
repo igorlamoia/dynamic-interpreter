@@ -16,12 +16,24 @@ export function unitaryStmt(iterator: TokenIterator): ExprResult {
 
   // Prefix increment: ++identifier
   if (token.type === plus && token.lexeme === "++") {
-    iterator.consume(plus, "++");
+    const operatorToken = iterator.consume(plus, "++");
     const identifier = iterator.consume(TOKENS.LITERALS.identifier);
     assertTypedAssignableIdentifier(iterator, identifier);
     const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emit("+", incremented, identifier.lexeme, "1");
-    iterator.emitter.emit("=", identifier.lexeme, incremented, null);
+    iterator.emitter.emitFromToken(
+      "+",
+      incremented,
+      identifier.lexeme,
+      "1",
+      operatorToken,
+    );
+    iterator.emitter.emitFromToken(
+      "=",
+      identifier.lexeme,
+      incremented,
+      null,
+      identifier,
+    );
     const type = iterator.resolveSymbol(identifier.lexeme);
     iterator.registerTemp(incremented, type);
     return iterator.createExprResult(incremented, type, identifier);
@@ -41,7 +53,13 @@ export function unitaryStmt(iterator: TokenIterator): ExprResult {
 
     const value = unitaryStmt(iterator);
     const temp = iterator.emitter.newTemp();
-    iterator.emitter.emit(operator as TUnaryArithmetics, temp, value.place, null);
+    iterator.emitter.emitFromToken(
+      operator as TUnaryArithmetics,
+      temp,
+      value.place,
+      null,
+      token,
+    );
     iterator.registerTemp(temp, value.type);
     return iterator.createExprResult(temp, value.type, token);
   }

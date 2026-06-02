@@ -17,6 +17,8 @@ type CreateExerciseInput = {
   title: string;
   description: string;
   gradeWeight?: string;
+  languagePolicy?: "OPEN" | "LOCKED";
+  lockedLanguageId?: number | null;
   testCases: Array<{
     label: string;
     input: string;

@@ -1,6 +1,8 @@
 from datetime import datetime
-from app.schemas.base import CamelModel
+from typing import Any
+
 from app.models.submission import SubmissionStatus
+from app.schemas.base import CamelModel
 
 
 class SubmissionCreate(CamelModel):
@@ -8,6 +10,7 @@ class SubmissionCreate(CamelModel):
     exercise_list_id: int
     class_id: int
     code_snapshot: str
+    language_snapshot: dict[str, Any]
     status: SubmissionStatus = SubmissionStatus.SUBMITTED
 
 
@@ -23,6 +26,7 @@ class SubmissionResponse(CamelModel):
     class_id: int
     student_id: int
     code_snapshot: str
+    language_snapshot: dict[str, Any]
     status: SubmissionStatus
     score: float | None = None
     teacher_feedback: str | None = None

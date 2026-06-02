@@ -1,6 +1,11 @@
+import { useState } from "react";
+import { Library } from "lucide-react";
 import { GradientText } from "@/components/text/gradient";
 import { Subtitle } from "@/components/text/subtitle";
 import { Title } from "@/components/text/title";
+import { Button } from "@/components/ui/button";
+import { LanguageLibraryModal } from "@/components/language-library/LanguageLibraryModal";
+import { useAuth } from "@/contexts/AuthContext";
 import { WizardStep } from "./keyword-customizer-types";
 import { WizardStepId } from "./wizard-model";
 
@@ -14,6 +19,8 @@ export function KeywordCustomizerHeader({
 }: KeywordCustomizerHeaderProps) {
   const activeIndex = steps.findIndex((step) => step.id === activeStepId);
   const progress = Math.round(((activeIndex + 1) / steps.length) * 100);
+  const [libraryOpen, setLibraryOpen] = useState(false);
+  const auth = useAuth();
 
   return (
     <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -26,6 +33,19 @@ export function KeywordCustomizerHeader({
             Torne a experiência de codar tão única quanto você.
           </Subtitle>
         </div>
+        {auth?.isAuthenticated && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="ml-3"
+            onClick={() => setLibraryOpen(true)}
+          >
+            <Library className="size-4" />
+            <span className="ml-2">Minhas Linguagens</span>
+          </Button>
+        )}
+        <LanguageLibraryModal open={libraryOpen} onOpenChange={setLibraryOpen} />
         {/* <div className="pr-2">
           <div className="flex items-end justify-between gap-4">
             <div className="flex items-center gap-2">

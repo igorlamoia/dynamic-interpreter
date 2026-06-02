@@ -44,11 +44,12 @@ export function functionCallExpr(
     });
   }
 
-  iterator.emitter.emit(
+  iterator.emitter.emitFromToken(
     "CALL",
     functionName.lexeme,
     args.map((arg) => arg.place),
     resultTemp,
+    functionName,
   );
   const returnType: ValueType = signature?.returnType ?? "unknown";
   iterator.registerTemp(resultTemp, returnType);

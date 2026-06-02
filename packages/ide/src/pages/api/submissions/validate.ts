@@ -217,6 +217,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 exerciseListId: Number(exerciseListId),
                 classId: Number(classId),
                 codeSnapshot: sourceCode,
+                // The customization the IDE actually used. Backend overrides this
+                // with the locked language when exercise.policy === LOCKED.
+                languageSnapshot: {
+                    keywordMap: keywordMap ?? {},
+                    operatorWordMap: operatorWordMap ?? {},
+                    booleanLiteralMap: booleanLiteralMap ?? {},
+                    statementTerminatorLexeme: statementTerminatorLexeme ?? '',
+                    blockDelimiters: blockDelimiters ?? null,
+                    indentationBlock: indentationBlock ?? false,
+                    grammar: grammar ?? {},
+                },
                 status: 'SUBMITTED',
             },
             {

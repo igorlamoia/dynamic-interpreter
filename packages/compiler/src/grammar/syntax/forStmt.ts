@@ -13,7 +13,7 @@ import { declarationStmtWithoutTerminator } from "./declarationStmt";
 export function forStmt(iterator: TokenIterator): void {
   const { left_paren, right_paren, semicolon } = TOKENS.SYMBOLS;
 
-  iterator.consume(TOKENS.RESERVEDS.for);
+  const forToken = iterator.consume(TOKENS.RESERVEDS.for);
   iterator.consume(left_paren);
 
   // (1) Init
@@ -29,27 +29,33 @@ export function forStmt(iterator: TokenIterator): void {
   const labelIncrement = iterator.emitter.newLabel();
   const labelEnd = iterator.emitter.newLabel();
 
-  iterator.emitter.emit("LABEL", labelStart, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelStart, null, null, forToken);
 
   // (2) Cond
   const conditionResult = optExprStmt(iterator);
   iterator.consume(semicolon, ";");
 
   if (conditionResult !== null) {
-    iterator.emitter.emit("IF", conditionResult.place, labelBody, labelEnd);
+    iterator.emitter.emitFromToken(
+      "IF",
+      conditionResult.place,
+      labelBody,
+      labelEnd,
+      forToken,
+    );
   } else {
-    iterator.emitter.emit("JUMP", labelBody, null, null);
+    iterator.emitter.emitFromToken("JUMP", labelBody, null, null, forToken);
   }
 
   // (3) Incremento — ANTES de consumir o ')'
-  iterator.emitter.emit("LABEL", labelIncrement, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelIncrement, null, null, forToken);
   optAttributeStmt(iterator);
-  iterator.emitter.emit("JUMP", labelStart, null, null);
+  iterator.emitter.emitFromToken("JUMP", labelStart, null, null, forToken);
 
   iterator.consume(right_paren); // ✅ depois do incremento
 
   // (4) Corpo
-  iterator.emitter.emit("LABEL", labelBody, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelBody, null, null, forToken);
 
   // Push loop context for break/continue
   iterator.pushLoopContext(labelEnd, labelIncrement);
@@ -59,10 +65,10 @@ export function forStmt(iterator: TokenIterator): void {
   // Pop loop context
   iterator.popLoopContext();
 
-  iterator.emitter.emit("JUMP", labelIncrement, null, null);
+  iterator.emitter.emitFromToken("JUMP", labelIncrement, null, null, forToken);
 
   // (5) Fim
-  iterator.emitter.emit("LABEL", labelEnd, null, null);
+  iterator.emitter.emitFromToken("LABEL", labelEnd, null, null, forToken);
 }
 
 function isTypedDeclarationStart(iterator: TokenIterator): boolean {

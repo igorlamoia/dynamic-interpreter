@@ -50,15 +50,16 @@ function declarationStmtCore(
         arrayMode: arrayDeclaration.mode,
         sizes: arrayDeclaration.sizes,
       });
-      emitter.emit(
+      emitter.emitFromToken(
         "DECLARE_ARRAY" as never,
         varName,
         type,
         JSON.stringify(arrayDeclaration),
+        identToken,
       );
     } else {
       iterator.declareSymbol(varName, type);
-      emitter.emit("DECLARE", varName, type, null);
+      emitter.emitFromToken("DECLARE", varName, type, null, identToken);
     }
 
     if (iterator.match(TOKENS.ASSIGNMENTS.equal)) {
@@ -76,7 +77,7 @@ function declarationStmtCore(
           token: identToken,
         });
       } else {
-        emitAssignmentChain(iterator, varName);
+        emitAssignmentChain(iterator, varName, identToken);
       }
     }
 
@@ -104,7 +105,7 @@ export function declareUntypedArray(
     arrayMode: arrayDeclaration.mode,
     sizes: arrayDeclaration.sizes,
   });
-  iterator.emitter.emit(
+  iterator.emitter.emitFromToken(
     "DECLARE_ARRAY" as never,
     identToken.lexeme,
     "dynamic",
@@ -113,6 +114,7 @@ export function declareUntypedArray(
       dimensions: arrayDeclaration.dimensions,
       sizes: arrayDeclaration.sizes,
     }),
+    identToken,
   );
 
   if (iterator.match(TOKENS.SYMBOLS.left_bracket)) {
@@ -350,6 +352,7 @@ function emitArrayLiteralEntries(
       node.value.place,
       node.value.type,
       node.value.token,
+      context.token,
     );
     return;
   }

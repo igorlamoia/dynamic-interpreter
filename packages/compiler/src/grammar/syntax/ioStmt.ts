@@ -7,6 +7,7 @@ import {
 } from "./attributeStmt";
 import { argumentListStmt } from "./argumentListStmt";
 import { consumeStmtTerminator } from "./statementTerminator";
+import { typeStmt } from "./typeStmt";
 
 const { RESERVEDS, SYMBOLS, LITERALS } = TOKENS;
 
@@ -16,7 +17,7 @@ const { RESERVEDS, SYMBOLS, LITERALS } = TOKENS;
  * @derivation `<printStmt> -> 'print' '(' <argList> ')' ';'`
  */
 export function printStmt(iterator: TokenIterator): void {
-  iterator.consume(RESERVEDS.print);
+  const printToken = iterator.consume(RESERVEDS.print);
   iterator.consume(SYMBOLS.left_paren);
 
   const values = argumentListStmt(iterator);
@@ -24,9 +25,21 @@ export function printStmt(iterator: TokenIterator): void {
   for (const val of values) {
     // Heurística simples: se for aspas, é string; se número, também é literal
     if (val.place.startsWith('"') || !isNaN(Number(val.place))) {
-      iterator.emitter.emit("CALL", "PRINT", val.place, null);
+      iterator.emitter.emitFromToken(
+        "CALL",
+        "PRINT",
+        val.place,
+        null,
+        printToken,
+      );
     } else {
-      iterator.emitter.emit("CALL", "PRINT", null, val.place); // identificador
+      iterator.emitter.emitFromToken(
+        "CALL",
+        "PRINT",
+        null,
+        val.place,
+        printToken,
+      ); // identificador
     }
   }
 
@@ -42,7 +55,7 @@ export function printStmt(iterator: TokenIterator): void {
  * @derivation `<scanStmt> -> 'scan' '(' (<type-or-format> ',' )? 'IDENT' ')' ';'`
  */
 export function scanStmt(iterator: TokenIterator): void {
-  iterator.consume(RESERVEDS.scan);
+  const scanToken = iterator.consume(RESERVEDS.scan);
   iterator.consume(SYMBOLS.left_paren);
 
   const typingMode = iterator.getTypingMode();
@@ -64,23 +77,39 @@ export function scanStmt(iterator: TokenIterator): void {
   consumeStmtTerminator(iterator);
 
   if (target.kind === "scalar") {
-    iterator.emitter.emit("CALL", "SCAN", hint, target.name);
+    iterator.emitter.emitFromToken("CALL", "SCAN", hint, target.name, scanToken);
     return;
   }
 
   const temp = iterator.emitter.newTemp();
   iterator.registerTemp(temp, target.type);
-  iterator.emitter.emit("CALL", "SCAN", hint, temp);
-  emitAssignmentFromValue(iterator, target, temp, target.type, target.token);
+  iterator.emitter.emitFromToken("CALL", "SCAN", hint, temp, scanToken);
+  emitAssignmentFromValue(
+    iterator,
+    target,
+    temp,
+    target.type,
+    target.token,
+    scanToken,
+  );
 }
 
 function parseScanHint(iterator: TokenIterator): ScanHint {
   const token = iterator.peek();
 
-  if (token.type === RESERVEDS.int || token.type === RESERVEDS.float) {
-    iterator.consume(token.type);
-    const semanticType = iterator.mapTokenTypeToSemanticType(token.type);
-    if (semanticType === "int" || semanticType === "float") {
+  if (
+    token.type === RESERVEDS.int ||
+    token.type === RESERVEDS.float ||
+    token.type === RESERVEDS.string ||
+    token.type === RESERVEDS.bool
+  ) {
+    const semanticType = typeStmt(iterator);
+    if (
+      semanticType === "int" ||
+      semanticType === "float" ||
+      semanticType === "string" ||
+      semanticType === "bool"
+    ) {
       return semanticType;
     }
   }

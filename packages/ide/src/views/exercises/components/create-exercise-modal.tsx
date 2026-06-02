@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/contexts/ToastContext";
 import { useCreateExerciseMutation } from "@/hooks/use-api-queries";
+import { useLanguagesList } from "@/hooks/useLanguages";
 import {
   Dialog,
   DialogContent,
@@ -40,6 +41,8 @@ const testCaseSchema = z.object({
 const createExerciseSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
   description: z.string().min(1, "Descrição é obrigatória"),
+  languagePolicy: z.enum(["OPEN", "LOCKED"]),
+  lockedLanguageId: z.number().int().positive().nullable(),
   testCases: z.array(testCaseSchema),
 });
 
@@ -62,10 +65,18 @@ export function CreateExerciseModal({
 }) {
   const { showToast } = useToast();
   const createExercise = useCreateExerciseMutation();
+  const languagesQuery = useLanguagesList(open);
   const form = useForm<CreateExerciseForm>({
     resolver: zodResolver(createExerciseSchema),
-    defaultValues: { title: "", description: "", testCases: defaultTestCases },
+    defaultValues: {
+      title: "",
+      description: "",
+      languagePolicy: "OPEN",
+      lockedLanguageId: null,
+      testCases: defaultTestCases,
+    },
   });
+  const languagePolicy = form.watch("languagePolicy");
 
   const { fields } = useFieldArray({
     control: form.control,
@@ -74,14 +85,30 @@ export function CreateExerciseModal({
 
   useEffect(() => {
     if (!open)
-      form.reset({ title: "", description: "", testCases: defaultTestCases });
+      form.reset({
+        title: "",
+        description: "",
+        languagePolicy: "OPEN",
+        lockedLanguageId: null,
+        testCases: defaultTestCases,
+      });
   }, [open, form]);
 
   const onSubmit = async (values: CreateExerciseForm) => {
+    if (values.languagePolicy === "LOCKED" && values.lockedLanguageId === null) {
+      form.setError("lockedLanguageId", {
+        type: "manual",
+        message: "Selecione uma linguagem para travar o exercício",
+      });
+      return;
+    }
     try {
       await createExercise.mutateAsync({
         title: values.title,
         description: values.description,
+        languagePolicy: values.languagePolicy,
+        lockedLanguageId:
+          values.languagePolicy === "LOCKED" ? values.lockedLanguageId : null,
         testCases: values.testCases.filter(
           (tc) => tc.input.trim() || tc.expectedOutput.trim(),
         ),
@@ -146,6 +173,71 @@ export function CreateExerciseModal({
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="languagePolicy"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Linguagem permitida</FormLabel>
+                  <FormControl>
+                    <div className="flex gap-2">
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="radio"
+                          checked={field.value === "OPEN"}
+                          onChange={() => {
+                            field.onChange("OPEN");
+                            form.setValue("lockedLanguageId", null);
+                          }}
+                        />
+                        Aberto (aluno usa sua linguagem)
+                      </label>
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="radio"
+                          checked={field.value === "LOCKED"}
+                          onChange={() => field.onChange("LOCKED")}
+                        />
+                        Travado em uma linguagem
+                      </label>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {languagePolicy === "LOCKED" && (
+              <FormField
+                control={form.control}
+                name="lockedLanguageId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Linguagem</FormLabel>
+                    <FormControl>
+                      <select
+                        className="h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-slate-100"
+                        value={field.value ?? ""}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value ? Number(e.target.value) : null,
+                          )
+                        }
+                      >
+                        <option value="">— selecione —</option>
+                        {(languagesQuery.data ?? []).map((lang) => (
+                          <option key={lang.id} value={lang.id}>
+                            {lang.name}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="test-cases">

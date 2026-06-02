@@ -29,6 +29,12 @@ export type StoredKeywordCustomization = {
 
 export type KeywordContextType = {
   customization: StoredKeywordCustomization;
+  /** ID da linguagem ativa do usuário no backend (null = sem ativa / não logado). */
+  activeLanguageId: number | null;
+  /** Aplica uma customização externa (ex.: linguagem travada de exercício). */
+  applyExternalCustomization: (customization: StoredKeywordCustomization) => void;
+  /** Restaura a customização da linguagem ativa (após sair de exercício travado). */
+  restoreActiveCustomization: () => void;
   setCustomization: (
     value:
       | StoredKeywordCustomization

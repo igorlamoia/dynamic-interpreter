@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { HeroButton } from "@/components/buttons/hero";
 import { Overlay } from "@/components/effect/overlay";
+import { InterpreterLottie } from "@/lottie/robot-brain";
 export type IdentityImageSearchResult = {
   id: number;
   provider: "pixabay" | "unsplash";
@@ -325,7 +326,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
           </button>
         )}
       </div>
-
+      <InterpreterLottie />
       <div className="flex flex-col gap-4">
         <div className="space-y-3 rounded-lg border border-slate-200/80 bg-white/80 p-4 dark:border-slate-800/80 dark:bg-slate-900/80">
           <div className="space-y-1">
