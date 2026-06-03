@@ -7,25 +7,20 @@
 
 \bibitem[AdaptWorks 2012]{agile2012}
 \abntrefinfo{AdaptWorks}{ADAPTWORKS}{2012}
-{ADAPTWORKS. \textbf{Agile: Desenvolvimento de Software com Entregas Frequentes
-  e Foco no Valor de Neg{\'o}cio}. S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
+{ADAPTWORKS. \textbf{Agile: Desenvolvimento de Software com Entregas Frequentes e Foco no Valor de Neg{\'o}cio}. S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
 
 \bibitem[Aho, Sethi e Ullman 1995]{aho1995}
 \abntrefinfo{Aho, Sethi e Ullman}{AHO; SETHI; ULLMAN}{1995}
-{AHO, A.~V.; SETHI, R.; ULLMAN, J.~D. \textbf{Compiladores}: princípios,
-  técnicas e ferramentas. Rio de Janeiro: LTC, 1995. Tradução de Daniel de
-  Ariosto Pinto.}
+{AHO, A.~V.; SETHI, R.; ULLMAN, J.~D. \textbf{Compiladores}: princípios, técnicas e ferramentas. Rio de Janeiro: LTC, 1995. Tradução de Daniel de Ariosto Pinto.}
 
 \bibitem[Alcantara 2024]{alcantara2024}
 \abntrefinfo{Alcantara}{ALCANTARA}{2024}
 {ALCANTARA, F. \textbf{Tabela de Símbolos}. 2024.
-Dispon{\'\i}vel em:
-  \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.}
+Dispon{\'\i}vel em: \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.}
 
 \bibitem[Aniche 2012]{aniche2012}
 \abntrefinfo{Aniche}{ANICHE}{2012}
-{ANICHE, M. \textbf{Test-Driven Development: Teste e Design no Mundo Real}.
-  S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
+{ANICHE, M. \textbf{Test-Driven Development: Teste e Design no Mundo Real}. S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
 
 \bibitem[Benedetti 2025]{benedetti2025}
 \abntrefinfo{Benedetti}{BENEDETTI}{2025}
@@ -35,79 +30,59 @@ Dispon{\'\i}vel em: \url{https://tutormundi.com/blog/}. Acesso em: 2026.}
 
 \bibitem[Cooper e Torczon 2012]{cooper2012}
 \abntrefinfo{Cooper e Torczon}{COOPER; TORCZON}{2012}
-{COOPER, K.~D.; TORCZON, L. \textbf{Engineering a Compiler}. 2. ed. Waltham:
-  Elsevier / Morgan Kaufmann, 2012.}
+{COOPER, K.~D.; TORCZON, L. \textbf{Engineering a Compiler}. 2. ed. Waltham: Elsevier / Morgan Kaufmann, 2012.}
 
 \bibitem[FASTAPI 2026]{fastapi2026}
 \abntrefinfo{FASTAPI}{FASTAPI}{2026}
 {FASTAPI. \textbf{Recursos e Documentação Oficial do FastAPI}. 2026.
-Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/}. Acesso em: 07 abr.
-  2026.}
+Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/}. Acesso em: 07 abr. 2026.}
 
 \bibitem[Ferreira, Silva e Ribeiro 2025]{ferreira2025}
 \abntrefinfo{Ferreira, Silva e Ribeiro}{FERREIRA; SILVA; RIBEIRO}{2025}
-{FERREIRA, B.; SILVA, C.~L.; RIBEIRO, F. d. C.~L. Um estudo de caso da
-  ferramenta beecrowd como tecnologia da informa{\c{c}}{\~a}o e
-  comunica{\c{c}}{\~a}o na aprendizagem de algoritmos.
+{FERREIRA, B.; SILVA, C.~L.; RIBEIRO, F. d. C.~L. Um estudo de caso da ferramenta beecrowd como tecnologia da informa{\c{c}}{\~a}o e comunica{\c{c}}{\~a}o na aprendizagem de algoritmos.
 \textbf{ForScience}, v.~13, n.~2, 2025.
 Dispon{\'\i}vel em: \url{https://doi.org/10.29069/forscience.2025v13n2.e1313}.}
 
 \bibitem[Garcia 2024]{garcia2024}
 \abntrefinfo{Garcia}{GARCIA}{2024}
-{GARCIA, L. \textbf{Beecrowd: como desenvolver habilidades praticando
-  programa{\c{c}}{\~a}o}. Alura, 2024.
-Dispon{\'\i}vel em:
-  \url{https://www.alura.com.br/artigos/beecrowd-como-desenvolver-habilidades-praticando-programacao}.
-  Acesso em: 07 abr. 2026.}
+{GARCIA, L. \textbf{Beecrowd: como desenvolver habilidades praticando programa{\c{c}}{\~a}o}. Alura, 2024.
+Dispon{\'\i}vel em: \url{https://www.alura.com.br/artigos/beecrowd-como-desenvolver-habilidades-praticando-programacao}. Acesso em: 07 abr. 2026.}
 
 \bibitem[GOMES 2020]{gomes2020}
 \abntrefinfo{GOMES}{GOMES}{2020}
 {GOMES, D. \textbf{O que é Portugol Studio?} DevMedia, 2020.
-Dispon{\'\i}vel em:
-  \url{https://www.devmedia.com.br/o-que-e-portugol-studio/40764}. Acesso em:
-  07 abr. 2026.}
+Dispon{\'\i}vel em: \url{https://www.devmedia.com.br/o-que-e-portugol-studio/40764}. Acesso em: 07 abr. 2026.}
 
 \bibitem[Ladner 2019]{ladner2019}
 \abntrefinfo{Ladner}{LADNER}{2019}
-{LADNER, R.~E. \textbf{Learn About the New Quorum Studio}. Computer Science
-  Teachers Association (CSTA), 2019.
-Dispon{\'\i}vel em:
-  \url{https://csteachers.org/learn-about-the-new-quorum-studio/}. Acesso em:
-  07 abr. 2026.}
+{LADNER, R.~E. \textbf{Learn About the New Quorum Studio}. Computer Science Teachers Association (CSTA), 2019.
+Dispon{\'\i}vel em: \url{https://csteachers.org/learn-about-the-new-quorum-studio/}. Acesso em: 07 abr. 2026.}
 
 \bibitem[{M{\~A}O NO C{\'O}DIGO} 2022]{maonocodigo2022}
 \abntrefinfo{{M{\~A}O NO C{\'O}DIGO}}{{M{\~A}O NO C{\'O}DIGO}}{2022}
-{{M{\~A}O NO C{\'O}DIGO}. \textbf{BEECROWD: Todo PROGRAMADOR deveria conhecer |
-  BEECROWD (antigo Uri Online Judge)}. 2022. V{\'i}deo do YouTube.
-Dispon{\'\i}vel em: \url{https://www.youtube.com/watch?v=ExemploUrl}. Acesso
-  em: 07 abr. 2026.}
+{{M{\~A}O NO C{\'O}DIGO}. \textbf{BEECROWD: Todo PROGRAMADOR deveria conhecer | BEECROWD (antigo Uri Online Judge)}. 2022. V{\'i}deo do YouTube.
+Dispon{\'\i}vel em: \url{https://www.youtube.com/watch?v=ExemploUrl}. Acesso em: 07 abr. 2026.}
 
 \bibitem[Martin 2009]{martin_clean_code}
 \abntrefinfo{Martin}{MARTIN}{2009}
-{MARTIN, R.~C. \textbf{Código Limpo: Habilidades Práticas do Agile Software}.
-  Rio de Janeiro: Alta Books, 2009.}
+{MARTIN, R.~C. \textbf{Código Limpo: Habilidades Práticas do Agile Software}. Rio de Janeiro: Alta Books, 2009.}
 
 \bibitem[Martin 2011]{martin_coder}
 \abntrefinfo{Martin}{MARTIN}{2011}
-{MARTIN, R.~C. \textbf{The Clean Coder: A Code of Conduct for Professional
-  Programmers}. Upper Saddle River: Prentice Hall, 2011.}
+{MARTIN, R.~C. \textbf{The Clean Coder: A Code of Conduct for Professional Programmers}. Upper Saddle River: Prentice Hall, 2011.}
 
 \bibitem[Martin 2019]{martin_clean}
 \abntrefinfo{Martin}{MARTIN}{2019}
-{MARTIN, R.~C. \textbf{Arquitetura Limpa: O Guia do Artes{\~a}o para Estrutura
-  e Design de Software}. Rio de Janeiro: Alta Books, 2019.}
+{MARTIN, R.~C. \textbf{Arquitetura Limpa: O Guia do Artes{\~a}o para Estrutura e Design de Software}. Rio de Janeiro: Alta Books, 2019.}
 
 \bibitem[MARTINS 2025]{martins2025}
 \abntrefinfo{MARTINS}{MARTINS}{2025}
-{MARTINS, C. \textbf{Portugol Studio: Guia Completo de Como Usar a Plataforma}.
-  HostGator, 2025.
-Dispon{\'\i}vel em: \url{https://www.hostgator.com.br/blog/portugol-studio/}.
-  Acesso em: 07 abr. 2026.}
+{MARTINS, C. \textbf{Portugol Studio: Guia Completo de Como Usar a Plataforma}. HostGator, 2025.
+Dispon{\'\i}vel em: \url{https://www.hostgator.com.br/blog/portugol-studio/}. Acesso em: 07 abr. 2026.}
 
 \bibitem[{Mind Makers} 2025]{mindmakers2025}
 \abntrefinfo{{Mind Makers}}{{Mind Makers}}{2025}
-{{Mind Makers}. 10 tend{\^e}ncias em edtech para 2026: o que a escola precisa
-  saber.
+{{Mind Makers}. 10 tend{\^e}ncias em edtech para 2026: o que a escola precisa saber.
 \textbf{Blog Mind Makers}, 2025.
 Dispon{\'\i}vel em: \url{https://mindmakers.com.br/blog/}. Acesso em: 2026.}
 
@@ -118,52 +93,40 @@ ISBN 978-0990582939.}
 
 \bibitem[Price e Toscani 2001]{price2001}
 \abntrefinfo{Price e Toscani}{PRICE; TOSCANI}{2001}
-{PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens
-  de Programa{\c{c}}{\~a}o: Compiladores}. Porto Alegre: Sagra Luzzatto, 2001.
-  (S{\'e}rie Livros Did{\'a}ticos).}
+{PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens de Programa{\c{c}}{\~a}o: Compiladores}. Porto Alegre: Sagra Luzzatto, 2001.  (S{\'e}rie Livros Did{\'a}ticos).}
 
 \bibitem[QUORUM 2025]{quorum2025}
 \abntrefinfo{QUORUM}{QUORUM}{2025}
-{QUORUM. \textbf{The Quorum Programming Language: Documentation and
-  Curriculum}. 2025.
-Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 07 abr.
-  2026.}
+{QUORUM. \textbf{The Quorum Programming Language: Documentation and Curriculum}. 2025.
+Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 07 abr. 2026.}
 
 \bibitem[Sabbagh 2014]{sabbagh2014}
 \abntrefinfo{Sabbagh}{SABBAGH}{2014}
-{SABBAGH, R. \textbf{Scrum: Gest{\~a}o {\'a}gil para projetos de sucesso}.
-  S{\~a}o Paulo: Casa do C{\'o}digo, 2014.}
+{SABBAGH, R. \textbf{Scrum: Gest{\~a}o {\'a}gil para projetos de sucesso}. S{\~a}o Paulo: Casa do C{\'o}digo, 2014.}
 
 \bibitem[Silva 2021]{ladgelson2021}
 \abntrefinfo{Silva}{SILVA}{2021}
 {SILVA, M. L.~d.
 \textbf{Laila: Uma Plataforma Web para Aux{\'i}lio ao Ensino de Compiladores}.
-Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da
-  Computa{\c{c}}{\~a}o)) --- Instituto Federal de Educa{\c{c}}{\~a}o,
-  Ci{\^e}ncia e Tecnologia do Cear{\'a}, Aracati, 2021.}
+Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da Computa{\c{c}}{\~a}o)) --- Instituto Federal de Educa{\c{c}}{\~a}o, Ci{\^e}ncia e Tecnologia do Cear{\'a}, Aracati, 2021.}
 
 \bibitem[Silveira et al. 2012]{silveira2012}
 \abntrefinfo{Silveira et al.}{SILVEIRA et al.}{2012}
-{SILVEIRA, P. et al. \textbf{Introdu{\c{c}}{\~a}o {\`a} arquitetura e design de
-  software}. S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
+{SILVEIRA, P. et al. \textbf{Introdu{\c{c}}{\~a}o {\`a} arquitetura e design de software}. S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
 
 \bibitem[Stefik e Siebert 2013]{stefik2013}
 \abntrefinfo{Stefik e Siebert}{STEFIK; SIEBERT}{2013}
-{STEFIK, A.; SIEBERT, S. An empirical investigation into programming language
-  syntax.
+{STEFIK, A.; SIEBERT, S. An empirical investigation into programming language syntax.
 \textbf{ACM Transactions on Computing Education}, ACM, v.~13, n.~4, 2013.}
 
 \bibitem[Ueyama 2020]{ueyama2020}
 \abntrefinfo{Ueyama}{UEYAMA}{2020}
 {UEYAMA, R. \textbf{chibicc: A small C compiler}. 2020.
-Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 07 abr.
-  2026.}
+Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 07 abr. 2026.}
 
 \bibitem[UNIVALI 2026]{univali2026}
 \abntrefinfo{UNIVALI}{UNIVALI}{2026}
-{UNIVALI. \textbf{Portugol Studio - LITE}. Laborat{\'o}rio de
-  Inova{\c{c}}{\~a}o Tecnol{\'o}gica na Educa{\c{c}}{\~a}o, 2026.
-Dispon{\'\i}vel em: \url{https://univali-lite.github.io/Portugol-Studio/}.
-  Acesso em: 07 abr. 2026.}
+{UNIVALI. \textbf{Portugol Studio - LITE}. Laborat{\'o}rio de Inova{\c{c}}{\~a}o Tecnol{\'o}gica na Educa{\c{c}}{\~a}o, 2026.
+Dispon{\'\i}vel em: \url{https://univali-lite.github.io/Portugol-Studio/}. Acesso em: 07 abr. 2026.}
 
 \end{thebibliography}

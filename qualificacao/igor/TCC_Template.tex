@@ -1,25 +1,25 @@
 %%& -job-name=targetfile
 \documentclass[
-        oneside,      %%coloque  % no in\'icio desta linha para imprimir frente e verso 
-        english,			
-%	french,				
-%	spanish, 
-        brazil			 
+        oneside,      %%coloque  % no in\'icio desta linha para imprimir frente e verso
+        english,
+%	french,
+%	spanish,
+        brazil
         ]{configcefetmglpd}
 
 
-\usepackage[T1]{fontenc}		
-\usepackage[utf8]{inputenc}		%% Para converter automaticamente acentos como digitados normalmente no teclado. Mude utf8 para latin1 se precisar. 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}		%% Para converter automaticamente acentos como digitados normalmente no teclado. Mude utf8 para latin1 se precisar.
 
 %\usepackage{lmodern} %no caso do modelo Latex, pode-se usar a família de fontes lmodern como aqui indicado, no lugar de Arial e Times New Roman.
 \usepackage{times}
 \usepackage{lastpage}
-\usepackage{indentfirst}		
-\usepackage{color}			
-\usepackage{graphicx}		
+\usepackage{indentfirst}
+\usepackage{color}
+\usepackage{graphicx}
 \usepackage{float}
 \usepackage{svg}
-\usepackage{microtype} 
+\usepackage{microtype}
 \usepackage{hyperref}
 \usepackage{xurl}
 \usepackage{pdflscape}
@@ -33,7 +33,7 @@
 \lstdefinelanguage{toml}{
     keywords={true, false},
     sensitive=true,
-    comment=[l]{#},
+    comment=[l]{\#},
     morecomment=[s]{"""}{"""},
     string=[b]",
 }
@@ -74,7 +74,7 @@
 \usepackage{xcolor}
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\usepackage{amsmath} 
+\usepackage{amsmath}
 \usepackage{amssymb}
 
 \graphicspath{{Figuras/}} % Diretório onde estão localizadas as figuras
@@ -83,9 +83,9 @@
 
 %% Obs.: Alguns acentos foram omitidos.
 
-\titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}. 
+\titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}.
 \subtitulo{Uma abordagem interativa com Ambiente de Desenvolvimento Integrado
-(IDE) para personalização e execução de comandos definidos pelo usuário}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}. 
+(IDE) para personalização e execução de comandos definidos pelo usuário}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}.
 
 \tituloIngles{Dynamic Interpreter for Programming Education: A Web IDE with Configurable Language Grammar} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
 % \subtituloIngles{subtitle (se tiver)}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo em inglês do trabalho deve ser colocado dentro das chaves {}.
@@ -138,7 +138,7 @@
 
 
 % Pacotes para referência bibliográfica. Não alterar as linhas abaixo
-% \usepackage[round, numbers]{natbib} % Referência númérica (não usado nesse trabalho) 
+% \usepackage[round, numbers]{natbib} % Referência númérica (não usado nesse trabalho)
   % \usepackage{natbib} % Referência utilizando o sistema autor-data
 \usepackage[alf,abnt-emphasize=bf]{abntex2cite}
 
@@ -154,9 +154,9 @@
 %% Folha de rosto (Não alterar)
 %\printafolhaderosto
 
-%% O aluno deverá solicitar a ficha na página da Biblioteca de Leopoldina. 
+%% O aluno deverá solicitar a ficha na página da Biblioteca de Leopoldina.
 %% Ficha catalográfica. AO IMPRIMIR, DEIXAR NO VERSO DA FOLHA DE ROSTO. (Não alterar)
-\printacatalog  
+\printacatalog
 
 
 %% Folha de Aprovação. (Não alterar)
@@ -165,15 +165,15 @@
 
 %% Dedicatória. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{dedicatoria}
  % \begin{dedicatoria}
- %  		A dedicatória deve ser escrita com o estilo de texto "Dedicatória" e ficar no final da página. Neste local colocam-se pequenos parágrafos (não muitos) homenageando as pessoas importantes da sua trajetória acadêmica.\\  		
+ %  		A dedicatória deve ser escrita com o estilo de texto "Dedicatória" e ficar no final da página. Neste local colocam-se pequenos parágrafos (não muitos) homenageando as pessoas importantes da sua trajetória acadêmica.\\
  %  		Este não é um item obrigatório do TCC conforme NBR 14724 \cite{bib:abnt14724}. Caso opte por não colocar dedicatória, deve-se retirar esta seção.
  % \end{dedicatoria}
 
- 
+
 %% Agradecimentos. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{agradecimentos}
 \begin{agradecimentos}
 Agradeço à minha família pelo apoio incondicional, incentivo e paciência ao longo desta jornada. Sem vocês, nada disso seria possível.
-Meu sincero agradecimento também ao meu orientador, Eduardo Gabriel Reis Miranda, e ao meu coorientador, Henrique Barros Lopes, pela orientação, dedicação e ensinamentos valiosos que tornaram este trabalho possível.
+Meu sincero agradecimento também ao meu orientador, Luís Augusto Mattos Mendes, e ao meu coorientador, Eduardo Gabriel Reis Miranda, pela orientação, dedicação e ensinamentos valiosos que tornaram este trabalho possível.
 A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrigado.
 
 \end{agradecimentos}
@@ -190,28 +190,31 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
 
 %% Resumo em Português. ELEMENTO OBRIGATÓRIO.
 \begin{resumo_cefetmg}
-	
+
 \begin{center}
-    \textbf{RESUMO} 
+    \textbf{RESUMO}
 \end{center}
 %\aplicaresumo
 
 
-Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador. Aplicações preliminares em sala de aula sugerem resultados educacionais positivos, incluindo redução do tempo necessário para que os alunos compreendam conceitos fundamentais de programação, diminuição das taxas de reprovação em disciplinas introdutórias de programação e aumento do engajamento dos estudantes. Ao permitir a definição flexível de comandos e sintaxe, a plataforma reduz barreiras linguísticas e incentiva a experimentação, ajudando os alunos a focarem no raciocínio algorítmico em vez de memorizar estruturas rígidas de linguagem.
+Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador.
+% Aplicações preliminares em sala de aula sugerem resultados educacionais positivos, incluindo redução do tempo necessário para que os alunos compreendam conceitos fundamentais de programação, diminuição das taxas de reprovação em disciplinas introdutórias de programação e aumento do engajamento dos estudantes.
+Espera-se que a plataforma contribua para o ensino de programação ao reduzir barreiras linguísticas, favorecer a compreensão de conceitos fundamentais e estimular o engajamento dos estudantes por meio da experimentação com diferentes formas de expressão algorítmica.
+Ao permitir a definição flexível de comandos e sintaxe, a plataforma incentiva a experimentação, ajudando os alunos a focarem no raciocínio algorítmico em vez de memorizar estruturas rígidas de linguagem.
 
-% Escrever o resumo do TCC. Este é um item obrigatório de acordo com a NBR 14724 \cite{bib:abnt14724}. 
-% Quanto a sua extensão os resumos devem ter de 150 a 500 palavras. 
-% A elaboração deste resumo deve seguir a NBR 6028 \cite{bib:abnt6028}. 
+% Escrever o resumo do TCC. Este é um item obrigatório de acordo com a NBR 14724 \cite{bib:abnt14724}.
+% Quanto a sua extensão os resumos devem ter de 150 a 500 palavras.
+% A elaboração deste resumo deve seguir a NBR 6028 \cite{bib:abnt6028}.
 % O texto do resumo deve estar em parágrafo único. Todas as palavras devem estar com letras minúsculas com exceção dos substantivos
-% próprios e nomes científicos, separadas por ponto e vírgula. 
+% próprios e nomes científicos, separadas por ponto e vírgula.
 % As palavras-chave são inseridas abaixo do resumo com uma linha de 1,5 em branco separando-as.
 
 \noindent
-\textbf{Palavras-chave}: Interpretador dinâmico; Educação em Programação Introdutória; Programação Orientada à Linguagem; Ambiente de Programação Interativo.
+\textbf{Palavras-chave}: Interpretador Dinâmico; Educação em Programação; Ambiente Educacional Web; IDE Educacional; Personalização de Linguagens.
 
 \end{resumo_cefetmg}
- 
- 
+
+
 %% Resumo em Inglês. Opcional, mas recomndável.
 \begin{abstract_cefetmg}
  \begin{otherlanguage*}{english}
@@ -219,12 +222,11 @@ Ensinar programação apresenta diversos desafios, em parte devido ao uso de lin
 %\aplicaabstract
 
 \begin{center}
-    \textbf{ABSTRACT} 
-\end{center} 
+    \textbf{ABSTRACT}
+\end{center}
+Teaching programming presents several challenges, partly due to the use of languages whose code structure is defined by fixed syntax and reserved keywords. This can hinder student learning, as beginners often need to memorize foreign-language terms and rigid sets of rules before fully understanding algorithmic concepts. This work proposes an educational platform featuring an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows users to customize language syntax, commands, and structural rules. The project is developed through a literature review, system architecture design, implementation of a web-based IDE and interpreter (including lexical and syntactic analysis), and integration with real-time execution in the browser. The platform is expected to contribute to programming education by reducing linguistic barriers, supporting the understanding of fundamental concepts, and increasing student engagement through experimentation with different forms of algorithmic expression. By enabling flexible definition of commands and syntax, the proposed approach encourages experimentation and helps students focus on algorithmic reasoning rather than memorizing rigid language structures.
 
-Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules.This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows users to customize language syntax, commands, and structural rules. The project is developed through literature review, system architecture design, implementation of a web IDE and interpreter (including lexical and syntactic analysis), and integration with real-time execution in the browser. Preliminary classroom applications suggest positive educational outcomes, including reduced time required for students to grasp fundamental programming concepts, lower failure rates in introductory programming courses, and increased student engagement.By allowing flexible definition of commands and syntax, the platform reduces linguistic barriers and encourages experimentation, helping students focus on algorithmic reasoning rather than memorizing rigid language structures.
-\noindent
-\textbf{Keywords:} Dynamic Interpreter; Introductory Programming Education; Language-Oriented Programming; Interactive Programming Environment.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
+\noindent \textbf{Keywords:} Dynamic Interpreter; Programming Education; Web-Based Educational Environment; Educational IDE; Language Customization.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
 
   \end{otherlanguage*}
 \end{abstract_cefetmg}
@@ -236,9 +238,9 @@ Teaching programming presents several challenges, partly due to the use of langu
 
 \pdfbookmark[0]{\listfigurename}{lof}
 
-%Caso as ilustrações do trabalho sejam todas do mesmo tipo (por exemplo, todas do tipo organograma), coloque % no início das duas linhas abaixo. 
-\figvariadas   %Use este comando somente caso as ilustrações não sejam todas do mesmo tipo. 
-\listfigvariadas  %Use este comando somente caso as ilustrações não sejam todas do mesmo tipo e caso queira inserir a lista delas. 
+%Caso as ilustrações do trabalho sejam todas do mesmo tipo (por exemplo, todas do tipo organograma), coloque % no início das duas linhas abaixo.
+\figvariadas   %Use este comando somente caso as ilustrações não sejam todas do mesmo tipo.
+\listfigvariadas  %Use este comando somente caso as ilustrações não sejam todas do mesmo tipo e caso queira inserir a lista delas.
 
 %\listoffigures*  %Use este comando quando todas as ilustrações são do mesmo tipo e caso queira inserir a lista delas. Em geral, se mantém comentado
 
@@ -247,35 +249,26 @@ Teaching programming presents several challenges, partly due to the use of langu
 \pdfbookmark[0]{\listtablename}{lot}
 
 %% Lista de tabelas. Se NÃO houver tabela nenhuma, colocar % na frente da linha debaixo.
- \listoftables*   
+ \listoftables*
 
 \cleardoublepage
 
 
-%% Lista de abreviaturas e siglas. Não deve haver sinal grafico entre as siglas e abreviaturas e o significado. 
+%% Lista de abreviaturas e siglas. Não deve haver sinal grafico entre as siglas e abreviaturas e o significado.
 
 % \begin{siglas} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
 % 	\acro{EX}{Example}
 % 	\acro{HiRDLS}{High-Resolution Dynamics Limb Sounder}
 % 	\acro{MLS}{Microwave Limb Sounder}
 % 	\acro{TES}{Tropospheric Emission Sounder}
- 
+
 % %  Deve obedecer a ordem alfabética. A sigla, quando mencionada pela primeira vez no texto, deve ser indicada entre parênteses, precedida do nome completo (ABNT 14724, 2011). Exemplo: Interface Homem Máquina (IHM).
 %   \end{siglas}
 
 
-% Lista de símbolos. Nao deve haver sinal grafico entre o simbolo e o seu significado.
-\begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-  \item[$ \ldots $] Reticências (omissão de elementos em uma sequência)
 
 
-  
 
-  
-%  Observação: Em trabalhos cuja formulação matemática requerer um número muito grande de símbolos e variáveis (geralmente letras gregas), sugere-se a colocação de uma seção de lista de símbolos. Devem obedecer a ordem com que aparecem no texto.
- \end{simbolos}
-
- 
 %% Sumário. Não alterar
 \pdfbookmark[0]{\contentsname}{toc}
 \tableofcontents*
