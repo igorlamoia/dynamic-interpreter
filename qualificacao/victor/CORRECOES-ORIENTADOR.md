@@ -45,6 +45,40 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 >   integralmente a cada mudança (acumula, detecta regressões).
 > - [x] **p44 (parcial)** nomenclatura padronizada para "esquema lógico" (corpo+legenda).
 >   FALTA confirmar **normalização** das tabelas (Front B — confirmação do autor).
+>
+> **Front B — decisões/confirmações (2026-06-05):**
+> - [x] **p57** figuras duplicadas. TDD: mantida só a 2.3 (`fig:ciclo_tdd`, fonte
+>   `firminiq2024`); removida a 4.5 do Cap.4 (que tinha citação quebrada "FIRMINIQ.") e o
+>   texto passou a citar a 2.3. lex.png: era figura do **Nystrom** mal atribuída como
+>   "elaborado pelo autor" no Cap.4 (Fig 4.4) — figura removida; texto religado à 2.2
+>   (`fig:lexemas_nystrom`, fonte Nystrom). Bônus: corrigido caminho `packages/compiler /src/tests`.
+> - [x] **p14** reorganização mínima: `\chapter` Cap.2 → "REFERENCIAL TEÓRICO E TRABALHOS
+>   RELACIONADOS"; Cap.4 "MODELAGEM" → "METODOLOGIA" (labels `cap:referencial`/`cap:modelagem`
+>   mantidos). Não se moveu proposta/cronograma (decisão do autor).
+> - [x] **p2/p3** ficha/aprovação: já resolvido no working tree (`\data{2026}`, `\aprovacao*`
+>   comentados). Confirmar visualmente no PDF.
+> - [~] **p44** normalização: autor optou por NÃO inserir frase agora; tratará direto com o orientador.
+> - [x] **p34** método de seleção dos trabalhos relacionados: autor optou por "seleção por
+>   representatividade dos dois eixos". Criada `\section{Seleção dos Trabalhos Relacionados}`
+>   (`sec:selecao-trabalhos`) na Metodologia, com critérios de inclusão explícitos (sem fingir
+>   revisão sistemática); referência cruzada adicionada na abertura de Trabalhos Relacionados.
+>
+> **Front C — layout / margens (2026-06-05):**
+> - [x] **Global anti-overflow:** `\setlength{\emergencystretch}{3em}` no preâmbulo do
+>   `TCC_Template.tex` — elimina a maioria dos *overfull \hbox* de prosa (ex.: "obrigatoriamente").
+> - [x] **Tabela da API (Apêndice):** rotas longas (`POST /api/submissions/validate`,
+>   `/class-exercise-lists`) quebradas com `\allowbreak`; adicionado pacote `array` e coluna
+>   "Recurso"/"Camada" com `>{\raggedright\arraybackslash}` (sem buracos de justificação).
+> - [x] **p53 + identificadores CORROMPIDOS:** um formatador automático havia quebrado
+>   identificadores com espaço no meio — corrigidos `consumeStmtTerminator` (era "consumeStmt er"),
+>   `IssueInfo` (era "IssueIn- fo") e `packages/compiler` (era "packages/compil er"), com `\allowbreak`.
+>   ⚠️ ALERTA: não rodar o formatador automático de LaTeX nos `texto/*.tex` — ele recria esses erros.
+> - [x] **Travessões removidos:** todos os 13 `—` substituídos por parênteses/vírgulas conforme
+>   o contexto (parênteses quando o aposto já tinha vírgulas internas), em `metodologia`,
+>   `proposta` e `referencial`.
+> - [ ] **PENDENTE (precisa do PDF):** figura fora da margem (p43); figura/legenda em páginas
+>   diferentes (p15); "Leopoldina 2026" em página solta (p4); espaços em branco (p15); sumário.
+> - [ ] **PENDENTE p47:** "é"→"são" — não localizado sem o PDF; autor deve apontar o trecho exato.
 
 ---
 

@@ -2,8 +2,6 @@
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{14}{figure.caption.18}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{16}{figure.caption.21}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes (TDD).\relax }}{27}{figure.caption.37}%
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Fluxo de execução entre os módulos do interpretador dinâmico.\relax }}{41}{figure.caption.53}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Esquema lógico do banco de dados da plataforma.\relax }}{43}{figure.caption.55}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Funções de validação prévia da configuração léxica da linguagem.\relax }}{48}{figure.caption.58}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Decomposição da instrução \texttt {var language = "lox";} em \textit {tokens} pelo analisador léxico.\relax }}{49}{figure.caption.61}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes aplicado ao projeto.\relax }}{56}{figure.caption.69}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Fluxo de execução entre os módulos do interpretador dinâmico.\relax }}{42}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Esquema lógico do banco de dados da plataforma.\relax }}{44}{figure.caption.56}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Funções de validação prévia da configuração léxica da linguagem.\relax }}{49}{figure.caption.59}%

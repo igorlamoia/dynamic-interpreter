@@ -47,11 +47,11 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
     \centering
     \caption{Grupos de recursos da API da plataforma.}
     \label{tab:api-recursos}
-    \begin{tabular}{|p{4.3cm}|p{8.3cm}|}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{4.3cm}|p{8.3cm}|}
         \hline
         \textbf{Recurso} & \textbf{Responsabilidade} \\
         \hline
-        \texttt{POST /api/submissions/validate} & Executa o ciclo completo de compilação e interpretação do código submetido e o avalia contra os casos de teste do exercício (rota do pacote \texttt{ide}). \\
+        \texttt{POST /api/}\allowbreak\texttt{submissions/}\allowbreak\texttt{validate} & Executa o ciclo completo de compilação e interpretação do código submetido e o avalia contra os casos de teste do exercício (rota do pacote \texttt{ide}). \\
         \hline
         \texttt{/auth} & Registro e \textit{login} de usuários, com emissão de \textit{tokens} JWT. \\
         \hline
@@ -65,7 +65,7 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
         \hline
         \texttt{/exercise-lists} & Composição, ordenação e atribuição de pesos aos exercícios de uma lista. \\
         \hline
-        \texttt{/class-exercise-lists} & Publicação de listas para turmas, com prazo, nota total e mínimo de exercícios. \\
+        \texttt{/class-}\allowbreak\texttt{exercise-}\allowbreak\texttt{lists} & Publicação de listas para turmas, com prazo, nota total e mínimo de exercícios. \\
         \hline
         \texttt{/submissions} & Armazenamento e recuperação das submissões dos estudantes, com pontuação e retroalimentação. \\
         \hline
@@ -81,7 +81,7 @@ Este apêndice resume a suíte de testes automatizados do núcleo do compilador,
     \centering
     \caption{Distribuição dos casos de teste por camada do compilador.}
     \label{tab:testes-resumo}
-    \begin{tabular}{|p{3.4cm}|c|c|p{6.2cm}|}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{3.4cm}|c|c|p{6.2cm}|}
         \hline
         \textbf{Camada} & \textbf{Arquivos} & \textbf{Casos} & \textbf{Escopo} \\
         \hline

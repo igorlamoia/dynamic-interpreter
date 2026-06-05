@@ -24,6 +24,7 @@
 \usepackage{pdflscape}
 \usepackage[printonlyused]{acronym}
 \usepackage{multirow}
+\usepackage{array}
 
 \renewcommand{\appendixname}{APÊNDICE}
 \usepackage{listings}
@@ -126,6 +127,11 @@
 \usepackage[alf,abnt-emphasize=bf]{abntex2cite}
 
 \linespread{1.5}
+
+%% Evita que palavras/linhas apertadas estourem a margem direita (overfull \hbox).
+%% O TeX só usa essa folga extra quando a linha realmente iria vazar; linhas normais ficam intactas.
+\setlength{\emergencystretch}{3em}
+
 \begin{document}
 
 %%---------------- Elementos Pré-textuais -----------------------------
@@ -209,8 +215,9 @@ fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte
 \end{center} 
 
 Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules. This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows the user to customize the language syntax, including its reserved words, operators, and structural rules. The project is developed through literature review, system architecture design, and the implementation of a web IDE and an interpreter, which includes lexical and syntactic analysis, intermediate code generation and interpretation, with real-time execution in the browser. The expected result is that the platform acts as a facilitator of the teaching-learning process, reducing initial linguistic barriers and encouraging experimentation, so that students can focus on algorithmic reasoning rather than memorizing rigid language structures. The main contribution of the proposal lies in allowing the flexible redefinition of the language's vocabulary and structural rules, adapting it to the student's background.
+
 \noindent
-\textbf{Keywords:} Dynamic Interpreter. Introductory Programming Education. Language-Oriented Programming. Interactive Programming Environment.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
+\textbf{Keywords:} Dynamic Interpreter. Introductory Programming Education. Language-Oriented Programming. Interactive Programming Environment. Teaching-Learning.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
 
   \end{otherlanguage*}
 \end{abstract_cefetmg}
@@ -269,13 +276,13 @@ Teaching programming presents several challenges, partly due to the use of langu
 \chapter{INTRODUÇÃO}
 \input{texto/introducao}
 
-\chapter{REFERENCIAL TEÓRICO} \label{cap:referencial}
+\chapter{REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS} \label{cap:referencial}
 \input{texto/referencial}
 
 \chapter{PROPOSTA} \label{cap:proposta}
 \input{texto/proposta}
 
-\chapter{MODELAGEM} \label{cap:modelagem}
+\chapter{METODOLOGIA} \label{cap:modelagem}
 \input{texto/metodologia}
 
 

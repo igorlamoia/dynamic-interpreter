@@ -12,7 +12,7 @@
 \contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{11}{subsection.13}%
 \contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{12}{section.14}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO}{13}{chapter.15}%
+\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS}{13}{chapter.15}%
 \contentsline {section}{\numberline {2.1}Compiladores}{13}{section.16}%
 \contentsline {subsection}{\numberline {{2.1}.1}Compiladores e seus Fundamentos}{13}{subsection.17}%
 \contentsline {subsection}{\numberline {{2.1}.2}O Modelo de Análise e Síntese (Fases da Compilação)}{14}{subsection.19}%
@@ -39,28 +39,29 @@
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {3}PROPOSTA}{38}{chapter.49}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}MODELAGEM}{40}{chapter.51}%
-\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura do Projeto}{40}{section.52}%
-\contentsline {subsection}{\numberline {{4.1}.1}Modelagem do Banco de Dados}{42}{subsection.54}%
-\contentsline {subsection}{\numberline {{4.1}.2}Especificação das Rotas da API}{45}{subsection.56}%
-\contentsline {section}{\numberline {4.2}Especificação da Linguagem e de seus Elementos Configuráveis}{46}{section.57}%
-\contentsline {section}{\numberline {4.3}Interpretador}{48}{section.59}%
-\contentsline {subsection}{\numberline {{4.3}.1}Análise Léxica}{49}{subsection.60}%
-\contentsline {subsection}{\numberline {{4.3}.2}Análise Sintática}{51}{subsection.63}%
-\contentsline {subsection}{\numberline {{4.3}.3}Análise Semântica}{51}{subsection.64}%
-\contentsline {subsection}{\numberline {{4.3}.4}Geração de Código Intermediário}{52}{subsection.65}%
-\contentsline {subsection}{\numberline {{4.3}.5}Interpretação e Tratamento de Erros em Tempo de Execução}{53}{subsection.66}%
-\contentsline {section}{\numberline {4.4}Integração entre a Plataforma e o Interpretador}{54}{section.67}%
-\contentsline {section}{\numberline {4.5}Estratégia de Testes Automatizados}{55}{section.68}%
+\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{40}{chapter.51}%
+\contentsline {section}{\numberline {4.1}Seleção dos Trabalhos Relacionados}{40}{section.52}%
+\contentsline {section}{\numberline {4.2}Modelagem da Arquitetura do Projeto}{41}{section.53}%
+\contentsline {subsection}{\numberline {{4.2}.1}Modelagem do Banco de Dados}{43}{subsection.55}%
+\contentsline {subsection}{\numberline {{4.2}.2}Especificação das Rotas da API}{46}{subsection.57}%
+\contentsline {section}{\numberline {4.3}Especificação da Linguagem e de seus Elementos Configuráveis}{47}{section.58}%
+\contentsline {section}{\numberline {4.4}Interpretador}{49}{section.60}%
+\contentsline {subsection}{\numberline {{4.4}.1}Análise Léxica}{50}{subsection.61}%
+\contentsline {subsection}{\numberline {{4.4}.2}Análise Sintática}{51}{subsection.63}%
+\contentsline {subsection}{\numberline {{4.4}.3}Análise Semântica}{52}{subsection.64}%
+\contentsline {subsection}{\numberline {{4.4}.4}Geração de Código Intermediário}{53}{subsection.65}%
+\contentsline {subsection}{\numberline {{4.4}.5}Interpretação e Tratamento de Erros em Tempo de Execução}{54}{subsection.66}%
+\contentsline {section}{\numberline {4.5}Integração entre a Plataforma e o Interpretador}{55}{section.67}%
+\contentsline {section}{\numberline {4.6}Estratégia de Testes Automatizados}{56}{section.68}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{57}{chapter*.71}%
+\contentsline {chapter}{REFERÊNCIAS}{57}{chapter*.70}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{59}{appendix.72}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{59}{section.73}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{59}{section.74}%
-\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{59}{subsection.75}%
-\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{60}{subsection.76}%
+\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{59}{appendix.71}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{59}{section.72}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{59}{section.73}%
+\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{59}{subsection.74}%
+\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{60}{subsection.75}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {B}DOCUMENTAÇÃO DA API}{61}{appendix.77}%
+\contentsline {appendix}{\chapternumberline {B}DOCUMENTAÇÃO DA API}{61}{appendix.76}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {C}CASOS DE TESTE AUTOMATIZADOS}{62}{appendix.79}%
+\contentsline {appendix}{\chapternumberline {C}CASOS DE TESTE AUTOMATIZADOS}{62}{appendix.78}%
