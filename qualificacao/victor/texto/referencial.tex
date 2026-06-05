@@ -1,10 +1,10 @@
 
+Este capítulo reúne a fundamentação teórica que sustenta o trabalho. Inicialmente, a Seção~\ref{sec:compiladores} apresenta os fundamentos de compiladores e suas fases — da análise léxica à geração de código intermediário —, bem como os conceitos de engenharia de software que orientaram a construção do sistema. Em seguida, discutem-se os softwares educativos e as tecnologias de apoio à aprendizagem de programação. Por fim, a Seção~\ref{sec:trabalhos-relacionados} analisa os trabalhos relacionados, posicionando a solução proposta frente ao estado da arte.
+
 \section{Compiladores}
-
-Este capitulo contém o referencial que embasa os principais aspectos abordados ao longo
-do trabalho.
-
 \label{sec:compiladores}
+
+Esta seção percorre os fundamentos de compiladores que embasam o núcleo de tradução implementado neste trabalho, desde a definição de compilador e de suas fases até a geração de código intermediário.
 
 \subsection{Compiladores e seus Fundamentos}
 
@@ -209,7 +209,7 @@ A alteração do fluxo é realizada puramente por meio de operações de saltos 
 
 \subsubsection{Gestão de Tarefas e Metodologias Ágeis}
 
-Para a fundamentação teórica acerca da gestão de escopo e da adoção de metodologias ágeis neste trabalho, esta subseção baseia-se primordialmente nas diretrizes do \textit{framework} Scrum detalhadas por \citeonline{sabbagh2014}, bem como nos princípios de desenvolvimento iterativo e incremental discutidos por \citeonline{agile2012}. Com o intuito de manter a fluidez da leitura, os conceitos de planejamento, empirismo e gerenciamento de tarefas apresentados a seguir refletem a consolidação das práticas e das ideias desses autores. %
+Para a fundamentação teórica acerca da gestão de escopo e dos princípios de desenvolvimento iterativo e incremental que orientaram este trabalho, esta subseção baseia-se nos princípios discutidos por \citeonline{agile2012} e toma como referência as diretrizes do \textit{framework} Scrum detalhadas por \citeonline{sabbagh2014}, das quais foram incorporadas práticas pontuais — como a organização do trabalho em ciclos curtos —, sem a adoção de seus papéis e cerimônias formais. Com o intuito de manter a fluidez da leitura, os conceitos de planejamento, empirismo e gerenciamento de tarefas apresentados a seguir refletem a consolidação das práticas e das ideias desses autores. %
 
 O gerenciamento clássico de projetos de software, frequentemente baseado no modelo em cascata (\textit{waterfall}), assume que o desenvolvimento pode ser tratado como uma sequência previsível e linear de atividades. No entanto, a engenharia de software lida com sistemas intrinsecamente complexos e com alto grau de incerteza, onde o engessamento de requisitos em fases iniciais costuma resultar em enorme desperdício e na entrega de produtos que não atendem às reais necessidades do cliente. Em contraponto a essa visão, as metodologias ágeis assumem a imprevisibilidade natural do desenvolvimento, baseando-se no empirismo e em ciclos de \textit{feedback} constante para promover a adaptação contínua e a entrega contínua de valor. %
 
@@ -301,7 +301,10 @@ Quando projetada com esse foco pedagógico, uma plataforma educativa bem estrutu
  
 
 
-\section{Trabalhos relacionados}
+\section{Trabalhos Relacionados}
+\label{sec:trabalhos-relacionados}
+
+Esta seção analisa ferramentas e linguagens que compartilham objetivos com a solução proposta, seja no apoio ao ensino de programação, seja na construção de compiladores para fins didáticos. Cada trabalho é descrito quanto à sua proposta, às suas características e às suas limitações; ao final, uma análise crítica consolida a comparação e evidencia o diferencial da plataforma desenvolvida frente ao estado da arte.
 
 \subsection{Portugol Studio e Portugol Webstudio}
 
@@ -362,10 +365,6 @@ O segundo caminho engloba as ferramentas criadas especificamente para o ensino p
 
 É exatamente na intersecção e na superação dessas lacunas que o presente projeto se destaca de forma inovadora. O interpretador dinâmico construído neste trabalho desloca toda a complexidade arquitetural da análise léxica e sintática para os bastidores, oferecendo uma IDE web focada inteiramente na flexibilidade cognitiva do usuário iniciante. Em vez de impor uma "sintaxe ideal única" ou de focar no mapeamento de instruções para o \textit{hardware}, a plataforma delega a criação estrutural da linguagem ao próprio estudante.
 
-Ao permitir que o aluno personalize as palavras-chave, os comandos e as regras de sua própria linguagem de forma dinâmica no navegador, o sistema atua como um laboratório seguro de experimentação algorítmica. Essa abordagem suprime a necessidade de adaptação imediata a um idioma comercial fixo, mitigando drasticamente a carga cognitiva e a frustração atrelada aos erros gramaticais. Dessa forma, o software proposto consolida-se não apenas como um ambiente de execução, mas como uma ponte pedagógica: uma ferramenta que prioriza a estrutura do pensamento computacional e suaviza a curva de aprendizado, preparando o estudante com muito mais confiança antes de sua transição para as linguagens estritas e juízes online do mercado de software.
-
-
-
-\label{sec:trabalhos-relacionados}
+Ao permitir que o aluno personalize as palavras-chave, os operadores e as regras estruturais de sua própria linguagem de forma dinâmica no navegador, o sistema atua como um laboratório seguro de experimentação algorítmica. Essa abordagem suprime a necessidade de adaptação imediata a um idioma comercial fixo, mitigando drasticamente a carga cognitiva e a frustração atrelada aos erros gramaticais. Dessa forma, o software proposto consolida-se não apenas como um ambiente de execução, mas como uma ponte pedagógica: uma ferramenta que prioriza a estrutura do pensamento computacional e suaviza a curva de aprendizado, preparando o estudante com muito mais confiança antes de sua transição para as linguagens estritas e juízes online do mercado de software.
 
 

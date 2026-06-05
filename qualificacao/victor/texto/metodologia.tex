@@ -1,7 +1,7 @@
 
-Este capítulo descreve a abordagem metodológica adotada para o desenvolvimento do interpretador dinâmico proposto, detalhando a arquitetura geral do sistema, as decisões de projeto que sustentam cada fase do compilador implementado e os mecanismos de integração com a plataforma web. A condução do trabalho seguiu as etapas previstas no cronograma do projeto, contemplando, nesta primeira fase do Trabalho de Conclusão de Curso, a revisão bibliográfica, a especificação do escopo da linguagem e dos comandos dinâmicos, a modelagem da arquitetura do interpretador, a implementação das análises léxica e sintática, a geração e a execução do código intermediário e a integração entre o núcleo do compilador e o ambiente web.
+Este capítulo descreve a abordagem metodológica adotada para o desenvolvimento do interpretador dinâmico proposto, detalhando a arquitetura geral do sistema, as decisões de projeto que sustentam cada fase do compilador implementado e os mecanismos de integração com a plataforma web. A condução do trabalho seguiu as etapas previstas no cronograma do projeto, contemplando, nesta primeira fase do Trabalho de Conclusão de Curso, a revisão bibliográfica, a especificação do escopo da linguagem e de seus elementos configuráveis, a modelagem da arquitetura do interpretador, a implementação das análises léxica e sintática, a geração e a execução do código intermediário e a integração entre o núcleo do compilador e o ambiente web.
 
-A construção do sistema foi conduzida de forma incremental e iterativa, em consonância com os princípios discutidos por \citeonline{agile2012} e \citeonline{sabbagh2014}. Cada etapa do compilador foi modelada, implementada e validada por meio de testes automatizados antes da agregação à etapa seguinte, em conformidade com a prática de Desenvolvimento Guiado por Testes consolidada por \citeonline{aniche2012} e \citeonline{martin_coder}. Essa abordagem permitiu a verificação contínua de regressões durante a evolução das gramáticas configuráveis e a manutenção da estabilidade das fases de análise mesmo diante das frequentes mudanças impostas pela natureza dinâmica da linguagem proposta.
+A construção do sistema foi conduzida de forma incremental e iterativa, organizando o trabalho em ciclos curtos de implementação e validação. Não se adotou formalmente um \textit{framework} de gestão ágil — cujos papéis e cerimônias pressupõem equipes maiores do que a dupla responsável por este projeto —, mas sim os princípios de desenvolvimento iterativo e incremental discutidos por \citeonline{agile2012}, combinados à prática de Desenvolvimento Guiado por Testes consolidada por \citeonline{aniche2012} e \citeonline{martin_coder}. Cada etapa do compilador foi modelada, implementada e validada por meio de testes automatizados antes da agregação à etapa seguinte. Essa abordagem permitiu a verificação contínua de regressões durante a evolução das gramáticas configuráveis e a manutenção da estabilidade das fases de análise mesmo diante das frequentes mudanças impostas pela natureza dinâmica da linguagem proposta.
 
 \section{Modelagem da Arquitetura do Projeto}
 \label{sec:modelagem-arquitetura}
@@ -29,7 +29,7 @@ A camada de persistência da plataforma foi projetada em conformidade com os pri
 
 \begin{figure}[H]
     \centering
-    \caption{Esquema relacional do banco de dados da plataforma.}
+    \caption{Esquema lógico do banco de dados da plataforma.}
     \label{fig:esquema-banco}
     \includegraphics[width=0.95\textwidth]{Figuras/esquema_banco.png}
     \legend{Fonte: elaborado pelo autor.}
@@ -45,7 +45,7 @@ As listas de exercícios são modeladas pela entidade \texttt{exercise\_lists}, 
 
 A entidade \texttt{submissions} registra cada tentativa de envio realizada por um estudante, capturando um instantâneo imutável do código submetido (\texttt{code\_snapshot}), o resultado da avaliação automática expresso pelo tipo enumerado \texttt{submissionstatus} e a pontuação calculada com base nos casos de teste aprovados. O campo de retroalimentação do professor (\texttt{teacher\_feedback}) permite a complementação qualitativa da avaliação automática. A referência simultânea ao exercício, à lista de exercícios e à turma possibilita consultas agregadas de desempenho tanto por estudante quanto por turma ou por lista, sem exigir junções adicionais. Índices secundários foram definidos sobre os campos \texttt{(exercise\_list\_id, class\_id)} e \texttt{student\_id} para otimizar as consultas de maior frequência, como a listagem de submissões por turma e a visualização do histórico de um estudante, em conformidade com as diretrizes de desempenho discutidas por \citeonline{elmasri2015}.
 
-O versionamento do esquema relacional é gerenciado pelo Alembic, cujo estado corrente de migração é rastreado pela tabela \texttt{alembic\_version}. Essa abordagem permite a evolução incremental do banco de dados sem perda de dados em implantações sucessivas, em consonância com a estratégia de entrega contínua adotada no projeto.
+O versionamento do esquema lógico é gerenciado pelo Alembic, cujo estado corrente de migração é rastreado pela tabela \texttt{alembic\_version}. Essa abordagem permite a evolução incremental do banco de dados sem perda de dados em implantações sucessivas, em consonância com a estratégia de entrega contínua adotada no projeto.
 \subsection{Especificação das Rotas da API}
 \label{subsec:rotas-api}
 
@@ -53,7 +53,7 @@ A interface de comunicação entre os clientes e os serviços da plataforma envo
 
 A única rota HTTP do pacote \texttt{ide} diretamente relacionada ao compilador é \texttt{POST /api/}\allowbreak\texttt{submissions/}\allowbreak\texttt{validate}. Essa rota, executada no processo do servidor Next.js, recebe o código-fonte e a configuração corrente da linguagem, executa o ciclo completo de análise léxica, geração de código intermediário e interpretação, e avalia o resultado contra os casos de teste do exercício recuperados do serviço de persistência. O isolamento dessa operação em uma rota de servidor, e não no navegador, é motivado pela necessidade de controlar o tempo máximo de execução por meio de um mecanismo de \textit{timeout} e de registrar a submissão de forma autenticada no banco de dados. Ao término da execução, a rota envia os resultados consolidados ao serviço FastAPI e devolve ao \textit{front-end} a estrutura \texttt{TValidationResult}, contendo o status de cada caso de teste, a pontuação obtida e eventuais avisos de compilação.
 
-As demais rotas HTTP da plataforma pertencem ao serviço de persistência, implementado em Python com o \textit{framework} FastAPI e o ORM SQLAlchemy assíncrono. A documentação completa e interativa dessas rotas é gerada automaticamente pelo próprio \textit{framework}, conforme descrito por \citeonline{fastapi2026}, e está disponível nos endereços \url{https://api.dynamicinterpreter.com.br/docs} (interface Swagger UI) e \url{https://api.dynamicinterpreter.com.br/redoc} (interface ReDoc). Essas rotas organizam-se nos seguintes grupos de recursos:
+As demais rotas HTTP da plataforma pertencem ao serviço de persistência, implementado em Python com o \textit{framework} FastAPI e o ORM SQLAlchemy assíncrono. A documentação completa e interativa dessas rotas são gerada automaticamente pelo próprio \textit{framework}, conforme descrito por \citeonline{fastapi2026}, e está disponível nos endereços \url{https://api.dynamicinterpreter.com.br/docs} (interface Swagger UI) e \url{https://api.dynamicinterpreter.com.br/redoc} (interface ReDoc). Essas rotas organizam-se nos seguintes grupos de recursos:
 
 \begin{itemize}
     \item \textbf{Autenticação} (\texttt{/auth}): gerencia o registro e o \textit{login} de usuários, emitindo tokens JWT utilizados nas demais requisições protegidas;
@@ -66,9 +66,9 @@ As demais rotas HTTP da plataforma pertencem ao serviço de persistência, imple
     \item \textbf{Submissões} (\texttt{/submissions}): armazena e recupera os registros de submissão dos estudantes, incluindo o instantâneo do código, a pontuação e a retroalimentação do professor.
 \end{itemize}
 
-Essa organização reflete diretamente a divisão arquitetural do projeto: o compilador opera localmente no navegador para as interações pedagógicas de baixa latência, em uma rota de servidor para a avaliação controlada de submissões, e o serviço FastAPI permanece inteiramente agnóstico em relação ao compilador, concentrando-se exclusivamente na gestão das entidades de domínio pedagógico.
+Essa organização reflete diretamente a divisão arquitetural do projeto: o compilador opera localmente no navegador para as interações pedagógicas de baixa latência, em uma rota de servidor para a avaliação controlada de submissões, e o serviço FastAPI permanece inteiramente agnóstico em relação ao compilador, concentrando-se exclusivamente na gestão das entidades de domínio pedagógico. A relação completa dos grupos de recursos da API está reproduzida no Apêndice~\ref{ap:api}.
 
-\section{Especificação da Linguagem e Comandos Dinâmicos}
+\section{Especificação da Linguagem e de seus Elementos Configuráveis}
 \label{sec:especificacao-linguagem}
 
 A linguagem suportada pelo interpretador foi projetada como um subconjunto didático de linguagens imperativas tipadas, suficientemente expressivo para abranger os conteúdos típicos das disciplinas introdutórias de programação, e simultaneamente flexível para que professores e alunos possam customizar suas regras superficiais. O conjunto base de funcionalidades contempla declarações de variáveis com tipagem estática, atribuições, expressões aritméticas, lógicas e relacionais, estruturas condicionais (\texttt{if}/\texttt{else} e \texttt{switch}), estruturas de repetição (\texttt{for} e \texttt{while}), arranjos uni e multidimensionais com modos de alocação fixos e dinâmicos, e operações de entrada e saída padrão (\texttt{print} e \texttt{scan}).
@@ -133,7 +133,31 @@ A análise léxica foi implementada na classe \texttt{Lexer}, que percorre o có
 
 Os \textit{tokens} foram organizados em sete grupos temáticos, a saber: aritméticos, lógicos, relacionais, atribuições, palavras reservadas, símbolos e literais, cada um deles definido em um módulo próprio sob o diretório \texttt{token/constants}. Essa segregação favorece a manutenção da tabela de \textit{tokens} e habilita o uso de estilos visuais distintos por categoria na IDE, alinhados aos campos \texttt{TOKENS\_STYLE} associados a cada grupo. A tabela completa de tipos é exportada também na forma invertida (\texttt{BY\_ID}), o que viabiliza a tradução reversa de identificadores numéricos em descrições legíveis, fundamental para fins de depuração e visualização pedagógica.
 
-A escolha por uma análise léxica determinística orientada por caracteres em vez de geradores automáticos como \textit{Lex} foi motivada pela natureza dinâmica das palavras-chave da linguagem proposta. Como o vocabulário não é fixo em tempo de compilação, autômatos finitos pré-gerados perderiam a flexibilidade exigida pelo projeto. Em substituição, adotou-se o padrão \textit{Factory} no diretório \texttt{lexer/scanners}, no qual a função \texttt{LexerScannerFactory.}\allowbreak\texttt{getInstance()} despacha o caractere corrente para o \textit{scanner} apropriado: \texttt{comment.ts} para comentários de linha e de bloco, \texttt{identifier.ts} para identificadores e palavras-chave, \texttt{number.ts} para literais inteiros e em ponto flutuante, \texttt{string.ts} para literais de cadeia com sequências de escape, e \texttt{symbol-and-}\allowbreak\texttt{operator.ts} para os demais símbolos. Um \textit{scanner} adicional, \texttt{statement-}\allowbreak\texttt{terminator.ts}, é instanciado dinamicamente conforme o terminador de instrução configurado pelo usuário, podendo assumir caracteres distintos do ponto e vírgula tradicional ou mesmo ser desativado.
+A escolha por uma análise léxica determinística orientada por caracteres em vez de geradores automáticos como \textit{Lex} foi motivada pela natureza dinâmica das palavras-chave da linguagem proposta. Como o vocabulário não é fixo em tempo de compilação, autômatos finitos pré-gerados perderiam a flexibilidade exigida pelo projeto. Em substituição, adotou-se o padrão \textit{Factory} no diretório \texttt{lexer/scanners}, no qual a função \texttt{LexerScannerFactory.}\allowbreak\texttt{getInstance()} despacha o caractere corrente para o \textit{scanner} apropriado: \texttt{comment.ts} para comentários de linha e de bloco, \texttt{identifier.ts} para identificadores e palavras-chave, \texttt{number.ts} para literais inteiros e em ponto flutuante, \texttt{string.ts} para literais de cadeia com sequências de escape, e \texttt{symbol-and-}\allowbreak\texttt{operator.ts} para os demais símbolos. Um \textit{scanner} adicional, \texttt{statement-}\allowbreak\texttt{terminator.ts}, é instanciado dinamicamente conforme o terminador de instrução configurado pelo usuário, podendo assumir caracteres distintos do ponto e vírgula tradicional ou mesmo ser desativado. A Tabela~\ref{tab:scanners} sintetiza os analisadores especializados e suas respectivas responsabilidades.
+
+\begin{table}[H]
+    \centering
+    \caption{Analisadores especializados (\textit{scanners}) despachados pela \texttt{LexerScannerFactory}.}
+    \label{tab:scanners}
+    \begin{tabular}{|l|p{9.2cm}|}
+        \hline
+        \textbf{\textit{Scanner}} & \textbf{Responsabilidade} \\
+        \hline
+        \texttt{comment.ts} & Comentários de linha (\texttt{//}) e de bloco (\texttt{/* */}). \\
+        \hline
+        \texttt{identifier.ts} & Identificadores e palavras-chave, classificados conforme o vocabulário ativo na configuração corrente. \\
+        \hline
+        \texttt{number.ts} & Literais inteiros e em ponto flutuante. \\
+        \hline
+        \texttt{string.ts} & Literais de cadeia, incluindo o tratamento de sequências de escape. \\
+        \hline
+        \texttt{symbol-and-operator.ts} & Operadores e demais símbolos da linguagem. \\
+        \hline
+        \texttt{statement-terminator.ts} & Terminador de instrução configurável, instanciado dinamicamente conforme a configuração do usuário. \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
 
 A função \texttt{buildEffective}\allowbreak\texttt{KeywordMap}, alimentada pela configuração de personalização proveniente da IDE, constrói em tempo de execução o mapeamento entre os lexemas das palavras-chave correntes e os identificadores numéricos canônicos dos \textit{tokens}. Dessa forma, ao reconhecer um identificador no código-fonte, o analisador léxico verifica primeiro se o lexema corresponde a alguma palavra-chave ativa naquela configuração, classificando-o como \texttt{reserved} quando aplicável e como identificador comum caso contrário. Esse mecanismo concentra toda a flexibilidade linguística no analisador léxico, mantendo os estágios subsequentes inalterados ainda que o vocabulário superficial mude entre execuções.
 
@@ -162,7 +186,7 @@ A representação intermediária adotada é uma variante de código de três end
 
 A geração dessas instruções é realizada pela classe \texttt{Emitter}, instanciada por cada análise sintática. O \textit{emitter} mantém dois contadores monotônicos responsáveis pela criação de variáveis temporárias (\texttt{\_\_temp0}, \texttt{\_\_temp1}, $\ldots$) e de rótulos (\texttt{\_\_label0}, \texttt{\_\_label1}, $\ldots$), ambos garantidos como únicos no escopo do programa traduzido. As expressões são decompostas em operações binárias elementares, conforme o exemplo clássico apresentado no referencial teórico, e o controle de fluxo das estruturas \texttt{if}, \texttt{while}, \texttt{for} e \texttt{switch} é traduzido em sequências de rótulos e saltos condicionais, eliminando a hierarquia das construções de alto nível em favor da representação linear esperada pelo interpretador.
 
-A opção por gerar três endereços, em detrimento de representações mais abstratas como árvores sintáticas anotadas, foi motivada pelo propósito didático da plataforma. A linearidade das instruções emitidas permite que a IDE apresente, na interface, exatamente o fluxo de operações que será executado, tornando visível para o estudante o vínculo entre comandos de alto nível e suas decomposições elementares. Essa exposição direta da representação intermediária é uma característica diferencial da plataforma em relação às ferramentas analisadas nos trabalhos relacionados.
+A opção por gerar três endereços, em detrimento de representações mais abstratas como árvores sintáticas anotadas, foi motivada pelo propósito didático da plataforma. A linearidade das instruções emitidas permite que a IDE apresente, na interface, exatamente o fluxo de operações que será executado, tornando visível para o estudante o vínculo entre construções de alto nível e suas decomposições elementares. Essa exposição direta da representação intermediária é uma característica diferencial da plataforma em relação às ferramentas analisadas nos trabalhos relacionados.
 
 \subsection{Interpretação e Tratamento de Erros em Tempo de Execução}
 \label{subsec:interpretacao}
@@ -199,4 +223,4 @@ A adoção do TDD discutida por \citeonline{aniche2012} mostrou-se particularmen
     \legend{Fonte: FIRMINIQ.}
 \end{figure}
 
-Os mesmos testes automatizados são executados localmente durante o desenvolvimento e também acionados pelo \textit{pipeline} de integração contínua antes da incorporação de qualquer mudança ao ramo principal do repositório, assegurando que as características essenciais do compilador, a saber, a estabilidade dos identificadores de \textit{tokens}, a correção semântica das instruções intermediárias geradas e a equivalência de comportamento entre as variantes configuráveis da linguagem, sejam preservadas ao longo de toda a evolução incremental do projeto.
+Os mesmos testes automatizados são executados localmente durante o desenvolvimento e também acionados pelo \textit{pipeline} de integração contínua antes da incorporação de qualquer mudança ao ramo principal do repositório, assegurando que as características essenciais do compilador, a saber, a estabilidade dos identificadores de \textit{tokens}, a correção semântica das instruções intermediárias geradas e a equivalência de comportamento entre as variantes configuráveis da linguagem, sejam preservadas ao longo de toda a evolução incremental do projeto. A cada nova funcionalidade, a suíte é executada integralmente — e não apenas sobre o trecho recém-adicionado —, de modo que regressões em fases anteriores sejam detectadas de imediato. Os casos de teste e o respectivo relatório de execução estão reunidos no Apêndice~\ref{ap:testes}.

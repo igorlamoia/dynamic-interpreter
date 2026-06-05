@@ -5,14 +5,12 @@ Este apêndice detalha a divisão de responsabilidades entre os dois autores, co
 
 \section{Atividades Desenvolvidas em Regime Colaborativo}
 
-As atividades listadas a seguir foram conduzidas de forma conjunta por Victor de Souza Vilela da Silva e Igor Lamoia Queiroz, com participação efetiva de ambos os integrantes em todas as etapas de especificação, implementação e revisão:
+As atividades listadas a seguir, de natureza estruturante ou situadas na fronteira entre os dois subsistemas, foram conduzidas de forma colaborativa por Victor de Souza Vilela da Silva e Igor Lamoia Queiroz:
 
 \begin{itemize}
     \item Revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais correlatas;
     \item Definição dos requisitos funcionais e não funcionais e da arquitetura geral do sistema;
-    \item Implementação do núcleo do compilador: análise léxica, análise sintática, geração e execução de código intermediário;
-    \item Especificação e implementação dos mecanismos de injeção dinâmica de regras gramaticais no interpretador;
-    \item Integração do núcleo do interpretador com a plataforma web e definição dos contratos de comunicação entre os módulos;
+    \item Definição dos contratos de comunicação entre o núcleo do interpretador e a plataforma web e a integração entre os módulos;
     \item Revisão mútua de código e tomada de decisões arquiteturais nas etapas de refatoração e evolução do sistema.
 \end{itemize}
 
@@ -25,7 +23,8 @@ A partir da base técnica construída em conjunto, cada autor aprofundou sua an�
 \begin{itemize}
     \item Detalhamento das fases de análise léxica e do sistema de varredura por escâneres especializados (\textit{factory pattern});
     \item Descrição aprofundada da análise sintática por descida recursiva e da correspondência entre as produções do analisador e a gramática formal da linguagem Java-{}-;
-    \item Documentação da geração de código de três endereços: instrução a instrução, tabela de temporários e tabela de rótulos;
+    \item Implementação e documentação da geração de código de três endereços: instrução a instrução, tabela de temporários e tabela de rótulos;
+    \item Especificação e implementação dos mecanismos de injeção dinâmica de regras gramaticais no interpretador, que permitem ao núcleo reconfigurar o vocabulário e as regras estruturais a cada execução;
     \item Análise do funcionamento do interpretador, da tabela de símbolos e do despacho das chamadas de sistema de entrada e saída;
     \item Estudos de caso centrados na validade técnica do núcleo de tradução e no comportamento do interpretador frente a programas de teste elaborados para cobrir as construções da linguagem.
 \end{itemize}
@@ -39,3 +38,63 @@ A partir da base técnica construída em conjunto, cada autor aprofundou sua an�
     \item Descrição da infraestrutura de submissão e correção automatizada de exercícios e do sistema de gerenciamento de turmas;
     \item Estudos de caso centrados na usabilidade, no engajamento dos estudantes e na retroalimentação coletada em ambiente educacional.
 \end{itemize}
+
+\chapter{DOCUMENTAÇÃO DA API} \label{ap:api}
+
+Este apêndice reúne a relação dos recursos expostos pela API da plataforma. A documentação completa e interativa é gerada automaticamente pelo \textit{framework} FastAPI e está disponível \textit{online} nas interfaces Swagger UI (\url{https://api.dynamicinterpreter.com.br/docs}) e ReDoc (\url{https://api.dynamicinterpreter.com.br/redoc}). A Tabela~\ref{tab:api-recursos} sintetiza os grupos de recursos e suas responsabilidades.
+
+\begin{table}[H]
+    \centering
+    \caption{Grupos de recursos da API da plataforma.}
+    \label{tab:api-recursos}
+    \begin{tabular}{|p{4.3cm}|p{8.3cm}|}
+        \hline
+        \textbf{Recurso} & \textbf{Responsabilidade} \\
+        \hline
+        \texttt{POST /api/submissions/validate} & Executa o ciclo completo de compilação e interpretação do código submetido e o avalia contra os casos de teste do exercício (rota do pacote \texttt{ide}). \\
+        \hline
+        \texttt{/auth} & Registro e \textit{login} de usuários, com emissão de \textit{tokens} JWT. \\
+        \hline
+        \texttt{/organizations} & Gestão das instituições de ensino cadastradas. \\
+        \hline
+        \texttt{/users} & Consulta e atualização de perfil, com controle de acesso por \texttt{role}. \\
+        \hline
+        \texttt{/classes} & Criação, edição, encerramento e arquivamento de turmas; matrícula via \texttt{/classes/join}. \\
+        \hline
+        \texttt{/exercises} & Criação e manutenção de enunciados e respectivos casos de teste. \\
+        \hline
+        \texttt{/exercise-lists} & Composição, ordenação e atribuição de pesos aos exercícios de uma lista. \\
+        \hline
+        \texttt{/class-exercise-lists} & Publicação de listas para turmas, com prazo, nota total e mínimo de exercícios. \\
+        \hline
+        \texttt{/submissions} & Armazenamento e recuperação das submissões dos estudantes, com pontuação e retroalimentação. \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+\chapter{CASOS DE TESTE AUTOMATIZADOS} \label{ap:testes}
+
+Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{215 casos} distribuídos em 22 arquivos, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. O conjunto completo dos casos e o respectivo relatório de execução estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}, em \texttt{packages/compiler/src/tests}); à data desta qualificação, a totalidade dos casos é aprovada.
+
+\begin{table}[H]
+    \centering
+    \caption{Distribuição dos casos de teste por camada do compilador.}
+    \label{tab:testes-resumo}
+    \begin{tabular}{|p{3.4cm}|c|c|p{6.2cm}|}
+        \hline
+        \textbf{Camada} & \textbf{Arquivos} & \textbf{Casos} & \textbf{Escopo} \\
+        \hline
+        Tokens & 1 & 8 & Estabilidade dos identificadores numéricos e dos agrupamentos por categoria. \\
+        \hline
+        Análise léxica & 9 & 56 & \textit{Scanners} em isolamento: comentários, literais numéricos e de cadeia, terminador configurável, delimitadores de bloco, operadores em forma de palavra e geração de \textit{tokens} de indentação. \\
+        \hline
+        Análise sintática e semântica & 9 & 138 & Aceitação ou rejeição de programas sob distintos modos de tipagem e de bloco, variantes do \texttt{switch} e verificação de tipos. \\
+        \hline
+        Interpretação & 2 & 13 & Execução do código de três endereços e sessões de depuração. \\
+        \hline
+        \textbf{Total} & \textbf{22} & \textbf{215} & \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}

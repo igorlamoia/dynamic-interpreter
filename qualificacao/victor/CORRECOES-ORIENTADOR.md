@@ -6,6 +6,48 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 
 ---
 
+> **Auditoria 2026-06-05:** verificação linha a linha mostrou que parte do que estava
+> marcado como aplicado no resumo/preâmbulo **nunca havia entrado no arquivo** (o doc
+> superdeclarou). Reaplicados nesta data: resumo PT (remoção da afirmação empírica de
+> sala de aula, "permite ao usuário", reescrita do fecho com "diferencial", `\indent`),
+> abstract EN espelhado, e titulação do orientador `Prof.` → `Prof. Msc.`. As mudanças
+> dos capítulos (`introducao`, `referencial`, `apendice`) foram confirmadas como
+> realmente presentes.
+>
+> **Ajustes adicionais 2026-06-05 (decisão do autor):**
+> - Coerência intro/objetivos com o eixo individual (núcleo): `introducao.tex` objetivo
+>   geral "comandos" → "vocabulário"; objetivo específico "Desenvolver interface web" →
+>   "Integrar o núcleo a uma interface web (contratos de comunicação)"; "validar
+>   viabilidade técnica e pedagógica" → "Avaliar tecnicamente... validade do núcleo".
+> - Varredura "comandos" → terminologia precisa: trocado onde prometia customização
+>   inexistente (`metodologia.tex:2`, seção `:71` agora "Especificação da Linguagem e de
+>   seus Elementos Configuráveis", `:165` "construções de alto nível", `referencial.tex:365`).
+>   Mantido onde correto: título do Igor (`introducao:3`), cronograma aprovado
+>   (`proposta:24`), descrições de Portugol/Quorum, e usos genéricos de "instrução".
+> - **PENDENTE p40:** referencial sobre retenção/dificuldade em programação — aguarda
+>   fontes reais (PET.COMP) do autor; não redigir sem referência.
+>
+> **Front A — deliverables concretos (2026-06-05):**
+> - [x] **p15** texto-âncora no início do Cap. Referencial (`referencial.tex`), com visão
+>   geral das frentes + intro da Seção Compiladores; corrigido "capitulo"→"capítulo".
+> - [x] **p34 (parcial)** texto-âncora antes de "Trabalhos Relacionados" + título
+>   corrigido para "Trabalhos Relacionados" + `\label{sec:trabalhos-relacionados}`
+>   (removido label duplicado solto no fim da seção). FALTA o **método de seleção** dos
+>   trabalhos (Front B — depende do critério do autor).
+> - [x] **p52** lista de scanners agora também em tabela (`Tabela~\ref{tab:scanners}` em
+>   `metodologia.tex`), mantida a descrição no corpo.
+> - [x] **p47 (parcial)** Apêndice "DOCUMENTAÇÃO DA API" (`\label{ap:api}`) com tabela de
+>   recursos + links Swagger/ReDoc; referenciado no corpo. FALTA o "é"→"são" (não
+>   localizado sem o PDF — pedir ao autor o trecho exato).
+> - [x] **p58** Apêndice "CASOS DE TESTE AUTOMATIZADOS" (`\label{ap:testes}`): 215 casos
+>   em 22 arquivos (tokens 8 / léxica 56 / sintática-semântica 138 / interpretação 13),
+>   tabela-resumo + link do repositório; e clarificado no corpo que a suíte roda
+>   integralmente a cada mudança (acumula, detecta regressões).
+> - [x] **p44 (parcial)** nomenclatura padronizada para "esquema lógico" (corpo+legenda).
+>   FALTA confirmar **normalização** das tabelas (Front B — confirmação do autor).
+
+---
+
 ## 1. Ajustes JÁ APLICADOS
 
 ### Preâmbulo / folha de aprovação (`TCC_Template.tex`)
@@ -77,8 +119,10 @@ Hoje: Cap. 2 = REFERENCIAL TEÓRICO, Cap. 3 = PROPOSTA, Cap. 4 = MODELAGEM. Muda
 - [ ] **p15:** inserir "texto âncora" no início do Cap. 2 relatando o que o capítulo contempla.
 - [ ] **p34:** inserir "texto âncora" antes de "Trabalhos Relacionados" + **explicitar o critério/método de seleção** dos trabalhos relacionados (deixar claro num método no capítulo de Metodologia).
 - [ ] **p40:** falta abordar **retenção/dificuldade em programação** no referencial teórico (sugestão: olhar publicações do PET.COMP sobre retenção em programação/algoritmos e usar as referências delas).
-- [ ] **p27:** cuidado metodológico com **Scrum** — é necessário equipe com tamanho mínimo para que cada papel seja exercido (conforme o manifesto); se estiver adotando Scrum metodologicamente, rever ("a Gabriella vai bater forte").
-- [ ] **p41 (IMPORTANTE):**
+- [x] **p27 (RESOLVIDO 2026-06-05):** Scrum rebaixado. `metodologia.tex:4` agora declara explicitamente que **não** houve adoção formal de framework ágil (papéis/cerimônias inviáveis para dupla), apenas desenvolvimento iterativo/incremental + TDD; citação `sabbagh2014` removida da metodologia. `referencial.tex:212` reescrito: Scrum mantido como referência teórica, com "práticas pontuais... sem papéis e cerimônias formais".
+- [ ] ~~**p27 original:**~~ cuidado metodológico com **Scrum** — é necessário equipe com tamanho mínimo para que cada papel seja exercido (conforme o manifesto); se estiver adotando Scrum metodologicamente, rever ("a Gabriella vai bater forte").
+- [x] **p41/p61 (RESOLVIDO 2026-06-05):** reenquadramento da divisão de trabalho, com base na pré-proposta aprovada (`qualificacao/igor/proposta_igor.pdf`), que atribui o **núcleo do interpretador** ao Victor e a **plataforma/personalização** ao Igor. Alterado: (a) `proposta.tex:45` — não afirma mais "núcleo construído pelos dois juntos"; agora o núcleo é a demanda individual desta monografia e a colaboração fica nas fronteiras/integração; (b) `apendice.tex` — núcleo retirado de "Regime Colaborativo" e movido para o eixo individual do Victor; (c) `proposta.tex:49` — TCC II não reivindica mais "estudos de caso em sala de aula / coleta de evidências empíricas" (trabalho do Igor), focando em avaliação técnica do núcleo. Resumo já teve a afirmação empírica removida.
+- [ ] ~~**p41 original (IMPORTANTE):**~~
   - "Trabalho de Conclusão de Curso??" sobre o termo "documento".
   - "mas este não é o seu trabalho???" — o núcleo do compilador (análise léxica, sintática, geração e execução de código intermediário) está descrito como trabalho conjunto, mas pelo título é a **sua** demanda.
   - "se colocar assim a banca vai bater muito em vc".

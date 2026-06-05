@@ -84,7 +84,7 @@
 
 \orientador[Orientador]{Luís Augusto Mattos Mendes} %%Colocar o nome completo do orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
 \coorientador[Coorientador]{Eduardo Gabriel Reis Miranda} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
-\orientadorTitulo{Prof.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
+\orientadorTitulo{Prof. Msc.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
 \coorientadorTitulo{Prof. Dsc.} %%Colocar a titulação do(a) co-orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
 \siglaInstituicaoCoorientador{CEFET-MG} %% Alterar caso o coorientado não seja do CEFET-MG
 
@@ -98,9 +98,9 @@
 \natureza{\printaobjeto ~apresentado ao Curso de \printaprograma ~do \printainstituicao, do Campus Leopoldina, como parte do requisito para obtenção do título de Bacharel em Engenharia de Computação.} %% Não alterar
 
 % Data da aprovação
-\aprovacaoDia{14} %% Colocar dentro das chaves {} o NÚMERO do dia da Data de aprovação. Ex: 15
-\aprovacaoMes{fevereiro} %% Colocar dentro das chaves {} o mês por extenso da Data de aprovação. Ex: janeiro
-\aprovacaoAno{2025} %%  Colocar dentro das chaves {} o NÚMERO do ano da Data de aprovação. Ex: 2021
+% \aprovacaoDia{14} %% Colocar dentro das chaves {} o NÚMERO do dia da Data de aprovação. Ex: 15
+% \aprovacaoMes{fevereiro} %% Colocar dentro das chaves {} o mês por extenso da Data de aprovação. Ex: janeiro
+% \aprovacaoAno{2025} %%  Colocar dentro das chaves {} o NÚMERO do ano da Data de aprovação. Ex: 2021
 
 % Dados do Avaliador 1
 \avaliadorUm{Matheus Ávila Moreira de Paula} % Nome e sobrenome
@@ -108,14 +108,9 @@
 \siglaInstituicaoAvaliadorUm{CEFET-MG} % Sigla da institução de ensino vinculado
 
 % Dados do Avaliador 2
-\avaliadorDois{Alex da Silva Temoteo} % Nome e sobrenome
+\avaliadorDois{Gabriella Castro Barbosa Costa} % Nome e sobrenome
 \titulacaoAvaliadorDois{Prof. Dsc.} % Titulação
 \siglaInstituicaoAvaliadorDois{CEFET-MG} % Sigla da institução de ensino vinculado
-
-% Dados do Avaliador 3 (Se houver, apagar o "%" da frente das próximas 3 linhas)
-\avaliadorTres{Diego Ascanio Santos} % Nome e sobrenome
-\titulacaoAvaliadorTres{Prof. Msc.} % Titulação
-\siglaInstituicaoAvaliadorTres{CEFET-MG} % Sigla da institução de ensino vinculado
 
 % Dados da ficha catalográfica
 \NumCatalog{A326m} % Disponibilizado pela biblioteca.
@@ -185,7 +180,10 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
 %\aplicaresumo
 
 
-Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador. Aplicações preliminares em sala de aula sugerem resultados educacionais positivos, incluindo redução do tempo necessário para que os alunos compreendam conceitos fundamentais de programação, diminuição das taxas de reprovação em disciplinas introdutórias de programação e aumento do engajamento dos estudantes. Ao permitir a definição flexível de comandos e sintaxe, a plataforma reduz barreiras linguísticas e incentiva a experimentação, ajudando os alunos a focarem no raciocínio algorítmico em vez de memorizar estruturas rígidas de linguagem.
+\indent O ensino de programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe
+fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que,
+ mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. 
+ Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite ao usuário personalizar a sintaxe da linguagem, incluindo as palavras reservadas, os operadores e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema e implementação de uma IDE web e de um interpretador, que inclui análise léxica e sintática, geração e interpretação de código intermediário, com execução em tempo real no navegador. Espera-se como resultado que a plataforma atue como facilitadora do processo de ensino-aprendizagem, reduzindo as barreiras linguísticas iniciais e incentivando a experimentação, de modo que os alunos possam concentrar-se no raciocínio algorítmico em vez da memorização de estruturas rígidas de linguagem. O diferencial da proposta está em permitir a redefinição flexível do vocabulário e das regras estruturais da linguagem, adaptando-a ao repertório do estudante.
 
 % Escrever o resumo do TCC. Este é um item obrigatório de acordo com a NBR 14724 \cite{bib:abnt14724}. 
 % Quanto a sua extensão os resumos devem ter de 150 a 500 palavras. 
@@ -195,7 +193,7 @@ Ensinar programação apresenta diversos desafios, em parte devido ao uso de lin
 % As palavras-chave são inseridas abaixo do resumo com uma linha de 1,5 em branco separando-as.
 
 \noindent
-\textbf{Palavras-chave}: Interpretador dinâmico; Educação em Programação Introdutória; Programação Orientada à Linguagem; Ambiente de Programação Interativo.
+\textbf{Palavras-chave}: Interpretador dinâmico; Educação em Programação Introdutória; Programação Orientada à Linguagem; Ambiente de Programação Interativo; ensino-aprendizagem.
 
 \end{resumo_cefetmg}
  
@@ -210,7 +208,7 @@ Ensinar programação apresenta diversos desafios, em parte devido ao uso de lin
     \textbf{ABSTRACT} 
 \end{center} 
 
-Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules.This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows users to customize language syntax, commands, and structural rules. The project is developed through literature review, system architecture design, implementation of a web IDE and interpreter (including lexical and syntactic analysis), and integration with real-time execution in the browser. Preliminary classroom applications suggest positive educational outcomes, including reduced time required for students to grasp fundamental programming concepts, lower failure rates in introductory programming courses, and increased student engagement.By allowing flexible definition of commands and syntax, the platform reduces linguistic barriers and encourages experimentation, helping students focus on algorithmic reasoning rather than memorizing rigid language structures.
+Teaching programming presents several challenges, partly due to the use of languages whose writing is defined by fixed syntax and reserved keywords. This can make assimilation difficult for students who, even before understanding the structure of algorithms, must memorize terms in another language and sets of rigid rules. This work proposes an educational platform with an Integrated Development Environment (IDE) connected to a dynamic interpreter that allows the user to customize the language syntax, including its reserved words, operators, and structural rules. The project is developed through literature review, system architecture design, and the implementation of a web IDE and an interpreter, which includes lexical and syntactic analysis, intermediate code generation and interpretation, with real-time execution in the browser. The expected result is that the platform acts as a facilitator of the teaching-learning process, reducing initial linguistic barriers and encouraging experimentation, so that students can focus on algorithmic reasoning rather than memorizing rigid language structures. The main contribution of the proposal lies in allowing the flexible redefinition of the language's vocabulary and structural rules, adapting it to the student's background.
 \noindent
 \textbf{Keywords:} Dynamic Interpreter. Introductory Programming Education. Language-Oriented Programming. Interactive Programming Environment.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
 

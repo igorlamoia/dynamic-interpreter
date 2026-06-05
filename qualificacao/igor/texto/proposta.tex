@@ -1,20 +1,20 @@
 
-A finalidade deste capítulo é, primeiramente, delimitar com precisão o que se pretende construir ao longo das duas fases do Trabalho de Conclusão de Curso e, em seguida, estabelecer a cadeia temporal de atividades que conduz à entrega final. A descrição parte da plataforma vista como produto educacional, atravessa as macroatividades técnicas necessárias à sua materialização e culmina na exposição do cronograma e do regime de trabalho em dupla adotado.
+A finalidade deste capítulo é delimitar o que se pretende construir ao longo das duas fases do Trabalho de Conclusão de Curso e, em seguida, apresentar a cadeia temporal de atividades prevista na pré-proposta aprovada. A descrição parte da plataforma vista como produto educacional, atravessa as macroatividades técnicas necessárias à sua materialização e culmina na exposição do cronograma e do regime de trabalho em dupla adotado.
 
 O artefato que orienta este trabalho não é apenas um compilador ou um editor de código, mas sim uma plataforma educacional web cuja unidade de valor é a possibilidade de o estudante personalizar a própria linguagem que utilizará para aprender programação. Em termos concretos, oferece-se ao usuário a possibilidade de redefinir o vocabulário das palavras-chave, escolher os delimitadores de bloco que melhor representem sua noção de escopo, substituir operadores lógicos e relacionais por palavras de uso natural, reescrever os literais booleanos no idioma de sua preferência e ajustar as regras de finalização de instrução. Cada uma dessas dimensões responde, em alguma medida, a uma fonte conhecida de atrito sintático no contato inicial com linguagens consolidadas no mercado, sendo a sua reunião sob uma mesma interface o que sustenta o caráter inovador da proposta.
 
-Para que a plataforma chegue ao estado descrito, o desenvolvimento é organizado em torno de seis eixos de trabalho que, embora possuam uma ordem natural de execução, sobrepõem-se em diversos pontos para permitir refinamentos sucessivos:
+Conforme definido na pré-proposta, a metodologia foi organizada em seis macroetapas complementares. Essas etapas não devem ser entendidas como blocos completamente isolados, pois o desenvolvimento de uma plataforma interativa exige revisões sucessivas entre interface, interpretador e experiência de uso. Ainda assim, elas delimitam com clareza o percurso técnico e acadêmico do projeto:
 
 \begin{itemize}
     \item \textbf{Revisão bibliográfica:} levantamento das bases conceituais sobre interpretadores, compiladores e ferramentas educacionais relacionadas, com o objetivo de sustentar tanto as decisões de projeto quanto a posterior análise comparativa;
     \item \textbf{Definição de requisitos e arquitetura:} consolidação dos elementos configuráveis da linguagem, da modelagem das camadas da plataforma e dos contratos de comunicação entre o núcleo do interpretador e a IDE;
-    \item \textbf{Análise léxica e sintática:} construção das fases iniciais do compilador, dotadas de suporte explícito à injeção de regras gramaticais customizáveis pelo usuário em tempo de execução;
-    \item \textbf{Geração e execução do código intermediário:} desenvolvimento do mecanismo de tradução para código de três endereços, do interpretador correspondente e da verificação semântica das construções aceitas;
-    \item \textbf{Integração com a plataforma web:} integração do núcleo do compilador à IDE, incluindo a edição, a personalização da linguagem, a apresentação de resultados intermediários e a infraestrutura de submissão e correção automatizada;
-    \item \textbf{Testes, validação e coleta de feedback:} planejamento e execução dos estudos de caso em ambiente educacional, com posterior análise dos dados recolhidos.
+    \item \textbf{Desenvolvimento da plataforma:} implementação da aplicação web, contemplando os fluxos de edição, navegação, personalização, autenticação e uso educacional da IDE;
+    \item \textbf{Implementação da análise dinâmica léxica e sintática:} integração entre o código escrito na IDE e as fases de reconhecimento de \textit{tokens} e validação sintática com suporte às regras configuradas pelo usuário;
+    \item \textbf{Geração e interpretação do código intermediário:} disponibilização, no ambiente da IDE, da execução do código intermediário e do retorno de avisos, erros e resultados ao usuário;
+    \item \textbf{Integração e testes entre plataforma e interpretador:} validação dos fluxos principais, com atenção à consistência da experiência, à acessibilidade, à responsividade e à preparação para os estudos com usuários.
 \end{itemize}
 
-A distribuição temporal desses eixos ao longo dos doze meses que compreendem o TCC~I e o TCC~II é apresentada na Tabela~\ref{tab:cronograma}. Cada coluna numerada corresponde a um mês corrido das duas etapas e cada célula marcada com ``X'' sinaliza a previsão de execução da respectiva atividade no período indicado.
+A distribuição temporal dessas atividades ao longo dos doze meses que compreendem o TCC~I e o TCC~II é apresentada na Tabela~\ref{tab:cronograma}, conforme o cronograma registrado na pré-proposta. Cada coluna numerada corresponde a um mês corrido das duas etapas e cada célula marcada com ``X'' sinaliza a previsão de execução da respectiva atividade no período indicado.
 
 \begin{table}[H]
     \centering
@@ -36,15 +36,17 @@ A distribuição temporal desses eixos ao longo dos doze meses que compreendem o
         \hline
         Predefinição de escopo e Especificação dos comandos dinâmicos & & & X & X & & & & & & & & \\
         \hline
-        Escrita da Metodologia & & & X & & X & X & X & & & & & \\
+        Escrita da Metodologia & & & X & & X & X & & & & & & \\
         \hline
-        Arquitetura e Modelagem do Interpretador & & & X & X & & & & & & & & \\
+        Arquitetura e Modelagem da Plataforma & & & X & X & & & & & & & & \\
         \hline
-        Implementação da Análise Léxica e Sintática & & & & X & X & & & & & & & \\
+        Customização dinâmica de tokens e sintaxe & & & & X & X & & & & & & & \\
         \hline
-        Geração de Código Intermediário e Análise Semântica & & & & X & X & X & & & & & & \\
+        Execução da Análise Léxica e Sintática com o código da IDE & & & & & X & X & & & & & & \\
         \hline
-        Integração entre a plataforma e interpretador & & & & & X & X & X & & & & & \\
+        Execução do código intermediário no Terminal da IDE com \textit{feedback} (avisos e erros) & & & & & & X & X & X & & & & \\
+        \hline
+        Finalização de fluxos, acessibilidade e responsividade & & & & & & X & X & X & & & & \\
         \hline
         Testes, Validação com Usuários e Coleta de \textit{Feedback} & & & & & & & & & X & X & X & \\
         \hline
@@ -55,8 +57,8 @@ A distribuição temporal desses eixos ao longo dos doze meses que compreendem o
     \legend{Fonte: elaborado pelo autor.}
 \end{table}
 
-Convém esclarecer, neste ponto, o regime de trabalho adotado, dada sua influência direta sobre o escopo do projeto e sobre os capítulos subsequentes. A pré-proposta aprovada para este Trabalho de Conclusão de Curso prevê, de modo expresso, a \textbf{participação conjunta em todas as etapas} do desenvolvimento. Em respeito a esse compromisso, o núcleo técnico da plataforma, que abrange o compilador, o interpretador, os analisadores léxico e sintático, o emissor de código intermediário e o subsistema responsável por executá-lo, foi construído de forma colaborativa pelos dois integrantes da dupla. Nas decisões arquiteturais relevantes, nos ciclos de revisão de código e nas iterações de refatoração, ambos atuaram com participação efetiva, do que resultou um sistema cuja autoria, no plano da implementação, deve ser compreendida como compartilhada. O mesmo princípio orientou a integração desse núcleo à plataforma web e a definição dos contratos de comunicação entre o interpretador e a IDE, etapas conduzidas conjuntamente pelos autores.
+Convém esclarecer, neste ponto, o regime de trabalho adotado, dada sua influência direta sobre o escopo do projeto e sobre os capítulos subsequentes. A pré-proposta aprovada para este Trabalho de Conclusão de Curso prevê a \textbf{participação conjunta em todas as etapas} do desenvolvimento, mas com funções complementares. Em respeito a esse compromisso, as decisões de arquitetura, os ciclos de revisão de código e as etapas de integração foram conduzidos de modo colaborativo pelos dois integrantes da dupla.
 
-A partir dessa base comum, a divisão complementar de eixos de aprofundamento, igualmente prevista na pré-proposta, manifesta-se nos capítulos de redação acadêmica e nas evoluções incrementais subsequentes. No presente documento, o autor concentra a investigação no Ambiente de Desenvolvimento Integrado web propriamente dito: na arquitetura da aplicação, na concepção do assistente que materializa a personalização da linguagem, na experiência de uso da plataforma e nos procedimentos de coleta de feedback junto aos estudantes. O detalhamento aprofundado do núcleo de tradução, com foco nas fases de análise léxica, sintática e semântica, na geração de código intermediário e no funcionamento do interpretador, é desenvolvido em paralelo pelo estudante Victor de Souza Vilela da Silva. Essa divisão de eixos não fragmenta o produto: o que se distribui é a profundidade analítica de cada autor sobre partes específicas do mesmo artefato, conduzido pelos dois em todas as etapas. Tal arranjo justifica-se pela amplitude do escopo, dificilmente executável, com profundidade satisfatória, por um único autor em um ciclo de doze meses.
+A partir dessa base comum, a divisão complementar de eixos de aprofundamento manifesta-se nos capítulos de redação acadêmica e nas evoluções incrementais subsequentes. No presente documento, o autor concentra a investigação na plataforma e na customização de comandos: arquitetura da aplicação web, concepção do assistente de personalização, experiência de uso da IDE, execução do código no terminal integrado e procedimentos de coleta de \textit{feedback} junto aos estudantes. O detalhamento aprofundado da evolução do núcleo do interpretador, incluindo a geração de código intermediário e sua integração técnica ao restante da plataforma, é desenvolvido em paralelo pelo estudante Victor de Souza Vilela da Silva. Essa divisão de eixos não fragmenta o produto: o que se distribui é a profundidade analítica de cada autor sobre partes específicas do mesmo artefato, conduzido pelos dois em todas as etapas. Tal arranjo justifica-se pela amplitude do escopo, que, individualmente, tenderia a resultar em um interpretador simplificado ou em uma plataforma incompleta, restrita a um terminal.
 
-Concluída a etapa coberta por este documento, dedicada à fundamentação teórica, à modelagem da arquitetura e à implementação das fases iniciais do compilador e da IDE, a fase subsequente direcionará seus esforços à condução dos estudos de caso, à coleta de evidências empíricas em sala de aula e à análise comparativa entre a plataforma desenvolvida e as ferramentas discutidas no referencial teórico. O próximo capítulo, dedicado à modelagem, descreve o estado em que o sistema se encontra ao término do TCC~I.
+Concluída a etapa coberta por este documento, dedicada à fundamentação teórica, à modelagem da plataforma, à customização dinâmica de \textit{tokens} e sintaxe, à execução das análises léxica e sintática a partir da IDE e à execução do código intermediário no terminal integrado, a fase subsequente direcionará seus esforços à condução dos estudos de caso, à coleta de evidências empíricas em sala de aula e à análise comparativa entre a plataforma desenvolvida e as ferramentas discutidas no referencial teórico. O próximo capítulo, dedicado à modelagem, descreve o estado em que o sistema se encontra ao término do TCC~I.
