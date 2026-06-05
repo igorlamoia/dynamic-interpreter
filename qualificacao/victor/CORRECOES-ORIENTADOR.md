@@ -102,6 +102,17 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 > - [x] **Reforço Pressman/Sommerville (2026-06-05):** adicionados `pressman2016` (Engenharia
 >   de Software, 8.ed., AMGH) e `sommerville2018` (Engenharia de Software, 10.ed., Pearson),
 >   citados no parágrafo cascata × ágil (`referencial.tex:215`).
+> - [x] **DISTRIBUIÇÃO DAS CITAÇÕES ao longo do texto (2026-06-05):** atendendo à correção
+>   central do orientador ("a atribuição em bloco no início não basta; cada trecho que remete
+>   a uma citação deve ser referenciado"), foi feita a varredura completa do `referencial.tex`:
+>   (a) **removidas todas as cláusulas-muleta** do tipo "para manter a fluidez da leitura, tudo
+>   a seguir reflete as ideias desses autores" (13 subseções); (b) **citações distribuídas ao
+>   fim de cada parágrafo** mostrando a procedência de cada ideia — referencial passou de ~24
+>   para **87** comandos de citação, seguindo o sistema autor-data da ABNT NBR 10520; (c) os
+>   marcadores numéricos comentados residuais (`% [3, 4]` etc., resquício de rascunho que ainda
+>   engolia o ponto final em alguns parágrafos) foram trocados por `\cite{}` reais ou removidos.
+>   `metodologia.tex` já seguia o padrão correto (citações integradas nas frases) e descreve
+>   majoritariamente trabalho próprio; `introducao.tex` também foi distribuída.
 
 ---
 
