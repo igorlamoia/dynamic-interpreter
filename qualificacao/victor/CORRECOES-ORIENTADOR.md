@@ -2,7 +2,7 @@
 
 Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto-base: `TCC_Template.tex` + `texto/*.tex`).
 
-> **Nota:** as marcações sobre citações ("não é suficiente para eliminar as citações ao longo do texto. Portanto, a cada trecho que remete a uma citação esta deverá ser adequadamente referenciada", além de "é uma citação? qual a fonte?", "referência?", "Segundo Fulano (ano)", "reforce a citação com Pressman ou Sommervile") **NÃO** foram tratadas aqui — serão resolvidas depois.
+> **Nota:** as marcações sobre citações ("não é suficiente para eliminar as citações ao longo do texto. Portanto, a cada trecho que remete a uma citação esta deverá ser adequadamente referenciada", além de "é uma citação? qual a fonte?", "referência?", "Segundo Fulano (ano)", "reforce a citação com Pressman ou Sommervile") são a **Frente D** — iniciada em 2026-06-05 (ver bloco "Front D" abaixo).
 
 ---
 
@@ -24,8 +24,8 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 >   seus Elementos Configuráveis", `:165` "construções de alto nível", `referencial.tex:365`).
 >   Mantido onde correto: título do Igor (`introducao:3`), cronograma aprovado
 >   (`proposta:24`), descrições de Portugol/Quorum, e usos genéricos de "instrução".
-> - **PENDENTE p40:** referencial sobre retenção/dificuldade em programação — aguarda
->   fontes reais (PET.COMP) do autor; não redigir sem referência.
+> - **p40 RESOLVIDO (2026-06-05):** retenção/dificuldade em programação agora referenciada
+>   com `souza2016` e `silva2020evasao` (ver bloco Front D).
 >
 > **Front A — deliverables concretos (2026-06-05):**
 > - [x] **p15** texto-âncora no início do Cap. Referencial (`referencial.tex`), com visão
@@ -79,6 +79,29 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 > - [ ] **PENDENTE (precisa do PDF):** figura fora da margem (p43); figura/legenda em páginas
 >   diferentes (p15); "Leopoldina 2026" em página solta (p4); espaços em branco (p15); sumário.
 > - [ ] **PENDENTE p47:** "é"→"são" — não localizado sem o PDF; autor deve apontar o trecho exato.
+>
+> **Front D — citações (iniciada 2026-06-05):**
+> - [x] **Seção "Softwares Educativos" (`referencial.tex` 294-298):** a atribuição em
+>   bloco da linha 292 (benedetti2025/mindmakers2025) não bastava — os 3 parágrafos
+>   seguintes não citavam nada e cada frase terminava em `" ."` (placeholder). Distribuídas
+>   citações ao fim de cada parágrafo (294 `\cite{benedetti2025}`; 296 `\cite{mindmakers2025}`;
+>   298 `\cite{benedetti2025,mindmakers2025}`) e removidos os 8 espaços-antes-de-ponto.
+> - [x] **Introdução (`introducao.tex` paras 7 e 9):** afirmação de que aprender lógica e
+>   sintaxe ao mesmo tempo é a barreira — citado `\cite{stefik2013}` (achado empírico dele,
+>   "An Empirical Investigation into Programming Language Syntax"). A atribuição-âncora da
+>   linha 5 (stefik2013/ferreira2025) foi mantida.
+> - [x] **Auditoria geral:** `metodologia.tex` está bem citado (toda afirmação teórica já
+>   tem fonte: Martin, Elmasri, Aho, Cooper, Aniche, Stefik). `proposta.tex`/`apendice.tex`
+>   sem `\cite` por serem escopo/cronograma e documentação do próprio trabalho (sem
+>   afirmação externa). Demais subseções do referencial abrem com atribuição nomeada.
+> - [x] **p40 RESOLVIDO (2026-06-05):** adicionadas 2 fontes reais à bib e citadas na frase
+>   "altos índices de reprovação e evasão" (`introducao.tex:7`): `souza2016` (SOUZA; BATISTA;
+>   BARBOSA. *Problemas e Dificuldades no Ensino e na Aprendizagem de Programação: um
+>   Mapeamento Sistemático*. RBIE, v.24, n.1, 2016) e `silva2020evasao` (SILVA et al.
+>   *Minerando dados de um juiz on-line para prever a evasão...*. SBIE, 2020, p.1343-1352).
+> - [x] **Reforço Pressman/Sommerville (2026-06-05):** adicionados `pressman2016` (Engenharia
+>   de Software, 8.ed., AMGH) e `sommerville2018` (Engenharia de Software, 10.ed., Pearson),
+>   citados no parágrafo cascata × ágil (`referencial.tex:215`).
 
 ---
 
@@ -95,7 +118,7 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 - [x] "(incluindo análise léxica e sintática) e integração" → "que inclui análise léxica e sintática e a integração"
 - [x] Removida afirmação empírica não sustentada ("Aplicações preliminares em sala de aula sugerem...") → "Espera-se como resultado que a plataforma seja um facilitador..."
 - [x] Última frase reescrita p/ clareza: "O diferencial da plataforma está em permitir..."
-- [x] `\indent` no resumo (recuo de parágrafo)
+- [x] Resumo sem recuo de primeira linha: `\indent` → `\noindent` (decisão do autor 2026-06-05)
 - [x] `Keywords` movido para a linha de baixo (abstract)
 - [x] Abstract em inglês espelhado para manter consistência (orientador só marcou o português)
 
@@ -152,7 +175,7 @@ Hoje: Cap. 2 = REFERENCIAL TEÓRICO, Cap. 3 = PROPOSTA, Cap. 4 = MODELAGEM. Muda
 ### 2.4 Conteúdo novo / pesquisa (não pode ser inventado)
 - [ ] **p15:** inserir "texto âncora" no início do Cap. 2 relatando o que o capítulo contempla.
 - [ ] **p34:** inserir "texto âncora" antes de "Trabalhos Relacionados" + **explicitar o critério/método de seleção** dos trabalhos relacionados (deixar claro num método no capítulo de Metodologia).
-- [ ] **p40:** falta abordar **retenção/dificuldade em programação** no referencial teórico (sugestão: olhar publicações do PET.COMP sobre retenção em programação/algoritmos e usar as referências delas).
+- [x] **p40 (RESOLVIDO 2026-06-05):** retenção/dificuldade em programação referenciada com `souza2016` (mapeamento sistemático RBIE 2016) e `silva2020evasao` (SBIE 2020) na introdução. Ver bloco Front D.
 - [x] **p27 (RESOLVIDO 2026-06-05):** Scrum rebaixado. `metodologia.tex:4` agora declara explicitamente que **não** houve adoção formal de framework ágil (papéis/cerimônias inviáveis para dupla), apenas desenvolvimento iterativo/incremental + TDD; citação `sabbagh2014` removida da metodologia. `referencial.tex:212` reescrito: Scrum mantido como referência teórica, com "práticas pontuais... sem papéis e cerimônias formais".
 - [ ] ~~**p27 original:**~~ cuidado metodológico com **Scrum** — é necessário equipe com tamanho mínimo para que cada papel seja exercido (conforme o manifesto); se estiver adotando Scrum metodologicamente, rever ("a Gabriella vai bater forte").
 - [x] **p41/p61 (RESOLVIDO 2026-06-05):** reenquadramento da divisão de trabalho, com base na pré-proposta aprovada (`qualificacao/igor/proposta_igor.pdf`), que atribui o **núcleo do interpretador** ao Victor e a **plataforma/personalização** ao Igor. Alterado: (a) `proposta.tex:45` — não afirma mais "núcleo construído pelos dois juntos"; agora o núcleo é a demanda individual desta monografia e a colaboração fica nas fronteiras/integração; (b) `apendice.tex` — núcleo retirado de "Regime Colaborativo" e movido para o eixo individual do Victor; (c) `proposta.tex:49` — TCC II não reivindica mais "estudos de caso em sala de aula / coleta de evidências empíricas" (trabalho do Igor), focando em avaliação técnica do núcleo. Resumo já teve a afirmação empírica removida.
