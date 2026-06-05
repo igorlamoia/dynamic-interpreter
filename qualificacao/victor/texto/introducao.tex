@@ -1,22 +1,22 @@
 \label{cap:introducao_modelo}
 
-Este TCC foi desenvolvido em parceria com Igor Lamoia Queiroz, aluno do Curso de Engenharia de Computação do CEFET-MG, Unidade Leopoldina. Os dois documentos tratam do mesmo projeto, mas com enfoques distintos. Este volume descreve o núcleo do compilador: as fases de análise léxica, análise sintática, geração de código intermediário e execução pelo interpretador. O trabalho complementar, intitulado \textit{Interpretador Dinâmico para Ensino de Programação: Uma abordagem interativa com Ambiente de Desenvolvimento Integrado (IDE) para personalização e execução de comandos definidos pelo usuário}, foca na IDE web, na interface de personalização da linguagem e na experiência de uso da plataforma. Para entender o sistema como um todo, recomenda-se ler os dois documentos em conjunto.
+Este Trabalho de Conclusão de Curso (TCC) foi desenvolvido em parceria com Igor Lamoia Queiroz, aluno do Curso de Engenharia de Computação do CEFET-MG, Unidade Leopoldina. Os dois trabalhos tratam do mesmo projeto, mas com enfoques distintos. Este volume descreve o núcleo do compilador: as fases de análise léxica, análise sintática, geração de código intermediário e execução pelo interpretador. O trabalho complementar, intitulado \textit{Interpretador Dinâmico para Ensino de Programação: Uma abordagem interativa com Ambiente de Desenvolvimento Integrado (IDE) para personalização e execução de comandos definidos pelo usuário}, foca na IDE web, na interface de personalização da linguagem e na experiência de uso da plataforma. Por se tratar de trabalhos complementares e interdependentes, para a compreensão do sistema como um todo, recomenda-se ler os dois trabalhos em conjunto.
 
 A contextualização do problema de pesquisa e as premissas sobre os desafios no ensino e na aprendizagem de programação, que fundamentam esta introdução e suas subseções, baseiam-se nas investigações de \citeonline{stefik2013} e \citeonline{ferreira2025}.
 
-Programar virou uma habilidade cada vez mais necessária, não só em cursos de tecnologia, mas em várias outras áreas. Mesmo assim, disciplinas de programação ainda registram altos índices de reprovação e evasão, principalmente nos primeiros semestres. Um dos motivos mais frequentes é que os alunos precisam aprender a lógica de programação e a sintaxe de uma linguagem ao mesmo tempo, o que torna o processo mais difícil do que precisaria ser.
+Programar virou uma habilidade cada vez mais necessária, não só em cursos de tecnologia, mas em várias outras áreas. Mesmo assim, disciplinas de programação ainda registram altos índices de reprovação e evasão, principalmente nos primeiros semestres. Um dos motivos mais frequentes é que os alunos precisam aprender a lógica de programação e a sintaxe de uma linguagem ao mesmo tempo, o que aumenta a dificuldade do processo de aprendizagem.
 
 Em linguagens comerciais, um simples erro de digitação, a falta de um ponto e vírgula ou o uso incorreto de uma palavra reservada já são suficientes para interromper a compilação e gerar mensagens de erro difíceis de entender para quem está começando. O aluno, que deveria estar pensando no algoritmo, acaba gastando tempo e energia tentando descobrir o que está sintaticamente errado.
 
-Diante disso, este trabalho parte da seguinte pergunta: é possível reduzir essa barreira deixando o estudante personalizar a sintaxe da linguagem que está aprendendo?
+Diante disso, este trabalho parte da seguinte pergunta: é possível reduzir a barreira de aprendizagem a partir da personalização da sintaxe da linguagem que o aluno está aprendendo?
 
 A hipótese é que sim. Se o aluno puder definir as palavras-chave, os delimitadores de bloco e os operadores de uma forma que faça sentido para ele, a curva de aprendizagem tende a ser mais suave. O foco passa a ser o raciocínio algorítmico, não a memorização de regras gramaticais de uma linguagem estrangeira.
 
 \section{Justificativa}
 
-Já existem plataformas e linguagens voltadas para iniciantes, como o Portugol Studio e o Scratch. A grande maioria, porém, trabalha com uma gramática fixa definida pelos desenvolvedores da ferramenta. O aluno não tem como ajustar a linguagem ao próprio raciocínio.
+Já existem plataformas e linguagens voltadas para iniciantes, como o Portugol Studio e o Scratch. A grande maioria, porém, trabalha com uma gramática fixa definida pelos desenvolvedores da ferramenta. O aluno não tem como ajustar ou adaptar a linguagem ao próprio raciocínio.
 
-A proposta deste trabalho é mudar isso: construir um interpretador que aceite regras gramaticais configuradas pelo próprio usuário, integrado a uma IDE web que torne essa personalização simples e acessível. Além de diminuir o atrito inicial com a sintaxe, a plataforma funciona como um ambiente de experimentação antes de o aluno migrar para linguagens mais rígidas exigidas pelo mercado e por plataformas de juízes online.
+A proposta deste trabalho é oportunizar a mudança desse cenário a partir da construção de um interpretador que aceite regras gramaticais configuradas pelo próprio usuário, integrado a uma IDE web que permita uma personalização simples e acessível. Além de diminuir o obstáculo inicial com a sintaxe, a plataforma funciona como um ambiente de experimentação antes de o aluno migrar para linguagens mais rígidas exigidas pelo mercado de trabalho e por plataformas de juízes online.
 
 \section{Objetivos}
 
@@ -24,17 +24,19 @@ A seguir são apresentados o objetivo geral e os objetivos específicos que nort
 
 \subsection{Objetivo Geral}
 
-Projetar e desenvolver um interpretador dinâmico integrado a uma IDE web que permita ao usuário personalizar a sintaxe e os comandos da linguagem, com o objetivo de facilitar o ensino e a aprendizagem de algoritmos para estudantes iniciantes.
+Projetar e desenvolver um interpretador dinâmico integrado a uma IDE web que permita ao usuário personalizar a sintaxe e os comandos da linguagem, com o objetivo de facilitar o processo de ensino-aprendizagem de algoritmos para estudantes iniciantes.
 
 \subsection{Objetivos Específicos}
 
 Para alcançar o objetivo geral, foram definidos os seguintes objetivos específicos:
 
 \begin{itemize}
-    \item Estudar os fundamentos de construção de compiladores e analisar ferramentas educacionais correlatas na literatura;
-    \item Projetar e implementar os módulos de análise léxica, sintática e semântica com suporte à injeção dinâmica de regras gramaticais;
+    \item Estudar os fundamentos de construção de compiladores;
+    \item Analisar ferramentas educacionais correlatas na literatura;
+    \item Projetar os módulos de análise léxica, sintática e semântica com suporte à injeção dinâmica de regras gramaticais;
+    \item Implementar os módulos projetados, integrando-os em um interpretador dinâmico executável no navegador;
     \item Desenvolver uma interface web para que o usuário interaja com o interpretador;
-    \item Validar a plataforma por meio de estudos de caso para avaliar sua viabilidade técnica e pedagógica.
+    \item Avaliar a solução desenvolvida por meio de estudos de caso para validar sua viabilidade técnica e pedagógica.
 \end{itemize}
 
 \section{Estrutura do Trabalho}
