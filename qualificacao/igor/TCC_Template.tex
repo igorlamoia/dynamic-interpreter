@@ -18,6 +18,7 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{placeins} % fornece \FloatBarrier para conter as figuras na seção
 \usepackage{svg}
 \usepackage{microtype}
 \usepackage{hyperref}
@@ -79,6 +80,14 @@
 
 \graphicspath{{Figuras/}} % Diretório onde estão localizadas as figuras
 
+%% Hifenização correta de palavras que o babel quebrava de forma indevida
+%% (correções apontadas pelo orientador: divisão silábica).
+\hyphenation{
+  as-si-mi-la-ção re-pre-sen-ta-ção hie-rár-qui-ca ins-tru-ções
+  res-pon-sa-bi-li-da-de so-li-ci-ta-ção a-na-li-sa-das mo-ni-tor
+  cor-res-pon-den-tes es-pe-cia-li-za-dos
+}
+
 %% -----------------------------------------------------------------------------
 
 %% Obs.: Alguns acentos foram omitidos.
@@ -97,7 +106,7 @@
 
 \local{Leopoldina} %%Não alterar
 \mesentrega{02} %%Colocar o mes da entrega dentro das chaves {}, em número. Por exemplo, 1 para janeiro; 2 para fevereiro ...
-\data{2025} %%Colocar APENAS o ano da entrega dentro das chaves {}. Por exemplo, 2019.
+\data{2026} %%Colocar APENAS o ano da entrega dentro das chaves {}. Por exemplo, 2019.
 
 \orientador[Orientador]{Luís Augusto Mattos Mendes} %%Colocar o nome completo do orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
 \coorientador[Coorientador]{Eduardo Gabriel Reis Miranda} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
@@ -197,7 +206,7 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
 %\aplicaresumo
 
 
-Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador.
+\noindent Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador.
 % Aplicações preliminares em sala de aula sugerem resultados educacionais positivos, incluindo redução do tempo necessário para que os alunos compreendam conceitos fundamentais de programação, diminuição das taxas de reprovação em disciplinas introdutórias de programação e aumento do engajamento dos estudantes.
 Espera-se que a plataforma contribua para o ensino de programação ao reduzir barreiras linguísticas, favorecer a compreensão de conceitos fundamentais e estimular o engajamento dos estudantes por meio da experimentação com diferentes formas de expressão algorítmica.
 Ao permitir a definição flexível de comandos e sintaxe, a plataforma incentiva a experimentação, ajudando os alunos a focarem no raciocínio algorítmico em vez de memorizar estruturas rígidas de linguagem.

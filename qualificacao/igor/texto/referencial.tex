@@ -1,14 +1,10 @@
 
+Este capítulo apresenta o referencial teórico que fundamenta o desenvolvimento da plataforma. A Seção~\ref{sec:compiladores} discute a construção de compiladores e interpretadores, percorrendo as fases de análise léxica, sintática e semântica, a geração de código intermediário e objeto e as estratégias de otimização, além das metodologias ágeis de desenvolvimento, da arquitetura do \textit{framework} Next.js, dos princípios de Experiência do Usuário (UX) e Interface do Usuário (UI) e das práticas de qualidade de código. Em seguida, são apresentados os softwares educativos e as tecnologias de apoio à aprendizagem e, por fim, os trabalhos relacionados, cuja análise crítica fundamenta o diferencial da solução proposta.
+
 \section{Compiladores}
-
-Este capitulo contém o referencial que embasa os principais aspectos abordados ao longo
-do trabalho.
-
 \label{sec:compiladores}
 
-\subsection{Fundamentos de Compiladores}
-
-Esta subseção usa como base a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de Ciência da Computação como uma das principais referências teóricas no projeto de compiladores. As definições de análise, síntese e estrutura do processo de compilação apresentadas a seguir seguem as ideias desses autores.
+Esta seção usa como base a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de Ciência da Computação como uma das principais referências teóricas no projeto de compiladores. As definições de análise, síntese e estrutura do processo de compilação apresentadas a seguir seguem as ideias desses autores.
 
 Em termos práticos, um compilador é um programa cuja função é ler um código-fonte, escrito em uma linguagem específica, e traduzi-lo para um programa equivalente em uma linguagem-alvo. No modelo moderno de compilação, esse processo é estruturado em duas etapas principais e complementares: a análise e a síntese. A etapa de análise, comumente chamada de \textit{Front-End}, divide o programa original em suas partes e gera uma representação intermediária do código. Por outro lado, a etapa de síntese, conhecida como \textit{Back-End}, utiliza essa representação intermediária para construir e formatar o programa final desejado.
 
@@ -92,13 +88,11 @@ Os conceitos e definições apresentados a seguir têm como base teórica os tra
 
 A etapa de análise sintática, comumente chamada de \textit{parsing}, tem a tarefa de validar se a sequência de \textit{tokens} gerada previamente está de acordo com as regras gramaticais da linguagem de origem. Para processar essa estrutura e gerar a árvore de derivação, o sistema utiliza algoritmos baseados em duas abordagens principais: a análise descendente (\textit{top-down}), que atua da raiz para as folhas, e a análise ascendente (\textit{bottom-up}), que opera no sentido inverso.
 
-\subsubsection*{Análise Sintática Descendente (\textit{Top-Down})}
-Esta abordagem busca reconstruir a árvore sintática partindo do símbolo inicial (raiz) até alcançar os elementos terminais (folhas) que compõem o código de entrada. Durante esse fluxo, o analisador expande de forma sistemática o símbolo não-terminal posicionado mais à esquerda, utilizando as regras de produção para realizar o que se conhece tecnicamente como derivação à esquerda (\textit{leftmost derivation}).
+\noindent\textbf{I) Análise Sintática Descendente (\textit{Top-Down}):} Esta abordagem busca reconstruir a árvore sintática partindo do símbolo inicial (raiz) até alcançar os elementos terminais (folhas) que compõem o código de entrada. Durante esse fluxo, o analisador expande de forma sistemática o símbolo não-terminal posicionado mais à esquerda, utilizando as regras de produção para realizar o que se conhece tecnicamente como derivação à esquerda (\textit{leftmost derivation}).
 
 Dentro dessa categoria, destacam-se os métodos recursivos descendentes e os preditivos baseados em tabelas, como o LL(1). O uso de analisadores por descida recursiva é frequente em projetos reais devido à sua legibilidade, simplicidade de implementação manual e eficiência no tratamento e diagnóstico de erros. Entretanto, para garantir um processamento linear e evitar o \textit{backtracking} (retrocesso), a gramática precisa ser cuidadosamente preparada: ela não deve apresentar recursão à esquerda e precisa ser devidamente fatorada. Isso assegura que o analisador consiga decidir qual regra aplicar consultando apenas o próximo \textit{token} da entrada.
 
-\subsubsection*{Análise Sintática Ascendente ou Redutiva (\textit{Bottom-Up})}
-Diferente do modelo anterior, a análise ascendente inicia o reconhecimento a partir dos \textit{tokens} individuais (folhas) e progride estruturalmente até atingir o símbolo inicial da gramática (raiz).
+\noindent\textbf{II) Análise Sintática Ascendente ou Redutiva (\textit{Bottom-Up}):} Diferente do modelo anterior, a análise ascendente inicia o reconhecimento a partir dos \textit{tokens} individuais (folhas) e progride estruturalmente até atingir o símbolo inicial da gramática (raiz).
 
 O termo ``redutiva'' caracteriza bem o funcionamento deste algoritmo: o analisador identifica padrões na pilha que correspondem ao lado direito de uma regra gramatical (denominados \textit{handles}) e os substitui (reduz) pelo respectivo símbolo não-terminal do lado esquerdo. Esse procedimento resulta em uma derivação à direita realizada de forma reversa.
 
@@ -118,9 +112,7 @@ Nesta etapa, o compilador utiliza a estrutura hierárquica gerada previamente (a
 A análise semântica atua inferindo tipos para as expressões e detectando situações nas quais os valores são interpretados incorretamente \cite{cooper2012}. % [6]
 Quando permitido pela especificação da linguagem, é também nesta fase que o compilador realiza conversões de tipo embutidas (coerções), como a transformação implícita de um valor inteiro para ponto flutuante antes de realizar uma adição entre tipos mistos \cite{aho1995, cooper2012}. % [3, 7]
 
-\subsubsection*{Tipos de Erros Semânticos}
-
-Os erros semânticos são falhas peculiares, pois ocorrem em programas que podem possuir uma estrutura gramatical perfeitamente bem-formada, mas que violam as regras de significado, consistência ou contexto da linguagem de programação \cite{aho1995, cooper2012}. % [3, 4, 8]
+Os erros semânticos, por sua vez, são falhas peculiares, pois ocorrem em programas que podem possuir uma estrutura gramatical perfeitamente bem-formada, mas que violam as regras de significado, consistência ou contexto da linguagem de programação \cite{aho1995, cooper2012}. % [3, 4, 8]
 O tratamento de erros semânticos é focado em capturar inconsistências que incluem, principalmente:
 
 \begin{itemize}
@@ -155,8 +147,6 @@ Para exemplificar o conceito, considere uma expressão de atribuição como $A :
     \item $T_2 := X + T_1$
     \item $A := T_2$
 \end{enumerate}
-
-\subsubsection*{Método de Geração Dirigida pela Sintaxe}
 
 A automação desse processo de conversão é viabilizada pela técnica de tradução dirigida pela sintaxe. Esse método expande o formalismo das gramáticas livres de contexto, permitindo que atributos sejam associados aos símbolos gramaticais e que ações semânticas específicas sejam vinculadas às regras de produção da linguagem.
 
