@@ -30,21 +30,21 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 > **Front A — deliverables concretos (2026-06-05):**
 > - [x] **p15** texto-âncora no início do Cap. Referencial (`referencial.tex`), com visão
 >   geral das frentes + intro da Seção Compiladores; corrigido "capitulo"→"capítulo".
-> - [x] **p34 (parcial)** texto-âncora antes de "Trabalhos Relacionados" + título
+> - [x] **p34** texto-âncora antes de "Trabalhos Relacionados" + título
 >   corrigido para "Trabalhos Relacionados" + `\label{sec:trabalhos-relacionados}`
->   (removido label duplicado solto no fim da seção). FALTA o **método de seleção** dos
->   trabalhos (Front B — depende do critério do autor).
+>   (removido label duplicado solto no fim da seção) + método de seleção dos trabalhos
+>   relacionados explicitado na Metodologia.
 > - [x] **p52** lista de scanners agora também em tabela (`Tabela~\ref{tab:scanners}` em
 >   `metodologia.tex`), mantida a descrição no corpo.
-> - [x] **p47 (parcial)** Apêndice "DOCUMENTAÇÃO DA API" (`\label{ap:api}`) com tabela de
->   recursos + links Swagger/ReDoc; referenciado no corpo. FALTA o "é"→"são" (não
->   localizado sem o PDF — pedir ao autor o trecho exato).
+> - [x] **p47** Apêndice "DOCUMENTAÇÃO DA API" (`\label{ap:api}`) com tabela de
+>   recursos + links Swagger/ReDoc; referenciado no corpo; concordância corrigida.
 > - [x] **p58** Apêndice "CASOS DE TESTE AUTOMATIZADOS" (`\label{ap:testes}`): 215 casos
 >   em 22 arquivos (tokens 8 / léxica 56 / sintática-semântica 138 / interpretação 13),
 >   tabela-resumo + link do repositório; e clarificado no corpo que a suíte roda
 >   integralmente a cada mudança (acumula, detecta regressões).
-> - [x] **p44 (parcial)** nomenclatura padronizada para "esquema lógico" (corpo+legenda).
->   FALTA confirmar **normalização** das tabelas (Front B — confirmação do autor).
+> - [x] **p44** nomenclatura padronizada para "esquema lógico" (corpo+legenda) e texto
+>   reforçado sobre normalização relacional: entidades separadas para reduzir redundância,
+>   preservar dependências funcionais e manter integridade referencial.
 >
 > **Front B — decisões/confirmações (2026-06-05):**
 > - [x] **p57** figuras duplicadas. TDD: mantida só a 2.3 (`fig:ciclo_tdd`, fonte
@@ -57,7 +57,7 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 >   mantidos). Não se moveu proposta/cronograma (decisão do autor).
 > - [x] **p2/p3** ficha/aprovação: já resolvido no working tree (`\data{2026}`, `\aprovacao*`
 >   comentados). Confirmar visualmente no PDF.
-> - [~] **p44** normalização: autor optou por NÃO inserir frase agora; tratará direto com o orientador.
+> - [x] **p44** normalização: texto reforçado na modelagem do banco de dados.
 > - [x] **p34** método de seleção dos trabalhos relacionados: autor optou por "seleção por
 >   representatividade dos dois eixos". Criada `\section{Seleção dos Trabalhos Relacionados}`
 >   (`sec:selecao-trabalhos`) na Metodologia, com critérios de inclusão explícitos (sem fingir
@@ -78,7 +78,8 @@ Documento gerado a partir das anotações de `TCC_I-Victor-corrigido.pdf` (texto
 >   `proposta` e `referencial`.
 > - [ ] **PENDENTE (precisa do PDF):** figura fora da margem (p43); figura/legenda em páginas
 >   diferentes (p15); "Leopoldina 2026" em página solta (p4); espaços em branco (p15); sumário.
-> - [ ] **PENDENTE p47:** "é"→"são" — não localizado sem o PDF; autor deve apontar o trecho exato.
+> - [x] **p47:** concordância corrigida em `metodologia.tex`: "A documentação completa e
+>   interativa dessas rotas é gerada...".
 >
 > **Front D — citações (iniciada 2026-06-05):**
 > - [x] **Seção "Softwares Educativos" (`referencial.tex` 294-298):** a atribuição em
@@ -184,25 +185,25 @@ Hoje: Cap. 2 = REFERENCIAL TEÓRICO, Cap. 3 = PROPOSTA, Cap. 4 = MODELAGEM. Muda
 - [ ] Espaços em branco a eliminar (p15).
 
 ### 2.4 Conteúdo novo / pesquisa (não pode ser inventado)
-- [ ] **p15:** inserir "texto âncora" no início do Cap. 2 relatando o que o capítulo contempla.
-- [ ] **p34:** inserir "texto âncora" antes de "Trabalhos Relacionados" + **explicitar o critério/método de seleção** dos trabalhos relacionados (deixar claro num método no capítulo de Metodologia).
+- [x] **p15:** texto âncora inserido no início do Cap. 2, relatando o que o capítulo contempla.
+- [x] **p34:** texto âncora antes de "Trabalhos Relacionados" e critério/método de seleção explicitado na Metodologia.
 - [x] **p40 (RESOLVIDO 2026-06-05):** retenção/dificuldade em programação referenciada com `souza2016` (mapeamento sistemático RBIE 2016) e `silva2020evasao` (SBIE 2020) na introdução. Ver bloco Front D.
 - [x] **p27 (RESOLVIDO 2026-06-05):** Scrum rebaixado. `metodologia.tex:4` agora declara explicitamente que **não** houve adoção formal de framework ágil (papéis/cerimônias inviáveis para dupla), apenas desenvolvimento iterativo/incremental + TDD; citação `sabbagh2014` removida da metodologia. `referencial.tex:212` reescrito: Scrum mantido como referência teórica, com "práticas pontuais... sem papéis e cerimônias formais".
-- [ ] ~~**p27 original:**~~ cuidado metodológico com **Scrum** — é necessário equipe com tamanho mínimo para que cada papel seja exercido (conforme o manifesto); se estiver adotando Scrum metodologicamente, rever ("a Gabriella vai bater forte").
+- [x] ~~**p27 original:**~~ Scrum reenquadrado: o texto declara que não houve adoção formal do framework, apenas desenvolvimento iterativo/incremental e TDD.
 - [x] **p41/p61 (RESOLVIDO 2026-06-05):** reenquadramento da divisão de trabalho, com base na pré-proposta aprovada (`qualificacao/igor/proposta_igor.pdf`), que atribui o **núcleo do interpretador** ao Victor e a **plataforma/personalização** ao Igor. Alterado: (a) `proposta.tex:45` — não afirma mais "núcleo construído pelos dois juntos"; agora o núcleo é a demanda individual desta monografia e a colaboração fica nas fronteiras/integração; (b) `apendice.tex` — núcleo retirado de "Regime Colaborativo" e movido para o eixo individual do Victor; (c) `proposta.tex:49` — TCC II não reivindica mais "estudos de caso em sala de aula / coleta de evidências empíricas" (trabalho do Igor), focando em avaliação técnica do núcleo. Resumo já teve a afirmação empírica removida.
-- [ ] ~~**p41 original (IMPORTANTE):**~~
+- [x] ~~**p41 original (IMPORTANTE):**~~
   - "Trabalho de Conclusão de Curso??" sobre o termo "documento".
   - "mas este não é o seu trabalho???" — o núcleo do compilador (análise léxica, sintática, geração e execução de código intermediário) está descrito como trabalho conjunto, mas pelo título é a **sua** demanda.
   - "se colocar assim a banca vai bater muito em vc".
   - O parágrafo sobre o TCC II **não bate com o cronograma** — alinhar para evitar problemas. Além disso, se o estudo de caso (coletar feedback) é trabalho do Igor, **não pode ser tratado como demanda sua**.
   - → Exige reescrever o enquadramento da divisão de trabalho.
-- [ ] **p42:** a "abordagem metodológica adotada para o desenvolvimento" deve ser especificada na **Metodologia**; as fases "implementada e validada por meio de testes automatizados" não estão inseridas em **Modelagem**.
-- [ ] **p44:** confirmar se as tabelas foram **normalizadas** (comentário "vocês normalizaram as tabelas?" sobre "denormalização relacional"); padronizar a nomenclatura entre corpo do texto e imagem ("esquema lógico").
-- [ ] **p47:** "é" → "são" (concordância — verificar qual ocorrência exata); e disponibilizar a documentação da API (Swagger/ReDoc) **nos apêndices**, além de online.
-- [ ] **p52:** apresentar a lista de scanners (`comment.ts`, `identifier.ts`, `number.ts`, `string.ts`, `symbol-and-operator.ts`) em **tabela**, mantendo a descrição no corpo do texto.
-- [ ] **p57:** verificar se a **Figura 4.5** é a mesma que a **Figura 2.3** — se sim, citar a 2.3 em vez de reapresentá-la.
-- [ ] **p58:** deixar claro o contexto dos testes (são feitos a cada novo desenvolvimento/sprint? testam só o atual ou acumulam os anteriores?); disponibilizar os casos de teste **e os resultados** em apêndice e online.
+- [x] **p42:** abordagem metodológica especificada no início da Metodologia, com desenvolvimento incremental/iterativo e TDD.
+- [x] **p44 (RESOLVIDO 2026-06-06):** texto reforçado para declarar a normalização relacional do esquema, com separação de entidades para reduzir redundância e preservar integridade referencial; nomenclatura "esquema lógico" já estava padronizada.
+- [x] **p47 (RESOLVIDO 2026-06-06):** concordância corrigida ("A documentação completa e interativa dessas rotas é gerada...") e documentação da API já reproduzida no Apêndice~\ref{ap:api}.
+- [x] **p52:** lista de scanners apresentada em tabela, mantendo a descrição no corpo do texto.
+- [x] **p57:** figuras duplicadas tratadas; TDD e lex.png foram religadas às figuras do referencial.
+- [x] **p58:** contexto dos testes esclarecido; suíte acumulativa e resultados/casos reunidos em apêndice e online.
 - [ ] **p19/p20/p22/p32:** micro-marcações sem comentário claro (carets "I)", "II)", "s"; "Framework" isolado) — revisar manualmente.
-- [ ] **p39:** "qual é a convergência com os sistemas relacionados de compiladores?" — esclarecer no fechamento da proposta.
-- [ ] **p54:** "não seria nos trabalhos relacionados?" — **já aplicado** (ver 1).
-- [ ] **p61:** "pelo título vejo que essa parte é demanda do seu trabalho" (confirmação do orientador sobre o núcleo do compilador ser sua demanda — coerente com p41).
+- [x] **p39 (RESOLVIDO 2026-06-06):** fechamento da proposta reforçado com a convergência entre a solução e sistemas relacionados de compiladores: análise léxica, análise sintática e geração de representação intermediária, com diferenciação pela linguagem configurável e pela IDE educacional.
+- [x] **p54:** "não seria nos trabalhos relacionados?" — já aplicado.
+- [x] **p61:** núcleo do compilador reenquadrado como demanda desta monografia, coerente com p41.

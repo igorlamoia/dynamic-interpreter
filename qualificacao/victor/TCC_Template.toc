@@ -56,12 +56,12 @@
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \contentsline {chapter}{REFERÊNCIAS}{57}{chapter*.70}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{59}{appendix.71}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{59}{section.72}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{59}{section.73}%
-\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{59}{subsection.74}%
-\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{60}{subsection.75}%
+\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{60}{appendix.71}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{60}{section.72}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{60}{section.73}%
+\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{60}{subsection.74}%
+\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{61}{subsection.75}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {B}DOCUMENTAÇÃO DA API}{61}{appendix.76}%
+\contentsline {appendix}{\chapternumberline {B}DOCUMENTAÇÃO DA API}{62}{appendix.76}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {C}CASOS DE TESTE AUTOMATIZADOS}{62}{appendix.78}%
+\contentsline {appendix}{\chapternumberline {C}CASOS DE TESTE AUTOMATIZADOS}{63}{appendix.78}%

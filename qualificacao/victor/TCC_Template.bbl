@@ -140,6 +140,11 @@ Dispon{\'\i}vel em: \url{https://mindmakers.com.br/blog/}. Acesso em: 2026.}
 {NYSTROM, R. \textbf{Crafting Interpreters}. [S.l.]: Genever Benning, 2021.
 ISBN 978-0990582939.}
 
+\bibitem[Pressman e Maxim 2016]{pressman2016}
+\abntrefinfo{Pressman e Maxim}{PRESSMAN; MAXIM}{2016}
+{PRESSMAN, R.~S.; MAXIM, B.~R. \textbf{Engenharia de Software: uma Abordagem
+  Profissional}. 8. ed. Porto Alegre: AMGH, 2016.}
+
 \bibitem[Price e Toscani 2001]{price2001}
 \abntrefinfo{Price e Toscani}{PRICE; TOSCANI}{2001}
 {PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens
@@ -158,6 +163,14 @@ Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 07 abr.
 {SABBAGH, R. \textbf{Scrum: Gest{\~a}o {\'a}gil para projetos de sucesso}.
   S{\~a}o Paulo: Casa do C{\'o}digo, 2014.}
 
+\bibitem[Silva et al. 2020]{silva2020evasao}
+\abntrefinfo{Silva et al.}{SILVA et al.}{2020}
+{SILVA, D. d.~S. et al. Minerando dados de um juiz on-line para prever a
+  evas{\~a}o de estudantes em disciplinas introdut{\'o}rias de
+  programa{\c{c}}{\~a}o. In:  \textbf{Anais do XXXI Simp{\'o}sio Brasileiro de
+  Inform{\'a}tica na Educa{\c{c}}{\~a}o (SBIE)}. Porto Alegre: Sociedade
+  Brasileira de Computa{\c{c}}{\~a}o, 2020. p. 1343--1352.}
+
 \bibitem[Silva 2021]{ladgelson2021}
 \abntrefinfo{Silva}{SILVA}{2021}
 {SILVA, M. L.~d.
@@ -170,6 +183,19 @@ Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da
 \abntrefinfo{Silveira et al.}{SILVEIRA et al.}{2012}
 {SILVEIRA, P. et al. \textbf{Introdu{\c{c}}{\~a}o {\`a} arquitetura e design de
   software}. S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
+
+\bibitem[Sommerville 2018]{sommerville2018}
+\abntrefinfo{Sommerville}{SOMMERVILLE}{2018}
+{SOMMERVILLE, I. \textbf{Engenharia de Software}. 10. ed. S{\~a}o Paulo:
+  Pearson Education do Brasil, 2018.}
+
+\bibitem[Souza, Batista e Barbosa 2016]{souza2016}
+\abntrefinfo{Souza, Batista e Barbosa}{SOUZA; BATISTA; BARBOSA}{2016}
+{SOUZA, D.~M.; BATISTA, M. H. d.~S.; BARBOSA, E.~F. Problemas e dificuldades no
+  ensino e na aprendizagem de programa{\c{c}}{\~a}o: um mapeamento
+  sistem{\'a}tico.
+\textbf{Revista Brasileira de Inform{\'a}tica na Educa{\c{c}}{\~a}o}, v.~24,
+  n.~1, p. 39--52, 2016.}
 
 \bibitem[Stefik e Siebert 2013]{stefik2013}
 \abntrefinfo{Stefik e Siebert}{STEFIK; SIEBERT}{2013}
