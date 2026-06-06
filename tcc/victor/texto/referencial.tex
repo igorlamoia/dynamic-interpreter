@@ -1,14 +1,14 @@
 
 \section{Compiladores}
 
-Este capitulo contém o referencial que embasa os principais aspectos abordados ao longo
+Este capítulo contém o referencial que embasa os principais aspectos abordados ao longo
 do trabalho.
 
 \label{sec:compiladores}
 
 \subsection{Compiladores e seus Fundamentos}
 
-Para a fundamentação teórica acerca do funcionamento, das fases e da arquitetura dos tradutores de linguagem, esta subseção adota como base estrutural a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de ciência da computação como a principal referência para o projeto de compiladores. Com o intuito de manter a fluidez da leitura, todas as definições conceituais de análise, síntese e estrutura de compilação apresentadas a seguir refletem estritamente as diretrizes estabelecidas por estes autores.
+Para a fundamentação teórica acerca do funcionamento, das fases e da arquitetura dos tradutores de linguagem, esta subseção adota como base estrutural a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de ciência da computação como uma das principais referências para o projeto de compiladores. Essa base é complementada por \citeonline{cooper2012}, que abordam o compilador sob a perspectiva de engenharia, e por \citeonline{appel2002}, que enfatiza a implementação prática das fases de análise e síntese.
 
 Posto de forma simples, um compilador é um programa de computador que lê um programa escrito em uma linguagem fonte e o traduz para um programa equivalente em uma linguagem alvo. O modelo de compilação moderno é estruturado dividindo esse processo em duas partes fundamentais: a análise e a síntese. A fase de análise, frequentemente associada ao \textit{Front-End}, divide o programa fonte em suas partes constituintes e cria uma representação intermediária do mesmo. Por outro lado, a fase de síntese, ou \textit{Back-End}, constrói o programa alvo desejado a partir dessa representação intermediária gerada.
 
@@ -30,7 +30,7 @@ Interagindo com todas essas seis fases de compilação, encontra-se o gerenciame
 % -------------------------------------------------------------------------------------------------
 \subsection{O Modelo de Análise e Síntese (Fases da Compilação)}
 
-Toda a estruturação das fases da compilação e os conceitos detalhados nesta seção fundamentam-se nas obras clássicas da área, notadamente nos estudos de \citeonline{aho1995}, \citeonline{price2001} e \citeonline{cooper2012}.
+Toda a estruturação das fases da compilação e os conceitos detalhados nesta seção fundamentam-se nas obras clássicas da área, notadamente nos estudos de \citeonline{aho1995}, \citeonline{price2001}, \citeonline{cooper2012} e \citeonline{appel2002}.
 
 O processo de compilação é tradicionalmente dividido em duas partes principais: a análise e a síntese.
 A fase de análise, frequentemente chamada de \textit{front-end}, concentra-se em compreender o programa fonte dividindo o código em seus elementos constituintes para criar uma representação intermediária abstrata.
@@ -69,7 +69,7 @@ Já o módulo de erros atua detectando falhas léxicas, sintáticas ou lógicas 
 
 \subsection{A Análise Léxica e o Reconhecimento de \textit{Tokens}}
 
-Os conceitos e definições inerentes à fase de análise léxica, detalhados a seguir, fundamentam-se fortemente nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+Os conceitos e definições inerentes à fase de análise léxica, detalhados a seguir, fundamentam-se fortemente nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021}, \citeonline{price2001} e \citeonline{appel2002}.
 
 A análise léxica, frequentemente denominada \textit{scanner}, constitui a primeira fase do processo de compilação. A função primária deste módulo é realizar a leitura do programa fonte, caractere por caractere, e agrupá-los logicamente em unidades com significado gramatical, denominadas lexemas, conforme exemplificado na Figura \ref{fig:lexemas_nystrom}. 
 
@@ -95,7 +95,7 @@ O uso de autômatos finitos permite que a análise léxica seja extremamente efi
 
 \subsection{Estratégias de Análise Sintática: \textit{Top-Down} e \textit{Bottom-Up}}
 
-As definições e conceitos apresentados nesta seção baseiam-se nos fundamentos estabelecidos por \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
+As definições e conceitos apresentados nesta seção baseiam-se nos fundamentos estabelecidos por \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001}, \citeonline{nystrom2021} e \citeonline{appel2002}.
 
 A fase de análise sintática (ou \textit{parsing}) tem a responsabilidade central de determinar se a cadeia de \textit{tokens} fornecida pelo analisador léxico pode ser validamente gerada pela gramática formal da linguagem fonte. Para realizar essa verificação e construir a árvore de derivação, os compiladores adotam abordagens matemáticas que se enquadram majoritariamente em duas categorias fundamentais de algoritmos: a análise descendente (\textit{top-down}) e a análise ascendente ou redutiva (\textit{bottom-up}).
 
@@ -116,11 +116,11 @@ Entretanto, devido à enorme complexidade matemática requerida para a construç
 % ---------------------------------------------------
 \subsection{Análise Semântica e Verificação de Tipos}
 
-Esta seção apresenta os fundamentos da análise semântica e da verificação de tipos, consolidando os conceitos e definições propostos por \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
+Esta seção apresenta os fundamentos da análise semântica e da verificação de tipos, consolidando os conceitos e definições propostos por \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001}, \citeonline{nystrom2021} e \citeonline{sebesta2018}.
 
-Uma vez que a estrutura gramatical do código é validada pela análise sintática, o processo de compilação evolui para a fase semântica. O objetivo central aqui é garantir que as construções do programa, embora sintaticamente corretas, possuam coerência lógica para a futura execução. Enquanto o \textit{parser} se limita a verificar se a "forma" do código respeita as regras da linguagem, o analisador semântico atua como um inspetor que examina o significado das combinações entre os elementos do programa. Um dos pilares desse estágio é a resolução de nomes (ou amarrações), procedimento no qual o compilador mapeia cada identificador à sua declaração correspondente, respeitando as regras de escopo.
+Uma vez que a estrutura gramatical do código é validada pela análise sintática, o processo de compilação evolui para a fase semântica. O objetivo central aqui é garantir que as construções do programa, embora sintaticamente corretas, possuam coerência lógica para a futura execução. Enquanto o \textit{parser} se limita a verificar se a "forma" do código respeita as regras da linguagem, o analisador semântico atua como um inspetor que examina o significado das combinações entre os elementos do programa. Um dos pilares desse estágio é a resolução de nomes (ou amarrações), procedimento no qual o compilador mapeia cada identificador à sua declaração correspondente, respeitando as regras de escopo \cite{aho1995,cooper2012,sebesta2018}.
 
-A verificação de tipos constitui outro componente vital da análise semântica. Utilizando a árvore de derivação e as informações armazenadas na tabela de símbolos, o compilador checa se os operadores estão sendo aplicados a operandos compatíveis. Durante essa inspeção, o sistema infere os tipos das expressões e detecta interpretações de valores que seriam semanticamente inválidas. Caso a linguagem permita, o analisador também pode aplicar coerções, que são conversões implícitas de tipos (como transformar um inteiro em ponto flutuante) para viabilizar operações entre tipos distintos.
+A verificação de tipos constitui outro componente vital da análise semântica. Utilizando a árvore de derivação e as informações armazenadas na tabela de símbolos, o compilador checa se os operadores estão sendo aplicados a operandos compatíveis. Durante essa inspeção, o sistema infere os tipos das expressões e detecta interpretações de valores que seriam semanticamente inválidas. Caso a linguagem permita, o analisador também pode aplicar coerções, que são conversões implícitas de tipos (como transformar um inteiro em ponto flutuante) para viabilizar operações entre tipos distintos \cite{price2001,nystrom2021,sebesta2018}.
 
 \subsubsection*{Tipos de Erros Semânticos}
 
@@ -137,7 +137,7 @@ Diferente dos erros de sintaxe, as falhas semânticas ocorrem em códigos que po
 % -------------------------------------------------------------------------------------------------------------
 \subsection{Geração de Código Intermediário}
 
-Os conceitos e as técnicas referentes à geração de código intermediário e à tradução dirigida pela sintaxe, detalhados nesta seção, fundamentam-se nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+Os conceitos e as técnicas referentes à geração de código intermediário e à tradução dirigida pela sintaxe, detalhados nesta seção, fundamentam-se nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021}, \citeonline{price2001} e \citeonline{appel2002}.
 
 A geração de código intermediário atua como um elo estrutural entre as fases de análise (\textit{front-end}) e síntese (\textit{back-end}) de um compilador. Após a verificação estrutural e semântica do código fonte, o compilador normalmente gera uma representação intermediária explícita, cujo formato é projetado para ser largamente independente das especificidades da linguagem fonte e da arquitetura da máquina alvo. A principal vantagem dessa estratégia em múltiplos passos é resolver, de maneira gradativa, a barreira de complexidade existente na conversão direta de comandos de alto nível para instruções de baixo nível. Ademais, essa etapa viabiliza a otimização de código e facilita a portabilidade, permitindo que a mesma representação interna seja traduzida para diversas arquiteturas diferentes.
 
@@ -159,7 +159,7 @@ Na prática, isso significa que a geração de código pode ocorrer concomitante
 %--------------------------------------------------------------------------------------------------------------
 \subsection{Otimização de Código e Eficiência Computacional}
 
-As discussões e definições apresentadas nesta seção fundamentam-se nas obras de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
+As discussões e definições apresentadas nesta seção fundamentam-se nas obras de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{muchnick1997}.
 
 Situada geralmente como a etapa intermediária do processo de compilação, a otimização visa refinar a representação interna do programa para torná-la mais performática. Esse aprimoramento busca não apenas acelerar a execução e reduzir o consumo de memória, mas também, em contextos tecnológicos modernos, diminuir o gasto energético do hardware. Durante esse estágio, o compilador substitui instruções genéricas por variantes mais ágeis e semanticamente equivalentes. Um exemplo clássico é o dobramento de constantes (\textit{constant folding}), que antecipa cálculos de valores fixos para o tempo de compilação, evitando que sejam processados repetidamente durante a execução.
 
@@ -181,7 +181,7 @@ De maneira geral, a maioria das rotinas de otimização ocorre em duas fases com
 
 \subsection{Geração de Código Objeto e Mapeamento de Arquitetura}
 
-Os conceitos, desafios e estratégias referentes à fase de geração de código objeto e mapeamento de arquitetura, descritos nesta seção, fundamentam-se nas obras de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
+Os conceitos, desafios e estratégias referentes à fase de geração de código objeto e mapeamento de arquitetura, descritos nesta seção, fundamentam-se nas obras de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{appel2002}, \citeonline{muchnick1997} e \citeonline{price2001}.
 
 A fase de geração de código objeto (ou geração de código de máquina) constitui a etapa final do processo de compilação, englobando as atividades finais do \textit{back-end}. O principal objetivo desta fase é mapear a representação intermediária otimizada para a linguagem nativa da máquina alvo, garantindo que o código gerado seja logicamente correto, faça uso efetivo dos recursos de \textit{hardware} disponíveis e execute de forma altamente eficiente.
 
@@ -190,6 +190,15 @@ Um dos maiores desafios enfrentados na geração de código objeto advém da div
 Para transpor essa barreira e evitar a necessidade de se construir um compilador inteiramente novo para cada arquitetura de \textit{hardware} existente, os compiladores modernos adotam o princípio da \textit{retargetabilidade} (capacidade de redirecionamento). Essa estratégia é viabilizada pelo uso do código intermediário: o \textit{front-end} atua de forma independente de máquina para gerar a representação intermediária, permitindo que a adaptação para um novo computador exija apenas a reescrita ou a substituição do módulo gerador de código (\textit{back-end}).
 
 O processo de geração de código específico para uma máquina baseia-se fortemente em duas atividades interligadas: a seleção de instruções e a alocação de registradores. A seleção de instruções atua como um reconhecedor de padrões que analisa a árvore ou a sequência linear do código intermediário e seleciona a sequência exata de operações na ISA do processador capaz de implementar aquele comportamento com o menor custo de execução possível. Em paralelo, a alocação de registradores gerencia o escasso conjunto de registradores físicos da Unidade Central de Processamento (UCP), decidindo quais valores em tempo de execução serão mantidos nestes componentes de altíssima velocidade e quais precisarão ser transferidos para a memória principal.
+
+% -------------------------------------------------------------------------------------------------------------
+\subsection{TypeScript como Linguagem de Implementação}
+
+Além das fases conceituais do compilador, a escolha da linguagem de implementação influencia diretamente a organização, a testabilidade e a segurança das estruturas internas manipuladas durante a tradução. Neste trabalho, o núcleo do interpretador foi implementado em TypeScript, linguagem mantida pela Microsoft que adiciona tipos opcionais ao JavaScript e gera, como saída, código JavaScript compatível com diferentes ambientes de execução \cite{microsofttypescript2026}.
+
+Essa característica é relevante para a construção de ferramentas de compilação em ambiente web, pois permite que o mesmo núcleo de análise seja compartilhado entre navegador e servidor. No contexto deste projeto, estruturas como \textit{tokens}, configurações léxicas, nós lógicos da gramática e instruções intermediárias podem ser modeladas com tipos explícitos durante o desenvolvimento, reduzindo inconsistências entre as fases do compilador e favorecendo a manutenção incremental do sistema.
+
+Do ponto de vista teórico, essa decisão dialoga com a importância atribuída aos sistemas de tipos na detecção antecipada de erros e na documentação estrutural dos programas. Embora a tipagem do TypeScript seja apagada na execução JavaScript, seu uso em tempo de desenvolvimento contribui para a validação estática das interfaces internas do compilador, aproximando a implementação prática dos princípios de verificação de tipos discutidos por \citeonline{aho1995}, \citeonline{cooper2012} e \citeonline{sebesta2018}.
 
 % -------------------------------------------------------------------------------------------------------------
 \subsection{Engenharia de Software}
@@ -367,5 +376,4 @@ Ao permitir que o aluno personalize as palavras-chave, os comandos e as regras d
 
 
 \label{sec:trabalhos-relacionados}
-
 
