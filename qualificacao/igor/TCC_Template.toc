@@ -48,14 +48,14 @@
 \contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{53}{section.210}%
 \contentsline {subsection}{\numberline {{4.8}.1}Página Inicial e Identidade Visual}{53}{subsection.211}%
 \contentsline {subsection}{\numberline {{4.8}.2}Painel do Aluno}{54}{subsection.213}%
-\contentsline {subsection}{\numberline {{4.8}.3}Painel do Professor}{54}{subsection.216}%
-\contentsline {subsection}{\numberline {{4.8}.4}Fluxo de Personalização da Linguagem Dinâmica}{64}{subsection.224}%
-\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{70}{section.231}%
+\contentsline {subsection}{\numberline {{4.8}.3}Painel do Professor}{56}{subsection.217}%
+\contentsline {subsection}{\numberline {{4.8}.4}Fluxo de Personalização da Linguagem Dinâmica}{62}{subsection.226}%
+\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{67}{section.233}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{71}{chapter*.233}%
+\contentsline {chapter}{REFERÊNCIAS}{68}{chapter*.235}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{73}{appendix.234}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{73}{section.235}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{73}{section.236}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{73}{subsection.237}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{74}{subsection.238}%
+\contentsline {appendix}{\chapternumberline {A}PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{70}{appendix.236}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{70}{section.237}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{70}{section.238}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{70}{subsection.239}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{71}{subsection.240}%

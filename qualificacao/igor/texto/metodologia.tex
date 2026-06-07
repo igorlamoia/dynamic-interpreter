@@ -286,7 +286,7 @@ Com o intuito de tornar tangíveis as decisões arquiteturais, os \textit{contex
 
 A página inicial materializa a identidade visual da plataforma e funciona como porta de entrada para os fluxos de autenticação, navegação e divulgação dos recursos disponíveis. A composição segue o sistema de temas claro e escuro discutido na Seção~\ref{sec:acessibilidade-responsividade}, com troca controlada pelo \texttt{ThemeContext}, e foi modelada com componentes da biblioteca \textit{shadcn/ui} para garantir consistência tipográfica, contraste adequado e respeito às diretrizes de acessibilidade WAI-ARIA. As Figuras~\ref{fig:home-light} e \ref{fig:home-dark} apresentam, lado a lado, as duas variações de tema, evidenciando o cuidado com a paridade visual entre as versões clara e escura.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -308,6 +308,8 @@ A página inicial materializa a identidade visual da plataforma e funciona como 
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
+\FloatBarrier
+
 \subsection{Painel do Aluno}
 
 O painel do aluno consolida, em uma única tela, todas as turmas em que o estudante está matriculado, as listas de exercícios pendentes e o histórico recente de submissões. A tela foi modelada para reduzir o número de cliques necessários até o exercício seguinte, oferecendo cartões interativos que conduzem o aluno diretamente à composição da IDE com a linguagem dinâmica já configurada pelo professor. A Figura~\ref{fig:painel-aluno} ilustra a disposição geral desse painel.
@@ -322,7 +324,7 @@ O painel do aluno consolida, em uma única tela, todas as turmas em que o estuda
 
 Ao selecionar uma turma específica, o aluno é conduzido à tela de detalhamento, na qual visualiza informações da disciplina, listas publicadas pelo professor e seu progresso individual em cada exercício. A Figura~\ref{fig:aluno-turma} apresenta essa visão, enquanto a Figura~\ref{fig:aluno-listas} detalha a estrutura interna de uma lista de exercícios, na qual cada item exibe o respectivo estado (não iniciado, em andamento ou submetido) e a configuração da linguagem dinâmica vinculada ao enunciado.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -331,7 +333,9 @@ Ao selecionar uma turma específica, o aluno é conduzido à tela de detalhament
         \label{fig:aluno-turma}
     \end{subfigure}
 
-    \vspace{0.8em}
+\end{figure}
+
+\begin{figure}[h]\ContinuedFloat
 
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -343,6 +347,8 @@ Ao selecionar uma turma específica, o aluno é conduzido à tela de detalhament
     \label{fig:aluno-fluxo}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
 
 \subsection{Painel do Professor}
 
@@ -356,7 +362,7 @@ O painel do professor segue a mesma metáfora de organização do painel do alun
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -365,8 +371,10 @@ O painel do professor segue a mesma metáfora de organização do painel do alun
         \label{fig:professor-turma}
     \end{subfigure}
 
-    \vspace{0.8em}
+\end{figure}
 
+\begin{figure}[h]\ContinuedFloat
+\centering
     \begin{subfigure}{0.9\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Professor/listas_turma.png}
@@ -378,11 +386,13 @@ O painel do professor segue a mesma metáfora de organização do painel do alun
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
+\FloatBarrier
+
 \subsubsection*{Gerenciamento de Listas e Exercícios}
 
 A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas que isolam cada operação em um fluxo independente. A Figura~\ref{fig:professor-listas-fluxo} reúne, em uma única composição, as quatro etapas centrais desse processo: a visualização das listas existentes, a configuração dos parâmetros gerais da lista (título, descrição e prazo), a vinculação de exercícios à lista por meio do utilitário de busca e seleção, e a publicação da lista para a turma escolhida.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
 
     \begin{subfigure}{0.9\textwidth}
@@ -431,7 +441,7 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
 A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, ilustrado pela Figura~\ref{fig:professor-exercicios-fluxo}. A tela de listagem permite a busca, a filtragem e a ordenação dos enunciados; a tela de criação centraliza, em um único formulário, a descrição do problema, os casos de teste com entradas e saídas esperadas e a vinculação a uma imagem de linguagem que delimita o vocabulário disponível ao aluno; a tela de detalhamento mostra a composição final do exercício; e a tela de submissões consolida todas as resoluções enviadas pelos alunos, com os respectivos vereditos do subsistema de avaliação automatizada discutido na Seção~\ref{sec:sistema-correcao}.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -480,7 +490,7 @@ A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, il
 
 A funcionalidade central da plataforma, que corresponde à personalização dinâmica do vocabulário e das regras estruturais da linguagem, foi materializada em um assistente progressivo composto por seis etapas sequenciais. Esse \textit{wizard}, discutido na Seção~\ref{sec:customizacao-dinamica}, conduz o usuário por escolhas independentes, validadas isoladamente, com geração de \textit{preview} em tempo real do código resultante. As figuras a seguir documentam, em ordem, cada uma das etapas efetivamente implementadas.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -497,11 +507,16 @@ A funcionalidade central da plataforma, que corresponde à personalização din�
         \caption{Etapa 2: configuração das palavras-chave de tipos primitivos.}
         \label{fig:etapa2}
     \end{subfigure}
+      \caption{Etapas 1 e 2 do assistente de personalização da linguagem dinâmica.}
+      \label{fig:etapas-1-2}
+      \legend{Fonte: elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
 
 A terceira etapa concentra-se na personalização das palavras-chave de controle de fluxo, oferecendo ao usuário a possibilidade de redefinir comandos como \texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{break}, \texttt{continue} e \texttt{return}. A Figura~\ref{fig:etapas-3} apresenta as duas variações dessa etapa, contemplando a configuração das palavras-chave básicas e a configuração estendida com construtores como \texttt{switch} e \texttt{case}.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \centering
@@ -522,6 +537,8 @@ A terceira etapa concentra-se na personalização das palavras-chave de controle
     \label{fig:etapas-3}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
 
 A quarta etapa habilita a substituição de operadores lógicos e relacionais por palavras de uso natural, em consonância com os achados empíricos de \citeonline{stefik2013} sobre o impacto de símbolos obscuros na carga cognitiva inicial. A Figura~\ref{fig:etapas-4} ilustra as duas variações dessa etapa, contemplando, primeiro, a definição de operadores lógicos como \texttt{e}, \texttt{ou} e \texttt{não} e, em seguida, a redefinição dos operadores relacionais por meio do mesmo princípio de palavras significativas.
 
@@ -546,6 +563,8 @@ A quarta etapa habilita a substituição de operadores lógicos e relacionais po
     \label{fig:etapas-4}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
+
+\FloatBarrier
 
 A quinta etapa, apresentada na Figura~\ref{fig:etapa5}, é responsável pela configuração dos literais booleanos, oferecendo ao usuário a oportunidade de adotar termos como \texttt{verdadeiro} e \texttt{falso} em substituição aos canônicos \texttt{true} e \texttt{false}. A finalização do assistente ocorre na etapa seis, na qual o usuário define os delimitadores de bloco (chaves, palavras-chave ou indentação) e o terminador de instrução, conforme ilustrado pela Figura~\ref{fig:etapas-6}, que reúne as três variações dessa etapa: configuração dos delimitadores, do terminador e da pré-visualização consolidada da linguagem personalizada.
 
