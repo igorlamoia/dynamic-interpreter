@@ -4,7 +4,11 @@ Este capítulo apresenta o referencial teórico que fundamenta o desenvolvimento
 \section{Compiladores}
 \label{sec:compiladores}
 
-Esta seção usa como base a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de Ciência da Computação como uma das principais referências teóricas no projeto de compiladores. As definições de análise, síntese e estrutura do processo de compilação apresentadas a seguir seguem as ideias desses autores.
+Esta seção percorre os fundamentos de compiladores que embasam o núcleo de tradução implementado neste trabalho, desde a definição de compilador e de suas fases até a geração de código intermediário.
+
+\subsection{Compiladores e seus Fundamentos}
+
+Esta subseção usa como base a obra clássica de \citeonline{aho1995}, amplamente reconhecida na literatura de Ciência da Computação como uma das principais referências teóricas no projeto de compiladores. As definições de análise, síntese e estrutura do processo de compilação apresentadas a seguir seguem as ideias desses autores.
 
 Em termos práticos, um compilador é um programa cuja função é ler um código-fonte, escrito em uma linguagem específica, e traduzi-lo para um programa equivalente em uma linguagem-alvo. No modelo moderno de compilação, esse processo é estruturado em duas etapas principais e complementares: a análise e a síntese. A etapa de análise, comumente chamada de \textit{front-end}, divide o programa original em suas partes e gera uma representação intermediária do código. Por outro lado, a etapa de síntese, conhecida como \textit{back-end}, utiliza essa representação intermediária para construir e formatar o programa final desejado \cite{aho1995,cooper2012}.
 
@@ -82,7 +86,7 @@ A implementação baseada em autômatos garante que a análise léxica seja efic
 
 % ------------------------------------------------------------------------------------------------------------
 
-\subsection{Métodos de Análise Sintática: Abordagens Descendente e Ascendente}
+\subsection{Estratégias de Análise Sintática: \textit{Top-Down} e \textit{Bottom-Up}}
 
 Os conceitos e definições apresentados a seguir têm como base teórica os trabalhos de \citeonline{aho1995}, \citeonline{cooper2012}, \citeonline{price2001} e \citeonline{nystrom2021}.
 
@@ -202,7 +206,9 @@ A síntese do código para uma máquina específica fundamenta-se em duas ativid
 \end{itemize}
 
 % -----------------------------------------------------------------------------------------------------------
-\subsection{Execução de Código de Máquina}
+\subsection{Engenharia de Software}
+
+\noindent\textbf{Execução de Código de Máquina}
 
 A dinâmica operacional do código de máquina e a simbiose entre o \textit{hardware} e o sistema operacional, discutidas a seguir, encontram seu fundamento teórico nas obras de \citeonline{cooper2012}, \citeonline{nystrom2021} e \citeonline{price2001}.
 
@@ -215,7 +221,7 @@ A partir desse momento, o comando da execução passa à Unidade Central de Proc
 A execução ocorre por meio de um ciclo mecânico e ininterrupto de busca e execução. O processador percorre a fita de instruções, decodifica o código de operação (\textit{opcode}) de cada entrada para extrair seu significado semântico e, em seguida, executa a tarefa correspondente. Nesse ecossistema de baixo nível, a complexidade dos laços de repetição e desvios condicionais das linguagens de alto nível é simplificada drasticamente. O controle do fluxo é resolvido exclusivamente através de operações de salto (\textit{jumps} ou \textit{branches}), que alteram o fluxo ao escrever um novo endereço de memória diretamente no Contador de Programa, desviando o "foco" da UCP de um ponto do binário para outro \cite{cooper2012,nystrom2021}.
 
 %----------------------------------------------------------------------------------------------------------
-\subsection{Gestão de Tarefas e Metodologias Ágeis}
+\subsubsection{Gestão de Tarefas e Metodologias Ágeis}
 
 Para a fundamentação teórica acerca da gestão de escopo e da adoção de metodologias ágeis neste trabalho, esta subseção baseia-se principalmente nas diretrizes do \textit{framework} Scrum detalhadas por \citeonline{sabbagh2014}, bem como nos princípios de desenvolvimento iterativo e incremental discutidos por \citeonline{agile2012}. Para manter a fluidez da leitura, os conceitos de planejamento, empirismo e gerenciamento de tarefas apresentados a seguir refletem a consolidação das práticas e das ideias desses autores.
 
@@ -225,32 +231,25 @@ Neste contexto de ambientes complexos e mutáveis, o Scrum destaca-se como um \t
 
 Para viabilizar essa execução com excelência, o desenvolvimento é fatiado em ciclos curtos e de duração fixa, chamados de \textit{Sprints}. A cada início de ciclo, as tarefas mais prioritárias são extraídas do topo do \textit{Product Backlog} e detalhadas de forma atômica no \textit{Sprint Backlog}. Essa divisão iterativa e atômica do trabalho permite que uma equipe multidisciplinar e auto-organizada foque exclusivamente em metas de negócio de curto prazo. Consequentemente, o projeto avança passo a passo, mitigando os riscos tecnológicos, abraçando a mudança como uma vantagem competitiva e permitindo a reavaliação contínua das prioridades do software \cite{agile2012,sabbagh2014}.
 
+\subsubsection{Testes Automatizados e \textit{Test-Driven Development} (TDD)}
 
-\subsection{O Framework Next.js e sua Arquitetura}
+Para a fundamentação da estratégia de testes e da adoção do \textit{Test-Driven Development} (TDD), esta subseção apoia-se nos princípios de qualidade e profissionalismo discutidos por \citeonline{martin_coder}, na estruturação arquitetural de testes defendida por \citeonline{martin_clean} e na literatura específica de testes e \textit{design} de software de \citeonline{aniche2012} e \citeonline{silveira2012}.
 
-Para a fundamentação teórica acerca dos conceitos arquiteturais, da evolução do sistema de roteamento e das estratégias de renderização do \textit{framework} Next.js, os parágrafos a seguir foram baseados nas diretrizes e documentações técnicas apresentadas por \citeonline{ziemann2025}, \citeonline{lai2025}, \citeonline{makerkit2026} e \citeonline{vercel2024}.
+A garantia da qualidade de um software exige validação contínua de seus comportamentos. Em projetos modernos, a automação de testes reduz a dependência de verificação manual e fornece uma rede de segurança para alterações, refatorações e evolução do código. Essa prevenção contra a quebra de comportamentos já consolidados é conhecida como teste de regressão; além de validar funcionalidades, os testes automatizados funcionam como documentação executável das regras de negócio do sistema \cite{aniche2012,silveira2012}.
 
-O Next.js é um \textit{framework} React voltado para a construção de aplicações web \textit{full-stack}, que facilita o desenvolvimento ao configurar internamente ferramentas de baixo nível, como empacotadores e compiladores, permitindo que o foco seja direcionado exclusivamente à construção do produto. A evolução de sua arquitetura ficou marcada pela transição do modelo tradicional de rotas, conhecido como \textit{Pages Router}, para o \textit{App Router}. Esse novo modelo adota uma arquitetura avançada centrada em \textit{React Server Components}, aprimorando o processo de busca de dados e permitindo o uso nativo de \textit{layouts} aninhados por meio de uma estrutura rigorosa de arquivos, utilizando convenções como \texttt{layout.tsx} e \texttt{loading.tsx} \cite{ziemann2025,vercel2024}.
+Nesse contexto, o TDD inverte o ciclo tradicional de implementação, exigindo que o desenvolvedor escreva um teste automatizado antes da funcionalidade. O ciclo vermelho-verde-refatora consiste em criar primeiro um teste que falha, escrever o código mínimo para fazê-lo passar e, por fim, refatorar a solução mantendo o comportamento validado \cite{aniche2012,martin_coder}.
 
-A adoção de componentes de servidor transforma a forma de renderização, pois permite que o código seja executado exclusivamente no servidor e nunca seja enviado ao cliente, o que elimina a sobrecarga de arquivos JavaScript redundantes ao navegador. Integrado a essa estrutura arquitetural, o \textit{framework} disponibiliza o \textit{streaming}, uma técnica muitas vezes apoiada pelo \textit{React Suspense}, que permite enviar partes da interface gráfica progressivamente para o cliente à medida que os dados ficam prontos, reduzindo o tempo de espera inicial percebido pelo usuário \cite{lai2025,vercel2024}.
+Mais do que uma técnica de verificação, o TDD também influencia o \textit{design} de software. Ao escrever o teste primeiro, o desenvolvedor precisa pensar na interface pública, nas dependências e na responsabilidade de cada componente; dificuldades excessivas na escrita dos testes podem indicar acoplamento elevado, baixa coesão ou problemas de arquitetura \cite{martin_clean,aniche2012}.
 
-Outra característica de destaque, consolidada nas versões mais recentes, é o uso de \textit{Server Actions}. Tais ações consistem em funções assíncronas executadas diretamente no servidor que podem ser invocadas a partir de componentes interativos no cliente. Essa abordagem simplifica mutações de dados complexas, como submissões de formulários e interações com o banco de dados, eliminando a necessidade de criar arquivos manuais para \textit{endpoints} de API \cite{makerkit2026,vercel2024}.
+\subsubsection{Arquitetura Limpa e Separação de Responsabilidades}
 
-Por fim, para a otimização em ambiente de produção, a ferramenta não apenas suporta múltiplas estratégias de renderização, como a estática e a dinâmica, mas também possibilita a escolha do ambiente de execução (\textit{runtime}) mais adequado para cada rota. O desenvolvedor pode optar pelo \textit{Node.js Runtime} padrão, que possui acesso completo a todas as APIs e ao ecossistema do Node.js, ou pelo \textit{Edge Runtime}, que opera com base em APIs da Web e é projetado para latência mínima e inicialização rápida ao lidar com lógicas de resposta simples \cite{makerkit2026,vercel2024}.
+Para a fundamentação das decisões arquiteturais e dos padrões de projeto adotados neste trabalho, esta subseção baseia-se nos preceitos de Arquitetura Limpa propostos por \citeonline{martin_clean} e nas diretrizes de \textit{design} de software estruturadas por \citeonline{silveira2012}.
 
-\subsection{Design de Experiência do Usuário (UX) e Interface do Usuário (UI)}
+O projeto arquitetural de um sistema deve separar responsabilidades em camadas com papéis independentes e bem definidos. A interface de usuário no \textit{front-end} concentra-se na experiência de uso e na integração visual, enquanto regras de negócio, persistência e serviços de apoio devem permanecer desacoplados de detalhes periféricos de entrega. Essa separação reduz dependências indevidas e facilita testes, manutenção e evolução do software \cite{martin_clean,silveira2012}.
 
-Para a fundamentação teórica acerca dos conceitos, diferenças e aplicabilidades do \textit{User Experience} (UX) e \textit{User Interface} (UI), os parágrafos a seguir foram baseados em \citeonline{seyffert2026}, \citeonline{yablonski2020}, \citeonline{lima2024} e \citeonline{raposo2012}.
+No contexto da plataforma, a separação entre elementos de interface, regras de customização da linguagem, execução do código e persistência de dados contribui para que cada parte possa evoluir sem comprometer as demais. Essa organização também favorece o uso de padrões de projeto e abstrações voltadas à redução de acoplamento entre os módulos \cite{martin_clean}.
 
-O design de produtos digitais modernos compreende duas disciplinas fundamentais e complementares: a Experiência do Usuário (UX) e a Interface do Usuário (UI). A UX refere-se à percepção, às emoções e às respostas de um indivíduo ao interagir com um sistema ao longo de toda a sua jornada. Essa área vai muito além da usabilidade, englobando a compreensão profunda do comportamento, das necessidades e das frustrações do público-alvo. Para garantir uma boa experiência, a organização estrutural é essencial, sendo a Arquitetura da Informação a especialidade responsável por moldar, gerenciar e dispor os conteúdos de modo a tornar a navegação fluida, acessível e agradável \cite{seyffert2026,lima2024,raposo2012}.
-
-Por outro lado, a UI diz respeito à camada visual e interativa com a qual o usuário interage diretamente. Isso inclui a definição rigorosa de leiautes, botões, tipografia, cores e componentes visuais. Mais do que atuar apenas na estética, uma interface bem projetada deve garantir clareza e consistência de uso. Uma organização confusa no aspecto visual pode comprometer toda a experiência global e levar ao abandono do sistema, independentemente de quão robusta seja a sua funcionalidade em \textit{back-end} \cite{seyffert2026,lima2024}.
-
-A relação entre essas duas áreas é de forte complementaridade, na qual a UX estrutura a lógica e a solução do problema, enquanto a UI materializa essas soluções em uma interface tangível e eficiente. O desenvolvimento adequado em engenharia de software dita que a estruturação de UX anteceda a de UI; ou seja, define-se primeiramente quais problemas serão resolvidos e como os fluxos de navegação funcionarão, para somente então aplicar o design visual \cite{seyffert2026,raposo2012}.
-
-Essa intersecção técnica também é fortemente influenciada por aspectos cognitivos e leis da psicologia. O chamado ``efeito estética-usabilidade'', por exemplo, demonstra que os usuários tendem a perceber um design esteticamente agradável, isto é, uma boa UI, como sendo inerentemente mais utilizável e eficiente na resolução de suas tarefas. Para avaliar e garantir a eficácia dessas interfaces, métodos de inspeção como a avaliação heurística são comumente aplicados. Trata-se de uma análise guiada por heurísticas (princípios gerais de bom design) para certificar itens como a visibilidade do estado do sistema e a prevenção de erros, maximizando a usabilidade final do artefato \cite{yablonski2020,raposo2012}.
-
-\subsection{Qualidade de Código e \textit{Clean Code}}
+\subsubsection{Qualidade de Código e \textit{Clean Code}}
 
 Para o detalhamento conceitual e a definição das práticas de \textit{Clean Code} (Código Limpo) descritas nesta subseção, este trabalho fundamenta-se nas consolidadas diretrizes de \citeonline{martin_clean_code} e na literatura de apoio sobre metodologias ágeis abordada por \citeonline{agile2012}. Para garantir a fluidez da leitura, toda a argumentação estrutural, as definições de qualidade e as regras de formatação apresentadas a seguir derivam da visão e das heurísticas desses autores.
 
@@ -270,6 +269,30 @@ Dentre as diretrizes estruturais básicas e inegociáveis para a manutenção de
     \item \textbf{Eliminação de Duplicidade e Refatoração contínua:} A repetição de código é o grande inimigo de um sistema bem desenvolvido, pois representa trabalho, risco e complexidade desnecessária. Deve-se melhorar o design do código de forma contínua, aplicando refatorações que tornem o sistema mais enxuto e compreensível, sem alterar o seu comportamento externo \cite{martin_clean_code,agile2012}.
 \end{itemize}
 
+\subsubsection{O Framework Next.js e sua Arquitetura}
+
+Para a fundamentação teórica acerca dos conceitos arquiteturais, da evolução do sistema de roteamento e das estratégias de renderização do \textit{framework} Next.js, os parágrafos a seguir foram baseados nas diretrizes e documentações técnicas apresentadas por \citeonline{ziemann2025}, \citeonline{lai2025}, \citeonline{makerkit2026} e \citeonline{vercel2024}.
+
+O Next.js é um \textit{framework} React voltado para a construção de aplicações web \textit{full-stack}, que facilita o desenvolvimento ao configurar internamente ferramentas de baixo nível, como empacotadores e compiladores, permitindo que o foco seja direcionado exclusivamente à construção do produto. A evolução de sua arquitetura ficou marcada pela transição do modelo tradicional de rotas, conhecido como \textit{Pages Router}, para o \textit{App Router}. Esse novo modelo adota uma arquitetura avançada centrada em \textit{React Server Components}, aprimorando o processo de busca de dados e permitindo o uso nativo de \textit{layouts} aninhados por meio de uma estrutura rigorosa de arquivos, utilizando convenções como \texttt{layout.tsx} e \texttt{loading.tsx} \cite{ziemann2025,vercel2024}.
+
+A adoção de componentes de servidor transforma a forma de renderização, pois permite que o código seja executado exclusivamente no servidor e nunca seja enviado ao cliente, o que elimina a sobrecarga de arquivos JavaScript redundantes ao navegador. Integrado a essa estrutura arquitetural, o \textit{framework} disponibiliza o \textit{streaming}, uma técnica muitas vezes apoiada pelo \textit{React Suspense}, que permite enviar partes da interface gráfica progressivamente para o cliente à medida que os dados ficam prontos, reduzindo o tempo de espera inicial percebido pelo usuário \cite{lai2025,vercel2024}.
+
+Outra característica de destaque, consolidada nas versões mais recentes, é o uso de \textit{Server Actions}. Tais ações consistem em funções assíncronas executadas diretamente no servidor que podem ser invocadas a partir de componentes interativos no cliente. Essa abordagem simplifica mutações de dados complexas, como submissões de formulários e interações com o banco de dados, eliminando a necessidade de criar arquivos manuais para \textit{endpoints} de API \cite{makerkit2026,vercel2024}.
+
+Por fim, para a otimização em ambiente de produção, a ferramenta não apenas suporta múltiplas estratégias de renderização, como a estática e a dinâmica, mas também possibilita a escolha do ambiente de execução (\textit{runtime}) mais adequado para cada rota. O desenvolvedor pode optar pelo \textit{Node.js Runtime} padrão, que possui acesso completo a todas as APIs e ao ecossistema do Node.js, ou pelo \textit{Edge Runtime}, que opera com base em APIs da Web e é projetado para latência mínima e inicialização rápida ao lidar com lógicas de resposta simples \cite{makerkit2026,vercel2024}.
+
+\subsubsection{Design de Experiência do Usuário (UX) e Interface do Usuário (UI)}
+
+Para a fundamentação teórica acerca dos conceitos, diferenças e aplicabilidades do \textit{User Experience} (UX) e \textit{User Interface} (UI), os parágrafos a seguir foram baseados em \citeonline{seyffert2026}, \citeonline{yablonski2020}, \citeonline{lima2024} e \citeonline{raposo2012}.
+
+O design de produtos digitais modernos compreende duas disciplinas fundamentais e complementares: a Experiência do Usuário (UX) e a Interface do Usuário (UI). A UX refere-se à percepção, às emoções e às respostas de um indivíduo ao interagir com um sistema ao longo de toda a sua jornada. Essa área vai muito além da usabilidade, englobando a compreensão profunda do comportamento, das necessidades e das frustrações do público-alvo. Para garantir uma boa experiência, a organização estrutural é essencial, sendo a Arquitetura da Informação a especialidade responsável por moldar, gerenciar e dispor os conteúdos de modo a tornar a navegação fluida, acessível e agradável \cite{seyffert2026,lima2024,raposo2012}.
+
+Por outro lado, a UI diz respeito à camada visual e interativa com a qual o usuário interage diretamente. Isso inclui a definição rigorosa de leiautes, botões, tipografia, cores e componentes visuais. Mais do que atuar apenas na estética, uma interface bem projetada deve garantir clareza e consistência de uso. Uma organização confusa no aspecto visual pode comprometer toda a experiência global e levar ao abandono do sistema, independentemente de quão robusta seja a sua funcionalidade em \textit{back-end} \cite{seyffert2026,lima2024}.
+
+A relação entre essas duas áreas é de forte complementaridade, na qual a UX estrutura a lógica e a solução do problema, enquanto a UI materializa essas soluções em uma interface tangível e eficiente. O desenvolvimento adequado em engenharia de software dita que a estruturação de UX anteceda a de UI; ou seja, define-se primeiramente quais problemas serão resolvidos e como os fluxos de navegação funcionarão, para somente então aplicar o design visual \cite{seyffert2026,raposo2012}.
+
+Essa intersecção técnica também é fortemente influenciada por aspectos cognitivos e leis da psicologia. O chamado ``efeito estética-usabilidade'', por exemplo, demonstra que os usuários tendem a perceber um design esteticamente agradável, isto é, uma boa UI, como sendo inerentemente mais utilizável e eficiente na resolução de suas tarefas. Para avaliar e garantir a eficácia dessas interfaces, métodos de inspeção como a avaliação heurística são comumente aplicados. Trata-se de uma análise guiada por heurísticas (princípios gerais de bom design) para certificar itens como a visibilidade do estado do sistema e a prevenção de erros, maximizando a usabilidade final do artefato \cite{yablonski2020,raposo2012}.
+
 \section{Softwares Educativos e Tecnologias de Apoio à Aprendizagem}
 
 Para a fundamentação conceitual acerca do uso de tecnologias no ambiente escolar abordada nesta subseção, este trabalho apoia-se nas perspectivas sobre plataformas educativas delineadas por \citeonline{benedetti2025} e nas diretrizes de inovação em tecnologia educacional da \citeonline{mindmakers2025}. Com o intuito de garantir a fluidez da leitura, os conceitos de mediação tecnológica, personalização do ensino e sistemas de apoio apresentados a seguir refletem a consolidação das ideias desses autores.
@@ -288,7 +311,7 @@ Quando projetada com esse foco pedagógico, uma plataforma educativa bem estrutu
 
 
 
-\section{Trabalhos relacionados}
+\section{Trabalhos Relacionados}
 \label{sec:trabalhos-relacionados}
 
 Esta seção tem como finalidade situar a plataforma desenvolvida neste trabalho no conjunto de soluções tecnológicas voltadas ao ensino introdutório de programação. Embora o objetivo do projeto seja apoiar a aprendizagem de programação, e não o ensino de construção de compiladores, sua própria natureza, a de uma IDE acoplada a um interpretador de gramática configurável, posiciona a proposta na fronteira entre dois universos de ferramentas: de um lado, os ambientes voltados à iniciação em programação; de outro, os projetos didáticos de construção de compiladores e de analisadores léxicos e sintáticos, cujas decisões técnicas e pedagógicas são pertinentes por dialogarem diretamente com o núcleo de tradução que sustenta esta plataforma. Por essa razão, são examinadas cinco iniciativas representativas do estado da arte abrangendo ambos os grupos, observando, em cada uma delas, as escolhas de interface, os recursos pedagógicos e as estratégias de interação com o estudante. Ao final, apresenta-se uma análise comparativa que evidencia as lacunas restantes e o diferencial da abordagem proposta, que se situa justamente entre esses dois grupos.

@@ -111,8 +111,8 @@
 
 \orientador[Orientador]{Luís Augusto Mattos Mendes} %%Colocar o nome completo do orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
 \coorientador[Coorientador]{Eduardo Gabriel Reis Miranda} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
-\orientadorTitulo{Prof.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
-\coorientadorTitulo{Prof. Dsc.} %%Colocar a titulação do(a) co-orientador(a) dentro de chaves {}. Ex: Msc., Dr., Dra., etc.
+\orientadorTitulo{Prof.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Me., Dr., Dra., etc.
+\coorientadorTitulo{Prof. Dsc.} %%Colocar a titulação do(a) co-orientador(a) dentro de chaves {}. Ex: Me., Dr., Dra., etc.
 \siglaInstituicaoCoorientador{CEFET-MG} %% Alterar caso o coorientado não seja do CEFET-MG
 
 \instituicao{Centro Federal de Educação Tecnológica de Minas Gerais} %% Não alterar
@@ -131,7 +131,7 @@
 
 % Dados do Avaliador 1
 \avaliadorUm{Matheus Ávila Moreira de Paula} % Nome e sobrenome
-\titulacaoAvaliadorUm{Prof. Msc.} % Titulação
+\titulacaoAvaliadorUm{Prof. Me.} % Titulação
 \siglaInstituicaoAvaliadorUm{CEFET-MG} % Sigla da institução de ensino vinculado
 
 % Dados do Avaliador 2
@@ -162,7 +162,7 @@
 \printacapa
 
 %% Folha de rosto (Não alterar)
-%\printafolhaderosto
+\printafolhaderosto{\folhaderostonome}
 
 %% O aluno deverá solicitar a ficha na página da Biblioteca de Leopoldina.
 %% Ficha catalográfica. AO IMPRIMIR, DEIXAR NO VERSO DA FOLHA DE ROSTO. (Não alterar)
@@ -170,7 +170,7 @@
 
 
 %% Folha de Aprovação. (Não alterar)
-%\printafolhaaprov
+\printafolhaaprov{\folhadeaprovacaonome}
 
 
 %% Dedicatória. ELEMENTO OPCIONAL. Caso desejar não usar, acrescentar % antes de todas as linhas até \end{dedicatoria}
@@ -292,7 +292,7 @@ Teaching programming presents several challenges, partly due to the use of langu
 \chapter{INTRODUÇÃO}
 \input{texto/introducao}
 
-\chapter{REFERENCIAL TEÓRICO} \label{cap:referencial}
+\chapter{REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS} \label{cap:referencial}
 \input{texto/referencial}
 
 \chapter{PROPOSTA} \label{cap:proposta}

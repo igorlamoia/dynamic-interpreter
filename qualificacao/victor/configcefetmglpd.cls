@@ -209,6 +209,7 @@
       \captionsetup{
                     labelseparator=dash,
                     }
+      \providecommand{\configurecaptions}{}
       \renewcommand{\configurecaptions}{
                   \captionsetup{
                                 singlelinecheck=false}}
@@ -1100,5 +1101,4 @@ Leopoldina \printaaprovacaoDia ~de \printaaprovacaoMes ~de \printaaprovacaoAno
 
 % ---
 % ---  
-
 
