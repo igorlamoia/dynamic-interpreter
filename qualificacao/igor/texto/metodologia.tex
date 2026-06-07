@@ -18,7 +18,7 @@ O fluxo geral de comunicação entre as camadas, ilustrado pela Figura \ref{fig:
     \centering
     \caption{Arquitetura geral da plataforma e fluxos de comunicação entre as camadas.}
     \label{fig:arquitetura-plataforma}
-    % \includegraphics[width=0.95\textwidth]{Figuras/arquitetura-plataforma.png}
+    \includegraphics[width=0.95\textwidth]{Figuras/arquitetura-plataforma.jpeg}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -282,7 +282,7 @@ A autenticação de usuários foi modelada por um fluxo simplificado, sustentado
 
 Com o intuito de tornar tangíveis as decisões arquiteturais, os \textit{contexts} de estado, os \textit{hooks} e os componentes discutidos ao longo das seções anteriores, esta seção apresenta as principais telas efetivamente implementadas até o encerramento desta etapa do trabalho. A organização segue o fluxo natural de uso da plataforma: parte-se da identidade visual da página inicial, percorrem-se os painéis dos perfis de aluno e de professor e, por fim, ilustra-se o passo a passo de criação e personalização de uma linguagem dinâmica diretamente na IDE.
 
-\subsection{Página Inicial e Identidade Visual}
+\noindent\textbf{Página Inicial e Identidade Visual}
 
 A página inicial materializa a identidade visual da plataforma e funciona como porta de entrada para os fluxos de autenticação, navegação e divulgação dos recursos disponíveis. A composição segue o sistema de temas claro e escuro discutido na Seção~\ref{sec:acessibilidade-responsividade}, com troca controlada pelo \texttt{ThemeContext}, e foi modelada com componentes da biblioteca \textit{shadcn/ui} para garantir consistência tipográfica, contraste adequado e respeito às diretrizes de acessibilidade WAI-ARIA. As Figuras~\ref{fig:home-light} e \ref{fig:home-dark} apresentam, lado a lado, as duas variações de tema, evidenciando o cuidado com a paridade visual entre as versões clara e escura.
 
@@ -310,7 +310,7 @@ A página inicial materializa a identidade visual da plataforma e funciona como 
 
 \FloatBarrier
 
-\subsection{Painel do Aluno}
+\noindent\textbf{Painel do Aluno}
 
 O painel do aluno consolida, em uma única tela, todas as turmas em que o estudante está matriculado, as listas de exercícios pendentes e o histórico recente de submissões. A tela foi modelada para reduzir o número de cliques necessários até o exercício seguinte, oferecendo cartões interativos que conduzem o aluno diretamente à composição da IDE com a linguagem dinâmica já configurada pelo professor. A Figura~\ref{fig:painel-aluno} ilustra a disposição geral desse painel.
 
@@ -350,7 +350,7 @@ Ao selecionar uma turma específica, o aluno é conduzido à tela de detalhament
 
 \FloatBarrier
 
-\subsection{Painel do Professor}
+\noindent\textbf{Painel do Professor}
 
 O painel do professor segue a mesma metáfora de organização do painel do aluno, mas amplia o conjunto de ações disponíveis, incorporando criação e gestão de turmas, listas de exercícios e enunciados. A Figura~\ref{fig:painel-professor} apresenta a visão consolidada do professor, com acesso direto às turmas sob sua responsabilidade. Ao selecionar uma turma, são exibidas as listas associadas, conforme a Figura~\ref{fig:professor-turma}, e o conjunto de listas pode ser inspecionado em maior detalhe pela visão dedicada da Figura~\ref{fig:professor-listas-turma}.
 

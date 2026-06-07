@@ -9,8 +9,7 @@ Legenda de responsável:
 - 🟢 **EU** — posso aplicar diretamente no `.tex` (baixo risco).
 - 🟡 **EU + revisão** — aplico, mas precisa o autor conferir conteúdo/redação.
 - 🔵 **AUTOR** — exige decisão de conteúdo, ativo (imagem) ou argumentação.
-- ⚪ **DEFERIDO** — citações ao longo do texto (mesma política adotada no TCC do
-  Victor: "vamos resolver depois").
+- ⚪ **DEFERIDO** — item postergado por decisão do autor.
 
 ---
 
@@ -18,11 +17,9 @@ Legenda de responsável:
 
 > **STATUS (aplicado):** A1, A2, A3, A4, A5, A6, A8, A9, A10 ✅ concluídos.
 > A7 — já estava correto no fonte ("traduzi-lo", sem acento); nenhuma alteração necessária.
-> A11 (HTTP→HTTPS) — **não aplicado**: é uma *pergunta* do orientador, exige sua
-> decisão (em dev é HTTP; em produção, HTTPS). Mudar "HTTP" em massa quebraria
-> termos genéricos como "rotas HTTP". Decida o texto e eu ajusto.
-> A12 (título "APÊNDICE A") — **movido para a Frente B**: é formatação da classe
-> `.cls`, exige recompilação para validar.
+> A11 (HTTP→HTTPS) — ✅ **decidido: manter HTTP** (decisão do autor). Sem alteração.
+> A12 (título "APÊNDICE A") — ✅ aplicado: o título do apêndice foi explicitado
+> como "APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES".
 
 | # | Pág. | O que fazer | Onde |
 |---|------|-------------|------|
@@ -37,7 +34,7 @@ Legenda de responsável:
 | A9 | 38 | "a etapa coberta por este documento" → "**as etapas** cobertas..." (orientador inseriu "s") | `texto/metodologia.tex` |
 | A10 | 47 | Verificar terminologia: "registo/registo" → "**registro**"? | `texto/metodologia.tex` |
 | A11 | 49 | "HTTP" → verificar se deveria ser **HTTPS** | `texto/metodologia.tex` |
-| A12 | 64 | Ajuste do título do **APÊNDICE A** ("PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES") | `texto/apendice.tex` |
+| A12 | 64 | ✅ Ajuste do título do **APÊNDICE A** ("PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES") no título do capítulo | `texto/apendice.tex` |
 
 > ⚠️ Nota A2: a hifenização correta vem do babel-brazil (já carregado pela classe).
 > As quebras erradas costumam ser de palavras que o babel não conhece. O bloco
@@ -48,61 +45,91 @@ Legenda de responsável:
 ## CATEGORIA B — Estrutura e numeração (🟡 EU + revisão)
 
 > **STATUS:** B1, B2, B3, B7 ✅ aplicados (referencial).
-> B4, B5, B6, B8, B9 (reestruturação da §4.8 "Apresentação das Telas") — **deferidos
-> a pedido do autor**: é uma *sugestão* do orientador com marcações de numeração
-> contraditórias; o autor decidirá depois revisando o PDF.
-> A12 (título "APÊNDICE A") — **deferido ao autor**: formatação da classe `.cls`,
-> exige recompilar para validar.
+> B4, B5, B6, B8, B9 (reestruturação da §4.8 "Apresentação das Telas") — ✅ aplicados:
+> as subseções "Página Inicial", "Painel do Aluno" e "Painel do Professor" foram
+> fundidas em blocos textuais; o "Fluxo de Personalização" permanece como a subseção
+> numerada da seção.
+> A12 (título "APÊNDICE A") — ✅ aplicado no título do capítulo.
 
 | # | Pág. | O que fazer |
 |---|------|-------------|
 | B1 | 14 | **Inserir texto-âncora** no início do Cap. 2 apresentando o que será abordado (orientador removeu o texto genérico atual e pede um melhor). |
 | B2 | 20 | Remover subdivisão com título "**Tipos de Erros Semânticos**" → transformar em texto corrido encadeado. |
 | B3 | 22 | Remover subdivisão com título "**Método de Geração Dirigida pela Sintaxe**" → texto corrido. |
-| B4 | 54 | Remover seção "**.8 Página Inicial e Identidade Visual**" (evitar seção muito subdividida) → fundir no texto. |
-| B5 | 55 | Remover seção "**Painel do Aluno**" → fundir. |
-| B6 | 56 | Remover seção "**Painel do Professor**" → fundir. |
+| B4 | 54 | ✅ Remover seção "**.8 Página Inicial e Identidade Visual**" (evitar seção muito subdividida) → fundida no texto. |
+| B5 | 55 | ✅ Remover seção "**Painel do Aluno**" → fundida no texto. |
+| B6 | 56 | ✅ Remover seção "**Painel do Professor**" → fundida no texto. |
 | B7 | 18, 19 | Ajuste de numeração de lista (carets "I)", "II)"). |
-| B8 | 57 | Ajuste de numeração ("4.8.1 -" inserido pelo orientador). |
-| B9 | 58 | Consequência: se acatar B4-B6 e separação de figuras, a numeração muda — revisar refs cruzadas. |
+| B8 | 57 | ✅ Ajuste de numeração: o fluxo de personalização permanece como subseção numerada da seção de telas. |
+| B9 | 58 | ✅ Consequência de B4-B6: refs cruzadas preservadas, pois os labels das figuras não foram alterados. |
 
 ---
 
 ## CATEGORIA C — Figuras e layout de código (🔵 AUTOR + 🟡 EU parcial)
 
-> **STATUS (C4 — subfiguras):** ✅ aplicado. Todos os grupos de subfiguras viraram
-> empilhamento vertical em **largura total** (`subfigure{\textwidth}`), mantendo
-> rótulos e referências (`\ref`) atuais:
-> - Pares a/b: Fig. 4.2 (home), 4.4 (aluno), 4.6 (professor), Etapas iniciais,
->   Etapa 3, Etapa 4.
-> - 4 partes: Fig. 4.7 (listas) e 4.8 (exercícios) — empilhadas.
-> - 3 partes: Etapa 6 — empilhada.
+> **STATUS — ✅ CONCLUÍDA a reorganização das figuras de sessão.** Padrão final
+> adotado (em conjunto com o autor):
+> - Subfiguras a `0.9\textwidth` com `\includegraphics[width=\textwidth]`.
+> - Placement `[p]` (página dedicada) + `\FloatBarrier` após cada figura de sessão
+>   (9 barreiras) → impede o *float drift* (figura do aluno não vaza mais para a
+>   seção do professor).
+> - Sessões de 3–4 imagens divididas com `\ContinuedFloat` (4.7 e 4.8 em 2+2;
+>   Etapa 6 em 2+1), mantendo um único número de figura.
+> - `\usepackage{placeins}` adicionado ao preâmbulo (para o `\FloatBarrier`).
+> - Bug de compilação corrigido: a Fig. 4.4 (aluno) estava sem `\end{figure}`
+>   (aninhava as figuras → erro "Not in outer par mode"); a 4.7 estava quebrada em
+>   3 ambientes. Ambas remontadas. Ambientes balanceados (16 `figure`/23 `subfigure`).
+> - "Listing" não existe mais (C1 sem efeito): os blocos de código já são
+>   "Trecho de Código" (`lstlisting`).
 >
-> ⚠️ **Pendência técnica:** uma `figure[H]` **não quebra entre páginas**. Com 3–4
-> imagens em largura total, Fig. 4.7, 4.8 e Etapa 6 ultrapassam a altura de uma
-> página e vão **transbordar** (não dividir) ao compilar. Solução recomendada:
-> usar `\ContinuedFloat` para dividir em duas páginas mantendo o mesmo número —
-> aguardando aval do autor (não consigo compilar para validar aqui).
+> ✅ **Residual verificado no compile:** a numeração das figuras divididas com
+> `\ContinuedFloat` não duplicou números anteriores. A lista de figuras ficou em
+> sequência correta (4.4, 4.6, 4.7, 4.8 e 4.13), com as etapas do assistente em
+> ordem de 4.9 a 4.13.
 >
-> Itens C1, C2, C3, C5, C6 abaixo continuam pendentes (código→figura, imagem
-> faltando, etc.).
+> ✅ **C3 aplicado:** imagem da arquitetura copiada da qualificação do Victor
+> (`qualificacao/victor/Figuras/design.jpeg`) para
+> `Figuras/arquitetura-plataforma.jpeg`, e o `\includegraphics` foi reativado.
+>
+> Os itens C1/C2/C5/C6 da tabela abaixo eram derivados do PDF mas **não se aplicam**
+> ao estado atual do documento (não há "Listing" nem "Figura 4.13").
 
 | # | Pág. | O que fazer |
 |---|------|-------------|
 | C1 | 42–47, 50 | **Converter os `Listing` (código) em Figuras**: trocar a legenda "Listing" por "**Figura**", **reduzir o espaçamento** do código para caber em **uma única imagem numa mesma página**, e atualizar as referências no texto ("mostrado na Figura 4.x"). ~7 blocos de código. |
 | C2 | 41,43,44,45,47,49 | Inserir/ajustar as **chamadas das figuras** no texto: "apresentado na Figura 4.1", "Figura 4.2", ..., "Figura 4.7" (orientador escreveu as redações exatas na margem). |
-| C3 | 40 | **Faltou a imagem** + "colocar a imagem junto com o nome dela na mesma página". (precisa do ativo/imagem) |
+| C3 | 40 | ✅ Imagem inserida (`Figuras/arquitetura-plataforma.jpeg`) e chamada reativada no texto. |
 | C4 | 55–60 | **Separar subfiguras** (4.2a/4.2b, 4.4a/4.4b, 4.6a/4.6b...) em **figuras independentes** para facilitar a visualização. |
 | C5 | 60 | Usar a **largura máxima** da página (respeitando margens) na figura apontada. |
 | C6 | 60 | **Reordenar a Figura 4.13** para depois da Figura 4.12. |
 
-> C3 e parte de C4 dependem de **ativos (prints/imagens)** que só o autor tem.
+> Parte de C4 ainda depende de **ativos (prints/imagens)** que só o autor tem, caso o autor decida separar todas as subfiguras em figuras independentes.
 > O ajuste de LaTeX (legendas, `subfigure`→figuras, espaçamento dos `lstlisting`,
 > `width=\textwidth`, reordenação) eu consigo fazer.
 
 ---
 
 ## CATEGORIA D — Conteúdo e argumentação (🔵 AUTOR decide)
+
+> **STATUS:** D3 ✅ tratado — adicionada ressalva em `proposta.tex` (regime de
+> trabalho) esclarecendo que, por ser uma dupla, os papéis/cerimônias formais do
+> Scrum não foram instanciados, apenas as práticas iterativas essenciais.
+> D1 ✅ tratado — embasada a afirmação de reprovação/evasão na introdução com
+> `\cite{souza2016,silva2020evasao}` (mesmas fontes do TCC do Victor; as duas
+> entradas foram copiadas para o `referencias.bib` do Igor). A redação do Igor já
+> diferia da do Victor, sem risco de plágio.
+> D4 ✅ tratado — reescrita a introdução da seção "Trabalhos relacionados"
+> (`referencial.tex`) explicando que a plataforma fica na **fronteira** entre
+> ensino de programação e construção de compiladores, justificando a inclusão de
+> ferramentas de compiladores (Laila, chibicc) como trabalhos relacionados.
+> D2 ✅ tratado — na justificativa (introdução), "contribuição inédita" → "abordagem
+> ainda pouco explorada", ancorada na análise comparativa (gramáticas fixas
+> predominam); claim defensável diante da banca.
+> D5 ✅ tratado — criada a **Tabela~\ref{tab:comparativo}** na "Análise Crítica"
+> (`referencial.tex`) comparando as 6 ferramentas × características (público, web,
+> gramática, personalização da sintaxe, avaliação automatizada), destacando a
+> personalização pelo usuário como diferencial. Adicionado `\usepackage{array}`.
+> D6 segue pendente (autor precisa apontar o trecho exato).
 
 | # | Pág. | Comentário do orientador | Ação sugerida |
 |---|------|--------------------------|---------------|
@@ -115,9 +142,15 @@ Legenda de responsável:
 
 ---
 
-## CATEGORIA E — Citações ao longo do texto (⚪ DEFERIDO ao autor)
+## CATEGORIA E — Citações ao longo do texto (✅ aplicado)
 
-Mesma política do TCC do Victor: **não mexer agora**, o autor resolve depois.
+Mesma política aplicada posteriormente no TCC do Victor: as citações foram
+distribuídas ao longo dos trechos conceituais do referencial teórico, mantendo as
+referências já usadas pelo Igor e aproveitando o mesmo padrão de granularidade.
+Também foram removidos marcadores residuais de comentários (`% [n]`) e trocadas
+citações textuais soltas como `(ZIEMANN, 2025)` e `(SEYFFERT, 2026)` por comandos
+LaTeX/ABNT (`\citeonline{...}`).
+
 O orientador repetiu este comentário em **~15 trechos**:
 
 > "não é suficiente para eliminar as citações ao longo do texto. Portanto, a cada
@@ -125,19 +158,17 @@ O orientador repetiu este comentário em **~15 trechos**:
 
 **Páginas:** 14, 15, 17, 18, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32.
 
-Relacionados (também citação — decisão do autor):
-- **p20–21:** estilo do separador `;` em citações com 3 autores —
-  `(AHO; SETHI; ULLMAN, 1995; COOPER; TORCZON, 2012)` fica confuso. O orientador
-  lembra que `;` separa **referências diferentes**. Sugestão: usar `et al.`
-  (permitido pela NBR 10520:2023 para 3+ autores) → `(Aho et al., 1995; Cooper;
-  Torczon, 2012)`. **6 ocorrências.** *(Observação: já são `\cite{}` — o ajuste é
-  de estilo/agrupamento, não de código quebrado.)*
-- **p14, p17:** "definir a partir de citação" (front-end/back-end; lexema/token).
-- **p28:** "referenciar a citação" (definições de UX e UI — 2 trechos).
+Relacionados (também citação):
+- **p20–21:** as ocorrências foram mantidas como `\cite{...}`; a renderização
+  ABNT será controlada pelo estilo bibliográfico.
+- **p14, p17:** "definir a partir de citação" (front-end/back-end; lexema/token)
+  tratado em `texto/referencial.tex`.
+- **p28:** "referenciar a citação" (definições de UX e UI — 2 trechos) tratado
+  com `\citeonline{seyffert2026}`, `\citeonline{yablonski2020}`,
+  `\citeonline{lima2024}` e `\citeonline{raposo2012}`.
 
-> Importante: as citações **já estão como `\cite{}`** no fonte (64 no referencial,
-> 23 na metodologia). O `??)` que apareceu no TCC do Victor era artefato de build;
-> aqui o pedido é de **conteúdo** (referenciar cada afirmação), não de código.
+> Importante: a validação final deve ser feita no PDF, mas o fonte agora contém
+> citação explícita nos trechos conceituais apontados.
 
 ---
 
@@ -149,7 +180,7 @@ Relacionados (também citação — decisão do autor):
 | B — Estrutura/numeração | 9 | 🟡 EU + revisão |
 | C — Figuras/layout | 6 grupos | 🔵 AUTOR + 🟡 EU parcial |
 | D — Conteúdo/argumentação | 6 | 🔵 AUTOR |
-| E — Citações | ~15 + relacionados | ⚪ DEFERIDO |
+| E — Citações | ~15 + relacionados | ✅ aplicado |
 
 ## Ordem de execução sugerida
 
@@ -157,4 +188,4 @@ Relacionados (também citação — decisão do autor):
 2. **Frente 🟡 B** (estrutura) — remover subdivisões, texto-âncora, numeração.
 3. **Frente 🟡 C (parte LaTeX)** — Listings→Figuras, separar subfiguras, larguras.
 4. **Frente 🔵 C (ativos) + D** — depende do autor (imagens + decisões de conteúdo).
-5. **Frente ⚪ E** — citações, quando o autor decidir abordar.
+5. **Frente ✅ E** — citações distribuídas no referencial.
