@@ -5,57 +5,57 @@
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{12}{chapter.10}%
-\contentsline {section}{\numberline {1.1}Justificativa}{13}{section.11}%
-\contentsline {section}{\numberline {1.2}Objetivos}{14}{section.12}%
-\contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{14}{subsection.13}%
-\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{14}{subsection.14}%
-\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{15}{section.15}%
+\contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{11}{chapter.10}%
+\contentsline {section}{\numberline {1.1}Justificativa}{12}{section.11}%
+\contentsline {section}{\numberline {1.2}Objetivos}{13}{section.12}%
+\contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{13}{subsection.13}%
+\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{13}{subsection.14}%
+\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{14}{section.15}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS}{16}{chapter.16}%
-\contentsline {section}{\numberline {2.1}Compiladores}{16}{section.17}%
-\contentsline {subsection}{\numberline {{2.1}.1}Compiladores e seus Fundamentos}{16}{subsection.18}%
-\contentsline {subsection}{\numberline {{2.1}.2}O Modelo de Análise e Síntese (Fases da Compilação)}{17}{subsection.20}%
-\contentsline {subsection}{\numberline {{2.1}.3}A Análise Léxica e o Reconhecimento de \textit {Tokens}}{19}{subsection.21}%
-\contentsline {subsection}{\numberline {{2.1}.4}Estratégias de Análise Sintática: \textit {Top-Down} e \textit {Bottom-Up}}{20}{subsection.23}%
-\contentsline {subsection}{\numberline {{2.1}.5}Análise Semântica e Verificação de Tipos}{22}{subsection.24}%
-\contentsline {subsection}{\numberline {{2.1}.6}Geração de Código Intermediário}{23}{subsection.25}%
-\contentsline {subsection}{\numberline {{2.1}.7}Otimização de Código e Eficiência Computacional}{25}{subsection.29}%
-\contentsline {subsection}{\numberline {{2.1}.8}Geração de Código Objeto e Mapeamento de Arquitetura}{26}{subsection.30}%
-\contentsline {subsection}{\numberline {{2.1}.9}Engenharia de Software}{27}{subsection.31}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.1}Gestão de Tarefas e Metodologias Ágeis}{28}{subsubsection.32}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{29}{subsubsection.33}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.3}Arquitetura Limpa e Separação de Responsabilidades}{30}{subsubsection.34}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.4}Qualidade de Código e \textit {Clean Code}}{31}{subsubsection.35}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.5}O Framework Next.js e sua Arquitetura}{32}{subsubsection.36}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.6}Design de Experiência do Usuário (UX) e Interface do Usuário (UI)}{33}{subsubsection.37}%
-\contentsline {section}{\numberline {2.2}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{34}{section.38}%
-\contentsline {section}{\numberline {2.3}Trabalhos Relacionados}{35}{section.39}%
-\contentsline {subsection}{\numberline {{2.3}.1}Portugol Studio e Portugol Webstudio}{36}{subsection.40}%
-\contentsline {subsection}{\numberline {{2.3}.2}Laila: Gerador de Analisadores Léxicos e Sintáticos Online}{36}{subsection.41}%
-\contentsline {subsection}{\numberline {{2.3}.3}Quorum: Linguagem de Programação Baseada em Evidências}{37}{subsection.42}%
-\contentsline {subsection}{\numberline {{2.3}.4}chibicc: Uma Abordagem Incremental para o Ensino de Compiladores}{38}{subsection.43}%
-\contentsline {subsection}{\numberline {{2.3}.5}Beecrowd: Prática de Algoritmos e Avaliação Automatizada}{38}{subsection.44}%
-\contentsline {subsection}{\numberline {{2.3}.6}Análise Crítica e o Diferencial da Solução Proposta}{39}{subsection.45}%
+\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS}{15}{chapter.16}%
+\contentsline {section}{\numberline {2.1}Compiladores}{15}{section.17}%
+\contentsline {subsection}{\numberline {{2.1}.1}Compiladores e seus Fundamentos}{15}{subsection.18}%
+\contentsline {subsection}{\numberline {{2.1}.2}O Modelo de Análise e Síntese (Fases da Compilação)}{16}{subsection.20}%
+\contentsline {subsection}{\numberline {{2.1}.3}A Análise Léxica e o Reconhecimento de \textit {Tokens}}{18}{subsection.21}%
+\contentsline {subsection}{\numberline {{2.1}.4}Estratégias de Análise Sintática: \textit {Top-Down} e \textit {Bottom-Up}}{19}{subsection.23}%
+\contentsline {subsection}{\numberline {{2.1}.5}Análise Semântica e Verificação de Tipos}{21}{subsection.24}%
+\contentsline {subsection}{\numberline {{2.1}.6}Geração de Código Intermediário}{22}{subsection.25}%
+\contentsline {subsection}{\numberline {{2.1}.7}Otimização de Código e Eficiência Computacional}{24}{subsection.29}%
+\contentsline {subsection}{\numberline {{2.1}.8}Geração de Código Objeto e Mapeamento de Arquitetura}{25}{subsection.30}%
+\contentsline {subsection}{\numberline {{2.1}.9}Engenharia de Software}{26}{subsection.31}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.1}Gestão de Tarefas e Metodologias Ágeis}{27}{subsubsection.32}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{28}{subsubsection.33}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.3}Arquitetura Limpa e Separação de Responsabilidades}{29}{subsubsection.34}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.4}Qualidade de Código e \textit {Clean Code}}{30}{subsubsection.35}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.5}O Framework Next.js e sua Arquitetura}{31}{subsubsection.36}%
+\contentsline {subsubsection}{\numberline {{2.1}.9.6}Design de Experiência do Usuário (UX) e Interface do Usuário (UI)}{32}{subsubsection.37}%
+\contentsline {section}{\numberline {2.2}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{33}{section.38}%
+\contentsline {section}{\numberline {2.3}Trabalhos Relacionados}{34}{section.39}%
+\contentsline {subsection}{\numberline {{2.3}.1}Portugol Studio e Portugol Webstudio}{35}{subsection.40}%
+\contentsline {subsection}{\numberline {{2.3}.2}Laila: Gerador de Analisadores Léxicos e Sintáticos Online}{35}{subsection.41}%
+\contentsline {subsection}{\numberline {{2.3}.3}Quorum: Linguagem de Programação Baseada em Evidências}{36}{subsection.42}%
+\contentsline {subsection}{\numberline {{2.3}.4}chibicc: Uma Abordagem Incremental para o Ensino de Compiladores}{37}{subsection.43}%
+\contentsline {subsection}{\numberline {{2.3}.5}Beecrowd: Prática de Algoritmos e Avaliação Automatizada}{37}{subsection.44}%
+\contentsline {subsection}{\numberline {{2.3}.6}Análise Crítica e o Diferencial da Solução Proposta}{38}{subsection.45}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{41}{chapter.47}%
+\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{40}{chapter.47}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}MODELAGEM}{44}{chapter.49}%
-\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{44}{section.50}%
-\contentsline {section}{\numberline {4.2}Customização Dinâmica de Tokens e Sintaxe}{46}{section.52}%
-\contentsline {section}{\numberline {4.3}Edição de Código e Sistema de Arquivos Virtual}{53}{section.181}%
-\contentsline {section}{\numberline {4.4}Execução das Análises Léxica e Sintática a partir da IDE}{54}{section.182}%
-\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{57}{section.213}%
-\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{58}{section.214}%
-\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{59}{section.215}%
-\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{60}{section.216}%
-\contentsline {subsection}{\numberline {{4.8}.1}Fluxo de Personalização da Linguagem Dinâmica}{69}{subsection.229}%
-\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{74}{section.236}%
+\contentsline {chapter}{\chapternumberline {4}MODELAGEM}{43}{chapter.49}%
+\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{43}{section.50}%
+\contentsline {section}{\numberline {4.2}Customização Dinâmica de Tokens e Sintaxe}{45}{section.52}%
+\contentsline {section}{\numberline {4.3}Edição de Código e Sistema de Arquivos Virtual}{52}{section.181}%
+\contentsline {section}{\numberline {4.4}Execução das Análises Léxica e Sintática a partir da IDE}{53}{section.182}%
+\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{56}{section.213}%
+\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{57}{section.214}%
+\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{58}{section.215}%
+\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{59}{section.216}%
+\contentsline {subsection}{\numberline {{4.8}.1}Fluxo de Personalização da Linguagem Dinâmica}{68}{subsection.229}%
+\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{73}{section.236}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{75}{chapter*.238}%
+\contentsline {chapter}{REFERÊNCIAS}{74}{chapter*.238}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{78}{appendix.239}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{78}{section.240}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{78}{section.241}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{78}{subsection.242}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{79}{subsection.243}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{77}{appendix.239}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{77}{section.240}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{77}{section.241}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{77}{subsection.242}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{78}{subsection.243}%

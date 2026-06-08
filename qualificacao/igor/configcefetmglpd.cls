@@ -678,7 +678,7 @@
 %% --
 
 \newcommand{\printafolhaderosto}[1]{
-  \begin{folhaderosto}{#1}
+  \begin{folhaderosto}[#1]
      \folhaderostocont
   \end{folhaderosto}}
 
@@ -793,7 +793,7 @@ Aprovado em: \printaaprovacaoDia ~de \printaaprovacaoMes ~de \printaaprovacaoAno
 }
 
 \newcommand{\printafolhaaprov}[1]{
-  \begin{folhadeaprovacao}{#1}
+  \begin{folhadeaprovacao}[#1]
      \folhaaprov
   \end{folhadeaprovacao}
   \cleardoublepage}
@@ -1101,4 +1101,3 @@ Leopoldina \printaaprovacaoDia ~de \printaaprovacaoMes ~de \printaaprovacaoAno
 
 % ---
 % ---  
-
