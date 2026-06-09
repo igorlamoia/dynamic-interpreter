@@ -123,7 +123,7 @@ A validação prévia da configuração é tratada por funções utilitárias de
 \section{Interpretador}
 \label{sec:metodologia-interpretador}
 
-O núcleo de tradução foi implementado em TypeScript, executado tanto via Node.js no servidor da IDE quanto pelo motor JavaScript do navegador em modos auxiliares de visualização. A escolha pela linguagem TypeScript permitiu o uso intensivo do sistema de tipos durante o desenvolvimento, aproximando o processo de implementação dos benefícios de verificação estática descritos por \citeonline{aho1995} e \citeonline{martin_clean_code}, e contribuindo para a robustez das estruturas de dados que atravessam todas as fases do compilador.
+O desenvolvimento do interpretador descrito nesta seção, que abrange as fases de análise léxica, sintática e semântica, a geração de código intermediário e a execução do código, constitui o núcleo comum do projeto e foi conduzido de forma colaborativa pelos dois autores, Victor de Souza Vilela da Silva e Igor Lamoia Queiroz, conforme detalhado no Apêndice~\ref{ap:plano}. O núcleo de tradução foi implementado em TypeScript, executado tanto via Node.js no servidor da IDE quanto pelo motor JavaScript do navegador em modos auxiliares de visualização. A escolha pela linguagem TypeScript permitiu o uso intensivo do sistema de tipos durante o desenvolvimento, aproximando o processo de implementação dos benefícios de verificação estática descritos por \citeonline{aho1995} e \citeonline{martin_clean_code}, e contribuindo para a robustez das estruturas de dados que atravessam todas as fases do compilador.
 
 \subsection{Análise Léxica}
 \label{subsec:analise-lexica}

@@ -1,5 +1,5 @@
 
-\chapter{PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES} \label{ap:plano}
+\chapter[APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES]{\fbox{\parbox{0.9\textwidth}{\centering APÊNDICE A \textendash{} PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}}} \label{ap:plano}
 
 Este apêndice detalha a divisão de responsabilidades entre os dois autores, conforme a pré-proposta aprovada e o plano de trabalho aprovado pelo Colegiado do Curso de Engenharia de Computação do Centro Federal de Educação Tecnológica de Minas Gerais, Unidade Leopoldina.
 
@@ -10,6 +10,7 @@ As atividades listadas a seguir, de natureza estruturante ou situadas na frontei
 \begin{itemize}
     \item Revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais correlatas;
     \item Definição dos requisitos funcionais e não funcionais e da arquitetura geral do sistema;
+    \item Implementação e validação do núcleo do interpretador, abrangendo as fases de análise léxica, análise sintática, geração de código intermediário e execução, conduzidas conjuntamente pelos dois autores;
     \item Definição dos contratos de comunicação entre o núcleo do interpretador e a plataforma web e a integração entre os módulos;
     \item Revisão mútua de código e tomada de decisões arquiteturais nas etapas de refatoração e evolução do sistema.
 \end{itemize}
@@ -23,8 +24,8 @@ A partir da base técnica construída em conjunto, cada autor aprofundou sua an�
 \begin{itemize}
     \item Detalhamento das fases de análise léxica e do sistema de varredura por escâneres especializados (\textit{factory pattern});
     \item Descrição aprofundada da análise sintática por descida recursiva e da correspondência entre as produções do analisador e a gramática formal da linguagem Java-{}-;
-    \item Implementação e documentação da geração de código de três endereços: instrução a instrução, tabela de temporários e tabela de rótulos;
-    \item Especificação e implementação dos mecanismos de injeção dinâmica de regras gramaticais no interpretador, que permitem ao núcleo reconfigurar o vocabulário e as regras estruturais a cada execução;
+    \item Detalhamento e documentação da geração de código de três endereços: instrução a instrução, tabela de temporários e tabela de rótulos;
+    \item Análise aprofundada dos mecanismos de injeção dinâmica de regras gramaticais no interpretador, que permitem ao núcleo reconfigurar o vocabulário e as regras estruturais a cada execução;
     \item Análise do funcionamento do interpretador, da tabela de símbolos e do despacho das chamadas de sistema de entrada e saída;
     \item Estudos de caso centrados na validade técnica do núcleo de tradução e no comportamento do interpretador frente a programas de teste elaborados para cobrir as construções da linguagem.
 \end{itemize}
@@ -39,7 +40,7 @@ A partir da base técnica construída em conjunto, cada autor aprofundou sua an�
     \item Estudos de caso centrados na usabilidade, no engajamento dos estudantes e na retroalimentação coletada em ambiente educacional.
 \end{itemize}
 
-\chapter{DOCUMENTAÇÃO DA API} \label{ap:api}
+\chapter[APÊNDICE B -- DOCUMENTAÇÃO DA API]{\fbox{\parbox{0.9\textwidth}{\centering APÊNDICE B \textendash{} DOCUMENTAÇÃO DA API}}} \label{ap:api}
 
 Este apêndice reúne a relação dos recursos expostos pela API da plataforma. A documentação completa e interativa é gerada automaticamente pelo \textit{framework} FastAPI e está disponível \textit{online} nas interfaces Swagger UI (\url{https://api.dynamicinterpreter.com.br/docs}) e ReDoc (\url{https://api.dynamicinterpreter.com.br/redoc}). A Tabela~\ref{tab:api-recursos} sintetiza os grupos de recursos e suas responsabilidades.
 
@@ -73,7 +74,7 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
     \legend{Fonte: elaborado pelo autor.}
 \end{table}
 
-\chapter{CASOS DE TESTE AUTOMATIZADOS} \label{ap:testes}
+\chapter[APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS]{\fbox{\parbox{0.9\textwidth}{\centering APÊNDICE C \textendash{} CASOS DE TESTE AUTOMATIZADOS}}} \label{ap:testes}
 
 Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{215 casos} distribuídos em 22 arquivos, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. O conjunto completo dos casos e o respectivo relatório de execução estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}, em \texttt{packages/compiler/src/tests}); à data desta qualificação, a totalidade dos casos é aprovada.
 
