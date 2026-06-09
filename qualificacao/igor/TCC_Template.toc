@@ -40,22 +40,23 @@
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {3}PROPOSTA}{40}{chapter.47}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}MODELAGEM}{43}{chapter.49}%
+\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{43}{chapter.49}%
 \contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{43}{section.50}%
-\contentsline {section}{\numberline {4.2}Customização Dinâmica de Tokens e Sintaxe}{45}{section.52}%
-\contentsline {section}{\numberline {4.3}Edição de Código e Sistema de Arquivos Virtual}{52}{section.181}%
-\contentsline {section}{\numberline {4.4}Execução das Análises Léxica e Sintática a partir da IDE}{53}{section.182}%
-\contentsline {section}{\numberline {4.5}Execução do Código Intermediário e \textit {Feedback} no Terminal}{56}{section.213}%
-\contentsline {section}{\numberline {4.6}Sistema de Correção e Avaliação Automatizada}{57}{section.214}%
-\contentsline {section}{\numberline {4.7}Acessibilidade, Responsividade e Finalização de Fluxos}{58}{section.215}%
-\contentsline {section}{\numberline {4.8}Apresentação das Telas da Plataforma}{59}{section.216}%
-\contentsline {subsection}{\numberline {{4.8}.1}Fluxo de Personalização da Linguagem Dinâmica}{68}{subsection.229}%
-\contentsline {section}{\numberline {4.9}Estratégia de Testes Automatizados}{73}{section.236}%
+\contentsline {section}{\numberline {4.2}Interpretador}{45}{section.52}%
+\contentsline {section}{\numberline {4.3}Customização Dinâmica de Tokens e Sintaxe}{46}{section.53}%
+\contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{53}{section.182}%
+\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{53}{section.183}%
+\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{56}{section.214}%
+\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{57}{section.215}%
+\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{58}{section.216}%
+\contentsline {section}{\numberline {4.9}Apresentação das Telas da Plataforma}{59}{section.217}%
+\contentsline {subsection}{\numberline {{4.9}.1}Fluxo de Personalização da Linguagem Dinâmica}{68}{subsection.230}%
+\contentsline {section}{\numberline {4.10}Estratégia de Testes Automatizados}{73}{section.237}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{74}{chapter*.238}%
+\contentsline {chapter}{REFERÊNCIAS}{74}{chapter*.239}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{77}{appendix.239}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{77}{section.240}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{77}{section.241}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{77}{subsection.242}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{78}{subsection.243}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{77}{appendix.240}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{77}{section.241}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{77}{section.242}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{77}{subsection.243}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{78}{subsection.244}%
