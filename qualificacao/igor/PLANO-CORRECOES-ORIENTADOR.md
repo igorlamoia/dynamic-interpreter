@@ -129,7 +129,11 @@ Legenda de responsável:
 > (`referencial.tex`) comparando as 6 ferramentas × características (público, web,
 > gramática, personalização da sintaxe, avaliação automatizada), destacando a
 > personalização pelo usuário como diferencial. Adicionado `\usepackage{array}`.
-> D6 segue pendente (autor precisa apontar o trecho exato).
+> D6 ✅ tratado — no parágrafo do regime de trabalho (`proposta.tex`), o regime em
+> dupla passa a remeter à introdução (Capítulo~\ref{cap:introducao_modelo}),
+> atendendo ao "dupla, como relatado no capítulo 1".
+>
+> **CATEGORIA D 100% concluída (D1–D6).**
 
 | # | Pág. | Comentário do orientador | Ação sugerida |
 |---|------|--------------------------|---------------|
