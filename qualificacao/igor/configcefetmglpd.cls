@@ -762,9 +762,6 @@
               Tecnológica de Minas Gerais, do Campus Leopoldina, como parte do requisito para obtenção do título de Bacharel em Engenharia de Computação.
     \end{minipage}%
 \end{center}
-\begin{flushleft}
-Aprovado em: \printaaprovacaoDia ~de \printaaprovacaoMes ~de \printaaprovacaoAno 
-\end{flushleft}
 \begin{center} Banca Examinadora: \end{center}
 \begin{center}
 \OnehalfSpacing
