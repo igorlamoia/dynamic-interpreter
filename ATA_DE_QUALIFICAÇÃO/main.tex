@@ -25,11 +25,12 @@
 \usepackage{enumitem,amssymb}
 \newlist{todolist}{itemize}{2}
 \setlist[todolist]{label=$\square$}
-\newcommand\signature[1]{% Name
+\newcommand\signature[2][]{% Legend, name
 \noindent\begin{minipage}{0.45\textwidth}
     \noindent\vspace{1cm}\par
-    \noindent\rule{\textwidth}{1pt}\par
-    \noindent#1%
+    \noindent#2\par
+    \noindent\rule{\textwidth}{1pt}%
+    \if\relax\detokenize{#1}\relax\else\par\noindent#1\fi%
 \end{minipage}}
 \newcommand\insertdate[1][\today]{\vfill\begin{flushright}#1\end{flushright}}
 
