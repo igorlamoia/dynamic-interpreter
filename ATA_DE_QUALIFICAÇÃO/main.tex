@@ -1,0 +1,83 @@
+\documentclass[12pt]{extarticle}
+\usepackage[a4paper,left=30mm,top=40mm,right=20mm,bottom=20mm,headheight=20mm,nomarginpar]{geometry}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{fancyhdr}
+\usepackage{soul}
+\usepackage{ragged2e}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\IfFontExistsTF{TeX Gyre Heros}
+  {\setmainfont{TeX Gyre Heros}}
+  {\setmainfont{Nimbus Sans}}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{multirow}
+\renewcommand{\arraystretch}{0.5}
+\usepackage{lastpage}
+\setlength{\extrarowheight}{12pt}
+\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{N}{@{}m{0pt}@{}}
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\newcommand\signature[1]{% Name
+\noindent\begin{minipage}{0.45\textwidth}
+    \noindent\vspace{1cm}\par
+    \noindent\rule{\textwidth}{1pt}\par
+    \noindent#1%
+\end{minipage}}
+\newcommand\insertdate[1][\today]{\vfill\begin{flushright}#1\end{flushright}}
+
+\usepackage{titlesec}
+\titleformat{\section}  % which section command to format
+  {\fontsize{12}{14}\bfseries\centering} % format for whole line
+  {\thesection} % how to show number
+  {1em} % space between number and text
+  {} % formatting for just the text
+  [] % formatting for after the text
+
+\usepackage{setspace}
+\setstretch{1.5}
+
+\newcommand{\ruletoright}[1]{%
+  \leavevmode
+  \begingroup
+  \leaders\hrule height #1\hfill\null
+  \endgroup
+}
+
+% Set the page style to "fancy"...
+\fancypagestyle{mystyleWithNPage}{
+%... then configure it.
+\fancyhf{}
+\fancyhead[C]{\small {\fontsize{9}{11} \center \hspace{-0.5cm} \textbf{SERVIÇO PÚBLICO FEDERAL \\ \hspace{-0.5cm}MINISTÉRIO DA EDUCAÇÃO \\ \hspace{-0.5cm}CENTRO FEDERAL DE EDUCAÇÃO TECNOLÓGICA DE MINAS GERAIS \\ \hspace{-0.5cm}CAMPUS LEOPOLDINA \\ \hspace{-0.5cm}CURSO DE ENGENHARIA DE COMPUTAÇÃO}}}
+\fancyhead[L]{\hspace{-1cm}\includegraphics[scale=0.085]{figs/brasil.png}}
+\fancyhead[R]{\vspace{-0.25cm}\includegraphics[scale=0.16]{figs/cefet.png}}
+\fancyfoot[R]{Página \thepage \hspace{1pt} de \pageref{LastPage}}
+}
+
+\fancypagestyle{mystyleNoNPage}{
+%... then configure it.
+\fancyhf{}
+\fancyhead[C]{\small {\fontsize{9}{11} \center \hspace{-0.5cm} \textbf{SERVIÇO PÚBLICO FEDERAL \\ \hspace{-0.5cm}MINISTÉRIO DA EDUCAÇÃO \\ \hspace{-0.5cm}CENTRO FEDERAL DE EDUCAÇÃO TECNOLÓGICA DE MINAS GERAIS \\ \hspace{-0.5cm}CAMPUS LEOPOLDINA \\ \hspace{-0.5cm}CURSO DE ENGENHARIA DE COMPUTAÇÃO}}}
+\fancyhead[L]{\hspace{-1cm}\includegraphics[scale=0.085]{figs/brasil.png}}
+\fancyhead[R]{\vspace{-0.25cm}\includegraphics[scale=0.16]{figs/cefet.png}}
+% \fancyfoot[R]{Página \thepage \hspace{1pt} de \pageref{LastPage}}
+}
+\pagestyle{mystyleWithNPage}
+\begin{document}
+
+
+\appendix
+\include{sections/texto}
+
+%\bibliographystyle{abntex2-alf}
+% \bibliographystyle{ieeetr}
+% \bibliography{mybib.bib}
+
+\end{document}
