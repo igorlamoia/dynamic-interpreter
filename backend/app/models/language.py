@@ -28,6 +28,9 @@ class Language(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str | None] = mapped_column(String, nullable=True)
     customization: Mapped[dict[str, Any]] = mapped_column(JSONType, nullable=False)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    image_query: Mapped[str | None] = mapped_column(String, nullable=True)
+    preset_id: Mapped[str | None] = mapped_column(String, nullable=True)
     cloned_from_id: Mapped[int | None] = mapped_column(
         Integer, ForeignKey("languages.id", ondelete="SET NULL"), nullable=True
     )

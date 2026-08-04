@@ -66,6 +66,9 @@ async def create_language(
         name=data.name,
         description=data.description,
         customization=data.customization,
+        image_url=data.image_url,
+        image_query=data.image_query,
+        preset_id=data.preset_id,
     )
     session.add(language)
     try:
@@ -143,6 +146,9 @@ async def clone_language(
         name=name,
         description=source.description,
         customization=source.customization,
+        image_url=source.image_url,
+        image_query=source.image_query,
+        preset_id=source.preset_id,
         cloned_from_id=source.id,
     )
     session.add(clone)
