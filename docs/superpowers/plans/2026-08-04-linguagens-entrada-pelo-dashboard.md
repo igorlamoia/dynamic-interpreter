@@ -2114,7 +2114,40 @@ git commit -m "feat(ide): wizard cria e edita linguagens no backend"
 - Create: `packages/ide/src/hooks/useLanguageChoices.ts`
 - Test: `packages/ide/src/hooks/useLanguageChoices.spec.tsx`
 - Modify: `packages/ide/src/views/ide/components/language-selector.tsx`
+- **Modify: `packages/ide/src/views/ide/components/language-selector.spec.tsx`** (descoberto durante a execução — ver abaixo)
 - Modify: `packages/ide/src/views/ide/components/side-explorer/language-panel.tsx:55-80,100-120,230-300`
+
+> **Correção 2026-08-04 (durante a execução).** O plano original não sabia que
+> `language-selector.spec.tsx` já existia. Ele existe, tem 2 casos, e cobre o
+> caminho localStorage: monta o `LanguageSelector`, mocka `useKeywords`,
+> semeia duas linguagens via `saveSavedKeywordLanguage` e verifica que trocar
+> no `<select>` grava `keyword-customization-active` e chama
+> `setCustomization`.
+>
+> **Esses 2 casos já falham hoje, antes de qualquer mudança nossa** —
+> confirmado rodando a suíte em `8a18b42`. Eles só estavam invisíveis porque
+> as dependências não estavam instaladas e o arquivo nem executava. Deixá-los
+> verdes faz parte desta task, e são **dois** problemas distintos:
+>
+> **(a) A falha de hoje: `localStorage.clear is not a function`** no
+> `beforeEach` (linha 32). Não é vazamento entre arquivos. Reproduzido num
+> spec mínimo isolado: com jsdom 28.1.0 neste setup do vitest,
+> `typeof localStorage === "object"` mas `typeof localStorage.clear ===
+> "undefined"` — o `Storage` do jsdom não chega completo. Qualquer spec que
+> chame `localStorage.clear()` quebra aqui. A correção é o spec não depender
+> desse método: instale um stub próprio de `Storage` no `beforeEach`, ou
+> remova as chaves usadas uma a uma com `removeItem`.
+>
+> Isso vale como aviso geral: **não use `localStorage.clear()` em spec novo
+> neste repo.** Os specs das Tasks 5 e 7 escapam porque mockam o módulo
+> `@/lib/keyword-language-storage` inteiro, sem tocar no `localStorage` real.
+>
+> **(b) A falha que a reescrita vai causar:** o componente passa a consumir
+> `useLanguageChoices()`, que chama `useAuth()`. O spec não mocka `useAuth`.
+> Ele precisa ganhar um mock de `@/contexts/AuthContext` devolvendo
+> `{ isAuthenticated: false }` — justamente o cenário que os dois casos já
+> descrevem. Os `expect` sobre localStorage e `setCustomization` seguem
+> válidos como estão.
 
 **Acceptance Criteria:**
 - [ ] Logado, a lista vem de `useLanguagesList()`
@@ -2748,7 +2781,21 @@ cd backend && uv run pytest tests/ -v
 cd packages/ide && npx tsc --noEmit && npm run test && npm run lint
 ```
 
-Todos devem passar. Se algum falhar, o trabalho **não** está completo — reporte a saída real em vez de declarar sucesso.
+Todos devem passar, **com duas exceções conhecidas e documentadas**:
+
+1. `packages/ide` tem **31 erros de `tsc`** pré-existentes, todos em arquivos
+   `.spec` e código não relacionado a esta feature (`editor-language.spec.ts`,
+   `submission-config.spec.ts`, `background-mascot-marquee.spec.tsx`,
+   `token-card.spec.tsx`, `compiler-config.spec.ts`,
+   `language-image-search.spec.ts`, `KeywordContext.spec.ts`). Nenhum toca os
+   arquivos desta feature. O critério é **não aumentar esse número**, não
+   zerá-lo — zerar é trabalho de outro dia.
+2. `review-step.spec.tsx` tem **1 teste falhando** por um `ast-viewer` ausente,
+   sem relação nenhuma com linguagens. Pré-existente, fora de escopo.
+
+Ambos foram confirmados rodando a suíte em `8a18b42`, antes de qualquer
+código desta rodada. Se aparecer qualquer falha **além** dessas, o trabalho
+não está completo — reporte a saída real em vez de declarar sucesso.
 
 E confirme o fluxo manualmente, com o backend migrado:
 
