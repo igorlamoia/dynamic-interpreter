@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import { BookOpen, Code2, LayoutDashboard, ListChecks } from "lucide-react";
+import { BookOpen, Code2, Languages, LayoutDashboard, ListChecks } from "lucide-react";
 
 type MenuItem = {
   id: string;
@@ -9,6 +9,17 @@ type MenuItem = {
   icon: React.ReactNode;
   href: string;
   activeMatchers: string[];
+};
+
+// Mesma entrada para aluno e professor: o acervo de linguagens é pessoal,
+// não depende do papel. `activeMatchers` inclui /language-creator porque o
+// wizard é uma rota irmã, não filha de /languages.
+const languagesMenuItem: MenuItem = {
+  id: "linguagens",
+  label: "Minhas Linguagens",
+  icon: <Languages className="w-5 h-5" />,
+  href: "/languages",
+  activeMatchers: ["/languages", "/language-creator"],
 };
 
 const studentMenu: MenuItem[] = [
@@ -19,6 +30,7 @@ const studentMenu: MenuItem[] = [
     href: "/dashboard",
     activeMatchers: ["/dashboard", "/classes"],
   },
+  languagesMenuItem,
 ];
 
 const teacherMenu: MenuItem[] = [
@@ -43,6 +55,7 @@ const teacherMenu: MenuItem[] = [
     href: "/exercise-lists",
     activeMatchers: ["/exercise-lists"],
   },
+  languagesMenuItem,
 ];
 
 export function Sidebar() {
