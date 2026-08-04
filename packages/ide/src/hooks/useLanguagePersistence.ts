@@ -30,9 +30,15 @@ export type LanguageSaveResult =
  * com `?id=N`.
  */
 export function useLanguagePersistence(editingLanguageId: number | null) {
-  const { isAuthenticated, isHydrated } = useAuth();
+  const { isAuthenticated, isHydrated, isProfileLoading } = useAuth();
   const createMut = useCreateLanguage();
   const updateMut = useUpdateLanguage();
+
+  // `isHydrated` só diz que o token foi lido. `isAuthenticated` depende do
+  // perfil, que chega uma requisição depois — nesse intervalo um usuário
+  // logado ainda parece deslogado. Só com as duas coisas assentadas dá para
+  // confiar no `mode`.
+  const isReady = isHydrated && !isProfileLoading;
 
   const mode: LanguageSaveMode = !isAuthenticated
     ? "local"
@@ -42,11 +48,11 @@ export function useLanguagePersistence(editingLanguageId: number | null) {
 
   const persist = useCallback(
     async (input: LanguageSaveInput): Promise<LanguageSaveResult> => {
-      // `isAuthenticated` fica falso até o efeito de hidratação do
-      // AuthContext resolver o token salvo. Sem essa guarda, um save
-      // disparado antes disso cairia no branch "local" mesmo para um
-      // usuário logado, gravando só no localStorage e nunca na conta dele.
-      if (!isHydrated) {
+      // `isAuthenticated` fica falso até o AuthContext hidratar o token e o
+      // perfil chegar. Sem essa guarda, um save disparado antes disso cairia
+      // no branch "local" mesmo para um usuário logado, gravando só no
+      // localStorage e nunca na conta dele.
+      if (!isReady) {
         return { ok: false, reason: "not-ready" };
       }
 
@@ -90,12 +96,12 @@ export function useLanguagePersistence(editingLanguageId: number | null) {
         };
       }
     },
-    [createMut, editingLanguageId, isHydrated, mode, updateMut],
+    [createMut, editingLanguageId, isReady, mode, updateMut],
   );
 
   return {
     mode,
-    isReady: isHydrated,
+    isReady,
     persist,
     isPending: createMut.isPending || updateMut.isPending,
   };

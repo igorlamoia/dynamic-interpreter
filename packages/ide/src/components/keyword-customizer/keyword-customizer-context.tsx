@@ -22,7 +22,8 @@ import type {
 } from "@/entities/compiler-config";
 import { consumeLanguageCreatorReturn } from "@/lib/language-creator-navigation";
 import { normalizeLanguageDocumentationMap } from "@/lib/compiler-config";
-import { saveSavedKeywordLanguage } from "@/lib/keyword-language-storage";
+import { useLanguagePersistence } from "@/hooks/useLanguagePersistence";
+import type { Language } from "@/lib/languages-api";
 import {
   OPERATOR_WORD_FIELDS,
   validateOperatorWordMap,
@@ -68,8 +69,12 @@ function resolveNextValue<T>(value: T | ((current: T) => T), current: T): T {
 
 export function KeywordCustomizerProvider({
   children,
+  editingLanguageId = null,
+  initialLanguage = null,
 }: {
   children: ReactNode;
+  editingLanguageId?: number | null;
+  initialLanguage?: Language | null;
 }) {
   const router = useRouter();
   const {
@@ -78,8 +83,12 @@ export function KeywordCustomizerProvider({
     validateKeyword,
     validateBlockDelimiters,
   } = useKeywords();
+  // Quando o wizard abre em `?id=N`, a linguagem carregada é a base da sessão
+  // inteira: rascunho, formulário e presets partem dela, não da customização
+  // global ativa.
+  const seededCustomization = initialLanguage?.customization ?? customization;
   const [draftCustomization, setDraftCustomization] =
-    useState<IDEKeywordCustomizationState>(customization);
+    useState<IDEKeywordCustomizationState>(seededCustomization);
   const [currentError, setCurrentError] = useState<string | null>(null);
   const [delimiterError, setDelimiterError] = useState<string | null>(null);
   const [booleanLiteralError, setBooleanLiteralError] = useState<string | null>(
@@ -94,12 +103,21 @@ export function KeywordCustomizerProvider({
   const [visitedWizardStepIds, setVisitedWizardStepIds] = useState<
     WizardStepId[]
   >(["identity"]);
-  const [selectedPresetId, setSelectedPresetId] =
-    useState<WizardPresetId>("free");
-  const [languageName, setLanguageNameState] = useState("");
-  const [languageDescription, setLanguageDescription] = useState("");
-  const [languageImageUrl, setLanguageImageUrl] = useState("");
-  const [languageImageQuery, setLanguageImageQuery] = useState("");
+  const [selectedPresetId, setSelectedPresetId] = useState<WizardPresetId>(
+    (initialLanguage?.presetId as WizardPresetId | null) ?? "free",
+  );
+  const [languageName, setLanguageNameState] = useState(
+    initialLanguage?.name ?? "",
+  );
+  const [languageDescription, setLanguageDescription] = useState(
+    initialLanguage?.description ?? "",
+  );
+  const [languageImageUrl, setLanguageImageUrl] = useState(
+    initialLanguage?.imageUrl ?? "",
+  );
+  const [languageImageQuery, setLanguageImageQuery] = useState(
+    initialLanguage?.imageQuery ?? "",
+  );
   const [languageImageResults, setLanguageImageResults] = useState<
     IdentityImageSearchResult[]
   >([]);
@@ -126,11 +144,21 @@ export function KeywordCustomizerProvider({
       return payload?.images ?? [];
     },
   });
-  const wizardSessionBaseCustomization = useRef(customization);
+  const wizardSessionBaseCustomization = useRef(seededCustomization);
   const shouldReturnOnExit = useRef(false);
+  // O efeito de reset abaixo zera identidade e rascunho sempre que a
+  // customização global muda — inclusive na montagem. Com `?id=N` isso
+  // apagaria a linguagem que acabamos de semear, então a primeira execução é
+  // pulada quando há uma linguagem em edição.
+  const shouldSkipInitialReset = useRef(initialLanguage !== null);
   const form = useForm<StoredKeywordCustomization>({
-    defaultValues: customization,
+    defaultValues: seededCustomization,
   });
+  const {
+    mode: saveMode,
+    isReady: isSaveReady,
+    persist,
+  } = useLanguagePersistence(editingLanguageId);
 
   const syncDraftCustomization = useCallback(
     (
@@ -152,6 +180,11 @@ export function KeywordCustomizerProvider({
   }, []);
 
   useEffect(() => {
+    if (shouldSkipInitialReset.current) {
+      shouldSkipInitialReset.current = false;
+      return;
+    }
+
     wizardSessionBaseCustomization.current = customization;
     syncDraftCustomization(customization);
     setCurrentError(null);
@@ -653,22 +686,51 @@ export function KeywordCustomizerProvider({
     };
 
     setDraftCustomization(nextCustomization);
-    saveSavedKeywordLanguage({
-      name: trimmedLanguageName,
-      slug: trimmedLanguageName,
-      description: languageDescription.trim(),
-      imageUrl: languageImageUrl,
-      imageQuery: languageImageQuery.trim(),
-      presetId: selectedPresetId,
-      customization: nextCustomization,
-    });
-    setCustomization(nextCustomization);
     setCurrentError(null);
     setDelimiterError(null);
     setBooleanLiteralError(null);
     setStatementTerminatorError(null);
     setOperatorError(null);
-    exit();
+
+    void persist({
+      name: trimmedLanguageName,
+      description: languageDescription.trim(),
+      imageUrl: languageImageUrl,
+      imageQuery: languageImageQuery.trim(),
+      presetId: selectedPresetId,
+      customization: nextCustomization,
+    }).then((result) => {
+      if (!result.ok) {
+        // "not-ready": a sessão ainda não hidratou, o usuário não errou nada.
+        // Não vale mandar ele para a etapa identity como se fosse problema de
+        // preenchimento.
+        if (result.reason === "not-ready") {
+          setCurrentError("Aguarde um instante e tente salvar de novo.");
+          return;
+        }
+
+        // Mantém o usuário no wizard: o nome é corrigível ali mesmo.
+        setCurrentError(
+          result.reason === "duplicate-name"
+            ? "Você já tem uma linguagem com esse nome."
+            : "Não foi possível salvar a linguagem. Tente de novo.",
+        );
+        setActiveWizardStepId("identity");
+        return;
+      }
+
+      // Só aplica globalmente o que de fato foi salvo. Além de correto, evita
+      // que o efeito de reset (disparado por `setCustomization`) limpe os
+      // campos de identidade enquanto o usuário ainda está corrigindo um erro.
+      setCustomization(nextCustomization);
+
+      if (result.mode === "local") {
+        exit();
+        return;
+      }
+
+      void router.push("/languages");
+    });
   }, [
     draftCustomization,
     exit,
@@ -677,6 +739,8 @@ export function KeywordCustomizerProvider({
     languageImageUrl,
     languageDescription,
     languageName,
+    persist,
+    router,
     selectedPresetId,
     setCustomization,
     validateBlockDelimiters,
@@ -704,6 +768,9 @@ export function KeywordCustomizerProvider({
     isSearchingLanguageImages,
     languageImageSearchError,
     hasChanges,
+    saveMode,
+    editingLanguageId,
+    isSaveReady,
     actions: {
       syncKeyword,
       syncDocumentation,

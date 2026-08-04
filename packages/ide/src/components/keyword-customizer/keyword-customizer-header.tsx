@@ -1,11 +1,7 @@
-import { useState } from "react";
-import { Library } from "lucide-react";
 import { GradientText } from "@/components/text/gradient";
 import { Subtitle } from "@/components/text/subtitle";
 import { Title } from "@/components/text/title";
-import { Button } from "@/components/ui/button";
-import { LanguageLibraryModal } from "@/components/language-library/LanguageLibraryModal";
-import { useAuth } from "@/contexts/AuthContext";
+import { useKeywordCustomizer } from "./keyword-customizer-context";
 import { WizardStep } from "./keyword-customizer-types";
 import { WizardStepId } from "./wizard-model";
 
@@ -13,39 +9,31 @@ export type KeywordCustomizerHeaderProps = {
   steps: readonly WizardStep[];
   activeStepId: WizardStepId;
 };
+
 export function KeywordCustomizerHeader({
   steps,
   activeStepId,
 }: KeywordCustomizerHeaderProps) {
+  const { saveMode, languageName } = useKeywordCustomizer();
+  const isEditing = saveMode === "update" && languageName.trim().length > 0;
   const activeIndex = steps.findIndex((step) => step.id === activeStepId);
   const progress = Math.round(((activeIndex + 1) / steps.length) * 100);
-  const [libraryOpen, setLibraryOpen] = useState(false);
-  const auth = useAuth();
 
   return (
     <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
       <div className="flex items-center -mt-4">
         <Title as="h4" id="keyword-customizer-title">
-          <GradientText>Explorador Universal</GradientText>
+          <GradientText>
+            {isEditing ? `Editando ${languageName}` : "Explorador Universal"}
+          </GradientText>
         </Title>
         <div className="backdrop-blur-[2px] p-2 bg-slate-400/10 rounded-md ml-2 mt-1">
           <Subtitle id="keyword-customizer-description">
-            Torne a experiência de codar tão única quanto você.
+            {isEditing
+              ? "Suas alterações substituem a linguagem salva."
+              : "Torne a experiência de codar tão única quanto você."}
           </Subtitle>
         </div>
-        {auth?.isAuthenticated && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="ml-3"
-            onClick={() => setLibraryOpen(true)}
-          >
-            <Library className="size-4" />
-            <span className="ml-2">Minhas Linguagens</span>
-          </Button>
-        )}
-        <LanguageLibraryModal open={libraryOpen} onOpenChange={setLibraryOpen} />
         {/* <div className="pr-2">
           <div className="flex items-end justify-between gap-4">
             <div className="flex items-center gap-2">
