@@ -21,21 +21,9 @@ vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => useAuthMock(),
 }));
 
-vi.mock("next/link", () => ({
-  default: ({
-    href,
-    children,
-    ...props
-  }: {
-    href: string;
-    children: React.ReactNode;
-  } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  ),
-}));
-
+// `next/link` nao e mockado de proposito: ele renderiza um <a href> normal
+// no jsdom, entao mockar so acrescentaria complexidade morta. Mocke apenas o
+// que carrega peso — aqui, o router, o auth e os icones.
 vi.mock("lucide-react", () => ({
   BookOpen: () => <span>book</span>,
   Code2: () => <span>code</span>,
@@ -102,6 +90,18 @@ describe("Sidebar", () => {
 
     const link = container.querySelector('a[href="/languages"]');
     expect(link?.className).toContain("bg-[#251e3c]");
+
+    act(() => root.unmount());
+  });
+
+  it("não marca o item como ativo em outra rota", () => {
+    const { container, root } = render("/dashboard", false);
+
+    // Caminho negativo: sem ele, um activeMatchers que casasse com tudo
+    // passaria nos testes acima sem ninguém notar.
+    const link = container.querySelector('a[href="/languages"]');
+    expect(link).toBeTruthy();
+    expect(link?.className).not.toContain("bg-[#251e3c]");
 
     act(() => root.unmount());
   });
