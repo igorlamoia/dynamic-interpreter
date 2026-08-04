@@ -1738,8 +1738,15 @@ git commit -m "feat(ide): hook de persistencia da linguagem do wizard"
 > `save` precisa cobrir `"not-ready"` além de `"duplicate-name"` e
 > `"unknown"`. Trate como falha transitória — mensagem no espírito de
 > "Aguarde um instante e tente de novo", **sem** mandar o usuário para a
-> etapa `identity` (não é erro de preenchimento dele). Opcionalmente use
-> `isReady` para desabilitar o botão de salvar enquanto for `false`.
+> etapa `identity` (não é erro de preenchimento dele).
+>
+> **Cachimbo do rótulo:** `mode` continua derivado só de `isAuthenticated`,
+> sem gate em `isHydrated`. Um usuário logado pode ver o botão rotulado
+> "Salvar e Aplicar" (modo `local`) por um instante antes da hidratação, e
+> só então virar "Salvar como nova". É puramente cosmético — o `persist`
+> devolve `not-ready` independentemente do que `mode` dizia naquele
+> instante. Você decide: desabilitar o botão enquanto `!isReady`, ou aceitar
+> o flicker. Desabilitar é o mais honesto e custa uma linha.
 
 **Steps:**
 

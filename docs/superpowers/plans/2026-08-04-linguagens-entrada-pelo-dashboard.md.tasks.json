@@ -34,7 +34,7 @@
     {
       "id": 5,
       "subject": "Task 5: Hook useLanguagePersistence",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         2
       ],
@@ -60,5 +60,5 @@
       "description": "**Goal:** O seletor e o painel do IDE param de contradizer a /languages, listando do backend quando ha sessao.\n\n**Files:**\n- Create: `packages/ide/src/hooks/useLanguageChoices.ts`\n- Test: `packages/ide/src/hooks/useLanguageChoices.spec.tsx`\n- Modify: `packages/ide/src/views/ide/components/language-selector.tsx`\n- Modify: `packages/ide/src/views/ide/components/side-explorer/language-panel.tsx`\n\n**Acceptance Criteria:**\n- [ ] Logado, a lista vem de useLanguagesList()\n- [ ] Deslogado, a lista vem de listSavedKeywordLanguages()\n- [ ] Trocar logado chama useSetActiveLanguage() e aplica a customization\n- [ ] Trocar deslogado chama setActiveSavedKeywordLanguage() como hoje\n- [ ] A imagem sai de imageUrl nos dois caminhos\n- [ ] O hook expoe activeLanguage completa (nome, descricao, imagem, customization)\n\n**Verify:** `cd packages/ide && npx tsc --noEmit && npm run test`\n\n**Steps:** escrever useLanguageChoices.spec.tsx com 6 casos; confirmar FAIL; escrever o hook expondo choices, activeKey, activeLanguage e selectLanguage; rodar o teste do hook; language-selector.tsx consome o hook; language-panel.tsx em seis sub-passos (6a imports, 6b alias de tipo, 6c corpo do LanguagePanel, 6d referencias, 6e LanguageOptionsMenu, 6f grep de resquicios); tsc e testes; commit.\n\nPor que activeLanguage separado: LanguageSummary nao traz customization, mas o LanguagePanel renderiza description e chama getLanguageDNA(customization). No localStorage isso vinha de graca via loadSavedKeywordLanguage; no backend precisa de useActiveLanguage(), que devolve o Language completo.\n\nO useEffect de language-panel.tsx que aplicava a linguagem ativa ao montar SAI: o KeywordContext ja faz isso nos dois caminhos, e manter os dois criaria duas fontes disputando o mesmo estado.\n\n```json:metadata\n{\"files\": [\"packages/ide/src/hooks/useLanguageChoices.ts\", \"packages/ide/src/hooks/useLanguageChoices.spec.tsx\", \"packages/ide/src/views/ide/components/language-selector.tsx\", \"packages/ide/src/views/ide/components/side-explorer/language-panel.tsx\"], \"verifyCommand\": \"cd packages/ide && npx tsc --noEmit && npm run test\", \"acceptanceCriteria\": [\"lista do backend logado\", \"lista do localStorage deslogado\", \"ativar pelo backend\", \"ativar pelo localStorage\", \"imagem dos dois caminhos\", \"activeLanguage completa\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-08-04T13:54:16.357009Z"
+  "lastUpdated": "2026-08-04T14:09:03.931653Z"
 }
