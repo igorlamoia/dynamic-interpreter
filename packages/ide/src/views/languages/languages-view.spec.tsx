@@ -12,6 +12,7 @@ import { LanguagesView } from "./languages-view";
 
 const pushMock = vi.fn();
 const listQueryMock = vi.fn();
+const activeQueryMock = vi.fn();
 const setActiveMutateMock = vi.fn();
 const cloneMutateMock = vi.fn();
 const deleteMutateMock = vi.fn();
@@ -29,7 +30,7 @@ vi.mock("@/hooks/useLanguages", () => ({
   }),
   useCloneLanguage: () => ({ mutateAsync: cloneMutateMock, isPending: false }),
   useDeleteLanguage: () => ({ mutateAsync: deleteMutateMock, isPending: false }),
-  useActiveLanguage: () => ({ data: { id: 1 } }),
+  useActiveLanguage: () => activeQueryMock(),
 }));
 
 vi.mock("@/contexts/ToastContext", () => ({
@@ -37,13 +38,18 @@ vi.mock("@/contexts/ToastContext", () => ({
 }));
 
 vi.mock("lucide-react", () => ({
+  AlertCircle: () => <span>alert-circle</span>,
+  CheckCircle2: () => <span>check-circle</span>,
   Copy: () => <span>copy</span>,
+  Info: () => <span>info</span>,
   Languages: () => <span>languages</span>,
   Loader2: () => <span>loading</span>,
   Pencil: () => <span>pencil</span>,
   Plus: () => <span>plus</span>,
   Star: () => <span>star</span>,
   Trash2: () => <span>trash</span>,
+  TriangleAlert: () => <span>triangle-alert</span>,
+  X: () => <span>x</span>,
 }));
 
 const LANGUAGES = [
@@ -93,6 +99,7 @@ describe("LanguagesView", () => {
     deleteMutateMock.mockReset().mockResolvedValue(undefined);
     showToastMock.mockReset();
     listQueryMock.mockReturnValue({ data: LANGUAGES, isPending: false });
+    activeQueryMock.mockReturnValue({ data: { id: 1 }, isPending: false });
   });
 
   afterEach(() => {
@@ -205,6 +212,47 @@ describe("LanguagesView", () => {
     expect(
       container.querySelectorAll('[data-testid="language-card"]'),
     ).toHaveLength(0);
+
+    act(() => root.unmount());
+  });
+
+  it("mostra um erro quando a lista falha ao carregar, sem oferecer criar a primeira", () => {
+    listQueryMock.mockReturnValue({
+      data: undefined,
+      isPending: false,
+      isError: true,
+      error: new Error("network down"),
+    });
+
+    const { container, root } = render();
+
+    expect(container.querySelector('[role="alert"]')).toBeTruthy();
+    expect(container.textContent).not.toContain("Nenhuma linguagem");
+    expect(container.textContent).not.toContain("Criar a primeira");
+    expect(
+      container.querySelectorAll('[data-testid="language-card"]'),
+    ).toHaveLength(0);
+
+    act(() => root.unmount());
+  });
+
+  it("desabilita tornar ativa enquanto a linguagem ativa ainda está carregando", () => {
+    activeQueryMock.mockReturnValue({ data: undefined, isPending: true });
+
+    const { container, root } = render();
+
+    expect(
+      container.querySelectorAll('[data-language-active="true"]'),
+    ).toHaveLength(0);
+
+    const ptBrButton = container.querySelector(
+      'button[aria-label="Tornar PtBr-Lang ativa"]',
+    );
+    const minhaLangButton = container.querySelector(
+      'button[aria-label="Tornar MinhaLang ativa"]',
+    );
+    expect(ptBrButton?.hasAttribute("disabled")).toBe(true);
+    expect(minhaLangButton?.hasAttribute("disabled")).toBe(true);
 
     act(() => root.unmount());
   });

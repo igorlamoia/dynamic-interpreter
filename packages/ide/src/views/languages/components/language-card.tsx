@@ -6,6 +6,11 @@ const DEFAULT_LANGUAGE_IMAGE = "/images/language-default.png";
 export type LanguageCardProps = {
   language: LanguageSummary;
   isActive: boolean;
+  // Verdadeiro enquanto ainda não sabemos qual linguagem está ativa (query em
+  // voo). Nesse intervalo nenhum card pode se afirmar ativo nem inativo, e a
+  // ação "Tornar ativa" fica desabilitada para não disparar uma mutação
+  // inútil na linguagem que já está ativa.
+  activeUnknown: boolean;
   onEdit: (id: number) => void;
   onSetActive: (id: number, name: string) => void;
   onClone: (id: number, name: string) => void;
@@ -15,6 +20,7 @@ export type LanguageCardProps = {
 export function LanguageCard({
   language,
   isActive,
+  activeUnknown,
   onEdit,
   onSetActive,
   onClone,
@@ -24,6 +30,7 @@ export function LanguageCard({
     <article
       data-testid="language-card"
       data-language-active={isActive ? "true" : "false"}
+      aria-current={isActive ? "true" : undefined}
       className={`flex flex-col gap-3 rounded-2xl border p-4 transition-colors ${
         isActive
           ? "border-[#3b305c] bg-[#251e3c]"
@@ -42,6 +49,7 @@ export function LanguageCard({
               <Star
                 className="size-4 shrink-0 text-yellow-500"
                 fill="currentColor"
+                role="img"
                 aria-label="Linguagem ativa"
               />
             )}
@@ -72,7 +80,7 @@ export function LanguageCard({
           type="button"
           aria-label={`Tornar ${language.name} ativa`}
           title="Tornar ativa"
-          disabled={isActive}
+          disabled={isActive || activeUnknown}
           onClick={() => onSetActive(language.id, language.name)}
           className="rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white disabled:opacity-40"
         >

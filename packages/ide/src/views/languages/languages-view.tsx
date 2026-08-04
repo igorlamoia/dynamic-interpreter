@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   useActiveLanguage,
@@ -7,6 +8,8 @@ import {
   useSetActiveLanguage,
 } from "@/hooks/useLanguages";
 import { useToast } from "@/contexts/ToastContext";
+import { Alert } from "@/components/ui/alert";
+import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { LanguagesGrid } from "./components/languages-grid";
 import { LanguagesHeader } from "./components/languages-header";
 
@@ -19,8 +22,30 @@ export function LanguagesView() {
   const cloneMut = useCloneLanguage();
   const deleteMut = useDeleteLanguage();
 
+  // Um erro de carregamento não pode se disfarçar de conta vazia: sem isto,
+  // GET /languages falhando (rede, sessão expirada, 500) mostraria "Nenhuma
+  // linguagem — Criar a primeira", convidando o usuário a duplicar algo que
+  // ele já tem.
+  const [loadError, setLoadError] = useState("");
+
+  useEffect(() => {
+    if (listQuery.isError) {
+      setLoadError(
+        getApiErrorMessage(
+          listQuery.error,
+          "Não foi possível carregar suas linguagens.",
+        ),
+      );
+    }
+  }, [listQuery.isError, listQuery.error]);
+
   const languages = listQuery.data ?? [];
   const activeLanguageId = activeQuery.data?.id ?? null;
+  // Enquanto a linguagem ativa ainda não é conhecida, nenhum card pode se
+  // afirmar ativo ou inativo — e "Tornar ativa" fica desabilitado em todos
+  // para não deixar um clique apressado disparar uma mutação inútil na
+  // linguagem que já está ativa.
+  const activeUnknown = activeQuery.isPending;
 
   const success = (message: string) => showToast({ type: "success", message });
   const failure = (message: string) => showToast({ type: "error", message });
@@ -66,16 +91,28 @@ export function LanguagesView() {
   return (
     <>
       <LanguagesHeader onCreate={() => goToCreator()} />
-      <LanguagesGrid
-        languages={languages}
-        loading={listQuery.isPending}
-        activeLanguageId={activeLanguageId}
-        onCreate={() => goToCreator()}
-        onEdit={(id) => goToCreator(id)}
-        onSetActive={handleSetActive}
-        onClone={handleClone}
-        onDelete={handleDelete}
-      />
+      {loadError && (
+        <Alert
+          variant="error"
+          onClose={() => setLoadError("")}
+          className="mb-6"
+        >
+          {loadError}
+        </Alert>
+      )}
+      {!listQuery.isError && (
+        <LanguagesGrid
+          languages={languages}
+          loading={listQuery.isPending}
+          activeLanguageId={activeLanguageId}
+          activeUnknown={activeUnknown}
+          onCreate={() => goToCreator()}
+          onEdit={(id) => goToCreator(id)}
+          onSetActive={handleSetActive}
+          onClone={handleClone}
+          onDelete={handleDelete}
+        />
+      )}
     </>
   );
 }
