@@ -41,6 +41,19 @@ cd packages/ide && npm run test
 
 ---
 
+> **Erro deste plano, corrigido durante a execução (Task 5).** As versões
+> anteriores usavam `presetId: "ptbr"` no código TypeScript. Esse valor **não
+> existe**: `WizardPresetId`
+> (`packages/ide/src/components/keyword-customizer/wizard-model.ts:21`) é
+> `"didactic-pt" | "minimal" | "python-like" | "ruby-like" | "mineres-like" |
+> "free"`, e o `tsc` rejeita `"ptbr"` com TS2322. Os trechos TypeScript foram
+> corrigidos para `"didactic-pt"`.
+>
+> Os testes Python da Task 1 seguem usando `"ptbr"` de propósito: no backend
+> `preset_id` é `VARCHAR` sem validação de domínio, qualquer string serve, e
+> esses testes já estão commitados e verdes. O backend não conhece o enum do
+> wizard — quem valida o valor é o front.
+
 ## File Structure
 
 **Backend**
@@ -1408,7 +1421,7 @@ const INPUT: LanguageSaveInput = {
   description: "Linguagem felina",
   imageUrl: "https://cdn.example/gato.png",
   imageQuery: "gato",
-  presetId: "ptbr",
+  presetId: "didactic-pt",
   customization: CUSTOMIZATION,
 };
 
@@ -1460,7 +1473,7 @@ describe("useLanguagePersistence", () => {
         slug: "Gatinho",
         imageUrl: "https://cdn.example/gato.png",
         imageQuery: "gato",
-        presetId: "ptbr",
+        presetId: "didactic-pt",
       }),
     );
     expect(createMutateMock).not.toHaveBeenCalled();
@@ -1487,7 +1500,7 @@ describe("useLanguagePersistence", () => {
       customization: CUSTOMIZATION,
       imageUrl: "https://cdn.example/gato.png",
       imageQuery: "gato",
-      presetId: "ptbr",
+      presetId: "didactic-pt",
     });
     expect(result).toEqual({ ok: true, mode: "create", languageId: 42 });
 
@@ -1513,7 +1526,7 @@ describe("useLanguagePersistence", () => {
         customization: CUSTOMIZATION,
         imageUrl: "https://cdn.example/gato.png",
         imageQuery: "gato",
-        presetId: "ptbr",
+        presetId: "didactic-pt",
       },
     });
     expect(result).toEqual({ ok: true, mode: "update", languageId: 7 });
