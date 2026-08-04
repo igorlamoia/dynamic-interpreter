@@ -83,7 +83,7 @@ describe("useLanguagePersistence", () => {
   });
 
   it("grava no localStorage quando não há sessão", async () => {
-    useAuthMock.mockReturnValue({ isAuthenticated: false });
+    useAuthMock.mockReturnValue({ isAuthenticated: false, isHydrated: true });
     const { captured, root } = mount(null);
 
     expect(captured.current?.mode).toBe("local");
@@ -110,7 +110,7 @@ describe("useLanguagePersistence", () => {
   });
 
   it("cria no backend quando logado e sem id", async () => {
-    useAuthMock.mockReturnValue({ isAuthenticated: true });
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: true });
     const { captured, root } = mount(null);
 
     expect(captured.current?.mode).toBe("create");
@@ -134,7 +134,7 @@ describe("useLanguagePersistence", () => {
   });
 
   it("atualiza no backend quando logado e com id", async () => {
-    useAuthMock.mockReturnValue({ isAuthenticated: true });
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: true });
     const { captured, root } = mount(7);
 
     expect(captured.current?.mode).toBe("update");
@@ -161,8 +161,11 @@ describe("useLanguagePersistence", () => {
   });
 
   it("reporta nome duplicado quando o backend devolve 409", async () => {
-    useAuthMock.mockReturnValue({ isAuthenticated: true });
-    createMutateMock.mockRejectedValue({ response: { status: 409 } });
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: true });
+    createMutateMock.mockRejectedValue({
+      isAxiosError: true,
+      response: { status: 409 },
+    });
     const { captured, root } = mount(null);
 
     let result: LanguageSaveResult | undefined;
@@ -176,8 +179,11 @@ describe("useLanguagePersistence", () => {
   });
 
   it("reporta falha genérica nos demais erros", async () => {
-    useAuthMock.mockReturnValue({ isAuthenticated: true });
-    createMutateMock.mockRejectedValue({ response: { status: 500 } });
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: true });
+    createMutateMock.mockRejectedValue({
+      isAxiosError: true,
+      response: { status: 500 },
+    });
     const { captured, root } = mount(null);
 
     let result: LanguageSaveResult | undefined;
@@ -188,5 +194,34 @@ describe("useLanguagePersistence", () => {
     expect(result).toEqual({ ok: false, reason: "unknown" });
 
     act(() => root.unmount());
+  });
+
+  it("recusa persistir antes da hidratação, mesmo autenticado", async () => {
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: false });
+    const { captured, root } = mount(null);
+
+    let result: LanguageSaveResult | undefined;
+    await act(async () => {
+      result = await captured.current?.persist(INPUT);
+    });
+
+    expect(result).toEqual({ ok: false, reason: "not-ready" });
+    expect(saveLocalMock).not.toHaveBeenCalled();
+    expect(createMutateMock).not.toHaveBeenCalled();
+    expect(updateMutateMock).not.toHaveBeenCalled();
+
+    act(() => root.unmount());
+  });
+
+  it("expõe isReady conforme a hidratação do AuthContext", () => {
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: false });
+    const notReady = mount(null);
+    expect(notReady.captured.current?.isReady).toBe(false);
+    act(() => notReady.root.unmount());
+
+    useAuthMock.mockReturnValue({ isAuthenticated: true, isHydrated: true });
+    const ready = mount(null);
+    expect(ready.captured.current?.isReady).toBe(true);
+    act(() => ready.root.unmount());
   });
 });

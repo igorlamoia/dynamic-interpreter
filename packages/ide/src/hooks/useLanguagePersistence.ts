@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { isAxiosError } from "axios";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCreateLanguage, useUpdateLanguage } from "@/hooks/useLanguages";
 import { saveSavedKeywordLanguage } from "@/lib/keyword-language-storage";
@@ -18,7 +19,7 @@ export type LanguageSaveInput = {
 
 export type LanguageSaveResult =
   | { ok: true; mode: LanguageSaveMode; languageId: number | null }
-  | { ok: false; reason: "duplicate-name" | "unknown" };
+  | { ok: false; reason: "duplicate-name" | "unknown" | "not-ready" };
 
 /**
  * Decide onde a linguagem editada no wizard é persistida.
@@ -29,7 +30,7 @@ export type LanguageSaveResult =
  * com `?id=N`.
  */
 export function useLanguagePersistence(editingLanguageId: number | null) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isHydrated } = useAuth();
   const createMut = useCreateLanguage();
   const updateMut = useUpdateLanguage();
 
@@ -41,6 +42,14 @@ export function useLanguagePersistence(editingLanguageId: number | null) {
 
   const persist = useCallback(
     async (input: LanguageSaveInput): Promise<LanguageSaveResult> => {
+      // `isAuthenticated` fica falso até o efeito de hidratação do
+      // AuthContext resolver o token salvo. Sem essa guarda, um save
+      // disparado antes disso cairia no branch "local" mesmo para um
+      // usuário logado, gravando só no localStorage e nunca na conta dele.
+      if (!isHydrated) {
+        return { ok: false, reason: "not-ready" };
+      }
+
       if (mode === "local") {
         saveSavedKeywordLanguage({
           name: input.name,
@@ -74,19 +83,19 @@ export function useLanguagePersistence(editingLanguageId: number | null) {
       } catch (error: unknown) {
         // UNIQUE (owner_id, name) no backend. Vale distinguir do resto porque
         // é o único erro que o usuário consegue corrigir sozinho.
-        const status = (error as { response?: { status?: number } })?.response
-          ?.status;
+        const status = isAxiosError(error) ? error.response?.status : undefined;
         return {
           ok: false,
           reason: status === 409 ? "duplicate-name" : "unknown",
         };
       }
     },
-    [createMut, editingLanguageId, mode, updateMut],
+    [createMut, editingLanguageId, isHydrated, mode, updateMut],
   );
 
   return {
     mode,
+    isReady: isHydrated,
     persist,
     isPending: createMut.isPending || updateMut.isPending,
   };
