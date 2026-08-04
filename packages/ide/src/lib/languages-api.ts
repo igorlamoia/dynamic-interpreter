@@ -6,12 +6,15 @@ export type LanguageSummary = {
   ownerId: number;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   clonedFromId: number | null;
   updatedAt: string;
 };
 
 export type Language = LanguageSummary & {
   customization: StoredKeywordCustomization;
+  imageQuery: string | null;
+  presetId: string | null;
   createdAt: string;
 };
 
@@ -19,12 +22,18 @@ export type CreateLanguageInput = {
   name: string;
   description?: string | null;
   customization: StoredKeywordCustomization;
+  imageUrl?: string | null;
+  imageQuery?: string | null;
+  presetId?: string | null;
 };
 
 export type UpdateLanguageInput = Partial<{
   name: string;
   description: string | null;
   customization: StoredKeywordCustomization;
+  imageUrl: string | null;
+  imageQuery: string | null;
+  presetId: string | null;
 }>;
 
 export const languagesApi = {
