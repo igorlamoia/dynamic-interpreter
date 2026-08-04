@@ -1710,6 +1710,37 @@ git commit -m "feat(ide): hook de persistencia da linguagem do wizard"
 
 **Verify:** `cd packages/ide && npm run test` → PASS
 
+> **Contrato atualizado durante a execução (revisão da Task 5).** O hook
+> ganhou uma terceira razão de falha e um sinal de prontidão:
+>
+> ```ts
+> export type LanguageSaveResult =
+>   | { ok: true; mode: LanguageSaveMode; languageId: number | null }
+>   | { ok: false; reason: "duplicate-name" | "unknown" | "not-ready" };
+>
+> useLanguagePersistence(editingLanguageId: number | null): {
+>   mode: LanguageSaveMode;
+>   isReady: boolean;      // ← novo
+>   persist: (input: LanguageSaveInput) => Promise<LanguageSaveResult>;
+>   isPending: boolean;
+> }
+> ```
+>
+> **Por quê:** `useAuth()` deixa `isAuthenticated === false` até o efeito de
+> montagem hidratar, sessão válida inclusive. Sem `isHydrated`, um usuário
+> logado que salvasse antes disso cairia no ramo `local` e gravaria no
+> localStorage em vez da própria conta — sem erro, sem toast, a linguagem
+> simplesmente não apareceria no acervo dele. Não é alcançável por clique
+> humano (efeitos assentam em um frame), mas é por qualquer save disparado
+> em efeito.
+>
+> **O que isso exige do wizard:** ao tratar o resultado do `persist`, o
+> `save` precisa cobrir `"not-ready"` além de `"duplicate-name"` e
+> `"unknown"`. Trate como falha transitória — mensagem no espírito de
+> "Aguarde um instante e tente de novo", **sem** mandar o usuário para a
+> etapa `identity` (não é erro de preenchimento dele). Opcionalmente use
+> `isReady` para desabilitar o botão de salvar enquanto for `false`.
+
 **Steps:**
 
 - [ ] **Step 1: Estender o contrato de tipos**
@@ -1815,6 +1846,14 @@ O `save` valida e monta `nextCustomization` exatamente como hoje. Só o bloco fi
       customization: nextCustomization,
     }).then((result) => {
       if (!result.ok) {
+        // "not-ready" e falha transitoria: a sessao ainda nao hidratou, o
+        // usuario nao errou nada. Nao vale mandar ele para a etapa identity
+        // como se fosse problema de preenchimento.
+        if (result.reason === "not-ready") {
+          setCurrentError("Aguarde um instante e tente salvar de novo.");
+          return;
+        }
+
         // Mantém o usuário no wizard: o nome é corrigível ali mesmo.
         setCurrentError(
           result.reason === "duplicate-name"
