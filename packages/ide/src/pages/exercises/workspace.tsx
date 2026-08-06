@@ -136,12 +136,12 @@ function WorkspaceContent({
     restoreActiveCustomization,
   } = useKeywords();
 
-  // When the exercise locks a specific language, overlay its customization
-  // onto the KeywordContext for the duration of the workspace session.
+  // O backend já resolveu a precedência (exercício > lista > livre). O front
+  // só aplica o que veio.
   useEffect(() => {
-    const locked = exercise?.lockedLanguage;
-    if (exercise?.languagePolicy === "LOCKED" && locked?.customization) {
-      applyExternalCustomization(locked.customization);
+    const effective = exercise?.effectiveLanguage;
+    if (effective?.customization) {
+      applyExternalCustomization(effective.customization);
       return () => restoreActiveCustomization();
     }
     return undefined;
@@ -312,14 +312,16 @@ function WorkspaceContent({
         </div>
       </header>
 
-      {exercise?.languagePolicy === "LOCKED" && exercise?.lockedLanguage && (
+      {exercise?.effectiveLanguage && (
         <div className="relative z-10 px-6 py-2">
           <LockedLanguageBanner
             language={{
-              id: exercise.lockedLanguage.id,
-              name: exercise.lockedLanguage.name,
-              description: exercise.lockedLanguage.description,
+              id: exercise.effectiveLanguage.id,
+              name: exercise.effectiveLanguage.name,
+              description: exercise.effectiveLanguage.description,
             }}
+            source={exercise.effectiveLanguageSource ?? "exercise"}
+            listTitle={list?.title}
           />
         </div>
       )}
@@ -452,6 +454,7 @@ export default function ExerciseWorkspace({
   const exerciseQuery = useExerciseQuery(
     exerciseId,
     Boolean(userId && exerciseId),
+    listId,
   );
   const listQuery = useExerciseListQuery(
     listId,
