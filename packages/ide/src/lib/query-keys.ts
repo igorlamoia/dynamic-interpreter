@@ -16,8 +16,10 @@ export const queryKeys = {
     all: ["exercises"] as const,
     list: (params?: Record<string, unknown>) =>
       ["exercises", params ?? {}] as const,
-    detail: (exerciseId: string | number | undefined) =>
-      ["exercises", exerciseId] as const,
+    detail: (
+      exerciseId: string | number | undefined,
+      listId?: string | number | null,
+    ) => ["exercises", exerciseId, listId ?? null] as const,
   },
   exerciseLists: {
     all: ["exercise-lists"] as const,

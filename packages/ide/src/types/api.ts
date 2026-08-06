@@ -20,6 +20,8 @@ export type Exercise = {
   languagePolicy: LanguagePolicy
   lockedLanguageId: number | null
   lockedLanguage: Language | null
+  effectiveLanguage: Language | null
+  effectiveLanguageSource: "exercise" | "list" | null
 }
 
 export type ExerciseListItem = {
@@ -47,4 +49,7 @@ export type ExerciseList = {
   items: ExerciseListItem[]
   classes: ClassPublication[]
   submittedExerciseIds?: number[]
+  languagePolicy: LanguagePolicy
+  lockedLanguageId: number | null
+  lockedLanguage: Language | null
 }

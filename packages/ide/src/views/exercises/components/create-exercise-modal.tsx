@@ -30,6 +30,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HeroButton } from "@/components/buttons/hero";
+import { LanguagePolicyField } from "@/components/language-policy-field";
 import { TestCaseFields } from "./test-case-fields";
 
 const testCaseSchema = z.object({
@@ -76,7 +77,6 @@ export function CreateExerciseModal({
       testCases: defaultTestCases,
     },
   });
-  const languagePolicy = form.watch("languagePolicy");
 
   const { fields } = useFieldArray({
     control: form.control,
@@ -181,63 +181,35 @@ export function CreateExerciseModal({
                 <FormItem>
                   <FormLabel>Linguagem permitida</FormLabel>
                   <FormControl>
-                    <div className="flex gap-2">
-                      <label className="flex items-center gap-2 text-sm">
-                        <input
-                          type="radio"
-                          checked={field.value === "OPEN"}
-                          onChange={() => {
-                            field.onChange("OPEN");
-                            form.setValue("lockedLanguageId", null);
-                          }}
-                        />
-                        Aberto (aluno usa sua linguagem)
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <input
-                          type="radio"
-                          checked={field.value === "LOCKED"}
-                          onChange={() => field.onChange("LOCKED")}
-                        />
-                        Travado em uma linguagem
-                      </label>
-                    </div>
+                    <LanguagePolicyField
+                      value={{
+                        policy: field.value,
+                        lockedLanguageId: form.watch("lockedLanguageId"),
+                      }}
+                      onChange={(next) => {
+                        field.onChange(next.policy);
+                        form.setValue("lockedLanguageId", next.lockedLanguageId);
+                      }}
+                      languages={languagesQuery.data ?? []}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {languagePolicy === "LOCKED" && (
-              <FormField
-                control={form.control}
-                name="lockedLanguageId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Linguagem</FormLabel>
-                    <FormControl>
-                      <select
-                        className="h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-slate-100"
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? Number(e.target.value) : null,
-                          )
-                        }
-                      >
-                        <option value="">— selecione —</option>
-                        {(languagesQuery.data ?? []).map((lang) => (
-                          <option key={lang.id} value={lang.id}>
-                            {lang.name}
-                          </option>
-                        ))}
-                      </select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            {/* o guard do onSubmit registra o erro em lockedLanguageId; o
+                FormMessage acima só enxerga languagePolicy, então a mensagem
+                precisa do seu próprio campo para aparecer */}
+            <FormField
+              control={form.control}
+              name="lockedLanguageId"
+              render={() => (
+                <FormItem>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="test-cases">
