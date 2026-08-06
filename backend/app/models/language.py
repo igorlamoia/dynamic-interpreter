@@ -1,5 +1,7 @@
+import enum
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy import Integer, String, ForeignKey, UniqueConstraint, Index, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -12,6 +14,18 @@ if TYPE_CHECKING:
 
 # JSONB on Postgres, JSON elsewhere (tests use SQLite).
 JSONType = JSON().with_variant(JSONB(), "postgresql")
+
+
+class LanguagePolicy(str, enum.Enum):
+    OPEN = "OPEN"
+    LOCKED = "LOCKED"
+
+
+# Um único objeto Enum compartilhado por `exercises` e `exercise_lists`.
+# Duas instâncias com o mesmo `name` fariam o Postgres receber dois
+# CREATE TYPE languagepolicy. `native_enum` continua ligado: no SQLite dos
+# testes ele degrada para VARCHAR sozinho.
+language_policy_type = SAEnum(LanguagePolicy, name="languagepolicy")
 
 
 class Language(Base):
