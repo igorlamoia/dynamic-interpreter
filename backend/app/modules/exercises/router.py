@@ -1,11 +1,12 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.core.dependencies import SessionDep, CurrentUserIdDep
 from app.modules.exercises.service import (
-    create_exercise, get_exercise, list_exercises,
+    create_exercise, get_exercise_in_context, list_exercises,
     update_exercise, delete_exercise, add_test_case, delete_test_case
 )
 from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, ExerciseResponse, TestCaseCreate, TestCaseResponse
+from app.schemas.languages import LanguageResponse
 
 router = APIRouter(prefix="/exercises", tags=["exercises"])
 
@@ -21,8 +22,21 @@ async def list_exercises_endpoint(user_id: CurrentUserIdDep, session: SessionDep
 
 
 @router.get("/{exercise_id}", response_model=ExerciseResponse)
-async def get_exercise_endpoint(exercise_id: int, user_id: CurrentUserIdDep, session: SessionDep):
-    return await get_exercise(exercise_id, session)
+async def get_exercise_endpoint(
+    exercise_id: int,
+    user_id: CurrentUserIdDep,
+    session: SessionDep,
+    list_id: int | None = Query(default=None, alias="listId"),
+):
+    exercise, effective, source = await get_exercise_in_context(
+        exercise_id, list_id, session
+    )
+    response = ExerciseResponse.model_validate(exercise)
+    response.effective_language = (
+        LanguageResponse.model_validate(effective) if effective is not None else None
+    )
+    response.effective_language_source = source
+    return response
 
 
 @router.patch("/{exercise_id}", response_model=ExerciseResponse)

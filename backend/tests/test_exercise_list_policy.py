@@ -7,12 +7,14 @@ from httpx import AsyncClient
 
 from app.models.exercise import Exercise
 from app.models.exercise_list import ExerciseList
+from app.models.exercise_list_item import ExerciseListItem
 from app.models.language import Language, LanguagePolicy
 from app.models.user import UserRole
 from app.modules.languages.policy import resolve_effective_language
 from tests.factories import (
     create_class,
     create_class_exercise_list,
+    create_exercise,
     create_exercise_list,
     create_organization,
     create_user,
@@ -201,3 +203,95 @@ class TestPatchExerciseList:
             headers=_auth(token),
         )
         assert r.status_code == 200
+
+
+class TestEffectiveLanguageEndpoint:
+    async def _list_with_exercise(self, async_session, teacher, **list_kwargs):
+        el = await create_exercise_list(async_session, teacher, **list_kwargs)
+        ex = await create_exercise(async_session, teacher)
+        async_session.add(
+            ExerciseListItem(
+                exercise_list_id=el.id, exercise_id=ex.id, grade_weight=1.0, order_index=0
+            )
+        )
+        await async_session.flush()
+        return el, ex
+
+    async def test_open_exercise_inherits_list_language(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="eff1@x.com")
+        lang = await _language(async_session, teacher)
+        el, ex = await self._list_with_exercise(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=lang.id,
+        )
+
+        r = await async_client.get(
+            f"/exercises/{ex.id}", params={"listId": el.id}, headers=_auth(token)
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["effectiveLanguage"]["id"] == lang.id
+        assert data["effectiveLanguageSource"] == "list"
+
+    async def test_exercise_lock_wins(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="eff2@x.com")
+        list_lang = await _language(async_session, teacher, name="DaLista")
+        ex_lang = await _language(async_session, teacher, name="DoExercicio")
+        el, ex = await self._list_with_exercise(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=list_lang.id,
+        )
+        ex.language_policy = LanguagePolicy.LOCKED
+        ex.locked_language_id = ex_lang.id
+        await async_session.flush()
+
+        r = await async_client.get(
+            f"/exercises/{ex.id}", params={"listId": el.id}, headers=_auth(token)
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["effectiveLanguage"]["id"] == ex_lang.id
+        assert data["effectiveLanguageSource"] == "exercise"
+
+    async def test_both_open_returns_null(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="eff3@x.com")
+        el, ex = await self._list_with_exercise(async_session, teacher)
+
+        r = await async_client.get(
+            f"/exercises/{ex.id}", params={"listId": el.id}, headers=_auth(token)
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["effectiveLanguage"] is None
+        assert data["effectiveLanguageSource"] is None
+
+    async def test_without_list_id_resolves_from_exercise_only(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="eff4@x.com")
+        lang = await _language(async_session, teacher)
+        el, ex = await self._list_with_exercise(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=lang.id,
+        )
+
+        r = await async_client.get(f"/exercises/{ex.id}", headers=_auth(token))
+        assert r.status_code == 200
+        assert r.json()["effectiveLanguage"] is None
+
+    async def test_unknown_list_id_returns_400(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="eff5@x.com")
+        ex = await create_exercise(async_session, teacher)
+
+        r = await async_client.get(
+            f"/exercises/{ex.id}", params={"listId": 999999}, headers=_auth(token)
+        )
+        assert r.status_code == 400
+
+    async def test_exercise_not_in_list_returns_400(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="eff6@x.com")
+        el = await create_exercise_list(async_session, teacher)
+        outsider = await create_exercise(async_session, teacher)
+
+        r = await async_client.get(
+            f"/exercises/{outsider.id}", params={"listId": el.id}, headers=_auth(token)
+        )
+        assert r.status_code == 400

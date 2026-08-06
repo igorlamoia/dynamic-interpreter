@@ -4,10 +4,16 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import selectinload
 
 from app.models.exercise import Exercise
+from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
+from app.models.language import Language
 from app.models.test_case import TestCase
 from app.models.user import User, UserRole
-from app.modules.languages.policy import validate_language_policy
+from app.modules.languages.policy import (
+    EffectiveSource,
+    resolve_effective_language,
+    validate_language_policy,
+)
 from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, TestCaseCreate
 
 
@@ -121,3 +127,45 @@ async def delete_test_case(exercise_id: int, tc_id: int, current_user_id: int, s
 
     await session.delete(tc)
     await session.flush()
+
+
+async def get_exercise_in_context(
+    exercise_id: int, list_id: int | None, session: AsyncSession
+) -> tuple[Exercise, Language | None, EffectiveSource | None]:
+    """Carrega o exercício e resolve a linguagem no contexto de uma lista.
+
+    `list_id` inconsistente é 400 e não silêncio: entregar ao aluno a
+    linguagem de um contexto que não é o dele seria pior do que falhar.
+    """
+    exercise = await get_exercise(exercise_id, session)
+
+    exercise_list = None
+    if list_id is not None:
+        result = await session.execute(
+            select(ExerciseList)
+            .where(ExerciseList.id == list_id)
+            .options(selectinload(ExerciseList.locked_language))
+        )
+        exercise_list = result.scalar_one_or_none()
+        if exercise_list is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="list_id not found"
+            )
+        is_item = (
+            await session.execute(
+                select(ExerciseListItem.exercise_id)
+                .where(
+                    ExerciseListItem.exercise_list_id == list_id,
+                    ExerciseListItem.exercise_id == exercise_id,
+                )
+                .limit(1)
+            )
+        ).scalar_one_or_none()
+        if is_item is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Exercise is not part of list_id",
+            )
+
+    effective, source = resolve_effective_language(exercise, exercise_list)
+    return exercise, effective, source
