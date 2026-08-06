@@ -5,6 +5,7 @@ os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 
 from httpx import AsyncClient
 
+from app.models.class_member import ClassMember
 from app.models.exercise import Exercise
 from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
@@ -295,3 +296,134 @@ class TestEffectiveLanguageEndpoint:
             f"/exercises/{outsider.id}", params={"listId": el.id}, headers=_auth(token)
         )
         assert r.status_code == 400
+
+
+class TestListLockSideEffects:
+    async def _published_list(self, async_session, **list_kwargs):
+        org = await create_organization(async_session)
+        teacher = await create_user(
+            async_session, org, email="tsx@x.com", role=UserRole.TEACHER
+        )
+        student = await create_user(async_session, org, email="ssx@x.com")
+        cls = await create_class(async_session, org, teacher)
+        async_session.add(ClassMember(class_id=cls.id, student_id=student.id))
+        el = await create_exercise_list(async_session, teacher, **list_kwargs)
+        ex = await create_exercise(async_session, teacher)
+        async_session.add(
+            ExerciseListItem(
+                exercise_list_id=el.id, exercise_id=ex.id, grade_weight=1.0, order_index=0
+            )
+        )
+        await create_class_exercise_list(async_session, el, cls)
+        await async_session.flush()
+        return teacher, student, cls, el, ex
+
+    async def test_student_reads_language_locked_by_the_list(self, async_client, async_session):
+        org = await create_organization(async_session)
+        teacher = await create_user(
+            async_session, org, email="rg_t@x.com", role=UserRole.TEACHER
+        )
+        lang = await _language(async_session, teacher, name="Acessivel")
+        student = await create_user(async_session, org, email="rg_s@x.com")
+        cls = await create_class(async_session, org, teacher)
+        async_session.add(ClassMember(class_id=cls.id, student_id=student.id))
+        el = await create_exercise_list(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=lang.id,
+        )
+        await create_class_exercise_list(async_session, el, cls)
+        await async_session.flush()
+
+        token = await _login(async_client, student.email, "secret123")
+        r = await async_client.get(f"/languages/{lang.id}", headers=_auth(token))
+        assert r.status_code == 200
+        assert r.json()["customization"] == CUSTOM
+
+    async def test_outsider_still_gets_403(self, async_client, async_session):
+        org = await create_organization(async_session)
+        teacher = await create_user(
+            async_session, org, email="og_t@x.com", role=UserRole.TEACHER
+        )
+        lang = await _language(async_session, teacher, name="Privada")
+        outsider = await create_user(async_session, org, email="og_s@x.com")
+        el = await create_exercise_list(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=lang.id,
+        )
+        await async_session.flush()
+
+        token = await _login(async_client, outsider.email, "secret123")
+        r = await async_client.get(f"/languages/{lang.id}", headers=_auth(token))
+        assert r.status_code == 403
+
+    async def test_delete_language_locked_by_list_returns_409(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="del@x.com")
+        lang = await _language(async_session, teacher, name="EmUso")
+        await create_exercise_list(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=lang.id,
+        )
+        await async_session.flush()
+
+        r = await async_client.delete(f"/languages/{lang.id}", headers=_auth(token))
+        assert r.status_code == 409
+
+    async def test_snapshot_comes_from_the_list(self, async_client, async_session):
+        org = await create_organization(async_session)
+        teacher = await create_user(
+            async_session, org, email="sn_t@x.com", role=UserRole.TEACHER
+        )
+        lang = await _language(async_session, teacher, name="DaLista2")
+        student = await create_user(async_session, org, email="sn_s@x.com")
+        cls = await create_class(async_session, org, teacher)
+        async_session.add(ClassMember(class_id=cls.id, student_id=student.id))
+        el = await create_exercise_list(
+            async_session, teacher,
+            language_policy=LanguagePolicy.LOCKED, locked_language_id=lang.id,
+        )
+        ex = await create_exercise(async_session, teacher)
+        async_session.add(
+            ExerciseListItem(
+                exercise_list_id=el.id, exercise_id=ex.id, grade_weight=1.0, order_index=0
+            )
+        )
+        await create_class_exercise_list(async_session, el, cls)
+        await async_session.flush()
+
+        token = await _login(async_client, student.email, "secret123")
+        r = await async_client.post(
+            "/submissions",
+            json={
+                "exercise_id": ex.id,
+                "exercise_list_id": el.id,
+                "class_id": cls.id,
+                "code_snapshot": "code",
+                "language_snapshot": {"cliente": "tenta-burlar"},
+                "status": "SUBMITTED",
+            },
+            headers=_auth(token),
+        )
+        assert r.status_code == 201
+        assert r.json()["languageSnapshot"] == CUSTOM
+
+    async def test_open_list_and_open_exercise_keep_client_snapshot(
+        self, async_client, async_session
+    ):
+        _, student, cls, el, ex = await self._published_list(async_session)
+        token = await _login(async_client, student.email, "secret123")
+        client_snap = {"do": "aluno"}
+
+        r = await async_client.post(
+            "/submissions",
+            json={
+                "exercise_id": ex.id,
+                "exercise_list_id": el.id,
+                "class_id": cls.id,
+                "code_snapshot": "code",
+                "language_snapshot": client_snap,
+                "status": "SUBMITTED",
+            },
+            headers=_auth(token),
+        )
+        assert r.status_code == 201
+        assert r.json()["languageSnapshot"] == client_snap

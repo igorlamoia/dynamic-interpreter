@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.class_exercise_list import ClassExerciseList
 from app.models.class_member import ClassMember
 from app.models.exercise import Exercise
+from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
 from app.models.language import Language
 from app.models.user import User, UserRole
@@ -39,7 +40,30 @@ async def _user_can_read_language(
         .limit(1)
     )
     result = await session.execute(stmt)
-    return result.scalar_one_or_none() is not None
+    if result.scalar_one_or_none() is not None:
+        return True
+
+    # A lista inteira pode travar a linguagem, e aí nenhum exercício dela
+    # aponta para ela. Sem este caminho o aluno levaria 403 no caso mais
+    # comum do recurso: lista travada com exercícios OPEN.
+    list_stmt = (
+        select(ExerciseList.id)
+        .join(
+            ClassExerciseList,
+            ClassExerciseList.exercise_list_id == ExerciseList.id,
+        )
+        .join(
+            ClassMember,
+            and_(
+                ClassMember.class_id == ClassExerciseList.class_id,
+                ClassMember.student_id == user_id,
+            ),
+        )
+        .where(ExerciseList.locked_language_id == language.id)
+        .limit(1)
+    )
+    list_result = await session.execute(list_stmt)
+    return list_result.scalar_one_or_none() is not None
 
 
 async def list_my_languages(user_id: int, session: AsyncSession) -> list[Language]:
@@ -105,15 +129,28 @@ async def delete_language(language_id: int, user_id: int, session: AsyncSession)
     language = await session.get(Language, language_id)
     if language is None or language.owner_id != user_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Language not found")
-    in_use = (
+    in_use_by_exercise = (
         await session.execute(
             select(Exercise.id).where(Exercise.locked_language_id == language_id).limit(1)
         )
     ).scalar_one_or_none()
-    if in_use is not None:
+    if in_use_by_exercise is not None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Language is locked by at least one exercise and cannot be deleted",
+        )
+
+    in_use_by_list = (
+        await session.execute(
+            select(ExerciseList.id)
+            .where(ExerciseList.locked_language_id == language_id)
+            .limit(1)
+        )
+    ).scalar_one_or_none()
+    if in_use_by_list is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Language is locked by at least one exercise list and cannot be deleted",
         )
     # Detach from this user's active_language if it points here.
     user = await session.get(User, user_id)
