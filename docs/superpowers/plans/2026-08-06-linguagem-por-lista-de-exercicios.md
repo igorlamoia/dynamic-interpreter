@@ -2323,3 +2323,35 @@ git commit -m "feat(ide): workspace usa a linguagem efetiva e diz a origem da tr
 ```json:metadata
 {"files": ["packages/ide/src/components/exercise-workspace/LockedLanguageBanner.tsx", "packages/ide/src/views/ide/components/locked-language-banner.spec.tsx", "packages/ide/src/pages/exercises/workspace.tsx"], "verifyCommand": "cd packages/ide && npx tsc --noEmit && npm run test", "acceptanceCriteria": ["useEffect usa effectiveLanguage", "banner aparece com trava da lista", "texto distingue a origem", "sem trava nada muda", "clonar segue funcionando", "query passa listId"], "requiresUserVerification": false}
 ```
+
+---
+
+### Task 9: Read-gate no que vem embutido na resposta do exercício
+
+> **Task acrescentada durante a execução**, depois de a Task 4 revelar que a
+> premissa do spec estava errada. Ver a nota de correção no spec, seção API.
+
+**Goal:** Ler um exercício deixa de ser um atalho para ler o `customization` de uma linguagem que o read-gate de `/languages/{id}` negaria.
+
+**O problema, concretamente:** `GET /exercises/{id}` não faz checagem de acesso nenhuma, e `ExerciseResponse.locked_language` / `effective_language` embutem o `LanguageResponse` inteiro. Qualquer autenticado que saiba um id de exercício lê o `customization` da linguagem do professor; com `?listId=N`, lê também o da linguagem travada da lista, sem estar na turma. O nível do exercício é pré-existente; o da lista veio da Task 4.
+
+**Files:**
+- Modify: `backend/app/modules/exercises/service.py` (`get_exercise_in_context`)
+- Modify: `backend/app/modules/languages/service.py` (extrair o predicado de leitura hoje privado em `_user_can_read_language`)
+- Modify: `backend/tests/test_exercise_list_policy.py`
+
+**Acceptance Criteria:**
+- [ ] Aluno **sem** vínculo com turma que recebeu a lista: `GET /exercises/{id}` responde 200 com o exercício, mas `lockedLanguage` e `effectiveLanguage` vêm `null`
+- [ ] Aluno **com** vínculo: os dois vêm expandidos como hoje
+- [ ] O professor dono da linguagem sempre vê expandido
+- [ ] Linguagem do usuário `SYSTEM` sempre vem expandida
+- [ ] `effectiveLanguageSource` continua refletindo a origem mesmo quando a linguagem é omitida — o aluno precisa saber que está travado, mesmo sem poder ler o mapeamento
+- [ ] `tests/test_exercise_policy_and_snapshot.py` segue verde sem edição
+
+**Decisão de design a tomar na execução:** omitir a linguagem (200 com `null`) em vez de 403 no exercício inteiro. Um 403 quebraria o workspace de quem legitimamente abriu o exercício por outro caminho; omitir degrada só o campo sensível.
+
+**Verify:** `cd backend && uv run pytest tests/ -v`
+
+```json:metadata
+{"files": ["backend/app/modules/exercises/service.py", "backend/app/modules/languages/service.py", "backend/tests/test_exercise_list_policy.py"], "verifyCommand": "cd backend && uv run pytest tests/ -v", "acceptanceCriteria": ["sem vinculo recebe null", "com vinculo recebe expandido", "dono sempre ve", "SYSTEM sempre visivel", "source preservado", "testes existentes verdes"], "requiresUserVerification": false}
+```

@@ -135,9 +135,21 @@ null`.
   uma linguagem que ninguém pediu; o front sempre tem o par correto vindo da
   rota, então o 400 só aparece com dado inconsistente.
 
-`lockedLanguage` e `effectiveLanguage` continuam sujeitos ao read-gate para
-serem *lidos* isoladamente via `GET /languages/{id}`; embutidos na resposta
-do exercício/lista eles já vêm com o contexto que autoriza.
+> **Correção (2026-08-06, durante a Task 4).** A versão anterior desta seção
+> dizia que `lockedLanguage` e `effectiveLanguage`, "embutidos na resposta do
+> exercício/lista, já vêm com o contexto que autoriza". **Está errado.**
+> `GET /exercises/{id}` não faz checagem de acesso nenhuma — não faz hoje e
+> não fazia antes desta branch — e a resposta já inclui o `LanguageResponse`
+> completo, com `customization`. Isso contorna o read-gate de
+> `GET /languages/{id}`, que existe justamente para limitar quem lê a
+> linguagem de um professor.
+>
+> O problema é pré-existente no nível do exercício; a Task 4 o estende ao
+> nível da lista, porque `?listId=N` passa a expandir também a linguagem
+> travada da lista para quem não está na turma.
+>
+> Decidido não bloquear as tasks 5-8 por isso. O conserto é a **Task 9**,
+> com escopo e teste próprios.
 
 ### 4. Read-gate
 
