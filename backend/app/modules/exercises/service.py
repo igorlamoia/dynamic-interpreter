@@ -3,43 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException, status
 from sqlalchemy.orm import selectinload
 
-from app.models.exercise import Exercise, LanguagePolicy
+from app.models.exercise import Exercise
 from app.models.exercise_list_item import ExerciseListItem
-from app.models.language import Language
 from app.models.test_case import TestCase
 from app.models.user import User, UserRole
+from app.modules.languages.policy import validate_language_policy
 from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, TestCaseCreate
-
-
-async def _validate_language_policy(
-    teacher_id: int,
-    policy: LanguagePolicy,
-    locked_language_id: int | None,
-    session: AsyncSession,
-) -> None:
-    if policy == LanguagePolicy.LOCKED:
-        if locked_language_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="locked_language_id is required when language_policy=LOCKED",
-            )
-        language = await session.get(Language, locked_language_id)
-        if language is None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="locked_language not found"
-            )
-        owner = await session.get(User, language.owner_id)
-        if language.owner_id != teacher_id and (owner is None or owner.role != UserRole.SYSTEM):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Locked language must be owned by the teacher or by the SYSTEM user",
-            )
-    else:  # OPEN
-        if locked_language_id is not None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="locked_language_id must be null when language_policy=OPEN",
-            )
 
 
 async def create_exercise(data: ExerciseCreate, current_user_id: int, session: AsyncSession) -> Exercise:
@@ -47,7 +16,7 @@ async def create_exercise(data: ExerciseCreate, current_user_id: int, session: A
     if user.role == UserRole.STUDENT:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only teachers can create exercises")
 
-    await _validate_language_policy(
+    await validate_language_policy(
         current_user_id, data.language_policy, data.locked_language_id, session
     )
 
@@ -101,7 +70,7 @@ async def update_exercise(
     payload = data.model_dump(exclude_unset=True)
     next_policy = payload.get("language_policy", exercise.language_policy)
     next_locked = payload.get("locked_language_id", exercise.locked_language_id)
-    await _validate_language_policy(current_user_id, next_policy, next_locked, session)
+    await validate_language_policy(current_user_id, next_policy, next_locked, session)
 
     for field, value in payload.items():
         setattr(exercise, field, value)
