@@ -9,12 +9,14 @@ from app.modules.exercise_lists.service import (
     list_exercise_lists,
     publish_exercise_list,
     remove_exercise_from_list,
+    update_exercise_list,
 )
 from app.schemas.exercise_lists import (
     AddExerciseRequest,
     ExerciseListCreate,
     ExerciseListItemResponse,
     ExerciseListResponse,
+    ExerciseListUpdate,
     PublishRequest,
     PublishResponse,
 )
@@ -51,6 +53,17 @@ async def get_exercise_list_endpoint(
         response.submitted_exercise_ids = submitted_ids
 
     return response
+
+
+@router.patch("/{list_id}", response_model=ExerciseListResponse)
+async def update_exercise_list_endpoint(
+    list_id: int,
+    data: ExerciseListUpdate,
+    user_id: CurrentUserIdDep,
+    session: SessionDep,
+):
+    el = await update_exercise_list(list_id, user_id, data, session)
+    return ExerciseListResponse.model_validate(el)
 
 
 @router.post("/{list_id}/exercises", response_model=ExerciseListItemResponse, status_code=201)
