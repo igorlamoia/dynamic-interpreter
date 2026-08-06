@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/contexts/ToastContext";
 import { useCreateExerciseListMutation } from "@/hooks/use-api-queries";
+import { useLanguagesList } from "@/hooks/useLanguages";
 import {
   Dialog,
   DialogContent,
@@ -22,10 +23,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { HeroButton } from "@/components/buttons/hero";
+import { LanguagePolicyField } from "@/components/language-policy-field";
 
 const createListSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
   description: z.string().optional(),
+  languagePolicy: z.enum(["OPEN", "LOCKED"]),
+  lockedLanguageId: z.number().int().positive().nullable(),
 });
 type CreateListForm = z.infer<typeof createListSchema>;
 
@@ -40,16 +44,32 @@ export function CreateListModal({
 }) {
   const { showToast } = useToast();
   const createList = useCreateExerciseListMutation();
+  const languagesQuery = useLanguagesList(open);
   const form = useForm<CreateListForm>({
     resolver: zodResolver(createListSchema),
-    defaultValues: { title: "", description: "" },
+    defaultValues: {
+      title: "",
+      description: "",
+      languagePolicy: "OPEN",
+      lockedLanguageId: null,
+    },
   });
 
   const onSubmit = async (values: CreateListForm) => {
+    if (values.languagePolicy === "LOCKED" && values.lockedLanguageId === null) {
+      form.setError("lockedLanguageId", {
+        type: "manual",
+        message: "Escolha uma linguagem",
+      });
+      return;
+    }
     try {
       await createList.mutateAsync({
         title: values.title,
         description: values.description,
+        languagePolicy: values.languagePolicy,
+        lockedLanguageId:
+          values.languagePolicy === "LOCKED" ? values.lockedLanguageId : null,
       });
       showToast({ type: "success", message: "Lista criada com sucesso!" });
       form.reset();
@@ -106,6 +126,43 @@ export function CreateListModal({
                       className="bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="languagePolicy"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Linguagem permitida</FormLabel>
+                  <FormControl>
+                    <LanguagePolicyField
+                      value={{
+                        policy: field.value,
+                        lockedLanguageId: form.watch("lockedLanguageId"),
+                      }}
+                      onChange={(next) => {
+                        field.onChange(next.policy);
+                        form.setValue("lockedLanguageId", next.lockedLanguageId);
+                      }}
+                      languages={languagesQuery.data ?? []}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* o guard do onSubmit registra o erro em lockedLanguageId; o
+                FormMessage acima só enxerga languagePolicy, então a mensagem
+                precisa do seu próprio campo para aparecer */}
+            <FormField
+              control={form.control}
+              name="lockedLanguageId"
+              render={() => (
+                <FormItem>
                   <FormMessage />
                 </FormItem>
               )}

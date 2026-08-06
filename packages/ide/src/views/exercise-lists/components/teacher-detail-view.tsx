@@ -18,8 +18,10 @@ import { PublishModal } from "./publish-modal";
 import { AddExerciseModal } from "./add-exercise-modal";
 import { SubmissionsPanel } from "./submissions-panel";
 import { ExerciseRow } from "./exercise-row";
+import { ListLanguagePanel } from "./list-language-panel";
 import {
   useExerciseListSubmissionsQuery,
+  useExercisesQuery,
   useRemoveExerciseFromListMutation,
 } from "@/hooks/use-api-queries";
 
@@ -54,6 +56,15 @@ export function TeacherDetailView({
 
   const existingIds = new Set(list.items.map((i) => i.exerciseId));
   const submissions = (submissionsQuery.data ?? []) as SubmissionRecord[];
+
+  // Os itens da lista só trazem { id, title }; a política de cada exercício
+  // vem da listagem do professor, que já está em cache.
+  const exercisesQuery = useExercisesQuery();
+  const lockedItemCount = (exercisesQuery.data ?? []).filter(
+    (ex) =>
+      ex.languagePolicy === "LOCKED" &&
+      list.items.some((item) => item.exerciseId === ex.id),
+  ).length;
 
   const handleToggleSubmissions = () => {
     setShowSubmissions((v) => !v);
@@ -92,6 +103,8 @@ export function TeacherDetailView({
           </div>
         </div>
       </div>
+
+      <ListLanguagePanel list={list} lockedItemCount={lockedItemCount} />
 
       {/* exercises panel */}
       <div className="bg-white/3 backdrop-blur-xl border border-white/8 rounded-2xl overflow-hidden">
