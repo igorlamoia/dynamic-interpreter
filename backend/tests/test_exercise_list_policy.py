@@ -4,13 +4,14 @@ os.environ.setdefault("SECRET_KEY", "test-secret-key-for-testing-only-not-for-pr
 os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 
 from httpx import AsyncClient
+from sqlalchemy import select
 
 from app.models.class_member import ClassMember
 from app.models.exercise import Exercise
 from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
 from app.models.language import Language, LanguagePolicy
-from app.models.user import UserRole
+from app.models.user import User, UserRole
 from app.modules.languages.policy import resolve_effective_language
 from tests.factories import (
     create_class,
@@ -427,3 +428,140 @@ class TestListLockSideEffects:
         )
         assert r.status_code == 201
         assert r.json()["languageSnapshot"] == client_snap
+
+
+class TestExerciseResponseReadGate:
+    """GET /exercises/{id} não pode ser atalho para ler a linguagem alheia.
+
+    A resposta embute `lockedLanguage` e `effectiveLanguage` inteiras, com
+    `customization`. Quem o read-gate de GET /languages/{id} negaria recebe
+    200 com os dois `null` — mas `effectiveLanguageSource` fica, porque o
+    aluno precisa saber que está travado mesmo sem poder ler o mapeamento.
+    """
+
+    async def _published(self, async_session, suffix, *, lock, language_owner=None):
+        """Turma com um aluno dentro, um de fora, e uma lista publicada nela.
+
+        `lock` diz onde a trava mora: "exercise" ou "list".
+        """
+        org = await create_organization(async_session)
+        teacher = await create_user(
+            async_session, org, email=f"{suffix}_t@x.com", role=UserRole.TEACHER
+        )
+        member = await create_user(async_session, org, email=f"{suffix}_in@x.com")
+        outsider = await create_user(async_session, org, email=f"{suffix}_out@x.com")
+        lang = await _language(
+            async_session, language_owner or teacher, name=f"Trancada-{suffix}"
+        )
+        cls = await create_class(async_session, org, teacher)
+        async_session.add(ClassMember(class_id=cls.id, student_id=member.id))
+        el = await create_exercise_list(
+            async_session,
+            teacher,
+            language_policy=(
+                LanguagePolicy.LOCKED if lock == "list" else LanguagePolicy.OPEN
+            ),
+            locked_language_id=lang.id if lock == "list" else None,
+        )
+        ex = await create_exercise(async_session, teacher)
+        if lock == "exercise":
+            ex.language_policy = LanguagePolicy.LOCKED
+            ex.locked_language_id = lang.id
+        async_session.add(
+            ExerciseListItem(
+                exercise_list_id=el.id, exercise_id=ex.id, grade_weight=1.0, order_index=0
+            )
+        )
+        await create_class_exercise_list(async_session, el, cls)
+        await async_session.flush()
+        return member, outsider, el, ex, lang
+
+    async def test_outsider_gets_null_languages_but_keeps_source(
+        self, async_client, async_session
+    ):
+        _, outsider, _, ex, lang = await self._published(
+            async_session, "gate1", lock="exercise"
+        )
+
+        token = await _login(async_client, outsider.email, "secret123")
+        r = await async_client.get(f"/exercises/{ex.id}", headers=_auth(token))
+        assert r.status_code == 200
+        data = r.json()
+        assert data["lockedLanguage"] is None
+        assert data["effectiveLanguage"] is None
+        assert data["effectiveLanguageSource"] == "exercise"
+        assert data["lockedLanguageId"] == lang.id
+
+    async def test_enrolled_student_sees_both_expanded(self, async_client, async_session):
+        member, _, _, ex, _ = await self._published(
+            async_session, "gate2", lock="exercise"
+        )
+
+        token = await _login(async_client, member.email, "secret123")
+        r = await async_client.get(f"/exercises/{ex.id}", headers=_auth(token))
+        assert r.status_code == 200
+        data = r.json()
+        assert data["lockedLanguage"]["customization"] == CUSTOM
+        assert data["effectiveLanguage"]["customization"] == CUSTOM
+        assert data["effectiveLanguageSource"] == "exercise"
+
+    async def test_owner_teacher_sees_expanded(self, async_client, async_session):
+        teacher, token, _ = await _teacher(async_client, async_session, email="gate3@x.com")
+        lang = await _language(async_session, teacher, name="Trancada3")
+        ex = await create_exercise(async_session, teacher)
+        ex.language_policy = LanguagePolicy.LOCKED
+        ex.locked_language_id = lang.id
+        await async_session.flush()
+
+        r = await async_client.get(f"/exercises/{ex.id}", headers=_auth(token))
+        assert r.status_code == 200
+        data = r.json()
+        assert data["lockedLanguage"]["customization"] == CUSTOM
+        assert data["effectiveLanguage"]["customization"] == CUSTOM
+
+    async def test_system_language_is_expanded_for_anyone(self, async_client, async_session):
+        system_user = (
+            await async_session.execute(select(User).where(User.role == UserRole.SYSTEM))
+        ).scalar_one()
+        _, outsider, _, ex, _ = await self._published(
+            async_session, "gate4", lock="exercise", language_owner=system_user
+        )
+
+        token = await _login(async_client, outsider.email, "secret123")
+        r = await async_client.get(f"/exercises/{ex.id}", headers=_auth(token))
+        assert r.status_code == 200
+        data = r.json()
+        assert data["lockedLanguage"]["customization"] == CUSTOM
+        assert data["effectiveLanguage"]["customization"] == CUSTOM
+
+    async def test_outsider_cannot_read_list_language_via_list_id(
+        self, async_client, async_session
+    ):
+        _, outsider, el, ex, _ = await self._published(
+            async_session, "gate5", lock="list"
+        )
+
+        token = await _login(async_client, outsider.email, "secret123")
+        r = await async_client.get(
+            f"/exercises/{ex.id}", params={"listId": el.id}, headers=_auth(token)
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["effectiveLanguage"] is None
+        assert data["effectiveLanguageSource"] == "list"
+
+    async def test_enrolled_student_reads_list_language_via_list_id(
+        self, async_client, async_session
+    ):
+        member, _, el, ex, _ = await self._published(
+            async_session, "gate6", lock="list"
+        )
+
+        token = await _login(async_client, member.email, "secret123")
+        r = await async_client.get(
+            f"/exercises/{ex.id}", params={"listId": el.id}, headers=_auth(token)
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["effectiveLanguage"]["customization"] == CUSTOM
+        assert data["effectiveLanguageSource"] == "list"

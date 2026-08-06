@@ -28,14 +28,19 @@ async def get_exercise_endpoint(
     session: SessionDep,
     list_id: int | None = Query(default=None, alias="listId"),
 ):
-    exercise, effective, source = await get_exercise_in_context(
-        exercise_id, list_id, session
-    )
-    response = ExerciseResponse.model_validate(exercise)
+    ctx = await get_exercise_in_context(exercise_id, list_id, user_id, session)
+    response = ExerciseResponse.model_validate(ctx.exercise)
+    if not ctx.can_read_locked_language:
+        # `model_validate` expandiu a relação direto do ORM — o gate só existe
+        # se ele for desfeito aqui. `lockedLanguageId` fica: o segredo é o
+        # `customization`, e o id o cliente já vê no source.
+        response.locked_language = None
     response.effective_language = (
-        LanguageResponse.model_validate(effective) if effective is not None else None
+        LanguageResponse.model_validate(ctx.effective_language)
+        if ctx.effective_language is not None
+        else None
     )
-    response.effective_language_source = source
+    response.effective_language_source = ctx.effective_language_source
     return response
 
 

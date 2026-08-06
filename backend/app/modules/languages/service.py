@@ -13,9 +13,15 @@ from app.models.user import User, UserRole
 from app.schemas.languages import LanguageCreate, LanguageUpdate
 
 
-async def _user_can_read_language(
+async def user_can_read_language(
     language: Language, user_id: int, session: AsyncSession
 ) -> bool:
+    """Este usuário pode ver o `customization` desta linguagem?
+
+    Pública porque o read-gate não vale só em `GET /languages/{id}`: qualquer
+    resposta que embuta a linguagem inteira (o exercício embute duas) tem que
+    passar pelo mesmo predicado, senão vira atalho para contorná-lo.
+    """
     if language.owner_id == user_id:
         return True
     owner = await session.get(User, language.owner_id)
@@ -77,7 +83,7 @@ async def get_language(language_id: int, user_id: int, session: AsyncSession) ->
     language = await session.get(Language, language_id)
     if language is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Language not found")
-    if not await _user_can_read_language(language, user_id, session):
+    if not await user_can_read_language(language, user_id, session):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
     return language
 

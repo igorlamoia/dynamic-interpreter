@@ -1,3 +1,5 @@
+from typing import NamedTuple
+
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException, status
@@ -14,6 +16,7 @@ from app.modules.languages.policy import (
     resolve_effective_language,
     validate_language_policy,
 )
+from app.modules.languages.service import user_can_read_language
 from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, TestCaseCreate
 
 
@@ -129,13 +132,25 @@ async def delete_test_case(exercise_id: int, tc_id: int, current_user_id: int, s
     await session.flush()
 
 
+class ExerciseContext(NamedTuple):
+    exercise: Exercise
+    effective_language: Language | None
+    effective_language_source: EffectiveSource | None
+    can_read_locked_language: bool
+
+
 async def get_exercise_in_context(
-    exercise_id: int, list_id: int | None, session: AsyncSession
-) -> tuple[Exercise, Language | None, EffectiveSource | None]:
+    exercise_id: int, list_id: int | None, user_id: int, session: AsyncSession
+) -> ExerciseContext:
     """Carrega o exercício e resolve a linguagem no contexto de uma lista.
 
     `list_id` inconsistente é 400 e não silêncio: entregar ao aluno a
     linguagem de um contexto que não é o dele seria pior do que falhar.
+
+    As linguagens que a resposta embute passam pelo mesmo read-gate de
+    `GET /languages/{id}`: quem não pode lê-las recebe o exercício mesmo
+    assim, só sem elas. Omitir o campo em vez de 403 no exercício inteiro
+    preserva o workspace de quem chegou por outro caminho legítimo.
     """
     exercise = await get_exercise(exercise_id, session)
 
@@ -168,4 +183,19 @@ async def get_exercise_in_context(
             )
 
     effective, source = resolve_effective_language(exercise, exercise_list)
-    return exercise, effective, source
+
+    # `source` sobrevive ao gate de propósito: o aluno precisa saber que está
+    # travado mesmo quando não pode ler qual é o mapeamento.
+    can_read_locked = exercise.locked_language is not None and await user_can_read_language(
+        exercise.locked_language, user_id, session
+    )
+    if effective is not None:
+        effective_readable = (
+            can_read_locked
+            if effective is exercise.locked_language
+            else await user_can_read_language(effective, user_id, session)
+        )
+        if not effective_readable:
+            effective = None
+
+    return ExerciseContext(exercise, effective, source, can_read_locked)
