@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
-from sqlalchemy import Enum as SAEnum
+from sqlalchemy import Boolean, DateTime, Enum as SAEnum
 from sqlalchemy import Integer, String, ForeignKey, UniqueConstraint, Index, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -33,6 +33,7 @@ class Language(Base):
     __table_args__ = (
         UniqueConstraint("owner_id", "name", name="uq_languages_owner_name"),
         Index("ix_languages_owner_id", "owner_id"),
+        Index("ix_languages_public_published_at", "is_public", "published_at"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -47,6 +48,12 @@ class Language(Base):
     preset_id: Mapped[str | None] = mapped_column(String, nullable=True)
     cloned_from_id: Mapped[int | None] = mapped_column(
         Integer, ForeignKey("languages.id", ondelete="SET NULL"), nullable=True
+    )
+    is_public: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false"
+    )
+    published_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
     )
     created_at: Mapped[datetime] = mapped_column(default=func.now())
     updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
@@ -77,3 +84,9 @@ class Language(Base):
                 customization.get("semicolonMode", "optional-eol"),
             ),
         }
+
+    @property
+    def owner_name(self) -> str | None:
+        """Nome público do autor quando a relação veio carregada."""
+        owner = self.__dict__.get("owner")
+        return owner.name if owner is not None else None

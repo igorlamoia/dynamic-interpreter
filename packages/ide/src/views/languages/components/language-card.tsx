@@ -1,4 +1,4 @@
-import { Copy, Dna, Pencil, Star, Trash2 } from "lucide-react";
+import { Copy, Dna, Globe2, LockKeyhole, Pencil, Star, Trash2 } from "lucide-react";
 import type { LanguageSummary } from "@/lib/languages-api";
 import { getLanguageDNAChips } from "../language-dna";
 
@@ -12,22 +12,26 @@ export type LanguageCardProps = {
   // ação "Tornar ativa" fica desabilitada para não disparar uma mutação
   // inútil na linguagem que já está ativa.
   activeUnknown: boolean;
+  canPublish: boolean;
   onEdit: (id: number) => void;
   onSetActive: (id: number, name: string) => void;
   onClone: (id: number, name: string) => void;
   onDelete: (id: number, name: string) => void;
   onViewDna: (id: number, name: string) => void;
+  onTogglePublication: (id: number, name: string, isPublic: boolean) => void;
 };
 
 export function LanguageCard({
   language,
   isActive,
   activeUnknown,
+  canPublish,
   onEdit,
   onSetActive,
   onClone,
   onDelete,
   onViewDna,
+  onTogglePublication,
 }: LanguageCardProps) {
   return (
     <article
@@ -57,6 +61,12 @@ export function LanguageCard({
               />
             )}
             <h3 className="truncate font-semibold text-white">{language.name}</h3>
+            {language.isPublic && (
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-300/20 bg-emerald-300/8 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-200">
+                <Globe2 className="size-2.5" />
+                Pública
+              </span>
+            )}
           </div>
           {language.description && (
             <p className="mt-0.5 truncate text-xs text-slate-400">
@@ -91,6 +101,23 @@ export function LanguageCard({
           <Dna className="size-4" />
           Ver DNA
         </button>
+        {canPublish && (
+          <button
+            type="button"
+            aria-label={`${language.isPublic ? "Despublicar" : "Publicar"} ${language.name}`}
+            title={language.isPublic ? "Remover da comunidade" : "Publicar na comunidade"}
+            onClick={() =>
+              onTogglePublication(language.id, language.name, !language.isPublic)
+            }
+            className="rounded-lg p-2 text-slate-400 hover:bg-emerald-400/10 hover:text-emerald-300"
+          >
+            {language.isPublic ? (
+              <LockKeyhole className="size-4" />
+            ) : (
+              <Globe2 className="size-4" />
+            )}
+          </button>
+        )}
         <button
           type="button"
           aria-label={`Editar ${language.name}`}

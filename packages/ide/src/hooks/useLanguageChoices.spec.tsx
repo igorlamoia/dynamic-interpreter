@@ -100,10 +100,13 @@ describe("useLanguageChoices", () => {
         {
           id: 3,
           ownerId: 1,
+          ownerName: "Autor",
           name: "PtBr-Lang",
           description: null,
           imageUrl: "https://cdn.example/p.png",
           clonedFromId: null,
+          isPublic: false,
+          publishedAt: null,
           updatedAt: "2026-08-01T00:00:00Z",
         },
       ],

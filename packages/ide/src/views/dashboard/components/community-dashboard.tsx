@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { ArrowRight, Code2, Dna, Languages, Plus, Sparkles } from "lucide-react";
+import { ArrowRight, Code2, Dna, Globe2, Languages, Plus, Sparkles } from "lucide-react";
 import { HeroButton } from "@/components/buttons/hero";
 import { GradientText } from "@/components/text/gradient";
 import { Title } from "@/components/text/title";
@@ -56,6 +56,14 @@ export function CommunityDashboard() {
             >
               Ver meu acervo
               <ArrowRight className="size-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => void router.push("/community/languages")}
+              className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/6 px-5 py-3 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/30 hover:bg-emerald-300/10"
+            >
+              <Globe2 className="size-4" />
+              Explorar comunidade
             </button>
           </div>
         </div>

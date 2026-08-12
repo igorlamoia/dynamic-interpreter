@@ -36,6 +36,8 @@ export const queryKeys = {
   },
   languages: {
     all: ["languages"] as const,
+    community: (filters: Record<string, unknown> = {}) =>
+      ["languages", "community", filters] as const,
     detail: (id: number | undefined) => ["languages", id] as const,
     active: ["languages", "active"] as const,
   },

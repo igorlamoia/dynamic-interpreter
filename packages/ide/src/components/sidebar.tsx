@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import { BookOpen, Code2, Languages, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+  BookOpen,
+  Code2,
+  Globe2,
+  Languages,
+  LayoutDashboard,
+  ListChecks,
+} from "lucide-react";
 
 type MenuItem = {
   id: string;
@@ -22,6 +29,14 @@ const languagesMenuItem: MenuItem = {
   activeMatchers: ["/languages", "/language-creator"],
 };
 
+const communityCatalogMenuItem: MenuItem = {
+  id: "comunidade",
+  label: "Comunidade",
+  icon: <Globe2 className="w-5 h-5" />,
+  href: "/community/languages",
+  activeMatchers: ["/community"],
+};
+
 const studentMenu: MenuItem[] = [
   {
     id: "turmas",
@@ -31,6 +46,7 @@ const studentMenu: MenuItem[] = [
     activeMatchers: ["/dashboard", "/classes"],
   },
   languagesMenuItem,
+  communityCatalogMenuItem,
 ];
 
 const teacherMenu: MenuItem[] = [
@@ -56,6 +72,7 @@ const teacherMenu: MenuItem[] = [
     activeMatchers: ["/exercise-lists"],
   },
   languagesMenuItem,
+  communityCatalogMenuItem,
 ];
 
 const communityMenu: MenuItem[] = [
@@ -67,6 +84,7 @@ const communityMenu: MenuItem[] = [
     activeMatchers: ["/dashboard"],
   },
   languagesMenuItem,
+  communityCatalogMenuItem,
 ];
 
 export function Sidebar() {

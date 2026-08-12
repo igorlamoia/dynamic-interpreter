@@ -17,6 +17,7 @@ const detailQueryMock = vi.fn();
 const setActiveMutateMock = vi.fn();
 const cloneMutateMock = vi.fn();
 const deleteMutateMock = vi.fn();
+const publicationMutateMock = vi.fn();
 const showToastMock = vi.fn();
 
 vi.mock("next/router", () => ({
@@ -31,6 +32,10 @@ vi.mock("@/hooks/useLanguages", () => ({
   }),
   useCloneLanguage: () => ({ mutateAsync: cloneMutateMock, isPending: false }),
   useDeleteLanguage: () => ({ mutateAsync: deleteMutateMock, isPending: false }),
+  useSetLanguagePublication: () => ({
+    mutateAsync: publicationMutateMock,
+    isPending: false,
+  }),
   useActiveLanguage: () => activeQueryMock(),
   useLanguageDetail: () => detailQueryMock(),
 }));
@@ -39,14 +44,20 @@ vi.mock("@/contexts/ToastContext", () => ({
   useToast: () => ({ showToast: showToastMock }),
 }));
 
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: () => ({ isCommunity: true }),
+}));
+
 vi.mock("lucide-react", () => ({
   AlertCircle: () => <span>alert-circle</span>,
   CheckCircle2: () => <span>check-circle</span>,
   Copy: () => <span>copy</span>,
   Dna: () => <span>dna</span>,
+  Globe2: () => <span>globe</span>,
   Info: () => <span>info</span>,
   Languages: () => <span>languages</span>,
   Loader2: () => <span>loading</span>,
+  LockKeyhole: () => <span>lock</span>,
   Pencil: () => <span>pencil</span>,
   Plus: () => <span>plus</span>,
   RefreshCw: () => <span>refresh</span>,
@@ -60,10 +71,13 @@ const LANGUAGES = [
   {
     id: 1,
     ownerId: 7,
+    ownerName: "Autor",
     name: "PtBr-Lang",
     description: "Português",
     imageUrl: "https://cdn.example/ptbr.png",
     clonedFromId: null,
+    isPublic: true,
+    publishedAt: "2026-08-01T00:00:00Z",
     updatedAt: "2026-08-01T00:00:00Z",
     dna: {
       typing: "typed",
@@ -75,10 +89,13 @@ const LANGUAGES = [
   {
     id: 2,
     ownerId: 7,
+    ownerName: "Autor",
     name: "MinhaLang",
     description: null,
     imageUrl: null,
     clonedFromId: 1,
+    isPublic: false,
+    publishedAt: null,
     updatedAt: "2026-08-02T00:00:00Z",
     dna: {
       typing: "untyped",
@@ -113,6 +130,7 @@ describe("LanguagesView", () => {
     setActiveMutateMock.mockReset().mockResolvedValue(undefined);
     cloneMutateMock.mockReset().mockResolvedValue({ name: "PtBr-Lang (cópia)" });
     deleteMutateMock.mockReset().mockResolvedValue(undefined);
+    publicationMutateMock.mockReset().mockResolvedValue(undefined);
     showToastMock.mockReset();
     listQueryMock.mockReturnValue({ data: LANGUAGES, isPending: false });
     activeQueryMock.mockReturnValue({ data: { id: 1 }, isPending: false });
@@ -214,6 +232,20 @@ describe("LanguagesView", () => {
     await act(async () => {});
 
     expect(cloneMutateMock).toHaveBeenCalledWith(1);
+
+    act(() => root.unmount());
+  });
+
+  it("permite ao membro da comunidade despublicar sua linguagem", async () => {
+    const { container, root } = render();
+
+    click(container.querySelector('button[aria-label="Despublicar PtBr-Lang"]'));
+    await act(async () => {});
+
+    expect(publicationMutateMock).toHaveBeenCalledWith({
+      id: 1,
+      isPublic: false,
+    });
 
     act(() => root.unmount());
   });

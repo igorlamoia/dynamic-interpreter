@@ -1,7 +1,10 @@
+from datetime import UTC, datetime
+
 from fastapi import HTTPException, status
-from sqlalchemy import and_, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.models.class_exercise_list import ClassExerciseList
 from app.models.class_member import ClassMember
@@ -23,6 +26,8 @@ async def user_can_read_language(
     passar pelo mesmo predicado, senão vira atalho para contorná-lo.
     """
     if language.owner_id == user_id:
+        return True
+    if language.is_public:
         return True
     owner = await session.get(User, language.owner_id)
     if owner is not None and owner.role == UserRole.SYSTEM:
@@ -74,13 +79,72 @@ async def user_can_read_language(
 
 async def list_my_languages(user_id: int, session: AsyncSession) -> list[Language]:
     result = await session.execute(
-        select(Language).where(Language.owner_id == user_id).order_by(Language.updated_at.desc())
+        select(Language)
+        .options(selectinload(Language.owner))
+        .where(Language.owner_id == user_id)
+        .order_by(Language.updated_at.desc())
     )
     return list(result.scalars().all())
 
 
+async def list_public_languages(
+    session: AsyncSession,
+    query: str | None = None,
+    typing: str | None = None,
+    array: str | None = None,
+    block: str | None = None,
+    semicolon: str | None = None,
+    limit: int = 24,
+    offset: int = 0,
+) -> list[Language]:
+    stmt = (
+        select(Language)
+        .options(selectinload(Language.owner))
+        .where(Language.is_public.is_(True))
+        .order_by(Language.published_at.desc(), Language.id.desc())
+        .limit(limit)
+        .offset(offset)
+    )
+    normalized_query = query.strip() if query else ""
+    if normalized_query:
+        pattern = f"%{normalized_query}%"
+        stmt = stmt.where(
+            or_(Language.name.ilike(pattern), Language.description.ilike(pattern))
+        )
+
+    # O DNA vive dentro de `customization`, mas linguagens antigas podem usar
+    # chaves legadas ou nem ter gravado o eixo. O mesmo fallback da propriedade
+    # `Language.dna` precisa ser aplicado no SQL para que filtro e exibição
+    # nunca discordem. `as_string()` é compilado como ->> no PostgreSQL e
+    # JSON_EXTRACT no SQLite usado pelos testes.
+    dna_filters = (
+        ("typing", "typingMode", "typed", typing),
+        ("array", "arrayMode", "fixed", array),
+        ("block", "blockMode", "delimited", block),
+        ("semicolon", "semicolonMode", "optional-eol", semicolon),
+    )
+    for axis, legacy_key, default, selected in dna_filters:
+        if selected is None:
+            continue
+        value = func.coalesce(
+            Language.customization["modes"][axis].as_string(),
+            Language.customization[legacy_key].as_string(),
+            default,
+        )
+        stmt = stmt.where(value == selected)
+
+    result = await session.execute(stmt)
+    return list(result.scalars().all())
+
+
 async def get_language(language_id: int, user_id: int, session: AsyncSession) -> Language:
-    language = await session.get(Language, language_id)
+    language = (
+        await session.execute(
+            select(Language)
+            .options(selectinload(Language.owner))
+            .where(Language.id == language_id)
+        )
+    ).scalar_one_or_none()
     if language is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Language not found")
     if not await user_can_read_language(language, user_id, session):
@@ -91,6 +155,7 @@ async def get_language(language_id: int, user_id: int, session: AsyncSession) ->
 async def create_language(
     data: LanguageCreate, user_id: int, session: AsyncSession
 ) -> Language:
+    owner = await session.get(User, user_id)
     language = Language(
         owner_id=user_id,
         name=data.name,
@@ -99,6 +164,7 @@ async def create_language(
         image_url=data.image_url,
         image_query=data.image_query,
         preset_id=data.preset_id,
+        owner=owner,
     )
     session.add(language)
     try:
@@ -127,6 +193,38 @@ async def update_language(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Name conflict"
         )
+    await session.refresh(language)
+    return language
+
+
+async def set_language_publication(
+    language_id: int,
+    is_public: bool,
+    user_id: int,
+    session: AsyncSession,
+) -> Language:
+    language = (
+        await session.execute(
+            select(Language)
+            .options(selectinload(Language.owner))
+            .where(Language.id == language_id, Language.owner_id == user_id)
+        )
+    ).scalar_one_or_none()
+    if language is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Language not found"
+        )
+
+    owner = language.owner
+    if owner.role != UserRole.COMMUNITY:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only community users can publish languages",
+        )
+
+    language.is_public = is_public
+    language.published_at = datetime.now(UTC) if is_public else None
+    await session.flush()
     await session.refresh(language)
     return language
 
@@ -193,6 +291,8 @@ async def clone_language(
         image_query=source.image_query,
         preset_id=source.preset_id,
         cloned_from_id=source.id,
+        is_public=False,
+        published_at=None,
     )
     session.add(clone)
     await session.flush()

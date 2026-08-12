@@ -29,13 +29,20 @@ class LanguageUpdate(CamelModel):
     preset_id: str | None = None
 
 
+class LanguagePublicationUpdate(CamelModel):
+    is_public: bool
+
+
 class LanguageSummary(CamelModel):
     id: int
     owner_id: int
+    owner_name: str | None = None
     name: str
     description: str | None
     image_url: str | None
     cloned_from_id: int | None
+    is_public: bool
+    published_at: datetime | None
     updated_at: datetime
     dna: LanguageDNA
 
@@ -43,6 +50,7 @@ class LanguageSummary(CamelModel):
 class LanguageResponse(CamelModel):
     id: int
     owner_id: int
+    owner_name: str | None = None
     name: str
     description: str | None
     customization: dict[str, Any]
@@ -50,6 +58,8 @@ class LanguageResponse(CamelModel):
     image_query: str | None
     preset_id: str | None
     cloned_from_id: int | None
+    is_public: bool
+    published_at: datetime | None
     created_at: datetime
     updated_at: datetime
     dna: LanguageDNA

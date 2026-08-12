@@ -8,13 +8,20 @@ export type LanguageDNA = {
   semicolon: "optional-eol" | "required";
 };
 
+export type CommunityLanguageFilters = Partial<LanguageDNA> & {
+  query?: string;
+};
+
 export type LanguageSummary = {
   id: number;
   ownerId: number;
+  ownerName: string | null;
   name: string;
   description: string | null;
   imageUrl: string | null;
   clonedFromId: number | null;
+  isPublic: boolean;
+  publishedAt: string | null;
   updatedAt: string;
   dna: LanguageDNA;
 };
@@ -49,6 +56,18 @@ export const languagesApi = {
     const { data } = await api.get<LanguageSummary[]>("/languages");
     return data;
   },
+  listCommunity: async (
+    filters: CommunityLanguageFilters = {},
+  ): Promise<LanguageSummary[]> => {
+    const { query, ...dnaFilters } = filters;
+    const { data } = await api.get<LanguageSummary[]>("/languages/community", {
+      params: {
+        ...(query ? { q: query } : {}),
+        ...dnaFilters,
+      },
+    });
+    return data;
+  },
   get: async (id: number): Promise<Language> => {
     const { data } = await api.get<Language>(`/languages/${id}`);
     return data;
@@ -66,6 +85,17 @@ export const languagesApi = {
   },
   clone: async (id: number): Promise<Language> => {
     const { data } = await api.post<Language>(`/languages/${id}/clone`);
+    return data;
+  },
+  import: async (id: number): Promise<Language> => {
+    const { data } = await api.post<Language>(`/languages/${id}/import`);
+    return data;
+  },
+  setPublication: async (id: number, isPublic: boolean): Promise<Language> => {
+    const { data } = await api.put<Language>(
+      `/languages/${id}/publication`,
+      { isPublic },
+    );
     return data;
   },
   getActive: async (): Promise<Language | null> => {

@@ -27,6 +27,7 @@ vi.mock("@/contexts/AuthContext", () => ({
 vi.mock("lucide-react", () => ({
   BookOpen: () => <span>book</span>,
   Code2: () => <span>code</span>,
+  Globe2: () => <span>globe</span>,
   Languages: () => <span>languages</span>,
   LayoutDashboard: () => <span>dashboard</span>,
   ListChecks: () => <span>list</span>,
@@ -76,11 +77,15 @@ describe("Sidebar", () => {
     act(() => root.unmount());
   });
 
-  it("mostra apenas painel e linguagens para membro da comunidade", () => {
+  it("mostra painel, linguagens e catálogo para membro da comunidade", () => {
     const { container, root } = render("/dashboard", false, true);
 
     expect(container.textContent).toContain("Meu Painel");
     expect(container.textContent).toContain("Minhas Linguagens");
+    expect(
+      container.querySelector('a[href="/community/languages"]'),
+    ).toBeTruthy();
+    expect(container.textContent).toContain("Comunidade");
     expect(container.textContent).not.toContain("Minhas Turmas");
     expect(container.textContent).not.toContain("Meus Exercícios");
 

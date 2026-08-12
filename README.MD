@@ -92,6 +92,11 @@ waits for PostgreSQL, applies Alembic migrations, seeds local sample data, and
 then becomes healthy. Ports can be overridden with `LOCAL_FRONTEND_PORT`,
 `LOCAL_BACKEND_PORT`, `LOCAL_DB_PORT`, and `LOCAL_API_URL`.
 
+The idempotent seed also publishes five ready-to-import official languages in
+the community catalog: Didática em Português, Pythonica, Minimalista,
+Ruby-like, and Minerês. Re-running the seed updates these SYSTEM-owned presets
+without duplicating them or changing copies imported by users.
+
 The existing `docker-compose.yml` remains available for externally configured
 deployments and must not be used as the default local environment.
 

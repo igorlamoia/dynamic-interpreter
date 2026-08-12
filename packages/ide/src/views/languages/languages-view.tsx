@@ -5,6 +5,7 @@ import {
   useCloneLanguage,
   useDeleteLanguage,
   useLanguagesList,
+  useSetLanguagePublication,
   useSetActiveLanguage,
 } from "@/hooks/useLanguages";
 import { useToast } from "@/contexts/ToastContext";
@@ -13,15 +14,18 @@ import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { LanguagesGrid } from "./components/languages-grid";
 import { LanguagesHeader } from "./components/languages-header";
 import { LanguageDnaDialog } from "./components/language-dna-dialog";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function LanguagesView() {
   const router = useRouter();
   const { showToast } = useToast();
+  const { isCommunity } = useAuth();
   const listQuery = useLanguagesList();
   const activeQuery = useActiveLanguage();
   const setActiveMut = useSetActiveLanguage();
   const cloneMut = useCloneLanguage();
   const deleteMut = useDeleteLanguage();
+  const publicationMut = useSetLanguagePublication();
 
   // Um erro de carregamento não pode se disfarçar de conta vazia: sem isto,
   // GET /languages falhando (rede, sessão expirada, 500) mostraria "Nenhuma
@@ -93,6 +97,23 @@ export function LanguagesView() {
     }
   };
 
+  const handlePublication = async (
+    id: number,
+    name: string,
+    isPublic: boolean,
+  ) => {
+    try {
+      await publicationMut.mutateAsync({ id, isPublic });
+      success(
+        isPublic
+          ? `"${name}" agora está no acervo da comunidade.`
+          : `"${name}" foi removida do acervo da comunidade.`,
+      );
+    } catch {
+      failure("Não foi possível alterar a publicação da linguagem.");
+    }
+  };
+
   return (
     <>
       <LanguagesHeader onCreate={() => goToCreator()} />
@@ -111,12 +132,14 @@ export function LanguagesView() {
           loading={listQuery.isPending}
           activeLanguageId={activeLanguageId}
           activeUnknown={activeUnknown}
+          canPublish={isCommunity}
           onCreate={() => goToCreator()}
           onEdit={(id) => goToCreator(id)}
           onSetActive={handleSetActive}
           onClone={handleClone}
           onDelete={handleDelete}
           onViewDna={(id, name) => setDnaLanguage({ id, name })}
+          onTogglePublication={handlePublication}
         />
       )}
       <LanguageDnaDialog
