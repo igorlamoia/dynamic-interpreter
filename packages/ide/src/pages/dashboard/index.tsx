@@ -9,9 +9,12 @@ import { CreateClassModal } from "@/views/dashboard/components/create-class-moda
 import { DashboardHeader } from "@/views/dashboard/components/dashboard-header";
 import { JoinClassModal } from "@/views/dashboard/components/join-class-modal";
 import { useClassesQuery } from "@/hooks/use-api-queries";
+import { useAuth } from "@/contexts/AuthContext";
+import { CommunityDashboard } from "@/views/dashboard/components/community-dashboard";
 
 export default function Dashboard() {
-  const classesQuery = useClassesQuery();
+  const { isCommunity } = useAuth();
+  const classesQuery = useClassesQuery(!isCommunity);
   const classes = classesQuery.data ?? [];
 
   // Modals
@@ -44,6 +47,10 @@ export default function Dashboard() {
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-y-auto w-full">
           <main className="max-w-7xl mx-auto px-6 py-12 w-full">
+            {isCommunity ? (
+              <CommunityDashboard />
+            ) : (
+              <>
             {/* Alerts */}
             {error && (
               <Alert
@@ -71,22 +78,28 @@ export default function Dashboard() {
               loading={classesQuery.isPending}
               onJoinClass={() => setShowJoinClass(true)}
             />
+              </>
+            )}
           </main>
 
           {/* Modals */}
-          <CreateClassModal
-            open={showCreateClass}
-            onOpenChange={setShowCreateClass}
-            onSuccess={handleClassCreated}
-            onError={setError}
-          />
+          {!isCommunity && (
+            <>
+              <CreateClassModal
+                open={showCreateClass}
+                onOpenChange={setShowCreateClass}
+                onSuccess={handleClassCreated}
+                onError={setError}
+              />
 
-          <JoinClassModal
-            open={showJoinClass}
-            onOpenChange={setShowJoinClass}
-            onSuccess={handleClassJoined}
-            onError={setError}
-          />
+              <JoinClassModal
+                open={showJoinClass}
+                onOpenChange={setShowJoinClass}
+                onSuccess={handleClassJoined}
+                onError={setError}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

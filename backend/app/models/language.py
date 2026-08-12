@@ -57,3 +57,23 @@ class Language(Base):
     cloned_from: Mapped["Language | None"] = relationship(
         "Language", remote_side="Language.id"
     )
+
+    @property
+    def dna(self) -> dict[str, str]:
+        customization = self.customization or {}
+        modes = customization.get("modes") or {}
+        return {
+            "typing": modes.get(
+                "typing", customization.get("typingMode", "typed")
+            ),
+            "array": modes.get(
+                "array", customization.get("arrayMode", "fixed")
+            ),
+            "block": modes.get(
+                "block", customization.get("blockMode", "delimited")
+            ),
+            "semicolon": modes.get(
+                "semicolon",
+                customization.get("semicolonMode", "optional-eol"),
+            ),
+        }

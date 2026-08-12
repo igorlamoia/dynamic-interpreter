@@ -1,6 +1,13 @@
 import { api } from "@/lib/api";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 
+export type LanguageDNA = {
+  typing: "typed" | "untyped";
+  array: "fixed" | "dynamic";
+  block: "delimited" | "indentation";
+  semicolon: "optional-eol" | "required";
+};
+
 export type LanguageSummary = {
   id: number;
   ownerId: number;
@@ -9,6 +16,7 @@ export type LanguageSummary = {
   imageUrl: string | null;
   clonedFromId: number | null;
   updatedAt: string;
+  dna: LanguageDNA;
 };
 
 export type Language = LanguageSummary & {

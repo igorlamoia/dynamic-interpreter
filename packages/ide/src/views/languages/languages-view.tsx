@@ -12,6 +12,7 @@ import { Alert } from "@/components/ui/alert";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { LanguagesGrid } from "./components/languages-grid";
 import { LanguagesHeader } from "./components/languages-header";
+import { LanguageDnaDialog } from "./components/language-dna-dialog";
 
 export function LanguagesView() {
   const router = useRouter();
@@ -27,6 +28,10 @@ export function LanguagesView() {
   // linguagem — Criar a primeira", convidando o usuário a duplicar algo que
   // ele já tem.
   const [loadError, setLoadError] = useState("");
+  const [dnaLanguage, setDnaLanguage] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   useEffect(() => {
     if (listQuery.isError) {
@@ -111,8 +116,17 @@ export function LanguagesView() {
           onSetActive={handleSetActive}
           onClone={handleClone}
           onDelete={handleDelete}
+          onViewDna={(id, name) => setDnaLanguage({ id, name })}
         />
       )}
+      <LanguageDnaDialog
+        languageId={dnaLanguage?.id}
+        languageName={dnaLanguage?.name ?? ""}
+        open={dnaLanguage !== null}
+        onOpenChange={(open) => {
+          if (!open) setDnaLanguage(null);
+        }}
+      />
     </>
   );
 }

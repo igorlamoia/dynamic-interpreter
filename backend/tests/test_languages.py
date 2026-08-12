@@ -80,6 +80,112 @@ class TestList:
         assert data[0]["name"] == "A1"
         assert data[0]["ownerId"] == user_a.id
 
+    async def test_list_includes_normalized_dna(self, async_client, async_session):
+        _, token, _ = await _login_user(async_client, async_session)
+        await async_client.post(
+            "/languages",
+            json={
+                "name": "DNA",
+                "customization": {
+                    "modes": {
+                        "typing": "untyped",
+                        "array": "dynamic",
+                        "block": "indentation",
+                        "semicolon": "required",
+                    }
+                },
+            },
+            headers=_auth(token),
+        )
+
+        response = await async_client.get("/languages", headers=_auth(token))
+
+        assert response.status_code == 200
+        assert response.json()[0]["dna"] == {
+            "typing": "untyped",
+            "array": "dynamic",
+            "block": "indentation",
+            "semicolon": "required",
+        }
+
+    async def test_legacy_customization_uses_dna_defaults(
+        self, async_client, async_session
+    ):
+        _, token, _ = await _login_user(async_client, async_session)
+        await async_client.post(
+            "/languages",
+            json={"name": "Legacy", "customization": {}},
+            headers=_auth(token),
+        )
+
+        response = await async_client.get("/languages", headers=_auth(token))
+
+        assert response.json()[0]["dna"] == {
+            "typing": "typed",
+            "array": "fixed",
+            "block": "delimited",
+            "semicolon": "optional-eol",
+        }
+
+
+class TestCommunityAccess:
+    async def test_community_can_manage_languages_but_not_academic_modules(
+        self, async_client, async_session
+    ):
+        registered = await async_client.post(
+            "/auth/register",
+            json={
+                "email": "community-access@example.com",
+                "password": "secret123",
+                "name": "Community",
+                "role": "community",
+                "organizationId": None,
+            },
+        )
+        token = registered.json()["accessToken"]
+
+        created = await async_client.post(
+            "/languages",
+            json={"name": "CommunityLang", "customization": {}},
+            headers=_auth(token),
+        )
+
+        assert created.status_code == 201
+        language_id = created.json()["id"]
+        assert (await async_client.get("/languages", headers=_auth(token))).status_code == 200
+        assert (
+            await async_client.get(
+                f"/languages/{language_id}", headers=_auth(token)
+            )
+        ).status_code == 200
+        assert (
+            await async_client.patch(
+                f"/languages/{language_id}",
+                json={"description": "Atualizada"},
+                headers=_auth(token),
+            )
+        ).status_code == 200
+        assert (
+            await async_client.put(
+                "/users/me/active-language",
+                json={"languageId": language_id},
+                headers=_auth(token),
+            )
+        ).status_code == 200
+        clone = await async_client.post(
+            f"/languages/{language_id}/clone", headers=_auth(token)
+        )
+        assert clone.status_code == 201
+        assert (
+            await async_client.delete(
+                f"/languages/{clone.json()['id']}", headers=_auth(token)
+            )
+        ).status_code == 204
+        assert (await async_client.get("/classes", headers=_auth(token))).status_code == 403
+        assert (await async_client.get("/exercises", headers=_auth(token))).status_code == 403
+        assert (await async_client.get("/exercise-lists", headers=_auth(token))).status_code == 403
+        assert (await async_client.get("/submissions", headers=_auth(token))).status_code == 403
+
 
 class TestGet:
     async def test_owner_can_read_full_customization(self, async_client, async_session):

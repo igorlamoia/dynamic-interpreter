@@ -4,6 +4,13 @@ from typing import Any
 from app.schemas.base import CamelModel
 
 
+class LanguageDNA(CamelModel):
+    typing: str
+    array: str
+    block: str
+    semicolon: str
+
+
 class LanguageCreate(CamelModel):
     name: str
     description: str | None = None
@@ -30,6 +37,7 @@ class LanguageSummary(CamelModel):
     image_url: str | None
     cloned_from_id: int | None
     updated_at: datetime
+    dna: LanguageDNA
 
 
 class LanguageResponse(CamelModel):
@@ -44,6 +52,7 @@ class LanguageResponse(CamelModel):
     cloned_from_id: int | None
     created_at: datetime
     updated_at: datetime
+    dna: LanguageDNA
 
 
 class ActiveLanguageUpdate(CamelModel):

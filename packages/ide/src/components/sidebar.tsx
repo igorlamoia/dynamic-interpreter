@@ -58,13 +58,28 @@ const teacherMenu: MenuItem[] = [
   languagesMenuItem,
 ];
 
+const communityMenu: MenuItem[] = [
+  {
+    id: "painel",
+    label: "Meu Painel",
+    icon: <LayoutDashboard className="w-5 h-5" />,
+    href: "/dashboard",
+    activeMatchers: ["/dashboard"],
+  },
+  languagesMenuItem,
+];
+
 export function Sidebar() {
   const { pathname } = useRouter();
-  const { isAuthenticated, isTeacher } = useAuth();
+  const { isAuthenticated, isCommunity, isTeacher } = useAuth();
 
   if (!isAuthenticated) return null;
 
-  const menuItems = isTeacher ? teacherMenu : studentMenu;
+  const menuItems = isCommunity
+    ? communityMenu
+    : isTeacher
+      ? teacherMenu
+      : studentMenu;
 
   return (
     <aside className="w-64 h-full shrink-0 flex flex-col bg-[#110c1c] border-r border-[#ffffff0a] relative z-40">

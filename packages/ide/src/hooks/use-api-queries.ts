@@ -64,7 +64,7 @@ type RegisterInput = {
   name: string;
   email: string;
   password: string;
-  role: string;
+  role: "teacher" | "student" | "community";
   organizationId: string;
 };
 
@@ -116,7 +116,10 @@ export function useRegisterMutation() {
     mutationFn: async (input: RegisterInput) => {
       const { data } = await api.post<{ accessToken: string }>(
         "/auth/register",
-        input,
+        {
+          ...input,
+          organizationId: input.organizationId || null,
+        },
       );
       const { data: user } = await api.get<AuthUser>("/auth/me", {
         headers: { Authorization: `Bearer ${data.accessToken}` },

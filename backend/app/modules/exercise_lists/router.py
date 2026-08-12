@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 
-from app.core.dependencies import CurrentUserIdDep, SessionDep
+from app.core.dependencies import AcademicUserIdDep, SessionDep
 from app.modules.exercise_lists.service import (
     add_exercise_to_list,
     create_exercise_list,
@@ -25,14 +25,14 @@ router = APIRouter(prefix="/exercise-lists", tags=["exercise-lists"])
 
 
 @router.get("", response_model=list[ExerciseListResponse])
-async def list_exercise_lists_endpoint(user_id: CurrentUserIdDep, session: SessionDep):
+async def list_exercise_lists_endpoint(user_id: AcademicUserIdDep, session: SessionDep):
     lists = await list_exercise_lists(user_id, session)
     return [ExerciseListResponse.model_validate(el) for el in lists]
 
 
 @router.post("", response_model=ExerciseListResponse, status_code=201)
 async def create_exercise_list_endpoint(
-    data: ExerciseListCreate, user_id: CurrentUserIdDep, session: SessionDep
+    data: ExerciseListCreate, user_id: AcademicUserIdDep, session: SessionDep
 ):
     el = await create_exercise_list(user_id, data.title, data.description, session)
     return ExerciseListResponse.model_validate(el)
@@ -41,7 +41,7 @@ async def create_exercise_list_endpoint(
 @router.get("/{list_id}", response_model=ExerciseListResponse)
 async def get_exercise_list_endpoint(
     list_id: int,
-    user_id: CurrentUserIdDep,
+    user_id: AcademicUserIdDep,
     session: SessionDep,
     class_id: int | None = Query(default=None, alias="classId"),
 ):
@@ -59,7 +59,7 @@ async def get_exercise_list_endpoint(
 async def update_exercise_list_endpoint(
     list_id: int,
     data: ExerciseListUpdate,
-    user_id: CurrentUserIdDep,
+    user_id: AcademicUserIdDep,
     session: SessionDep,
 ):
     el = await update_exercise_list(list_id, user_id, data, session)
@@ -68,7 +68,7 @@ async def update_exercise_list_endpoint(
 
 @router.post("/{list_id}/exercises", response_model=ExerciseListItemResponse, status_code=201)
 async def add_exercise_to_list_endpoint(
-    list_id: int, data: AddExerciseRequest, user_id: CurrentUserIdDep, session: SessionDep
+    list_id: int, data: AddExerciseRequest, user_id: AcademicUserIdDep, session: SessionDep
 ):
     item = await add_exercise_to_list(
         list_id, data.exercise_id, data.grade_weight, data.order_index, user_id, session
@@ -79,7 +79,7 @@ async def add_exercise_to_list_endpoint(
 @router.delete("/{list_id}/exercises", status_code=204)
 async def remove_exercise_from_list_endpoint(
     list_id: int,
-    user_id: CurrentUserIdDep,
+    user_id: AcademicUserIdDep,
     session: SessionDep,
     exercise_id: int = Query(..., alias="exerciseId"),
 ):
@@ -88,7 +88,7 @@ async def remove_exercise_from_list_endpoint(
 
 @router.post("/{list_id}/publish", response_model=PublishResponse)
 async def publish_exercise_list_endpoint(
-    list_id: int, data: PublishRequest, user_id: CurrentUserIdDep, session: SessionDep
+    list_id: int, data: PublishRequest, user_id: AcademicUserIdDep, session: SessionDep
 ):
     cel = await publish_exercise_list(
         list_id, data.class_id, data.total_grade, data.min_required, data.deadline, user_id, session

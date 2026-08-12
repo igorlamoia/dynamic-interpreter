@@ -1,5 +1,6 @@
-import { Copy, Pencil, Star, Trash2 } from "lucide-react";
+import { Copy, Dna, Pencil, Star, Trash2 } from "lucide-react";
 import type { LanguageSummary } from "@/lib/languages-api";
+import { getLanguageDNAChips } from "../language-dna";
 
 const DEFAULT_LANGUAGE_IMAGE = "/images/language-default.png";
 
@@ -15,6 +16,7 @@ export type LanguageCardProps = {
   onSetActive: (id: number, name: string) => void;
   onClone: (id: number, name: string) => void;
   onDelete: (id: number, name: string) => void;
+  onViewDna: (id: number, name: string) => void;
 };
 
 export function LanguageCard({
@@ -25,6 +27,7 @@ export function LanguageCard({
   onSetActive,
   onClone,
   onDelete,
+  onViewDna,
 }: LanguageCardProps) {
   return (
     <article
@@ -66,7 +69,28 @@ export function LanguageCard({
         </div>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex flex-wrap gap-1.5" aria-label="Resumo do DNA">
+        {getLanguageDNAChips(language.dna).map((item) => (
+          <span
+            key={item}
+            className="rounded-full border border-cyan-300/15 bg-cyan-300/6 px-2.5 py-1 text-[11px] font-medium text-cyan-100/90"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+
+      <div className="mt-auto flex items-center gap-1 border-t border-white/5 pt-2">
+        <button
+          type="button"
+          aria-label={`Ver DNA de ${language.name}`}
+          title="Ver DNA"
+          onClick={() => onViewDna(language.id, language.name)}
+          className="mr-auto inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold text-cyan-200 hover:bg-cyan-300/10 hover:text-cyan-100"
+        >
+          <Dna className="size-4" />
+          Ver DNA
+        </button>
         <button
           type="button"
           aria-label={`Editar ${language.name}`}

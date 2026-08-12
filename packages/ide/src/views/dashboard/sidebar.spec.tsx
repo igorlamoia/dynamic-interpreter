@@ -32,9 +32,9 @@ vi.mock("lucide-react", () => ({
   ListChecks: () => <span>list</span>,
 }));
 
-function render(pathname: string, isTeacher: boolean) {
+function render(pathname: string, isTeacher: boolean, isCommunity = false) {
   useRouterMock.mockReturnValue({ pathname });
-  useAuthMock.mockReturnValue({ isAuthenticated: true, isTeacher });
+  useAuthMock.mockReturnValue({ isAuthenticated: true, isTeacher, isCommunity });
 
   const container = document.createElement("div");
   document.body.appendChild(container);
@@ -72,6 +72,17 @@ describe("Sidebar", () => {
 
     const link = container.querySelector('a[href="/languages"]');
     expect(link).toBeTruthy();
+
+    act(() => root.unmount());
+  });
+
+  it("mostra apenas painel e linguagens para membro da comunidade", () => {
+    const { container, root } = render("/dashboard", false, true);
+
+    expect(container.textContent).toContain("Meu Painel");
+    expect(container.textContent).toContain("Minhas Linguagens");
+    expect(container.textContent).not.toContain("Minhas Turmas");
+    expect(container.textContent).not.toContain("Meus Exercícios");
 
     act(() => root.unmount());
   });

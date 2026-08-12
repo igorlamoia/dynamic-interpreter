@@ -13,6 +13,7 @@ import { LanguagesView } from "./languages-view";
 const pushMock = vi.fn();
 const listQueryMock = vi.fn();
 const activeQueryMock = vi.fn();
+const detailQueryMock = vi.fn();
 const setActiveMutateMock = vi.fn();
 const cloneMutateMock = vi.fn();
 const deleteMutateMock = vi.fn();
@@ -31,6 +32,7 @@ vi.mock("@/hooks/useLanguages", () => ({
   useCloneLanguage: () => ({ mutateAsync: cloneMutateMock, isPending: false }),
   useDeleteLanguage: () => ({ mutateAsync: deleteMutateMock, isPending: false }),
   useActiveLanguage: () => activeQueryMock(),
+  useLanguageDetail: () => detailQueryMock(),
 }));
 
 vi.mock("@/contexts/ToastContext", () => ({
@@ -41,11 +43,13 @@ vi.mock("lucide-react", () => ({
   AlertCircle: () => <span>alert-circle</span>,
   CheckCircle2: () => <span>check-circle</span>,
   Copy: () => <span>copy</span>,
+  Dna: () => <span>dna</span>,
   Info: () => <span>info</span>,
   Languages: () => <span>languages</span>,
   Loader2: () => <span>loading</span>,
   Pencil: () => <span>pencil</span>,
   Plus: () => <span>plus</span>,
+  RefreshCw: () => <span>refresh</span>,
   Star: () => <span>star</span>,
   Trash2: () => <span>trash</span>,
   TriangleAlert: () => <span>triangle-alert</span>,
@@ -61,6 +65,12 @@ const LANGUAGES = [
     imageUrl: "https://cdn.example/ptbr.png",
     clonedFromId: null,
     updatedAt: "2026-08-01T00:00:00Z",
+    dna: {
+      typing: "typed",
+      array: "fixed",
+      block: "delimited",
+      semicolon: "required",
+    },
   },
   {
     id: 2,
@@ -70,6 +80,12 @@ const LANGUAGES = [
     imageUrl: null,
     clonedFromId: 1,
     updatedAt: "2026-08-02T00:00:00Z",
+    dna: {
+      typing: "untyped",
+      array: "dynamic",
+      block: "indentation",
+      semicolon: "optional-eol",
+    },
   },
 ];
 
@@ -100,6 +116,12 @@ describe("LanguagesView", () => {
     showToastMock.mockReset();
     listQueryMock.mockReturnValue({ data: LANGUAGES, isPending: false });
     activeQueryMock.mockReturnValue({ data: { id: 1 }, isPending: false });
+    detailQueryMock.mockReturnValue({
+      data: undefined,
+      isPending: false,
+      isError: false,
+      refetch: vi.fn(),
+    });
   });
 
   afterEach(() => {
@@ -138,6 +160,18 @@ describe("LanguagesView", () => {
     );
     expect(sources).toContain("https://cdn.example/ptbr.png");
     expect(sources).toContain("/images/language-default.png");
+
+    act(() => root.unmount());
+  });
+
+  it("mostra os quatro eixos do DNA nos cards", () => {
+    const { container, root } = render();
+
+    expect(container.textContent).toContain("Tipada");
+    expect(container.textContent).toContain("Arrays fixos");
+    expect(container.textContent).toContain("Blocos delimitados");
+    expect(container.textContent).toContain("Terminador obrigatório");
+    expect(container.textContent).toContain("Não tipada");
 
     act(() => root.unmount());
   });

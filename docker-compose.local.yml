@@ -1,0 +1,86 @@
+name: ts-compilator-local
+
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tscompilator_local
+      POSTGRES_PASSWORD: local_only_password
+      POSTGRES_DB: tscompilator_local
+    ports:
+      - "${LOCAL_DB_PORT:-5434}:5432"
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U tscompilator_local -d tscompilator_local",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - local_stack
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+asyncpg://tscompilator_local:local_only_password@database:5432/tscompilator_local
+      DATABASE_SCHEMA: public
+      SECRET_KEY: local-development-secret-key-do-not-use-in-production
+      ACCESS_TOKEN_EXPIRE_MINUTES: "1440"
+      CORS_ORIGINS: '["http://localhost:${LOCAL_FRONTEND_PORT:-3001}"]'
+      RUN_CREATE_ALL: "false"
+    ports:
+      - "${LOCAL_BACKEND_PORT:-8000}:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    networks:
+      - local_stack
+
+  frontend:
+    build:
+      context: .
+      dockerfile: packages/ide/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${LOCAL_API_URL:-http://localhost:8000}
+    restart: unless-stopped
+    ports:
+      - "${LOCAL_FRONTEND_PORT:-3001}:3001"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3001').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - local_stack
+
+volumes:
+  local_postgres_data:
+    name: ts-compilator-local-postgres-data
+
+networks:
+  local_stack:
+    name: ts-compilator-local-network
