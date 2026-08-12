@@ -1,8 +1,17 @@
 import { HeroButton } from "../buttons/hero";
+import type { LanguageSaveMode } from "@/hooks/useLanguagePersistence";
+
+const SAVE_LABELS: Record<LanguageSaveMode, string> = {
+  local: "Salvar e Aplicar",
+  create: "Salvar como nova",
+  update: "Salvar alterações",
+};
 
 export type KeywordCustomizerFooterProps = {
   activeStepIndex: number;
   totalSteps: number;
+  saveMode: LanguageSaveMode;
+  isSaveReady: boolean;
   onBack: () => void;
   onNext: () => void;
   onSave: () => void;
@@ -11,6 +20,8 @@ export type KeywordCustomizerFooterProps = {
 export function KeywordCustomizerFooter({
   activeStepIndex,
   totalSteps,
+  saveMode,
+  isSaveReady,
   onBack,
   onNext,
   onSave,
@@ -33,8 +44,11 @@ export function KeywordCustomizerFooter({
               Continuar
             </HeroButton>
           ) : (
-            <HeroButton type="button" onClick={onSave}>
-              Salvar e Aplicar
+            // Antes da sessão hidratar, `saveMode` ainda diz "local" mesmo para
+            // quem está logado. Desabilitar por esse instante evita prometer no
+            // rótulo um destino que o save não usaria.
+            <HeroButton type="button" onClick={onSave} disabled={!isSaveReady}>
+              {SAVE_LABELS[saveMode]}
             </HeroButton>
           )}
         </div>

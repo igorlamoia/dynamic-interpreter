@@ -10,6 +10,7 @@ from app.models.class_ import Class, ClassStatus
 from app.models.exercise import Exercise
 from app.models.exercise_list import ExerciseList
 from app.models.class_exercise_list import ClassExerciseList
+from app.models.language import LanguagePolicy
 
 fake = Faker("pt_BR")
 
@@ -73,6 +74,8 @@ async def create_exercise_list(session: AsyncSession, teacher, **kwargs) -> Exer
         teacher_id=teacher.id,
         title=kwargs.get("title", fake.sentence()),
         description=kwargs.get("description", fake.sentence()),
+        language_policy=kwargs.get("language_policy", LanguagePolicy.OPEN),
+        locked_language_id=kwargs.get("locked_language_id", None),
     )
     session.add(el)
     await session.flush()

@@ -64,4 +64,47 @@ describe("AuthContext", () => {
       root.unmount();
     });
   });
+
+  it("identifies a community member without academic privileges", () => {
+    let auth: ReturnType<typeof useAuth> | undefined;
+
+    function Consumer() {
+      auth = useAuth();
+      return null;
+    }
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+    const queryClient = new QueryClient();
+
+    act(() => {
+      root.render(
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <Consumer />
+          </AuthProvider>
+        </QueryClientProvider>,
+      );
+    });
+
+    act(() => {
+      auth?.login({
+        token: "token",
+        user: {
+          id: 2,
+          name: "Community",
+          email: "community@example.com",
+          role: "COMMUNITY",
+          organizationId: null,
+        },
+      });
+    });
+
+    expect(auth?.isCommunity).toBe(true);
+    expect(auth?.isTeacher).toBe(false);
+    expect(auth?.organizationId).toBeNull();
+
+    act(() => root.unmount());
+  });
 });

@@ -4,6 +4,7 @@ Seed do banco de dados — porta o seed TypeScript/Prisma para SQLAlchemy async.
 Dados criados:
   - 2 organizações: CEFET-MG, UFJF
   - 1 professor + 3 alunos (mesmas credenciais do seed original)
+  - 5 linguagens oficiais publicadas no catálogo da comunidade
   - 2 turmas: Programação I (PROG1-2025), Programação II (PROG2-2025)
   - 3 alunos matriculados em ambas as turmas
   - 6 exercícios + 8 test cases
@@ -17,7 +18,7 @@ Uso:
 import asyncio
 import os
 import sys
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 # Garante que o diretório raiz do backend está no sys.path
@@ -37,10 +38,15 @@ from app.models.class_member import ClassMember
 from app.models.exercise import Exercise
 from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
+from app.models.language import Language
 from app.models.organization import Organization
 from app.models.test_case import TestCase
 from app.models.user import User, UserRole
 from app.db.base import Base
+from scripts.community_language_presets import COMMUNITY_LANGUAGE_PRESETS
+
+
+OFFICIAL_LANGUAGE_PUBLISHED_AT = datetime(2026, 8, 12, tzinfo=UTC)
 
 
 async def get_or_create_org(session: AsyncSession, name: str) -> Organization:
@@ -61,10 +67,48 @@ async def get_or_create_user(session: AsyncSession, **kwargs) -> User:
         session.add(user)
         await session.flush()
     else:
-        user.password = kwargs["password"]
-        user.name = kwargs.get("name", user.name)
+        for field in ("password", "name", "role", "organization_id", "bio"):
+            if field in kwargs:
+                setattr(user, field, kwargs[field])
         await session.flush()
     return user
+
+
+async def seed_community_languages(
+    session: AsyncSession, system_user: User
+) -> list[Language]:
+    """Cria ou reconcilia o acervo oficial sem duplicar registros.
+
+    A identidade é `(owner_id, name)`, a mesma protegida pela unique constraint
+    de `languages`. Cópias importadas pertencem a outros usuários e nunca são
+    tocadas por uma nova execução do seed.
+    """
+    languages: list[Language] = []
+    for preset in COMMUNITY_LANGUAGE_PRESETS:
+        result = await session.execute(
+            select(Language).where(
+                Language.owner_id == system_user.id,
+                Language.name == preset.name,
+            )
+        )
+        language = result.scalar_one_or_none()
+        if language is None:
+            language = Language(owner_id=system_user.id, name=preset.name)
+            session.add(language)
+
+        language.description = preset.description
+        language.customization = preset.customization()
+        language.image_url = None
+        language.image_query = None
+        language.preset_id = preset.preset_id
+        language.is_public = True
+        language.published_at = (
+            language.published_at or OFFICIAL_LANGUAGE_PUBLISHED_AT
+        )
+        languages.append(language)
+
+    await session.flush()
+    return languages
 
 
 async def get_or_create_class(session: AsyncSession, access_code: str, **kwargs) -> Class:
@@ -105,6 +149,7 @@ async def seed(session: AsyncSession) -> None:
     # ── Organizations ─────────────────────────────────────────────────────────
     cefet = await get_or_create_org(session, "CEFET-MG")
     _ufjf = await get_or_create_org(session, "UFJF")
+    system_org = await get_or_create_org(session, "System")
     print("✅ Organizações: CEFET-MG, UFJF")
 
     # ── Users ─────────────────────────────────────────────────────────────────
@@ -134,7 +179,24 @@ async def seed(session: AsyncSession) -> None:
         )
         alunos.append(aluno)
 
+    system_user = await get_or_create_user(
+        session,
+        email="system@internal",
+        password="!disabled",
+        name="Linguagens Oficiais",
+        role=UserRole.SYSTEM,
+        organization_id=system_org.id,
+        bio="Coleção oficial de linguagens prontas da comunidade.",
+    )
+
     print("✅ Usuários: Prof. Carlos Silva, Ana Souza, Bruno Oliveira, Camila Ferreira")
+
+    # ── Community Languages ──────────────────────────────────────────────
+    official_languages = await seed_community_languages(session, system_user)
+    print(
+        "✅ Linguagens oficiais na comunidade: "
+        + ", ".join(language.name for language in official_languages)
+    )
 
     # ── Classes ───────────────────────────────────────────────────────────────
     prog1 = await get_or_create_class(
@@ -342,6 +404,10 @@ async def main() -> None:
     print("📚 Turmas:")
     print("   PROG I  — Código: PROG1-2025")
     print("   PROG II — Código: PROG2-2025")
+    print()
+    print("🧬 Linguagens oficiais publicadas:")
+    for preset in COMMUNITY_LANGUAGE_PRESETS:
+        print(f"   {preset.name}")
     print()
     print("📝 Listas publicadas:")
     print("   Lista 1 (Fundamentos)  → PROG I  — 4 exercícios")

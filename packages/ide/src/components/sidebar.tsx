@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import { BookOpen, Code2, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+  BookOpen,
+  Code2,
+  Globe2,
+  Languages,
+  LayoutDashboard,
+  ListChecks,
+} from "lucide-react";
 
 type MenuItem = {
   id: string;
@@ -9,6 +16,25 @@ type MenuItem = {
   icon: React.ReactNode;
   href: string;
   activeMatchers: string[];
+};
+
+// Mesma entrada para aluno e professor: o acervo de linguagens é pessoal,
+// não depende do papel. `activeMatchers` inclui /language-creator porque o
+// wizard é uma rota irmã, não filha de /languages.
+const languagesMenuItem: MenuItem = {
+  id: "linguagens",
+  label: "Minhas Linguagens",
+  icon: <Languages className="w-5 h-5" />,
+  href: "/languages",
+  activeMatchers: ["/languages", "/language-creator"],
+};
+
+const communityCatalogMenuItem: MenuItem = {
+  id: "comunidade",
+  label: "Comunidade",
+  icon: <Globe2 className="w-5 h-5" />,
+  href: "/community/languages",
+  activeMatchers: ["/community"],
 };
 
 const studentMenu: MenuItem[] = [
@@ -19,6 +45,8 @@ const studentMenu: MenuItem[] = [
     href: "/dashboard",
     activeMatchers: ["/dashboard", "/classes"],
   },
+  languagesMenuItem,
+  communityCatalogMenuItem,
 ];
 
 const teacherMenu: MenuItem[] = [
@@ -43,15 +71,33 @@ const teacherMenu: MenuItem[] = [
     href: "/exercise-lists",
     activeMatchers: ["/exercise-lists"],
   },
+  languagesMenuItem,
+  communityCatalogMenuItem,
+];
+
+const communityMenu: MenuItem[] = [
+  {
+    id: "painel",
+    label: "Meu Painel",
+    icon: <LayoutDashboard className="w-5 h-5" />,
+    href: "/dashboard",
+    activeMatchers: ["/dashboard"],
+  },
+  languagesMenuItem,
+  communityCatalogMenuItem,
 ];
 
 export function Sidebar() {
   const { pathname } = useRouter();
-  const { isAuthenticated, isTeacher } = useAuth();
+  const { isAuthenticated, isCommunity, isTeacher } = useAuth();
 
   if (!isAuthenticated) return null;
 
-  const menuItems = isTeacher ? teacherMenu : studentMenu;
+  const menuItems = isCommunity
+    ? communityMenu
+    : isTeacher
+      ? teacherMenu
+      : studentMenu;
 
   return (
     <aside className="w-64 h-full shrink-0 flex flex-col bg-[#110c1c] border-r border-[#ffffff0a] relative z-40">

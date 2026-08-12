@@ -16,6 +16,7 @@ import type {
 } from "./wizard-model";
 import type { KeywordCustomizerErrorState } from "./keyword-customizer-validation";
 import type { IdentityImageSearchResult } from "./steps/identity-step";
+import type { LanguageSaveMode } from "@/hooks/useLanguagePersistence";
 
 export type WizardStep = (typeof WIZARD_STEPS)[number];
 
@@ -68,5 +69,9 @@ export type KeywordCustomizerContextValue = {
   isSearchingLanguageImages: boolean;
   languageImageSearchError: string | null;
   hasChanges: boolean;
+  saveMode: LanguageSaveMode;
+  editingLanguageId: number | null;
+  /** Falso enquanto a sessão não hidratou: salvar ainda não é confiável. */
+  isSaveReady: boolean;
   actions: KeywordCustomizerSyncActions & KeywordCustomizerWizardActions;
 };

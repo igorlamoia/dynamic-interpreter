@@ -1,4 +1,5 @@
 import { Form } from "@/components/ui/form";
+import type { Language } from "@/lib/languages-api";
 import { PreviewPanel } from "./keyword-customizer/preview-panel";
 import { WizardStepper } from "./keyword-customizer/wizard-stepper";
 import {
@@ -10,8 +11,16 @@ import { KeywordCustomizerFooter } from "./keyword-customizer/keyword-customizer
 import { KeywordCustomizerStepContent } from "./keyword-customizer/keyword-customizer-step-content";
 
 function KeywordCustomizerShell() {
-  const { form, preview, activeStep, activeStepIndex, visibleSteps, actions } =
-    useKeywordCustomizer();
+  const {
+    form,
+    preview,
+    activeStep,
+    activeStepIndex,
+    visibleSteps,
+    actions,
+    saveMode,
+    isSaveReady,
+  } = useKeywordCustomizer();
   return (
     <Form {...form}>
       <section className="flex flex-col gap-8 max-w-screen-3xl mx-auto">
@@ -40,6 +49,8 @@ function KeywordCustomizerShell() {
                 <KeywordCustomizerFooter
                   activeStepIndex={activeStepIndex}
                   totalSteps={visibleSteps.length}
+                  saveMode={saveMode}
+                  isSaveReady={isSaveReady}
                   onBack={actions.goToPreviousWizardStep}
                   onNext={actions.goToNextWizardStep}
                   onSave={actions.save}
@@ -54,9 +65,18 @@ function KeywordCustomizerShell() {
   );
 }
 
-export function KeywordCustomizer() {
+export function KeywordCustomizer({
+  editingLanguageId = null,
+  initialLanguage = null,
+}: {
+  editingLanguageId?: number | null;
+  initialLanguage?: Language | null;
+} = {}) {
   return (
-    <KeywordCustomizerProvider>
+    <KeywordCustomizerProvider
+      editingLanguageId={editingLanguageId}
+      initialLanguage={initialLanguage}
+    >
       <KeywordCustomizerShell />
     </KeywordCustomizerProvider>
   );

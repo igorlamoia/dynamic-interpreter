@@ -1,4 +1,4 @@
-import { GraduationCap, User } from "lucide-react";
+import { GraduationCap, User, UsersRound } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { HeroButton } from "@/components/buttons/hero";
 import {
@@ -13,13 +13,23 @@ import { RadioSelector } from "@/components/buttons/radio-selector";
 import type { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
-export const registerSchema = z.object({
-  name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-  email: z.string().email("E-mail inválido"),
-  password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-  role: z.enum(["teacher", "student"]),
-  organizationId: z.string().min(1, "Selecione uma instituição"),
-});
+export const registerSchema = z
+  .object({
+    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
+    email: z.string().email("E-mail inválido"),
+    password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+    role: z.enum(["teacher", "student", "community"]),
+    organizationId: z.string(),
+  })
+  .superRefine((values, context) => {
+    if (values.role !== "community" && !values.organizationId) {
+      context.addIssue({
+        code: "custom",
+        path: ["organizationId"],
+        message: "Selecione uma instituição",
+      });
+    }
+  });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 
@@ -66,6 +76,11 @@ export function RegisterForm({
                         Icon: GraduationCap,
                       },
                       { value: "student", label: "Aluno", Icon: User },
+                      {
+                        value: "community",
+                        label: "Comunidade",
+                        Icon: UsersRound,
+                      },
                     ]}
                     field={field}
                   />
@@ -147,6 +162,11 @@ export function RegisterForm({
             <FormItem className="text-left">
               <FormLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">
                 Instituição
+                {form.watch("role") === "community" && (
+                  <span className="ml-1 normal-case text-cyan-300/80">
+                    (opcional)
+                  </span>
+                )}
               </FormLabel>
               <FormControl>
                 <select
@@ -154,8 +174,16 @@ export function RegisterForm({
                   disabled={loadingOrgs}
                   className="w-full h-10 px-3 rounded-md border border-white/10 dark:bg-black/20 bg-slate-300/20 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#0dccf2]/50 disabled:opacity-50"
                 >
-                  <option value="" disabled className="bg-slate-900">
-                    {loadingOrgs ? "Carregando..." : "Selecione sua instituição"}
+                  <option
+                    value=""
+                    disabled={form.watch("role") !== "community"}
+                    className="bg-slate-900"
+                  >
+                    {loadingOrgs
+                      ? "Carregando..."
+                      : form.watch("role") === "community"
+                        ? "Sem vínculo institucional"
+                        : "Selecione sua instituição"}
                   </option>
                   {organizations.map((org) => (
                     <option key={org.id} value={org.id} className="bg-slate-900">

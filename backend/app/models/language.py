@@ -1,5 +1,7 @@
+import enum
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
+from sqlalchemy import Boolean, DateTime, Enum as SAEnum
 from sqlalchemy import Integer, String, ForeignKey, UniqueConstraint, Index, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -14,11 +16,24 @@ if TYPE_CHECKING:
 JSONType = JSON().with_variant(JSONB(), "postgresql")
 
 
+class LanguagePolicy(str, enum.Enum):
+    OPEN = "OPEN"
+    LOCKED = "LOCKED"
+
+
+# Um único objeto Enum compartilhado por `exercises` e `exercise_lists`.
+# Duas instâncias com o mesmo `name` fariam o Postgres receber dois
+# CREATE TYPE languagepolicy. `native_enum` continua ligado: no SQLite dos
+# testes ele degrada para VARCHAR sozinho.
+language_policy_type = SAEnum(LanguagePolicy, name="languagepolicy")
+
+
 class Language(Base):
     __tablename__ = "languages"
     __table_args__ = (
         UniqueConstraint("owner_id", "name", name="uq_languages_owner_name"),
         Index("ix_languages_owner_id", "owner_id"),
+        Index("ix_languages_public_published_at", "is_public", "published_at"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -28,8 +43,17 @@ class Language(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str | None] = mapped_column(String, nullable=True)
     customization: Mapped[dict[str, Any]] = mapped_column(JSONType, nullable=False)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    image_query: Mapped[str | None] = mapped_column(String, nullable=True)
+    preset_id: Mapped[str | None] = mapped_column(String, nullable=True)
     cloned_from_id: Mapped[int | None] = mapped_column(
         Integer, ForeignKey("languages.id", ondelete="SET NULL"), nullable=True
+    )
+    is_public: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false"
+    )
+    published_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
     )
     created_at: Mapped[datetime] = mapped_column(default=func.now())
     updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
@@ -40,3 +64,29 @@ class Language(Base):
     cloned_from: Mapped["Language | None"] = relationship(
         "Language", remote_side="Language.id"
     )
+
+    @property
+    def dna(self) -> dict[str, str]:
+        customization = self.customization or {}
+        modes = customization.get("modes") or {}
+        return {
+            "typing": modes.get(
+                "typing", customization.get("typingMode", "typed")
+            ),
+            "array": modes.get(
+                "array", customization.get("arrayMode", "fixed")
+            ),
+            "block": modes.get(
+                "block", customization.get("blockMode", "delimited")
+            ),
+            "semicolon": modes.get(
+                "semicolon",
+                customization.get("semicolonMode", "optional-eol"),
+            ),
+        }
+
+    @property
+    def owner_name(self) -> str | None:
+        """Nome público do autor quando a relação veio carregada."""
+        owner = self.__dict__.get("owner")
+        return owner.name if owner is not None else None

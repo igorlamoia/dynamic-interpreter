@@ -1,4 +1,6 @@
-from pydantic import EmailStr
+from typing import Literal
+
+from pydantic import EmailStr, model_validator
 from app.schemas.base import CamelModel
 
 
@@ -11,7 +13,14 @@ class RegisterRequest(CamelModel):
     email: EmailStr
     password: str
     name: str
-    organization_id: int
+    role: Literal["student", "teacher", "community"] = "student"
+    organization_id: int | None = None
+
+    @model_validator(mode="after")
+    def validate_organization_for_role(self):
+        if self.role != "community" and self.organization_id is None:
+            raise ValueError("organizationId is required for students and teachers")
+        return self
 
 
 class TokenResponse(CamelModel):

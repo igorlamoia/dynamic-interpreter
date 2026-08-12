@@ -80,6 +80,412 @@ class TestList:
         assert data[0]["name"] == "A1"
         assert data[0]["ownerId"] == user_a.id
 
+    async def test_list_includes_normalized_dna(self, async_client, async_session):
+        _, token, _ = await _login_user(async_client, async_session)
+        await async_client.post(
+            "/languages",
+            json={
+                "name": "DNA",
+                "customization": {
+                    "modes": {
+                        "typing": "untyped",
+                        "array": "dynamic",
+                        "block": "indentation",
+                        "semicolon": "required",
+                    }
+                },
+            },
+            headers=_auth(token),
+        )
+
+        response = await async_client.get("/languages", headers=_auth(token))
+
+        assert response.status_code == 200
+        assert response.json()[0]["dna"] == {
+            "typing": "untyped",
+            "array": "dynamic",
+            "block": "indentation",
+            "semicolon": "required",
+        }
+
+    async def test_legacy_customization_uses_dna_defaults(
+        self, async_client, async_session
+    ):
+        _, token, _ = await _login_user(async_client, async_session)
+        await async_client.post(
+            "/languages",
+            json={"name": "Legacy", "customization": {}},
+            headers=_auth(token),
+        )
+
+        response = await async_client.get("/languages", headers=_auth(token))
+
+        assert response.json()[0]["dna"] == {
+            "typing": "typed",
+            "array": "fixed",
+            "block": "delimited",
+            "semicolon": "optional-eol",
+        }
+
+
+class TestCommunityAccess:
+    async def test_community_can_manage_languages_but_not_academic_modules(
+        self, async_client, async_session
+    ):
+        registered = await async_client.post(
+            "/auth/register",
+            json={
+                "email": "community-access@example.com",
+                "password": "secret123",
+                "name": "Community",
+                "role": "community",
+                "organizationId": None,
+            },
+        )
+        token = registered.json()["accessToken"]
+
+        created = await async_client.post(
+            "/languages",
+            json={"name": "CommunityLang", "customization": {}},
+            headers=_auth(token),
+        )
+
+        assert created.status_code == 201
+        language_id = created.json()["id"]
+        assert (await async_client.get("/languages", headers=_auth(token))).status_code == 200
+        assert (
+            await async_client.get(
+                f"/languages/{language_id}", headers=_auth(token)
+            )
+        ).status_code == 200
+        assert (
+            await async_client.patch(
+                f"/languages/{language_id}",
+                json={"description": "Atualizada"},
+                headers=_auth(token),
+            )
+        ).status_code == 200
+        assert (
+            await async_client.put(
+                "/users/me/active-language",
+                json={"languageId": language_id},
+                headers=_auth(token),
+            )
+        ).status_code == 200
+        clone = await async_client.post(
+            f"/languages/{language_id}/clone", headers=_auth(token)
+        )
+        assert clone.status_code == 201
+        assert (
+            await async_client.delete(
+                f"/languages/{clone.json()['id']}", headers=_auth(token)
+            )
+        ).status_code == 204
+        assert (await async_client.get("/classes", headers=_auth(token))).status_code == 403
+        assert (await async_client.get("/exercises", headers=_auth(token))).status_code == 403
+        assert (await async_client.get("/exercise-lists", headers=_auth(token))).status_code == 403
+        assert (await async_client.get("/submissions", headers=_auth(token))).status_code == 403
+
+
+class TestCommunityCatalog:
+    async def _publish_language(
+        self,
+        async_client,
+        token: str,
+        name: str,
+        customization: dict,
+    ) -> dict:
+        created = await async_client.post(
+            "/languages",
+            json={"name": name, "customization": customization},
+            headers=_auth(token),
+        )
+        response = await async_client.put(
+            f"/languages/{created.json()['id']}/publication",
+            json={"isPublic": True},
+            headers=_auth(token),
+        )
+        assert response.status_code == 200
+        return response.json()
+
+    async def test_community_user_can_publish_and_unpublish_own_language(
+        self, async_client, async_session
+    ):
+        owner, token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="publisher@example.com",
+            role=UserRole.COMMUNITY,
+        )
+        created = await async_client.post(
+            "/languages",
+            json={"name": "Linguagem Pública", "customization": {}},
+            headers=_auth(token),
+        )
+
+        published = await async_client.put(
+            f"/languages/{created.json()['id']}/publication",
+            json={"isPublic": True},
+            headers=_auth(token),
+        )
+
+        assert published.status_code == 200
+        assert published.json()["isPublic"] is True
+        assert published.json()["publishedAt"] is not None
+        assert published.json()["ownerName"] == owner.name
+
+        unpublished = await async_client.put(
+            f"/languages/{created.json()['id']}/publication",
+            json={"isPublic": False},
+            headers=_auth(token),
+        )
+        assert unpublished.status_code == 200
+        assert unpublished.json()["isPublic"] is False
+        assert unpublished.json()["publishedAt"] is None
+
+    async def test_only_community_user_can_publish(
+        self, async_client, async_session
+    ):
+        _, token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="student-publisher@example.com",
+            role=UserRole.STUDENT,
+        )
+        created = await async_client.post(
+            "/languages",
+            json={"name": "Privada", "customization": {}},
+            headers=_auth(token),
+        )
+
+        response = await async_client.put(
+            f"/languages/{created.json()['id']}/publication",
+            json={"isPublic": True},
+            headers=_auth(token),
+        )
+
+        assert response.status_code == 403
+
+    async def test_catalog_lists_only_public_languages_and_supports_search(
+        self, async_client, async_session
+    ):
+        owner, owner_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="catalog-owner@example.com",
+            role=UserRole.COMMUNITY,
+        )
+        _, visitor_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="catalog-visitor@example.com",
+        )
+        published = await async_client.post(
+            "/languages",
+            json={
+                "name": "Script Lunar",
+                "description": "Uma linguagem indentada",
+                "customization": {"modes": {"block": "indentation"}},
+            },
+            headers=_auth(owner_token),
+        )
+        await async_client.post(
+            "/languages",
+            json={"name": "Segredo", "customization": {}},
+            headers=_auth(owner_token),
+        )
+        await async_client.put(
+            f"/languages/{published.json()['id']}/publication",
+            json={"isPublic": True},
+            headers=_auth(owner_token),
+        )
+
+        response = await async_client.get(
+            "/languages/community?q=lunar", headers=_auth(visitor_token)
+        )
+
+        assert response.status_code == 200
+        assert len(response.json()) == 1
+        language = response.json()[0]
+        assert language["name"] == "Script Lunar"
+        assert language["ownerName"] == owner.name
+        assert language["isPublic"] is True
+        assert language["dna"]["block"] == "indentation"
+        assert "customization" not in language
+
+    async def test_catalog_combines_dna_filters_with_and_semantics(
+        self, async_client, async_session
+    ):
+        _, owner_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="dna-filter-owner@example.com",
+            role=UserRole.COMMUNITY,
+        )
+        _, visitor_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="dna-filter-visitor@example.com",
+        )
+        await self._publish_language(
+            async_client,
+            owner_token,
+            "Tipada Indentada",
+            {
+                "modes": {
+                    "typing": "typed",
+                    "array": "dynamic",
+                    "block": "indentation",
+                    "semicolon": "required",
+                }
+            },
+        )
+        await self._publish_language(
+            async_client,
+            owner_token,
+            "Não Tipada Indentada",
+            {"modes": {"typing": "untyped", "block": "indentation"}},
+        )
+        await self._publish_language(
+            async_client,
+            owner_token,
+            "Tipada Delimitada",
+            {"modes": {"typing": "typed", "block": "delimited"}},
+        )
+
+        response = await async_client.get(
+            "/languages/community?typing=typed&block=indentation",
+            headers=_auth(visitor_token),
+        )
+
+        assert response.status_code == 200
+        assert [item["name"] for item in response.json()] == ["Tipada Indentada"]
+
+    async def test_catalog_dna_filters_use_defaults_for_legacy_customization(
+        self, async_client, async_session
+    ):
+        _, owner_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="legacy-dna-owner@example.com",
+            role=UserRole.COMMUNITY,
+        )
+        _, visitor_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="legacy-dna-visitor@example.com",
+        )
+        await self._publish_language(
+            async_client, owner_token, "Legada Padrão", {}
+        )
+
+        response = await async_client.get(
+            "/languages/community?typing=typed&array=fixed&block=delimited&semicolon=optional-eol",
+            headers=_auth(visitor_token),
+        )
+
+        assert response.status_code == 200
+        assert [item["name"] for item in response.json()] == ["Legada Padrão"]
+
+    async def test_catalog_rejects_unknown_dna_filter(
+        self, async_client, async_session
+    ):
+        _, token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="invalid-dna-filter@example.com",
+        )
+
+        response = await async_client.get(
+            "/languages/community?typing=loosely-typed", headers=_auth(token)
+        )
+
+        assert response.status_code == 422
+
+    async def test_public_language_can_be_read_and_imported_by_another_user(
+        self, async_client, async_session
+    ):
+        _, owner_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="import-owner@example.com",
+            role=UserRole.COMMUNITY,
+        )
+        _, visitor_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="import-visitor@example.com",
+        )
+        created = await async_client.post(
+            "/languages",
+            json={
+                "name": "Compartilhada",
+                "customization": SAMPLE_CUSTOMIZATION,
+            },
+            headers=_auth(owner_token),
+        )
+        language_id = created.json()["id"]
+        await async_client.put(
+            f"/languages/{language_id}/publication",
+            json={"isPublic": True},
+            headers=_auth(owner_token),
+        )
+
+        detail = await async_client.get(
+            f"/languages/{language_id}", headers=_auth(visitor_token)
+        )
+        imported = await async_client.post(
+            f"/languages/{language_id}/import", headers=_auth(visitor_token)
+        )
+
+        assert detail.status_code == 200
+        assert detail.json()["customization"] == SAMPLE_CUSTOMIZATION
+        assert imported.status_code == 201
+        assert imported.json()["clonedFromId"] == language_id
+        assert imported.json()["isPublic"] is False
+        assert imported.json()["publishedAt"] is None
+
+    async def test_unpublished_language_is_removed_from_catalog_and_read_gate(
+        self, async_client, async_session
+    ):
+        _, owner_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="unpublish-owner@example.com",
+            role=UserRole.COMMUNITY,
+        )
+        _, visitor_token, _ = await _login_user(
+            async_client,
+            async_session,
+            email="unpublish-visitor@example.com",
+        )
+        created = await async_client.post(
+            "/languages",
+            json={"name": "Temporária", "customization": {}},
+            headers=_auth(owner_token),
+        )
+        language_id = created.json()["id"]
+        await async_client.put(
+            f"/languages/{language_id}/publication",
+            json={"isPublic": True},
+            headers=_auth(owner_token),
+        )
+        await async_client.put(
+            f"/languages/{language_id}/publication",
+            json={"isPublic": False},
+            headers=_auth(owner_token),
+        )
+
+        catalog = await async_client.get(
+            "/languages/community", headers=_auth(visitor_token)
+        )
+        detail = await async_client.get(
+            f"/languages/{language_id}", headers=_auth(visitor_token)
+        )
+
+        assert all(item["id"] != language_id for item in catalog.json())
+        assert detail.status_code == 403
+
 
 class TestGet:
     async def test_owner_can_read_full_customization(self, async_client, async_session):

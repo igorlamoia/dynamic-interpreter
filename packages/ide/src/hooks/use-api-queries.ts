@@ -29,6 +29,16 @@ type CreateExerciseInput = {
 type CreateExerciseListInput = {
   title: string;
   description?: string;
+  languagePolicy?: "OPEN" | "LOCKED";
+  lockedLanguageId?: number | null;
+};
+
+type UpdateExerciseListInput = {
+  listId: string | number;
+  title?: string;
+  description?: string;
+  languagePolicy?: "OPEN" | "LOCKED";
+  lockedLanguageId?: number | null;
 };
 
 type PublishExerciseListInput = {
@@ -54,7 +64,7 @@ type RegisterInput = {
   name: string;
   email: string;
   password: string;
-  role: string;
+  role: "teacher" | "student" | "community";
   organizationId: string;
 };
 
@@ -106,7 +116,10 @@ export function useRegisterMutation() {
     mutationFn: async (input: RegisterInput) => {
       const { data } = await api.post<{ accessToken: string }>(
         "/auth/register",
-        input,
+        {
+          ...input,
+          organizationId: input.organizationId || null,
+        },
       );
       const { data: user } = await api.get<AuthUser>("/auth/me", {
         headers: { Authorization: `Bearer ${data.accessToken}` },
@@ -173,11 +186,14 @@ export function useExercisesQuery(
 export function useExerciseQuery(
   exerciseId: string | number | undefined,
   enabled = true,
+  listId?: string | number | null,
 ) {
   return useQuery({
-    queryKey: queryKeys.exercises.detail(exerciseId),
+    queryKey: queryKeys.exercises.detail(exerciseId, listId),
     queryFn: async () => {
-      const { data } = await api.get(`/exercises/${exerciseId}`);
+      const { data } = await api.get(`/exercises/${exerciseId}`, {
+        params: listId ? { listId } : undefined,
+      });
       return data;
     },
     enabled: enabled && Boolean(exerciseId),
@@ -342,6 +358,25 @@ export function useCreateExerciseListMutation() {
   return useMutation({
     mutationFn: async (input: CreateExerciseListInput) => {
       const { data } = await api.post("/exercise-lists", input);
+      return data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.exerciseLists.all,
+      });
+    },
+  });
+}
+
+export function useUpdateExerciseListMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ listId, ...body }: UpdateExerciseListInput) => {
+      const { data } = await api.patch<ExerciseList>(
+        `/exercise-lists/${listId}`,
+        body,
+      );
       return data;
     },
     onSuccess: () => {

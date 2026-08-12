@@ -3,6 +3,7 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
 import { saveSavedKeywordLanguage } from "@/lib/keyword-language-storage";
@@ -19,6 +20,57 @@ vi.mock("@/contexts/keyword/KeywordContext", async (importOriginal) => {
   };
 });
 
+// O seletor passou a consumir `useLanguageChoices`, que chama `useAuth`. Estes
+// dois casos descrevem o caminho deslogado, então é isso que mockamos.
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: () => ({ isAuthenticated: false }),
+}));
+
+/**
+ * O `localStorage` do jsdom 28 neste setup do vitest é um objeto sem os
+ * métodos de `Storage` — `localStorage.clear` é `undefined` e estoura. Como
+ * estes testes exercitam de propósito o caminho real de storage, instalamos um
+ * `Storage` completo em vez de mockar o módulo.
+ */
+/**
+ * `useLanguageChoices` consulta o backend via TanStack Query. Deslogado essas
+ * queries ficam desabilitadas, mas os hooks ainda exigem um client no contexto.
+ */
+function renderSelector(container: HTMLElement) {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  const root = createRoot(container);
+
+  act(() => {
+    root.render(
+      <QueryClientProvider client={queryClient}>
+        <LanguageSelector />
+      </QueryClientProvider>,
+    );
+  });
+
+  return root;
+}
+
+function installLocalStorageStub() {
+  const store = new Map<string, string>();
+
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    value: {
+      getItem: (key: string) => store.get(key) ?? null,
+      setItem: (key: string, value: string) => void store.set(key, String(value)),
+      removeItem: (key: string) => void store.delete(key),
+      clear: () => store.clear(),
+      key: (index: number) => Array.from(store.keys())[index] ?? null,
+      get length() {
+        return store.size;
+      },
+    },
+  });
+}
+
 import { LanguageSelector } from "./language-selector";
 
 (
@@ -29,7 +81,7 @@ import { LanguageSelector } from "./language-selector";
 
 describe("LanguageSelector", () => {
   beforeEach(() => {
-    localStorage.clear();
+    installLocalStorageStub();
     useKeywordsMock.mockReset();
     useKeywordsMock.mockReturnValue({
       setCustomization: vi.fn(),
@@ -66,11 +118,7 @@ describe("LanguageSelector", () => {
   it("renders saved language options and reflects the active selection", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    const root = createRoot(container);
-
-    act(() => {
-      root.render(<LanguageSelector />);
-    });
+    const root = renderSelector(container);
 
     const select = container.querySelector(
       'select[aria-label="Selecionar linguagem salva"]',
@@ -89,15 +137,12 @@ describe("LanguageSelector", () => {
   it("switches the active saved language and applies its customization", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-    const root = createRoot(container);
     const context = {
       setCustomization: vi.fn(),
     };
     useKeywordsMock.mockReturnValue(context);
 
-    act(() => {
-      root.render(<LanguageSelector />);
-    });
+    const root = renderSelector(container);
 
     const select = container.querySelector(
       'select[aria-label="Selecionar linguagem salva"]',

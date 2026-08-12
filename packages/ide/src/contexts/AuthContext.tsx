@@ -16,14 +16,14 @@ import {
 import { useAuthProfileQuery } from "@/hooks/use-api-queries";
 import { queryKeys } from "@/lib/query-keys";
 
-type UserRole = "ADMIN" | "TEACHER" | "STUDENT";
+type UserRole = "ADMIN" | "TEACHER" | "STUDENT" | "COMMUNITY";
 
 export type AuthUser = {
   id: number;
   name: string;
   email: string;
   role: UserRole;
-  organizationId: number;
+  organizationId: number | null;
 };
 
 type AuthPayload = {
@@ -37,6 +37,7 @@ type AuthContextValue = {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isTeacher: boolean;
+  isCommunity: boolean;
   isHydrated: boolean;
   isProfileLoading: boolean;
   login: (payload: AuthPayload) => void;
@@ -93,6 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [queryClient]);
 
   const isTeacher = user?.role === "TEACHER" || user?.role === "ADMIN";
+  const isCommunity = user?.role === "COMMUNITY";
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -101,6 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       isAuthenticated: Boolean(userId),
       isTeacher,
+      isCommunity,
       isHydrated,
       isProfileLoading,
       login,
@@ -108,6 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }),
     [
       isHydrated,
+      isCommunity,
       isProfileLoading,
       isTeacher,
       login,

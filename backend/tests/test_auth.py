@@ -4,10 +4,11 @@ os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 
 import pytest
 from httpx import AsyncClient
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from tests.factories import create_organization, create_user
-from app.models.user import UserRole
+from app.models.user import User, UserRole
 
 
 class TestRegister:
@@ -31,6 +32,91 @@ class TestRegister:
         data = response.json()
         assert "accessToken" in data
         assert data["tokenType"] == "bearer"
+
+    @pytest.mark.parametrize(
+        ("role", "expected_role"),
+        [
+            ("student", UserRole.STUDENT),
+            ("teacher", UserRole.TEACHER),
+            ("community", UserRole.COMMUNITY),
+        ],
+    )
+    async def test_register_persists_public_role(
+        self,
+        role: str,
+        expected_role: UserRole,
+        async_client: AsyncClient,
+        async_session: AsyncSession,
+    ):
+        org = await create_organization(async_session)
+        payload = {
+            "email": f"{role}@example.com",
+            "password": "secret123",
+            "name": role.title(),
+            "role": role,
+            "organizationId": org.id,
+        }
+
+        response = await async_client.post("/auth/register", json=payload)
+
+        assert response.status_code == 201
+        result = await async_session.execute(
+            select(User).where(User.email == payload["email"])
+        )
+        assert result.scalar_one().role == expected_role
+
+    async def test_community_can_register_without_organization(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        response = await async_client.post(
+            "/auth/register",
+            json={
+                "email": "community-no-org@example.com",
+                "password": "secret123",
+                "name": "Community Member",
+                "role": "community",
+                "organizationId": None,
+            },
+        )
+
+        assert response.status_code == 201
+        token = response.json()["accessToken"]
+        profile = await async_client.get(
+            "/auth/me", headers={"Authorization": f"Bearer {token}"}
+        )
+        assert profile.json()["role"] == "COMMUNITY"
+        assert profile.json()["organizationId"] is None
+
+    @pytest.mark.parametrize("role", ["student", "teacher"])
+    async def test_academic_roles_require_organization(
+        self, role: str, async_client: AsyncClient
+    ):
+        response = await async_client.post(
+            "/auth/register",
+            json={
+                "email": f"missing-org-{role}@example.com",
+                "password": "secret123",
+                "name": "Missing Org",
+                "role": role,
+                "organizationId": None,
+            },
+        )
+
+        assert response.status_code == 422
+
+    async def test_register_rejects_internal_role(self, async_client: AsyncClient):
+        response = await async_client.post(
+            "/auth/register",
+            json={
+                "email": "admin-register@example.com",
+                "password": "secret123",
+                "name": "Not Admin",
+                "role": "ADMIN",
+                "organizationId": None,
+            },
+        )
+
+        assert response.status_code == 422
 
     async def test_register_fails_for_duplicate_email(
         self, async_client: AsyncClient, async_session: AsyncSession

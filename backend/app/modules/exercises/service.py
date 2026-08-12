@@ -1,45 +1,23 @@
+from typing import NamedTuple
+
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException, status
 from sqlalchemy.orm import selectinload
 
-from app.models.exercise import Exercise, LanguagePolicy
+from app.models.exercise import Exercise
+from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
 from app.models.language import Language
 from app.models.test_case import TestCase
 from app.models.user import User, UserRole
+from app.modules.languages.policy import (
+    EffectiveSource,
+    resolve_effective_language,
+    validate_language_policy,
+)
+from app.modules.languages.service import user_can_read_language
 from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, TestCaseCreate
-
-
-async def _validate_language_policy(
-    teacher_id: int,
-    policy: LanguagePolicy,
-    locked_language_id: int | None,
-    session: AsyncSession,
-) -> None:
-    if policy == LanguagePolicy.LOCKED:
-        if locked_language_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="locked_language_id is required when language_policy=LOCKED",
-            )
-        language = await session.get(Language, locked_language_id)
-        if language is None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="locked_language not found"
-            )
-        owner = await session.get(User, language.owner_id)
-        if language.owner_id != teacher_id and (owner is None or owner.role != UserRole.SYSTEM):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Locked language must be owned by the teacher or by the SYSTEM user",
-            )
-    else:  # OPEN
-        if locked_language_id is not None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="locked_language_id must be null when language_policy=OPEN",
-            )
 
 
 async def create_exercise(data: ExerciseCreate, current_user_id: int, session: AsyncSession) -> Exercise:
@@ -47,7 +25,7 @@ async def create_exercise(data: ExerciseCreate, current_user_id: int, session: A
     if user.role == UserRole.STUDENT:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only teachers can create exercises")
 
-    await _validate_language_policy(
+    await validate_language_policy(
         current_user_id, data.language_policy, data.locked_language_id, session
     )
 
@@ -101,7 +79,7 @@ async def update_exercise(
     payload = data.model_dump(exclude_unset=True)
     next_policy = payload.get("language_policy", exercise.language_policy)
     next_locked = payload.get("locked_language_id", exercise.locked_language_id)
-    await _validate_language_policy(current_user_id, next_policy, next_locked, session)
+    await validate_language_policy(current_user_id, next_policy, next_locked, session)
 
     for field, value in payload.items():
         setattr(exercise, field, value)
@@ -152,3 +130,72 @@ async def delete_test_case(exercise_id: int, tc_id: int, current_user_id: int, s
 
     await session.delete(tc)
     await session.flush()
+
+
+class ExerciseContext(NamedTuple):
+    exercise: Exercise
+    effective_language: Language | None
+    effective_language_source: EffectiveSource | None
+    can_read_locked_language: bool
+
+
+async def get_exercise_in_context(
+    exercise_id: int, list_id: int | None, user_id: int, session: AsyncSession
+) -> ExerciseContext:
+    """Carrega o exercício e resolve a linguagem no contexto de uma lista.
+
+    `list_id` inconsistente é 400 e não silêncio: entregar ao aluno a
+    linguagem de um contexto que não é o dele seria pior do que falhar.
+
+    As linguagens que a resposta embute passam pelo mesmo read-gate de
+    `GET /languages/{id}`: quem não pode lê-las recebe o exercício mesmo
+    assim, só sem elas. Omitir o campo em vez de 403 no exercício inteiro
+    preserva o workspace de quem chegou por outro caminho legítimo.
+    """
+    exercise = await get_exercise(exercise_id, session)
+
+    exercise_list = None
+    if list_id is not None:
+        result = await session.execute(
+            select(ExerciseList)
+            .where(ExerciseList.id == list_id)
+            .options(selectinload(ExerciseList.locked_language))
+        )
+        exercise_list = result.scalar_one_or_none()
+        if exercise_list is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="list_id not found"
+            )
+        is_item = (
+            await session.execute(
+                select(ExerciseListItem.exercise_id)
+                .where(
+                    ExerciseListItem.exercise_list_id == list_id,
+                    ExerciseListItem.exercise_id == exercise_id,
+                )
+                .limit(1)
+            )
+        ).scalar_one_or_none()
+        if is_item is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Exercise is not part of list_id",
+            )
+
+    effective, source = resolve_effective_language(exercise, exercise_list)
+
+    # `source` sobrevive ao gate de propósito: o aluno precisa saber que está
+    # travado mesmo quando não pode ler qual é o mapeamento.
+    can_read_locked = exercise.locked_language is not None and await user_can_read_language(
+        exercise.locked_language, user_id, session
+    )
+    if effective is not None:
+        effective_readable = (
+            can_read_locked
+            if effective is exercise.locked_language
+            else await user_can_read_language(effective, user_id, session)
+        )
+        if not effective_readable:
+            effective = None
+
+    return ExerciseContext(exercise, effective, source, can_read_locked)

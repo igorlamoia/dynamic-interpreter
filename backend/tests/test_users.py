@@ -107,6 +107,34 @@ class TestUpdateUser:
         # Assert
         assert response.status_code == 403
 
+    async def test_community_can_update_only_own_profile(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        org = await create_organization(async_session)
+        community = await create_user(
+            async_session,
+            org,
+            role=UserRole.COMMUNITY,
+            email="community-profile@example.com",
+            password="secret",
+        )
+        other = await create_user(async_session, org)
+        token = await get_token(async_client, community.email, "secret")
+
+        own = await async_client.patch(
+            f"/users/{community.id}",
+            json={"bio": "Criador de linguagens"},
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        other_response = await async_client.patch(
+            f"/users/{other.id}",
+            json={"bio": "Não permitido"},
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        assert own.status_code == 200
+        assert other_response.status_code == 403
+
 
 class TestListUsers:
     async def test_admin_can_list_users(

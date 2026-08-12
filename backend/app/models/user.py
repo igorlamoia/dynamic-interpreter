@@ -19,6 +19,7 @@ class UserRole(str, enum.Enum):
     ADMIN = "ADMIN"
     TEACHER = "TEACHER"
     STUDENT = "STUDENT"
+    COMMUNITY = "COMMUNITY"
     SYSTEM = "SYSTEM"
 
 
@@ -26,7 +27,9 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    organization_id: Mapped[int] = mapped_column(Integer, ForeignKey("organizations.id"), nullable=False)
+    organization_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("organizations.id"), nullable=True
+    )
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.STUDENT, nullable=False)
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
@@ -39,7 +42,9 @@ class User(Base):
         nullable=True,
     )
 
-    organization: Mapped["Organization"] = relationship("Organization", back_populates="users")
+    organization: Mapped["Organization | None"] = relationship(
+        "Organization", back_populates="users"
+    )
     classes_taught: Mapped[list["Class"]] = relationship("Class", back_populates="teacher", foreign_keys="Class.teacher_id")
     memberships: Mapped[list["ClassMember"]] = relationship("ClassMember", back_populates="student")
     exercises: Mapped[list["Exercise"]] = relationship("Exercise", back_populates="teacher")

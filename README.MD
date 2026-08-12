@@ -62,11 +62,43 @@ uv run alembic upgrade head    # apply DB migrations
 uv run uvicorn app.main:app --reload
 ```
 
-Or run the full stack with Docker:
+Or run the full stack with Docker. For local development, use the isolated
+composition below. The Make targets ignore the root `.env`, and the Compose
+file always connects the backend to its own PostgreSQL container:
 
 ```bash
-docker-compose up
+make local-up
 ```
+
+The local services are available at:
+
+- IDE: <http://localhost:3001>
+- Backend API: <http://localhost:8000>
+- API docs: <http://localhost:8000/docs>
+- PostgreSQL: `localhost:5434` (`tscompilator_local` database)
+
+Useful commands:
+
+```bash
+make local-status       # container and health status
+make local-logs         # follow logs from the complete stack
+make local-down         # stop containers, preserving local data
+make local-reset        # stop and delete only the local database volume
+```
+
+`make local-reset` is intentionally destructive, but it is scoped to the
+`ts-compilator-local-postgres-data` Docker volume. On startup, the backend
+waits for PostgreSQL, applies Alembic migrations, seeds local sample data, and
+then becomes healthy. Ports can be overridden with `LOCAL_FRONTEND_PORT`,
+`LOCAL_BACKEND_PORT`, `LOCAL_DB_PORT`, and `LOCAL_API_URL`.
+
+The idempotent seed also publishes five ready-to-import official languages in
+the community catalog: Didática em Português, Pythonica, Minimalista,
+Ruby-like, and Minerês. Re-running the seed updates these SYSTEM-owned presets
+without duplicating them or changing copies imported by users.
+
+The existing `docker-compose.yml` remains available for externally configured
+deployments and must not be used as the default local environment.
 
 ## Database
 

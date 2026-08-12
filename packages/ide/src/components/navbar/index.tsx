@@ -135,6 +135,7 @@ export function Navbar({ links, hasAuth = true }: NavbarProps) {
 
 function mapRoleLabel(role?: string) {
   if (role === "TEACHER" || role === "ADMIN") return "Professor";
+  if (role === "COMMUNITY") return "Membro da comunidade";
   return "Aluno";
 }
 

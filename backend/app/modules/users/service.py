@@ -22,8 +22,8 @@ async def update_user(
     current_user = await get_user_by_id(current_user_id, session)
     target_user = await get_user_by_id(target_id, session)
 
-    # STUDENT só pode atualizar a si mesmo; ADMIN/TEACHER podem atualizar qualquer um
-    if current_user.role == UserRole.STUDENT and current_user_id != target_id:
+    can_manage_others = current_user.role in (UserRole.ADMIN, UserRole.TEACHER)
+    if not can_manage_others and current_user_id != target_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
 
     for field, value in data.model_dump(exclude_unset=True).items():
@@ -36,7 +36,7 @@ async def update_user(
 async def list_users(current_user_id: str, session: AsyncSession) -> list[User]:
     current_user = await get_user_by_id(current_user_id, session)
 
-    if current_user.role == UserRole.STUDENT:
+    if current_user.role not in (UserRole.ADMIN, UserRole.TEACHER):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
 
     result = await session.execute(
