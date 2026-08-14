@@ -9,6 +9,8 @@ from app.models.class_exercise_list import ClassExerciseList
 from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
 from app.models.submission import Submission
+from app.modules.languages.policy import validate_language_policy
+from app.schemas.exercise_lists import ExerciseListUpdate
 
 
 async def list_exercise_lists(teacher_id: int, session: AsyncSession) -> list[ExerciseList]:
@@ -18,6 +20,7 @@ async def list_exercise_lists(teacher_id: int, session: AsyncSession) -> list[Ex
         .options(
             selectinload(ExerciseList.items).selectinload(ExerciseListItem.exercise),
             selectinload(ExerciseList.classes),
+            selectinload(ExerciseList.locked_language),
         )
     )
     return list(result.scalars().all())
@@ -43,6 +46,7 @@ async def get_exercise_list(list_id: int, session: AsyncSession, caller_id: int 
         .options(
             selectinload(ExerciseList.items).selectinload(ExerciseListItem.exercise),
             selectinload(ExerciseList.classes),
+            selectinload(ExerciseList.locked_language),
         )
     )
     el = result.scalar_one_or_none()
@@ -56,6 +60,36 @@ async def get_exercise_list(list_id: int, session: AsyncSession, caller_id: int 
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
 
     return el
+
+
+async def update_exercise_list(
+    list_id: int,
+    caller_id: int,
+    data: ExerciseListUpdate,
+    session: AsyncSession,
+) -> ExerciseList:
+    el = await get_exercise_list(list_id, session)
+    if el.teacher_id != caller_id:
+        # 404 e não 403: o resto do módulo não distingue "não existe" de
+        # "não é seu" para quem não é dono.
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Exercise list not found"
+        )
+
+    payload = data.model_dump(exclude_unset=True)
+    next_policy = payload.get("language_policy", el.language_policy)
+    next_locked = payload.get("locked_language_id", el.locked_language_id)
+    await validate_language_policy(caller_id, next_policy, next_locked, session)
+
+    for field, value in payload.items():
+        setattr(el, field, value)
+
+    await session.flush()
+    # `locked_language` já veio carregada pelo selectinload com o valor antigo e
+    # a requery reaproveita este mesmo objeto do identity map. Sem o expire, a
+    # resposta expandiria a linguagem anterior à edição.
+    session.expire(el)
+    return await get_exercise_list(list_id, session)
 
 
 async def get_submitted_exercise_ids(

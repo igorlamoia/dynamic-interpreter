@@ -1,6 +1,7 @@
 from datetime import datetime
+from typing import Literal
 from app.schemas.base import CamelModel
-from app.models.exercise import LanguagePolicy
+from app.models.language import LanguagePolicy
 from app.schemas.languages import LanguageResponse
 
 
@@ -48,3 +49,5 @@ class ExerciseResponse(CamelModel):
     created_at: datetime
     updated_at: datetime
     test_cases: list[TestCaseResponse] = []
+    effective_language: LanguageResponse | None = None
+    effective_language_source: Literal["exercise", "list"] | None = None

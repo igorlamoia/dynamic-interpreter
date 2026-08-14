@@ -9,6 +9,7 @@ export default defineConfig({
       "src/components/editor.spec.tsx",
       "src/components/terminal/**/*.spec.tsx",
       "src/components/keyword-customizer/keyword-customizer-step-props.spec.ts",
+      "src/components/keyword-customizer/keyword-customizer-save.spec.tsx",
       "src/components/keyword-customizer/steps/review-step/review-step.spec.tsx",
       "src/contexts/editor/useDebugger.spec.tsx",
       "src/hooks/**/*.spec.ts",

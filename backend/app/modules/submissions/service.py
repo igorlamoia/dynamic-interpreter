@@ -5,13 +5,13 @@ from fastapi import HTTPException, status
 
 from app.models.submission import Submission, SubmissionStatus
 from app.models.user import User, UserRole
-from app.models.exercise import Exercise, LanguagePolicy
+from app.models.exercise import Exercise
+from app.models.exercise_list import ExerciseList
+from app.modules.languages.policy import resolve_effective_language
 from app.schemas.submissions import SubmissionCreate, SubmissionGrade
 
 
 async def create_submission(data: SubmissionCreate, student_id: str, session: AsyncSession) -> Submission:
-    # Load the exercise (with locked_language) so we can override the snapshot
-    # when the exercise is LOCKED.
     result = await session.execute(
         select(Exercise)
         .where(Exercise.id == data.exercise_id)
@@ -21,13 +21,19 @@ async def create_submission(data: SubmissionCreate, student_id: str, session: As
     if exercise is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
 
-    language_snapshot = data.language_snapshot
-    if (
-        exercise.language_policy == LanguagePolicy.LOCKED
-        and exercise.locked_language is not None
-    ):
-        # Server-side override: students cannot bypass the locked language.
-        language_snapshot = dict(exercise.locked_language.customization)
+    list_result = await session.execute(
+        select(ExerciseList)
+        .where(ExerciseList.id == data.exercise_list_id)
+        .options(selectinload(ExerciseList.locked_language))
+    )
+    exercise_list = list_result.scalar_one_or_none()
+
+    # Override no servidor: o aluno não burla a trava mexendo no keywordMap.
+    # Vale para a trava do exercício e para a herdada da lista.
+    effective, _ = resolve_effective_language(exercise, exercise_list)
+    language_snapshot = (
+        dict(effective.customization) if effective is not None else data.language_snapshot
+    )
 
     submission = Submission(
         exercise_id=data.exercise_id,

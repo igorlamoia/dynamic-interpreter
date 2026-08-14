@@ -1,9 +1,9 @@
-import enum
 from datetime import datetime
 from typing import TYPE_CHECKING
-from sqlalchemy import CheckConstraint, Enum, ForeignKey, Index, Integer, String, func
+from sqlalchemy import CheckConstraint, ForeignKey, Index, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
+from app.models.language import LanguagePolicy, language_policy_type  # noqa: F401
 
 if TYPE_CHECKING:
     from app.models.user import User
@@ -13,9 +13,9 @@ if TYPE_CHECKING:
     from app.models.language import Language
 
 
-class LanguagePolicy(str, enum.Enum):
-    OPEN = "OPEN"
-    LOCKED = "LOCKED"
+# `LanguagePolicy` mora em `models/language.py`; o re-export mantém os imports
+# existentes de `app.models.exercise` funcionando.
+__all__ = ["Exercise", "LanguagePolicy"]
 
 
 class Exercise(Base):
@@ -34,7 +34,7 @@ class Exercise(Base):
     description: Mapped[str] = mapped_column(String, nullable=False)
     attachments: Mapped[str] = mapped_column(String, nullable=False, default="")
     language_policy: Mapped[LanguagePolicy] = mapped_column(
-        Enum(LanguagePolicy), nullable=False, default=LanguagePolicy.OPEN, server_default="OPEN"
+        language_policy_type, nullable=False, default=LanguagePolicy.OPEN, server_default="OPEN"
     )
     locked_language_id: Mapped[int | None] = mapped_column(
         Integer, ForeignKey("languages.id", ondelete="RESTRICT"), nullable=True

@@ -4,15 +4,18 @@ from fastapi import HTTPException, status
 
 from app.core.security import hash_password, verify_password, create_access_token
 from app.models.organization import Organization
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
 
 
 async def register_user(data: RegisterRequest, session: AsyncSession) -> TokenResponse:
-    # Verificar se a organização existe
-    org = await session.get(Organization, data.organization_id)
-    if not org:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Organization not found")
+    if data.organization_id is not None:
+        org = await session.get(Organization, data.organization_id)
+        if not org:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Organization not found",
+            )
 
     # Verificar email duplicado
     existing = await session.execute(select(User).where(User.email == data.email))
@@ -22,6 +25,11 @@ async def register_user(data: RegisterRequest, session: AsyncSession) -> TokenRe
     # Criar usuário
     user = User(
         organization_id=data.organization_id,
+        role={
+            "student": UserRole.STUDENT,
+            "teacher": UserRole.TEACHER,
+            "community": UserRole.COMMUNITY,
+        }[data.role],
         email=data.email,
         password=hash_password(data.password),
         name=data.name,

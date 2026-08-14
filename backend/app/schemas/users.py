@@ -4,7 +4,7 @@ from app.models.user import UserRole
 
 class UserResponse(CamelModel):
     id: int
-    organization_id: int
+    organization_id: int | None
     role: UserRole
     email: str
     name: str

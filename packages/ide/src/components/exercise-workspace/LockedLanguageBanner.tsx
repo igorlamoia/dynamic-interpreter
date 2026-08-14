@@ -5,9 +5,15 @@ import { useToast } from "@/contexts/ToastContext";
 
 type LockedLanguageBannerProps = {
   language: { id: number; name: string; description: string | null };
+  source?: "exercise" | "list";
+  listTitle?: string | null;
 };
 
-export function LockedLanguageBanner({ language }: LockedLanguageBannerProps) {
+export function LockedLanguageBanner({
+  language,
+  source = "exercise",
+  listTitle,
+}: LockedLanguageBannerProps) {
   const cloneMut = useCloneLanguage();
   const { showToast } = useToast();
 
@@ -37,9 +43,14 @@ export function LockedLanguageBanner({ language }: LockedLanguageBannerProps) {
           <p className="font-medium truncate">
             Linguagem fixa: <span className="font-semibold">{language.name}</span>
           </p>
-          {language.description && (
-            <p className="opacity-70 truncate text-xs">{language.description}</p>
-          )}
+          {/* A origem da trava vale mais que a descricao da linguagem aqui: o
+              nome ja identifica a linguagem, e o aluno precisa saber de onde
+              ela veio para entender por que nao pode trocar. */}
+          <p className="opacity-70 truncate text-xs">
+            {source === "list" && listTitle
+              ? `Travada pela lista "${listTitle}"`
+              : "Travada por este exercício"}
+          </p>
         </div>
       </div>
       <Button

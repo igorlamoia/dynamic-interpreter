@@ -1,10 +1,20 @@
 from datetime import datetime
+
+from app.models.language import LanguagePolicy
 from app.schemas.base import CamelModel
+from app.schemas.languages import LanguageResponse
 
 
 class ExerciseListCreate(CamelModel):
     title: str
     description: str | None = None
+
+
+class ExerciseListUpdate(CamelModel):
+    title: str | None = None
+    description: str | None = None
+    language_policy: LanguagePolicy | None = None
+    locked_language_id: int | None = None
 
 
 class ExerciseSummary(CamelModel):
@@ -31,6 +41,9 @@ class ExerciseListResponse(CamelModel):
     teacher_id: int
     title: str
     description: str | None
+    language_policy: LanguagePolicy
+    locked_language_id: int | None = None
+    locked_language: LanguageResponse | None = None
     created_at: datetime
     updated_at: datetime
     items: list[ExerciseListItemResponse]

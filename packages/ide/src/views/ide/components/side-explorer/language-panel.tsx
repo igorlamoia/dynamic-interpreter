@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import {
@@ -16,22 +15,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useEditor } from "@/hooks/useEditor";
-import { useKeywords } from "@/contexts/keyword/KeywordContext";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { cn } from "@/lib/utils";
 import {
-  listSavedKeywordLanguages,
-  loadActiveSavedKeywordLanguage,
-  loadSavedKeywordLanguage,
-  setActiveSavedKeywordLanguage,
-  type SavedKeywordLanguageIndexEntry,
-} from "@/lib/keyword-language-storage";
+  useLanguageChoices,
+  type ActiveLanguageDetail,
+  type LanguageChoice,
+} from "@/hooks/useLanguageChoices";
+import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-panel/categories-list";
 import { getCategoryLexemes } from "./category-lexemes";
 
-export type LanguageCustomization = NonNullable<
-  ReturnType<typeof loadSavedKeywordLanguage>
->["customization"];
+export type LanguageCustomization = StoredKeywordCustomization;
 
 function getDefaultLanguageImage(imageUrl?: string) {
   return imageUrl?.trim() ? imageUrl : "/images/language-default.png";
@@ -51,46 +46,17 @@ function getLanguageDNA(customization: LanguageCustomization): string[] {
 
 export function LanguagePanel() {
   const editor = useEditor();
-  const { setCustomization } = useKeywords();
-  const [languages, setLanguages] = useState<SavedKeywordLanguageIndexEntry[]>(
-    [],
-  );
-  const [selectedSlug, setSelectedSlug] = useState("");
-
-  useEffect(() => {
-    const nextLanguages = listSavedKeywordLanguages();
-    setLanguages(nextLanguages);
-
-    const activeSlug =
-      loadActiveSavedKeywordLanguage()?.slug ?? nextLanguages[0]?.slug ?? "";
-    setSelectedSlug(activeSlug);
-
-    if (!activeSlug) return;
-
-    const loadedLanguage = loadSavedKeywordLanguage(activeSlug);
-    if (loadedLanguage) {
-      setActiveSavedKeywordLanguage(activeSlug);
-      setCustomization(loadedLanguage.customization);
-    }
-  }, [setCustomization]);
-
-  const visibleLanguage = useMemo(() => {
-    const currentSlug = selectedSlug || loadActiveSavedKeywordLanguage()?.slug;
-    const currentLanguage = currentSlug
-      ? loadSavedKeywordLanguage(currentSlug)
-      : null;
-
-    if (currentLanguage) return currentLanguage;
-
-    const fallbackSlug = languages[0]?.slug;
-    return fallbackSlug ? loadSavedKeywordLanguage(fallbackSlug) : null;
-  }, [languages, selectedSlug]);
+  // Sem efeito de "aplicar a linguagem ativa ao montar": o KeywordContext já
+  // faz isso nos dois caminhos, e duas fontes disputando o mesmo estado é
+  // pedir para elas divergirem.
+  const { choices, activeKey, activeLanguage, selectLanguage } =
+    useLanguageChoices();
 
   const handleLexemeClick = (lexeme: string) => {
     editor.insertTextAtCursor(lexeme);
   };
 
-  if (!languages.length) {
+  if (!choices.length) {
     return (
       <div className="flex h-full items-center justify-center p-4 text-center text-xs text-muted-foreground">
         Nenhuma linguagem salva foi encontrada.
@@ -104,8 +70,8 @@ export function LanguagePanel() {
         <div className="group relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
           <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
             <Image
-              src={getDefaultLanguageImage(visibleLanguage?.imageUrl)}
-              alt={visibleLanguage?.name ?? "Language default"}
+              src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
+              alt={activeLanguage?.name ?? "Language default"}
               fill
               sizes="(max-width: 768px) 100vw, 360px"
               className="object-cover opacity-70 transition duration-300 group-hover:scale-[1.03]"
@@ -120,18 +86,17 @@ export function LanguagePanel() {
                 Linguagem ativa
               </div>
               <LanguageOptionsMenu
-                setCustomization={setCustomization}
-                setSelectedSlug={setSelectedSlug}
-                selectedSlug={selectedSlug}
-                languages={languages}
+                choices={choices}
+                activeKey={activeKey}
+                onSelect={selectLanguage}
               />
             </div>
 
-            <LanguageDescription visibleLanguage={visibleLanguage} />
+            <LanguageDescription activeLanguage={activeLanguage} />
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {visibleLanguage?.customization
-                ? getLanguageDNA(visibleLanguage.customization).map((item) => (
+              {activeLanguage?.customization
+                ? getLanguageDNA(activeLanguage.customization).map((item) => (
                     <span
                       key={item}
                       className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
@@ -151,7 +116,7 @@ export function LanguagePanel() {
           </p>
           <div className="space-y-3">
             {PREVIEW_CATEGORIES.map((category) => {
-              const customization = visibleLanguage?.customization;
+              const customization = activeLanguage?.customization;
 
               if (!customization) return null;
 
@@ -198,18 +163,18 @@ export function LanguagePanel() {
 }
 
 function LanguageDescription({
-  visibleLanguage,
+  activeLanguage,
 }: {
-  visibleLanguage: ReturnType<typeof loadSavedKeywordLanguage> | null;
+  activeLanguage: ActiveLanguageDetail | null;
 }) {
   const description =
-    visibleLanguage?.description ??
+    activeLanguage?.description ||
     "Uma linguagem de programação personalizada criada com o Java--.";
 
   return (
     <div className="max-w-[83%]">
       <h2 className="truncate text-xl font-semibold text-white drop-shadow-sm sm:text-2xl">
-        {visibleLanguage?.name ?? "Java--"}
+        {activeLanguage?.name ?? "Java--"}
       </h2>
       <TooltipProvider>
         <Tooltip>
@@ -226,22 +191,16 @@ function LanguageDescription({
 }
 
 interface LanguageOptionsMenuProps {
-  setCustomization: (customization: LanguageCustomization) => void;
-  setSelectedSlug: (slug: string) => void;
-  selectedSlug: string;
-  languages: SavedKeywordLanguageIndexEntry[];
+  choices: LanguageChoice[];
+  activeKey: string;
+  onSelect: (key: string) => Promise<void>;
 }
 
-function LanguageOptionsMenu(props: LanguageOptionsMenuProps) {
-  const { setCustomization, setSelectedSlug, selectedSlug, languages } = props;
-  const handleSelectLanguage = (slug: string) => {
-    const loadedLanguage = loadSavedKeywordLanguage(slug);
-    if (!loadedLanguage) return;
-
-    setActiveSavedKeywordLanguage(slug);
-    setCustomization(loadedLanguage.customization);
-    setSelectedSlug(slug);
-  };
+function LanguageOptionsMenu({
+  choices,
+  activeKey,
+  onSelect,
+}: LanguageOptionsMenuProps) {
 
   return (
     <div className="relative z-20">
@@ -270,20 +229,20 @@ function LanguageOptionsMenu(props: LanguageOptionsMenuProps) {
                   Seleção de linguagem
                 </p>
                 <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
-                  {languages.length}
+                  {choices.length}
                 </span>
               </div>
 
               <PerfectScrollbar axis="y" className="max-h-56 pr-1">
                 <div className="flex flex-col gap-2">
-                  {languages.map((language) => {
-                    const isSelected = language.slug === selectedSlug;
+                  {choices.map((choice) => {
+                    const isSelected = choice.key === activeKey;
 
                     return (
-                      <DropdownMenuItem key={language.slug} asChild>
+                      <DropdownMenuItem key={choice.key} asChild>
                         <button
                           type="button"
-                          onClick={() => handleSelectLanguage(language.slug)}
+                          onClick={() => void onSelect(choice.key)}
                           className={cn(
                             "group relative overflow-hidden rounded-xl border px-3 py-2 text-left transition backdrop-blur-sm",
                             isSelected
@@ -293,8 +252,8 @@ function LanguageOptionsMenu(props: LanguageOptionsMenuProps) {
                         >
                           <div className="pointer-events-none absolute inset-0">
                             <Image
-                              src={getDefaultLanguageImage(language.imageUrl)}
-                              alt={language.name}
+                              src={getDefaultLanguageImage(choice.imageUrl)}
+                              alt={choice.name}
                               fill
                               sizes="(max-width: 768px) 100vw, 320px"
                               className="object-cover opacity-35 transition duration-300 group-hover:scale-[1.03]"
@@ -305,10 +264,7 @@ function LanguageOptionsMenu(props: LanguageOptionsMenuProps) {
 
                           <div className="relative z-10 min-w-0">
                             <p className="text-sm font-medium leading-tight text-white">
-                              {language.name}
-                            </p>
-                            <p className="text-xs text-white/65">
-                              {language.slug}
+                              {choice.name}
                             </p>
                           </div>
                         </button>
