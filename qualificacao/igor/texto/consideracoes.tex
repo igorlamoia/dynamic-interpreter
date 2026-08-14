@@ -1,0 +1,36 @@
+
+Este capítulo retoma o percurso realizado nesta primeira etapa do Trabalho de Conclusão de Curso, confronta o que foi construído com os objetivos estabelecidos na introdução, explicita as limitações do que se apresenta e delimita os encaminhamentos previstos para a etapa seguinte.
+
+\section{Retomada dos Objetivos}
+
+O objetivo geral consistia em construir uma plataforma educacional formada por uma IDE web e por um interpretador dinâmico capaz de aceitar, em tempo de execução, regras gramaticais definidas pelo próprio usuário. Ao término desta etapa, a plataforma encontra-se operante nos fluxos descritos no Capítulo~\ref{cap:metodologia}, e os objetivos específicos apresentam a seguinte situação.
+
+O primeiro objetivo, especificar quais elementos da linguagem seriam passíveis de redefinição, foi cumprido e está registrado na Tabela~\ref{tab:elementos-configuraveis}, que relaciona cada elemento configurável, sua forma canônica e as restrições verificadas pela plataforma no momento da configuração.
+
+O segundo, projetar e implementar a IDE web, também foi cumprido. O assistente de personalização, a edição de código com realce ajustado à linguagem ativa, o sistema de arquivos virtual, o terminal integrado e a apresentação de \textit{feedback} ao usuário encontram-se implementados e ilustrados na Seção~\ref{sec:telas-plataforma}.
+
+O terceiro, integrar a IDE ao interpretador dinâmico, foi cumprido por meio do consumo direto do pacote \texttt{compiler} como dependência local, arranjo descrito na Seção~\ref{sec:arquitetura-plataforma} e que dispensa comunicação remota para a execução das análises.
+
+O quarto, disponibilizar a plataforma com os fluxos de uso concluídos, foi cumprido no que diz respeito à navegação, à autenticação e ao uso educacional. Os requisitos de acessibilidade e de responsividade foram endereçados por decisão de projeto, com a adoção de componentes que implementam as diretrizes WAI-ARIA por padrão e com a reorganização das composições de tela por faixa de resolução; sua verificação sistemática, contudo, ainda não foi realizada, conforme se discute adiante.
+
+O quinto objetivo, definir o protocolo de avaliação da plataforma, encontra-se parcialmente cumprido: os requisitos que a solução deve satisfazer estão especificados nas Tabelas~\ref{tab:requisitos-funcionais} e \ref{tab:requisitos-nao-funcionais}, mas os instrumentos de coleta e as métricas a serem aplicados junto a estudantes ainda precisam ser consolidados.
+
+\section{Limitações}
+
+Cabe explicitar os limites do que aqui se apresenta, de modo que os resultados não sejam lidos além do que sustentam.
+
+A limitação mais relevante diz respeito à ausência de verificação empírica. A pergunta que orienta a pesquisa indaga em que medida a personalização da sintaxe contribui para reduzir a barreira do primeiro contato com a programação; o que este trabalho entrega é o artefato que torna essa investigação possível, e não a resposta a ela. Nenhuma afirmação sobre ganho de aprendizagem, redução de carga cognitiva ou aumento de engajamento pode ser sustentada com os dados atualmente disponíveis.
+
+A acessibilidade da interface apoia-se, no estado atual, nas garantias oferecidas pelas bibliotecas de componentes adotadas, que implementam as diretrizes WAI-ARIA por padrão. Não foi conduzida auditoria própria com tecnologias assistivas nem avaliação com usuários que dependam delas, de modo que a conformidade permanece pressuposta e não verificada.
+
+O modelo de autenticação foi deliberadamente mantido simples, compatível com o caráter educacional do projeto e com o cenário de uso previsto, o que o torna inadequado a um ambiente de produção com dados sensíveis.
+
+Por fim, a linguagem suportada é um subconjunto didático de linguagens imperativas tipadas. Ela cobre as construções típicas das disciplinas introdutórias, mas não contempla recursos como orientação a objetos, tratamento estruturado de exceções ou modularização em múltiplos arquivos de código-fonte.
+
+\section{Encaminhamentos}
+
+A etapa seguinte do Trabalho de Conclusão de Curso concentrará esforços na consolidação da plataforma e na conclusão do protocolo de avaliação. No plano técnico, prevê-se a ampliação da cobertura de testes automatizados, a auditoria da acessibilidade com tecnologias assistivas e o refinamento dos fluxos ainda pouco exercitados. No plano metodológico, prevê-se a definição dos instrumentos de coleta, das métricas e dos critérios que permitirão aferir a contribuição pedagógica da personalização da linguagem.
+
+A aplicação desse protocolo junto a estudantes, com a coleta de evidências empíricas em ambiente educacional e a consequente análise comparativa entre a plataforma desenvolvida e as ferramentas examinadas no referencial teórico, é registrada como trabalho futuro. Sua condução exigirá, além do protocolo consolidado, a articulação com turmas em andamento e a observância dos procedimentos éticos aplicáveis a pesquisas que envolvem seres humanos.
+
+Como desdobramentos adicionais, identificam-se a ampliação do conjunto de elementos configuráveis da linguagem, a investigação do compartilhamento de linguagens entre turmas como recurso pedagógico e o estudo da viabilidade de exportar as linguagens criadas para uso fora da plataforma.

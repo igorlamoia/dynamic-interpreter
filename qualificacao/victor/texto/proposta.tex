@@ -1,7 +1,165 @@
 
-Este capítulo apresenta o escopo do trabalho e o cronograma de desenvolvimento das duas etapas do TCC. O projeto consiste em construir uma plataforma educacional web composta por uma IDE acoplada a um interpretador dinâmico. A plataforma permite ao usuário personalizar o vocabulário da linguagem, os delimitadores de bloco, os operadores em forma de palavra, os literais booleanos e as regras de finalização de instrução. O objetivo é reduzir a dificuldade inicial de aprender programação deslocando o foco do aluno da sintaxe para a lógica.
+Este capítulo apresenta o escopo do trabalho e o cronograma de desenvolvimento das duas etapas do TCC. O projeto consiste em construir uma plataforma educacional web composta por uma IDE acoplada a um interpretador dinâmico. A plataforma permite ao usuário personalizar o vocabulário da linguagem, os delimitadores de bloco, os operadores em forma de palavra, os literais booleanos e as regras de finalização de instrução. O objetivo é reduzir a dificuldade inicial de aprender programação deslocando o foco do aluno da sintaxe para a lógica. O conjunto completo de funcionalidades previstas para a plataforma, com os respectivos atores, é apresentado no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso}. O diagrama situa o núcleo de tradução tratado neste texto dentro do escopo funcional mais amplo do projeto: as funcionalidades de edição, execução e inspeção do código, no centro do diagrama, são as que acionam diretamente o interpretador descrito nos capítulos seguintes.
 
-O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepostas: (I) revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais; (II) definição dos requisitos e da arquitetura do sistema; (III) implementação da análise léxica e sintática com suporte a regras gramaticais configuráveis; (IV) geração e execução do código intermediário e verificação semântica; (V) integração entre o núcleo do interpretador e a plataforma web; e (VI) testes, validação com usuários e coleta de feedback. O cronograma de execução dessas etapas está na Tabela~\ref{tab:cronograma}, onde cada coluna numerada representa um mês corrido e as células marcadas com ``X'' indicam os meses de execução previstos.
+\begin{landscape}
+\begin{figure}[p]
+    \centering
+    \caption{Diagrama de casos de uso da plataforma.}
+    \label{fig:casos-de-uso}
+    \resizebox{\linewidth}{!}{%
+    \begin{tikzpicture}[x=1cm,y=1cm]
+
+    %% ---------- fronteira do sistema ----------
+    \draw[thick] (3.0,5.9) rectangle (23.2,-7.2);
+    \node[font=\bfseries, anchor=north] at (13.1,5.7) {Plataforma educacional web};
+
+    %% ---------- atores ----------
+    \pic at (0,4.6) {ator};  \node[font=\small, align=center] at (0,2.9) {Visitante};
+    \pic at (0,0.9) {ator};  \node[font=\small, align=center] at (0,-1.1) {Usuário\\autenticado};
+    \pic at (0,-4.4) {ator}; \node[font=\small, align=center] at (0,-6.1) {Aluno};
+    \pic at (26.0,-0.6) {ator};  \node[font=\small, align=center] at (26.0,-2.4) {Professor};
+
+    %% generalizacao: Aluno e Professor sao Usuarios autenticados.
+    %% A do Professor e roteada abaixo da fronteira para nao cruzar os casos de uso.
+    \draw[heranca] (0,-4.2) -- (0,-2.0);
+    \draw[heranca] (26.0,-1.9) -- (26.0,-8.3) -- (1.5,-8.3) -- (1.5,0.3) -- (0.45,0.3);
+
+    %% ---------- coluna A: acesso, conta e linguagem ----------
+    \node[uc] (ucCad)  at (7.2, 4.5)  {Cadastrar-se};
+    \node[uc] (ucAut)  at (7.2, 3.0)  {Autenticar-se};
+    \node[uc] (ucPer)  at (7.2, 1.5)  {Gerenciar perfil};
+    \node[uc] (ucLing) at (7.2, 0.0)  {Criar e gerenciar\\linguagens personalizadas};
+    \node[uc] (ucCom)  at (7.2,-1.5)  {Compartilhar e importar\\linguagens da comunidade};
+    \node[uc] (ucAtiv) at (7.2,-3.0)  {Ativar linguagem\\no editor};
+    \node[uc] (ucEdit) at (7.2,-4.5)  {Editar código na IDE};
+    \node[uc] (ucArq)  at (7.2,-6.0)  {Gerenciar arquivos\\do projeto};
+
+    %% ---------- coluna B: ambiente de desenvolvimento e aluno ----------
+    \node[uc] (ucExec) at (13.6, 4.5) {Executar programa\\no terminal};
+    \node[uc] (ucTok)  at (13.6, 3.0) {Inspecionar \textit{tokens} e\\código intermediário};
+    \node[uc] (ucDep)  at (13.6, 1.5) {Depurar execução\\passo a passo};
+    \node[uc] (ucIng)  at (13.6, 0.0) {Ingressar em turma};
+    \node[uc] (ucCons) at (13.6,-1.5) {Consultar listas\\e exercícios};
+    \node[uc] (ucSub)  at (13.6,-3.0) {Submeter solução\\de exercício};
+    \node[uc] (ucVer)  at (13.6,-4.5) {Consultar veredito\\e histórico};
+
+    %% ---------- coluna C: gestao pedagogica ----------
+    \node[uc] (ucTur)  at (20.0, 4.5) {Gerenciar turmas};
+    \node[uc] (ucMem)  at (20.0, 3.0) {Gerenciar membros\\da turma};
+    \node[uc] (ucEx)   at (20.0, 1.5) {Gerenciar exercícios\\e casos de teste};
+    \node[uc] (ucVinc) at (20.0, 0.0) {Vincular linguagem\\a exercício};
+    \node[uc] (ucLis)  at (20.0,-1.5) {Gerenciar listas\\de exercícios};
+    \node[uc] (ucPub)  at (20.0,-3.0) {Publicar lista\\para a turma};
+    \node[uc] (ucAva)  at (20.0,-4.5) {Acompanhar e avaliar\\submissões};
+
+    %% ---------- associacoes (camada de fundo: passam atras das elipses) ----------
+    \begin{scope}[on background layer]
+      \foreach \d in {ucCad,ucAut}
+        \draw[liga] (0.35,4.2) -- (\d);
+      \foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep}
+        \draw[liga] (0.35,0.5) -- (\d);
+      \foreach \d in {ucIng,ucCons,ucSub,ucVer}
+        \draw[liga] (0.35,-4.8) -- (\d);
+      \foreach \d in {ucTur,ucMem,ucEx,ucVinc,ucLis,ucPub,ucAva}
+        \draw[liga] (25.3,-0.9) -- (\d);
+    \end{scope}
+
+    \end{tikzpicture}}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+\end{landscape}
+
+A partir desses casos de uso, consolidaram-se os requisitos que orientaram a construção da plataforma. A Tabela~\ref{tab:requisitos-funcionais} relaciona os requisitos funcionais, isto é, o que o sistema deve fazer; a Tabela~\ref{tab:requisitos-nao-funcionais}, os requisitos não funcionais, que estabelecem as qualidades esperadas da solução e os critérios sob os quais ela será verificada.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Requisitos funcionais da plataforma.}
+    \label{tab:requisitos-funcionais}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{|c|>{\raggedright\arraybackslash}p{12.3cm}|}
+        \hline
+        \textbf{ID} & \textbf{Descrição} \\
+        \hline
+        RF01 & Permitir o cadastro e a autenticação de usuários, distinguindo os papéis de aluno e de professor \\
+        \hline
+        RF02 & Permitir ao usuário autenticado consultar e editar os dados de seu perfil \\
+        \hline
+        RF03 & Oferecer um assistente guiado, organizado em etapas independentes, para a criação de uma linguagem personalizada \\
+        \hline
+        RF04 & Permitir a redefinição dos elementos da linguagem relacionados na Tabela~\ref{tab:elementos-configuraveis} \\
+        \hline
+        RF05 & Validar preventivamente cada configuração, impedindo colisões entre palavras-chave, operadores, literais, delimitadores e terminador de instrução \\
+        \hline
+        RF06 & Exibir, em tempo real, a pré-visualização de um programa exemplo sob a configuração corrente \\
+        \hline
+        RF07 & Persistir localmente a customização ativa e remotamente as linguagens nomeadas pelo usuário \\
+        \hline
+        RF08 & Permitir publicar uma linguagem no catálogo comunitário e importar linguagens publicadas por terceiros \\
+        \hline
+        RF09 & Oferecer edição de código com realce de sintaxe e sugestão automática ajustados à linguagem ativa \\
+        \hline
+        RF10 & Manter um sistema de arquivos virtual que permita criar, renomear, remover e alternar entre arquivos \\
+        \hline
+        RF11 & Executar o programa produzido no editor, com entrada e saída conectadas ao terminal integrado \\
+        \hline
+        RF12 & Exibir ao usuário a tabela de \textit{tokens} reconhecidos e o código intermediário gerado \\
+        \hline
+        RF13 & Oferecer execução passo a passo, destacando no editor a instrução em processamento \\
+        \hline
+        RF14 & Relatar erros léxicos, sintáticos, semânticos e de execução no vocabulário da linguagem ativa e no idioma selecionado \\
+        \hline
+        RF15 & Permitir ao professor criar e gerir turmas, e ao aluno ingressar em uma turma \\
+        \hline
+        RF16 & Permitir ao professor criar e gerir exercícios, com casos de teste de entrada e saída esperada \\
+        \hline
+        RF17 & Permitir vincular uma configuração de linguagem a um exercício, restringindo o vocabulário disponível ao aluno \\
+        \hline
+        RF18 & Permitir organizar exercícios em listas e publicá-las para uma turma \\
+        \hline
+        RF19 & Avaliar automaticamente a submissão do aluno contra os casos de teste do exercício \\
+        \hline
+        RF20 & Permitir ao professor acompanhar as submissões da turma e atribuir nota \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Requisitos não funcionais da plataforma.}
+    \label{tab:requisitos-nao-funcionais}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{|c|>{\raggedright\arraybackslash}p{12.3cm}|}
+        \hline
+        \textbf{ID} & \textbf{Descrição} \\
+        \hline
+        RNF01 & \textbf{Acessibilidade:} os componentes de interface devem observar as diretrizes WAI-ARIA \cite{w3c2023aria}, com navegação por teclado, leitura por tecnologias assistivas e gerenciamento de foco \\
+        \hline
+        RNF02 & \textbf{Responsividade:} as composições de tela devem reorganizar-se conforme a faixa de resolução do dispositivo \\
+        \hline
+        RNF03 & \textbf{Internacionalização:} toda cadeia visível ao usuário deve estar externalizada, com suporte aos idiomas \textit{pt-BR}, \textit{pt-PT}, \textit{es} e \textit{en} \\
+        \hline
+        RNF04 & \textbf{Autonomia de execução:} edição, análise léxica e sintática, geração de código intermediário e interpretação devem permanecer funcionais na ausência de conexão com o serviço de persistência \\
+        \hline
+        RNF05 & \textbf{Latência:} a execução do núcleo de tradução deve ocorrer sem ciclo de requisição e resposta a servidor remoto \\
+        \hline
+        RNF06 & \textbf{Consistência visual:} os temas claro e escuro devem manter paridade de contraste e legibilidade, inclusive no editor \\
+        \hline
+        RNF07 & \textbf{Testabilidade:} as construções críticas devem ser cobertas por testes automatizados, executados localmente e no \textit{pipeline} de integração contínua \\
+        \hline
+        RNF08 & \textbf{Segregação de acesso:} as rotas e operações restritas devem verificar o papel do usuário antes de permitir o acesso \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+
+
+O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepostas: (I) revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais; (II) definição dos requisitos e da arquitetura do sistema; (III) implementação da análise léxica e sintática com suporte a regras gramaticais configuráveis; (IV) geração e execução do código intermediário e verificação semântica; (V) integração entre o núcleo do interpretador e a plataforma web; e (VI) testes automatizados do núcleo de tradução e definição do protocolo de avaliação junto a usuários, cuja aplicação é registrada como encaminhamento futuro. O cronograma de execução dessas etapas está na Tabela~\ref{tab:cronograma}, onde cada coluna numerada representa um mês corrido e as células marcadas com ``X'' indicam os meses de execução previstos.
 
 \begin{table}[H]
     \centering
@@ -44,6 +202,6 @@ O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepost
 
 Este trabalho foi desenvolvido em dupla, conforme a pré-proposta aprovada, que distribui o projeto em \textbf{funções complementares}: o desenvolvimento da plataforma web e da interface de personalização da linguagem ficou a cargo de Igor Lamoia Queiroz, enquanto a concepção e a implementação do \textbf{núcleo do interpretador} (análise léxica, sintática e semântica, geração e execução de código intermediário) constituem a demanda desta monografia. As etapas iniciais de revisão bibliográfica e de definição da arquitetura geral foram conduzidas conjuntamente, e o regime de dupla manifestou-se sobretudo nas atividades de fronteira entre os subsistemas: a definição dos contratos de comunicação entre os módulos e a integração do núcleo à plataforma, em que decisões de uma camada exigiam ajustes na outra. O aprofundamento técnico e analítico do núcleo de tradução, objeto de avaliação deste documento, é de responsabilidade individual do autor.
 
-A divisão de eixos de aprofundamento individual, prevista na pré-proposta, aparece nos capítulos de redação acadêmica. Neste documento, o foco está no núcleo de tradução: as fases de análise léxica, sintática e semântica, a geração de código intermediário e o funcionamento do interpretador. O aluno Igor Lamoia Queiroz aprofunda, em seu documento, a IDE web: a interface de personalização da linguagem, a usabilidade da plataforma e a coleta de feedback dos estudantes. Essa divisão se justifica pela amplitude do projeto, que seria difícil de cobrir com profundidade suficiente por apenas um autor.
+A divisão de eixos de aprofundamento individual, prevista na pré-proposta, aparece nos capítulos de redação acadêmica. Neste documento, o foco está no núcleo de tradução: as fases de análise léxica, sintática e semântica, a geração de código intermediário e o funcionamento do interpretador. O aluno Igor Lamoia Queiroz aprofunda, em seu documento, a IDE web: a interface de personalização da linguagem, a experiência de uso da plataforma e o protocolo de coleta de \textit{feedback} dos estudantes. Essa divisão se justifica pela amplitude do projeto, que seria difícil de cobrir com profundidade suficiente por apenas um autor.
 
 Com o TCC I concluído, o TCC II dará continuidade ao aprofundamento do núcleo de tradução, ampliando a cobertura de testes e a avaliação técnica do interpretador (a correção do código intermediário gerado e a robustez frente às variações configuráveis da linguagem) e consolidando a análise comparativa entre a solução desenvolvida e as ferramentas discutidas no referencial teórico, sob a ótica das capacidades do compilador. Essa comparação evidencia a convergência da proposta com sistemas relacionados de compiladores, pois o projeto também explicita as etapas de análise léxica, análise sintática e geração de representação intermediária; contudo, diferencia-se ao integrar essas etapas a uma linguagem configurável e a uma IDE educacional voltada ao estudante iniciante. O próximo capítulo descreve a modelagem e a implementação realizadas até o fim do TCC~I.

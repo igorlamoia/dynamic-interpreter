@@ -1,22 +1,22 @@
 \label{cap:introducao_modelo}
 
-Este Trabalho de Conclusão de Curso (TCC) foi desenvolvido em parceria com Igor Lamoia Queiroz, aluno do Curso de Engenharia de Computação do CEFET-MG, Unidade Leopoldina. Os dois trabalhos tratam do mesmo projeto, mas com enfoques distintos, conforme a divisão de responsabilidades descrita no Apêndice~\ref{ap:plano}. Este volume descreve o núcleo do compilador: as fases de análise léxica, análise sintática, geração de código intermediário e execução pelo interpretador. O trabalho complementar, intitulado \textit{Interpretador Dinâmico para Ensino de Programação: Uma abordagem interativa com Ambiente de Desenvolvimento Integrado (IDE) para personalização e execução de comandos definidos pelo usuário}, foca na IDE web, na interface de personalização da linguagem e na experiência de uso da plataforma. Por se tratar de trabalhos complementares e interdependentes, para a compreensão do sistema como um todo, recomenda-se ler os dois trabalhos em conjunto.
-
-A contextualização do problema de pesquisa e as premissas sobre os desafios no ensino e na aprendizagem de programação, que fundamentam esta introdução e suas subseções, baseiam-se nas investigações de \citeonline{stefik2013} e \citeonline{ferreira2025}.
+Este Trabalho de Conclusão de Curso (TCC) foi desenvolvido em parceria com Igor Lamoia Queiroz, aluno do Curso de Engenharia de Computação do CEFET-MG, Unidade Leopoldina. Os dois trabalhos tratam do mesmo projeto, mas com enfoques distintos, conforme a divisão de responsabilidades descrita no Apêndice~\ref{ap:plano}. Este texto descreve o núcleo do compilador: as fases de análise léxica, análise sintática, geração de código intermediário e execução pelo interpretador. O trabalho complementar, intitulado \textit{Interpretador Dinâmico para Ensino de Programação: Uma abordagem interativa com Ambiente de Desenvolvimento Integrado (IDE) para personalização e execução de comandos definidos pelo usuário}, foca na IDE web, na interface de personalização da linguagem e na experiência de uso da plataforma. Por se tratar de trabalhos complementares e interdependentes, para a compreensão do sistema como um todo, recomenda-se ler os dois trabalhos em conjunto.
 
 Programar virou uma habilidade cada vez mais necessária, não só em cursos de tecnologia, mas em várias outras áreas. Mesmo assim, disciplinas de programação ainda registram altos índices de reprovação e evasão, principalmente nos primeiros semestres \cite{souza2016,silva2020evasao}. Um dos motivos mais frequentes é que os alunos precisam aprender a lógica de programação e a sintaxe de uma linguagem ao mesmo tempo, o que aumenta a dificuldade do processo de aprendizagem \cite{stefik2013}.
 
 Em linguagens comerciais, um simples erro de digitação, a falta de um ponto e vírgula ou o uso incorreto de uma palavra reservada já são suficientes para interromper a compilação e gerar mensagens de erro difíceis de entender para quem está começando. O aluno, que deveria estar pensando no algoritmo, acaba gastando tempo e energia tentando descobrir o que está sintaticamente errado \cite{stefik2013}.
 
-Diante disso, este trabalho parte da seguinte pergunta: é possível reduzir a barreira de aprendizagem a partir da personalização da sintaxe da linguagem que o aluno está aprendendo?
+Diante disso, este trabalho parte da seguinte pergunta: \textbf{em que medida a personalização da sintaxe da linguagem pelo próprio estudante contribui para reduzir a barreira de aprendizagem enfrentada no primeiro contato com a programação?}
 
-A hipótese é que sim. Se o aluno puder definir as palavras-chave, os delimitadores de bloco e os operadores de uma forma que faça sentido para ele, a curva de aprendizagem tende a ser mais suave. O foco passa a ser o raciocínio algorítmico, não a memorização de regras gramaticais de uma linguagem estrangeira.
+Trabalha-se com a hipótese, ainda não submetida a verificação empírica, de que permitir ao aluno definir as palavras-chave, os delimitadores de bloco e os operadores de uma forma que faça sentido para ele possa suavizar a curva de aprendizagem, deslocando o foco para o raciocínio algorítmico em vez da memorização de regras gramaticais de uma linguagem estrangeira.
+
+Cumpre delimitar o alcance deste trabalho diante dessa pergunta. O que aqui se apresenta é a construção do artefato que torna a investigação possível e a definição do protocolo com que ela poderá ser conduzida. A aplicação desse protocolo junto a estudantes, que permitiria responder empiricamente à pergunta formulada, não integra o escopo deste documento e é registrada como encaminhamento futuro.
 
 \section{Justificativa}
 
 Já existem plataformas e linguagens voltadas para iniciantes, como o Portugol Studio e o Scratch. A grande maioria, porém, trabalha com uma gramática fixa definida pelos desenvolvedores da ferramenta. O aluno não tem como ajustar ou adaptar a linguagem ao próprio raciocínio.
 
-A proposta deste trabalho é oportunizar a mudança desse cenário a partir da construção de um interpretador que aceite regras gramaticais configuradas pelo próprio usuário, integrado a uma IDE web que permita uma personalização simples e acessível. Além de diminuir o obstáculo inicial com a sintaxe, a plataforma funciona como um ambiente de experimentação antes de o aluno migrar para linguagens mais rígidas exigidas pelo mercado de trabalho e por plataformas de juízes online.
+A proposta deste trabalho é oportunizar a mudança desse cenário a partir da construção de um interpretador que aceite regras gramaticais configuradas pelo próprio usuário, integrado a uma IDE web que permita uma personalização simples e acessível. A expectativa é que, ao diminuir o obstáculo inicial com a sintaxe, a plataforma sirva como ambiente de experimentação antes de o aluno migrar para linguagens mais rígidas exigidas pelo mercado de trabalho e por plataformas de juízes online. A verificação dessa expectativa constitui o objeto da avaliação registrada como trabalho futuro.
 
 \section{Objetivos}
 
@@ -31,12 +31,12 @@ Projetar e desenvolver um interpretador dinâmico integrado a uma IDE web que pe
 Para alcançar o objetivo geral, foram definidos os seguintes objetivos específicos:
 
 \begin{itemize}
-    \item Estudar os fundamentos de construção de compiladores;
-    \item Analisar ferramentas educacionais correlatas na literatura;
+    \item Especificar a gramática da linguagem e os elementos passíveis de redefinição pelo usuário em tempo de execução;
     \item Projetar os módulos de análise léxica, sintática e semântica com suporte à injeção dinâmica de regras gramaticais;
     \item Implementar os módulos projetados, integrando-os em um interpretador dinâmico executável no navegador;
-    \item Integrar o núcleo do interpretador a uma interface web, definindo os contratos de comunicação entre os módulos;
-    \item Avaliar tecnicamente a solução desenvolvida por meio de estudos de caso centrados na validade do núcleo de tradução.
+    \item Integrar o núcleo do interpretador à interface web, definindo os contratos de comunicação entre os módulos;
+    \item Disponibilizar o núcleo de tradução em ambiente web, verificando seu comportamento por meio de uma suíte de testes automatizados que cubra as construções da linguagem;
+    \item Definir o protocolo de avaliação da solução, estabelecendo os critérios que permitirão, em etapa posterior, aferir sua contribuição pedagógica.
 \end{itemize}
 
 \section{Estrutura do Trabalho}

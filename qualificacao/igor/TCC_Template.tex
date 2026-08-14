@@ -68,7 +68,9 @@
     numbers=left,                      % Adiciona numeração das linhas
     numberstyle=\tiny\color{gray},     % Estilo dos números das linhas
     tabsize=2,                         % Tamanho do tabulação
-    showstringspaces=false             % Não mostra espaços em strings
+    showstringspaces=false,            % Não mostra espaços em strings
+    float=htbp,                        % Listagem vira float: nunca quebra entre páginas
+    floatplacement=htbp                % (exigência da banca: listagem em página única)
 }
 
 \usepackage{lipsum}    % gera texto aleatório (remover)
@@ -79,6 +81,27 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+
+%% TikZ para os diagramas elaborados pelos autores (casos de uso e arquitetura).
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,arrows.meta,fit,backgrounds,calc}
+
+%% Ator UML (boneco palito) desenhado como pic, para uso no diagrama de casos de uso.
+\tikzset{
+  ator/.pic={
+    \draw[thick] (0,0) circle (0.20);
+    \draw[thick] (0,-0.20) -- (0,-0.80);
+    \draw[thick] (-0.30,-0.40) -- (0.30,-0.40);
+    \draw[thick] (0,-0.80) -- (-0.25,-1.25);
+    \draw[thick] (0,-0.80) -- (0.25,-1.25);
+  },
+  uc/.style={ellipse, draw, align=center, inner sep=1.5pt,
+             minimum height=0.85cm, font=\scriptsize, fill=white},
+  pacote/.style={draw, dashed, rounded corners, inner sep=6pt},
+  liga/.style={-, thin, gray!70},
+  heranca/.style={-{Triangle[open, length=3mm, width=2.5mm]}, thin},
+}
+
 \graphicspath{{Figuras/}} % Diretório onde estão localizadas as figuras
 
 %% Hifenização correta de palavras que o babel quebrava de forma indevida
@@ -87,7 +110,44 @@
   as-si-mi-la-ção re-pre-sen-ta-ção hie-rár-qui-ca ins-tru-ções
   res-pon-sa-bi-li-da-de so-li-ci-ta-ção a-na-li-sa-das mo-ni-tor
   cor-res-pon-den-tes es-pe-cia-li-za-dos
+  re-tar-ge-ta-bi-li-da-de bi-bli-o-grá-fi-ca co-men-tá-rios
+  con-sci-en-te es-câ-ne-res es-pe-cia-li-za-dos
 }
+
+%% Combate aos "Overfull \hbox" apontados pela banca (texto ultrapassando as
+%% margens). \emergencystretch autoriza o TeX a afrouxar o espaçamento numa
+%% passada final, em vez de estourar a margem.
+\emergencystretch=3em
+
+%% Permite quebra de linha dentro de identificadores longos em \texttt{}
+%% (ex.: editor-glass-light, LanguageImage), outra fonte dos estouros.
+%% Equivale à opção [htt] do pacote hyphenat, feito à mão para não exigir
+%% a instalação de pacote adicional.
+\makeatletter
+\DeclareRobustCommand\ttfamily{%
+  \not@math@alphabet\ttfamily\mathtt
+  \fontfamily\ttdefault\selectfont
+  \hyphenchar\font=`\-\relax}
+\makeatother
+
+%% A classe fixa \cftfigurenumwidth em 24pt dentro de \listfigvariadas
+%% (configcefetmglpd.cls, l. 296-303). Essa largura não acomoda rótulos de dois
+%% dígitos ("Figura 4.13"), e o excedente empurrava o número da página para fora
+%% da margem na Lista de Figuras -- exatamente o ponto apontado pela banca.
+%% Redefinido aqui para não alterar o arquivo da classe institucional.
+\renewcommand{\listfigvariadas}{%
+  \setlength{\cftfigurenumwidth}{32pt}%
+  \setlength{\cftfigureindent}{0pt}%
+  \begingroup
+  \listoffigures*
+  \endgroup
+}
+
+%% A classe aplica \MakeLowercase ao subtítulo (configcefetmglpd.cls, l. 468),
+%% o que rebaixava a sigla IDE para "ide" na capa, na folha de rosto e na folha
+%% de aprovação. \NoCaseChange preserva a caixa. O \providecommand é apenas
+%% salvaguarda para kernels anteriores a 2022, que não trazem o comando.
+\providecommand{\NoCaseChange}[1]{#1}
 
 %% -----------------------------------------------------------------------------
 
@@ -95,7 +155,7 @@
 
 \titulo{Interpretador Dinâmico para Ensino de Programação} %% O título do trabalho deve ser colocado dentro das chaves {}.
 \subtitulo{Uma abordagem interativa com Ambiente de Desenvolvimento Integrado
-(IDE) para personalização e execução de comandos definidos pelo usuário}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}.
+(\NoCaseChange{IDE}) para personalização e execução de comandos definidos pelo usuário}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo do trabalho deve ser colocado dentro das chaves {}.
 
 \tituloIngles{Dynamic Interpreter for Programming Education: A Web IDE with Configurable Language Grammar} %% O título do trabalho em inglês deve ser colocado dentro das chaves {} .
 % \subtituloIngles{subtitle (se tiver)}  %% Acrescentar % no início desta linha se NÃO tiver subtítulo. Se tiver,o subtítulo em inglês do trabalho deve ser colocado dentro das chaves {}.
@@ -111,7 +171,7 @@
 
 \orientador[Orientador]{Luís Augusto Mattos Mendes} %%Colocar o nome completo do orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
 \coorientador[Coorientador]{Eduardo Gabriel Reis Miranda} %%Colocar o nome completo do co-orientador(a) dentro das chaves {}. Entre os colchetes [], use [Orientador] ou [Orientadora] para identificação
-\orientadorTitulo{Prof.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Me., Dr., Dra., etc.
+\orientadorTitulo{Prof. Me.} %%Colocar a titulação do(a) orientador(a) dentro de chaves {}. Ex: Me., Dr., Dra., etc.
 \coorientadorTitulo{Prof. Dsc.} %%Colocar a titulação do(a) co-orientador(a) dentro de chaves {}. Ex: Me., Dr., Dra., etc.
 \siglaInstituicaoCoorientador{CEFET-MG} %% Alterar caso o coorientado não seja do CEFET-MG
 
@@ -150,7 +210,10 @@
 % Pacotes para referência bibliográfica. Não alterar as linhas abaixo
 % \usepackage[round, numbers]{natbib} % Referência númérica (não usado nesse trabalho)
   % \usepackage{natbib} % Referência utilizando o sistema autor-data
-\usepackage[alf,abnt-emphasize=bf]{abntex2cite}
+%% abnt-etal-list=0 desliga a abreviação por "et al." nas Referências, de modo
+%% que todos os autores sejam listados (exigência da banca em LAI et al.,
+%% SILVA et al. e SILVEIRA et al.). No corpo do texto o "et al." é mantido.
+\usepackage[alf,abnt-emphasize=bf,abnt-etal-list=0]{abntex2cite}
 
 \linespread{1.5}
 \begin{document}
@@ -207,7 +270,7 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
 %\aplicaresumo
 
 
-\noindent Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite aos usuários personalizar a sintaxe da linguagem, os comandos e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema, implementação de uma IDE web e de um interpretador (incluindo análise léxica e sintática) e integração com execução em tempo real no navegador.
+\noindent Ensinar programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que, mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. Diante desse cenário, o projeto do qual este trabalho faz parte propõe uma plataforma educacional composta por um Ambiente de Desenvolvimento Integrado (IDE) web conectado a um interpretador dinâmico, que permite ao usuário personalizar a sintaxe da linguagem, os comandos e as regras estruturais. A plataforma é desenvolvida em coautoria e está dividida em dois eixos complementares: o núcleo de tradução, tratado no documento complementar, e o Ambiente de Desenvolvimento Integrado, objeto deste trabalho. O presente documento tem por objetivo projetar, implementar e integrar essa IDE web, contemplando o assistente de personalização da linguagem, a edição e a execução de código no próprio ambiente, a apresentação de \textit{feedback} ao usuário e a integração com o interpretador. Os procedimentos adotados compreendem a revisão de literatura, a modelagem da arquitetura, a implementação incremental orientada por testes automatizados e a definição do protocolo de avaliação da plataforma. A aplicação desse protocolo junto a estudantes não integra o escopo deste trabalho e é registrada como encaminhamento futuro.
 % Aplicações preliminares em sala de aula sugerem resultados educacionais positivos, incluindo redução do tempo necessário para que os alunos compreendam conceitos fundamentais de programação, diminuição das taxas de reprovação em disciplinas introdutórias de programação e aumento do engajamento dos estudantes.
 Espera-se que a plataforma contribua para o ensino de programação ao reduzir barreiras linguísticas, favorecer a compreensão de conceitos fundamentais e estimular o engajamento dos estudantes por meio da experimentação com diferentes formas de expressão algorítmica.
 Ao permitir a definição flexível de comandos e sintaxe, a plataforma incentiva a experimentação, ajudando os alunos a focarem no raciocínio algorítmico em vez de memorizar estruturas rígidas de linguagem.
@@ -302,15 +365,8 @@ Teaching programming presents several challenges, partly due to the use of langu
 \input{texto/metodologia}
 
 
-% \chapter{CONCLUSÕES E TRABALHOS FUTUROS}
-
-% Neste capítulo, são apresentadas as conclusões, as considerações sobre o trabalho desenvolvido e, também, são discutidas propostas para trabalhos futuros.
-
-% \section{Conclusões}
-% A utilização deste modelo visa padronizar a parte editorial dos trabalhos de conclusão de curso (TCC). Os orientadores darão mais dicas além das colocadas neste documento, principalmente no tocante ao conteúdo e sequência de apresentação.
-
-% \section{Trabalhos futuros}
-% Colocar aqui sugestões de trabalhos futuros.
+\chapter{CONSIDERAÇÕES FINAIS} \label{cap:consideracoes}
+\input{texto/consideracoes}
 
 %% -----------Elementos  Pós-Textuais --------------
 

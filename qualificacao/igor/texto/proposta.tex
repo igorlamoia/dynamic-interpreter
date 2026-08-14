@@ -1,7 +1,198 @@
 
 A finalidade deste capítulo é delimitar o que se pretende construir ao longo das duas fases do Trabalho de Conclusão de Curso e, em seguida, apresentar a cadeia temporal de atividades prevista na pré-proposta aprovada. A descrição parte da plataforma vista como produto educacional, atravessa as macroatividades técnicas necessárias à sua materialização e culmina na exposição do cronograma e do regime de trabalho em dupla adotado.
 
-O artefato que orienta este trabalho não é apenas um compilador ou um editor de código, mas sim uma plataforma educacional web cuja unidade de valor é a possibilidade de o estudante personalizar a própria linguagem que utilizará para aprender programação. Em termos concretos, oferece-se ao usuário a possibilidade de redefinir o vocabulário das palavras-chave, escolher os delimitadores de bloco que melhor representem sua noção de escopo, substituir operadores lógicos e relacionais por palavras de uso natural, reescrever os literais booleanos no idioma de sua preferência e ajustar as regras de finalização de instrução. Cada uma dessas dimensões responde, em alguma medida, a uma fonte conhecida de atrito sintático no contato inicial com linguagens consolidadas no mercado, sendo a sua reunião sob uma mesma interface o que sustenta o caráter inovador da proposta.
+O artefato que orienta este trabalho não é apenas um compilador ou um editor de código, mas sim uma plataforma educacional web cuja unidade de valor é a possibilidade de o estudante personalizar a própria linguagem que utilizará para aprender programação. Em termos concretos, oferece-se ao usuário a possibilidade de redefinir o vocabulário das palavras-chave, escolher os delimitadores de bloco que melhor representem sua noção de escopo, substituir operadores lógicos e relacionais por palavras de uso natural, reescrever os literais booleanos no idioma de sua preferência e ajustar as regras de finalização de instrução. Cada uma dessas dimensões responde, em alguma medida, a uma fonte conhecida de atrito sintático no contato inicial com linguagens consolidadas no mercado, sendo a sua reunião sob uma mesma interface o que sustenta o caráter inovador da proposta. A Tabela~\ref{tab:elementos-configuraveis} detalha cada um desses elementos, confrontando a forma canônica herdada da família C com um exemplo de personalização e com as restrições verificadas pela plataforma no momento da configuração.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Elementos da linguagem passíveis de redefinição pelo usuário.}
+    \label{tab:elementos-configuraveis}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.9cm}|>{\raggedright\arraybackslash}p{5.2cm}|}
+        \hline
+        \textbf{Elemento} & \textbf{Forma canônica} & \textbf{Exemplo de personalização} & \textbf{Restrições verificadas} \\
+        \hline
+        Palavras-chave de tipo & \texttt{int}, \texttt{float}, \texttt{bool}, \texttt{string} & \texttt{inteiro}, \texttt{real}, \texttt{logico}, \texttt{texto} & Devem ter forma de identificador e não colidir entre si nem com os demais elementos configurados \\
+        \hline
+        Controle de fluxo & \texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{break}, \texttt{continue}, \texttt{return} & \texttt{se}, \texttt{senao}, \texttt{para}, \texttt{enquanto}, \texttt{pare}, \texttt{siga}, \texttt{retorne} & Mesmas restrições das palavras-chave de tipo \\
+        \hline
+        Entrada e saída & \texttt{print}, \texttt{scan} & \texttt{escreva}, \texttt{leia} & Mesmas restrições das palavras-chave de tipo \\
+        \hline
+        Operadores lógicos & \texttt{\&\&}, \texttt{||}, \texttt{!} & \texttt{e}, \texttt{ou}, \texttt{nao} & Forma de identificador; sem duplicatas; não podem reusar palavra reservada nem colidir com delimitadores de bloco \\
+        \hline
+        Operadores relacionais & \texttt{==}, \texttt{!=}, \texttt{>}, \texttt{>=}, \texttt{<}, \texttt{<=} & \texttt{igual}, \texttt{diferente}, \texttt{maior}, \texttt{maiorIgual}, \texttt{menor}, \texttt{menorIgual} & Mesmas restrições dos operadores lógicos \\
+        \hline
+        Literais booleanos & \texttt{true}, \texttt{false} & \texttt{verdadeiro}, \texttt{falso} & Forma de identificador; sem duplicatas; não podem conflitar com operadores em forma de palavra nem com delimitadores \\
+        \hline
+        Delimitadores de bloco & \texttt{\{} e \texttt{\}} & \texttt{inicio} e \texttt{fim}, ou indentação & Ambos preenchidos, com forma de identificador, distintos entre si e sem reusar palavra reservada \\
+        \hline
+        Terminador de instrução & \texttt{;} & \texttt{ponto} ou ausência de terminador & Não pode ser vazio, conter espaços, reusar o ponto e vírgula ou caracteres de operadores fixos, nem colidir com palavras já definidas na linguagem \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor, a partir das funções de validação do módulo \texttt{config.ts} do pacote \texttt{compiler}.}
+\end{table}
+
+
+O conjunto completo de funcionalidades previstas para a plataforma, com os respectivos atores, é apresentado no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso}. O diagrama distingue quatro atores: o visitante, que apenas se cadastra e se autentica; o usuário autenticado, que concentra as funcionalidades comuns de personalização da linguagem e de uso do ambiente de desenvolvimento; e os papéis de aluno e de professor, que dele herdam e acrescentam, respectivamente, as funcionalidades de participação em turmas e de gestão pedagógica.
+
+\begin{landscape}
+\begin{figure}[p]
+    \centering
+    \caption{Diagrama de casos de uso da plataforma.}
+    \label{fig:casos-de-uso}
+    \resizebox{\linewidth}{!}{%
+    \begin{tikzpicture}[x=1cm,y=1cm]
+
+    %% ---------- fronteira do sistema ----------
+    \draw[thick] (3.0,5.9) rectangle (23.2,-7.2);
+    \node[font=\bfseries, anchor=north] at (13.1,5.7) {Plataforma educacional web};
+
+    %% ---------- atores ----------
+    \pic at (0,4.6) {ator};  \node[font=\small, align=center] at (0,2.9) {Visitante};
+    \pic at (0,0.9) {ator};  \node[font=\small, align=center] at (0,-1.1) {Usuário\\autenticado};
+    \pic at (0,-4.4) {ator}; \node[font=\small, align=center] at (0,-6.1) {Aluno};
+    \pic at (26.0,-0.6) {ator};  \node[font=\small, align=center] at (26.0,-2.4) {Professor};
+
+    %% generalizacao: Aluno e Professor sao Usuarios autenticados.
+    %% A do Professor e roteada abaixo da fronteira para nao cruzar os casos de uso.
+    \draw[heranca] (0,-4.2) -- (0,-2.0);
+    \draw[heranca] (26.0,-1.9) -- (26.0,-8.3) -- (1.5,-8.3) -- (1.5,0.3) -- (0.45,0.3);
+
+    %% ---------- coluna A: acesso, conta e linguagem ----------
+    \node[uc] (ucCad)  at (7.2, 4.5)  {Cadastrar-se};
+    \node[uc] (ucAut)  at (7.2, 3.0)  {Autenticar-se};
+    \node[uc] (ucPer)  at (7.2, 1.5)  {Gerenciar perfil};
+    \node[uc] (ucLing) at (7.2, 0.0)  {Criar e gerenciar\\linguagens personalizadas};
+    \node[uc] (ucCom)  at (7.2,-1.5)  {Compartilhar e importar\\linguagens da comunidade};
+    \node[uc] (ucAtiv) at (7.2,-3.0)  {Ativar linguagem\\no editor};
+    \node[uc] (ucEdit) at (7.2,-4.5)  {Editar código na IDE};
+    \node[uc] (ucArq)  at (7.2,-6.0)  {Gerenciar arquivos\\do projeto};
+
+    %% ---------- coluna B: ambiente de desenvolvimento e aluno ----------
+    \node[uc] (ucExec) at (13.6, 4.5) {Executar programa\\no terminal};
+    \node[uc] (ucTok)  at (13.6, 3.0) {Inspecionar \textit{tokens} e\\código intermediário};
+    \node[uc] (ucDep)  at (13.6, 1.5) {Depurar execução\\passo a passo};
+    \node[uc] (ucIng)  at (13.6, 0.0) {Ingressar em turma};
+    \node[uc] (ucCons) at (13.6,-1.5) {Consultar listas\\e exercícios};
+    \node[uc] (ucSub)  at (13.6,-3.0) {Submeter solução\\de exercício};
+    \node[uc] (ucVer)  at (13.6,-4.5) {Consultar veredito\\e histórico};
+
+    %% ---------- coluna C: gestao pedagogica ----------
+    \node[uc] (ucTur)  at (20.0, 4.5) {Gerenciar turmas};
+    \node[uc] (ucMem)  at (20.0, 3.0) {Gerenciar membros\\da turma};
+    \node[uc] (ucEx)   at (20.0, 1.5) {Gerenciar exercícios\\e casos de teste};
+    \node[uc] (ucVinc) at (20.0, 0.0) {Vincular linguagem\\a exercício};
+    \node[uc] (ucLis)  at (20.0,-1.5) {Gerenciar listas\\de exercícios};
+    \node[uc] (ucPub)  at (20.0,-3.0) {Publicar lista\\para a turma};
+    \node[uc] (ucAva)  at (20.0,-4.5) {Acompanhar e avaliar\\submissões};
+
+    %% ---------- associacoes (camada de fundo: passam atras das elipses) ----------
+    \begin{scope}[on background layer]
+      \foreach \d in {ucCad,ucAut}
+        \draw[liga] (0.35,4.2) -- (\d);
+      \foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep}
+        \draw[liga] (0.35,0.5) -- (\d);
+      \foreach \d in {ucIng,ucCons,ucSub,ucVer}
+        \draw[liga] (0.35,-4.8) -- (\d);
+      \foreach \d in {ucTur,ucMem,ucEx,ucVinc,ucLis,ucPub,ucAva}
+        \draw[liga] (25.3,-0.9) -- (\d);
+    \end{scope}
+
+    \end{tikzpicture}}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+\end{landscape}
+
+A partir desses casos de uso, consolidaram-se os requisitos que orientaram a construção da plataforma. A Tabela~\ref{tab:requisitos-funcionais} relaciona os requisitos funcionais, isto é, o que o sistema deve fazer; a Tabela~\ref{tab:requisitos-nao-funcionais}, os requisitos não funcionais, que estabelecem as qualidades esperadas da solução e os critérios sob os quais ela será verificada.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Requisitos funcionais da plataforma.}
+    \label{tab:requisitos-funcionais}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{|c|>{\raggedright\arraybackslash}p{12.3cm}|}
+        \hline
+        \textbf{ID} & \textbf{Descrição} \\
+        \hline
+        RF01 & Permitir o cadastro e a autenticação de usuários, distinguindo os papéis de aluno e de professor \\
+        \hline
+        RF02 & Permitir ao usuário autenticado consultar e editar os dados de seu perfil \\
+        \hline
+        RF03 & Oferecer um assistente guiado, organizado em etapas independentes, para a criação de uma linguagem personalizada \\
+        \hline
+        RF04 & Permitir a redefinição dos elementos da linguagem relacionados na Tabela~\ref{tab:elementos-configuraveis} \\
+        \hline
+        RF05 & Validar preventivamente cada configuração, impedindo colisões entre palavras-chave, operadores, literais, delimitadores e terminador de instrução \\
+        \hline
+        RF06 & Exibir, em tempo real, a pré-visualização de um programa exemplo sob a configuração corrente \\
+        \hline
+        RF07 & Persistir localmente a customização ativa e remotamente as linguagens nomeadas pelo usuário \\
+        \hline
+        RF08 & Permitir publicar uma linguagem no catálogo comunitário e importar linguagens publicadas por terceiros \\
+        \hline
+        RF09 & Oferecer edição de código com realce de sintaxe e sugestão automática ajustados à linguagem ativa \\
+        \hline
+        RF10 & Manter um sistema de arquivos virtual que permita criar, renomear, remover e alternar entre arquivos \\
+        \hline
+        RF11 & Executar o programa produzido no editor, com entrada e saída conectadas ao terminal integrado \\
+        \hline
+        RF12 & Exibir ao usuário a tabela de \textit{tokens} reconhecidos e o código intermediário gerado \\
+        \hline
+        RF13 & Oferecer execução passo a passo, destacando no editor a instrução em processamento \\
+        \hline
+        RF14 & Relatar erros léxicos, sintáticos, semânticos e de execução no vocabulário da linguagem ativa e no idioma selecionado \\
+        \hline
+        RF15 & Permitir ao professor criar e gerir turmas, e ao aluno ingressar em uma turma \\
+        \hline
+        RF16 & Permitir ao professor criar e gerir exercícios, com casos de teste de entrada e saída esperada \\
+        \hline
+        RF17 & Permitir vincular uma configuração de linguagem a um exercício, restringindo o vocabulário disponível ao aluno \\
+        \hline
+        RF18 & Permitir organizar exercícios em listas e publicá-las para uma turma \\
+        \hline
+        RF19 & Avaliar automaticamente a submissão do aluno contra os casos de teste do exercício \\
+        \hline
+        RF20 & Permitir ao professor acompanhar as submissões da turma e atribuir nota \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Requisitos não funcionais da plataforma.}
+    \label{tab:requisitos-nao-funcionais}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{|c|>{\raggedright\arraybackslash}p{12.3cm}|}
+        \hline
+        \textbf{ID} & \textbf{Descrição} \\
+        \hline
+        RNF01 & \textbf{Acessibilidade:} os componentes de interface devem observar as diretrizes WAI-ARIA \cite{w3c2023aria}, com navegação por teclado, leitura por tecnologias assistivas e gerenciamento de foco \\
+        \hline
+        RNF02 & \textbf{Responsividade:} as composições de tela devem reorganizar-se conforme a faixa de resolução do dispositivo \\
+        \hline
+        RNF03 & \textbf{Internacionalização:} toda cadeia visível ao usuário deve estar externalizada, com suporte aos idiomas \textit{pt-BR}, \textit{pt-PT}, \textit{es} e \textit{en} \\
+        \hline
+        RNF04 & \textbf{Autonomia de execução:} edição, análise léxica e sintática, geração de código intermediário e interpretação devem permanecer funcionais na ausência de conexão com o serviço de persistência \\
+        \hline
+        RNF05 & \textbf{Latência:} a execução do núcleo de tradução deve ocorrer sem ciclo de requisição e resposta a servidor remoto \\
+        \hline
+        RNF06 & \textbf{Consistência visual:} os temas claro e escuro devem manter paridade de contraste e legibilidade, inclusive no editor \\
+        \hline
+        RNF07 & \textbf{Testabilidade:} as construções críticas devem ser cobertas por testes automatizados, executados localmente e no \textit{pipeline} de integração contínua \\
+        \hline
+        RNF08 & \textbf{Segregação de acesso:} as rotas e operações restritas devem verificar o papel do usuário antes de permitir o acesso \\
+        \hline
+    \end{tabular}
+    \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
 
 Conforme definido na pré-proposta, a metodologia foi organizada em seis macroetapas complementares. Essas etapas não devem ser entendidas como blocos completamente isolados, pois o desenvolvimento de uma plataforma interativa exige revisões sucessivas entre interface, interpretador e experiência de uso. Ainda assim, elas delimitam com clareza o percurso técnico e acadêmico do projeto:
 
@@ -40,7 +231,7 @@ A distribuição temporal dessas atividades ao longo dos doze meses que compreen
         \hline
         Arquitetura e Modelagem da Plataforma & & & X & X & & & & & & & & \\
         \hline
-        Customização dinâmica de tokens e sintaxe & & & & X & X & & & & & & & \\
+        Customização dinâmica de \textit{tokens} e sintaxe & & & & X & X & & & & & & & \\
         \hline
         Execução da Análise Léxica e Sintática com o código da IDE & & & & & X & X & & & & & & \\
         \hline
@@ -57,8 +248,8 @@ A distribuição temporal dessas atividades ao longo dos doze meses que compreen
     \legend{Fonte: elaborado pelo autor.}
 \end{table}
 
-Convém retomar, neste ponto, o regime de trabalho em dupla já apresentado na introdução (Capítulo~\ref{cap:introducao_modelo}), dada sua influência direta sobre o escopo do projeto e sobre os capítulos subsequentes. A pré-proposta aprovada para este Trabalho de Conclusão de Curso prevê a \textbf{participação conjunta em todas as etapas} do desenvolvimento, mas com funções complementares. Em respeito a esse compromisso, as decisões de arquitetura, os ciclos de revisão de código e as etapas de integração foram conduzidos de modo colaborativo pelos dois integrantes da dupla. Cabe ressaltar que, por se tratar de uma equipe reduzida, composta por apenas dois integrantes, os papéis formais e as cerimônias completas previstos no \textit{framework} Scrum não foram instanciados; adotaram-se, de forma pragmática, apenas as práticas essenciais de desenvolvimento iterativo e incremental discutidas no referencial teórico, como a organização do trabalho em ciclos curtos e a manutenção de uma lista priorizada de tarefas.
+Convém retomar, neste ponto, o regime de trabalho em dupla já apresentado na introdução (Capítulo~\ref{cap:introducao_modelo}), dada sua influência direta sobre o escopo do projeto e sobre os capítulos subsequentes. A pré-proposta aprovada para este Trabalho de Conclusão de Curso prevê a \textbf{participação conjunta em todas as etapas} do desenvolvimento, mas com funções complementares. Em respeito a esse compromisso, as decisões de arquitetura, os ciclos de revisão de código e as etapas de integração foram conduzidos de modo colaborativo pelos dois integrantes da dupla. Cabe ressaltar que, por se tratar de uma equipe reduzida, não houve especialização de papéis: ambos os integrantes acumularam as atribuições de levantamento de requisitos, projeto, implementação, teste e revisão. Adotaram-se, de forma pragmática, as práticas técnicas do \textit{Extreme Programming} discutidas no referencial teórico, sem ciclos de duração fixa: partiu-se de um conjunto mínimo de requisitos e o sistema avançou por acréscimos funcionais, incorporando as melhorias identificadas durante a própria implementação \cite{beck2004,wildt2015}.
 
 A partir dessa base comum, a divisão complementar de eixos de aprofundamento manifesta-se nos capítulos de redação acadêmica e nas evoluções incrementais subsequentes. No presente documento, o autor concentra a investigação na plataforma e na customização de comandos: arquitetura da aplicação web, concepção do assistente de personalização, experiência de uso da IDE, execução do código no terminal integrado e procedimentos de coleta de \textit{feedback} junto aos estudantes. O detalhamento aprofundado da evolução do núcleo do interpretador, incluindo a geração de código intermediário e sua integração técnica ao restante da plataforma, é desenvolvido em paralelo pelo estudante Victor de Souza Vilela da Silva. Essa divisão de eixos não fragmenta o produto: o que se distribui é a profundidade analítica de cada autor sobre partes específicas do mesmo artefato, conduzido pelos dois em todas as etapas. Tal arranjo justifica-se pela amplitude do escopo, que, individualmente, tenderia a resultar em um interpretador simplificado ou em uma plataforma incompleta, restrita a um terminal.
 
-Concluídas as etapas cobertas por este documento, dedicadas à fundamentação teórica, à modelagem da plataforma, à customização dinâmica de \textit{tokens} e sintaxe, à execução das análises léxica e sintática a partir da IDE e à execução do código intermediário no terminal integrado, a fase subsequente direcionará seus esforços à condução dos estudos de caso, à coleta de evidências empíricas em sala de aula e à análise comparativa entre a plataforma desenvolvida e as ferramentas discutidas no referencial teórico. O próximo capítulo, dedicado à modelagem, descreve o estado em que o sistema se encontra ao término do TCC~I.
+Concluídas as etapas cobertas por este documento, dedicadas à fundamentação teórica, à modelagem da plataforma, à customização dinâmica de \textit{tokens} e sintaxe, à execução das análises léxica e sintática a partir da IDE e à execução do código intermediário no terminal integrado, a fase subsequente direcionará seus esforços à consolidação da plataforma e à definição do protocolo de avaliação: os instrumentos de coleta, as métricas e os critérios que permitirão, posteriormente, aferir em que medida a personalização da linguagem contribui para a aprendizagem. A aplicação desse protocolo junto a estudantes, com a consequente coleta de evidências empíricas em sala de aula, não integra o escopo deste trabalho e é registrada como encaminhamento futuro. O próximo capítulo, dedicado à modelagem, descreve o estado em que o sistema se encontra ao término do TCC~I.

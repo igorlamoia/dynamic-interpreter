@@ -1,0 +1,36 @@
+
+Este capítulo retoma o percurso realizado nesta primeira etapa do Trabalho de Conclusão de Curso, confronta o que foi construído com os objetivos estabelecidos na introdução, explicita as limitações do que se apresenta e delimita os encaminhamentos previstos para a etapa seguinte.
+
+\section{Retomada dos Objetivos}
+
+O objetivo geral consistia em projetar e desenvolver um interpretador dinâmico, integrado a uma IDE web, que permitisse ao usuário personalizar a sintaxe e o vocabulário da linguagem. Ao término desta etapa, o núcleo de tradução encontra-se operante e integrado à plataforma, e os objetivos específicos apresentam a seguinte situação.
+
+O primeiro objetivo, especificar a gramática da linguagem e os elementos passíveis de redefinição em tempo de execução, foi cumprido e está registrado na Seção~\ref{sec:especificacao-linguagem} e na Tabela~\ref{tab:elementos-configuraveis}, que relaciona cada elemento configurável, sua forma canônica e as restrições verificadas antes do início da análise.
+
+O segundo e o terceiro, projetar e implementar os módulos de análise léxica, sintática e semântica com suporte à injeção dinâmica de regras gramaticais, foram cumpridos. As fases encadeiam-se do analisador léxico à execução pelo interpretador, conforme detalhado na Seção~\ref{sec:metodologia-interpretador}, e a configuração da linguagem é recebida e validada a cada nova compilação.
+
+O quarto, integrar o núcleo à interface web definindo os contratos de comunicação entre os módulos, foi cumprido por meio da organização em \textit{monorepo} descrita na Seção~\ref{sec:modelagem-arquitetura}, que permite à IDE consumir o pacote \texttt{compiler} como dependência local.
+
+O quinto, disponibilizar o núcleo em ambiente web e verificar seu comportamento por meio de uma suíte de testes automatizados, foi cumprido no que diz respeito à disponibilização e à cobertura das construções da linguagem, conforme a Seção~\ref{sec:metodologia-testes}.
+
+O sexto objetivo, definir o protocolo de avaliação da solução, encontra-se parcialmente cumprido: os requisitos que a solução deve satisfazer estão especificados nas Tabelas~\ref{tab:requisitos-funcionais} e \ref{tab:requisitos-nao-funcionais}, mas os critérios de aferição da contribuição pedagógica ainda precisam ser consolidados.
+
+\section{Limitações}
+
+Cabe explicitar os limites do que aqui se apresenta, de modo que os resultados não sejam lidos além do que sustentam.
+
+A limitação mais relevante diz respeito à ausência de verificação empírica. A pergunta que orienta a pesquisa indaga em que medida a personalização da sintaxe contribui para reduzir a barreira do primeiro contato com a programação; o que este trabalho entrega é o artefato que torna essa investigação possível, e não a resposta a ela. Nenhuma afirmação sobre ganho de aprendizagem pode ser sustentada com os dados atualmente disponíveis.
+
+No plano técnico, a linguagem suportada é um subconjunto didático de linguagens imperativas tipadas. Ela cobre as construções típicas das disciplinas introdutórias, mas não contempla orientação a objetos, tratamento estruturado de exceções nem modularização em múltiplos arquivos de código-fonte.
+
+A personalização, por sua vez, incide sobre a camada superficial da linguagem: o vocabulário, os operadores em forma de palavra, os literais booleanos, os delimitadores de bloco e o terminador de instrução. A estrutura gramatical propriamente dita, isto é, o conjunto de produções que define como as construções se compõem, permanece fixa. Essa delimitação foi deliberada, pois preserva a validade das fases posteriores de análise, mas restringe o alcance do que o estudante pode redefinir.
+
+Por fim, o interpretador executa o código intermediário por percurso direto das instruções, sem etapa de otimização. As técnicas discutidas no referencial teórico foram estudadas, mas não implementadas, uma vez que o porte dos programas produzidos em contexto introdutório não as torna necessárias.
+
+\section{Encaminhamentos}
+
+A etapa seguinte do Trabalho de Conclusão de Curso concentrará esforços no aprofundamento do núcleo de tradução e na conclusão do protocolo de avaliação. No plano técnico, prevê-se a ampliação da cobertura de testes, sobretudo quanto à robustez do analisador diante das variações configuráveis da linguagem, e a verificação sistemática da correção do código intermediário gerado. No plano metodológico, prevê-se a consolidação dos critérios que permitirão aferir a contribuição da solução.
+
+A aplicação desse protocolo junto a estudantes, com a coleta de evidências empíricas em ambiente educacional, é registrada como trabalho futuro. Sua condução exigirá, além do protocolo consolidado, a articulação com turmas em andamento e a observância dos procedimentos éticos aplicáveis a pesquisas que envolvem seres humanos.
+
+Como desdobramentos adicionais, identificam-se a ampliação do subconjunto da linguagem suportado pelo interpretador, a investigação de mecanismos que permitam configurar também produções gramaticais, e não apenas o vocabulário, e o estudo da geração de código para um alvo executável fora do ambiente da plataforma.

@@ -22,41 +22,43 @@
 \contentsline {subsection}{\numberline {{2.1}.6}Geração de Código Intermediário}{22}{subsection.25}%
 \contentsline {subsection}{\numberline {{2.1}.7}Otimização de Código e Eficiência Computacional}{24}{subsection.29}%
 \contentsline {subsection}{\numberline {{2.1}.8}Geração de Código Objeto e Mapeamento de Arquitetura}{25}{subsection.30}%
-\contentsline {subsection}{\numberline {{2.1}.9}Engenharia de Software}{26}{subsection.31}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.1}Gestão de Tarefas e Metodologias Ágeis}{27}{subsubsection.32}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{28}{subsubsection.33}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.3}Arquitetura Limpa e Separação de Responsabilidades}{29}{subsubsection.34}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.4}Qualidade de Código e \textit {Clean Code}}{30}{subsubsection.35}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.5}O Framework Next.js e sua Arquitetura}{31}{subsubsection.36}%
-\contentsline {subsubsection}{\numberline {{2.1}.9.6}Design de Experiência do Usuário (UX) e Interface do Usuário (UI)}{32}{subsubsection.37}%
-\contentsline {section}{\numberline {2.2}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{33}{section.38}%
-\contentsline {section}{\numberline {2.3}Trabalhos Relacionados}{34}{section.39}%
-\contentsline {subsection}{\numberline {{2.3}.1}Portugol Studio e Portugol Webstudio}{35}{subsection.40}%
-\contentsline {subsection}{\numberline {{2.3}.2}Laila: Gerador de Analisadores Léxicos e Sintáticos Online}{35}{subsection.41}%
-\contentsline {subsection}{\numberline {{2.3}.3}Quorum: Linguagem de Programação Baseada em Evidências}{36}{subsection.42}%
-\contentsline {subsection}{\numberline {{2.3}.4}chibicc: Uma Abordagem Incremental para o Ensino de Compiladores}{37}{subsection.43}%
-\contentsline {subsection}{\numberline {{2.3}.5}Beecrowd: Prática de Algoritmos e Avaliação Automatizada}{37}{subsection.44}%
-\contentsline {subsection}{\numberline {{2.3}.6}Análise Crítica e o Diferencial da Solução Proposta}{38}{subsection.45}%
+\contentsline {subsection}{\numberline {{2.1}.9}Execução de Código de Máquina}{26}{subsection.31}%
+\contentsline {section}{\numberline {2.2}Engenharia de Software}{27}{section.32}%
+\contentsline {subsection}{\numberline {{2.2}.1}Desenvolvimento Iterativo e Incremental e \textit {Extreme Programming}}{27}{subsection.33}%
+\contentsline {subsection}{\numberline {{2.2}.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{28}{subsection.34}%
+\contentsline {subsection}{\numberline {{2.2}.3}Arquitetura Limpa e Separação de Responsabilidades}{29}{subsection.35}%
+\contentsline {subsection}{\numberline {{2.2}.4}Qualidade de Código e \textit {Clean Code}}{30}{subsection.36}%
+\contentsline {subsection}{\numberline {{2.2}.5}O Framework Next.js e sua Arquitetura}{31}{subsection.37}%
+\contentsline {subsection}{\numberline {{2.2}.6}Design de Experiência do Usuário (UX) e Interface do Usuário (UI)}{32}{subsection.38}%
+\contentsline {section}{\numberline {2.3}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{33}{section.39}%
+\contentsline {section}{\numberline {2.4}Trabalhos Relacionados}{34}{section.40}%
+\contentsline {subsection}{\numberline {{2.4}.1}Ambientes Voltados à Iniciação em Programação}{34}{subsection.41}%
+\contentsline {subsection}{\numberline {{2.4}.2}Projetos Didáticos de Construção de Compiladores}{37}{subsection.42}%
+\contentsline {subsection}{\numberline {{2.4}.3}Análise Crítica e o Diferencial da Solução Proposta}{38}{subsection.43}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{40}{chapter.47}%
+\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{42}{chapter.45}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{43}{chapter.49}%
-\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{43}{section.50}%
-\contentsline {section}{\numberline {4.2}Interpretador}{45}{section.52}%
-\contentsline {section}{\numberline {4.3}Customização Dinâmica de Tokens e Sintaxe}{46}{section.53}%
-\contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{53}{section.182}%
-\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{53}{section.183}%
-\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{56}{section.214}%
-\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{57}{section.215}%
-\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{58}{section.216}%
-\contentsline {section}{\numberline {4.9}Apresentação das Telas da Plataforma}{59}{section.217}%
-\contentsline {subsection}{\numberline {{4.9}.1}Fluxo de Personalização da Linguagem Dinâmica}{68}{subsection.230}%
-\contentsline {section}{\numberline {4.10}Estratégia de Testes Automatizados}{73}{section.237}%
+\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{49}{chapter.51}%
+\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{50}{section.52}%
+\contentsline {section}{\numberline {4.2}Interpretador}{53}{section.54}%
+\contentsline {section}{\numberline {4.3}Customização Dinâmica de \textit {Tokens} e Sintaxe}{53}{section.55}%
+\contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{60}{section.184}%
+\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{61}{section.185}%
+\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{63}{section.216}%
+\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{65}{section.217}%
+\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{65}{section.218}%
+\contentsline {section}{\numberline {4.9}Apresentação das Telas da Plataforma}{67}{section.219}%
+\contentsline {section}{\numberline {4.10}Estratégia de Testes Automatizados}{82}{section.237}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {5}CONSIDERAÇÕES FINAIS}{85}{chapter.258}%
+\contentsline {section}{\numberline {5.1}Retomada dos Objetivos}{85}{section.259}%
+\contentsline {section}{\numberline {5.2}Limitações}{86}{section.260}%
+\contentsline {section}{\numberline {5.3}Encaminhamentos}{86}{section.261}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{74}{chapter*.239}%
+\contentsline {chapter}{REFERÊNCIAS}{88}{chapter*.263}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{77}{appendix.240}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{77}{section.241}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{77}{section.242}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{77}{subsection.243}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{78}{subsection.244}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{91}{appendix.264}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{91}{section.265}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{91}{section.266}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{91}{subsection.267}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{92}{subsection.268}%

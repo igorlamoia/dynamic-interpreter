@@ -40,6 +40,23 @@
 }
 \makeatother}
 
+% Configuração para exibir código TypeScript
+\lstdefinelanguage{typescript}{
+    keywords={break, case, catch, class, const, continue, debugger, default, delete, do, else, enum, export, extends, false, finally, for, function, if, import, in, instanceof, interface, let, new, null, of, return, super, switch, this, throw, true, try, type, typeof, var, void, while, with, yield, async, await, as, from, namespace, readonly, public, private, protected, static, abstract, declare, implements, package},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywords={string, number, boolean, any, unknown, never, Record, Array, Promise, ReactNode},
+    ndkeywordstyle=\color{teal}\bfseries,
+    identifierstyle=\color{black},
+    sensitive=true,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    string=[b]',
+    morestring=[b]",
+    morestring=[b]`,
+}
+
 \lstset{
     language=toml,
     basicstyle=\ttfamily\small,        % Fonte monoespaçada e menor
@@ -51,7 +68,9 @@
     numbers=left,                      % Adiciona numeração das linhas
     numberstyle=\tiny\color{gray},     % Estilo dos números das linhas
     tabsize=2,                         % Tamanho do tabulação
-    showstringspaces=false             % Não mostra espaços em strings
+    showstringspaces=false,            % Não mostra espaços em strings
+    float=htbp,                        % Listagem vira float: nunca quebra entre páginas
+    floatplacement=htbp                % (exigência da banca: listagem em página única)
 }
 
 \usepackage{lipsum}    % gera texto aleatório (remover)
@@ -62,7 +81,44 @@
 \usepackage{amsmath} 
 \usepackage{amssymb}
 
+
+%% TikZ para os diagramas elaborados pelos autores (casos de uso e arquitetura).
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,arrows.meta,fit,backgrounds,calc}
+
+%% Ator UML (boneco palito) desenhado como pic, para uso no diagrama de casos de uso.
+\tikzset{
+  ator/.pic={
+    \draw[thick] (0,0) circle (0.20);
+    \draw[thick] (0,-0.20) -- (0,-0.80);
+    \draw[thick] (-0.30,-0.40) -- (0.30,-0.40);
+    \draw[thick] (0,-0.80) -- (-0.25,-1.25);
+    \draw[thick] (0,-0.80) -- (0.25,-1.25);
+  },
+  uc/.style={ellipse, draw, align=center, inner sep=1.5pt,
+             minimum height=0.85cm, font=\scriptsize, fill=white},
+  pacote/.style={draw, dashed, rounded corners, inner sep=6pt},
+  liga/.style={-, thin, gray!70},
+  heranca/.style={-{Triangle[open, length=3mm, width=2.5mm]}, thin},
+}
+
 \graphicspath{{Figuras/}} % Diretório onde estão localizadas as figuras
+
+%% Combate aos "Overfull \hbox" apontados pela banca (texto ultrapassando as
+%% margens). \emergencystretch autoriza o TeX a afrouxar o espaçamento numa
+%% passada final, em vez de estourar a margem.
+\emergencystretch=3em
+
+%% Permite quebra de linha dentro de identificadores longos em \texttt{}
+%% (ex.: LexerScannerFactory), outra fonte dos estouros de margem.
+%% Equivale à opção [htt] do pacote hyphenat, feito à mão para não exigir
+%% a instalação de pacote adicional.
+\makeatletter
+\DeclareRobustCommand\ttfamily{%
+  \not@math@alphabet\ttfamily\mathtt
+  \fontfamily\ttdefault\selectfont
+  \hyphenchar\font=`\-\relax}
+\makeatother
 
 %% -----------------------------------------------------------------------------
 
@@ -124,7 +180,10 @@
 % Pacotes para referência bibliográfica. Não alterar as linhas abaixo
 % \usepackage[round, numbers]{natbib} % Referência númérica (não usado nesse trabalho) 
   % \usepackage{natbib} % Referência utilizando o sistema autor-data
-\usepackage[alf,abnt-emphasize=bf]{abntex2cite}
+%% abnt-etal-list=0 desliga a abreviação por "et al." nas Referências, de modo
+%% que todos os autores sejam listados (exigência da banca). No corpo do texto
+%% o "et al." é mantido.
+\usepackage[alf,abnt-emphasize=bf,abnt-etal-list=0]{abntex2cite}
 
 \linespread{1.5}
 
@@ -189,7 +248,7 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
 \noindent O ensino de programação apresenta diversos desafios, em parte devido ao uso de linguagens cuja escrita é definida por sintaxe
 fixa e palavras-chave reservadas. Isso pode dificultar a assimilação por parte dos estudantes que,
  mesmo antes de compreender a estrutura dos algoritmos, precisam memorizar termos em outro idioma e conjuntos de regras rígidas. 
- Este trabalho propõe uma plataforma educacional com um Ambiente de Desenvolvimento Integrado (IDE) conectado a um interpretador dinâmico que permite ao usuário personalizar a sintaxe da linguagem, incluindo as palavras reservadas, os operadores e as regras estruturais. O projeto é desenvolvido por meio de revisão de literatura, projeto da arquitetura do sistema e implementação de uma IDE web e de um interpretador, que inclui análise léxica e sintática, geração e interpretação de código intermediário, com execução em tempo real no navegador. Espera-se como resultado que a plataforma atue como facilitadora do processo de ensino-aprendizagem, reduzindo as barreiras linguísticas iniciais e incentivando a experimentação, de modo que os alunos possam concentrar-se no raciocínio algorítmico em vez da memorização de estruturas rígidas de linguagem. O diferencial da proposta está em permitir a redefinição flexível do vocabulário e das regras estruturais da linguagem, adaptando-a ao repertório do estudante.
+ Diante desse cenário, o projeto do qual este trabalho faz parte propõe uma plataforma educacional composta por um Ambiente de Desenvolvimento Integrado (IDE) web conectado a um interpretador dinâmico, que permite ao usuário personalizar a sintaxe da linguagem, incluindo as palavras reservadas, os operadores e as regras estruturais. A plataforma é desenvolvida em coautoria e está dividida em dois eixos complementares: o Ambiente de Desenvolvimento Integrado, tratado no documento complementar, e o núcleo de tradução, objeto deste trabalho. O presente documento tem por objetivo projetar, implementar e integrar esse núcleo, contemplando as fases de análise léxica, sintática e semântica, a geração de código intermediário e a execução pelo interpretador, com suporte à injeção dinâmica das regras gramaticais definidas pelo usuário. Os procedimentos adotados compreendem a revisão de literatura, a modelagem da arquitetura, a implementação incremental orientada por testes automatizados e a definição do protocolo de avaliação da solução. Espera-se que a plataforma possa atuar como facilitadora do processo de ensino-aprendizagem, reduzindo as barreiras linguísticas iniciais e incentivando a experimentação; a verificação dessa expectativa junto a estudantes não integra o escopo deste trabalho e é registrada como encaminhamento futuro. O diferencial da proposta está em permitir a redefinição flexível do vocabulário e das regras estruturais da linguagem, adaptando-a ao repertório do estudante.
 
 % Escrever o resumo do TCC. Este é um item obrigatório de acordo com a NBR 14724 \cite{bib:abnt14724}. 
 % Quanto a sua extensão os resumos devem ter de 150 a 500 palavras. 
@@ -286,15 +345,8 @@ Teaching programming presents several challenges, partly due to the use of langu
 \input{texto/metodologia}
 
 
-% \chapter{CONCLUSÕES E TRABALHOS FUTUROS}
-
-% Neste capítulo, são apresentadas as conclusões, as considerações sobre o trabalho desenvolvido e, também, são discutidas propostas para trabalhos futuros.
-
-% \section{Conclusões}
-% A utilização deste modelo visa padronizar a parte editorial dos trabalhos de conclusão de curso (TCC). Os orientadores darão mais dicas além das colocadas neste documento, principalmente no tocante ao conteúdo e sequência de apresentação.
-
-% \section{Trabalhos futuros}
-% Colocar aqui sugestões de trabalhos futuros.
+\chapter{CONSIDERAÇÕES FINAIS} \label{cap:consideracoes}
+\input{texto/consideracoes}
 
 %% -----------Elementos  Pós-Textuais --------------
 
