@@ -912,7 +912,8 @@ export class Interpreter {
     }
     currentScope.set(name, {
       type,
-      value: coerceValueForType(type, value),
+      value:
+        value === null ? null : this.coerceCheckedValue(type, value, name),
     });
   }
 
@@ -923,7 +924,7 @@ export class Interpreter {
     if (currentSlot) {
       currentScope.set(name, {
         ...currentSlot,
-        value: coerceValueForType(currentSlot.type, value),
+        value: this.coerceCheckedValue(currentSlot.type, value, name),
       });
       return;
     }
@@ -932,12 +933,36 @@ export class Interpreter {
       const globalSlot = this.variables.get(name)!;
       this.variables.set(name, {
         ...globalSlot,
-        value: coerceValueForType(globalSlot.type, value),
+        value: this.coerceCheckedValue(globalSlot.type, value, name),
       });
       return;
     }
 
     currentScope.set(name, { type: "dynamic", value });
+  }
+
+  private coerceCheckedValue(
+    targetType: string,
+    value: unknown,
+    variableName: string,
+  ): unknown {
+    const valueMatchesType =
+      targetType === "dynamic" ||
+      targetType === "unknown" ||
+      ((targetType === "int" || targetType === "float") &&
+        typeof value === "number") ||
+      (targetType === "string" && typeof value === "string") ||
+      (targetType === "bool" && typeof value === "boolean");
+
+    if (!valueMatchesType) {
+      this.throwRuntimeError("interpreter.incompatible_assignment", {
+        variableName,
+        targetType,
+        sourceType: this.resolveOperandRuntimeType(value, value),
+      });
+    }
+
+    return coerceValueForType(targetType, value);
   }
 
   private parseOrGetVariableWithScope(value: unknown): unknown {

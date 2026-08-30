@@ -311,10 +311,25 @@ export class TokenIterator {
     sourceType: ValueType,
     token: Token,
   ): void {
-    if (targetType !== "int") return;
-    if (sourceType !== "float") return;
+    if (targetType === "int" && sourceType === "float") {
+      this.addWarning("grammar.lossy_int_conversion", token.line, token.column, {
+        sourceType,
+        targetType,
+      });
+      return;
+    }
 
-    this.addWarning("grammar.lossy_int_conversion", token.line, token.column, {
+    if (
+      targetType === "dynamic" ||
+      sourceType === "dynamic" ||
+      sourceType === "unknown" ||
+      targetType === sourceType ||
+      (targetType === "float" && sourceType === "int")
+    ) {
+      return;
+    }
+
+    this.addWarning("grammar.incompatible_type_conversion", token.line, token.column, {
       sourceType,
       targetType,
     });

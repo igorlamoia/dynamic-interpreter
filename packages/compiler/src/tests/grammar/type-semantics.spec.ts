@@ -8,6 +8,27 @@ import {
 import { TokenIterator } from "../../token/TokenIterator";
 
 describe("Type semantics warnings", () => {
+  it("warns at compile time and fails at runtime for string-to-int assignment", async () => {
+    const source = `
+      int main() {
+        int value = "not a number";
+        return 0;
+      }
+    `;
+
+    const compiled = compileProgram(source);
+    expect(compiled.warnings).toEqual([
+      expect.objectContaining({
+        code: "grammar.incompatible_type_conversion",
+        params: expect.objectContaining({ sourceType: "string", targetType: "int" }),
+      }),
+    ]);
+
+    await expect(executeProgram(source)).rejects.toMatchObject({
+      code: "interpreter.incompatible_assignment",
+    });
+  });
+
   it("keeps strict equality false between string and int values", async () => {
     const source = `
       int main() {

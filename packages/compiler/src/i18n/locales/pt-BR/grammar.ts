@@ -18,6 +18,8 @@ const grammar = {
     'Literal inválido em case "{lexeme}". Apenas inteiros e strings são permitidos.',
   lossy_int_conversion:
     "Possível conversão com perda de dados de {sourceType} para {targetType}.",
+  incompatible_type_conversion:
+    "Conversao incompativel de {sourceType} para {targetType}.",
 };
 
 export default grammar;

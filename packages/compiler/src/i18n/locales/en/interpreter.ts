@@ -24,6 +24,8 @@ const interpreter = {
   unknown_relational_operator: "Unknown relational operator '{op}'",
   invalid_operand_type: "Invalid operand type: {operand}",
   variable_not_defined: "Variable '{operand}' has not been defined yet!",
+  incompatible_assignment:
+    "Cannot assign a value of type {sourceType} to {targetType} variable '{variableName}'.",
   array_read_out_of_bounds: "Array read out of bounds at index '{index}'",
   array_write_out_of_bounds: "Array write out of bounds at index '{index}'",
   array_missing_value: "Dynamic array read found no value at index '{index}'",
