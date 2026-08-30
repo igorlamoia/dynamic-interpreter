@@ -17,6 +17,26 @@ function getDelimiterRules(
 }
 
 describe("buildJavaMMLanguageMetadata", () => {
+  it("tokenizes customized words containing ç and Ç as identifiers", () => {
+    const language = buildJavaMMMonarchLanguage({
+      allKeywords: ["começar", "AÇAO"],
+      operatorWords: [],
+      semanticGroups: {
+        types: [],
+        conditionals: ["começar"],
+        loops: [],
+        flow: [],
+        io: [],
+      },
+    });
+    const identifierRules = language.tokenizer.root.filter(
+      (rule): rule is [RegExp, unknown] => Array.isArray(rule) && rule[0] instanceof RegExp,
+    );
+
+    expect(identifierRules.some(([pattern]) => pattern.test("começar"))).toBe(true);
+    expect(identifierRules.some(([pattern]) => pattern.test("AÇAO"))).toBe(true);
+  });
+
   it("recognizes ternary punctuation as operators", () => {
     const language = buildJavaMMMonarchLanguage({
       allKeywords: [],
@@ -174,7 +194,8 @@ describe("buildJavaMMLanguageMetadata", () => {
       (rule): rule is [RegExp, { cases: Record<string, string> }] =>
         Array.isArray(rule) &&
         rule[0] instanceof RegExp &&
-        String(rule[0]) === "/[a-zA-Z_]\\w*(?=\\s*\\()/" &&
+        String(rule[0]) ===
+          "/[a-zA-Z_çÇ][a-zA-Z0-9_çÇ]*(?=\\s*\\()/" &&
         typeof rule[1] === "object" &&
         rule[1] !== null &&
         "cases" in rule[1],

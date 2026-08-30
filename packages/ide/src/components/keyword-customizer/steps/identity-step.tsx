@@ -282,51 +282,11 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
     <section className="space-y-6">
       <Step.Header>
         <Step.Index>Etapa 1</Step.Index>
-        <Step.Title>Que tipo de linguagem você quer se basear?</Step.Title>
+        <Step.Title>Crie sua própria linguagem</Step.Title>
         <Step.Description>
-          Escolha um ponto de partida. A seleção apenas sugere lexemas iniciais
-          e continua totalmente editável.
+          A linguagem é apenas o início de algo grande.
         </Step.Description>
       </Step.Header>
-
-      <div className="space-y-3">
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {visiblePresets.map((preset) => (
-            <OptionCard
-              key={preset.id}
-              title={preset.title}
-              subtitle={preset.subtitle}
-              description={preset.description}
-              snippet={preset.snippet}
-              icon={preset.icon}
-              iconColor={preset.iconColor}
-              selected={preset.id === values.selectedPresetId}
-              onClick={() => actions.selectPreset(preset.id)}
-            />
-          ))}
-        </div>
-
-        {isAdvancedMode ? (
-          <button
-            type="button"
-            onClick={() => setShowAdvancedMode(false)}
-            className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
-          >
-            <span>Mostrar menos</span>
-            <ChevronDown className="h-4 w-4 rotate-180" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setShowAdvancedMode(true)}
-            className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
-          >
-            <span>Mostrar mais</span>
-            <ChevronDown className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-      {/* <InterpreterLottie /> */}
       <div className="flex flex-col gap-4">
         <div className="space-y-3 rounded-lg border border-slate-200/80 bg-white/80 p-4 dark:border-slate-800/80 dark:bg-slate-900/80">
           <div className="space-y-1">
@@ -375,6 +335,48 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
 
         <ImageSearchFeature values={values} actions={actions} />
       </div>
+      <p>
+        Escolha um ponto de partida. A seleção apenas sugere lexemas iniciais e
+        continua totalmente editável.
+      </p>
+      <div className="space-y-3">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {visiblePresets.map((preset) => (
+            <OptionCard
+              key={preset.id}
+              title={preset.title}
+              subtitle={preset.subtitle}
+              description={preset.description}
+              snippet={preset.snippet}
+              icon={preset.icon}
+              iconColor={preset.iconColor}
+              selected={preset.id === values.selectedPresetId}
+              onClick={() => actions.selectPreset(preset.id)}
+            />
+          ))}
+        </div>
+
+        {isAdvancedMode ? (
+          <button
+            type="button"
+            onClick={() => setShowAdvancedMode(false)}
+            className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
+          >
+            <span>Mostrar menos</span>
+            <ChevronDown className="h-4 w-4 rotate-180" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowAdvancedMode(true)}
+            className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
+          >
+            <span>Mostrar mais</span>
+            <ChevronDown className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+      {/* <InterpreterLottie /> */}
     </section>
   );
 }
@@ -393,7 +395,7 @@ function ImageSearchFeature({
           htmlFor="language-image-search"
           className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
         >
-          Buscar imagem
+          Escolha uma imagem para a linguagem (opcional)
         </label>
 
         <div className="flex gap-2">

@@ -4,6 +4,16 @@ import type { BlockDelimiters } from "@/contexts/keyword/types";
 import { validateOperatorWordMap } from "./operator-word-map";
 
 describe("operator word alias validation", () => {
+  it("accepts ç and Ç in aliases", () => {
+    const error = validateOperatorWordMap(
+      { logical_and: "maçcaÇ" },
+      getDefaultKeywordMappings(),
+      { open: "", close: "" },
+    );
+
+    expect(error).toBeNull();
+  });
+
   it("rejects duplicate operator aliases", () => {
     const error = validateOperatorWordMap(
       { logical_and: "and", logical_or: "and" },

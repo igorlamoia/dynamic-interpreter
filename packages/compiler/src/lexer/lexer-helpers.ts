@@ -11,7 +11,12 @@ export function isOctalDigit(c: string): boolean {
 }
 
 export function isAlpha(c: string): boolean {
-  return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z");
+  return (
+    (c >= "a" && c <= "z") ||
+    (c >= "A" && c <= "Z") ||
+    c === "ç" ||
+    c === "Ç"
+  );
 }
 
 export function isIdentifierStart(c: string): boolean {

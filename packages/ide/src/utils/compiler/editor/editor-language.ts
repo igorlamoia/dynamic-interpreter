@@ -85,7 +85,7 @@ const DEFAULT_OPERATORS = [
   ":",
 ];
 
-const WORD_LIKE_TERMINATOR = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const WORD_LIKE_TERMINATOR = /^[A-Za-z_çÇ][A-Za-z0-9_çÇ]*$/;
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -109,7 +109,7 @@ function buildStatementTerminatorRules(
 ): [RegExp, string][] {
   return statementTerminators.map((terminator) => [
     WORD_LIKE_TERMINATOR.test(terminator)
-      ? new RegExp(`\\b${escapeRegExp(terminator)}\\b`)
+      ? new RegExp(`${escapeRegExp(terminator)}(?![A-Za-z0-9_çÇ])`)
       : new RegExp(escapeRegExp(terminator)),
     "delimiter",
   ]);
@@ -146,7 +146,7 @@ export function buildJavaMMMonarchLanguage(
         ...buildStatementTerminatorRules(statementTerminators),
         ...buildBlockDelimiterRules(blockDelimiters),
         [
-          /[a-zA-Z_]\w*(?=\s*\()/,
+          /[a-zA-Z_çÇ][a-zA-Z0-9_çÇ]*(?=\s*\()/,
           {
             cases: {
               "@types": "keyword.type",
@@ -162,7 +162,7 @@ export function buildJavaMMMonarchLanguage(
           },
         ],
         [
-          /[a-zA-Z_]\w*/,
+          /[a-zA-Z_çÇ][a-zA-Z0-9_çÇ]*/,
           {
             cases: {
               "@types": "keyword.type",
