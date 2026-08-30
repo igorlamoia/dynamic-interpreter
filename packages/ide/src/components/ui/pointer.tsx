@@ -489,14 +489,17 @@ export function Pointer({
             initial={{
               scale: 0,
               opacity: 0,
+              filter: "blur(6px)",
             }}
             animate={{
               scale: 1,
-              opacity: 1,
+              opacity: 0.8,
+              filter: "blur(0px)",
             }}
             exit={{
               scale: 0,
               opacity: 0,
+              filter: "blur(6px)",
             }}
             {...props}
           >

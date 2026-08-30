@@ -12,8 +12,8 @@ import { LanguagePanel } from "./language-panel";
 import { SearchPanel } from "./search-panel";
 
 function getMinSidebarWidth() {
-  if (window.innerWidth >= 1280) return 400;
-  if (window.innerWidth >= 1024) return 320;
+  if (window.innerWidth >= 1280) return 300;
+  if (window.innerWidth >= 1024) return 280;
   return 230;
 }
 
@@ -128,7 +128,7 @@ export function SidebarPanel({
     <motion.div
       initial={{ x: "-5%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="relative flex min-h-0 min-w-full sm:min-w-[200px] flex-none flex-col overflow-visible border-r border-black/10 lg:min-w-80 xl:min-w-[400px] dark:border-white/10"
+      className="relative flex min-h-0 min-w-full sm:min-w-[200px] flex-none flex-col overflow-visible border-r border-black/10 lg:min-w-80 dark:border-white/10"
       style={{ width }}
       transition={{
         type: "spring",
