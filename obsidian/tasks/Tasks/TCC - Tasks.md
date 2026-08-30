@@ -22,8 +22,8 @@
 - [x] identação tem que ser PERFEITA
 - [x] verificar tokens de bool conflitando com original (true e false)
 - [ ] Permitir caracteres como ç e acentos, tal como \_\_
-- [ ] ajustar ===
-- [ ] ajustar scan com string, hoje só funciona com int
+- [x] ajustar ===
+- [x] ajustar scan com string, hoje só funciona com int
 
 Particles:
 https://particles.js.org/samples/index.html#amongUs

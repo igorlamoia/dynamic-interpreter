@@ -1,9 +1,33 @@
 import { TOKENS } from "../../token/constants";
+import { Lexer } from "../../lexer";
+import { makeRelation } from "../../interpreter/utils";
 import { expect, it } from "vitest";
 
 it("should be able to get token id from description or from id", () => {
   expect(TOKENS.BY_DESCRIPTION["plus"]).toBe(1);
   expect(TOKENS.BY_ID[1]).toBe("plus");
+});
+
+it("should accept === as strict equality", () => {
+  const [token] = new Lexer("===").scanTokens();
+
+  expect(token.type).toBe(TOKENS.RELATIONALS.strict_equal);
+  expect(token.lexeme).toBe("===");
+});
+
+it("should not accept ==== as a single equality operator", () => {
+  const tokens = new Lexer("====").scanTokens();
+
+  expect(tokens.map(({ type, lexeme }) => ({ type, lexeme }))).toEqual([
+    { type: TOKENS.RELATIONALS.strict_equal, lexeme: "===" },
+    { type: TOKENS.ASSIGNMENTS.equal, lexeme: "=" },
+  ]);
+});
+
+it("should distinguish value equality from strict equality", () => {
+  expect(makeRelation("==", 1, "1")).toBe(true);
+  expect(makeRelation("===", 1, "1")).toBe(false);
+  expect(makeRelation("===", 1, 1)).toBe(true);
 });
 
 it("should include switch/case/default and colon tokens", () => {

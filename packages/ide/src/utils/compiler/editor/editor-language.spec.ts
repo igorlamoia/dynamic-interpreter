@@ -17,6 +17,17 @@ function getDelimiterRules(
 }
 
 describe("buildJavaMMLanguageMetadata", () => {
+  it("recognizes strict equality as an editor operator", () => {
+    const language = buildJavaMMMonarchLanguage({
+      allKeywords: [],
+      operatorWords: [],
+      semanticGroups: { types: [], conditionals: [], loops: [], flow: [], io: [] },
+    });
+
+    expect(language.operators).toContain("===");
+    expect(language.operators).not.toContain("====");
+  });
+
   it("maps customized words into semantic keyword groups", () => {
     const metadata = buildJavaMMLanguageMetadata([
       { original: "if", custom: "se", tokenId: 28 },

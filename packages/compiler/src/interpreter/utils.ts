@@ -32,17 +32,22 @@ export function makeOperation(
 
 export function makeRelation(
   op: TRelational,
-  val1: number,
-  val2: number,
+  val1: unknown,
+  val2: unknown,
   throwError?: (code: string, params?: Record<string, unknown>) => never,
 ) {
+  const numericVal1 = Number(val1);
+  const numericVal2 = Number(val2);
   const relations = {
-    "==": val1 === val2,
+    // Deliberately loose: == compares values after the language's normal
+    // coercion, while === additionally requires the runtime types to match.
+    "==": val1 == val2,
+    "===": val1 === val2,
     "<>": val1 !== val2,
-    ">": val1 > val2,
-    "≥": val1 >= val2,
-    "<": val1 < val2,
-    "≤": val1 <= val2,
+    ">": numericVal1 > numericVal2,
+    "≥": numericVal1 >= numericVal2,
+    "<": numericVal1 < numericVal2,
+    "≤": numericVal1 <= numericVal2,
   };
   const computation = relations[op] as boolean | undefined;
   if (computation === undefined) {

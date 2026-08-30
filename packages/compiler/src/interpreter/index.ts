@@ -258,15 +258,20 @@ export class Interpreter {
       } else if (RELATIONALS.includes(op as TRelational)) {
         const val1 = this.parseOrGetVariableWithScope(operand1);
         const val2 = this.parseOrGetVariableWithScope(operand2);
+        const strictTypesMatch =
+          op !== "===" ||
+          this.resolveOperandRuntimeType(operand1, val1) ===
+            this.resolveOperandRuntimeType(operand2, val2);
         this.setVariable(
           result,
-          makeRelation(
-            op as TRelational,
-            val1 as number,
-            val2 as number,
-            (code, params) =>
-              this.throwRuntimeError(code, params, currentInstruction),
-          ),
+          strictTypesMatch &&
+            makeRelation(
+              op as TRelational,
+              val1,
+              val2,
+              (code, params) =>
+                this.throwRuntimeError(code, params, currentInstruction),
+            ),
         );
         this.instructionPointer++;
       } else if (op === "=") {
@@ -956,6 +961,36 @@ export class Interpreter {
       }
     }
     return value;
+  }
+
+  private resolveOperandRuntimeType(
+    operand: unknown,
+    resolvedValue: unknown,
+  ): string {
+    if (typeof operand === "string") {
+      if (operand.startsWith('"') && operand.endsWith('"')) return "string";
+      const normalized = operand.trim().toLowerCase();
+      if (normalized === "true" || normalized === "false") return "bool";
+      if (/^-?\d+$/.test(operand)) return "int";
+      if (/^-?\d+\.\d+$/.test(operand)) return "float";
+
+      try {
+        const declaredType = this.getVariableSlot(operand).type;
+        if (declaredType !== "dynamic" && declaredType !== "unknown") {
+          return declaredType;
+        }
+      } catch {
+        // Non-variable string operands are classified from their resolved value.
+      }
+    }
+
+    if (typeof resolvedValue === "boolean") return "bool";
+    if (typeof resolvedValue === "number") {
+      return Number.isInteger(resolvedValue) ? "int" : "float";
+    }
+    if (typeof resolvedValue === "string") return "string";
+    if (resolvedValue === null) return "null";
+    return typeof resolvedValue;
   }
 
   private parseArrayDeclaration(

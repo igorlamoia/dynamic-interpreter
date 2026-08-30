@@ -1,7 +1,7 @@
 export type TArithmetics = "+" | "-" | "*" | "/" | "%" | "//";
 export type TUnaryArithmetics = "unary+" | "unary-";
 export type TLogical = "||" | "&&" | "!";
-export type TRelational = "==" | "<>" | ">" | "≥" | "<" | "≤";
+export type TRelational = "==" | "===" | "<>" | ">" | "≥" | "<" | "≤";
 export type TAssignment = "=";
 export type TFlowControl = "IF" | "JUMP" | "RETURN";
 export type TSystemCalls = "CALL"; // e.g. PRINT, SCAN
@@ -12,7 +12,7 @@ export type ScanHint = "int" | "float" | "string" | "bool" | null;
 
 export const ARITHMETICS: TArithmetics[] = ["+", "-", "*", "/", "%", "//"];
 export const LOGICALS: TLogical[] = ["||", "&&", "!"];
-export const RELATIONALS: TRelational[] = ["==", "<>", ">", "≥", "<", "≤"];
+export const RELATIONALS: TRelational[] = ["==", "===", "<>", ">", "≥", "<", "≤"];
 
 export type OpName =
   | TArithmetics

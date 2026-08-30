@@ -8,6 +8,31 @@ import {
 import { TokenIterator } from "../../token/TokenIterator";
 
 describe("Type semantics warnings", () => {
+  it("keeps strict equality false between string and int values", async () => {
+    const source = `
+      int main() {
+        string x = "1";
+        int z = 1;
+        print(x === z);
+        print(x == z);
+        float y = 1.0;
+        print(y === z);
+        return 0;
+      }
+    `;
+
+    const compiled = compileProgram(source);
+    expect(compiled.instructions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ op: "===" }),
+        expect.objectContaining({ op: "==" }),
+      ]),
+    );
+
+    const result = await executeProgram(source);
+    expect(result.output).toBe("falsetruefalse");
+  });
+
   it("preserves array symbol metadata while resolving scalar element type", () => {
     const iterator = new TokenIterator([], {
       grammar: { typingMode: "typed", arrayMode: "fixed" },
