@@ -44,6 +44,7 @@ export default function LanguageCreatorPage() {
   // Sem isso o wizard montaria em branco e seria remontado logo em seguida.
   const isSessionSettled = isHydrated && !isProfileLoading;
   const isWaitingForLanguage =
+    !isHydrated ||
     !router.isReady ||
     (editingLanguageId !== null && !isSessionSettled) ||
     (shouldLoad && detailQuery.isPending);

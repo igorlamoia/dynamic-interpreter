@@ -11,10 +11,12 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import {
-  useKeywords,
-} from "@/contexts/keyword/KeywordContext";
-import type { BlockDelimiters, KeywordMapping, StoredKeywordCustomization } from "@/contexts/keyword/types";
+import { useKeywords } from "@/contexts/keyword/KeywordContext";
+import type {
+  BlockDelimiters,
+  KeywordMapping,
+  StoredKeywordCustomization,
+} from "@/contexts/keyword/types";
 import type {
   IDEBooleanLiteralMap,
   IDEKeywordCustomizationState,
@@ -299,7 +301,8 @@ export function KeywordCustomizerProvider({
       ) ||
       OPERATOR_WORD_FIELDS.some(
         ({ key }) =>
-          draftCustomization.operatorWordMap[key] !== customization.operatorWordMap[key],
+          draftCustomization.operatorWordMap[key] !==
+          customization.operatorWordMap[key],
       ) ||
       draftCustomization.booleanLiteralMap.true !==
         customization.booleanLiteralMap.true ||
@@ -338,7 +341,11 @@ export function KeywordCustomizerProvider({
       syncDraftCustomization(nextDraft);
       setCurrentError(
         nextMapping
-          ? validateDraftKeyword(original, nextMapping.custom, nextDraft.mappings)
+          ? validateDraftKeyword(
+              original,
+              nextMapping.custom,
+              nextDraft.mappings,
+            )
           : null,
       );
     },
@@ -366,7 +373,9 @@ export function KeywordCustomizerProvider({
 
   const syncDelimiter = useCallback(
     (field: keyof BlockDelimiters, value: string) => {
-      syncDraftCustomization((current) => syncDelimiterInDraft(current, field, value));
+      syncDraftCustomization((current) =>
+        syncDelimiterInDraft(current, field, value),
+      );
     },
     [syncDraftCustomization],
   );
@@ -753,7 +762,8 @@ export function KeywordCustomizerProvider({
     preview,
     errors: {
       ...errors,
-      currentError: getActiveWizardStepError(activeStep.id, errors) ?? currentError,
+      currentError:
+        getActiveWizardStepError(activeStep.id, errors) ?? currentError,
     },
     activeStep,
     activeStepIndex,

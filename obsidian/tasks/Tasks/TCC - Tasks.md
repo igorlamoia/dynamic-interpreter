@@ -11,8 +11,8 @@
 - [x] Personalizar operadores - Colorir também FEITO
 - [x] Desabilitar spell check (atrapalha blocos)
 - [ ] Fluxograma
-- [ ] Debug
-  - [ ] Código
+- [x] Debug
+  - [x] Código
   - [ ] Fluxograma
 - [ ] Fórum para turma, instituição e para o site como um todo (Victor)
 - [ ] Run terminal comands to compile (atalho para play)

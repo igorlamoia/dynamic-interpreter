@@ -282,7 +282,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
     <section className="space-y-6">
       <Step.Header>
         <Step.Index>Etapa 1</Step.Index>
-        <Step.Title>Que tipo de linguagem você quer criar?</Step.Title>
+        <Step.Title>Que tipo de linguagem você quer se basear?</Step.Title>
         <Step.Description>
           Escolha um ponto de partida. A seleção apenas sugere lexemas iniciais
           e continua totalmente editável.
@@ -326,7 +326,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
           </button>
         )}
       </div>
-      <InterpreterLottie />
+      {/* <InterpreterLottie /> */}
       <div className="flex flex-col gap-4">
         <div className="space-y-3 rounded-lg border border-slate-200/80 bg-white/80 p-4 dark:border-slate-800/80 dark:bg-slate-900/80">
           <div className="space-y-1">
