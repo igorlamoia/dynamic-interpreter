@@ -16,7 +16,8 @@ type PointerVariant =
   | "grab"
   | "grabbing"
   | "not-allowed"
-  | "move";
+  | "move"
+  | "col-resize";
 
 type PointerProps = HTMLMotionProps<"div"> & {
   variant?: PointerVariant;
@@ -30,9 +31,11 @@ const POINTER_VARIANTS = new Set<Exclude<PointerVariant, "auto">>([
   "grabbing",
   "not-allowed",
   "move",
+  "col-resize",
 ]);
 
 function resolveCursorVariant(cursor: string): Exclude<PointerVariant, "auto"> {
+  if (cursor.includes("col-resize")) return "col-resize";
   if (cursor.includes("grabbing")) return "grabbing";
   if (cursor.includes("grab")) return "grab";
   if (cursor.includes("text")) return "text";
@@ -140,6 +143,7 @@ function resolveVariantFromElement(
     if (hasCursorClass(current, "cursor-grab")) return "grab";
     if (hasCursorClass(current, "cursor-text")) return "text";
     if (hasCursorClass(current, "cursor-not-allowed")) return "not-allowed";
+    if (hasCursorClass(current, "cursor-col-resize")) return "col-resize";
     if (hasCursorClass(current, "cursor-move")) return "move";
     if (hasCursorClass(current, "cursor-pointer")) return "pointer";
 
@@ -332,6 +336,27 @@ function PointerShape({
           fill="#020617"
           stroke="#0dccf2"
           strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (variant === "col-resize") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        height={size - 4}
+        width={size - 4}
+        xmlns="http://www.w3.org/2000/svg"
+        className="drop-shadow-[0_0_8px_rgba(13,204,242,0.45)]"
+      >
+        <path
+          d="M9 7L4 12l5 5M15 7l5 5-5 5M4 12h16M12 5v14"
+          fill="none"
+          stroke="#0dccf2"
+          strokeWidth="1.8"
+          strokeLinecap="round"
           strokeLinejoin="round"
         />
       </svg>

@@ -21,7 +21,7 @@
 - [x] Remover lógicas de se for identado vai ser não tipado e não tipado já ser array dinamico (deixar esse pré-set rápido de configurar, mas não tão engessado assim)
 - [x] identação tem que ser PERFEITA
 - [x] verificar tokens de bool conflitando com original (true e false)
-- [ ] Permitir caracteres como ç e acentos, tal como \_\_
+- [x] Permitir caracteres como ç e acentos, tal como \_\_
 - [x] ajustar ===
 - [x] ajustar scan com string, hoje só funciona com int
 
