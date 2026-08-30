@@ -26,6 +26,8 @@ const interpreter = {
   variable_not_defined: "Variable '{operand}' has not been defined yet!",
   incompatible_assignment:
     "Cannot assign a value of type {sourceType} to {targetType} variable '{variableName}'.",
+  incompatible_return:
+    "Cannot return a value of type {sourceType} from a function declared as {targetType}.",
   array_read_out_of_bounds: "Array read out of bounds at index '{index}'",
   array_write_out_of_bounds: "Array write out of bounds at index '{index}'",
   array_missing_value: "Dynamic array read found no value at index '{index}'",

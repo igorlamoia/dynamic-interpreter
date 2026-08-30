@@ -8,6 +8,54 @@ import {
 import { TokenIterator } from "../../token/TokenIterator";
 
 describe("Type semantics warnings", () => {
+  it("warns and throws when a function returns bool as int", async () => {
+    const source = `
+      int bigger(int x, int y) {
+        return x < y;
+      }
+
+      int main() {
+        return bigger(1, 2);
+      }
+    `;
+
+    const compiled = compileProgram(source);
+    expect(compiled.warnings).toEqual([
+      expect.objectContaining({
+        code: "grammar.incompatible_type_conversion",
+        params: expect.objectContaining({ sourceType: "bool", targetType: "int" }),
+      }),
+    ]);
+
+    await expect(executeProgram(source)).rejects.toMatchObject({
+      code: "interpreter.incompatible_return",
+    });
+  });
+
+  it("executes ternary expressions and only selects the matching branch", async () => {
+    const result = await executeProgram(`
+      string unselected() {
+        print("wrong-branch");
+        return "wrong";
+      }
+
+      int main() {
+        int z = 2;
+        string first = z === 2 ? "yes" : "no";
+        string second = false ? "wrong" : "right";
+        int nested = true ? false ? 1 : 2 : 3;
+        string lazy = true ? "lazy" : unselected();
+        print(first);
+        print(second);
+        print(nested);
+        print(lazy);
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("yesright2lazy");
+  });
+
   it("warns at compile time and fails at runtime for string-to-int assignment", async () => {
     const source = `
       int main() {

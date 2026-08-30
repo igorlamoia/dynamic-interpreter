@@ -17,6 +17,16 @@ function getDelimiterRules(
 }
 
 describe("buildJavaMMLanguageMetadata", () => {
+  it("recognizes ternary punctuation as operators", () => {
+    const language = buildJavaMMMonarchLanguage({
+      allKeywords: [],
+      operatorWords: [],
+      semanticGroups: { types: [], conditionals: [], loops: [], flow: [], io: [] },
+    });
+
+    expect(language.operators).toEqual(expect.arrayContaining(["?", ":"]));
+  });
+
   it("recognizes strict equality as an editor operator", () => {
     const language = buildJavaMMMonarchLanguage({
       allKeywords: [],

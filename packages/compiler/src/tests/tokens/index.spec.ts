@@ -37,6 +37,12 @@ it("should include switch/case/default and colon tokens", () => {
   expect(TOKENS.BY_DESCRIPTION["colon"]).toBeDefined();
 });
 
+it("should tokenize the ternary question mark", () => {
+  const token = new Lexer("?").scanTokens()[0];
+
+  expect(token.type).toBe(TOKENS.SYMBOLS.question);
+});
+
 it("should include boolean reserved tokens", () => {
   expect(TOKENS.BY_DESCRIPTION["bool"]).toBeDefined();
   expect(TOKENS.BY_DESCRIPTION["true"]).toBeDefined();

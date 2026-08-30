@@ -17,7 +17,7 @@
 - [ ] Fórum para turma, instituição e para o site como um todo (Victor)
 - [ ] Run terminal comands to compile (atalho para play)
 - [ ] Explicações avançadas de Lexer, código intermediário e Interpretação (pra ser didático)
-- [ ] Adicionar ternário
+- [x] Adicionar ternário
 - [x] Remover lógicas de se for identado vai ser não tipado e não tipado já ser array dinamico (deixar esse pré-set rápido de configurar, mas não tão engessado assim)
 - [x] identação tem que ser PERFEITA
 - [x] verificar tokens de bool conflitando com original (true e false)

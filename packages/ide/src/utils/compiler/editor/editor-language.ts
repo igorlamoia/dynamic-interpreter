@@ -81,6 +81,8 @@ const DEFAULT_OPERATORS = [
   "++",
   "--",
   "**",
+  "?",
+  ":",
 ];
 
 const WORD_LIKE_TERMINATOR = /^[A-Za-z_][A-Za-z0-9_]*$/;

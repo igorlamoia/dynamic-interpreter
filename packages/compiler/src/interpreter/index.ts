@@ -447,9 +447,21 @@ export class Interpreter {
         );
         this.instructionPointer++;
       } else if (op === "RETURN") {
-        const returnValue = this.parseOrGetVariableWithScope(result);
+        const hasReturnValue = result !== "null";
+        const returnValue = hasReturnValue
+          ? this.parseOrGetVariableWithScope(result)
+          : null;
         const returnType = typeof operand1 === "string" ? operand1 : "dynamic";
-        const coercedReturnValue = coerceValueForType(returnType, returnValue);
+        const functionName =
+          this.callStack[this.callStack.length - 1]?.name ?? "main";
+        const coercedReturnValue = hasReturnValue
+          ? this.coerceCheckedValue(
+              returnType,
+              returnValue,
+              `return value of ${functionName}`,
+              "interpreter.incompatible_return",
+            )
+          : null;
 
         if (this.callStack.length === 0) {
           // Return do main - terminar execução
@@ -945,6 +957,7 @@ export class Interpreter {
     targetType: string,
     value: unknown,
     variableName: string,
+    errorCode = "interpreter.incompatible_assignment",
   ): unknown {
     const valueMatchesType =
       targetType === "dynamic" ||
@@ -955,7 +968,7 @@ export class Interpreter {
       (targetType === "bool" && typeof value === "boolean");
 
     if (!valueMatchesType) {
-      this.throwRuntimeError("interpreter.incompatible_assignment", {
+      this.throwRuntimeError(errorCode, {
         variableName,
         targetType,
         sourceType: this.resolveOperandRuntimeType(value, value),
