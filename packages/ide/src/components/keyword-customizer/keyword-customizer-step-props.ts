@@ -62,8 +62,8 @@ export function buildIdentityStepProps(
   return {
     values: {
       selectedPresetId: context.selectedPresetId,
-      languageName: context.languageName,
-      languageDescription: context.languageDescription,
+      name: context.name,
+      description: context.description,
       imageSearchQuery: context.languageImageQuery,
       imageSearchResults: context.languageImageResults,
       selectedImageUrl: context.languageImageUrl,
@@ -72,8 +72,8 @@ export function buildIdentityStepProps(
     },
     actions: {
       selectPreset: context.actions.applyPreset,
-      setLanguageName: context.actions.setLanguageName,
-      setLanguageDescription: context.actions.setLanguageDescription,
+      setName: context.actions.setName,
+      setDescription: context.actions.setDescription,
       setImageSearchQuery: context.actions.setImageSearchQuery,
       searchImages: context.actions.searchLanguageImages,
       selectImage: context.actions.selectLanguageImage,

@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { HeroButton } from "@/components/buttons/hero";
 import { useJoinClassMutation } from "@/hooks/use-api-queries";
+import { useToast } from "@/contexts/ToastContext";
 
 const joinClassSchema = z.object({
   joinCode: z
@@ -48,6 +49,7 @@ export function JoinClassModal({
   onError,
 }: JoinClassModalProps) {
   const joinClass = useJoinClassMutation();
+  const { showToast } = useToast();
   const form = useForm<JoinClassFormValues>({
     resolver: zodResolver(joinClassSchema),
     defaultValues: {
@@ -72,6 +74,7 @@ export function JoinClassModal({
       onOpenChange(false);
     } catch (error) {
       const message = getApiErrorMessage(error, "Código inválido");
+      showToast({ type: "error", message });
       onError?.(message);
     }
   };

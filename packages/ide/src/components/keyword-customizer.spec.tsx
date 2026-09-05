@@ -468,11 +468,11 @@ describe("KeywordCustomizer", () => {
 
     const { container, root } = render();
 
-    const languageNameInput = container.querySelector(
+    const nameInput = container.querySelector(
       'input[aria-label="Nome da linguagem"]',
     ) as HTMLInputElement | null;
-    expect(languageNameInput).toBeInstanceOf(HTMLInputElement);
-    setControlValue(languageNameInput!, "Didatica Neon");
+    expect(nameInput).toBeInstanceOf(HTMLInputElement);
+    setControlValue(nameInput!, "Didatica Neon");
 
     clickButtonByText(container, "Continuar");
     const keywordInput = Array.from(container.querySelectorAll("input")).find(
@@ -566,11 +566,11 @@ describe("KeywordCustomizer", () => {
 
     const { container, root } = render();
 
-    const languageNameInput = container.querySelector(
+    const nameInput = container.querySelector(
       'input[aria-label="Nome da linguagem"]',
     ) as HTMLInputElement | null;
-    expect(languageNameInput).toBeInstanceOf(HTMLInputElement);
-    setControlValue(languageNameInput!, "Doc Neon");
+    expect(nameInput).toBeInstanceOf(HTMLInputElement);
+    setControlValue(nameInput!, "Doc Neon");
 
     clickButtonByText(container, "Continuar");
 

@@ -12,7 +12,7 @@ import { getLanguageDNAChips } from "../language-dna";
 
 type LanguageDnaDialogProps = {
   languageId: number | undefined;
-  languageName: string;
+  name: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
@@ -66,7 +66,7 @@ function ValueList({
 
 export function LanguageDnaDialog({
   languageId,
-  languageName,
+  name,
   open,
   onOpenChange,
 }: LanguageDnaDialogProps) {
@@ -102,7 +102,7 @@ export function LanguageDnaDialog({
             <div className="min-w-0">
               <DialogTitle className="truncate text-xl">DNA da linguagem</DialogTitle>
               <DialogDescription className="truncate">
-                {languageName || "Configuração da linguagem"}
+                {name || "Configuração da linguagem"}
               </DialogDescription>
             </div>
           </div>

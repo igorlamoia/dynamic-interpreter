@@ -46,8 +46,8 @@ function getImageAttributionLabel(
 export type IdentityStepProps = {
   values: {
     selectedPresetId: WizardPresetId;
-    languageName: string;
-    languageDescription: string;
+    name: string;
+    description: string;
     imageSearchQuery: string;
     imageSearchResults: IdentityImageSearchResult[];
     selectedImageUrl: string;
@@ -56,8 +56,8 @@ export type IdentityStepProps = {
   };
   actions: {
     selectPreset: (presetId: WizardPresetId) => void;
-    setLanguageName: (value: string) => void;
-    setLanguageDescription: (value: string) => void;
+    setName: (value: string) => void;
+    setDescription: (value: string) => void;
     setImageSearchQuery: (value: string) => void;
     searchImages: () => void;
     selectImage: (imageUrl: string) => void;
@@ -299,8 +299,8 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             <input
               id="language-name"
               aria-label="Nome da linguagem"
-              value={values.languageName}
-              onChange={(event) => actions.setLanguageName(event.target.value)}
+              value={values.name}
+              onChange={(event) => actions.setName(event.target.value)}
               placeholder="Ex.: Didatica Neon"
               className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition-colors focus:border-cyan-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
             />
@@ -319,9 +319,9 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             <textarea
               id="language-description"
               aria-label="Descrição da linguagem"
-              value={values.languageDescription}
+              value={values.description}
               onChange={(event) =>
-                actions.setLanguageDescription(event.target.value)
+                actions.setDescription(event.target.value)
               }
               placeholder="Ex.: Uma linguagem didática inspirada em português para ensinar lógica de programação"
               className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition-colors focus:border-cyan-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"

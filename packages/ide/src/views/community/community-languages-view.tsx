@@ -206,7 +206,7 @@ export function CommunityLanguagesView() {
 
       <LanguageDnaDialog
         languageId={dnaLanguage?.id}
-        languageName={dnaLanguage?.name ?? ""}
+        name={dnaLanguage?.name ?? ""}
         open={dnaLanguage !== null}
         onOpenChange={(open) => {
           if (!open) setDnaLanguage(null);

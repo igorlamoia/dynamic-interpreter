@@ -26,8 +26,8 @@ function buildContext(
     },
     visitedStepIds: [],
     selectedPresetId: "free",
-    languageName: "",
-    languageDescription: "",
+    name: "",
+    description: "",
     languageImageUrl: "",
     languageImageQuery: "",
     languageImageResults: [],
@@ -43,8 +43,8 @@ function buildContext(
       goToNextWizardStep: () => undefined,
       goToPreviousWizardStep: () => undefined,
       applyPreset: () => undefined,
-      setLanguageName: () => undefined,
-      setLanguageDescription: () => undefined,
+      setName: () => undefined,
+      setDescription: () => undefined,
       setImageSearchQuery: () => undefined,
       searchLanguageImages: async () => undefined,
       selectLanguageImage: () => undefined,
@@ -65,22 +65,22 @@ function buildContext(
 
 describe("buildIdentityStepProps", () => {
   it("passes through the language description value and setter", () => {
-    const setLanguageDescription = () => undefined;
+    const setDescription = () => undefined;
 
     const props = buildIdentityStepProps(
       buildContext({
-        languageDescription: "Uma linguagem para aulas de logica.",
+        description: "Uma linguagem para aulas de logica.",
         actions: {
           ...buildContext().actions,
-          setLanguageDescription,
+          setDescription,
         },
       }),
     );
 
-    expect(props.values.languageDescription).toBe(
+    expect(props.values.description).toBe(
       "Uma linguagem para aulas de logica.",
     );
-    expect(props.actions.setLanguageDescription).toBe(setLanguageDescription);
+    expect(props.actions.setDescription).toBe(setDescription);
   });
 });
 

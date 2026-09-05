@@ -174,7 +174,7 @@ function LanguageBasedCard({
         <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-white/15 to-transparent dark:from-white/5" />
         <Image
           src={imageUrl}
-          alt={preview.languageLabel}
+          alt={preview.name}
           width={640}
           height={260}
           unoptimized
@@ -187,7 +187,7 @@ function LanguageBasedCard({
               Nome da linguagem
             </p>
             <p className="mt-1 text-sm font-semibold tracking-[0.02em] text-white">
-              {preview.languageLabel}
+              {preview.name}
             </p>
           </div>
         </div>

@@ -17,7 +17,7 @@ import {
 export type BuildPreviewOptions = {
   activeStepId: WizardStepId;
   presetId: WizardPresetId;
-  languageName?: string;
+  name?: string;
   languageImageUrl?: string;
 };
 
@@ -32,7 +32,7 @@ type PreviewLexemeChange = {
 };
 
 export type WizardPreview = {
-  languageLabel: string;
+  name: string;
   basedOnLabel: string;
   languageImageUrl: string;
   dna: string[];
@@ -152,8 +152,8 @@ export function buildWizardPreview(
   const snippet = buildPreviewSource(draft, options.activeStepId);
 
   return {
-    languageLabel:
-      options.languageName?.trim() || WIZARD_PRESET_LABELS[options.presetId],
+    name:
+      options.name?.trim() || WIZARD_PRESET_LABELS[options.presetId],
     basedOnLabel: WIZARD_PRESET_LABELS[options.presetId],
     languageImageUrl: options.languageImageUrl?.trim() ?? "",
     dna: [
