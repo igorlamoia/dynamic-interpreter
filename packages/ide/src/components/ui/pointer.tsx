@@ -46,14 +46,6 @@ function resolveCursorVariant(cursor: string): Exclude<PointerVariant, "auto"> {
 }
 
 function getClassNameValue(element: Element): string {
-  if (element instanceof HTMLElement) {
-    return element.className;
-  }
-
-  if (element instanceof SVGElement) {
-    return element.className.baseVal || element.getAttribute("class") || "";
-  }
-
   return element.getAttribute("class") ?? "";
 }
 

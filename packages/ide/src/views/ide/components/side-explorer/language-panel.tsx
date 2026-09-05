@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -25,6 +25,8 @@ import {
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-panel/categories-list";
 import { getCategoryLexemes } from "./category-lexemes";
+import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
 
 export type LanguageCustomization = StoredKeywordCustomization;
 
@@ -46,6 +48,7 @@ function getLanguageDNA(customization: LanguageCustomization): string[] {
 
 export function LanguagePanel() {
   const editor = useEditor();
+  const router = useRouter();
   // Sem efeito de "aplicar a linguagem ativa ao montar": o KeywordContext já
   // faz isso nos dois caminhos, e duas fontes disputando o mesmo estado é
   // pedir para elas divergirem.
@@ -67,7 +70,7 @@ export function LanguagePanel() {
   return (
     <PerfectScrollbar className="flex h-full min-h-0 flex-col gap-4  p-4">
       <div className="relative shrink-0 overflow-visible">
-        <div className="group relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
+        <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
           <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
             <Image
               src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
@@ -158,6 +161,9 @@ export function LanguagePanel() {
           </div>
         </div>
       </div>
+      <div className="flex justify-center">
+        <AddLanguageButton onClick={() => router.push("/language-creator")} />
+      </div>
     </PerfectScrollbar>
   );
 }
@@ -201,7 +207,7 @@ function LanguageOptionsMenu({
   activeKey,
   onSelect,
 }: LanguageOptionsMenuProps) {
-
+  const router = useRouter();
   return (
     <div className="relative z-20">
       <TooltipProvider>
@@ -273,10 +279,37 @@ function LanguageOptionsMenu({
                   })}
                 </div>
               </PerfectScrollbar>
+              <div className="flex justify-center pt-3">
+                <AddLanguageButton
+                  onClick={() => router.push("/language-creator")}
+                />
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </Tooltip>
       </TooltipProvider>
     </div>
+  );
+}
+
+function AddLanguageButton({ onClick }: { onClick: () => void }) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
+            aria-label="Criar linguagem"
+            onClick={onClick}
+            className="rounded-full shadow-md hover:shadow-lg"
+          >
+            <Plus aria-hidden="true" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Criar linguagem</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

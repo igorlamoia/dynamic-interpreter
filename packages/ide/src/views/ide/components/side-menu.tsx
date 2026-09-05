@@ -5,6 +5,7 @@ import {
   Languages,
   Search,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/router";
 import type { SidebarView } from "./side-explorer/sidebar-panel";
@@ -72,13 +73,13 @@ function ConfigButton() {
 
   return (
     <IconButton
-      tooltip="Configurações"
+      tooltip="Linguagem personalizada"
       onClick={() => {
         markLanguageCreatorReturn();
         void router.push("/language-creator");
       }}
     >
-      <Settings className="h-4 w-4" />
+      <Sparkles className="h-4 w-4" />
     </IconButton>
   );
 }

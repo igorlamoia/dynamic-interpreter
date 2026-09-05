@@ -23,7 +23,10 @@ import { EditorContext, EditorProvider } from "@/contexts/editor/EditorContext";
 import { QuickFileSearch } from "@/components/quick-file-search";
 import { useIntermediatorCode } from "@/hooks/useIntermediatorCode";
 import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
-import { KeywordProvider, useKeywords } from "@/contexts/keyword/KeywordContext";
+import {
+  KeywordProvider,
+  useKeywords,
+} from "@/contexts/keyword/KeywordContext";
 import { useRouter } from "next/router";
 import { useDebugSession } from "@/hooks/useDebugSession";
 import type { MarkerSeverity } from "monaco-editor";
@@ -44,15 +47,21 @@ const DEFAULT_FILES = [
   { path: "README.md", initialCode: "# Project README\n" },
 ];
 
-export function IDEView() {
+export function IDEProvider({ children }: { children: React.ReactNode }) {
   return (
     <EditorProvider>
       <TerminalProvider>
-        <KeywordProvider>
-          <IDE />
-        </KeywordProvider>
+        <KeywordProvider>{children}</KeywordProvider>
       </TerminalProvider>
     </EditorProvider>
+  );
+}
+
+export function IDEView() {
+  return (
+    <IDEProvider>
+      <IDE />
+    </IDEProvider>
   );
 }
 export function IDE() {
