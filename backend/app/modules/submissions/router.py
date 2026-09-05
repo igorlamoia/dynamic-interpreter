@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.core.dependencies import AcademicUserIdDep, SessionDep
 from app.modules.submissions.service import (
@@ -20,8 +20,15 @@ async def create_submission_endpoint(
 
 
 @router.get("", response_model=list[SubmissionResponse])
-async def list_submissions_endpoint(user_id: AcademicUserIdDep, session: SessionDep):
-    return await list_submissions(user_id, session)
+async def list_submissions_endpoint(
+    user_id: AcademicUserIdDep,
+    session: SessionDep,
+    exercise_id: int | None = Query(default=None, alias="exerciseId"),
+    exercise_list_id: int | None = Query(default=None, alias="exerciseListId"),
+):
+    return await list_submissions(
+        user_id, session, exercise_id=exercise_id, exercise_list_id=exercise_list_id
+    )
 
 
 @router.get("/{submission_id}", response_model=SubmissionResponse)
@@ -32,6 +39,7 @@ async def get_submission_endpoint(
 
 
 @router.patch("/{submission_id}/grade", response_model=SubmissionResponse)
+@router.patch("/{submission_id}", response_model=SubmissionResponse)
 async def grade_submission_endpoint(
     submission_id: str,
     data: SubmissionGrade,

@@ -115,6 +115,17 @@ export default function GradeSubmission() {
           <Link href="/dashboard" className="text-sm text-slate-400 hover:text-white transition-colors">
             ← Painel
           </Link>
+          {submission?.exerciseListId && (
+            <>
+              <div className="h-4 w-px bg-white/10" />
+              <Link
+                href={`/exercise-lists/${submission.exerciseListId}`}
+                className="text-sm text-[#0dccf2] hover:text-[#0dccf2]/80 transition-colors"
+              >
+                ← Voltar à Lista
+              </Link>
+            </>
+          )}
           <div className="h-4 w-px bg-white/10" />
           <h1 className="text-lg font-bold text-white">Correção de Exercício</h1>
         </div>

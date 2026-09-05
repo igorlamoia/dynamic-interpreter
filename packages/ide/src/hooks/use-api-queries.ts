@@ -269,23 +269,18 @@ export function useExerciseSubmissionsQuery(
 }
 
 export function useExerciseListSubmissionsQuery(
-  exerciseIds: Array<string | number>,
+  listId: string | number | undefined,
   enabled = true,
 ) {
   return useQuery({
-    queryKey: ["submissions", "exercise-list", exerciseIds] as const,
+    queryKey: ["submissions", "exercise-list", listId] as const,
     queryFn: async () => {
-      const results = await Promise.all(
-        exerciseIds.map(async (exerciseId) => {
-          const response = await api.get<unknown[]>(
-            `/submissions?exerciseId=${exerciseId}`,
-          );
-          return response.data;
-        }),
+      const response = await api.get<unknown[]>(
+        `/submissions?exerciseListId=${listId}`,
       );
-      return results.flat();
+      return response.data;
     },
-    enabled: enabled && exerciseIds.length > 0,
+    enabled: enabled && Boolean(listId),
   });
 }
 
@@ -456,11 +451,16 @@ export function useGradeSubmissionMutation() {
       void queryClient.invalidateQueries({
         queryKey: queryKeys.submissions.detail(variables.submissionId),
       });
+      void queryClient.invalidateQueries({
+        queryKey: ["submissions"],
+      });
     },
   });
 }
 
 export function useValidateSubmissionMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({
       payload,
@@ -476,6 +476,14 @@ export function useValidateSubmissionMutation() {
         headers,
       });
       return data;
+    },
+    onSuccess: (_data, variables) => {
+      if (!variables.params?.dryRun) {
+        void queryClient.invalidateQueries({ queryKey: ["submissions"] });
+        void queryClient.invalidateQueries({
+          queryKey: queryKeys.exerciseLists.all,
+        });
+      }
     },
   });
 }
