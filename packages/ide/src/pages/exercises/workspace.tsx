@@ -14,11 +14,12 @@ import { useToast } from "@/contexts/ToastContext";
 import { useKeywords } from "@/contexts/keyword/KeywordContext";
 import { useRouter } from "next/router";
 import { getAuthToken } from "@/lib/auth-cookies";
-import { CheckCircle2, Circle, ChevronRight, ListChecks } from "lucide-react";
+import { CheckCircle2, Circle, ChevronRight, ListChecks, PlayCircle } from "lucide-react";
 import type { ExerciseList } from "@/types/api";
 import {
   useExerciseListQuery,
   useExerciseQuery,
+  useExerciseSubmissionsQuery,
   useValidateSubmissionMutation,
 } from "@/hooks/use-api-queries";
 
@@ -148,6 +149,9 @@ function WorkspaceContent({
   }, [exercise, applyExternalCustomization, restoreActiveCustomization]);
   const validateSubmission = useValidateSubmissionMutation();
   const [submitted, setSubmitted] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
+  const [panelMode, setPanelMode] = useState<"test" | "submit">("submit");
+  const [testEmptyMessage, setTestEmptyMessage] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [submitErrors, setSubmitErrors] = useState<string[]>([]);
   const [submitWarnings, setSubmitWarnings] = useState<string[]>([]);
@@ -163,12 +167,102 @@ function WorkspaceContent({
     lastSubmission?.status === "SUBMITTED" ||
     lastSubmission?.status === "GRADED";
 
+  const handleTest = async () => {
+    setError("");
+    setSubmitErrors([]);
+    setSubmitWarnings([]);
+    setShowSubmitPanel(false);
+    setTestCaseResults(null);
+    setTestEmptyMessage(null);
+    setPanelMode("test");
+
+    const code = getEditorCode();
+    if (!code || code.trim().length < 5) {
+      setError("Escreva algum código antes de testar!");
+      showToast({ type: "warning", message: "Escreva algum código antes de testar!" });
+      return;
+    }
+
+    setIsTesting(true);
+    try {
+      const lexerConfig = buildLexerConfig();
+      const data = await validateSubmission.mutateAsync({
+        payload: {
+          exerciseId: exercise.id,
+          exerciseListId: list?.id,
+          classId,
+          sourceCode: code,
+          keywordMap: lexerConfig.keywordMap,
+          operatorWordMap: lexerConfig.operatorWordMap,
+          booleanLiteralMap: lexerConfig.booleanLiteralMap,
+          statementTerminatorLexeme: lexerConfig.statementTerminatorLexeme,
+          blockDelimiters: lexerConfig.blockDelimiters,
+          indentationBlock: lexerConfig.indentationBlock,
+          grammar: lexerConfig.grammar,
+          locale,
+        },
+        params: {
+          dryRun: "true",
+        },
+        headers: {
+          "x-user-id": String(userId),
+          "x-authorization": getAuthToken() ?? "",
+        },
+      });
+
+      if (data.warnings?.length > 0) {
+        setSubmitWarnings(data.warnings);
+      }
+
+      if (!data.valid && data.errors?.length > 0) {
+        setSubmitErrors(data.errors);
+        setShowSubmitPanel(true);
+        showToast({ type: "error", message: "Erro de compilação no teste." });
+        return;
+      }
+
+      if (data.testCaseResults && data.testCaseResults.length > 0) {
+        setTestCaseResults(data.testCaseResults);
+        setTestCasesPassed(data.testCasesPassed ?? 0);
+        setTestCasesTotal(data.testCasesTotal ?? 0);
+        setShowSubmitPanel(true);
+        if (data.testCasesPassed === data.testCasesTotal) {
+          showToast({
+            type: "success",
+            message: `Todos os ${data.testCasesTotal} testes passaram!`,
+          });
+        } else {
+          showToast({
+            type: "warning",
+            message: `${data.testCasesPassed} de ${data.testCasesTotal} casos de teste passaram.`,
+          });
+        }
+      } else {
+        setTestEmptyMessage(
+          "Código compilado com sucesso! Nenhum caso de teste cadastrado para este exercício.",
+        );
+        setShowSubmitPanel(true);
+        showToast({
+          type: "success",
+          message: "Código compilado com sucesso! (Sem casos de teste)",
+        });
+      }
+    } catch {
+      setError("Erro de conexão ao testar.");
+      showToast({ type: "error", message: "Erro de conexão ao testar." });
+    } finally {
+      setIsTesting(false);
+    }
+  };
+
   const handleSubmit = async () => {
     setError("");
     setSubmitErrors([]);
     setSubmitWarnings([]);
     setShowSubmitPanel(false);
     setTestCaseResults(null);
+    setTestEmptyMessage(null);
+    setPanelMode("submit");
     setSubmitted(false);
 
     const code = getEditorCode();
@@ -292,6 +386,15 @@ function WorkspaceContent({
               )}
             </div>
           )}
+          <button
+            onClick={handleTest}
+            disabled={isTesting || validateSubmission.isPending}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border border-[#0dccf2]/30 bg-[#0dccf2]/10 hover:bg-[#0dccf2]/20 text-[#0dccf2] shadow-[0_0_10px_rgba(13,204,242,0.15)] hover:shadow-[0_0_15px_rgba(13,204,242,0.25)] transition-all disabled:opacity-50"
+            title="Executar os casos de teste deste exercício sem submeter"
+          >
+            <PlayCircle className="w-4 h-4" />
+            {isTesting ? "Testando..." : "Testar Exercício"}
+          </button>
           {isOverdue ? (
             <div className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 bg-white/5 border border-white/10 cursor-not-allowed">
               Prazo encerrado
@@ -299,7 +402,7 @@ function WorkspaceContent({
           ) : (
             <button
               onClick={handleSubmit}
-              disabled={validateSubmission.isPending}
+              disabled={isTesting || validateSubmission.isPending}
               className="px-5 py-2 rounded-xl text-sm font-bold bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 shadow-[0_0_15px_rgba(13,204,242,0.3)] hover:shadow-[0_0_25px_rgba(13,204,242,0.5)] hover:opacity-90 transition-all disabled:opacity-50"
             >
               {validateSubmission.isPending
@@ -326,20 +429,49 @@ function WorkspaceContent({
         </div>
       )}
 
-      {/* Submission Results Panel */}
+      {/* Submission / Test Results Panel */}
       {showSubmitPanel && (
         <div className="relative z-10 border-b border-white/5">
           <div
-            className={`px-6 py-3 ${submitErrors.length > 0 ? "bg-red-500/5" : "bg-emerald-500/5"} backdrop-blur-md`}
+            className={`px-6 py-3 ${
+              submitErrors.length > 0
+                ? "bg-red-500/5"
+                : panelMode === "test" && testCaseResults && testCasesPassed < testCasesTotal
+                  ? "bg-amber-500/5"
+                  : "bg-emerald-500/5"
+            } backdrop-blur-md`}
           >
             <div className="flex justify-between items-center mb-2">
-              <h3
-                className={`text-sm font-bold ${submitErrors.length > 0 ? "text-red-400" : "text-emerald-400"}`}
-              >
-                {submitErrors.length > 0
-                  ? `Submissão Falhou (${submitErrors.length} erro${submitErrors.length > 1 ? "s" : ""})`
-                  : "Submissão Enviada"}
-              </h3>
+              <div className="flex items-center gap-2.5">
+                <span
+                  className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded tracking-wider ${
+                    panelMode === "test"
+                      ? "bg-[#0dccf2]/20 text-[#0dccf2] border border-[#0dccf2]/30"
+                      : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                  }`}
+                >
+                  {panelMode === "test" ? "Modo Teste" : "Submissão"}
+                </span>
+                <h3
+                  className={`text-sm font-bold ${
+                    submitErrors.length > 0
+                      ? "text-red-400"
+                      : panelMode === "test" && testCaseResults && testCasesPassed < testCasesTotal
+                        ? "text-amber-400"
+                        : "text-emerald-400"
+                  }`}
+                >
+                  {submitErrors.length > 0
+                    ? `${panelMode === "test" ? "Teste Falhou" : "Submissão Falhou"} (${submitErrors.length} erro${submitErrors.length > 1 ? "s" : ""})`
+                    : panelMode === "test"
+                      ? testCaseResults && testCaseResults.length > 0
+                        ? testCasesPassed === testCasesTotal
+                          ? `Todos os Testes Passaram (${testCasesPassed}/${testCasesTotal})`
+                          : `Casos de Teste (${testCasesPassed}/${testCasesTotal} passaram)`
+                        : "Compilação Concluída"
+                      : "Submissão Enviada"}
+                </h3>
+              </div>
               <button
                 onClick={() => setShowSubmitPanel(false)}
                 className="text-xs text-slate-500 hover:text-white transition-colors"
@@ -347,6 +479,9 @@ function WorkspaceContent({
                 Fechar
               </button>
             </div>
+            {testEmptyMessage && (
+              <p className="text-xs text-slate-300 mb-2">{testEmptyMessage}</p>
+            )}
             {submitErrors.length > 0 && (
               <div className="space-y-1 mb-2">
                 {submitErrors.map((err, i) => (
@@ -456,13 +591,19 @@ export default function ExerciseWorkspace({
     Boolean(userId && exerciseId),
     listId,
   );
+  const submissionsQuery = useExerciseSubmissionsQuery(
+    exerciseId,
+    Boolean(userId && exerciseId),
+  );
   const listQuery = useExerciseListQuery(
     listId,
     classId ? { classId } : undefined,
     Boolean(userId && listId),
   );
   const exercise = exerciseQuery.data;
+  const exerciseSubmissions = submissionsQuery.data as any[] | undefined;
   const list = listQuery.data;
+  const lastSubmission = exerciseSubmissions?.[0] ?? exercise?.submissions?.[0];
 
   useEffect(() => {
     if (exerciseQuery.error || listQuery.error) {
@@ -471,7 +612,11 @@ export default function ExerciseWorkspace({
     }
   }, [exerciseQuery.error, listQuery.error, showToast]);
 
-  if (exerciseQuery.isPending || (listId && listQuery.isPending)) {
+  if (
+    exerciseQuery.isPending ||
+    (listId && listQuery.isPending) ||
+    submissionsQuery.isPending
+  ) {
     return (
       <div className="min-h-screen bg-[#101f22] flex items-center justify-center">
         <div className="text-slate-500">Carregando exercício...</div>
@@ -496,12 +641,20 @@ export default function ExerciseWorkspace({
   return (
     <div className="relative min-h-screen bg-[#101f22] text-slate-100 flex flex-col overflow-hidden font-sans">
       <SpaceBackground />
-      <EditorProvider>
+      <EditorProvider
+        key={exerciseId}
+        storageScope={`exercise-${exerciseId}`}
+        initialCode={lastSubmission?.codeSnapshot}
+      >
         <KeywordProvider>
           <RuntimeErrorProvider>
             <TerminalProvider>
               <WorkspaceContent
-                exercise={exercise}
+                key={exerciseId}
+                exercise={{
+                  ...exercise,
+                  submissions: exerciseSubmissions ?? exercise.submissions,
+                }}
                 userId={userId!}
                 list={
                   list

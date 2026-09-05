@@ -47,9 +47,8 @@ export function TeacherDetailView({
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [removeTarget, setRemoveTarget] = useState<string | null>(null);
-  const exerciseIds = list.items.map((item) => item.exerciseId);
   const submissionsQuery = useExerciseListSubmissionsQuery(
-    exerciseIds,
+    list.id,
     showSubmissions,
   );
   const removeExercise = useRemoveExerciseFromListMutation(list.id);

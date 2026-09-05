@@ -199,8 +199,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     // Step 4: Create the submission (unless dryRun)
     if (dryRun) {
+        const passedAll = testCasesTotal ? testCasesPassed === testCasesTotal : true
         return res.status(200).json({
-            valid: true,
+            valid: passedAll,
             errors: [],
             warnings,
             testCaseResults,

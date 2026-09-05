@@ -1,4 +1,5 @@
-import { ChevronDown, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 import type { SubmissionRecord } from "./types";
 
 function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
@@ -13,7 +14,7 @@ function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
   return (
     <tr className="border-b border-white/5 hover:bg-white/2 transition-colors">
       <td className="px-6 py-3.5 text-slate-300 font-medium">
-        {submission.student?.name ?? String(submission.studentId).slice(0, 8)}
+        {submission.student?.name || submission.student?.email || String(submission.studentId).slice(0, 8)}
       </td>
       <td className="px-6 py-3.5 text-slate-400 text-sm">
         {submission.exercise?.title ?? String(submission.exerciseId).slice(0, 8)}
@@ -30,6 +31,15 @@ function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
       </td>
       <td className="px-6 py-3.5 text-slate-300 font-mono text-sm">
         {submission.score != null ? submission.score : "—"}
+      </td>
+      <td className="px-6 py-3.5 text-right">
+        <Link
+          href={`/submissions/${submission.id}`}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 hover:border-[#0dccf2]/40 transition-colors"
+        >
+          <span>Corrigir</span>
+          <ChevronRight className="w-3.5 h-3.5" />
+        </Link>
       </td>
     </tr>
   );
@@ -83,6 +93,7 @@ export function SubmissionsPanel({
                     <th className="px-6 py-3 text-left">Enviado</th>
                     <th className="px-6 py-3 text-left">Status</th>
                     <th className="px-6 py-3 text-left">Nota</th>
+                    <th className="px-6 py-3 text-right">Ação</th>
                   </tr>
                 </thead>
                 <tbody>

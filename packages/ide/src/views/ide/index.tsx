@@ -74,6 +74,8 @@ export function IDE() {
     setCurrentDebugLine,
     showLineIssues,
     sourceCode,
+    initialCode,
+    storageScope,
   } = useContext(EditorContext);
   const lexerConfig = buildLexerConfig();
 
@@ -132,9 +134,13 @@ export function IDE() {
   useEffect(() => {
     if (!fileSystem.isLoaded) return;
 
-    DEFAULT_FILES.forEach(({ path, initialCode }) => {
+    DEFAULT_FILES.forEach(({ path, initialCode: fileDefaultCode }) => {
       if (!fileSystem.fileExists(path)) {
-        fileSystem.createOrUpdateFile(path, initialCode);
+        let code = fileDefaultCode;
+        if (path === "src/main.?") {
+          code = initialCode ?? (storageScope ? "int main() {\n  \n}\n" : fileDefaultCode);
+        }
+        fileSystem.createOrUpdateFile(path, code);
       }
     });
 
