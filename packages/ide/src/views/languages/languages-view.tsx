@@ -20,7 +20,9 @@ export function LanguagesView() {
   const router = useRouter();
   const { showToast } = useToast();
   const { isCommunity } = useAuth();
-  const listQuery = useLanguagesList();
+  const [page, setPage] = useState(1);
+  const pageSize = 12;
+  const listQuery = useLanguagesList({ page, pageSize });
   const activeQuery = useActiveLanguage();
   const setActiveMut = useSetActiveLanguage();
   const cloneMut = useCloneLanguage();
@@ -48,7 +50,16 @@ export function LanguagesView() {
     }
   }, [listQuery.isError, listQuery.error]);
 
-  const languages = listQuery.data ?? [];
+  const languages = Array.isArray(listQuery.data)
+    ? listQuery.data
+    : (listQuery.data?.items ?? []);
+  const totalPages = Array.isArray(listQuery.data)
+    ? 1
+    : (listQuery.data?.totalPages ?? 1);
+  const totalItems = Array.isArray(listQuery.data)
+    ? listQuery.data.length
+    : (listQuery.data?.total ?? languages.length);
+
   const activeLanguageId = activeQuery.data?.id ?? null;
   // Enquanto a linguagem ativa ainda não é conhecida, nenhum card pode se
   // afirmar ativo ou inativo — e "Tornar ativa" fica desabilitado em todos
@@ -133,6 +144,11 @@ export function LanguagesView() {
           activeLanguageId={activeLanguageId}
           activeUnknown={activeUnknown}
           canPublish={isCommunity}
+          page={page}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          pageSize={pageSize}
+          onPageChange={setPage}
           onCreate={() => goToCreator()}
           onEdit={(id) => goToCreator(id)}
           onSetActive={handleSetActive}

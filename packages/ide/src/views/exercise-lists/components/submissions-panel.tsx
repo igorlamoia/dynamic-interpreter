@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronDown, ChevronRight, Loader2 } from "lucide-react";
+import { Pagination } from "@/components/ui/pagination";
 import type { SubmissionRecord } from "./types";
 
 function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
@@ -50,12 +51,24 @@ export function SubmissionsPanel({
   showSubmissions,
   loadingSubmissions,
   onToggle,
+  page = 1,
+  totalPages = 1,
+  totalItems,
+  pageSize = 10,
+  onPageChange,
 }: {
   submissions: SubmissionRecord[];
   showSubmissions: boolean;
   loadingSubmissions: boolean;
   onToggle: () => void;
+  page?: number;
+  totalPages?: number;
+  totalItems?: number;
+  pageSize?: number;
+  onPageChange?: (page: number) => void;
 }) {
+  const count = totalItems ?? submissions.length;
+
   return (
     <div className="bg-white/3 backdrop-blur-xl border border-white/8 rounded-2xl overflow-hidden">
       <button
@@ -64,8 +77,8 @@ export function SubmissionsPanel({
       >
         <div className="flex items-center gap-2">
           <h2 className="font-semibold text-slate-200">Submissões</h2>
-          {submissions.length > 0 && (
-            <span className="text-xs text-slate-500">({submissions.length})</span>
+          {count > 0 && (
+            <span className="text-xs text-slate-500">({count})</span>
           )}
         </div>
         <ChevronDown
@@ -102,6 +115,17 @@ export function SubmissionsPanel({
                   ))}
                 </tbody>
               </table>
+              {onPageChange && (
+                <div className="p-4 border-t border-white/8">
+                  <Pagination
+                    page={page}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                    totalItems={totalItems ?? submissions.length}
+                    pageSize={pageSize}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

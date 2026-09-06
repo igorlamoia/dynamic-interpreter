@@ -19,8 +19,10 @@ import type {
 } from "@/lib/languages-api";
 import { getLanguageDNAChips } from "@/views/languages/language-dna";
 import { LanguageDnaDialog } from "@/views/languages/components/language-dna-dialog";
+import { Pagination } from "@/components/ui/pagination";
 
 const DEFAULT_LANGUAGE_IMAGE = "/images/language-default.png";
+const PAGE_SIZE = 12;
 
 type DnaAxis = keyof LanguageDNA;
 type DnaValue = LanguageDNA[DnaAxis];
@@ -66,6 +68,7 @@ const DNA_FILTER_GROUPS: Array<{
 
 export function CommunityLanguagesView() {
   const { showToast } = useToast();
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [dnaFilters, setDnaFilters] = useState<Partial<LanguageDNA>>({});
   const deferredSearch = useDeferredValue(search.trim());
@@ -73,10 +76,23 @@ export function CommunityLanguagesView() {
     () => ({
       ...dnaFilters,
       ...(deferredSearch ? { query: deferredSearch } : {}),
+      page,
+      pageSize: PAGE_SIZE,
     }),
-    [deferredSearch, dnaFilters],
+    [deferredSearch, dnaFilters, page],
   );
   const catalog = useCommunityLanguages(catalogFilters);
+
+  const languages = Array.isArray(catalog.data)
+    ? catalog.data
+    : catalog.data?.items ?? [];
+  const totalPages = Array.isArray(catalog.data)
+    ? 1
+    : catalog.data?.totalPages ?? 1;
+  const totalItems = Array.isArray(catalog.data)
+    ? catalog.data.length
+    : catalog.data?.total ?? languages.length;
+
   const importLanguage = useImportLanguage();
   const [importingId, setImportingId] = useState<number | null>(null);
   const [dnaLanguage, setDnaLanguage] = useState<{
@@ -87,6 +103,7 @@ export function CommunityLanguagesView() {
   const hasActiveCriteria = deferredSearch !== "" || activeDnaFilterCount > 0;
 
   const toggleDnaFilter = (axis: DnaAxis, value: DnaValue) => {
+    setPage(1);
     setDnaFilters((current) => {
       const next = { ...current };
       if (next[axis] === value) {
@@ -152,7 +169,10 @@ export function CommunityLanguagesView() {
             <input
               type="search"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPage(1);
+              }}
               placeholder="Buscar por nome ou descrição"
               className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-300/35 focus:bg-emerald-300/5 focus:ring-2 focus:ring-emerald-300/10"
             />
@@ -163,7 +183,10 @@ export function CommunityLanguagesView() {
           filters={dnaFilters}
           activeCount={activeDnaFilterCount}
           onToggle={toggleDnaFilter}
-          onClear={() => setDnaFilters({})}
+          onClear={() => {
+            setDnaFilters({});
+            setPage(1);
+          }}
         />
 
         {catalog.isPending ? (
@@ -174,7 +197,7 @@ export function CommunityLanguagesView() {
           <div role="alert" className="rounded-2xl border border-red-400/15 bg-red-400/5 p-8 text-center text-sm text-red-200">
             {getApiErrorMessage(catalog.error, "Não foi possível carregar o acervo.")}
           </div>
-        ) : (catalog.data?.length ?? 0) === 0 ? (
+        ) : languages.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-emerald-300/15 bg-emerald-300/3 px-6 py-16 text-center">
             <Globe2 className="mx-auto size-9 text-emerald-300/60" />
             <p className="mt-4 font-bold text-slate-200">
@@ -187,20 +210,30 @@ export function CommunityLanguagesView() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {catalog.data?.map((language) => (
-              <CommunityLanguageCard
-                key={language.id}
-                language={language}
-                importing={importingId === language.id}
-                importDisabled={importLanguage.isPending}
-                onImport={() => void handleImport(language)}
-                onViewDna={() =>
-                  setDnaLanguage({ id: language.id, name: language.name })
-                }
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              {languages.map((language) => (
+                <CommunityLanguageCard
+                  key={language.id}
+                  language={language}
+                  importing={importingId === language.id}
+                  importDisabled={importLanguage.isPending}
+                  onImport={() => void handleImport(language)}
+                  onViewDna={() =>
+                    setDnaLanguage({ id: language.id, name: language.name })
+                  }
+                />
+              ))}
+            </div>
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              totalItems={totalItems}
+              pageSize={PAGE_SIZE}
+              className="mt-8"
+            />
+          </>
         )}
       </section>
 

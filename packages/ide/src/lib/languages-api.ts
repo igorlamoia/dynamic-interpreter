@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
+import type { PaginatedResponse } from "@/types/api";
 
 export type LanguageDNA = {
   typing: "typed" | "untyped";
@@ -10,6 +11,8 @@ export type LanguageDNA = {
 
 export type CommunityLanguageFilters = Partial<LanguageDNA> & {
   query?: string;
+  page?: number;
+  pageSize?: number;
 };
 
 export type LanguageSummary = {
@@ -52,17 +55,21 @@ export type UpdateLanguageInput = Partial<{
 }>;
 
 export const languagesApi = {
-  list: async (): Promise<LanguageSummary[]> => {
-    const { data } = await api.get<LanguageSummary[]>("/languages");
+  list: async (
+    params?: { page?: number; pageSize?: number; q?: string },
+  ): Promise<PaginatedResponse<LanguageSummary> | LanguageSummary[]> => {
+    const { data } = await api.get<PaginatedResponse<LanguageSummary> | LanguageSummary[]>("/languages", { params });
     return data;
   },
   listCommunity: async (
     filters: CommunityLanguageFilters = {},
-  ): Promise<LanguageSummary[]> => {
-    const { query, ...dnaFilters } = filters;
-    const { data } = await api.get<LanguageSummary[]>("/languages/community", {
+  ): Promise<PaginatedResponse<LanguageSummary> | LanguageSummary[]> => {
+    const { query, page, pageSize, ...dnaFilters } = filters;
+    const { data } = await api.get<PaginatedResponse<LanguageSummary> | LanguageSummary[]>("/languages/community", {
       params: {
         ...(query ? { q: query } : {}),
+        ...(page ? { page } : {}),
+        ...(pageSize ? { pageSize } : {}),
         ...dnaFilters,
       },
     });

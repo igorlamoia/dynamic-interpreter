@@ -113,6 +113,25 @@ async def list_submissions(
     return unique_subs
 
 
+async def list_submissions_paginated(
+    current_user_id: str,
+    session: AsyncSession,
+    exercise_id: int | None = None,
+    exercise_list_id: int | None = None,
+    page: int = 1,
+    page_size: int = 10,
+) -> tuple[list[Submission], int]:
+    unique_subs = await list_submissions(
+        current_user_id,
+        session,
+        exercise_id=exercise_id,
+        exercise_list_id=exercise_list_id,
+    )
+    total = len(unique_subs)
+    offset = (page - 1) * page_size
+    return unique_subs[offset:offset + page_size], total
+
+
 async def get_submission(submission_id: str, current_user_id: str, session: AsyncSession) -> Submission:
     result = await session.execute(
         select(Submission)

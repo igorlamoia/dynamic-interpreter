@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from fastapi import HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, func, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -22,8 +22,42 @@ async def list_exercise_lists(teacher_id: int, session: AsyncSession) -> list[Ex
             selectinload(ExerciseList.classes),
             selectinload(ExerciseList.locked_language),
         )
+        .order_by(ExerciseList.id.desc())
     )
     return list(result.scalars().all())
+
+
+async def list_exercise_lists_paginated(
+    teacher_id: int,
+    session: AsyncSession,
+    page: int = 1,
+    page_size: int = 12,
+    query: str | None = None,
+) -> tuple[list[ExerciseList], int]:
+    base_stmt = select(ExerciseList).where(ExerciseList.teacher_id == teacher_id)
+    if query and query.strip():
+        pattern = f"%{query.strip()}%"
+        base_stmt = base_stmt.where(
+            or_(ExerciseList.title.ilike(pattern), ExerciseList.description.ilike(pattern))
+        )
+
+    count_stmt = select(func.count()).select_from(base_stmt.subquery())
+    total = (await session.execute(count_stmt)).scalar_one()
+
+    offset = (page - 1) * page_size
+    stmt = (
+        base_stmt
+        .options(
+            selectinload(ExerciseList.items).selectinload(ExerciseListItem.exercise),
+            selectinload(ExerciseList.classes),
+            selectinload(ExerciseList.locked_language),
+        )
+        .order_by(ExerciseList.id.desc())
+        .offset(offset)
+        .limit(page_size)
+    )
+    result = await session.execute(stmt)
+    return list(result.scalars().all()), total
 
 
 async def create_exercise_list(
