@@ -39,6 +39,7 @@ export default function ExercisesPage() {
   const [viewExercise, setViewExercise] = useState<Exercise | null>(null);
   const [editTarget, setEditTarget] = useState<Exercise | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null);
+  const [hasShownSearch, setHasShownSearch] = useState(false);
 
   const exercisesQuery = useExercisesQuery(
     { page, pageSize: PAGE_SIZE, q: deferredSearch || undefined },
@@ -62,6 +63,12 @@ export default function ExercisesPage() {
     }
   }, [exercisesQuery.error, showToast]);
 
+  useEffect(() => {
+    if (!exercisesQuery.isPending && exercises.length > 0) {
+      setHasShownSearch(true);
+    }
+  }, [exercises.length, exercisesQuery.isPending]);
+
   const handleDelete = async () => {
     if (!deleteTarget || !userId) return;
     try {
@@ -79,6 +86,8 @@ export default function ExercisesPage() {
   };
 
   const filtered = exercises;
+  const hasSearch = search.trim().length > 0;
+  const shouldShowSearch = hasSearch || hasShownSearch || exercises.length > 0;
 
   if (!userId) return null;
 
@@ -117,7 +126,7 @@ export default function ExercisesPage() {
             )}
 
             {/* Search */}
-            {!exercisesQuery.isPending && exercises.length > 0 && (
+            {shouldShowSearch && (
               <div className="mb-6">
                 <div className="relative max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
@@ -135,7 +144,7 @@ export default function ExercisesPage() {
             {/* Content */}
             {exercisesQuery.isPending ? (
               <LoadingSpinner label="Carregando exercícios..." />
-            ) : filtered.length === 0 && search ? (
+            ) : filtered.length === 0 && hasSearch ? (
               <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-3">
                 <Search className="w-8 h-8 text-slate-600" />
                 <p className="text-sm font-medium">
