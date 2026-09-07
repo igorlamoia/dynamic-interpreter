@@ -37,7 +37,7 @@ export function HeroButton(props: HeroButtonProps) {
           "pointer-events-none cursor-wait text-slate-950 shadow-[0_0_18px_rgba(13,204,242,0.38)] hover:scale-100 hover:from-primary hover:to-emerald-400 hover:shadow-[0_0_18px_rgba(13,204,242,0.38)]",
         disabled &&
           !isLoading &&
-          "opacity-50 cursor-not-allowed hover:from-primary hover:to-emerald-300 hover:shadow-none hover:border-slate-700/20 hover:bg-transparent hover:text-slate-800 dark:hover:border-white/10 dark:hover:bg-transparent dark:hover:text-slate-300",
+          "opacity-50 cursor-not-allowed hover:from-primary hover:to-emerald-300 hover:shadow-none hover:border-slate-700/20 hover:bg-transparent hover:text-slate-800 dark:hover:dark:border-white/10 dark:hover:bg-transparent dark:hover:text-slate-300",
       )}
     >
       {isLoading && (

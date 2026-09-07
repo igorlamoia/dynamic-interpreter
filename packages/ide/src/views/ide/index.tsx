@@ -147,7 +147,9 @@ export function IDE() {
       if (!fileSystem.fileExists(path)) {
         let code = fileDefaultCode;
         if (path === "src/main.?") {
-          code = initialCode ?? (storageScope ? "int main() {\n  \n}\n" : fileDefaultCode);
+          code =
+            initialCode ??
+            (storageScope ? "int main() {\n  \n}\n" : fileDefaultCode);
         }
         fileSystem.createOrUpdateFile(path, code);
       }

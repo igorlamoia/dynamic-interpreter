@@ -42,7 +42,9 @@ function ValueList({
         {title}
       </h3>
       {items.length === 0 ? (
-        <p className="mt-3 text-sm text-muted-foreground">Configuração padrão</p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Configuração padrão
+        </p>
       ) : (
         <dl className="mt-3 grid gap-2 sm:grid-cols-2">
           {items.map((item) => (
@@ -100,7 +102,9 @@ export function LanguageDnaDialog({
               <Dna className="size-5" />
             </div>
             <div className="min-w-0">
-              <DialogTitle className="truncate text-xl">DNA da linguagem</DialogTitle>
+              <DialogTitle className="truncate text-xl">
+                DNA da linguagem
+              </DialogTitle>
               <DialogDescription className="truncate">
                 {name || "Configuração da linguagem"}
               </DialogDescription>

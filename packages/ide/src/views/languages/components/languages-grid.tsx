@@ -38,9 +38,7 @@ export function LanguagesGrid({
   if (languages.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border py-16 text-center dark:border-white/10">
-        <p className="text-muted-foreground">
-          Nenhuma linguagem salva ainda.
-        </p>
+        <p className="text-muted-foreground">Nenhuma linguagem salva ainda.</p>
         <button
           type="button"
           onClick={onCreate}

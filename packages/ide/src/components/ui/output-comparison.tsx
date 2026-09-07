@@ -18,9 +18,13 @@ type RenderLine =
 
 // ── LCS ───────────────────────────────────────────────────────────────────────
 
-function buildDpTable<T>(a: T[], b: T[], eq: (x: T, y: T) => boolean): number[][] {
+function buildDpTable<T>(
+  a: T[],
+  b: T[],
+  eq: (x: T, y: T) => boolean,
+): number[][] {
   const dp = Array.from({ length: a.length + 1 }, () =>
-    new Array(b.length + 1).fill(0)
+    new Array(b.length + 1).fill(0),
   );
   for (let i = 1; i <= a.length; i++)
     for (let j = 1; j <= b.length; j++)
@@ -60,7 +64,7 @@ function computeLineDiff(expected: string, actual: string): LineDiff[] {
 
 function computeCharParts(
   a: string,
-  b: string
+  b: string,
 ): { removeParts: CharPart[]; addParts: CharPart[] } {
   const ac = a.split("");
   const bc = b.split("");
@@ -185,14 +189,14 @@ function LineContent({
             key={idx}
             className={cn(
               "rounded-[2px]",
-              isRemove ? "bg-emerald-400/25" : "bg-red-400/25"
+              isRemove ? "bg-emerald-400/25" : "bg-red-400/25",
             )}
           >
             {part.text}
           </span>
         ) : (
           <span key={idx}>{part.text}</span>
-        )
+        ),
       )}
     </>
   );
@@ -215,7 +219,7 @@ export function OutputComparison({
 }: OutputComparisonProps) {
   const lineDiff = computeLineDiff(
     expectedOutput || "(vazio)",
-    actualOutput || "(vazio)"
+    actualOutput || "(vazio)",
   );
   const renderLines = buildRenderLines(lineDiff);
 
@@ -223,11 +227,11 @@ export function OutputComparison({
     <div
       className={cn(
         "w-full overflow-hidden rounded-lg border border-border font-mono text-xs dark:border-white/10",
-        className
+        className,
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-border bg-muted/60 px-3 py-1.5 dark:border-white/10 dark:bg-white/[0.04]">
+      <div className="flex items-center justify-between border-b border-border bg-muted/60 px-3 py-1.5 dark:border-white/10">
         <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest">
           <span className="text-emerald-400/70">
             <span className="font-bold mr-1">−</span>esperada
@@ -242,7 +246,7 @@ export function OutputComparison({
             "text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded",
             passed
               ? "text-emerald-400 bg-emerald-500/10"
-              : "text-red-400 bg-red-500/10"
+              : "text-red-400 bg-red-500/10",
           )}
         >
           {passed ? "idêntico" : "diferente"}
@@ -250,14 +254,14 @@ export function OutputComparison({
       </div>
 
       {/* Diff body */}
-      <div className="bg-[#0d1117]">
+      <div className="bg-card/80 dark:bg-[#0d1117]">
         {renderLines.map((entry, idx) => (
           <div
             key={idx}
             className={cn(
               "flex items-start leading-5",
               entry.type === "remove" && "bg-emerald-500/10",
-              entry.type === "add" && "bg-red-500/10"
+              entry.type === "add" && "bg-red-500/10",
             )}
           >
             {/* Sign gutter */}
@@ -269,7 +273,7 @@ export function OutputComparison({
                 entry.type === "add" &&
                   "border-red-500/20 bg-red-500/20 text-red-400",
                 entry.type === "equal" &&
-                  "border-white/5 bg-transparent text-slate-700"
+                  "dark:border-white/5 bg-transparent text-slate-700",
               )}
             >
               {entry.type === "remove" ? "−" : entry.type === "add" ? "+" : " "}
@@ -281,7 +285,7 @@ export function OutputComparison({
                 "px-3 py-0.5 whitespace-pre-wrap break-all",
                 entry.type === "remove" && "text-emerald-300",
                 entry.type === "add" && "text-red-300",
-                entry.type === "equal" && "text-slate-500"
+                entry.type === "equal" && "text-slate-500",
               )}
             >
               {entry.type === "equal" ? (

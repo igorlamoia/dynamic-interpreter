@@ -107,34 +107,34 @@ export function OptionCard({
       onClick={onClick}
       style={{ boxShadow }}
       className={[
-        "group relative flex w-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/8 bg-[#0E1629]/95 p-5 text-left transition-all backdrop-blur-xl",
+        "group relative flex w-full flex-col gap-4 overflow-hidden rounded-2xl border dark:border-white/8 dark:bg-[#0E1629]/95 p-5 text-left transition-all backdrop-blur-xl",
         "dark:border-white/6 dark:bg-[#0B1020]/96",
-        "before:pointer-events-none before:absolute before:inset-0 before:bg-linear-to-br before:from-white/4 before:via-transparent before:to-black/20 before:opacity-90 before:transition-opacity before:duration-300 group-hover:before:opacity-100",
+        "before:pointer-events-none before:absolute before:inset-0 before:bg-linear-to-br before:from-white/4 before:via-transparent before:to-primary/20 dark:before:to-black/20 before:opacity-90 before:transition-opacity before:duration-300 group-hover:before:opacity-100",
         "after:pointer-events-none after:absolute after:-left-12 after:top-4 after:h-28 after:w-28 after:rounded-full after:bg-white/3 after:blur-3xl after:transition-transform after:duration-500 group-hover:after:translate-x-2 group-hover:after:-translate-y-1",
         "dark:after:bg-slate-500/6",
         selected
-          ? "outline-none border-white/12 ring-0"
-          : "ring-1 ring-white/6 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.6)]",
+          ? "outline-none dark:border-white/12 ring-0"
+          : "ring-1 ring-white/6 dark:shadow-[0_10px_24px_-18px_rgba(0,0,0,0.6)]",
         disabled
           ? "cursor-not-allowed opacity-50"
           : selected
-            ? "cursor-pointer hover:border-white/14 hover:ring-0"
-            : "cursor-pointer hover:border-white/12 hover:ring-white/10 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.75)]",
+            ? "cursor-pointer hover:dark:border-white/14 hover:ring-0"
+            : "cursor-pointer hover:dark:border-white/12 hover:ring-white/10 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.75)]",
       ].join(" ")}
     >
       <div className="relative z-10 flex items-center gap-3">
         <OptionCardIcon icon={icon} color={iconColor} />
-        <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-slate-400">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.26em] dark:text-slate-400">
           {subtitle ?? "Esqueceu de mim"}
         </p>
       </div>
       <div className="relative z-10">
-        <p className="text-3xl font-semibold leading-tight text-slate-100">
+        <p className="text-3xl font-semibold leading-tight dark:text-slate-100">
           {title}
         </p>
       </div>
       {snippet && (
-        <CodeScrollArea className="relative z-10 rounded-xl bg-[#0a1020]/80 ring-1 ring-white/8">
+        <CodeScrollArea className="relative z-10 rounded-xl bg-card/40 dark:bg-[#0a1020]/80 ring-1 ring-black/8 dark:ring-white/8">
           <pre className="w-max min-w-full px-3 py-2 font-mono text-sm text-slate-200">
             <code>{snippet}</code>
           </pre>

@@ -78,7 +78,7 @@ export function WizardStepper({
               <div className="mt-1 flex flex-col">
                 <p
                   data-wizard-active-title
-                  className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-200"
+                  className="text-xs font-semibold uppercase tracking-[0.18em] dark:text-slate-200"
                 >
                   {activeStep?.title}
                 </p>
@@ -115,8 +115,8 @@ export function WizardStepper({
                 className={[
                   "flex items-center gap-2 border-l-4 px-3 py-2.5 transition-all max-lg:h-10 max-lg:w-10 max-lg:min-w-10 max-lg:flex-none max-lg:justify-center max-lg:rounded-full max-lg:border max-lg:px-0 max-lg:py-0",
                   isActive
-                    ? "border-l-cyan-500 bg-slate-900/40 text-cyan-400 max-lg:border-cyan-400 max-lg:bg-cyan-400/10 max-lg:shadow-[0_0_24px_-10px_rgba(34,211,238,0.95)] dark:text-cyan-300"
-                    : "border-l-transparent text-slate-400 hover:text-slate-300 max-lg:border-slate-800 max-lg:bg-slate-950/60 dark:text-slate-500 dark:hover:text-slate-400",
+                    ? "border-l-cyan-500 bg-primary/20 dark:bg-slate-900/40 text-cyan-400 max-lg:border-cyan-400 max-lg:bg-cyan-400/10 max-lg:shadow-[0_0_24px_-10px_rgba(34,211,238,0.95)] dark:text-cyan-300"
+                    : "border-l-transparent text-slate-400 hover:text-slate-600 max-lg:border-slate-800 max-lg:bg-slate-950/60 dark:text-slate-500 dark:hover:text-slate-400",
                 ].join(" ")}
                 style={
                   {

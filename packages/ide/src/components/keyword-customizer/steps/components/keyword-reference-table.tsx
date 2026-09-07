@@ -38,7 +38,7 @@ export function KeywordReferenceRow<TKey extends string>({
         <span
           aria-hidden="true"
           className={cn(
-            "flex h-9 min-w-9 items-center justify-center rounded-md border border-white/8 bg-black px-2 font-mono text-base font-bold leading-none",
+            "flex h-9 min-w-9 items-center justify-center rounded-md border dark:border-white/8 dark:bg-black px-2 font-mono text-base font-bold leading-none",
             item.reference.className ?? "text-slate-300",
           )}
         >
@@ -75,7 +75,7 @@ export function KeywordReferenceRow<TKey extends string>({
             }
             aria-label={`Definição semântica para ${editLabel}`}
             rows={matches ? 1 : 2}
-            className="min-h-11 resize-y border-white/10 bg-transparent py-2.5 text-sm font-medium leading-6 md:resize-none"
+            className="min-h-11 resize-y  bg-transparent py-2.5 text-sm font-medium leading-6 md:resize-none"
           />
         </PerfectScrollbar>
       </label>
@@ -104,14 +104,14 @@ export function KeywordReferenceTable<TKey extends string>({
         </h4>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-white/7 bg-[#101827] shadow-[0_22px_70px_-42px_rgba(2,6,23,0.95)] dark:border-white/6 dark:bg-[#0D1424]">
-        <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 border-b border-white/7 px-4 py-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-600 dark:text-slate-500 md:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)]">
+      <div className="overflow-hidden rounded-lg border border-black/7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.95)] dark:border-white/6 dark:bg-[#0D1424]">
+        <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 border-b border-black/10 dark:border-white/7 px-4 py-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-600 dark:text-slate-500 md:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)]">
           <span>{referenceHeader}</span>
           <span>Nome customizado</span>
           <span className="hidden md:block">Definição semântica</span>
         </div>
 
-        <div className="divide-y divide-white/6">
+        <div className="divide-y divide-black/10 dark:divide-white/6">
           {items.map((item) => (
             <KeywordReferenceRow
               key={item.id}

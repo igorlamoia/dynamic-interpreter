@@ -28,7 +28,7 @@ export function HomeScreen() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 w-full max-w-3xl mt-4">
           <button
             type="button"
-            className="group flex flex-col items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-cyan-500/50"
+            className="group flex flex-col items-center gap-3 rounded-lg border dark:border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-cyan-500/50"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400 transition-colors group-hover:bg-cyan-500/20">
               <FolderOpen className="h-6 w-6" />
@@ -45,7 +45,7 @@ export function HomeScreen() {
 
           <button
             type="button"
-            className="group flex flex-col items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-emerald-500/50"
+            className="group flex flex-col items-center gap-3 rounded-lg border dark:border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-emerald-500/50"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 transition-colors group-hover:bg-emerald-500/20">
               <FileCode2 className="h-6 w-6" />
@@ -62,7 +62,7 @@ export function HomeScreen() {
 
           <button
             type="button"
-            className="group flex flex-col items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-purple-500/50"
+            className="group flex flex-col items-center gap-3 rounded-lg border dark:border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-purple-500/50"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 transition-colors group-hover:bg-purple-500/20">
               <Book className="h-6 w-6" />
@@ -79,7 +79,7 @@ export function HomeScreen() {
         </div>
 
         {/* Getting Started */}
-        <div className="mt-8 rounded-lg border border-white/10 bg-white/5 p-6 max-w-3xl">
+        <div className="mt-8 rounded-lg border dark:border-white/10 bg-white/5 p-6 max-w-3xl">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
               <Rocket className="h-5 w-5 text-blue-400" />
@@ -102,17 +102,17 @@ export function HomeScreen() {
         {/* Keyboard Shortcuts Hint */}
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <kbd className="rounded border border-white/10 bg-white/5 px-2 py-1 font-mono">
+            <kbd className="rounded border dark:border-white/10 bg-white/5 px-2 py-1 font-mono">
               Ctrl
             </kbd>
             <span>+</span>
-            <kbd className="rounded border border-white/10 bg-white/5 px-2 py-1 font-mono">
+            <kbd className="rounded border dark:border-white/10 bg-white/5 px-2 py-1 font-mono">
               S
             </kbd>
             <span>Salvar</span>
           </div>
           <div className="flex items-center gap-2">
-            <kbd className="rounded border border-white/10 bg-white/5 px-2 py-1 font-mono">
+            <kbd className="rounded border dark:border-white/10 bg-white/5 px-2 py-1 font-mono">
               F5
             </kbd>
             <span>Executar</span>

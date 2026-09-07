@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { ArrowRight, Code2, Dna, Globe2, Languages, Plus, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Code2,
+  Dna,
+  Globe2,
+  Languages,
+  Plus,
+  Sparkles,
+} from "lucide-react";
 import { HeroButton } from "@/components/buttons/hero";
 import { GradientText } from "@/components/text/gradient";
 import { Title } from "@/components/text/title";
@@ -78,9 +86,11 @@ export function CommunityDashboard() {
         <MetricCard
           icon={Code2}
           label="Linguagem ativa"
-          value={activeLanguageQuery.isPending
-            ? "Carregando"
-            : activeLanguageQuery.data?.name || "Nenhuma"}
+          value={
+            activeLanguageQuery.isPending
+              ? "Carregando"
+              : activeLanguageQuery.data?.name || "Nenhuma"
+          }
         />
         <MetricCard
           icon={Dna}
@@ -92,7 +102,9 @@ export function CommunityDashboard() {
       <section>
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-foreground">Criações recentes</h2>
+            <h2 className="text-xl font-bold text-foreground">
+              Criações recentes
+            </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Uma leitura rápida das regras que tornam cada linguagem única.
             </p>
@@ -109,9 +121,15 @@ export function CommunityDashboard() {
         </div>
 
         {languagesQuery.isPending ? (
-          <div className="grid gap-4 md:grid-cols-3" aria-label="Carregando linguagens">
+          <div
+            className="grid gap-4 md:grid-cols-3"
+            aria-label="Carregando linguagens"
+          >
             {[0, 1, 2].map((item) => (
-              <div key={item} className="h-44 animate-pulse rounded-2xl bg-muted/70 dark:bg-white/5" />
+              <div
+                key={item}
+                className="h-44 animate-pulse rounded-2xl bg-muted/70 dark:bg-white/5"
+              />
             ))}
           </div>
         ) : recentLanguages.length === 0 ? (
@@ -123,7 +141,9 @@ export function CommunityDashboard() {
             <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-cyan-500/10 text-cyan-700 transition-transform group-hover:-translate-y-1 dark:bg-cyan-300/10 dark:text-cyan-200">
               <Plus className="size-6" />
             </div>
-            <span className="font-bold text-foreground">Crie sua primeira linguagem</span>
+            <span className="font-bold text-foreground">
+              Crie sua primeira linguagem
+            </span>
             <span className="mt-2 max-w-md text-sm text-muted-foreground">
               Comece por um estilo pronto ou defina cada detalhe da gramática.
             </span>
@@ -142,7 +162,9 @@ export function CommunityDashboard() {
                     className="size-11 rounded-xl object-cover"
                   />
                   <div className="min-w-0">
-                    <h3 className="truncate font-bold text-foreground">{language.name}</h3>
+                    <h3 className="truncate font-bold text-foreground">
+                      {language.name}
+                    </h3>
                     <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
                       {language.description || "Linguagem personalizada"}
                     </p>
@@ -160,7 +182,9 @@ export function CommunityDashboard() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setDnaLanguage({ id: language.id, name: language.name })}
+                  onClick={() =>
+                    setDnaLanguage({ id: language.id, name: language.name })
+                  }
                   className="mt-auto inline-flex items-center gap-2 pt-4 text-xs font-bold text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200"
                 >
                   <Dna className="size-4" />
@@ -203,7 +227,9 @@ function MetricCard({
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {label}
           </p>
-          <p className="mt-1 truncate text-lg font-bold text-foreground">{value}</p>
+          <p className="mt-1 truncate text-lg font-bold text-foreground">
+            {value}
+          </p>
         </div>
       </div>
     </article>

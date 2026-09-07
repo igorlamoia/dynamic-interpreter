@@ -45,7 +45,7 @@ export function TokenCard({ token, styles }: TokenCardProps) {
         overflow-hidden
         rounded-xl
         border
-        border-white/35 dark:border-white/20
+        dark:border-white/35 dark:border-white/20
         ${styles.bg}
         p-4
         shadow-lg shadow-black/5 dark:shadow-black/50
@@ -74,7 +74,7 @@ export function TokenCard({ token, styles }: TokenCardProps) {
             col-span-2
             text-center
             rounded-full
-            border border-white/35 dark:border-white/20
+            border dark:border-white/35 dark:border-white/20
             bg-white/35 dark:bg-slate-950/60
             px-2.5 py-0.5
             text-sm
@@ -95,7 +95,7 @@ export function TokenCard({ token, styles }: TokenCardProps) {
         className={`
           relative z-10 mt-3
           rounded-lg
-          border border-white/35 dark:border-white/20
+          border dark:border-white/35 dark:border-white/20
           bg-white/30 dark:bg-slate-950/55
           px-2.5 py-1.5
           text-sm

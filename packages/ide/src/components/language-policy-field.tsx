@@ -27,7 +27,9 @@ export function LanguagePolicyField({
             aria-label="Aberto"
             checked={value.policy === "OPEN"}
             disabled={disabled}
-            onChange={() => onChange({ policy: "OPEN", lockedLanguageId: null })}
+            onChange={() =>
+              onChange({ policy: "OPEN", lockedLanguageId: null })
+            }
           />
           Aberto (aluno usa sua linguagem)
         </label>
