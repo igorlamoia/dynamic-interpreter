@@ -1,11 +1,12 @@
 import { ClipboardList, Users } from "lucide-react";
 import { HeroLink } from "@/components/buttons/hero";
 import { useAuth } from "@/contexts/AuthContext";
+import type { ClassSummary } from "@/types/api";
 
 export function TeacherClassCard({
   cls,
 }: {
-  cls: any;
+  cls: ClassSummary;
 }) {
   const { isTeacher } = useAuth();
 
@@ -45,7 +46,10 @@ export function TeacherClassCard({
       <div className="flex items-center justify-between text-sm text-slate-400 font-medium mb-6 px-1">
         <div className="flex items-center gap-2">
           <ClipboardList className="w-4 h-4 text-[#0dccf2]/70" />
-          <span>{cls._count?.exercises || 0} exercícios</span>
+          <span>
+            {cls._count.exerciseLists} lista
+            {cls._count.exerciseLists !== 1 ? "s" : ""}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-full bg-linear-to-br from-[#0dccf2] to-[#10b981] flex items-center justify-center text-[10px] font-bold text-slate-800">

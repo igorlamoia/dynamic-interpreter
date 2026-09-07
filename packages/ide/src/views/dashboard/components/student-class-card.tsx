@@ -1,10 +1,11 @@
 import { Plus } from "lucide-react";
+import type { ClassSummary } from "@/types/api";
 import { TeacherClassCard } from "./teacher-class-card";
 
 export function StudentClassCard({
   cls,
 }: {
-  cls: any;
+  cls: ClassSummary;
   onJoinClick: () => void;
 }) {
   return <TeacherClassCard cls={cls} />;

@@ -1,4 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
+import type { ClassSummary } from "@/types/api";
 import { StudentClassCard, JoinClassCard } from "./student-class-card";
 import { TeacherClassCard } from "./teacher-class-card";
 
@@ -7,7 +8,7 @@ export function ClassesGrid({
   loading,
   onJoinClass,
 }: {
-  classes: any[];
+  classes: ClassSummary[];
   loading: boolean;
   onJoinClass: () => void;
 }) {
@@ -25,7 +26,7 @@ export function ClassesGrid({
   if (!isTeacher) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {classes.map((cls: any) => (
+        {classes.map((cls) => (
           <StudentClassCard
             key={cls.id}
             cls={cls}
@@ -57,7 +58,7 @@ export function ClassesGrid({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {classes.map((cls: any) => (
+      {classes.map((cls) => (
         <TeacherClassCard
           key={cls.id}
           cls={cls}

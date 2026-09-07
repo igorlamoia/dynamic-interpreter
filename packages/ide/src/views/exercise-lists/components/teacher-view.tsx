@@ -7,11 +7,10 @@ import { Title } from "@/components/text/title";
 import { Subtitle } from "@/components/text/subtitle";
 import { BookOpen, ChevronRight, ListChecks, Plus, Users } from "lucide-react";
 import type { ExerciseList } from "@/types/api";
+import type { ClassOption } from "./types";
 import { LoadingSpinner, EmptyState } from "./shared";
 import { CreateListModal } from "./create-list-modal";
 import { useExerciseListsQuery } from "@/hooks/use-api-queries";
-
-type ClassOption = { id: string; name: string };
 
 export function TeacherListCard({
   list,

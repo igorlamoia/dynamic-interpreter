@@ -8,7 +8,12 @@ import { api } from "@/lib/api";
 import { localApi } from "@/lib/local-api";
 import { queryKeys } from "@/lib/query-keys";
 import type { AuthUser } from "@/contexts/AuthContext";
-import type { Exercise, ExerciseList, PaginatedResponse } from "@/types/api";
+import type {
+  ClassSummary,
+  Exercise,
+  ExerciseList,
+  PaginatedResponse,
+} from "@/types/api";
 import type { ClassOption } from "@/views/exercise-lists/components/types";
 
 type CreateClassInput = {
@@ -143,7 +148,7 @@ export function useClassesQuery(enabled = true) {
   return useQuery({
     queryKey: queryKeys.classes.all,
     queryFn: async () => {
-      const { data } = await api.get<any[]>("/classes");
+      const { data } = await api.get<ClassSummary[]>("/classes");
       return data;
     },
     enabled,

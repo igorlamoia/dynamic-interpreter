@@ -12,6 +12,9 @@ export function ListNavigatorSidebar({
   classId?: string;
 }) {
   const sorted = list.items.slice().sort((a, b) => a.orderIndex - b.orderIndex);
+  const currentIdx = sorted.findIndex(
+    (i) => i.exerciseId === currentExerciseId,
+  );
 
   const submittedSet = new Set<number>(list.submittedExerciseIds ?? []);
 
