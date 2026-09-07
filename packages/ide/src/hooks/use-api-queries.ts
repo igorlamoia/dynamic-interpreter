@@ -1,9 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { localApi } from "@/lib/local-api";
 import { queryKeys } from "@/lib/query-keys";
 import type { AuthUser } from "@/contexts/AuthContext";
-import type { Exercise, ExerciseList } from "@/types/api";
+import type { Exercise, ExerciseList, PaginatedResponse } from "@/types/api";
 import type { ClassOption } from "@/views/exercise-lists/components/types";
 
 type CreateClassInput = {
@@ -170,13 +175,21 @@ export function useClassExerciseListsQuery(
 }
 
 export function useExercisesQuery(
+  params: Record<string, unknown> & { page: number },
+  enabled?: boolean,
+): UseQueryResult<PaginatedResponse<Exercise>>;
+export function useExercisesQuery(
+  params?: (Record<string, unknown> & { page?: undefined }) | undefined,
+  enabled?: boolean,
+): UseQueryResult<Exercise[]>;
+export function useExercisesQuery(
   params?: Record<string, unknown>,
   enabled = true,
-) {
+): UseQueryResult<PaginatedResponse<Exercise> | Exercise[]> {
   return useQuery({
     queryKey: queryKeys.exercises.list(params),
     queryFn: async () => {
-      const { data } = await api.get<Exercise[]>("/exercises", { params });
+      const { data } = await api.get<PaginatedResponse<Exercise> | Exercise[]>("/exercises", { params });
       return data;
     },
     enabled,
@@ -200,11 +213,26 @@ export function useExerciseQuery(
   });
 }
 
-export function useExerciseListsQuery(enabled = true) {
+export function useExerciseListsQuery(
+  params: Record<string, unknown> & { page: number },
+  maybeEnabled?: boolean,
+): UseQueryResult<PaginatedResponse<ExerciseList>>;
+export function useExerciseListsQuery(
+  paramsOrEnabled?: (Record<string, unknown> & { page?: undefined }) | boolean,
+  maybeEnabled?: boolean,
+): UseQueryResult<ExerciseList[]>;
+export function useExerciseListsQuery(
+  paramsOrEnabled?: Record<string, unknown> | boolean,
+  maybeEnabled = true,
+): UseQueryResult<PaginatedResponse<ExerciseList> | ExerciseList[]> {
+  const isBool = typeof paramsOrEnabled === "boolean";
+  const enabled = isBool ? paramsOrEnabled : maybeEnabled;
+  const params = !isBool ? paramsOrEnabled : undefined;
+
   return useQuery({
-    queryKey: queryKeys.exerciseLists.all,
+    queryKey: params ? [...queryKeys.exerciseLists.all, params] : queryKeys.exerciseLists.all,
     queryFn: async () => {
-      const { data } = await api.get<ExerciseList[]>("/exercise-lists");
+      const { data } = await api.get<PaginatedResponse<ExerciseList> | ExerciseList[]>("/exercise-lists", { params });
       return data;
     },
     enabled,
@@ -269,23 +297,39 @@ export function useExerciseSubmissionsQuery(
 }
 
 export function useExerciseListSubmissionsQuery(
-  exerciseIds: Array<string | number>,
-  enabled = true,
-) {
-  return useQuery({
-    queryKey: ["submissions", "exercise-list", exerciseIds] as const,
+  listId: string | number | undefined,
+  params: Record<string, unknown> & { page: number },
+  maybeEnabled?: boolean,
+): UseQueryResult<PaginatedResponse<any>>;
+export function useExerciseListSubmissionsQuery(
+  listId: string | number | undefined,
+  paramsOrEnabled?: (Record<string, unknown> & { page?: undefined }) | boolean,
+  maybeEnabled?: boolean,
+): UseQueryResult<any[]>;
+export function useExerciseListSubmissionsQuery(
+  listId: string | number | undefined,
+  paramsOrEnabled?: Record<string, unknown> | boolean,
+  maybeEnabled = true,
+): UseQueryResult<any> {
+  const isBool = typeof paramsOrEnabled === "boolean";
+  const enabled = isBool ? paramsOrEnabled : maybeEnabled;
+  const params = !isBool ? paramsOrEnabled : undefined;
+
+  return useQuery<any>({
+    queryKey: ["submissions", "exercise-list", listId, params] as const,
     queryFn: async () => {
-      const results = await Promise.all(
-        exerciseIds.map(async (exerciseId) => {
-          const response = await api.get<unknown[]>(
-            `/submissions?exerciseId=${exerciseId}`,
-          );
-          return response.data;
-        }),
+      const response = await api.get<unknown[]>(
+        `/submissions`,
+        {
+          params: {
+            exerciseListId: listId,
+            ...params,
+          },
+        },
       );
-      return results.flat();
+      return response.data;
     },
-    enabled: enabled && exerciseIds.length > 0,
+    enabled: enabled && Boolean(listId),
   });
 }
 
@@ -456,11 +500,16 @@ export function useGradeSubmissionMutation() {
       void queryClient.invalidateQueries({
         queryKey: queryKeys.submissions.detail(variables.submissionId),
       });
+      void queryClient.invalidateQueries({
+        queryKey: ["submissions"],
+      });
     },
   });
 }
 
 export function useValidateSubmissionMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({
       payload,
@@ -476,6 +525,14 @@ export function useValidateSubmissionMutation() {
         headers,
       });
       return data;
+    },
+    onSuccess: (_data, variables) => {
+      if (!variables.params?.dryRun) {
+        void queryClient.invalidateQueries({ queryKey: ["submissions"] });
+        void queryClient.invalidateQueries({
+          queryKey: queryKeys.exerciseLists.all,
+        });
+      }
     },
   });
 }

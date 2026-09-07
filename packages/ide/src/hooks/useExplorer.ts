@@ -22,8 +22,16 @@ export function useExplorer({
   setOpenTabs,
 }: UseExplorerProps) {
   const editorContext = useContext(EditorContext);
-  const { fileSystem } = editorContext;
+  const { fileSystem, getSourceCodeStorageKey } = editorContext;
   const { showAlert, showMessage } = useAlert();
+
+  const getFileStorageKey = useCallback(
+    (path: string) =>
+      getSourceCodeStorageKey
+        ? getSourceCodeStorageKey(path)
+        : `source-code-${path}`,
+    [getSourceCodeStorageKey],
+  );
 
   const [openFolders, setOpenFolders] = useState<string[]>(["src"]);
   const [extraFolders, setExtraFolders] = useState<string[]>([]);
@@ -51,9 +59,13 @@ export function useExplorer({
     return () => window.removeEventListener("click", handleClick);
   }, []);
 
+  const foldersStorageKey = editorContext.storageScope
+    ? `${editorContext.storageScope}:folders-storage`
+    : "folders-storage";
+
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const stored = localStorage.getItem("folders-storage");
+    const stored = localStorage.getItem(foldersStorageKey);
     if (!stored) return;
     try {
       const parsed = JSON.parse(stored) as string[];
@@ -61,12 +73,12 @@ export function useExplorer({
     } catch {
       // Ignore invalid storage content
     }
-  }, []);
+  }, [foldersStorageKey]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    localStorage.setItem("folders-storage", JSON.stringify(extraFolders));
-  }, [extraFolders]);
+    localStorage.setItem(foldersStorageKey, JSON.stringify(extraFolders));
+  }, [extraFolders, foldersStorageKey]);
 
   // Auto-expand parent folders when activeFile changes from external source
   useEffect(() => {
@@ -163,8 +175,8 @@ export function useExplorer({
       return;
     }
 
-    const oldStorageKey = `source-code-${currentPath}`;
-    const newStorageKey = `source-code-${targetPath}`;
+    const oldStorageKey = getFileStorageKey(currentPath);
+    const newStorageKey = getFileStorageKey(targetPath);
     const storedCode = localStorage.getItem(oldStorageKey);
     if (storedCode !== null) {
       localStorage.setItem(newStorageKey, storedCode);
@@ -211,7 +223,7 @@ export function useExplorer({
       }
       return remaining;
     });
-    localStorage.removeItem(`source-code-${currentPath}`);
+    localStorage.removeItem(getFileStorageKey(currentPath));
   };
 
   const renameFolder = (currentPath: string) => {
@@ -248,7 +260,7 @@ export function useExplorer({
     // Delete all files inside the folder
     childFiles.forEach((file) => {
       fileSystem.deleteFile(file.path);
-      localStorage.removeItem(`source-code-${file.path}`);
+      localStorage.removeItem(getFileStorageKey(file.path));
     });
 
     // Remove folder from extraFolders
@@ -308,8 +320,8 @@ export function useExplorer({
       const relativePath = filePath.substring(normalized.length);
       const newFilePath = `${newPath}${relativePath}`;
 
-      const oldStorageKey = `source-code-${file.path}`;
-      const newStorageKey = `source-code-${newFilePath}`;
+      const oldStorageKey = getFileStorageKey(file.path);
+      const newStorageKey = getFileStorageKey(newFilePath);
       const storedCode = localStorage.getItem(oldStorageKey);
       if (storedCode !== null) {
         localStorage.setItem(newStorageKey, storedCode);
@@ -436,8 +448,8 @@ export function useExplorer({
         const relativePath = filePath.substring(normalized.length);
         const newFilePath = `${targetPath}${relativePath}`;
 
-        const oldStorageKey = `source-code-${file.path}`;
-        const newStorageKey = `source-code-${newFilePath}`;
+        const oldStorageKey = getFileStorageKey(file.path);
+        const newStorageKey = getFileStorageKey(newFilePath);
         const storedCode = localStorage.getItem(oldStorageKey);
         if (storedCode !== null) {
           localStorage.setItem(newStorageKey, storedCode);

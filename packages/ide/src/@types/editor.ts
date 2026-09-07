@@ -49,4 +49,7 @@ export type TEditorContextType = {
   // File management methods
   loadFileContent: (filePath: string, initialCode?: string) => void;
   saveCurrentFile: (filePath: string) => void;
+  storageScope?: string;
+  initialCode?: string;
+  getSourceCodeStorageKey?: (fileName: string) => string;
 };

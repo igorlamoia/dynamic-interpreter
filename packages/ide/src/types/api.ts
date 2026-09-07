@@ -1,5 +1,13 @@
 import type { Language } from "@/lib/languages-api"
 
+export type PaginatedResponse<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
+
 export type TestCase = {
   id: number
   label: string

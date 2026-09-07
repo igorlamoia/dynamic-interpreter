@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useDeferredValue } from "react";
 import { SpaceBackground } from "@/components/space-background";
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
@@ -10,6 +10,7 @@ import { Title } from "@/components/text/title";
 import { Subtitle } from "@/components/text/subtitle";
 import { Plus, Search } from "lucide-react";
 import type { Exercise } from "@/types/api";
+import { Pagination } from "@/components/ui/pagination";
 import { CreateExerciseModal } from "@/views/exercises/components/create-exercise-modal";
 import { ExerciseCard } from "@/views/exercises/components/exercise-card";
 import { ExerciseDetailModal } from "@/views/exercises/components/exercise-detail-modal";
@@ -24,17 +25,34 @@ import {
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
 
+const PAGE_SIZE = 12;
+
 export default function ExercisesPage() {
   const { isTeacher, userId } = useAuth();
   const { showToast } = useToast();
 
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const deferredSearch = useDeferredValue(search.trim());
   const [showCreate, setShowCreate] = useState(false);
   const [viewExercise, setViewExercise] = useState<Exercise | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null);
-  const exercisesQuery = useExercisesQuery(undefined, Boolean(userId));
+
+  const exercisesQuery = useExercisesQuery(
+    { page, pageSize: PAGE_SIZE, q: deferredSearch || undefined },
+    Boolean(userId),
+  );
   const deleteExercise = useDeleteExerciseMutation();
-  const exercises = exercisesQuery.data ?? [];
+
+  const exercises = Array.isArray(exercisesQuery.data)
+    ? exercisesQuery.data
+    : exercisesQuery.data?.items ?? [];
+  const totalPages = Array.isArray(exercisesQuery.data)
+    ? 1
+    : exercisesQuery.data?.totalPages ?? 1;
+  const totalItems = Array.isArray(exercisesQuery.data)
+    ? exercisesQuery.data.length
+    : exercisesQuery.data?.total ?? exercises.length;
 
   useEffect(() => {
     if (exercisesQuery.error) {
@@ -53,11 +71,12 @@ export default function ExercisesPage() {
     }
   };
 
-  const filtered = exercises.filter(
-    (e: Exercise) =>
-      e.title.toLowerCase().includes(search.toLowerCase()) ||
-      e.description.toLowerCase().includes(search.toLowerCase()),
-  );
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
+
+  const filtered = exercises;
 
   if (!userId) return null;
 
@@ -103,7 +122,7 @@ export default function ExercisesPage() {
                   <input
                     type="text"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder="Buscar exercícios..."
                     className="w-full h-11 pl-10 pr-4 rounded-xl bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#0dccf2]/50 transition-colors"
                   />
@@ -124,16 +143,26 @@ export default function ExercisesPage() {
             ) : exercises.length === 0 ? (
               <EmptyState />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filtered.map((exercise: Exercise) => (
-                  <ExerciseCard
-                    key={exercise.id}
-                    exercise={exercise}
-                    onView={() => setViewExercise(exercise)}
-                    onDelete={() => setDeleteTarget(exercise)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {filtered.map((exercise: Exercise) => (
+                    <ExerciseCard
+                      key={exercise.id}
+                      exercise={exercise}
+                      onView={() => setViewExercise(exercise)}
+                      onDelete={() => setDeleteTarget(exercise)}
+                    />
+                  ))}
+                </div>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                  totalItems={totalItems}
+                  pageSize={PAGE_SIZE}
+                  className="mt-6"
+                />
+              </>
             )}
           </main>
         </div>

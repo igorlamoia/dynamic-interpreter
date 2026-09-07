@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, func, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException, status
 from sqlalchemy.orm import selectinload
@@ -65,8 +65,41 @@ async def list_exercises(current_user_id: int, session: AsyncSession) -> list[Ex
             selectinload(Exercise.test_cases),
             selectinload(Exercise.locked_language),
         )
+        .order_by(Exercise.id.desc())
     )
     return list(result.scalars().all())
+
+
+async def list_exercises_paginated(
+    current_user_id: int,
+    session: AsyncSession,
+    page: int = 1,
+    page_size: int = 12,
+    query: str | None = None,
+) -> tuple[list[Exercise], int]:
+    base_stmt = select(Exercise).where(Exercise.teacher_id == current_user_id)
+    if query and query.strip():
+        pattern = f"%{query.strip()}%"
+        base_stmt = base_stmt.where(
+            or_(Exercise.title.ilike(pattern), Exercise.description.ilike(pattern))
+        )
+
+    count_stmt = select(func.count()).select_from(base_stmt.subquery())
+    total = (await session.execute(count_stmt)).scalar_one()
+
+    offset = (page - 1) * page_size
+    stmt = (
+        base_stmt
+        .options(
+            selectinload(Exercise.test_cases),
+            selectinload(Exercise.locked_language),
+        )
+        .order_by(Exercise.id.desc())
+        .offset(offset)
+        .limit(page_size)
+    )
+    result = await session.execute(stmt)
+    return list(result.scalars().all()), total
 
 
 async def update_exercise(

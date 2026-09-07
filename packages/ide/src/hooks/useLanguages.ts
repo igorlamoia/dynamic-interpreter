@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import {
   languagesApi,
   type CommunityLanguageFilters,
@@ -8,11 +13,24 @@ import {
   type UpdateLanguageInput,
 } from "@/lib/languages-api";
 import { queryKeys } from "@/lib/query-keys";
+import type { PaginatedResponse } from "@/types/api";
 
-export function useLanguagesList(enabled = true) {
-  return useQuery<LanguageSummary[]>({
-    queryKey: queryKeys.languages.all,
-    queryFn: languagesApi.list,
+export function useLanguagesList(
+  params: { page: number; pageSize?: number; q?: string },
+): UseQueryResult<PaginatedResponse<LanguageSummary>>;
+export function useLanguagesList(
+  enabled?: boolean,
+): UseQueryResult<LanguageSummary[]>;
+export function useLanguagesList(
+  paramsOrEnabled?: { page?: number; pageSize?: number; q?: string } | boolean,
+): UseQueryResult<PaginatedResponse<LanguageSummary> | LanguageSummary[]> {
+  const isBool = typeof paramsOrEnabled === "boolean";
+  const enabled = isBool ? paramsOrEnabled : true;
+  const params = !isBool ? paramsOrEnabled : undefined;
+
+  return useQuery({
+    queryKey: params ? [...queryKeys.languages.all, params] : queryKeys.languages.all,
+    queryFn: () => languagesApi.list(params),
     enabled,
   });
 }
@@ -20,8 +38,8 @@ export function useLanguagesList(enabled = true) {
 export function useCommunityLanguages(
   filters: CommunityLanguageFilters = {},
   enabled = true,
-) {
-  return useQuery<LanguageSummary[]>({
+): UseQueryResult<PaginatedResponse<LanguageSummary> | LanguageSummary[]> {
+  return useQuery({
     queryKey: queryKeys.languages.community(filters),
     queryFn: () => languagesApi.listCommunity(filters),
     enabled,
