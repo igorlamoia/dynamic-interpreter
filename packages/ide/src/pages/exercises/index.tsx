@@ -12,6 +12,7 @@ import { Plus, Search } from "lucide-react";
 import type { Exercise } from "@/types/api";
 import { Pagination } from "@/components/ui/pagination";
 import { CreateExerciseModal } from "@/views/exercises/components/create-exercise-modal";
+import { EditExerciseModal } from "@/views/exercises/components/edit-exercise-modal";
 import { ExerciseCard } from "@/views/exercises/components/exercise-card";
 import { ExerciseDetailModal } from "@/views/exercises/components/exercise-detail-modal";
 import { DeleteConfirmModal } from "@/views/exercises/components/delete-confirm-modal";
@@ -36,6 +37,7 @@ export default function ExercisesPage() {
   const deferredSearch = useDeferredValue(search.trim());
   const [showCreate, setShowCreate] = useState(false);
   const [viewExercise, setViewExercise] = useState<Exercise | null>(null);
+  const [editTarget, setEditTarget] = useState<Exercise | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null);
 
   const exercisesQuery = useExercisesQuery(
@@ -150,6 +152,7 @@ export default function ExercisesPage() {
                       key={exercise.id}
                       exercise={exercise}
                       onView={() => setViewExercise(exercise)}
+                      onEdit={() => setEditTarget(exercise)}
                       onDelete={() => setDeleteTarget(exercise)}
                     />
                   ))}
@@ -170,6 +173,18 @@ export default function ExercisesPage() {
 
       {/* Modals */}
       <CreateExerciseModal open={showCreate} onOpenChange={setShowCreate} />
+
+      <EditExerciseModal
+        open={!!editTarget}
+        onOpenChange={(v) => !v && setEditTarget(null)}
+        exercise={editTarget}
+        onUpdated={(exercise) => {
+          setEditTarget(null);
+          setViewExercise((current) =>
+            current?.id === exercise.id ? exercise : current,
+          );
+        }}
+      />
 
       <ExerciseDetailModal
         open={!!viewExercise}

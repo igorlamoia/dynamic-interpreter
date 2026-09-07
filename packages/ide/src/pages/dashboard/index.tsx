@@ -37,6 +37,7 @@ export default function Dashboard() {
 
   const handleClassJoined = (message: string) => {
     setSuccess(message);
+    void classesQuery.refetch();
   };
 
   return (

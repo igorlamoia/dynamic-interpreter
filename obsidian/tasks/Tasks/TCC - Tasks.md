@@ -24,6 +24,9 @@
 - [x] Permitir caracteres como ç e acentos, tal como \_\_
 - [x] ajustar ===
 - [x] ajustar scan com string, hoje só funciona com int
+- [ ] Ajustar somatório dentro de for, hj i -= 1 não funciona, tal como i+= 1 ou -=, i-- não está funcionadno
+- [ ] Para loops infinitos previnir bloqueio do browser, colocar um alerta, algo do tipo
+- [ ] No debug, o imprime (print), quebra linha automaticamente, não deveria, até porque que executando normal isso não acontece
 
 Particles:
 https://particles.js.org/samples/index.html#amongUs

@@ -1,13 +1,22 @@
-import { Calendar, Code2, Eye, FlaskConical, Trash2 } from "lucide-react";
+import {
+  Calendar,
+  Code2,
+  Eye,
+  FlaskConical,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import type { Exercise } from "@/types/api";
 
 export function ExerciseCard({
   exercise,
   onView,
+  onEdit,
   onDelete,
 }: {
   exercise: Exercise;
   onView: () => void;
+  onEdit: () => void;
   onDelete: () => void;
 }) {
   const createdDate = new Date(exercise.createdAt).toLocaleDateString("pt-BR", {
@@ -56,8 +65,16 @@ export function ExerciseCard({
           Visualizar
         </button>
         <button
+          onClick={onEdit}
+          className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold hover:bg-amber-500/20 transition-colors cursor-pointer"
+          aria-label={`Editar ${exercise.title}`}
+        >
+          <Pencil className="w-3.5 h-3.5" />
+        </button>
+        <button
           onClick={onDelete}
           className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold hover:bg-rose-500/20 transition-colors cursor-pointer"
+          aria-label={`Excluir ${exercise.title}`}
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>
