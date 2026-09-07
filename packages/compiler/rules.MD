@@ -25,7 +25,7 @@ Grammar options change how the parser accepts token streams:
 | --- | --- | --- | --- |
 | `semicolonMode` | `optional-eol`, `required` | `optional-eol` | Controls whether statements can end by line boundary or must use a terminator. |
 | `blockMode` | `delimited`, `indentation` | `delimited` | Controls whether blocks use delimiters or indentation. |
-| `typingMode` | `typed`, `untyped` | `typed` | Typed mode uses typed declarations/functions. Untyped mode uses `funcao` and `variavel`. |
+| `typingMode` | `typed`, `untyped` | `typed` | Typed mode uses typed declarations/functions. Untyped mode uses `function` and `variable`. |
 | `arrayMode` | `fixed`, `dynamic` | fixed behavior when arrays are parsed | Fixed arrays require sizes. Dynamic arrays use empty brackets. |
 
 ## Statement Terminators
@@ -212,12 +212,12 @@ int main() {
 }
 ```
 
-In `typingMode: "untyped"`, functions use `funcao` and variables use
-`variavel`; values are treated as dynamic:
+In `typingMode: "untyped"`, functions use `function` and variables use
+`variable`; values are treated as dynamic:
 
 ```java
-funcao main() {
-  variavel x = 1;
+function main() {
+  variable x = 1;
   print(x)
 }
 ```
@@ -236,7 +236,7 @@ int values[2][4];
 Dynamic array declarations use empty brackets:
 
 ```java
-variavel values[][] = [[1], [2]];
+variable values[][] = [[1], [2]];
 ```
 
 Fixed array access must provide exactly the declared number of dimensions.

@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { normalizeStoredKeywordCustomization } from "@/contexts/keyword/KeywordContext";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -88,7 +89,9 @@ export function KeywordCustomizerProvider({
   // Quando o wizard abre em `/language-creator/[id]`, a linguagem carregada é a base da sessão
   // inteira: rascunho, formulário e presets partem dela, não da customização
   // global ativa.
-  const seededCustomization = initialLanguage?.customization ?? customization;
+  const seededCustomization = initialLanguage?.customization
+    ? normalizeStoredKeywordCustomization(initialLanguage.customization)
+    : customization;
   const [draftCustomization, setDraftCustomization] =
     useState<IDEKeywordCustomizationState>(seededCustomization);
   const [currentError, setCurrentError] = useState<string | null>(null);
@@ -482,7 +485,7 @@ export function KeywordCustomizerProvider({
       const visibleVariableKeywords =
         draftCustomization.modes.typing === "typed"
           ? ["int", "float", "bool", "string"]
-          : ["variavel"];
+          : ["variable"];
       const keywordError = validateWizardKeywordGroup(visibleVariableKeywords);
       if (keywordError) return;
     }

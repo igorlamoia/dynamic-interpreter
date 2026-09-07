@@ -68,7 +68,7 @@ describe("buildWizardPreview", () => {
 
     expect(preview.dna).toContain("nao tipada");
     expect(preview.chosenLexemes).toContainEqual({
-      original: "variavel",
+      original: "variable",
       custom: "nome",
     });
     expect(preview.chosenLexemes).not.toContainEqual({
@@ -182,9 +182,9 @@ describe("buildWizardPreview", () => {
       presetId: "python-like",
     });
 
-    expect(preview.baselineSnippet).toContain('variavel nome = "Kiki"');
-    expect(preview.baselineSnippet).toContain("variavel idade = 25");
-    expect(preview.baselineSnippet).not.toContain("int idade = 25");
-    expect(preview.snippet).toContain("variavel estudante = true");
+    expect(preview.baselineSnippet).toContain("int idade = 25");
+    expect(preview.snippet).toContain('variable nome = "Kiki"');
+    expect(preview.snippet).toContain("variable idade = 25");
+    expect(preview.snippet).toContain("variable estudante = true");
   });
 });

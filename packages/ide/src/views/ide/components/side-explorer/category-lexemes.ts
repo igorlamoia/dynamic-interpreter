@@ -28,8 +28,8 @@ export function getCategoryLexemes(
         getKeywordValue(customization, "bool"),
         getKeywordValue(customization, "string"),
         getKeywordValue(customization, "void"),
-        getKeywordValue(customization, "variavel"),
-        getKeywordValue(customization, "funcao"),
+        getKeywordValue(customization, "variable"),
+        getKeywordValue(customization, "function"),
       ];
     case "lacos":
       return [

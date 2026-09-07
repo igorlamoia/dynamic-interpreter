@@ -23,7 +23,7 @@ export type StructureStepProps = {
       description: string;
     };
     keywords: Array<{
-      key: "void" | "funcao";
+      key: "void" | "function";
       value: string;
       description: string;
     }>;
@@ -50,9 +50,9 @@ export type StructureStepProps = {
     syncStatementTerminatorDescription: (value: string) => void;
     syncSemicolonMode: (mode: "optional-eol" | "required") => void;
     syncArrayMode: (mode: "fixed" | "dynamic") => void;
-    syncKeyword: (original: "void" | "funcao", value: string) => void;
+    syncKeyword: (original: "void" | "function", value: string) => void;
     syncKeywordDescription: (
-      original: "void" | "funcao",
+      original: "void" | "function",
       value: string,
     ) => void;
   };

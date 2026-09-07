@@ -12,7 +12,7 @@ The parser receives grammar options through `TokenIterator`.
 | --- | --- | --- | --- |
 | `semicolonMode` | `optional-eol`, `required` | `optional-eol` | In optional mode, a statement may end with a semicolon, configured terminator, newline, `}`, or `DEDENT`. In required mode, statement terminators are mandatory. |
 | `blockMode` | `delimited`, `indentation` | `delimited` | Delimited mode parses `{ ... }`. Indentation mode parses `: NEWLINE INDENT ... DEDENT`. |
-| `typingMode` | `typed`, `untyped` | `typed` | Typed mode uses typed function signatures and declarations. Untyped mode uses `funcao` and `variavel`, and values are `dynamic`. |
+| `typingMode` | `typed`, `untyped` | `typed` | Typed mode uses typed function signatures and declarations. Untyped mode uses `function` and `variable`, and values are `dynamic`. |
 | `arrayMode` | `fixed`, `dynamic` | `fixed` when arrays are parsed | Fixed arrays require integer sizes in declarations. Dynamic arrays use empty brackets. |
 
 The lexer can also change the token surface before parsing.
@@ -38,7 +38,7 @@ The lexer can also change the token surface before parsing.
   <typeWithVoid> IDENT '(' <paramList> ')' <block>
 
 <untypedFunctionDecl> ->
-  'funcao' IDENT '(' <untypedParamList> ')' <block>
+  'function' IDENT '(' <untypedParamList> ')' <block>
 
 <typeWithVoid> -> <type> | 'void'
 <type> -> 'int' | 'float' | 'bool' | 'string'
@@ -101,7 +101,7 @@ form is used when `blockMode` is `indentation`.
   <type> <declItem> (',' <declItem>)* <stmtTerminator>
 
 <untypedDeclaration> ->
-  'variavel' <declItem> (',' <declItem>)* <stmtTerminator>
+  'variable' <declItem> (',' <declItem>)* <stmtTerminator>
 
 <typedDeclarationWithoutTerminator> ->
   <type> <declItem> (',' <declItem>)*

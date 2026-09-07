@@ -596,7 +596,7 @@ describe("buildJavaMMLanguageMetadata", () => {
       monaco as never,
       [
         { original: "int", custom: "int", tokenId: 21 },
-        { original: "variavel", custom: "variavel", tokenId: 62 },
+        { original: "variable", custom: "variable", tokenId: 62 },
       ] as never,
       {
         typingMode: "untyped",
@@ -650,7 +650,7 @@ describe("buildJavaMMLanguageMetadata", () => {
       monaco as never,
       [
         { original: "int", custom: "int", tokenId: 21 },
-        { original: "variavel", custom: "variavel", tokenId: 62 },
+        { original: "variable", custom: "variable", tokenId: 62 },
       ] as never,
       {
         typingMode: "untyped",

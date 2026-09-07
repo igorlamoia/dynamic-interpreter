@@ -17,10 +17,10 @@ export function resolveStepAfterKeywordValidationFailure(
   original: string,
 ): WizardStepId {
   if (["print", "scan"].includes(original)) return "IO";
-  if (["int", "float", "bool", "string", "variavel"].includes(original)) {
+  if (["int", "float", "bool", "string", "variable"].includes(original)) {
     return "types";
   }
-  if (["void", "funcao"].includes(original)) return "structure";
+  if (["void", "function"].includes(original)) return "structure";
   if (
     [
       "if",

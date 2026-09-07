@@ -17,7 +17,7 @@ describe("preview-builder variable snippets", () => {
     return {
       ...defaultCustomization,
       mappings: defaultCustomization.mappings.map((mapping) => {
-        if (mapping.original === "variavel") {
+        if (mapping.original === "variable") {
           return { ...mapping, custom: "var" };
         }
 

@@ -10,8 +10,8 @@ function resolveKeywordSemanticToken(original: string): SemanticToken {
     "bool",
     "string",
     "void",
-    "variavel",
-    "funcao",
+    "variable",
+    "function",
   ]);
   const CONDITIONALS = new Set(["if", "else", "switch", "case", "default"]);
   const LOOPS = new Set(["for", "while"]);

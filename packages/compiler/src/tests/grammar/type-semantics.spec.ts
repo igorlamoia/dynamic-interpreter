@@ -393,7 +393,7 @@ describe("Type semantics warnings", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             vetor[] = [0, 1];
             return 0;
           }
@@ -972,7 +972,7 @@ describe("Type semantics runtime", () => {
   it("supports untyped dynamic array declaration syntax at runtime", async () => {
     const result = await executeProgram(
       `
-        funcao main() {
+        function main() {
           lista[] = [];
           lista[0] = 1;
           print(lista[0]);
@@ -1020,7 +1020,7 @@ describe("Type semantics runtime", () => {
   it("reads initialized untyped dynamic array values at runtime", async () => {
     const result = await executeProgram(
       `
-        funcao main() {
+        function main() {
           vetor[] = [0, 1];
           print(vetor[0]);
           print(vetor[1]);
@@ -1056,7 +1056,7 @@ describe("Type semantics runtime", () => {
   it("reads directly into dynamic matrix elements at runtime in untyped mode", async () => {
     const result = await executeProgram(
       `
-        funcao main() {
+        function main() {
           lista[] = [];
           scan(lista[1][2]);
           print(lista[1][2]);

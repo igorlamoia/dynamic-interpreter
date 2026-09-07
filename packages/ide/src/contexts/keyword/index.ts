@@ -17,8 +17,8 @@ export const CUSTOMIZABLE_KEYWORDS: Record<string, number> = {
   switch: 50,
   case: 51,
   default: 52,
-  variavel: 62,
-  funcao: 63,
+  variable: 62,
+  function: 63,
 };
 
 /** Lista ordenada das palavras originais customizáveis (para exibir no modal) */

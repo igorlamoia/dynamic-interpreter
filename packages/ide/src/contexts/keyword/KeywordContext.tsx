@@ -50,6 +50,10 @@ export function useKeywords() {
 
 const STORAGE_KEY = "keyword-customization";
 const LEGACY_MAPPINGS_STORAGE_KEY = "keyword-mappings";
+const LEGACY_ORIGINAL_KEYWORDS: Record<string, string> = {
+  variavel: "variable",
+  funcao: "function",
+};
 
 export function getDefaultBooleanLiteralMap(): IDEBooleanLiteralMap {
   return { ...DEFAULT_BOOLEAN_LITERAL_MAP };
@@ -73,7 +77,9 @@ export function migrateStoredMappings(
 
   for (const original of ORIGINAL_KEYWORDS) {
     const storedMapping = parsed.find(
-      (mapping) => mapping.original === original,
+      (mapping) =>
+        mapping.original === original ||
+        LEGACY_ORIGINAL_KEYWORDS[mapping.original] === original,
     );
     const defaultMapping = defaultsByOriginal.get(original);
     if (!defaultMapping) {
@@ -197,6 +203,15 @@ function normalizeCustomization(
   };
 }
 
+export function normalizeStoredKeywordCustomization(
+  customization: StoredKeywordCustomization,
+): StoredKeywordCustomization {
+  return (
+    normalizeCustomization(customization, getDefaultCustomizationState()) ??
+    getDefaultCustomizationState()
+  );
+}
+
 function loadLegacyKeywordMappings(): KeywordMapping[] | null {
   if (typeof window === "undefined") return null;
 
@@ -220,7 +235,10 @@ function loadCustomization(): StoredKeywordCustomization {
   try {
     const activeSavedLanguage = loadActiveSavedKeywordLanguage();
     if (activeSavedLanguage) {
-      return activeSavedLanguage.customization;
+      return (
+        normalizeCustomization(activeSavedLanguage.customization, defaults) ??
+        defaults
+      );
     }
 
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -291,7 +309,9 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     }
     if (activeLanguageData) {
       setActiveLanguageId(activeLanguageData.id);
-      setCustomizationState(activeLanguageData.customization);
+      setCustomizationState(
+        normalizeStoredKeywordCustomization(activeLanguageData.customization),
+      );
     } else if (activeLanguageData === null) {
       setActiveLanguageId(null);
     }
@@ -408,7 +428,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
       if (overlaySavedRef.current === null) {
         overlaySavedRef.current = customization;
       }
-      setCustomizationState(next);
+      setCustomizationState(normalizeStoredKeywordCustomization(next));
     },
     [customization],
   );

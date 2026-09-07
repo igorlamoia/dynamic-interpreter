@@ -83,11 +83,11 @@ it("should keep bracket symbols distinct from literals", () => {
   expect(TOKENS.BY_ID[TOKENS.SYMBOLS.right_bracket]).toBe("right_bracket");
 });
 
-it("should keep colon and newline symbols distinct from variavel and funcao reserveds", () => {
-  expect(TOKENS.SYMBOLS.colon).not.toBe(TOKENS.RESERVEDS.variavel);
-  expect(TOKENS.SYMBOLS.newline).not.toBe(TOKENS.RESERVEDS.funcao);
-  expect(TOKENS.BY_ID[TOKENS.RESERVEDS.variavel]).toBe("variavel");
-  expect(TOKENS.BY_ID[TOKENS.RESERVEDS.funcao]).toBe("funcao");
+it("should keep colon and newline symbols distinct from variable and function reserveds", () => {
+  expect(TOKENS.SYMBOLS.colon).not.toBe(TOKENS.RESERVEDS.variable);
+  expect(TOKENS.SYMBOLS.newline).not.toBe(TOKENS.RESERVEDS.function);
+  expect(TOKENS.BY_ID[TOKENS.RESERVEDS.variable]).toBe("variable");
+  expect(TOKENS.BY_ID[TOKENS.RESERVEDS.function]).toBe("function");
 });
 
 it("should include bracket symbol tokens", () => {

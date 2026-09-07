@@ -43,11 +43,11 @@ describe("TypeStep", () => {
           values={{
             snippet: "inteiro idade",
             typedSnippet: "inteiro idade",
-            untypedSnippet: "variavel idade",
+            untypedSnippet: "variable idade",
             typingMode: "typed",
             printKeyword: "mostrar",
             typingBeamKeywords: {
-              variavel: "variavel",
+              variable: "variable",
               string: "texto",
               float: "decimal",
               int: "inteiro",

@@ -90,8 +90,8 @@ describe("buildStructureStepProps", () => {
 
     const props = buildStructureStepProps(context);
 
-    expect(props.values.delimiterSnippet).toContain("funcao main()");
-    expect(props.values.identationSnippet).toContain("funcao main():");
+    expect(props.values.delimiterSnippet).toContain("function main()");
+    expect(props.values.identationSnippet).toContain("function main():");
     expect(props.values.optionalTerminatorSnippet).toBe('print("ok")');
     expect(props.values.requiredTerminatorSnippet).toBe('print("ok");');
     expect(props.values.fixedArraySnippet).toBe(
