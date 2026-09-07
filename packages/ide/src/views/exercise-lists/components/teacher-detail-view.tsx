@@ -28,11 +28,30 @@ import {
 export function deadlineInfo(deadline: string) {
   const diff = new Date(deadline).getTime() - Date.now();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-  if (days < 0) return { text: "Prazo encerrado", cls: "text-red-400 bg-red-500/10 border-red-500/20" };
-  if (days === 0) return { text: "Hoje!", cls: "text-red-400 bg-red-500/10 border-red-500/20" };
-  if (days <= 3) return { text: `Faltam ${days}d`, cls: "text-red-400 bg-red-500/10 border-red-500/20" };
-  if (days <= 7) return { text: `Faltam ${days}d`, cls: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20" };
-  return { text: `Faltam ${days}d`, cls: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
+  if (days < 0)
+    return {
+      text: "Prazo encerrado",
+      cls: "text-red-400 bg-red-500/10 border-red-500/20",
+    };
+  if (days === 0)
+    return {
+      text: "Hoje!",
+      cls: "text-red-400 bg-red-500/10 border-red-500/20",
+    };
+  if (days <= 3)
+    return {
+      text: `Faltam ${days}d`,
+      cls: "text-red-400 bg-red-500/10 border-red-500/20",
+    };
+  if (days <= 7)
+    return {
+      text: `Faltam ${days}d`,
+      cls: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
+    };
+  return {
+    text: `Faltam ${days}d`,
+    cls: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+  };
 }
 
 export function TeacherDetailView({
@@ -99,7 +118,9 @@ export function TeacherDetailView({
           <div>
             <h1 className="text-2xl font-bold text-foreground">{list.title}</h1>
             {list.description && (
-              <p className="text-muted-foreground text-sm mt-1">{list.description}</p>
+              <p className="text-muted-foreground text-sm mt-1">
+                {list.description}
+              </p>
             )}
           </div>
           <div className="flex items-center gap-3 shrink-0">
@@ -120,7 +141,7 @@ export function TeacherDetailView({
       <div className="bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between px-6 py-4 border-b border-border dark:border-white/8">
           <div className="flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-[#0dccf2]" />
+            <BookOpen className="w-4 h-4 text-primary" />
             <h2 className="font-semibold text-foreground">
               Exercícios nesta lista
             </h2>
@@ -158,7 +179,6 @@ export function TeacherDetailView({
               ))}
           </ul>
         )}
-
       </div>
 
       <SubmissionsPanel
@@ -194,7 +214,8 @@ export function TeacherDetailView({
           <AlertDialogHeader>
             <AlertDialogTitle>Remover exercício?</AlertDialogTitle>
             <AlertDialogDescription>
-              Este exercício será removido da lista. As submissões existentes não serão afetadas.
+              Este exercício será removido da lista. As submissões existentes
+              não serão afetadas.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

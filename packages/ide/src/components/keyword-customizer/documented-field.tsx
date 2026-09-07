@@ -43,7 +43,6 @@ export function DocumentedField({
             value={value}
             onChange={(event) => onValueChange(event.target.value)}
             placeholder={placeholder}
-            className="border-white/10 bg-[#0a1020]/80 font-mono text-slate-200 placeholder:text-slate-500"
             spellCheck={false}
             disabled={disabled}
             aria-label={label}
@@ -57,7 +56,6 @@ export function DocumentedField({
               value={description}
               onChange={(event) => onDescriptionChange(event.target.value)}
               placeholder={descriptionPlaceholder}
-              className="border-white/10 bg-[#0a1020]/80 text-slate-200 placeholder:text-slate-500"
               disabled={disabled}
               aria-label={`${label} descrição`}
             />

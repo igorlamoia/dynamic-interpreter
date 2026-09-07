@@ -65,7 +65,7 @@ export function StudentListCard({
   const progress = listProgress(entry.completedCount, entry.totalCount);
 
   return (
-    <div className="group bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-[#0dccf2]/30 hover:shadow-[0_4px_24px_rgba(13,204,242,0.08)] transition-all duration-300">
+    <div className="group bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/30 hover:shadow-[0_4px_24px_rgba(13,204,242,0.08)] transition-all duration-300">
       <div className="flex items-start justify-between gap-3 mb-3">
         <h3 className="font-bold text-foreground leading-snug">
           {entry.exerciseList.title}
@@ -94,7 +94,7 @@ export function StudentListCard({
         </div>
         <div className="h-1.5 bg-muted dark:bg-white/8 rounded-full overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-[#0dccf2] to-[#10b981] rounded-full transition-all duration-500"
+            className="h-full bg-linear-to-r from-primary to-[#10b981] rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -102,7 +102,7 @@ export function StudentListCard({
 
       <Link
         href={`/exercise-lists/${entry.exerciseListId}?classId=${classId}`}
-        className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-sm font-semibold hover:bg-[#0dccf2]/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
+        className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
       >
         Abrir Lista
         <ChevronRight className="w-4 h-4" />
@@ -157,7 +157,7 @@ export function StudentView() {
           <select
             value={selectedClassId}
             onChange={(e) => setSelectedClassId(Number(e.target.value))}
-            className="bg-card/80 dark:bg-white/5 border border-border dark:border-white/10 rounded-xl px-4 py-2 text-sm text-foreground focus:outline-none focus:border-[#0dccf2]/50 cursor-pointer"
+            className="bg-card/80 dark:bg-white/5 border border-border dark:border-white/10 rounded-xl px-4 py-2 text-sm text-foreground focus:outline-none focus:border-primary/50 cursor-pointer"
           >
             {classes.map((c) => (
               <option key={c.id} value={c.id} className="bg-background">

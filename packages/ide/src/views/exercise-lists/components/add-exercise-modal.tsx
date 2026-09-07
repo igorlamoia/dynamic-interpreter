@@ -68,7 +68,7 @@ export function AddExerciseModal({
         <div className="max-h-[50vh] overflow-y-auto space-y-2 py-2 px-1">
           {exercisesQuery.isPending ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-[#0dccf2]" />
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
             </div>
           ) : available.length === 0 ? (
             <p className="text-center text-muted-foreground text-sm py-8">
@@ -80,20 +80,27 @@ export function AddExerciseModal({
             available.map((ex: Exercise) => (
               <div
                 key={ex.id}
-                className="flex items-center justify-between gap-3 p-3 rounded-xl bg-card/80 dark:bg-white/3 border border-border dark:border-white/8 hover:border-[#0dccf2]/25 transition-colors"
+                className="flex items-center justify-between gap-3 p-3 rounded-xl bg-card/80 dark:bg-white/3 border border-border dark:border-white/8 hover:border-primary/25 transition-colors"
               >
                 <div>
-                  <p className="text-sm font-medium text-foreground">{ex.title}</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {ex.title}
+                  </p>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    {ex.testCases.length} caso{ex.testCases.length !== 1 ? "s" : ""} de teste
+                    {ex.testCases.length} caso
+                    {ex.testCases.length !== 1 ? "s" : ""} de teste
                   </p>
                 </div>
                 <button
                   onClick={() => handleAdd(String(ex.id))}
                   disabled={adding === String(ex.id)}
-                  className="shrink-0 px-3 py-1.5 rounded-lg bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 transition-colors disabled:opacity-50"
+                  className="shrink-0 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors disabled:opacity-50"
                 >
-                  {adding === String(ex.id) ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Adicionar"}
+                  {adding === String(ex.id) ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    "Adicionar"
+                  )}
                 </button>
               </div>
             ))

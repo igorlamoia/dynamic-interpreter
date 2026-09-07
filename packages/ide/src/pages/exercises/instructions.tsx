@@ -15,7 +15,7 @@ export function Instructions({
   return (
     <div className="w-90 shrink-0 border-r border-border bg-card/80 backdrop-blur-md overflow-y-auto dark:border-white/5 dark:bg-[#0d1a1d]/60">
       <div className="p-6">
-        <h2 className="text-sm font-semibold text-[#0dccf2] uppercase tracking-wider mb-4">
+        <h2 className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
           Instruções
         </h2>
         <div className="prose prose-sm max-w-none dark:prose-invert">

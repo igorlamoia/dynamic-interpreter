@@ -26,7 +26,7 @@ export function SubmittedCodePanel({
           <button
             onClick={onRecompile}
             disabled={compiling}
-            className="px-4 py-1.5 rounded-lg text-xs font-bold bg-[#0dccf2]/10 hover:bg-[#0dccf2]/20 text-[#0dccf2] transition-all disabled:opacity-50"
+            className="px-4 py-1.5 rounded-lg text-xs font-bold bg-primary/10 hover:bg-primary/20 text-primary transition-all disabled:opacity-50"
           >
             {compiling ? "Compilando..." : "▶ Recompilar"}
           </button>
@@ -42,7 +42,7 @@ export function SubmittedCodePanel({
 
       {/* Exercise Description */}
       <div className="bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl p-6">
-        <h3 className="text-sm font-semibold text-[#0dccf2] uppercase tracking-wider mb-3">
+        <h3 className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">
           Enunciado do Exercício
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">

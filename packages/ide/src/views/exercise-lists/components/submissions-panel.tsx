@@ -5,28 +5,48 @@ import type { SubmissionRecord } from "./types";
 
 function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
   const statusMap: Record<string, { label: string; cls: string }> = {
-    PENDING: { label: "Pendente", cls: "bg-slate-500/15 text-slate-700 border-slate-500/25 dark:text-slate-400" },
-    SUBMITTED: { label: "Submetido", cls: "bg-blue-500/15 text-blue-700 border-blue-500/25 dark:text-blue-300" },
-    GRADED: { label: "Avaliado", cls: "bg-emerald-500/15 text-emerald-700 border-emerald-500/25 dark:text-emerald-300" },
-    LATE: { label: "Atrasado", cls: "bg-red-500/15 text-red-700 border-red-500/25 dark:text-red-300" },
+    PENDING: {
+      label: "Pendente",
+      cls: "bg-slate-500/15 text-slate-700 border-slate-500/25 dark:text-slate-400",
+    },
+    SUBMITTED: {
+      label: "Submetido",
+      cls: "bg-blue-500/15 text-blue-700 border-blue-500/25 dark:text-blue-300",
+    },
+    GRADED: {
+      label: "Avaliado",
+      cls: "bg-emerald-500/15 text-emerald-700 border-emerald-500/25 dark:text-emerald-300",
+    },
+    LATE: {
+      label: "Atrasado",
+      cls: "bg-red-500/15 text-red-700 border-red-500/25 dark:text-red-300",
+    },
   };
   const s = statusMap[submission.status] ?? statusMap.PENDING;
 
   return (
     <tr className="border-b border-border hover:bg-accent/70 transition-colors dark:border-white/5 dark:hover:bg-white/2">
       <td className="px-6 py-3.5 text-foreground font-medium">
-        {submission.student?.name || submission.student?.email || String(submission.studentId).slice(0, 8)}
+        {submission.student?.name ||
+          submission.student?.email ||
+          String(submission.studentId).slice(0, 8)}
       </td>
       <td className="px-6 py-3.5 text-muted-foreground text-sm">
-        {submission.exercise?.title ?? String(submission.exerciseId).slice(0, 8)}
+        {submission.exercise?.title ??
+          String(submission.exerciseId).slice(0, 8)}
       </td>
       <td className="px-6 py-3.5 text-muted-foreground text-xs">
         {new Date(submission.submittedAt).toLocaleString("pt-BR", {
-          day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit",
+          day: "2-digit",
+          month: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
         })}
       </td>
       <td className="px-6 py-3.5">
-        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${s.cls}`}>
+        <span
+          className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${s.cls}`}
+        >
           {s.label}
         </span>
       </td>
@@ -36,7 +56,7 @@ function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
       <td className="px-6 py-3.5 text-right">
         <Link
           href={`/submissions/${submission.id}`}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 hover:border-[#0dccf2]/40 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 hover:border-primary/40 transition-colors"
         >
           <span>Corrigir</span>
           <ChevronRight className="w-3.5 h-3.5" />
@@ -90,7 +110,7 @@ export function SubmissionsPanel({
         <div className="border-t border-border dark:border-white/8">
           {loadingSubmissions ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="w-5 h-5 animate-spin text-[#0dccf2]" />
+              <Loader2 className="w-5 h-5 animate-spin text-primary" />
             </div>
           ) : submissions.length === 0 ? (
             <p className="text-center text-muted-foreground text-sm py-8">

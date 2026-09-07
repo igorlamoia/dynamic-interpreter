@@ -108,7 +108,7 @@ export default function Register() {
                 Já tem uma conta?{" "}
                 <Link
                   href="/login"
-                  className="font-semibold text-[#0dccf2] hover:text-emerald-400 transition-colors"
+                  className="font-semibold text-primary hover:text-emerald-400 transition-colors"
                 >
                   Entrar
                 </Link>

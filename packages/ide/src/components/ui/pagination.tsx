@@ -55,7 +55,8 @@ export function Pagination({
 
   const pages = getPageNumbers();
   const startItem = pageSize ? (page - 1) * pageSize + 1 : undefined;
-  const endItem = pageSize && totalItems ? Math.min(page * pageSize, totalItems) : undefined;
+  const endItem =
+    pageSize && totalItems ? Math.min(page * pageSize, totalItems) : undefined;
 
   return (
     <div
@@ -69,13 +70,22 @@ export function Pagination({
         <p className="text-xs text-muted-foreground">
           {startItem !== undefined && endItem !== undefined ? (
             <>
-              Mostrando <span className="font-semibold text-foreground">{startItem}</span> a{" "}
-              <span className="font-semibold text-foreground">{endItem}</span> de{" "}
-              <span className="font-semibold text-foreground">{totalItems}</span> resultados
+              Mostrando{" "}
+              <span className="font-semibold text-foreground">{startItem}</span>{" "}
+              a <span className="font-semibold text-foreground">{endItem}</span>{" "}
+              de{" "}
+              <span className="font-semibold text-foreground">
+                {totalItems}
+              </span>{" "}
+              resultados
             </>
           ) : (
             <>
-              Total de <span className="font-semibold text-foreground">{totalItems}</span> itens
+              Total de{" "}
+              <span className="font-semibold text-foreground">
+                {totalItems}
+              </span>{" "}
+              itens
             </>
           )}
         </p>
@@ -123,7 +133,7 @@ export function Pagination({
                   className={cn(
                     "min-w-8 h-8 px-2 rounded-xl text-xs font-semibold border transition-all flex items-center justify-center",
                     isCurrent
-                      ? "bg-[#0dccf2]/20 border-[#0dccf2]/60 text-[#0dccf2] shadow-[0_0_12px_rgba(13,204,242,0.25)]"
+                      ? "bg-primary/20 border-primary/60 text-primary shadow-[0_0_12px_rgba(13,204,242,0.25)]"
                       : "border-border bg-card/80 text-foreground hover:bg-accent hover:border-cyan-400/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
                   )}
                 >
@@ -141,7 +151,8 @@ export function Pagination({
             className={cn(
               "inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors",
               "border-border bg-card/80 text-foreground hover:bg-accent hover:border-cyan-400/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
-              page >= totalPages && "opacity-40 cursor-not-allowed pointer-events-none",
+              page >= totalPages &&
+                "opacity-40 cursor-not-allowed pointer-events-none",
             )}
           >
             <span>Próxima</span>

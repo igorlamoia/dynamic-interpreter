@@ -53,7 +53,7 @@ export function ListLanguagePanel({
     <div className="bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-6 space-y-3">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 min-w-0">
-          <Languages className="w-4 h-4 text-[#0dccf2] shrink-0" />
+          <Languages className="w-4 h-4 text-primary shrink-0" />
           <h2 className="font-semibold text-foreground">Linguagem da lista</h2>
         </div>
         {!editing && (

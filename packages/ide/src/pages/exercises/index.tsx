@@ -49,13 +49,13 @@ export default function ExercisesPage() {
 
   const exercises = Array.isArray(exercisesQuery.data)
     ? exercisesQuery.data
-    : exercisesQuery.data?.items ?? [];
+    : (exercisesQuery.data?.items ?? []);
   const totalPages = Array.isArray(exercisesQuery.data)
     ? 1
-    : exercisesQuery.data?.totalPages ?? 1;
+    : (exercisesQuery.data?.totalPages ?? 1);
   const totalItems = Array.isArray(exercisesQuery.data)
     ? exercisesQuery.data.length
-    : exercisesQuery.data?.total ?? exercises.length;
+    : (exercisesQuery.data?.total ?? exercises.length);
 
   useEffect(() => {
     if (exercisesQuery.error) {
@@ -135,7 +135,7 @@ export default function ExercisesPage() {
                     value={search}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder="Buscar exercícios..."
-                    className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-card/80 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#0dccf2]/50 transition-colors dark:bg-white/5"
+                    className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-card/80 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors dark:bg-white/5"
                   />
                 </div>
               </div>

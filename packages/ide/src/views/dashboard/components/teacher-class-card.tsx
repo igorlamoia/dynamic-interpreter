@@ -7,12 +7,12 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
   const { isTeacher } = useAuth();
 
   return (
-    <div className="overflow-hidden group shadow-[0_1px_10px_rgba(0,0,0,0.08)] dark:shadow-none relative bg-card/80 dark:bg-white/3 backdrop-blur-2xl border border-border dark:border-white/10 rounded-3xl p-7 hover:border-[#0dccf2]/40 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(13,204,242,0.15)] hover:-translate-y-1 flex flex-col h-full">
+    <div className="overflow-hidden group shadow-[0_1px_10px_rgba(0,0,0,0.08)] dark:shadow-none relative bg-card/80 dark:bg-white/3 backdrop-blur-2xl border border-border dark:border-white/10 rounded-3xl p-7 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(13,204,242,0.15)] hover:-translate-y-1 flex flex-col h-full">
       {/* Top gradient accent */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-[#0dccf2] to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-3xl shadow-[0_0_10px_rgba(13,204,242,0.5)]" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-primary to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-3xl shadow-[0_0_10px_rgba(13,204,242,0.5)]" />
 
       <div className="flex justify-between items-start mb-1">
-        <h3 className="capitalize text-xl font-bold group-hover:text-[#0dccf2] transition-colors leading-tight pr-4">
+        <h3 className="capitalize text-xl font-bold group-hover:text-primary transition-colors leading-tight pr-4">
           {cls.name}
         </h3>
         {cls._count && (
@@ -33,7 +33,7 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
           <span className="text-xs text-muted-foreground font-semibold tracking-wider">
             CÓDIGO:
           </span>
-          <span className="text-base font-mono font-bold text-[#0dccf2] tracking-widest drop-shadow-[0_0_8px_rgba(13,204,242,0.4)] group-hover/code:text-accent-foreground transition-colors">
+          <span className="text-base font-mono font-bold text-primary tracking-widest drop-shadow-[0_0_8px_rgba(13,204,242,0.4)] group-hover/code:text-accent-foreground transition-colors">
             {cls.accessCode}
           </span>
         </div>
@@ -41,14 +41,14 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
 
       <div className="flex items-center justify-between text-sm text-muted-foreground font-medium mb-6 px-1">
         <div className="flex items-center gap-2">
-          <ClipboardList className="w-4 h-4 text-[#0dccf2]/70" />
+          <ClipboardList className="w-4 h-4 text-primary/70" />
           <span>
             {cls._count.exerciseLists} lista
             {cls._count.exerciseLists !== 1 ? "s" : ""}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-full bg-linear-to-br from-[#0dccf2] to-[#10b981] flex items-center justify-center text-[10px] font-bold text-slate-800">
+          <div className="w-5 h-5 rounded-full bg-linear-to-br from-primary to-[#10b981] flex items-center justify-center text-[10px] font-bold text-slate-800">
             {(cls.teacher?.name || "P")[0].toUpperCase()}
           </div>
           <span>{cls.teacher?.name || "Professor"}</span>

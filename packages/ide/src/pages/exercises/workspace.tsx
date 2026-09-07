@@ -71,7 +71,7 @@ export default function ExerciseWorkspace({
         <div className="text-red-400">{error || "Erro desconhecido"}</div>
         <Link
           href="/dashboard"
-          className="text-sm text-[#0dccf2] hover:underline"
+          className="text-sm text-primary hover:underline"
         >
           Voltar ao Painel
         </Link>

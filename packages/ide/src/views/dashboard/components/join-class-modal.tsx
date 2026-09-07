@@ -131,7 +131,7 @@ export function JoinClassModal({
             type="submit"
             form="join-class-form"
             disabled={joinClass.isPending}
-            className="bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 hover:opacity-90"
+            className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
             {joinClass.isPending ? "Entrando..." : "Entrar"}
           </HeroButton>

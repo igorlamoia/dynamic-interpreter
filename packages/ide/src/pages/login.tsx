@@ -108,7 +108,7 @@ export default function Login() {
                 Não tem uma conta?{" "}
                 <Link
                   href="/register"
-                  className="text-[#0dccf2] hover:text-emerald-400 font-semibold transition-colors"
+                  className="text-primary hover:text-emerald-400 font-semibold transition-colors"
                 >
                   Cadastre-se
                 </Link>

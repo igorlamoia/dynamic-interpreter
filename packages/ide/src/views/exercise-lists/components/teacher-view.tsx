@@ -25,9 +25,9 @@ export function TeacherListCard({
     .slice(0, 2);
 
   return (
-    <div className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-[#0dccf2]/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3">
+    <div className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3">
       {/* top accent on hover */}
-      <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-[#0dccf2] to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
+      <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
 
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-bold text-foreground leading-snug line-clamp-2">
@@ -37,7 +37,7 @@ export function TeacherListCard({
 
       <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <BookOpen className="w-3.5 h-3.5 text-[#0dccf2]/60" />
+          <BookOpen className="w-3.5 h-3.5 text-primary/60" />
           {list.items.length} exercício{list.items.length !== 1 ? "s" : ""}
         </span>
         {classNames.length > 0 && (
@@ -52,7 +52,7 @@ export function TeacherListCard({
       <div className="flex items-center gap-2 mt-auto pt-3 border-t border-border dark:border-white/5">
         <Link
           href={`/exercise-lists/${list.id}`}
-          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
         >
           Gerenciar
           <ChevronRight className="w-3.5 h-3.5" />
@@ -66,11 +66,7 @@ import { Pagination } from "@/components/ui/pagination";
 
 const PAGE_SIZE = 9;
 
-export function TeacherView({
-  classes,
-}: {
-  classes: ClassOption[];
-}) {
+export function TeacherView({ classes }: { classes: ClassOption[] }) {
   const { showToast } = useToast();
   const [page, setPage] = useState(1);
   const [showCreate, setShowCreate] = useState(false);
@@ -78,13 +74,13 @@ export function TeacherView({
 
   const lists = Array.isArray(listsQuery.data)
     ? listsQuery.data
-    : listsQuery.data?.items ?? [];
+    : (listsQuery.data?.items ?? []);
   const totalPages = Array.isArray(listsQuery.data)
     ? 1
-    : listsQuery.data?.totalPages ?? 1;
+    : (listsQuery.data?.totalPages ?? 1);
   const totalItems = Array.isArray(listsQuery.data)
     ? listsQuery.data.length
-    : listsQuery.data?.total ?? lists.length;
+    : (listsQuery.data?.total ?? lists.length);
 
   const classMap = useMemo(
     () => Object.fromEntries(classes.map((c) => [c.id, c.name])),
@@ -131,11 +127,7 @@ export function TeacherView({
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((list: ExerciseList) => (
-              <TeacherListCard
-                key={list.id}
-                list={list}
-                classMap={classMap}
-              />
+              <TeacherListCard key={list.id} list={list} classMap={classMap} />
             ))}
           </div>
           <Pagination
@@ -149,10 +141,7 @@ export function TeacherView({
         </>
       )}
 
-      <CreateListModal
-        open={showCreate}
-        onOpenChange={setShowCreate}
-      />
+      <CreateListModal open={showCreate} onOpenChange={setShowCreate} />
     </>
   );
 }

@@ -7,8 +7,8 @@ export function StatsBar({ exercises }: { exercises: Exercise[] }) {
     {
       label: "Total de Exercícios",
       value: exercises.length,
-      color: "text-[#0dccf2]",
-      bgColor: "bg-[#0dccf2]/10 border-[#0dccf2]/20",
+      color: "text-primary",
+      bgColor: "bg-primary/10 border-primary/20",
     },
     {
       label: "Casos de Teste",

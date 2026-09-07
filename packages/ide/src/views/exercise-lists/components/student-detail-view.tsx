@@ -26,14 +26,17 @@ export function StudentDetailView({
   }, [classListsQuery.error, showToast]);
 
   const submittedIds = new Set<number>(
-    classEntry?.exerciseList.items.filter((i) => i.submitted).map((i) => i.exerciseId) ?? [],
+    classEntry?.exerciseList.items
+      .filter((i) => i.submitted)
+      .map((i) => i.exerciseId) ?? [],
   );
 
   const publication = list.classes.find((c) => c.classId === Number(classId));
   const totalCount = list.items.length;
   const completedCount = submittedIds.size;
   const minRequired = publication?.minRequired ?? 0;
-  const progress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const progress =
+    totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -43,7 +46,9 @@ export function StudentDetailView({
           <div>
             <h1 className="text-2xl font-bold text-foreground">{list.title}</h1>
             {list.description && (
-              <p className="text-muted-foreground text-sm mt-1">{list.description}</p>
+              <p className="text-muted-foreground text-sm mt-1">
+                {list.description}
+              </p>
             )}
           </div>
 
@@ -67,7 +72,7 @@ export function StudentDetailView({
             </div>
             <div className="h-2 bg-muted dark:bg-white/8 rounded-full overflow-hidden">
               <div
-                className="h-full bg-linear-to-r from-[#0dccf2] to-[#10b981] rounded-full transition-all duration-500"
+                className="h-full bg-linear-to-r from-primary to-[#10b981] rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -84,7 +89,7 @@ export function StudentDetailView({
       {/* exercises list */}
       <div className="bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl overflow-hidden">
         <div className="flex items-center gap-2 px-6 py-4 border-b border-border dark:border-white/8">
-          <BookOpen className="w-4 h-4 text-[#0dccf2]" />
+          <BookOpen className="w-4 h-4 text-primary" />
           <h2 className="font-semibold text-foreground">Exercícios</h2>
         </div>
         {list.items.length === 0 ? (
@@ -118,7 +123,7 @@ export function StudentDetailView({
                     </span>
                     <Link
                       href={`/exercises/${item.exerciseId}?listId=${list.id}&classId=${classId}`}
-                      className="shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 transition-colors"
+                      className="shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
                     >
                       {done ? "Ver solução" : "Resolver"}
                       <ChevronRight className="w-3.5 h-3.5" />

@@ -15,6 +15,8 @@ import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { HeroButton } from "@/components/buttons/hero";
 import { Overlay } from "@/components/effect/overlay";
 import { InterpreterLottie } from "@/lottie/robot-brain";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 export type IdentityImageSearchResult = {
   id: number;
   provider: "pixabay" | "unsplash";
@@ -296,13 +298,12 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             >
               Nome da linguagem
             </label>
-            <input
+            <Input
               id="language-name"
               aria-label="Nome da linguagem"
               value={values.name}
               onChange={(event) => actions.setName(event.target.value)}
               placeholder="Ex.: Didatica Neon"
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition-colors focus:border-cyan-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
             />
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Esse nome será usado no preview, no salvamento e no seletor da
@@ -316,15 +317,12 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             >
               Descrição da linguagem
             </label>
-            <textarea
+            <Textarea
               id="language-description"
               aria-label="Descrição da linguagem"
               value={values.description}
-              onChange={(event) =>
-                actions.setDescription(event.target.value)
-              }
+              onChange={(event) => actions.setDescription(event.target.value)}
               placeholder="Ex.: Uma linguagem didática inspirada em português para ensinar lógica de programação"
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition-colors focus:border-cyan-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
             />
             <p className="text-sm text-slate-500 dark:text-slate-400">
               A descrição é opcional, mas pode ajudar a lembrar das escolhas

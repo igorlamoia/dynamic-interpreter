@@ -57,7 +57,7 @@ export default function ClassDetail() {
     return (
       <div className="relative min-h-screen bg-background text-foreground flex items-center justify-center">
         <SpaceBackground />
-        <div className="w-12 h-12 rounded-full border-4 border-[#0dccf2]/20 border-t-[#0dccf2] animate-spin" />
+        <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
       </div>
     );
   }
@@ -86,7 +86,7 @@ export default function ClassDetail() {
               <div>
                 <Link
                   href="/dashboard"
-                  className="group inline-flex items-center gap-2 text-slate-500 hover:text-[#0dccf2] transition-colors mb-4 text-sm"
+                  className="group inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-4 text-sm"
                 >
                   <svg
                     className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
@@ -103,7 +103,7 @@ export default function ClassDetail() {
                   </svg>
                   Voltar ao Painel
                 </Link>
-                <div className="flex items-center gap-2 text-[#0dccf2] mb-2">
+                <div className="flex items-center gap-2 text-primary mb-2">
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -127,13 +127,13 @@ export default function ClassDetail() {
               </div>
               <div className="flex rounded-xl border border-border bg-card/70 p-1 dark:border-white/5 dark:bg-white/5">
                 <button
-                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "lists" ? "bg-[#0dccf2]/20 text-[#0dccf2] shadow-lg shadow-[#0dccf2]/20" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "lists" ? "bg-primary/20 text-primary shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"}`}
                   onClick={() => setActiveTab("lists")}
                 >
                   Listas
                 </button>
                 <button
-                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "members" ? "bg-[#0dccf2]/20 text-[#0dccf2] shadow-lg shadow-[#0dccf2]/20" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "members" ? "bg-primary/20 text-primary shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"}`}
                   onClick={() => setActiveTab("members")}
                 >
                   Todos da Turma

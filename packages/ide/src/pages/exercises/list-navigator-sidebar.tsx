@@ -26,8 +26,8 @@ export function ListNavigatorSidebar({
     <div className="w-52 shrink-0 border-r border-border bg-card/85 backdrop-blur-md flex flex-col overflow-hidden dark:border-white/5 dark:bg-[#0b1719]/80">
       <div className="px-4 py-3 border-b border-border dark:border-white/5">
         <div className="flex items-center gap-2 mb-1">
-          <ListChecks className="w-3.5 h-3.5 text-[#0dccf2] shrink-0" />
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-[#0dccf2]">
+          <ListChecks className="w-3.5 h-3.5 text-primary shrink-0" />
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
             Lista
           </span>
         </div>
@@ -47,7 +47,7 @@ export function ListNavigatorSidebar({
               href={href}
               className={`flex items-center gap-2.5 px-3 py-2.5 text-xs transition-all group ${
                 isActive
-                  ? "bg-[#0dccf2]/10 border-l-2 border-[#0dccf2] text-[#0dccf2]"
+                  ? "bg-primary/10 border-l-2 border-primary text-primary"
                   : isSubmitted
                     ? "border-l-2 border-emerald-500/50 text-emerald-400/80 hover:text-emerald-300 hover:bg-emerald-500/5"
                     : "border-l-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-accent/70 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-white/3"
@@ -79,7 +79,7 @@ export function ListNavigatorSidebar({
         </div>
         <div className="h-1 bg-muted dark:bg-white/8 rounded-full overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-[#0dccf2] to-[#10b981] rounded-full transition-all duration-500"
+            className="h-full bg-linear-to-r from-primary to-[#10b981] rounded-full transition-all duration-500"
             style={{
               width: `${sorted.length > 0 ? (completedCount / sorted.length) * 100 : 0}%`,
             }}

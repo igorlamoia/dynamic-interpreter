@@ -59,7 +59,7 @@ export function ExerciseDetailModal({
                     className="p-3 bg-muted/60 dark:bg-black/20 rounded-lg border border-border dark:border-white/5"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs font-bold text-[#0dccf2]">
+                      <span className="text-xs font-bold text-primary">
                         #{idx + 1}
                       </span>
                       {tc.label && (

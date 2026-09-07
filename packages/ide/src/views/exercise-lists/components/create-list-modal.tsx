@@ -127,7 +127,7 @@ export function CreateListModal({
                       {...field}
                       rows={3}
                       placeholder="Descreva o objetivo desta lista..."
-                      className="focus:border-[#0dccf2]/50"
+                      className="focus:border-primary/50"
                     />
                   </FormControl>
                   <FormMessage />

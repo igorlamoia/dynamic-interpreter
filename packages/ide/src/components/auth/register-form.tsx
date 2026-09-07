@@ -50,14 +50,9 @@ export function RegisterForm({
 }) {
   return (
     <Form {...form}>
-      <form
-        className="space-y-5"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
         {serverError && (
-          <div className="text-red-400 text-sm text-center">
-            {serverError}
-          </div>
+          <div className="text-red-400 text-sm text-center">{serverError}</div>
         )}
 
         {/* Role Selector */}
@@ -122,11 +117,7 @@ export function RegisterForm({
                 Endereço de E-mail
               </FormLabel>
               <FormControl>
-                <Input
-                  placeholder="voce@exemplo.com"
-                  type="email"
-                  {...field}
-                />
+                <Input placeholder="voce@exemplo.com" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -172,7 +163,7 @@ export function RegisterForm({
                 <select
                   {...field}
                   disabled={loadingOrgs}
-                  className="w-full h-10 px-3 rounded-md border border-input bg-background/80 dark:bg-black/20 text-foreground dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#0dccf2]/50 disabled:opacity-50"
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background/80 dark:bg-black/20 text-foreground dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
                 >
                   <option
                     value=""
@@ -186,7 +177,11 @@ export function RegisterForm({
                         : "Selecione sua instituição"}
                   </option>
                   {organizations.map((org) => (
-                    <option key={org.id} value={org.id} className="bg-background text-foreground">
+                    <option
+                      key={org.id}
+                      value={org.id}
+                      className="bg-background text-foreground"
+                    >
                       {org.name}
                     </option>
                   ))}

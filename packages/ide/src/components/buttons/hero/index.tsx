@@ -27,17 +27,17 @@ export function HeroButton(props: HeroButtonProps) {
       className={cn(
         "group inline-flex items-center justify-center gap-2 px-5 py-2.5 text-slate-800 font-bold text-sm rounded-md  transition-all duration-300 transform active:scale-[0.97]  hover:scale-[1.02] cursor-pointer",
         variant === "primary" &&
-          "bg-linear-to-r from-[#0dccf2] to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 shadow-[0_0_15px_rgba(13,204,242,0.25)] hover:shadow-[0_0_25px_rgba(13,204,242,0.45)]",
+          "bg-linear-to-r from-primary to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 shadow-[0_0_15px_rgba(13,204,242,0.25)] hover:shadow-[0_0_25px_rgba(13,204,242,0.45)]",
         variant === "outline" &&
-          "border border-slate-700/20 dark:border-white/10 hover:border-[#0dccf2]/50 hover:bg-[#0dccf2]/5 dark:text-slate-300 hover:text-[#0dccf2]",
+          "border border-slate-700/20 dark:border-white/10 hover:border-primary/50 hover:bg-primary/5 dark:text-slate-300 hover:text-primary",
         variant === "ghost" &&
-          "hover:bg-[#0dccf2]/5 dark:hover:bg-[#0dccf2]/5 text-slate-800 dark:text-slate-300 hover:text-[#0dccf2]",
+          "hover:bg-primary/5 dark:hover:bg-primary/5 text-slate-800 dark:text-slate-300 hover:text-primary",
         props.className,
         isLoading &&
-          "pointer-events-none cursor-wait text-slate-950 shadow-[0_0_18px_rgba(13,204,242,0.38)] hover:scale-100 hover:from-[#0dccf2] hover:to-emerald-400 hover:shadow-[0_0_18px_rgba(13,204,242,0.38)]",
+          "pointer-events-none cursor-wait text-slate-950 shadow-[0_0_18px_rgba(13,204,242,0.38)] hover:scale-100 hover:from-primary hover:to-emerald-400 hover:shadow-[0_0_18px_rgba(13,204,242,0.38)]",
         disabled &&
           !isLoading &&
-          "opacity-50 cursor-not-allowed hover:from-[#0dccf2] hover:to-emerald-300 hover:shadow-none hover:border-slate-700/20 hover:bg-transparent hover:text-slate-800 dark:hover:border-white/10 dark:hover:bg-transparent dark:hover:text-slate-300",
+          "opacity-50 cursor-not-allowed hover:from-primary hover:to-emerald-300 hover:shadow-none hover:border-slate-700/20 hover:bg-transparent hover:text-slate-800 dark:hover:border-white/10 dark:hover:bg-transparent dark:hover:text-slate-300",
       )}
     >
       {isLoading && (
@@ -66,9 +66,9 @@ export function HeroLink(props: HeroLinkProps) {
       className={cn(
         "inline-flex items-center justify-center gap-2 px-5 py-2.5 text-slate-800 font-bold text-sm rounded-md  transition-all duration-300 transform active:scale-[0.97] hover:scale-[1.02]  cursor-pointer",
         variant === "primary" &&
-          "bg-linear-to-r from-[#0dccf2] to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 shadow-[0_0_15px_rgba(13,204,242,0.25)] hover:shadow-[0_0_25px_rgba(13,204,242,0.45)]",
+          "bg-linear-to-r from-primary to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 shadow-[0_0_15px_rgba(13,204,242,0.25)] hover:shadow-[0_0_25px_rgba(13,204,242,0.45)]",
         variant === "outline" &&
-          "border border-slate-700/20 dark:border-white/10 hover:border-[#0dccf2]/50 hover:bg-[#0dccf2]/5 text-slate-800 dark:text-slate-300 hover:text-[#0dccf2]",
+          "border border-slate-700/20 dark:border-white/10 hover:border-primary/50 hover:bg-primary/5 text-slate-800 dark:text-slate-300 hover:text-primary",
         props.className,
       )}
     >

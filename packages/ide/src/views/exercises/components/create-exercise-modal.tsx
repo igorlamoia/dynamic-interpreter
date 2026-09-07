@@ -95,7 +95,10 @@ export function CreateExerciseModal({
   }, [open, form]);
 
   const onSubmit = async (values: CreateExerciseForm) => {
-    if (values.languagePolicy === "LOCKED" && values.lockedLanguageId === null) {
+    if (
+      values.languagePolicy === "LOCKED" &&
+      values.lockedLanguageId === null
+    ) {
       form.setError("lockedLanguageId", {
         type: "manual",
         message: "Selecione uma linguagem para travar o exercício",
@@ -166,7 +169,7 @@ export function CreateExerciseModal({
                       {...field}
                       rows={5}
                       placeholder="Descreva o exercício em detalhes..."
-                      className="focus:border-[#0dccf2]/50"
+                      className="focus:border-primary/50"
                     />
                   </FormControl>
                   <FormMessage />
@@ -188,7 +191,10 @@ export function CreateExerciseModal({
                       }}
                       onChange={(next) => {
                         field.onChange(next.policy);
-                        form.setValue("lockedLanguageId", next.lockedLanguageId);
+                        form.setValue(
+                          "lockedLanguageId",
+                          next.lockedLanguageId,
+                        );
                       }}
                       languages={languagesQuery.data ?? []}
                     />
@@ -240,7 +246,7 @@ export function CreateExerciseModal({
             type="submit"
             form="create-exercise-page-form"
             disabled={createExercise.isPending}
-            className="bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 hover:opacity-90"
+            className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
             {createExercise.isPending ? "Criando..." : "Criar Exercício"}
           </HeroButton>

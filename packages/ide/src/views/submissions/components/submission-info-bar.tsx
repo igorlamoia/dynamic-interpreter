@@ -10,7 +10,7 @@ export function SubmissionInfoBar({
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold">
-            <span className="bg-linear-to-r from-[#0dccf2] to-[#10b981] bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-primary to-[#10b981] bg-clip-text text-transparent">
               {submission?.exercise?.title}
             </span>
           </h2>

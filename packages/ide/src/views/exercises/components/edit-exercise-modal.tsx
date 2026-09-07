@@ -116,7 +116,10 @@ export function EditExerciseModal({
 
   const onSubmit = async (values: EditExerciseForm) => {
     if (!exercise) return;
-    if (values.languagePolicy === "LOCKED" && values.lockedLanguageId === null) {
+    if (
+      values.languagePolicy === "LOCKED" &&
+      values.lockedLanguageId === null
+    ) {
       form.setError("lockedLanguageId", {
         type: "manual",
         message: "Selecione uma linguagem para travar o exercicio",
@@ -166,10 +169,7 @@ export function EditExerciseModal({
                 <FormItem>
                   <FormLabel>Titulo</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      className="h-12"
-                    />
+                    <Input {...field} className="h-12" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -186,7 +186,7 @@ export function EditExerciseModal({
                     <Textarea
                       {...field}
                       rows={5}
-                      className="focus:border-[#0dccf2]/50"
+                      className="focus:border-primary/50"
                     />
                   </FormControl>
                   <FormMessage />
@@ -208,7 +208,10 @@ export function EditExerciseModal({
                       }}
                       onChange={(next) => {
                         field.onChange(next.policy);
-                        form.setValue("lockedLanguageId", next.lockedLanguageId);
+                        form.setValue(
+                          "lockedLanguageId",
+                          next.lockedLanguageId,
+                        );
                       }}
                       languages={languagesQuery.data ?? []}
                     />
@@ -286,7 +289,7 @@ export function EditExerciseModal({
             type="submit"
             form="edit-exercise-page-form"
             disabled={updateExercise.isPending}
-            className="bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 hover:opacity-90"
+            className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
             {updateExercise.isPending ? "Salvando..." : "Salvar Alteracoes"}
           </HeroButton>

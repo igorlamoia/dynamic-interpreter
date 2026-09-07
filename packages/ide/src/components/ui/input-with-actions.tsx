@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
+import { Input } from "./input";
 
 export interface InputWithActionsProps extends React.InputHTMLAttributes<HTMLInputElement> {
   actions?: React.ReactNode;
@@ -18,12 +19,8 @@ const InputWithActions = React.forwardRef<
 >(({ className, actions, ...props }, ref) => {
   return (
     <div className="relative w-full">
-      <input
-        className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-background/80 px-3 py-1.5 text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/60 focus:bg-background disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:focus:border-white/30 dark:focus:bg-white/10",
-          actions && "pr-20",
-          className,
-        )}
+      <Input
+        className={cn(actions && "pr-20", className)}
         ref={ref}
         {...props}
       />

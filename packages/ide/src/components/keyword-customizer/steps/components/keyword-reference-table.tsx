@@ -59,7 +59,7 @@ export function KeywordReferenceRow<TKey extends string>({
           placeholder={item.placeholder}
           aria-label={`Nome customizado para ${editLabel}`}
           spellCheck={false}
-          className="h-11 border-white/10 bg-black font-mono font-bold text-cyan-300 placeholder:text-slate-600 focus:bg-black"
+          className="h-11  text-cyan-300"
         />
       </label>
 
@@ -75,7 +75,7 @@ export function KeywordReferenceRow<TKey extends string>({
             }
             aria-label={`Definição semântica para ${editLabel}`}
             rows={matches ? 1 : 2}
-            className="min-h-11 resize-y border-white/10 bg-transparent py-2.5 text-sm font-medium leading-6 text-slate-400 placeholder:text-slate-600 focus:bg-transparent md:resize-none"
+            className="min-h-11 resize-y border-white/10 bg-transparent py-2.5 text-sm font-medium leading-6 md:resize-none"
           />
         </PerfectScrollbar>
       </label>

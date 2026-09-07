@@ -41,7 +41,7 @@ export function Header({
         </Link>
         <div className="h-4 w-px bg-border" />
         <div>
-          <h1 className="text-lg font-bold bg-linear-to-r from-[#0dccf2] to-[#10b981] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold bg-linear-to-r from-primary to-[#10b981] bg-clip-text text-transparent">
             {exercise.title}
           </h1>
           <div className="flex items-center gap-3 mt-0.5">
@@ -71,7 +71,7 @@ export function Header({
               ✓ Enviado
             </span>
             {lastSubmission?.score != null && (
-              <span className="text-xs font-bold text-[#0dccf2]">
+              <span className="text-xs font-bold text-primary">
                 Nota: {lastSubmission.score}
               </span>
             )}
@@ -85,7 +85,7 @@ export function Header({
           <button
             onClick={handleSubmit}
             disabled={validateSubmission.isPending}
-            className="px-5 py-2 rounded-xl text-sm font-bold bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 shadow-[0_0_15px_rgba(13,204,242,0.3)] hover:shadow-[0_0_25px_rgba(13,204,242,0.5)] hover:opacity-90 transition-all disabled:opacity-50"
+            className="px-5 py-2 rounded-xl text-sm font-bold bg-linear-to-r from-primary to-[#10b981] text-slate-800 shadow-[0_0_15px_rgba(13,204,242,0.3)] hover:shadow-[0_0_25px_rgba(13,204,242,0.5)] hover:opacity-90 transition-all disabled:opacity-50"
           >
             {validateSubmission.isPending
               ? "Submetendo..."

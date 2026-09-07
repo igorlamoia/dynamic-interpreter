@@ -47,7 +47,7 @@ export function ListsTab({
   if (loadingLists) {
     return (
       <div className="flex flex-col items-center justify-center py-32 text-muted-foreground gap-4">
-        <div className="w-10 h-10 rounded-full border-4 border-[#0dccf2]/20 border-t-[#0dccf2] animate-spin" />
+        <div className="w-10 h-10 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
         <span className="text-sm font-medium">Carregando listas...</span>
       </div>
     );
@@ -56,7 +56,7 @@ export function ListsTab({
   if (exerciseLists.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 bg-card/70 dark:bg-white/2 rounded-3xl border border-border dark:border-white/5 backdrop-blur-xl">
-        <div className="w-20 h-20 mb-5 rounded-full bg-linear-to-br from-[#0dccf2]/10 to-[#10b981]/10 flex items-center justify-center border border-border dark:border-white/10">
+        <div className="w-20 h-20 mb-5 rounded-full bg-linear-to-br from-primary/10 to-[#10b981]/10 flex items-center justify-center border border-border dark:border-white/10">
           <BookOpen className="w-10 h-10 text-slate-600" />
         </div>
         <p className="text-foreground text-lg font-bold">
@@ -77,9 +77,9 @@ export function ListsTab({
         {exerciseLists.map((entry: any) => (
           <div
             key={entry.exerciseListId}
-            className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-[#0dccf2]/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3"
+            className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3"
           >
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-[#0dccf2] to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
+            <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
             <h3 className="font-bold text-foreground leading-snug line-clamp-2">
               {entry.exerciseList.title}
             </h3>
@@ -90,7 +90,7 @@ export function ListsTab({
             )}
             <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-[#0dccf2]/60" />
+                <BookOpen className="w-3.5 h-3.5 text-primary/60" />
                 {entry.totalCount} exercício{entry.totalCount !== 1 ? "s" : ""}
               </span>
               <span className="flex items-center gap-1.5 text-muted-foreground">
@@ -113,7 +113,7 @@ export function ListsTab({
             <div className="mt-auto pt-3 border-t border-border dark:border-white/5">
               <Link
                 href={`/exercise-lists/${entry.exerciseListId}`}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
               >
                 Gerenciar
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -148,7 +148,7 @@ export function ListsTab({
         return (
           <div
             key={entry.exerciseListId}
-            className="group bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-[#0dccf2]/30 hover:shadow-[0_4px_24px_rgba(13,204,242,0.08)] transition-all duration-300"
+            className="group bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/30 hover:shadow-[0_4px_24px_rgba(13,204,242,0.08)] transition-all duration-300"
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <h3 className="font-bold text-foreground leading-snug">
@@ -187,14 +187,14 @@ export function ListsTab({
               </div>
               <div className="h-1.5 bg-muted dark:bg-white/8 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-linear-to-r from-[#0dccf2] to-[#10b981] rounded-full transition-all duration-500"
+                  className="h-full bg-linear-to-r from-primary to-[#10b981] rounded-full transition-all duration-500"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
             <Link
               href={`/exercise-lists/${entry.exerciseListId}?classId=${classId}`}
-              className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-sm font-semibold hover:bg-[#0dccf2]/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
+              className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
             >
               Abrir Lista
               <ChevronRight className="w-4 h-4" />
