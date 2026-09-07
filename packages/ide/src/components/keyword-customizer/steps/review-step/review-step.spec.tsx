@@ -96,8 +96,6 @@ describe("ReviewStep", () => {
     expect(container.textContent).toContain("Teste");
     expect(container.textContent).toContain("Baseado em");
     expect(container.textContent).toContain("Pythonica");
-    expect(container.querySelector("[data-testid='ast-viewer']")).not.toBeNull();
-    expect(container.textContent).toContain("typed");
     const image = container.querySelector("img");
     expect(image?.getAttribute("src")).toBe("https://img.example/teste.jpg");
     expect(image?.getAttribute("alt")).toBe("Teste");

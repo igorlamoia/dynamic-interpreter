@@ -87,24 +87,42 @@ async def list_my_languages(user_id: int, session: AsyncSession) -> list[Languag
     return list(result.scalars().all())
 
 
-async def list_public_languages(
+async def list_my_languages_paginated(
+    user_id: int,
     session: AsyncSession,
+    page: int = 1,
+    page_size: int = 12,
+    query: str | None = None,
+) -> tuple[list[Language], int]:
+    base_stmt = select(Language).where(Language.owner_id == user_id)
+    if query and query.strip():
+        pattern = f"%{query.strip()}%"
+        base_stmt = base_stmt.where(
+            or_(Language.name.ilike(pattern), Language.description.ilike(pattern))
+        )
+    count_stmt = select(func.count()).select_from(base_stmt.subquery())
+    total = (await session.execute(count_stmt)).scalar_one()
+
+    offset = (page - 1) * page_size
+    stmt = (
+        base_stmt
+        .options(selectinload(Language.owner))
+        .order_by(Language.updated_at.desc())
+        .offset(offset)
+        .limit(page_size)
+    )
+    result = await session.execute(stmt)
+    return list(result.scalars().all()), total
+
+
+def _build_public_languages_query(
     query: str | None = None,
     typing: str | None = None,
     array: str | None = None,
     block: str | None = None,
     semicolon: str | None = None,
-    limit: int = 24,
-    offset: int = 0,
-) -> list[Language]:
-    stmt = (
-        select(Language)
-        .options(selectinload(Language.owner))
-        .where(Language.is_public.is_(True))
-        .order_by(Language.published_at.desc(), Language.id.desc())
-        .limit(limit)
-        .offset(offset)
-    )
+):
+    stmt = select(Language).where(Language.is_public.is_(True))
     normalized_query = query.strip() if query else ""
     if normalized_query:
         pattern = f"%{normalized_query}%"
@@ -133,8 +151,55 @@ async def list_public_languages(
         )
         stmt = stmt.where(value == selected)
 
+    return stmt
+
+
+async def list_public_languages(
+    session: AsyncSession,
+    query: str | None = None,
+    typing: str | None = None,
+    array: str | None = None,
+    block: str | None = None,
+    semicolon: str | None = None,
+    limit: int = 24,
+    offset: int = 0,
+) -> list[Language]:
+    base_stmt = _build_public_languages_query(query, typing, array, block, semicolon)
+    stmt = (
+        base_stmt
+        .options(selectinload(Language.owner))
+        .order_by(Language.published_at.desc(), Language.id.desc())
+        .limit(limit)
+        .offset(offset)
+    )
     result = await session.execute(stmt)
     return list(result.scalars().all())
+
+
+async def list_public_languages_paginated(
+    session: AsyncSession,
+    query: str | None = None,
+    typing: str | None = None,
+    array: str | None = None,
+    block: str | None = None,
+    semicolon: str | None = None,
+    page: int = 1,
+    page_size: int = 24,
+) -> tuple[list[Language], int]:
+    base_stmt = _build_public_languages_query(query, typing, array, block, semicolon)
+    count_stmt = select(func.count()).select_from(base_stmt.subquery())
+    total = (await session.execute(count_stmt)).scalar_one()
+
+    offset = (page - 1) * page_size
+    stmt = (
+        base_stmt
+        .options(selectinload(Language.owner))
+        .order_by(Language.published_at.desc(), Language.id.desc())
+        .offset(offset)
+        .limit(page_size)
+    )
+    result = await session.execute(stmt)
+    return list(result.scalars().all()), total
 
 
 async def get_language(language_id: int, user_id: int, session: AsyncSession) -> Language:

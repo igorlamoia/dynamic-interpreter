@@ -46,16 +46,26 @@ export function TeacherDetailView({
   const [showPublish, setShowPublish] = useState(false);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [showSubmissions, setShowSubmissions] = useState(false);
+  const [submissionsPage, setSubmissionsPage] = useState(1);
   const [removeTarget, setRemoveTarget] = useState<string | null>(null);
-  const exerciseIds = list.items.map((item) => item.exerciseId);
   const submissionsQuery = useExerciseListSubmissionsQuery(
-    exerciseIds,
+    list.id,
+    { page: submissionsPage, pageSize: 10 },
     showSubmissions,
   );
   const removeExercise = useRemoveExerciseFromListMutation(list.id);
 
   const existingIds = new Set(list.items.map((i) => i.exerciseId));
-  const submissions = (submissionsQuery.data ?? []) as SubmissionRecord[];
+  const submissionsData = submissionsQuery.data;
+  const submissions: SubmissionRecord[] = Array.isArray(submissionsData)
+    ? (submissionsData as SubmissionRecord[])
+    : ((submissionsData?.items ?? []) as SubmissionRecord[]);
+  const submissionsTotalPages: number = Array.isArray(submissionsData)
+    ? 1
+    : (submissionsData?.totalPages ?? 1);
+  const submissionsTotalItems: number = Array.isArray(submissionsData)
+    ? submissionsData.length
+    : (submissionsData?.total ?? submissions.length);
 
   // Os itens da lista só trazem { id, title }; a política de cada exercício
   // vem da listagem do professor, que já está em cache.
@@ -156,6 +166,11 @@ export function TeacherDetailView({
         showSubmissions={showSubmissions}
         loadingSubmissions={submissionsQuery.isPending}
         onToggle={handleToggleSubmissions}
+        page={submissionsPage}
+        totalPages={submissionsTotalPages}
+        totalItems={submissionsTotalItems}
+        pageSize={10}
+        onPageChange={setSubmissionsPage}
       />
 
       {/* modals */}

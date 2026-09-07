@@ -21,7 +21,8 @@ import { EditorSkeleton } from "./EditorSkeleton";
 import { DarkTheme, LightTheme } from "./EditorThemes";
 import { useDebugger } from "./useDebugger";
 
-const getSourceCodeStorageKey = (fileName: string) => `source-code-${fileName}`;
+export const getSourceCodeStorageKey = (fileName: string, storageScope?: string) =>
+  storageScope ? `${storageScope}:source-code-${fileName}` : `source-code-${fileName}`;
 const DEFAULT_FILE_NAME = "main.?";
 
 // Create the EditorContext with default values
@@ -29,12 +30,30 @@ export const EditorContext = createContext<TEditorContextType>(
   {} as TEditorContextType,
 );
 
-export function EditorProvider({ children }: { children: ReactNode }) {
+export interface EditorProviderProps {
+  children: ReactNode;
+  storageScope?: string;
+  initialCode?: string;
+}
+
+export function EditorProvider({
+  children,
+  storageScope,
+  initialCode,
+}: EditorProviderProps) {
+  const getStorageKey = useCallback(
+    (fileName: string) => getSourceCodeStorageKey(fileName, storageScope),
+    [storageScope],
+  );
+
   const [currentFilePath, setCurrentFilePath] = useState(DEFAULT_FILE_NAME);
+  const currentFilePathRef = useRef(DEFAULT_FILE_NAME);
+
   const [sourceCode, setSourceCode] = useState(() => {
-    if (typeof window === "undefined") return INITIAL_CODE;
+    if (typeof window === "undefined") return initialCode ?? INITIAL_CODE;
     return (
-      localStorage.getItem(getSourceCodeStorageKey(DEFAULT_FILE_NAME)) ||
+      localStorage.getItem(getSourceCodeStorageKey(DEFAULT_FILE_NAME, storageScope)) ||
+      initialCode ||
       INITIAL_CODE
     );
   });
@@ -56,7 +75,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     monacoRef,
   });
 
-  const fileSystem = useFileSystem();
+  const fileSystem = useFileSystem(storageScope);
 
   useEffect(() => {
     loader.init().then((monaco) => {
@@ -68,6 +87,24 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (editorInstanceRef.current) {
+        try {
+          const code = editorInstanceRef.current.getValue();
+          localStorage.setItem(
+            getSourceCodeStorageKey(currentFilePathRef.current, storageScope),
+            code,
+          );
+        } catch {
+          // ignore if already disposed
+        }
+        editorInstanceRef.current.dispose();
+        editorInstanceRef.current = null;
+      }
+    };
+  }, [storageScope]);
 
   const initializeEditor = (container: HTMLDivElement) => {
     if (!monacoRef.current || !container) return;
@@ -84,7 +121,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       editorInstanceRef.current.onDidChangeModelContent(() => {
         const nextCode = editorInstanceRef.current?.getValue() ?? "";
         setSourceCode(nextCode);
-        localStorage.setItem(getSourceCodeStorageKey(currentFilePath), nextCode);
+        localStorage.setItem(getStorageKey(currentFilePathRef.current), nextCode);
       });
 
       editorInstanceRef.current.onMouseDown((event) => {
@@ -142,7 +179,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
 
   const updateSourceCode = (newCode: string) => {
     setSourceCode(newCode);
-    localStorage.setItem(getSourceCodeStorageKey(currentFilePath), newCode);
+    localStorage.setItem(getStorageKey(currentFilePathRef.current), newCode);
     editorInstanceRef.current?.setValue(newCode);
   };
 
@@ -204,11 +241,11 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       ]);
       const nextCode = editor.getValue();
       setSourceCode(nextCode);
-      localStorage.setItem(getSourceCodeStorageKey(currentFilePath), nextCode);
+      localStorage.setItem(getStorageKey(currentFilePathRef.current), nextCode);
       editor.pushUndoStop();
       editor.focus();
     },
-    [currentFilePath],
+    [getStorageKey],
   );
 
   const cleanIssues = () => {
@@ -237,23 +274,24 @@ export function EditorProvider({ children }: { children: ReactNode }) {
 
   const getEditorCode = () => {
     cleanIssues();
-    const code = editorInstanceRef.current?.getValue() ?? "";
-    localStorage.setItem(getSourceCodeStorageKey(currentFilePath), code);
+    const code = editorInstanceRef.current?.getValue() ?? sourceCode;
+    localStorage.setItem(getStorageKey(currentFilePathRef.current), code);
     return code;
   };
 
   const loadFileContent = useCallback(
-    (filePath: string, initialCode?: string) => {
+    (filePath: string, fileInitialCode?: string) => {
       const fileData = fileSystem.getFile(filePath);
-      const storageKey = getSourceCodeStorageKey(filePath);
+      const storageKey = getStorageKey(filePath);
       const storedCode = localStorage.getItem(storageKey);
       const content =
-        fileData?.content ?? storedCode ?? initialCode ?? INITIAL_CODE;
+        storedCode ?? fileData?.content ?? fileInitialCode ?? initialCode ?? INITIAL_CODE;
 
       clearDebugLines();
       clearCurrentDebugLine();
 
       setCurrentFilePath(filePath);
+      currentFilePathRef.current = filePath;
       setSourceCode(content);
       editorInstanceRef.current?.setValue(content);
 
@@ -265,17 +303,18 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       // Update localStorage for this file
       localStorage.setItem(storageKey, content);
     },
-    [clearDebugLines, fileSystem],
+    [clearDebugLines, clearCurrentDebugLine, fileSystem, getStorageKey, initialCode],
   );
 
   const saveCurrentFile = useCallback(
     (filePath: string) => {
       const code = editorInstanceRef.current?.getValue() ?? sourceCode;
       fileSystem.createOrUpdateFile(filePath, code);
-      localStorage.setItem(getSourceCodeStorageKey(filePath), code);
+      localStorage.setItem(getStorageKey(filePath), code);
       setCurrentFilePath(filePath);
+      currentFilePathRef.current = filePath;
     },
-    [sourceCode, fileSystem],
+    [sourceCode, fileSystem, getStorageKey],
   );
 
   return (
@@ -301,6 +340,9 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         insertTextAtCursor,
         loadFileContent,
         saveCurrentFile,
+        storageScope,
+        initialCode,
+        getSourceCodeStorageKey: getStorageKey,
       }}
     >
       {loading ? <EditorSkeleton /> : children}

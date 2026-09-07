@@ -63,15 +63,29 @@ export function TeacherListCard({
   );
 }
 
+import { Pagination } from "@/components/ui/pagination";
+
+const PAGE_SIZE = 9;
+
 export function TeacherView({
   classes,
 }: {
   classes: ClassOption[];
 }) {
   const { showToast } = useToast();
+  const [page, setPage] = useState(1);
   const [showCreate, setShowCreate] = useState(false);
-  const listsQuery = useExerciseListsQuery();
-  const lists = listsQuery.data ?? [];
+  const listsQuery = useExerciseListsQuery({ page, pageSize: PAGE_SIZE });
+
+  const lists = Array.isArray(listsQuery.data)
+    ? listsQuery.data
+    : listsQuery.data?.items ?? [];
+  const totalPages = Array.isArray(listsQuery.data)
+    ? 1
+    : listsQuery.data?.totalPages ?? 1;
+  const totalItems = Array.isArray(listsQuery.data)
+    ? listsQuery.data.length
+    : listsQuery.data?.total ?? lists.length;
 
   const classMap = useMemo(
     () => Object.fromEntries(classes.map((c) => [c.id, c.name])),
@@ -115,15 +129,25 @@ export function TeacherView({
           description="Crie sua primeira lista de exercícios para começar."
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((list: ExerciseList) => (
-            <TeacherListCard
-              key={list.id}
-              list={list}
-              classMap={classMap}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filtered.map((list: ExerciseList) => (
+              <TeacherListCard
+                key={list.id}
+                list={list}
+                classMap={classMap}
+              />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            totalItems={totalItems}
+            pageSize={PAGE_SIZE}
+            className="mt-8"
+          />
+        </>
       )}
 
       <CreateListModal

@@ -89,6 +89,38 @@ class TestListSubmissions:
         assert len(data) >= 1
         assert all(s["studentId"] == student.id for s in data)
 
+    async def test_student_can_filter_submissions_by_exercise(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        org = await create_organization(async_session)
+        teacher = await create_user(async_session, org, role=UserRole.TEACHER, email="teacher_s2_filter@ex.com", password="secret")
+        student = await create_user(async_session, org, role=UserRole.STUDENT, email="student_s2_filter@ex.com", password="secret")
+        cls = await create_class(async_session, org, teacher)
+        exercise1 = await create_exercise(async_session, teacher)
+        exercise2 = await create_exercise(async_session, teacher)
+        ex_list = await create_exercise_list(async_session, teacher)
+        await create_class_exercise_list(async_session, ex_list, cls)
+
+        student_token = await get_token(async_client, "student_s2_filter@ex.com", "secret")
+
+        await async_client.post(
+            "/submissions",
+            json={"exercise_id": exercise1.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "code 1", "language_snapshot": {}, "status": "SUBMITTED"},
+            headers={"Authorization": f"Bearer {student_token}"},
+        )
+        await async_client.post(
+            "/submissions",
+            json={"exercise_id": exercise2.id, "exercise_list_id": ex_list.id, "class_id": cls.id, "code_snapshot": "code 2", "language_snapshot": {}, "status": "SUBMITTED"},
+            headers={"Authorization": f"Bearer {student_token}"},
+        )
+
+        response = await async_client.get(f"/submissions?exerciseId={exercise1.id}", headers={"Authorization": f"Bearer {student_token}"})
+        assert response.status_code == 200
+        data = response.json()
+        assert len(data) == 1
+        assert data[0]["exerciseId"] == exercise1.id
+        assert data[0]["codeSnapshot"] == "code 1"
+
 
 class TestGradeSubmission:
     async def test_teacher_can_grade_submission(
@@ -224,3 +256,113 @@ class TestGetSubmission:
         )
 
         assert response.status_code == 403
+
+    async def test_student_resubmission_replaces_old_submission_without_duplicates(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        org = await create_organization(async_session)
+        teacher = await create_user(async_session, org, role=UserRole.TEACHER, email="teacher_resub@ex.com", password="secret")
+        student = await create_user(async_session, org, role=UserRole.STUDENT, email="student_resub@ex.com", password="secret")
+        cls = await create_class(async_session, org, teacher)
+        exercise = await create_exercise(async_session, teacher)
+        ex_list = await create_exercise_list(async_session, teacher)
+        await create_class_exercise_list(async_session, ex_list, cls)
+
+        token = await get_token(async_client, "student_resub@ex.com", "secret")
+
+        # Submit first version
+        resp1 = await async_client.post(
+            "/submissions",
+            json={
+                "exercise_id": exercise.id,
+                "exercise_list_id": ex_list.id,
+                "class_id": cls.id,
+                "code_snapshot": "version 1",
+                "language_snapshot": {},
+                "status": "SUBMITTED",
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert resp1.status_code == 201
+
+        # Submit second version (should overwrite the first)
+        resp2 = await async_client.post(
+            "/submissions",
+            json={
+                "exercise_id": exercise.id,
+                "exercise_list_id": ex_list.id,
+                "class_id": cls.id,
+                "code_snapshot": "version 2",
+                "language_snapshot": {},
+                "status": "SUBMITTED",
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert resp2.status_code == 201
+
+        # Check list of submissions for student
+        list_resp = await async_client.get(
+            f"/submissions?exerciseId={exercise.id}",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert list_resp.status_code == 200
+        subs = list_resp.json()
+        assert len(subs) == 1
+        assert subs[0]["codeSnapshot"] == "version 2"
+
+    async def test_teacher_can_filter_submissions_by_exercise_list(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        org = await create_organization(async_session)
+        teacher = await create_user(async_session, org, role=UserRole.TEACHER, email="teacher_list_filter@ex.com", password="secret")
+        student = await create_user(async_session, org, role=UserRole.STUDENT, email="student_list_filter@ex.com", password="secret")
+        cls = await create_class(async_session, org, teacher)
+        ex1 = await create_exercise(async_session, teacher)
+        ex2 = await create_exercise(async_session, teacher)
+        list1 = await create_exercise_list(async_session, teacher)
+        list2 = await create_exercise_list(async_session, teacher)
+        await create_class_exercise_list(async_session, list1, cls)
+        await create_class_exercise_list(async_session, list2, cls)
+
+        s_token = await get_token(async_client, "student_list_filter@ex.com", "secret")
+        t_token = await get_token(async_client, "teacher_list_filter@ex.com", "secret")
+
+        # Submit to list1
+        await async_client.post(
+            "/submissions",
+            json={
+                "exercise_id": ex1.id,
+                "exercise_list_id": list1.id,
+                "class_id": cls.id,
+                "code_snapshot": "ex1 on list1",
+                "language_snapshot": {},
+                "status": "SUBMITTED",
+            },
+            headers={"Authorization": f"Bearer {s_token}"},
+        )
+        # Submit to list2
+        await async_client.post(
+            "/submissions",
+            json={
+                "exercise_id": ex2.id,
+                "exercise_list_id": list2.id,
+                "class_id": cls.id,
+                "code_snapshot": "ex2 on list2",
+                "language_snapshot": {},
+                "status": "SUBMITTED",
+            },
+            headers={"Authorization": f"Bearer {s_token}"},
+        )
+
+        # Teacher queries submissions for list1
+        resp = await async_client.get(
+            f"/submissions?exerciseListId={list1.id}",
+            headers={"Authorization": f"Bearer {t_token}"},
+        )
+        assert resp.status_code == 200
+        items = resp.json()
+        assert len(items) == 1
+        assert items[0]["exerciseId"] == ex1.id
+        assert items[0]["codeSnapshot"] == "ex1 on list1"
+        assert items[0]["student"]["email"] == "student_list_filter@ex.com"
+        assert items[0]["exercise"]["id"] == ex1.id
