@@ -65,10 +65,10 @@ export default function Login() {
       />
 
       {/* Main Content */}
-      <main className="grow flex items-center justify-center relative z-10 p-6 font-sans text-slate-500 dark:text-slate-400">
+      <main className="grow flex items-center justify-center relative z-10 p-6 font-sans text-muted-foreground">
         {/* Login Card */}
         <div className="relative z-10 w-full max-w-120">
-          <div className="relative dark:bg-[#182f34]/40 backdrop-blur-[3px] border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden">
+          <div className="relative bg-card/85 dark:bg-[#182f34]/40 backdrop-blur-[3px] border border-border dark:border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden">
             <BorderBeam
               colorFrom="#0dccf2"
               colorTo="#34d399"
@@ -93,17 +93,17 @@ export default function Login() {
 
             {/* Divider */}
             <div className="relative flex py-4 items-center">
-              <div className="grow border-t border-white/10"></div>
-              <span className="shrink-0 mx-4 text-xs text-slate-500 uppercase">
+              <div className="grow border-t border-border dark:border-white/10"></div>
+              <span className="shrink-0 mx-4 text-xs text-muted-foreground uppercase">
                 Ou continue com
               </span>
-              <div className="grow border-t border-white/10"></div>
+              <div className="grow border-t border-border dark:border-white/10"></div>
             </div>
 
             <SocialLogin />
 
             {/* Footer Link */}
-            <div className="mt-8 text-center border-t border-white/10 pt-6">
+            <div className="mt-8 text-center border-t border-border dark:border-white/10 pt-6">
               <p className="text-sm">
                 Não tem uma conta?{" "}
                 <Link

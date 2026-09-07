@@ -39,14 +39,14 @@ export default function ExerciseListDetailPage() {
 
   if (listQuery.isPending || !userId) {
     return (
-      <div className="min-h-screen bg-[#101f22] flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-[#0dccf2]" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-[#0A0A0F]">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
       <div className="flex flex-1 overflow-hidden relative z-10 w-full">
@@ -54,16 +54,16 @@ export default function ExerciseListDetailPage() {
         <div className="flex-1 flex flex-col overflow-y-auto w-full">
           <main className="max-w-4xl mx-auto px-6 py-10 w-full">
             {/* breadcrumb */}
-            <nav className="flex items-center gap-2 text-xs text-slate-500 mb-6">
+            <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-6">
               <Link
                 href="/exercise-lists"
-                className="hover:text-slate-300 transition-colors flex items-center gap-1"
+                className="hover:text-foreground transition-colors flex items-center gap-1"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Listas
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-700" />
-              <span className="text-slate-300 font-medium">
+              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/70" />
+              <span className="text-foreground font-medium">
                 {list?.title ?? "..."}
               </span>
             </nav>

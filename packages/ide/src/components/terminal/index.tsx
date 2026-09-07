@@ -103,7 +103,7 @@ export default function TerminalView({
             exit={{ y: "50%", opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={cn(
-              "absolute left-0 right-0 bottom-0 z-50 backdrop-blur-3xl bg-white/80 dark:bg-accent/95",
+              "absolute left-0 right-0 bottom-0 z-50 backdrop-blur-sm",
               "shadow-[0_-20px_60px_-40px_rgba(255,255,255,0.9)] dark:shadow-[0_-20px_60px_-40px_rgba(0,0,0,0.9)]",
             )}
             onClick={() => inputRef.current?.focus()}

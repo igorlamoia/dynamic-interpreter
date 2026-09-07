@@ -13,28 +13,28 @@ export function Instructions({
   };
 }) {
   return (
-    <div className="w-90 shrink-0 border-r border-white/5 bg-[#0d1a1d]/60 backdrop-blur-md overflow-y-auto">
+    <div className="w-90 shrink-0 border-r border-border bg-card/80 backdrop-blur-md overflow-y-auto dark:border-white/5 dark:bg-[#0d1a1d]/60">
       <div className="p-6">
         <h2 className="text-sm font-semibold text-[#0dccf2] uppercase tracking-wider mb-4">
           Instruções
         </h2>
-        <div className="prose prose-invert prose-sm max-w-none">
-          <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">
+        <div className="prose prose-sm max-w-none dark:prose-invert">
+          <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
             {exercise.description}
           </p>
         </div>
 
         <div className="mt-8 space-y-3">
-          <div className="flex justify-between text-xs text-slate-500 p-3 bg-white/5 rounded-lg">
+          <div className="flex justify-between text-xs text-muted-foreground p-3 bg-muted/70 dark:bg-white/5 rounded-lg">
             <span>Peso da Nota</span>
-            <span className="text-white font-medium">
+            <span className="text-foreground font-medium">
               {exercise.gradeWeight}
             </span>
           </div>
           {lastSubmission && (
-            <div className="flex justify-between text-xs text-slate-500 p-3 bg-white/5 rounded-lg">
+            <div className="flex justify-between text-xs text-muted-foreground p-3 bg-muted/70 dark:bg-white/5 rounded-lg">
               <span>Última Submissão</span>
-              <span className="text-white font-medium">
+              <span className="text-foreground font-medium">
                 {formatDate(lastSubmission.submittedAt)}
               </span>
             </div>

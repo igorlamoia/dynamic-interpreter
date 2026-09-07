@@ -13,7 +13,7 @@ export default function ExerciseListsPage() {
   if (!userId) return null;
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-[#0A0A0F]">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
       <div className="flex flex-1 overflow-hidden relative z-10 w-full">

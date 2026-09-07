@@ -25,7 +25,7 @@ export function ExerciseDetailModal({
       <DialogContent className="max-w-3xl backdrop-blur-3xl">
         <DialogHeader>
           <DialogTitle className="text-lg">{exercise.title}</DialogTitle>
-          <DialogDescription className="text-slate-400 text-xs">
+          <DialogDescription className="text-muted-foreground text-xs">
             Criado em{" "}
             {new Date(exercise.createdAt).toLocaleDateString("pt-BR", {
               day: "2-digit",
@@ -38,10 +38,10 @@ export function ExerciseDetailModal({
         <div className="overflow-y-auto max-h-[calc(90vh-180px)] space-y-6 p-6">
           {/* Description */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
               Enunciado
             </h4>
-            <div className="p-4 bg-black/20 rounded-xl border border-white/5 text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
+            <div className="p-4 bg-muted/60 dark:bg-black/20 rounded-xl border border-border dark:border-white/5 text-sm text-foreground whitespace-pre-wrap leading-relaxed">
               {exercise.description}
             </div>
           </div>
@@ -49,39 +49,39 @@ export function ExerciseDetailModal({
           {/* Test Cases */}
           {exercise.testCases.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                 Casos de Teste ({exercise.testCases.length})
               </h4>
               <div className="space-y-3">
                 {exercise.testCases.map((tc, idx) => (
                   <div
                     key={tc.id}
-                    className="p-3 bg-black/20 rounded-lg border border-white/5"
+                    className="p-3 bg-muted/60 dark:bg-black/20 rounded-lg border border-border dark:border-white/5"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-xs font-bold text-[#0dccf2]">
                         #{idx + 1}
                       </span>
                       {tc.label && (
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground">
                           {tc.label}
                         </span>
                       )}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                           Entrada
                         </p>
-                        <pre className="text-xs font-mono text-emerald-300 bg-black/30 p-2 rounded border border-white/5 whitespace-pre-wrap">
+                        <pre className="text-xs font-mono text-emerald-700 dark:text-emerald-300 bg-background/80 dark:bg-black/30 p-2 rounded border border-border dark:border-white/5 whitespace-pre-wrap">
                           {tc.input || "(vazio)"}
                         </pre>
                       </div>
                       <div>
-                        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                           Saída Esperada
                         </p>
-                        <pre className="text-xs font-mono text-cyan-300 bg-black/30 p-2 rounded border border-white/5 whitespace-pre-wrap">
+                        <pre className="text-xs font-mono text-cyan-700 dark:text-cyan-300 bg-background/80 dark:bg-black/30 p-2 rounded border border-border dark:border-white/5 whitespace-pre-wrap">
                           {tc.expectedOutput || "(vazio)"}
                         </pre>
                       </div>
@@ -93,10 +93,10 @@ export function ExerciseDetailModal({
           )}
         </div>
 
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
             variant="outline"
           >
             Fechar

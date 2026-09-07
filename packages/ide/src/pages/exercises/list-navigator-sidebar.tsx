@@ -23,15 +23,15 @@ export function ListNavigatorSidebar({
   ).length;
 
   return (
-    <div className="w-52 shrink-0 border-r border-white/5 bg-[#0b1719]/80 backdrop-blur-md flex flex-col overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/5">
+    <div className="w-52 shrink-0 border-r border-border bg-card/85 backdrop-blur-md flex flex-col overflow-hidden dark:border-white/5 dark:bg-[#0b1719]/80">
+      <div className="px-4 py-3 border-b border-border dark:border-white/5">
         <div className="flex items-center gap-2 mb-1">
           <ListChecks className="w-3.5 h-3.5 text-[#0dccf2] shrink-0" />
           <span className="text-[10px] font-semibold uppercase tracking-wider text-[#0dccf2]">
             Lista
           </span>
         </div>
-        <p className="text-xs text-slate-300 font-medium leading-tight line-clamp-2">
+        <p className="text-xs text-foreground font-medium leading-tight line-clamp-2">
           {list.title}
         </p>
       </div>
@@ -50,7 +50,7 @@ export function ListNavigatorSidebar({
                   ? "bg-[#0dccf2]/10 border-l-2 border-[#0dccf2] text-[#0dccf2]"
                   : isSubmitted
                     ? "border-l-2 border-emerald-500/50 text-emerald-400/80 hover:text-emerald-300 hover:bg-emerald-500/5"
-                    : "border-l-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/3"
+                    : "border-l-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-accent/70 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-white/3"
               }`}
             >
               <span className="shrink-0">
@@ -73,11 +73,11 @@ export function ListNavigatorSidebar({
         })}
       </div>
 
-      <div className="px-4 py-3 border-t border-white/5">
-        <div className="text-[10px] text-slate-500 mb-1.5">
+      <div className="px-4 py-3 border-t border-border dark:border-white/5">
+        <div className="text-[10px] text-muted-foreground mb-1.5">
           {completedCount}/{sorted.length} concluídos
         </div>
-        <div className="h-1 bg-white/8 rounded-full overflow-hidden">
+        <div className="h-1 bg-muted dark:bg-white/8 rounded-full overflow-hidden">
           <div
             className="h-full bg-linear-to-r from-[#0dccf2] to-[#10b981] rounded-full transition-all duration-500"
             style={{

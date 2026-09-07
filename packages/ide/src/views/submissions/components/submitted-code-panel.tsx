@@ -18,9 +18,9 @@ export function SubmittedCodePanel({
   return (
     <div className="lg:col-span-2 space-y-4">
       {/* Code */}
-      <div className="bg-[#182f34]/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
-        <div className="flex justify-between items-center px-6 py-3 border-b border-white/5">
-          <h3 className="text-sm font-semibold text-slate-300">
+      <div className="bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl overflow-hidden">
+        <div className="flex justify-between items-center px-6 py-3 border-b border-border dark:border-white/5">
+          <h3 className="text-sm font-semibold text-foreground">
             Código Submetido
           </h3>
           <button
@@ -31,8 +31,8 @@ export function SubmittedCodePanel({
             {compiling ? "Compilando..." : "▶ Recompilar"}
           </button>
         </div>
-        <CodeScrollArea className="max-h-[500px] bg-black/20">
-          <pre className="w-max min-w-full p-6 font-mono text-sm leading-relaxed text-slate-200">
+        <CodeScrollArea className="max-h-[500px] bg-muted/60 dark:bg-black/20">
+          <pre className="w-max min-w-full p-6 font-mono text-sm leading-relaxed text-foreground">
             <code>{codeSnapshot || "Nenhum código enviado"}</code>
           </pre>
         </CodeScrollArea>
@@ -41,11 +41,11 @@ export function SubmittedCodePanel({
       <CompileResultPanel compileResult={compileResult} />
 
       {/* Exercise Description */}
-      <div className="bg-[#182f34]/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+      <div className="bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl p-6">
         <h3 className="text-sm font-semibold text-[#0dccf2] uppercase tracking-wider mb-3">
           Enunciado do Exercício
         </h3>
-        <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
           {exerciseDescription}
         </p>
       </div>

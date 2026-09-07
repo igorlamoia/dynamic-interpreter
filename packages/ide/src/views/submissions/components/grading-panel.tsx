@@ -21,7 +21,7 @@ export function GradingPanel({
 }) {
   return (
     <div className="space-y-4">
-      <div className="bg-[#182f34]/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sticky top-24">
+      <div className="bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl p-6 sticky top-24">
         <h3 className="text-lg font-bold mb-6">
           <span className="bg-linear-to-r from-[#0dccf2] to-[#10b981] bg-clip-text text-transparent">
             Avaliação
@@ -41,7 +41,7 @@ export function GradingPanel({
 
         <form onSubmit={onSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
               Nota
             </label>
             <input
@@ -52,24 +52,24 @@ export function GradingPanel({
               value={score}
               onChange={(e) => setScore(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-slate-100 text-2xl font-bold text-center focus:outline-none focus:ring-1 focus:ring-[#0dccf2]/50 focus:border-[#0dccf2]/50 transition-all"
+              className="w-full px-4 py-3 bg-background/80 dark:bg-black/30 border border-input dark:border-white/10 rounded-lg text-foreground text-2xl font-bold text-center focus:outline-none focus:ring-1 focus:ring-[#0dccf2]/50 focus:border-[#0dccf2]/50 transition-all"
               placeholder="0.0"
             />
-            <div className="flex justify-between mt-1.5 text-xs text-slate-500">
+            <div className="flex justify-between mt-1.5 text-xs text-muted-foreground">
               <span>Mínimo: 0</span>
               <span>Máximo: 10</span>
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
               Feedback para o Aluno
             </label>
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               rows={5}
-              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-[#0dccf2]/50 focus:border-[#0dccf2]/50 transition-all text-sm resize-none"
+              className="w-full px-4 py-3 bg-background/80 dark:bg-black/30 border border-input dark:border-white/10 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#0dccf2]/50 focus:border-[#0dccf2]/50 transition-all text-sm resize-none"
               placeholder="Escreva seu feedback sobre o código do aluno..."
             />
           </div>

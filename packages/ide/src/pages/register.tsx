@@ -60,7 +60,7 @@ export default function Register() {
   };
 
   return (
-    <div className="relative min-h-screen text-slate-100 flex flex-col overflow-hidden">
+    <div className="relative min-h-screen text-foreground flex flex-col overflow-hidden">
       <SpaceBackground />
 
       <Navbar links={[{ label: "Entrar", href: "/login" }]} hasAuth={false} />
@@ -69,7 +69,7 @@ export default function Register() {
       <main className="relative font-sans z-10 grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-lg">
           {/* Card */}
-          <div className="relative dark:bg-[#182f34]/40 backdrop-blur-[3px] border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden">
+          <div className="relative bg-card/85 dark:bg-[#182f34]/40 backdrop-blur-[3px] border border-border dark:border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden">
             <BorderBeam
               colorFrom="#0dccf2"
               colorTo="#34d399"
@@ -81,7 +81,7 @@ export default function Register() {
               <Title>
                 <GradientText>Crie sua Conta</GradientText>
               </Title>
-              <p className="text-slate-400 text-sm mt-1">
+              <p className="text-muted-foreground text-sm mt-1">
                 Entre para o futuro da educação em programação.
               </p>
             </div>
@@ -96,15 +96,15 @@ export default function Register() {
 
             <div className="mt-6 flex flex-col items-center gap-4">
               <div className="relative w-full flex items-center">
-                <div className="grow border-t border-white/10"></div>
-                <span className="shrink-0 mx-4 text-slate-500 text-xs">
+                <div className="grow border-t border-border dark:border-white/10"></div>
+                <span className="shrink-0 mx-4 text-muted-foreground text-xs">
                   OU CONTINUE COM
                 </span>
-                <div className="grow border-t border-white/10"></div>
+                <div className="grow border-t border-border dark:border-white/10"></div>
               </div>
               <SocialLogin fullWidth />
 
-              <p className="mt-4 text-center text-sm dark:text-slate-400 text-slate-500">
+              <p className="mt-4 text-center text-sm text-muted-foreground">
                 Já tem uma conta?{" "}
                 <Link
                   href="/login"

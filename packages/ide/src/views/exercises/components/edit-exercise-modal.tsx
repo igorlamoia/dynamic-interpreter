@@ -149,7 +149,7 @@ export function EditExerciseModal({
       <DialogContent className="max-w-3xl backdrop-blur-3xl">
         <DialogHeader>
           <DialogTitle>Editar Exercicio</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Atualize o enunciado e substitua os casos de teste.
           </DialogDescription>
         </DialogHeader>
@@ -168,7 +168,7 @@ export function EditExerciseModal({
                   <FormControl>
                     <Input
                       {...field}
-                      className="h-12 bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="h-12"
                     />
                   </FormControl>
                   <FormMessage />
@@ -186,7 +186,7 @@ export function EditExerciseModal({
                     <Textarea
                       {...field}
                       rows={5}
-                      className="bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="focus:border-[#0dccf2]/50"
                     />
                   </FormControl>
                   <FormMessage />
@@ -238,7 +238,7 @@ export function EditExerciseModal({
                 <AccordionTrigger>
                   <div className="flex w-full items-center justify-between pr-2">
                     <span>Casos de Teste</span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-muted-foreground">
                       {fields.length} casos
                     </span>
                   </div>
@@ -274,11 +274,11 @@ export function EditExerciseModal({
             </Accordion>
           </form>
         </Form>
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>

@@ -85,13 +85,13 @@ export function CommunityLanguagesView() {
 
   const languages = Array.isArray(catalog.data)
     ? catalog.data
-    : catalog.data?.items ?? [];
+    : (catalog.data?.items ?? []);
   const totalPages = Array.isArray(catalog.data)
     ? 1
-    : catalog.data?.totalPages ?? 1;
+    : (catalog.data?.totalPages ?? 1);
   const totalItems = Array.isArray(catalog.data)
     ? catalog.data.length
-    : catalog.data?.total ?? languages.length;
+    : (catalog.data?.total ?? languages.length);
 
   const importLanguage = useImportLanguage();
   const [importingId, setImportingId] = useState<number | null>(null);
@@ -126,7 +126,10 @@ export function CommunityLanguagesView() {
     } catch (error) {
       showToast({
         type: "error",
-        message: getApiErrorMessage(error, "Não foi possível importar a linguagem."),
+        message: getApiErrorMessage(
+          error,
+          "Não foi possível importar a linguagem.",
+        ),
       });
     } finally {
       setImportingId(null);
@@ -135,18 +138,19 @@ export function CommunityLanguagesView() {
 
   return (
     <>
-      <header className="relative mb-8 overflow-hidden rounded-[2rem] border border-emerald-300/15 bg-[#0d1717]/90 px-6 py-9 shadow-[0_30px_100px_rgba(0,0,0,0.35)] sm:px-10">
-        <div className="pointer-events-none absolute -right-20 -top-32 size-96 rounded-full bg-emerald-300/10 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 left-1/3 h-px w-1/2 bg-linear-to-r from-transparent via-emerald-300/60 to-transparent" />
+      <header className="relative mb-8 overflow-hidden rounded-4xl border  px-6 py-9 shadow-[0_30px_100px_rgba(15,23,42,0.12)] border-primary/15 bg-primary/10 dark:bg-secondary/10 dark:shadow-[0_30px_100px_rgba(0,0,0,0.35)] sm:px-10">
+        <div className="pointer-events-none absolute -right-20 -top-32 size-96 rounded-full bg-secondary/10 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 left-1/3 h-px w-1/2 bg-linear-to-r from-transparent via-primary/90 to-transparent" />
         <div className="relative max-w-3xl">
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/8 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-200">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary dark:border-primary/20 dark:bg-primary/8 dark:text-primary">
             <Sparkles className="size-3.5" />
             Acervo colaborativo
           </span>
-          <h1 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
-            Atlas de <span className="text-emerald-300">linguagens</span>
+          <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-5xl">
+            Atlas de{" "}
+            <span className="text-primary dark:text-primary">linguagens</span>
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
             Descubra gramáticas criadas pela comunidade, examine cada eixo do
             DNA e importe uma base para experimentar no seu próprio acervo.
           </p>
@@ -156,10 +160,13 @@ export function CommunityLanguagesView() {
       <section aria-labelledby="catalog-title">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 id="catalog-title" className="text-xl font-bold text-white">
+            <h2
+              id="catalog-title"
+              className="text-xl font-bold text-foreground"
+            >
               Linguagens publicadas
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               A importação cria uma cópia privada e editável no seu acervo.
             </p>
           </div>
@@ -174,7 +181,7 @@ export function CommunityLanguagesView() {
                 setPage(1);
               }}
               placeholder="Buscar por nome ou descrição"
-              className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-300/35 focus:bg-emerald-300/5 focus:ring-2 focus:ring-emerald-300/10"
+              className="w-full rounded-xl border border-border bg-card/80 py-3 pl-11 pr-4 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary/35 focus:bg-primary/5 focus:ring-2 focus:ring-primary/10 dark:border-white/10 dark:bg-white/5 dark:text-white"
             />
           </label>
         </div>
@@ -190,20 +197,31 @@ export function CommunityLanguagesView() {
         />
 
         {catalog.isPending ? (
-          <div className="flex min-h-64 items-center justify-center" aria-label="Carregando catálogo">
-            <Loader2 className="size-7 animate-spin text-emerald-300" />
+          <div
+            className="flex min-h-64 items-center justify-center"
+            aria-label="Carregando catálogo"
+          >
+            <Loader2 className="size-7 animate-spin text-primary" />
           </div>
         ) : catalog.isError ? (
-          <div role="alert" className="rounded-2xl border border-red-400/15 bg-red-400/5 p-8 text-center text-sm text-red-200">
-            {getApiErrorMessage(catalog.error, "Não foi possível carregar o acervo.")}
+          <div
+            role="alert"
+            className="rounded-2xl border border-red-400/20 bg-red-400/5 p-8 text-center text-sm text-red-700 dark:border-red-400/15 dark:text-red-200"
+          >
+            {getApiErrorMessage(
+              catalog.error,
+              "Não foi possível carregar o acervo.",
+            )}
           </div>
         ) : languages.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-emerald-300/15 bg-emerald-300/3 px-6 py-16 text-center">
-            <Globe2 className="mx-auto size-9 text-emerald-300/60" />
-            <p className="mt-4 font-bold text-slate-200">
-              {hasActiveCriteria ? "Nenhuma linguagem encontrada" : "O atlas ainda está vazio"}
+          <div className="rounded-3xl border border-dashed border-primary/15 bg-primary/3 px-6 py-16 text-center">
+            <Globe2 className="mx-auto size-9 text-primary/60" />
+            <p className="mt-4 font-bold text-foreground">
+              {hasActiveCriteria
+                ? "Nenhuma linguagem encontrada"
+                : "O atlas ainda está vazio"}
             </p>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               {hasActiveCriteria
                 ? "Tente remover algum filtro de DNA ou alterar a busca."
                 : "Usuários da comunidade podem publicar pelo acervo pessoal."}
@@ -261,20 +279,22 @@ function DnaFiltersPanel({
   onClear: () => void;
 }) {
   return (
-    <div className="mb-7 rounded-2xl border border-white/8 bg-[#0c1216]/75 p-4 sm:p-5">
+    <div className="mb-7 rounded-2xl border border-border bg-card/80 p-4 dark:border-white/8 dark:bg-[#0c1216]/75 sm:p-5">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="flex size-8 items-center justify-center rounded-lg border border-emerald-300/15 bg-emerald-300/7 text-emerald-200">
+          <span className="flex size-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary dark:border-primary/15 dark:bg-primary/7 dark:text-primary">
             <SlidersHorizontal className="size-4" />
           </span>
           <div>
-            <h3 className="text-sm font-bold text-slate-100">Filtrar pelo DNA</h3>
-            <p className="text-[11px] text-slate-500">
+            <h3 className="text-sm font-bold text-foreground">
+              Filtrar pelo DNA
+            </h3>
+            <p className="text-[11px] text-muted-foreground">
               Combine características de diferentes eixos.
             </p>
           </div>
           {activeCount > 0 && (
-            <span className="rounded-full bg-emerald-300 px-2 py-0.5 text-[10px] font-black text-emerald-950">
+            <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-black text-primary">
               {activeCount} {activeCount === 1 ? "filtro" : "filtros"}
             </span>
           )}
@@ -283,7 +303,7 @@ function DnaFiltersPanel({
           <button
             type="button"
             onClick={onClear}
-            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-bold text-slate-400 transition hover:bg-white/5 hover:text-white"
+            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-bold text-muted-foreground transition hover:bg-accent hover:text-foreground dark:hover:bg-white/5 dark:hover:text-white"
           >
             <RotateCcw className="size-3.5" />
             Limpar DNA
@@ -294,10 +314,10 @@ function DnaFiltersPanel({
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {DNA_FILTER_GROUPS.map((group) => (
           <fieldset key={group.axis} className="min-w-0">
-            <legend className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-slate-600">
+            <legend className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
               {group.label}
             </legend>
-            <div className="grid grid-cols-2 gap-1 rounded-xl border border-white/6 bg-black/20 p-1">
+            <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-muted/60 p-1 dark:border-white/6 dark:bg-black/20">
               {group.options.map((option) => {
                 const selected = filters[group.axis] === option.value;
                 return (
@@ -309,8 +329,8 @@ function DnaFiltersPanel({
                     onClick={() => onToggle(group.axis, option.value)}
                     className={`min-w-0 rounded-lg px-2 py-2 text-[11px] font-bold transition ${
                       selected
-                        ? "bg-emerald-300 text-emerald-950 shadow-[0_4px_18px_rgba(110,231,183,0.16)]"
-                        : "text-slate-500 hover:bg-white/5 hover:text-slate-200"
+                        ? "bg-primary text-primary shadow-[0_4px_18px_rgba(110,231,183,0.16)]"
+                        : "text-muted-foreground hover:bg-background hover:text-foreground dark:hover:bg-white/5 dark:hover:text-slate-200"
                     }`}
                   >
                     {option.label}
@@ -339,7 +359,10 @@ function CommunityLanguageCard({
   onViewDna: () => void;
 }) {
   return (
-    <article data-testid="community-language-card" className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-white/8 bg-[#10151b]/90 p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-300/20 hover:shadow-[0_22px_60px_rgba(16,185,129,0.08)]">
+    <article
+      data-testid="community-language-card"
+      className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-border bg-card/85 p-5 transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_22px_60px_rgba(16,185,129,0.08)] dark:border-white/8 dark:bg-[#10151b]/90 dark:hover:border-primary/20"
+    >
       <div className="flex items-start gap-4">
         <img
           src={language.imageUrl || DEFAULT_LANGUAGE_IMAGE}
@@ -347,33 +370,60 @@ function CommunityLanguageCard({
           className="size-14 shrink-0 rounded-2xl object-cover ring-1 ring-white/10"
         />
         <div className="min-w-0 flex-1">
-          <h3 className="truncate text-lg font-extrabold text-white">{language.name}</h3>
-          <p className="mt-1 truncate text-xs text-slate-500">
-            por <span className="text-slate-300">{language.ownerName || "Comunidade"}</span>
+          <h3 className="truncate text-lg font-extrabold text-foreground">
+            {language.name}
+          </h3>
+          <p className="mt-1 truncate text-xs text-muted-foreground">
+            por{" "}
+            <span className="text-foreground">
+              {language.ownerName || "Comunidade"}
+            </span>
           </p>
         </div>
-        <Globe2 className="size-4 shrink-0 text-emerald-300/70" aria-label="Linguagem pública" />
+        <Globe2
+          className="size-4 shrink-0 text-primary/70"
+          aria-label="Linguagem pública"
+        />
       </div>
 
-      <p className="mt-4 line-clamp-2 min-h-10 text-sm leading-5 text-slate-400">
-        {language.description || "Uma linguagem personalizada compartilhada com a comunidade."}
+      <p className="mt-4 line-clamp-2 min-h-10 text-sm leading-5 text-muted-foreground">
+        {language.description ||
+          "Uma linguagem personalizada compartilhada com a comunidade."}
       </p>
 
       <div className="mt-4 flex flex-wrap gap-1.5" aria-label="Resumo do DNA">
         {getLanguageDNAChips(language.dna).map((item) => (
-          <span key={item} className="rounded-full border border-emerald-300/12 bg-emerald-300/5 px-2.5 py-1 text-[10px] font-semibold text-emerald-100/85">
+          <span
+            key={item}
+            className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary dark:border-primary/12 dark:bg-primary/5 dark:text-primary/85"
+          >
             {item}
           </span>
         ))}
       </div>
 
-      <div className="mt-auto flex gap-2 border-t border-white/6 pt-4">
-        <button type="button" onClick={onViewDna} aria-label={`Ver DNA de ${language.name}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/4 px-3 py-2.5 text-xs font-bold text-slate-200 transition hover:border-cyan-300/20 hover:bg-cyan-300/7 hover:text-cyan-100">
+      <div className="mt-auto flex gap-2 border-t border-border pt-4 dark:border-white/6">
+        <button
+          type="button"
+          onClick={onViewDna}
+          aria-label={`Ver DNA de ${language.name}`}
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-muted/70 px-3 py-2.5 text-xs font-bold text-foreground transition hover:border-cyan-300/20 hover:bg-cyan-300/10 hover:text-cyan-700 dark:border-white/8 dark:bg-white/4 dark:text-slate-200 dark:hover:bg-cyan-300/7 dark:hover:text-cyan-100"
+        >
           <Dna className="size-4" />
           Ver DNA
         </button>
-        <button type="button" onClick={onImport} disabled={importDisabled} aria-label={`Importar ${language.name}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-400 px-3 py-2.5 text-xs font-black text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-wait disabled:opacity-60">
-          {importing ? <Loader2 className="size-4 animate-spin" /> : <ArrowDownToLine className="size-4" />}
+        <button
+          type="button"
+          onClick={onImport}
+          disabled={importDisabled}
+          aria-label={`Importar ${language.name}`}
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary/30 px-3 py-2.5 text-xs font-black  transition hover:bg-primary disabled:cursor-wait disabled:opacity-60"
+        >
+          {importing ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <ArrowDownToLine className="size-4" />
+          )}
           {importing ? "Importando" : "Importar"}
         </button>
       </div>

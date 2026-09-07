@@ -222,12 +222,12 @@ export function OutputComparison({
   return (
     <div
       className={cn(
-        "w-full overflow-hidden rounded-lg border border-white/10 font-mono text-xs",
+        "w-full overflow-hidden rounded-lg border border-border font-mono text-xs dark:border-white/10",
         className
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.04] px-3 py-1.5">
+      <div className="flex items-center justify-between border-b border-border bg-muted/60 px-3 py-1.5 dark:border-white/10 dark:bg-white/[0.04]">
         <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest">
           <span className="text-emerald-400/70">
             <span className="font-bold mr-1">−</span>esperada

@@ -10,11 +10,11 @@ const Input = React.forwardRef<
       type={type}
       className={cn(
         `flex sm:text-sm focus:outline-none p-4 h-11 w-full rounded-md border
-        bg-white/5 text-foreground outline-none
+        bg-white/5 dark:bg-gray-800/50 text-foreground outline-none
         transition-colors placeholder:text-muted-foreground
-        focus:ring-0.5 focus:ring-0.5 focus:ring-[#0dccf2] focus:border-[#0dccf2]
-        dark:focus:bg-slate-900/60
-        border-slate-200/80 focus:bg-cyan-100/10 text-sm dark:border-slate-700/80 dark:bg-slate-950/60
+        focus:ring-0.5 focus:ring-0.5 focus:ring-primary focus:border-primary
+        dark:focus:bg-cyan-950/60
+        border-cyan-200/80 focus:bg-cyan-100/10 text-sm dark:border-cyan-700/80
         disabled:cursor-not-allowed disabled:opacity-50
         `,
         className,

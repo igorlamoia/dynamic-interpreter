@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   ListChecks,
 } from "lucide-react";
+import { RainbowButton } from "./ui/rainbow-button";
 
 type MenuItem = {
   id: string;
@@ -100,11 +101,11 @@ export function Sidebar() {
       : studentMenu;
 
   return (
-    <aside className="w-64 h-full shrink-0 flex flex-col bg-[#110c1c] border-r border-[#ffffff0a] relative z-40">
+    <aside className="w-64 h-full shrink-0 flex flex-col border-r border-border bg-card/90 relative z-40 dark:bg-transparent backdrop-blur-[3px] dark:border-[#ffffff0a]">
       <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto pt-6">
         {menuItems.map((item) => {
           const isActive = item.activeMatchers.some((matcher) =>
-            pathname.startsWith(matcher)
+            pathname.startsWith(matcher),
           );
 
           return (
@@ -113,18 +114,21 @@ export function Sidebar() {
               href={item.href}
               className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 group ${
                 isActive
-                  ? "bg-[#251e3c] border border-[#3b305c] text-white shadow-sm"
-                  : "text-[#8a8698] border border-transparent hover:text-slate-200 hover:bg-white/5"
+                  ? "bg-primary/15 border border-primary/30 text-foreground shadow-sm"
+                  : "text-muted-foreground border border-transparent hover:text-foreground hover:bg-accent/80 dark:text-[#8a8698] dark:hover:text-slate-200 dark:hover:bg-white/5"
               }`}
             >
               <div
                 className={`${
-                  isActive ? "text-[#e9e8ed]" : "text-[#8a8698] group-hover:text-slate-300 transition-colors"
+                  !isActive &&
+                  "text-muted-foreground group-hover:text-foreground transition-colors dark:text-[#8a8698] dark:group-hover:text-slate-300"
                 }`}
               >
                 {item.icon}
               </div>
-              <span className={`text-[14px] font-bold ${isActive ? "text-white" : ""}`}>
+              <span
+                className={`text-[14px] font-bold ${isActive ? "text-foreground dark:text-white" : ""}`}
+              >
                 {item.label}
               </span>
             </Link>

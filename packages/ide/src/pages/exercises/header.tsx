@@ -27,7 +27,7 @@ export function Header({
   validateSubmission: any;
 }) {
   return (
-    <header className="relative z-10 flex justify-between items-center px-6 py-3 bg-[#101f22]/90 backdrop-blur-md border-b border-white/5">
+    <header className="relative z-10 flex justify-between items-center px-6 py-3 bg-background/90 backdrop-blur-md border-b border-border dark:border-white/5">
       <div className="flex items-center gap-4">
         <Link
           href={
@@ -35,28 +35,28 @@ export function Header({
               ? `/exercise-lists/${list.id}${classId ? `?classId=${classId}` : ""}`
               : "/dashboard"
           }
-          className="text-xs text-slate-500 hover:text-white transition-colors"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           {list ? `← ${list.title}` : "← Painel"}
         </Link>
-        <div className="h-4 w-px bg-white/10" />
+        <div className="h-4 w-px bg-border" />
         <div>
           <h1 className="text-lg font-bold bg-linear-to-r from-[#0dccf2] to-[#10b981] bg-clip-text text-transparent">
             {exercise.title}
           </h1>
           <div className="flex items-center gap-3 mt-0.5">
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-muted-foreground">
               Turma: {exercise.class?.name}
             </span>
             {deadlineStr && (
               <span
-                className={`text-xs ${isOverdue ? "text-red-400" : "text-slate-500"}`}
+                className={`text-xs ${isOverdue ? "text-red-400" : "text-muted-foreground"}`}
               >
                 Prazo: {formatDate(deadlineStr)}
               </span>
             )}
             {isOverdue && (
-              <span className="text-xs px-1.5 py-0.5 rounded bg-red-500/20 text-red-300">
+              <span className="text-xs px-1.5 py-0.5 rounded bg-red-500/15 text-red-700 dark:bg-red-500/20 dark:text-red-300">
                 Atrasado
               </span>
             )}
@@ -67,7 +67,7 @@ export function Header({
         {error && <span className="text-xs text-red-400">{error}</span>}
         {(submitted || isAlreadySubmitted) && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-            <span className="text-xs text-emerald-300 font-medium">
+            <span className="text-xs text-emerald-700 dark:text-emerald-300 font-medium">
               ✓ Enviado
             </span>
             {lastSubmission?.score != null && (
@@ -78,7 +78,7 @@ export function Header({
           </div>
         )}
         {isOverdue ? (
-          <div className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 bg-white/5 border border-white/10 cursor-not-allowed">
+          <div className="px-4 py-2 rounded-xl text-xs font-semibold text-muted-foreground bg-muted/70 dark:bg-white/5 border border-border dark:border-white/10 cursor-not-allowed">
             Prazo encerrado
           </div>
         ) : (

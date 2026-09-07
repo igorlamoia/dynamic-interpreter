@@ -81,10 +81,10 @@ export function JoinClassModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#182f34] border-white/10 text-white">
+      <DialogContent className="bg-popover text-popover-foreground dark:bg-[#182f34] dark:border-white/10 dark:text-white">
         <DialogHeader className="flex flex-col">
           <DialogTitle>Entrar em Turma</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Digite o código de acesso fornecido por seu professor
           </DialogDescription>
         </DialogHeader>
@@ -108,7 +108,7 @@ export function JoinClassModal({
                       }
                       maxLength={6}
                       placeholder="EX: A3F9K2"
-                      className="h-12 bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50 font-mono text-center text-base tracking-widest uppercase"
+                      className="h-12 font-mono text-center text-base tracking-widest uppercase"
                     />
                   </FormControl>
                   <FormMessage />
@@ -118,12 +118,12 @@ export function JoinClassModal({
           </form>
         </Form>
 
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>

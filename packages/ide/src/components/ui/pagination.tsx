@@ -66,16 +66,16 @@ export function Pagination({
       aria-label="Navegação por páginas"
     >
       {totalItems !== undefined && (
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-muted-foreground">
           {startItem !== undefined && endItem !== undefined ? (
             <>
-              Mostrando <span className="font-semibold text-slate-200">{startItem}</span> a{" "}
-              <span className="font-semibold text-slate-200">{endItem}</span> de{" "}
-              <span className="font-semibold text-slate-200">{totalItems}</span> resultados
+              Mostrando <span className="font-semibold text-foreground">{startItem}</span> a{" "}
+              <span className="font-semibold text-foreground">{endItem}</span> de{" "}
+              <span className="font-semibold text-foreground">{totalItems}</span> resultados
             </>
           ) : (
             <>
-              Total de <span className="font-semibold text-slate-200">{totalItems}</span> itens
+              Total de <span className="font-semibold text-foreground">{totalItems}</span> itens
             </>
           )}
         </p>
@@ -90,7 +90,7 @@ export function Pagination({
             aria-label="Página anterior"
             className={cn(
               "inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors",
-              "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:border-cyan-400/30 hover:text-white",
+              "border-border bg-card/80 text-foreground hover:bg-accent hover:border-cyan-400/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
               page <= 1 && "opacity-40 cursor-not-allowed pointer-events-none",
             )}
           >
@@ -124,7 +124,7 @@ export function Pagination({
                     "min-w-8 h-8 px-2 rounded-xl text-xs font-semibold border transition-all flex items-center justify-center",
                     isCurrent
                       ? "bg-[#0dccf2]/20 border-[#0dccf2]/60 text-[#0dccf2] shadow-[0_0_12px_rgba(13,204,242,0.25)]"
-                      : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:border-cyan-400/30 hover:text-white",
+                      : "border-border bg-card/80 text-foreground hover:bg-accent hover:border-cyan-400/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
                   )}
                 >
                   {item}
@@ -140,7 +140,7 @@ export function Pagination({
             aria-label="Próxima página"
             className={cn(
               "inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors",
-              "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:border-cyan-400/30 hover:text-white",
+              "border-border bg-card/80 text-foreground hover:bg-accent hover:border-cyan-400/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
               page >= totalPages && "opacity-40 cursor-not-allowed pointer-events-none",
             )}
           >

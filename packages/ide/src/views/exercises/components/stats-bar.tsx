@@ -28,7 +28,7 @@ export function StatsBar({ exercises }: { exercises: Exercise[] }) {
           <span className={`text-3xl font-black tabular-nums ${stat.color}`}>
             {stat.value}
           </span>
-          <span className="text-xs text-slate-400 font-medium leading-tight">
+          <span className="text-xs text-muted-foreground font-medium leading-tight">
             {stat.label}
           </span>
         </div>

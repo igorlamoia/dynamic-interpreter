@@ -55,7 +55,7 @@ export default function ClassDetail() {
 
   if (!user || exercisesQuery.isPending) {
     return (
-      <div className="relative min-h-screen bg-[#101f22] text-slate-100 flex items-center justify-center">
+      <div className="relative min-h-screen bg-background text-foreground flex items-center justify-center">
         <SpaceBackground />
         <div className="w-12 h-12 rounded-full border-4 border-[#0dccf2]/20 border-t-[#0dccf2] animate-spin" />
       </div>
@@ -73,7 +73,7 @@ export default function ClassDetail() {
   }
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-[#0A0A0F]">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
 
@@ -121,19 +121,19 @@ export default function ClassDetail() {
                     Dashboard da Turma
                   </span>
                 </div>
-                <h1 className="text-3xl font-bold tracking-tight text-white mb-2">
+                <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
                   Recursos & Estudantes
                 </h1>
               </div>
-              <div className="flex bg-white/5 p-1 rounded-xl border border-white/5">
+              <div className="flex rounded-xl border border-border bg-card/70 p-1 dark:border-white/5 dark:bg-white/5">
                 <button
-                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "lists" ? "bg-[#0dccf2]/20 text-[#0dccf2] shadow-lg shadow-[#0dccf2]/20" : "text-slate-400 hover:text-slate-200"}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "lists" ? "bg-[#0dccf2]/20 text-[#0dccf2] shadow-lg shadow-[#0dccf2]/20" : "text-muted-foreground hover:text-foreground"}`}
                   onClick={() => setActiveTab("lists")}
                 >
                   Listas
                 </button>
                 <button
-                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "members" ? "bg-[#0dccf2]/20 text-[#0dccf2] shadow-lg shadow-[#0dccf2]/20" : "text-slate-400 hover:text-slate-200"}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "members" ? "bg-[#0dccf2]/20 text-[#0dccf2] shadow-lg shadow-[#0dccf2]/20" : "text-muted-foreground hover:text-foreground"}`}
                   onClick={() => setActiveTab("members")}
                 >
                   Todos da Turma

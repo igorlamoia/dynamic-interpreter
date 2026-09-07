@@ -59,15 +59,15 @@ export default function ExerciseWorkspace({
     submissionsQuery.isPending
   ) {
     return (
-      <div className="min-h-screen bg-[#101f22] flex items-center justify-center">
-        <div className="text-slate-500">Carregando exercício...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Carregando exercício...</div>
       </div>
     );
   }
 
   if (error || !exercise) {
     return (
-      <div className="min-h-screen bg-[#101f22] flex items-center justify-center flex-col gap-4">
+      <div className="min-h-screen bg-background flex items-center justify-center flex-col gap-4">
         <div className="text-red-400">{error || "Erro desconhecido"}</div>
         <Link
           href="/dashboard"
@@ -80,7 +80,7 @@ export default function ExerciseWorkspace({
   }
 
   return (
-    <div className="relative min-h-screen bg-[#101f22] text-slate-100 flex flex-col overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-background text-foreground flex flex-col overflow-hidden font-sans">
       <SpaceBackground />
       <EditorProvider
         key={exerciseId}
