@@ -96,7 +96,7 @@ describe("Sidebar", () => {
     const { container, root } = render("/languages", false);
 
     const link = container.querySelector('a[href="/languages"]');
-    expect(link?.className).toContain("bg-[#251e3c]");
+    expect(link?.className).toContain("bg-primary/15");
 
     act(() => root.unmount());
   });
@@ -105,7 +105,7 @@ describe("Sidebar", () => {
     const { container, root } = render("/language-creator", false);
 
     const link = container.querySelector('a[href="/languages"]');
-    expect(link?.className).toContain("bg-[#251e3c]");
+    expect(link?.className).toContain("bg-primary/15");
 
     act(() => root.unmount());
   });

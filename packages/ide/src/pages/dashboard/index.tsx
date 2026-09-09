@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
 import { ClassesGrid } from "@/views/dashboard/components/classes-grid";
 import { CreateClassModal } from "@/views/dashboard/components/create-class-modal";
-import { DashboardHeader } from "@/pages/dashboard/dashboard-header";
+import { DashboardHeader } from "@/views/dashboard/components/dashboard-header";
 import { JoinClassModal } from "@/views/dashboard/components/join-class-modal";
 import { useClassesQuery } from "@/hooks/use-api-queries";
 import { useAuth } from "@/contexts/AuthContext";

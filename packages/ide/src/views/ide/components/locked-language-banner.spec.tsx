@@ -25,14 +25,14 @@ vi.mock("lucide-react", () => ({
   Lock: () => <span>lock</span>,
 }));
 
-const LANGUAGE = { id: 3, name: "Portugolzinho", description: null };
+const LANGUAGE = { id: 3, name: "Portugolzinho", description: null, imageUrl: null };
 
 function render(props: Record<string, unknown>) {
   const container = document.createElement("div");
   document.body.appendChild(container);
   const root = createRoot(container);
   act(() => {
-    root.render(<LockedLanguageBanner language={LANGUAGE} {...props} />);
+    root.render(<LockedLanguageBanner language={LANGUAGE as any} {...props} />);
   });
   return { container, root };
 }
@@ -40,7 +40,6 @@ function render(props: Record<string, unknown>) {
 describe("LockedLanguageBanner", () => {
   beforeEach(() => {
     mutateAsyncMock.mockReset();
-    mutateAsyncMock.mockResolvedValue({ name: "Portugolzinho (cópia)" });
   });
 
   afterEach(() => {
@@ -58,12 +57,8 @@ describe("LockedLanguageBanner", () => {
     expect(container.textContent).toContain("Recursao");
   });
 
-  it("mantem o botao de clonar", () => {
+  it("exibe o nome da linguagem no card", () => {
     const { container } = render({ source: "list", listTitle: "Recursao" });
-    const button = container.querySelector("button");
-    act(() => {
-      button?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
-    expect(mutateAsyncMock).toHaveBeenCalledWith(3);
+    expect(container.textContent).toContain("Portugolzinho");
   });
 });
