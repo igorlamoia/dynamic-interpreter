@@ -67,7 +67,7 @@ describe("ReviewStep", () => {
         <ReviewStep
           values={{
             preview: {
-              languageLabel: "Teste",
+              name: "Teste",
               basedOnLabel: "Pythonica",
               languageImageUrl: "https://img.example/teste.jpg",
               dna: [],

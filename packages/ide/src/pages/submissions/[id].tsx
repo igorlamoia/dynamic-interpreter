@@ -76,30 +76,40 @@ export default function GradeSubmission() {
       });
       setCompileResult(data);
     } catch {
-      setCompileResult({ valid: false, errors: ["Erro de conexão"], warnings: [] });
+      setCompileResult({
+        valid: false,
+        errors: ["Erro de conexão"],
+        warnings: [],
+      });
       showToast({ type: "error", message: "Erro ao recompilar submissão." });
     }
   };
 
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString("pt-BR", {
-      day: "2-digit", month: "2-digit", year: "numeric",
-      hour: "2-digit", minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
 
   if (submissionQuery.isPending) {
     return (
-      <div className="min-h-screen bg-[#101f22] flex items-center justify-center">
-        <div className="text-slate-500">Carregando submissão...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Carregando submissão...</div>
       </div>
     );
   }
 
   if (error && !submission) {
     return (
-      <div className="min-h-screen bg-[#101f22] flex items-center justify-center flex-col gap-4">
+      <div className="min-h-screen bg-background flex items-center justify-center flex-col gap-4">
         <div className="text-red-400">{error}</div>
-        <Link href="/dashboard" className="text-sm text-[#0dccf2] hover:underline">
+        <Link
+          href="/dashboard"
+          className="text-sm text-primary hover:underline"
+        >
           Voltar ao Painel
         </Link>
       </div>
@@ -107,27 +117,32 @@ export default function GradeSubmission() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#101f22] text-slate-100 font-sans overflow-hidden">
+    <div className="relative min-h-screen bg-background text-foreground font-sans overflow-hidden">
       <SpaceBackground />
 
-      <header className="relative z-20 w-full border-b border-white/5 bg-[#101f22]/80 backdrop-blur-md">
+      <header className="relative z-20 w-full border-b border-border bg-background/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
-          <Link href="/dashboard" className="text-sm text-slate-400 hover:text-white transition-colors">
+          <Link
+            href="/dashboard"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
             ← Painel
           </Link>
           {submission?.exerciseListId && (
             <>
-              <div className="h-4 w-px bg-white/10" />
+              <div className="h-4 w-px bg-border" />
               <Link
                 href={`/exercise-lists/${submission.exerciseListId}`}
-                className="text-sm text-[#0dccf2] hover:text-[#0dccf2]/80 transition-colors"
+                className="text-sm text-primary hover:text-primary/80 transition-colors"
               >
                 ← Voltar à Lista
               </Link>
             </>
           )}
-          <div className="h-4 w-px bg-white/10" />
-          <h1 className="text-lg font-bold text-white">Correção de Exercício</h1>
+          <div className="h-4 w-px bg-border" />
+          <h1 className="text-lg font-bold text-foreground">
+            Correção de Exercício
+          </h1>
         </div>
       </header>
 

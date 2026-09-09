@@ -22,7 +22,7 @@ export function RadioSelector({
         checked={field.value === value}
         onChange={() => field.onChange?.(value)}
       />
-      <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium text-slate-400 transition-all peer-checked:bg-white/10 peer-checked:text-[#0dccf2] peer-checked:shadow-sm">
+      <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium text-slate-400 transition-all peer-checked:bg-white/10 peer-checked:text-primary peer-checked:shadow-sm">
         <Icon className="w-4 h-4" />
         <span>{label}</span>
       </div>

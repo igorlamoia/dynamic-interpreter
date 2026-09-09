@@ -7,8 +7,8 @@ export function StatsBar({ exercises }: { exercises: Exercise[] }) {
     {
       label: "Total de Exercícios",
       value: exercises.length,
-      color: "text-[#0dccf2]",
-      bgColor: "bg-[#0dccf2]/10 border-[#0dccf2]/20",
+      color: "text-primary",
+      bgColor: "bg-primary/10 border-primary/20",
     },
     {
       label: "Casos de Teste",
@@ -28,7 +28,7 @@ export function StatsBar({ exercises }: { exercises: Exercise[] }) {
           <span className={`text-3xl font-black tabular-nums ${stat.color}`}>
             {stat.value}
           </span>
-          <span className="text-xs text-slate-400 font-medium leading-tight">
+          <span className="text-xs text-muted-foreground font-medium leading-tight">
             {stat.label}
           </span>
         </div>

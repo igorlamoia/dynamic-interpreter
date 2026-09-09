@@ -15,8 +15,8 @@ describe("Grammar Typing Mode", () => {
 
   it("accepts untyped declarations/functions in untyped mode", () => {
     const source = `
-      funcao soma(a, b) { return a + b; }
-      funcao main() { variavel x = 1; return soma(x, 2); }
+      function soma(a, b) { return a + b; }
+      function main() { variable x = 1; return soma(x, 2); }
     `;
 
     expect(() =>
@@ -34,7 +34,7 @@ describe("Grammar Typing Mode", () => {
 
   it("rejects typed variable declaration in untyped mode", () => {
     expect(() =>
-      compileToIr(`funcao main(){ int x = 1; }`, {
+      compileToIr(`function main(){ int x = 1; }`, {
         grammar: { typingMode: "untyped" },
       }),
     ).toThrow(/Unexpected|type|statement/i);
@@ -42,7 +42,7 @@ describe("Grammar Typing Mode", () => {
 
   it("rejects typed parameters in untyped mode", () => {
     expect(() =>
-      compileToIr(`funcao soma(int a){ return a; }`, {
+      compileToIr(`function soma(int a){ return a; }`, {
         grammar: { typingMode: "untyped" },
       }),
     ).toThrow(/Unexpected|type|parameter/i);
@@ -141,8 +141,8 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
-            variavel x = 0;
+          function main() {
+            variable x = 0;
             scan(x);
           }
         `,
@@ -155,7 +155,7 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             lista[] = [];
             scan(lista[1][2]);
           }
@@ -169,8 +169,8 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
-            variavel x = 0;
+          function main() {
+            variable x = 0;
             scan(int, x);
           }
         `,
@@ -183,7 +183,7 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             lista[] = [];
             return 0;
           }
@@ -197,7 +197,7 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             lista[] = [];
             return 0;
           }
@@ -331,7 +331,7 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             lista[10] = [];
             return 0;
           }
@@ -345,7 +345,7 @@ describe("Grammar Typing Mode", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             lista[] = [];
             return 0;
           }

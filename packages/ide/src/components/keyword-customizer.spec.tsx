@@ -347,7 +347,7 @@ describe("KeywordCustomizer", () => {
     });
   });
 
-  it("shows only variavel in untyped mode and reveals typed keywords after selecting typed", () => {
+  it("shows only variable in untyped mode and reveals typed keywords after selecting typed", () => {
     useKeywordsMock.mockReturnValue(createKeywordsContext());
 
     const { container, root } = render();
@@ -358,7 +358,7 @@ describe("KeywordCustomizer", () => {
         (input) => (input as HTMLInputElement).value,
       );
 
-    expect(getInputValues()).toContain("variavel");
+    expect(getInputValues()).toContain("variable");
     expect(getInputValues()).not.toContain("int");
     expect(getInputValues()).not.toContain("float");
     expect(getInputValues()).not.toContain("bool");
@@ -468,11 +468,11 @@ describe("KeywordCustomizer", () => {
 
     const { container, root } = render();
 
-    const languageNameInput = container.querySelector(
+    const nameInput = container.querySelector(
       'input[aria-label="Nome da linguagem"]',
     ) as HTMLInputElement | null;
-    expect(languageNameInput).toBeInstanceOf(HTMLInputElement);
-    setControlValue(languageNameInput!, "Didatica Neon");
+    expect(nameInput).toBeInstanceOf(HTMLInputElement);
+    setControlValue(nameInput!, "Didatica Neon");
 
     clickButtonByText(container, "Continuar");
     const keywordInput = Array.from(container.querySelectorAll("input")).find(
@@ -566,11 +566,11 @@ describe("KeywordCustomizer", () => {
 
     const { container, root } = render();
 
-    const languageNameInput = container.querySelector(
+    const nameInput = container.querySelector(
       'input[aria-label="Nome da linguagem"]',
     ) as HTMLInputElement | null;
-    expect(languageNameInput).toBeInstanceOf(HTMLInputElement);
-    setControlValue(languageNameInput!, "Doc Neon");
+    expect(nameInput).toBeInstanceOf(HTMLInputElement);
+    setControlValue(nameInput!, "Doc Neon");
 
     clickButtonByText(container, "Continuar");
 
@@ -631,7 +631,7 @@ describe("KeywordCustomizer", () => {
     ).toBe(true);
     expect(
       Array.from(container.querySelectorAll("textarea")).some((textarea) =>
-        textarea.getAttribute("aria-label")?.includes("funcao descrição"),
+        textarea.getAttribute("aria-label")?.includes("function descrição"),
       ),
     ).toBe(true);
     expect(

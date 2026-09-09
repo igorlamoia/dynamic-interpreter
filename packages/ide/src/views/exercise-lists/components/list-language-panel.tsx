@@ -50,11 +50,11 @@ export function ListLanguagePanel({
   };
 
   return (
-    <div className="bg-white/3 backdrop-blur-xl border border-white/8 rounded-2xl p-6 space-y-3">
+    <div className="bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-6 space-y-3">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 min-w-0">
-          <Languages className="w-4 h-4 text-[#0dccf2] shrink-0" />
-          <h2 className="font-semibold text-slate-200">Linguagem da lista</h2>
+          <Languages className="w-4 h-4 text-primary shrink-0" />
+          <h2 className="font-semibold text-foreground">Linguagem da lista</h2>
         </div>
         {!editing && (
           <HeroButton
@@ -77,7 +77,7 @@ export function ListLanguagePanel({
       </div>
 
       {!editing && (
-        <p className="flex items-center gap-2 text-sm text-slate-300">
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
           {list.languagePolicy === "LOCKED" && list.lockedLanguage ? (
             <>
               <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
@@ -138,7 +138,7 @@ export function ListLanguagePanel({
       )}
 
       {publishedCount > 0 && (
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           Esta lista está publicada em {publishedCount}{" "}
           {publishedCount === 1 ? "turma" : "turmas"}. Alterar a linguagem vale
           para quem ainda não entregou; o que já foi enviado não muda.

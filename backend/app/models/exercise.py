@@ -43,7 +43,12 @@ class Exercise(Base):
     updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
 
     teacher: Mapped["User"] = relationship("User", back_populates="exercises")
-    test_cases: Mapped[list["TestCase"]] = relationship("TestCase", back_populates="exercise", cascade="all, delete-orphan")
+    test_cases: Mapped[list["TestCase"]] = relationship(
+        "TestCase",
+        back_populates="exercise",
+        cascade="all, delete-orphan",
+        order_by="TestCase.order_index",
+    )
     submissions: Mapped[list["Submission"]] = relationship("Submission", back_populates="exercise")
     list_items: Mapped[list["ExerciseListItem"]] = relationship("ExerciseListItem", back_populates="exercise")
     locked_language: Mapped["Language | None"] = relationship("Language")

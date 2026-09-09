@@ -72,7 +72,7 @@ export function buildDynamicArraySnippet(
 
 function buildRichReviewSnippet(draft: StoredKeywordCustomization): string {
   const lineEnding = buildLineEnding(draft);
-  const funcao = getKeyword(draft, "funcao");
+  const functionKeyword = getKeyword(draft, "function");
   const print = getKeyword(draft, "print");
   const scan = getKeyword(draft, "scan");
   const conditional = getKeyword(draft, "if");
@@ -89,7 +89,7 @@ function buildRichReviewSnippet(draft: StoredKeywordCustomization): string {
   const floatType = getKeyword(draft, "float");
   const boolType = getKeyword(draft, "bool");
   const stringType = getKeyword(draft, "string");
-  const variableKeyword = getKeyword(draft, "variavel");
+  const variableKeyword = getKeyword(draft, "variable");
   const boolTrue = draft.booleanLiteralMap.true?.trim() || "true";
   const boolFalse = draft.booleanLiteralMap.false?.trim() || "false";
   const logicalOr = buildOperatorWord(draft, "logical_or", "ou");
@@ -123,7 +123,7 @@ function buildRichReviewSnippet(draft: StoredKeywordCustomization): string {
     draft.modes.typing === "untyped" ? genericDeclarations : typedDeclarations;
 
   if (draft.modes.block === "indentation") {
-    return `${funcao} main():
+    return `${functionKeyword} main():
   ${declarations.join("\n\t")}
   ${arrayLine}
   ${print}("Olá Mundo!")${lineEnding}
@@ -157,7 +157,7 @@ function buildRichReviewSnippet(draft: StoredKeywordCustomization): string {
   const open = draft.blockDelimiters.open.trim() || "{";
   const close = draft.blockDelimiters.close.trim() || "}";
 
-  return `${funcao} main()${open}
+  return `${functionKeyword} main()${open}
   ${declarations.join("\n  ")}
   ${arrayLine}
   ${print}("Olá Mundo!")${lineEnding}
@@ -201,7 +201,7 @@ export function untypedVariableSnippet(
   draft: StoredKeywordCustomization,
 ): string {
   const lineEnding = buildLineEnding(draft);
-  const variable = getKeyword(draft, "variavel");
+  const variable = getKeyword(draft, "variable");
   return `${variable} nome = "Kiki"${lineEnding}\n${variable} idade = 25${lineEnding}\n${variable} altura = 1.75${lineEnding}\n${variable} estudante = true${lineEnding}`;
 }
 export function typedVariableSnippet(
@@ -229,9 +229,9 @@ export function buildIdentationSnippet(
   const print = getKeyword(draft, "print");
   const boolTrue = draft.booleanLiteralMap.true?.trim() || "true";
   const lineEnding = buildLineEnding(draft);
-  const funcao = getKeyword(draft, "funcao");
+  const functionKeyword = getKeyword(draft, "function");
 
-  const baseCodeSnippet = `${funcao} main()`;
+  const baseCodeSnippet = `${functionKeyword} main()`;
 
   return `${baseCodeSnippet}:\n\t${conditional} (${boolTrue}):\n\t\t${print}("Olá Mundo!")\n\t${otherwise}:\n\t\t${print}("Sou mudo")`;
 }
@@ -242,8 +242,8 @@ export function buildDelimiterSnippet(
   const print = getKeyword(draft, "print");
   const scan = getKeyword(draft, "scan");
   const lineEnding = buildLineEnding(draft);
-  const funcao = getKeyword(draft, "funcao");
-  const baseCodeSnippet = `${funcao} main()`;
+  const functionKeyword = getKeyword(draft, "function");
+  const baseCodeSnippet = `${functionKeyword} main()`;
 
   const open = draft.blockDelimiters.open.trim() || "{";
   const close = draft.blockDelimiters.close.trim() || "}";

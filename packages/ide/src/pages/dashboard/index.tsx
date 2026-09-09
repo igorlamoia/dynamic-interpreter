@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
 import { ClassesGrid } from "@/views/dashboard/components/classes-grid";
 import { CreateClassModal } from "@/views/dashboard/components/create-class-modal";
-import { DashboardHeader } from "@/views/dashboard/components/dashboard-header";
+import { DashboardHeader } from "@/pages/dashboard/dashboard-header";
 import { JoinClassModal } from "@/views/dashboard/components/join-class-modal";
 import { useClassesQuery } from "@/hooks/use-api-queries";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,10 +37,11 @@ export default function Dashboard() {
 
   const handleClassJoined = (message: string) => {
     setSuccess(message);
+    void classesQuery.refetch();
   };
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-[#0A0A0F]">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
       <div className="flex flex-1 overflow-hidden relative z-10">
@@ -51,33 +52,35 @@ export default function Dashboard() {
               <CommunityDashboard />
             ) : (
               <>
-            {/* Alerts */}
-            {error && (
-              <Alert
-                variant="error"
-                onClose={() => setError("")}
-                className="mb-8"
-              >
-                {error}
-              </Alert>
-            )}
-            {success && (
-              <Alert
-                variant="success"
-                onClose={() => setSuccess("")}
-                className="mb-8"
-              >
-                {success}
-              </Alert>
-            )}
+                {/* Alerts */}
+                {error && (
+                  <Alert
+                    variant="error"
+                    onClose={() => setError("")}
+                    className="mb-8"
+                  >
+                    {error}
+                  </Alert>
+                )}
+                {success && (
+                  <Alert
+                    variant="success"
+                    onClose={() => setSuccess("")}
+                    className="mb-8"
+                  >
+                    {success}
+                  </Alert>
+                )}
 
-            <DashboardHeader onCreateClass={() => setShowCreateClass(true)} />
+                <DashboardHeader
+                  onCreateClass={() => setShowCreateClass(true)}
+                />
 
-            <ClassesGrid
-              classes={classes}
-              loading={classesQuery.isPending}
-              onJoinClass={() => setShowJoinClass(true)}
-            />
+                <ClassesGrid
+                  classes={classes}
+                  loading={classesQuery.isPending}
+                  onJoinClass={() => setShowJoinClass(true)}
+                />
               </>
             )}
           </main>

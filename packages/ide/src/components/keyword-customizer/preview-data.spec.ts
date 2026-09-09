@@ -19,7 +19,7 @@ describe("buildWizardPreview", () => {
       presetId: "didactic-pt",
     });
 
-    expect(preview.languageLabel).toBe("Didatica em Portugues");
+    expect(preview.name).toBe("Didatica em Portugues");
     expect(preview.basedOnLabel).toBe("Didatica em Portugues");
     expect(preview.dna).toContain("blocos com delimitadores");
     expect(preview.snippet).toContain("escreva(");
@@ -37,7 +37,7 @@ describe("buildWizardPreview", () => {
       presetId: "python-like",
     });
 
-    expect(preview.languageLabel).toBe("Pythonica");
+    expect(preview.name).toBe("Pythonica");
     expect(preview.dna).toContain("blocos por indentacao");
     expect(preview.snippet).toContain(":");
     expect(preview.snippet).not.toContain("{");
@@ -68,7 +68,7 @@ describe("buildWizardPreview", () => {
 
     expect(preview.dna).toContain("nao tipada");
     expect(preview.chosenLexemes).toContainEqual({
-      original: "variavel",
+      original: "variable",
       custom: "nome",
     });
     expect(preview.chosenLexemes).not.toContainEqual({
@@ -104,7 +104,7 @@ describe("buildWizardPreview", () => {
       presetId: "minimal",
     });
 
-    expect(preview.languageLabel).toBe("Minimalista");
+    expect(preview.name).toBe("Minimalista");
     expect(preview.snippet).toContain("out(");
     expect(preview.chosenLexemes).toContainEqual({
       original: "print",
@@ -123,7 +123,7 @@ describe("buildWizardPreview", () => {
       presetId: "mineres-like",
     });
 
-    expect(preview.languageLabel).toBe("Mineres");
+    expect(preview.name).toBe("Mineres");
     expect(preview.dna).toContain("terminador obrigatorio");
     expect(preview.snippet).toContain("uai");
     expect(preview.snippet).toContain("simbora");
@@ -139,7 +139,7 @@ describe("buildWizardPreview", () => {
       presetId: "ruby-like",
     });
 
-    expect(preview.languageLabel).toBe("Ruby-like");
+    expect(preview.name).toBe("Ruby-like");
     expect(preview.snippet).toContain("inicio");
     expect(preview.snippet).toContain("fim");
   });
@@ -148,11 +148,11 @@ describe("buildWizardPreview", () => {
     const preview = buildWizardPreview(getDefaultCustomizationState(), {
       activeStepId: "identity",
       presetId: "minimal",
-      languageName: "CafeScript BR",
+      name: "CafeScript BR",
       languageImageUrl: "https://img.example/cafe.jpg",
     });
 
-    expect(preview.languageLabel).toBe("CafeScript BR");
+    expect(preview.name).toBe("CafeScript BR");
     expect(preview.basedOnLabel).toBe("Minimalista");
     expect(preview.languageImageUrl).toBe("https://img.example/cafe.jpg");
   });
@@ -182,9 +182,9 @@ describe("buildWizardPreview", () => {
       presetId: "python-like",
     });
 
-    expect(preview.baselineSnippet).toContain('variavel nome = "Kiki"');
-    expect(preview.baselineSnippet).toContain("variavel idade = 25");
-    expect(preview.baselineSnippet).not.toContain("int idade = 25");
-    expect(preview.snippet).toContain("variavel estudante = true");
+    expect(preview.baselineSnippet).toContain("int idade = 25");
+    expect(preview.snippet).toContain('variable nome = "Kiki"');
+    expect(preview.snippet).toContain("variable idade = 25");
+    expect(preview.snippet).toContain("variable estudante = true");
   });
 });

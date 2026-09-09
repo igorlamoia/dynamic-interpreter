@@ -66,7 +66,7 @@ describe("PreviewPanel", () => {
   }
 
   const preview: WizardPreview = {
-    languageLabel: "Ruby-like",
+    name: "Ruby-like",
     basedOnLabel: "Ruby-like",
     languageImageUrl: "",
     dna: [],

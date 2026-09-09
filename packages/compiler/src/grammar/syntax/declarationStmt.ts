@@ -33,7 +33,7 @@ function declarationStmtCore(
   const arrayMode = iterator.getArrayMode();
   const type =
     typingMode === "untyped"
-      ? (iterator.consume(TOKENS.RESERVEDS.variavel), "dynamic")
+      ? (iterator.consume(TOKENS.RESERVEDS.variable), "dynamic")
       : typeStmt(iterator); // "int", "float", "string"
   const emitter = iterator.emitter;
 

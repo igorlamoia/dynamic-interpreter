@@ -28,10 +28,14 @@ export function DocumentedField({
   icon,
 }: DocumentedFieldProps) {
   return (
-    <div className="group relative overflow-hidden rounded-md border border-white/8 bg-[#0E1629]/95 p-4 shadow-[0_18px_50px_-34px_rgba(0,0,0,0.98)] backdrop-blur-xl dark:border-white/6 dark:bg-[#0B1020]/96">
+    <div
+      className="group relative overflow-hidden rounded-xl border bg-card p-4 dark:shadow-[0_18px_50px_-34px_rgba(0,0,0,0.98)] backdrop-blur-sm dark:border-white/6 dark:bg-[#0B1020]/96
+    before:pointer-events-none before:absolute before:inset-0 before:bg-linear-to-br before:from-white/4 before:via-transparent before:to-primary/20 dark:before:to-black/20 before:opacity-90 before:transition-opacity before:duration-300 group-hover:before:opacity-100
+    "
+    >
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-16 left-1/2 h-48 w-64 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(59,65,100,0.25),rgba(59,65,100,0))] blur-2xl" />
-        <div className="absolute -bottom-24 right-0 h-40 w-56 rounded-full bg-[radial-gradient(circle_at_center,rgba(37,50,115,0.25),rgba(37,50,115,0))] blur-2xl" />
+        <div className="absolute -top-16 left-1/2 h-48 w-64 -translate-x-1/2 rounded-full dark:bg-[radial-gradient(circle_at_center,rgba(59,65,100,0.25),rgba(59,65,100,0))] blur-2xl" />
+        <div className="absolute -bottom-24 right-0 h-40 w-56 rounded-full dark:bg-[radial-gradient(circle_at_center,rgba(37,50,115,0.25),rgba(37,50,115,0))] blur-2xl" />
       </div>
       <div className="relative z-10 flex flex-col gap-3">
         <FormItem className="text-left">
@@ -43,7 +47,6 @@ export function DocumentedField({
             value={value}
             onChange={(event) => onValueChange(event.target.value)}
             placeholder={placeholder}
-            className="border-white/10 bg-[#0a1020]/80 font-mono text-slate-200 placeholder:text-slate-500"
             spellCheck={false}
             disabled={disabled}
             aria-label={label}
@@ -57,7 +60,6 @@ export function DocumentedField({
               value={description}
               onChange={(event) => onDescriptionChange(event.target.value)}
               placeholder={descriptionPlaceholder}
-              className="border-white/10 bg-[#0a1020]/80 text-slate-200 placeholder:text-slate-500"
               disabled={disabled}
               aria-label={`${label} descrição`}
             />

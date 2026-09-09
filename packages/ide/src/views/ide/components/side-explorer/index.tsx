@@ -420,7 +420,7 @@ function InlineNameInput({
           onCancel();
         }
       }}
-      className="w-full rounded border border-white/10 bg-white/5 px-2 py-1 text-xs text-foreground outline-none focus:border-white/30"
+      className="w-full rounded border dark:border-white/10 bg-white/5 px-2 py-1 text-xs text-foreground outline-none focus:dark:border-white/30"
     />
   );
 }
@@ -438,7 +438,7 @@ function ContextMenu({
 }) {
   return (
     <div
-      className="fixed z-50 min-w-40 rounded-md border border-white/10 bg-neutral-900/95 py-1 shadow-lg backdrop-blur-sm"
+      className="fixed z-50 min-w-40 rounded-md border dark:border-white/10 bg-neutral-900/95 py-1 shadow-lg backdrop-blur-sm"
       style={{ left: x, top: y }}
       onClick={(e) => e.stopPropagation()}
     >

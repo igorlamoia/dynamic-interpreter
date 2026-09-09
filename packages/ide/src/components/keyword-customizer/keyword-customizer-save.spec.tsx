@@ -92,18 +92,27 @@ function createLanguage(overrides: Partial<Language> = {}): Language {
 }
 
 function Probe() {
-  const { languageName, saveMode, activeStep, errors, actions } =
-    useKeywordCustomizer();
+  const context = useKeywordCustomizer();
+  const { name, saveMode, activeStep, errors, actions } =
+    context;
 
   return (
     <div>
-      <span data-testid="name">{languageName}</span>
+      <span data-testid="initial-fields">{JSON.stringify({
+        description: context.description,
+        imageUrl: context.languageImageUrl,
+        imageQuery: context.languageImageQuery,
+        presetId: context.selectedPresetId,
+        customization: context.draftCustomization,
+        form: context.form.getValues(),
+      })}</span>
+      <span data-testid="name">{name}</span>
       <span data-testid="mode">{saveMode}</span>
       <span data-testid="step">{activeStep.id}</span>
       <span data-testid="error">{errors.currentError ?? ""}</span>
       <button
         data-testid="set-name"
-        onClick={() => actions.setLanguageName("Neonica")}
+        onClick={() => actions.setName("Neonica")}
       />
       <button
         data-testid="goto-review"
@@ -162,11 +171,13 @@ describe("KeywordCustomizerProvider save", () => {
 
     act(() => {
       root.render(
-        <QueryClientProvider client={client}>
-          <KeywordCustomizerProvider {...props}>
-            <Probe />
-          </KeywordCustomizerProvider>
-        </QueryClientProvider>,
+        <React.StrictMode>
+          <QueryClientProvider client={client}>
+            <KeywordCustomizerProvider {...props}>
+              <Probe />
+            </KeywordCustomizerProvider>
+          </QueryClientProvider>
+        </React.StrictMode>,
       );
     });
 
@@ -215,6 +226,30 @@ describe("KeywordCustomizerProvider save", () => {
 
     expect(read("name")).toBe("Neonica");
     expect(editingIdSeenByHook.current).toBe(7);
+  });
+
+  it("preserves all edit fields when the global language hydrates", () => {
+    const language = createLanguage();
+    language.customization.booleanLiteralMap = { true: "yes", false: "no" };
+    render({ editingLanguageId: language.id, initialLanguage: language });
+
+    const expectedFields = {
+      description: language.description,
+      imageUrl: language.imageUrl,
+      imageQuery: language.imageQuery,
+      presetId: language.presetId,
+      customization: language.customization,
+      form: language.customization,
+    };
+    expect(JSON.parse(read("initial-fields")!)).toEqual(expectedFields);
+    expect(read("name")).toBe(language.name);
+
+    useKeywordsMock.mockReturnValue(createKeywordsContext());
+    click("goto-review");
+
+    expect(JSON.parse(read("initial-fields")!)).toEqual(expectedFields);
+    expect(read("name")).toBe(language.name);
+    expect(read("step")).toBe("review");
   });
 
   it("exits through the router when the save is local", async () => {

@@ -12,4 +12,5 @@ export const SYMBOLS_TOKENS_MAP: TTokenMap = {
   "]": (lexer) => lexer.addToken(TOKENS.SYMBOLS.right_bracket),
   ".": (lexer) => lexer.addToken(TOKENS.SYMBOLS.dot),
   ":": (lexer) => lexer.addToken(TOKENS.SYMBOLS.colon),
+  "?": (lexer) => lexer.addToken(TOKENS.SYMBOLS.question),
 };

@@ -30,7 +30,10 @@ export type LanguageSummary = {
 };
 
 export type Language = LanguageSummary & {
+  name: string;
+  description: string | null;
   customization: StoredKeywordCustomization;
+  imageUrl: string | null;
   imageQuery: string | null;
   presetId: string | null;
   createdAt: string;
@@ -99,14 +102,15 @@ export const languagesApi = {
     return data;
   },
   setPublication: async (id: number, isPublic: boolean): Promise<Language> => {
-    const { data } = await api.put<Language>(
-      `/languages/${id}/publication`,
-      { isPublic },
-    );
+    const { data } = await api.put<Language>(`/languages/${id}/publication`, {
+      isPublic,
+    });
     return data;
   },
   getActive: async (): Promise<Language | null> => {
-    const { data } = await api.get<Language | null>("/users/me/active-language");
+    const { data } = await api.get<Language | null>(
+      "/users/me/active-language",
+    );
     return data;
   },
   setActive: async (languageId: number | null): Promise<Language | null> => {

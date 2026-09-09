@@ -90,6 +90,49 @@ class TestListClasses:
         data = response.json()
         assert any(c["name"] == "My Class" for c in data)
 
+    async def test_list_classes_returns_member_and_list_counts(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        from tests.factories import (
+            create_class,
+            create_class_exercise_list,
+            create_exercise_list,
+        )
+        from app.models.class_member import ClassMember
+
+        org = await create_organization(async_session)
+        teacher = await create_user(
+            async_session,
+            org,
+            role=UserRole.TEACHER,
+            email="teacher_counts@ex.com",
+            password="secret",
+        )
+        student = await create_user(
+            async_session,
+            org,
+            role=UserRole.STUDENT,
+            email="student_counts@ex.com",
+            password="secret",
+        )
+        token = await get_token(async_client, "teacher_counts@ex.com", "secret")
+        cls = await create_class(async_session, org, teacher, access_code="CNT001")
+        async_session.add(ClassMember(class_id=cls.id, student_id=student.id))
+        exercise_list = await create_exercise_list(async_session, teacher)
+        await create_class_exercise_list(async_session, exercise_list, cls)
+
+        response = await async_client.get(
+            "/classes",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        listed = next(c for c in data if c["id"] == cls.id)
+        assert listed["_count"] == {"members": 1, "exerciseLists": 1}
+        assert listed["teacher"]["name"] == teacher.name
+        assert "exercises" not in listed["_count"]
+
 
 class TestJoinClass:
     async def test_student_can_join_with_valid_code(

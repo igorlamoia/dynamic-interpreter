@@ -44,7 +44,7 @@ describe("WizardStepper", () => {
           activeStepId={"types" as WizardStepId}
           onStepClick={onStepClick}
           preview={{
-            languageLabel: "Teste",
+            name: "Teste",
             basedOnLabel: "JavaMM",
             languageImageUrl: "",
             dna: ["tipada", "vetores dinâmicos"],

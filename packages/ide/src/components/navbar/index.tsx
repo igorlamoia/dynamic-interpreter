@@ -80,9 +80,9 @@ export function Navbar({ links, hasAuth = true }: NavbarProps) {
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="group inline-flex items-center gap-3 rounded-full border border-black/10 dark:border-white/20 bg-white/80 dark:bg-white/5 px-2 py-1.5 pr-3 shadow-sm hover:shadow-md hover:border-black/20 dark:hover:border-white/30 transition-all"
+                      className="group inline-flex items-center gap-3 rounded-full border border-black/10 dark:border-white/20 bg-white/80 dark:bg-white/5 px-2 py-1.5 pr-3 shadow-sm hover:shadow-md hover:border-black/20 dark:hover:dark:border-white/30 transition-all"
                     >
-                      <Avatar className="h-8 w-8 bg-linear-to-br from-[#0dccf2] to-[#34d399] text-white dark:text-white border-transparent">
+                      <Avatar className="h-8 w-8 bg-linear-to-br from-primary to-[#34d399] text-white dark:text-white border-transparent">
                         <AvatarFallback>{profileInitials}</AvatarFallback>
                       </Avatar>
                       <div className="hidden sm:flex flex-col items-start">

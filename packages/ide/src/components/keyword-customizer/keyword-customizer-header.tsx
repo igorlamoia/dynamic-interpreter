@@ -14,8 +14,8 @@ export function KeywordCustomizerHeader({
   steps,
   activeStepId,
 }: KeywordCustomizerHeaderProps) {
-  const { saveMode, languageName } = useKeywordCustomizer();
-  const isEditing = saveMode === "update" && languageName.trim().length > 0;
+  const { saveMode, name } = useKeywordCustomizer();
+  const isEditing = saveMode === "update" && name.trim().length > 0;
   const activeIndex = steps.findIndex((step) => step.id === activeStepId);
   const progress = Math.round(((activeIndex + 1) / steps.length) * 100);
 
@@ -24,7 +24,7 @@ export function KeywordCustomizerHeader({
       <div className="flex items-center -mt-4">
         <Title as="h4" id="keyword-customizer-title">
           <GradientText>
-            {isEditing ? `Editando ${languageName}` : "Explorador Universal"}
+            {isEditing ? `Editando ${name}` : "Explorador Universal"}
           </GradientText>
         </Title>
         <div className="backdrop-blur-[2px] p-2 bg-slate-400/10 rounded-md ml-2 mt-1">

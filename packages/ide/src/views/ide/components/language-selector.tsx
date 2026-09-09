@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { useLanguageChoices } from "@/hooks/useLanguageChoices";
 
 export function LanguageSelector() {
-  const { choices, activeKey, selectLanguage } = useLanguageChoices();
+  const { choices, activeKey, isSelectionLocked, selectLanguage } =
+    useLanguageChoices();
 
   const activeChoice = useMemo(
     () => choices.find((choice) => choice.key === activeKey) ?? null,
@@ -27,10 +28,11 @@ export function LanguageSelector() {
         <select
           aria-label="Selecionar linguagem salva"
           value={activeKey}
+          disabled={isSelectionLocked}
           onChange={(event) => {
             void selectLanguage(event.target.value);
           }}
-          className="rounded-lg border border-black/10 bg-white/80 px-2 py-1 text-xs text-foreground outline-none dark:border-white/10 dark:bg-black/20"
+          className="rounded-lg border border-black/10 bg-white/80 px-2 py-1 text-xs text-foreground outline-none disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/10 dark:bg-black/20"
         >
           {choices.map((choice) => (
             <option key={choice.key} value={choice.key}>

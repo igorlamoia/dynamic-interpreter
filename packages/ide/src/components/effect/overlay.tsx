@@ -8,7 +8,7 @@ export type OverlayProps = {
 };
 
 const baseClassName =
-  "pointer-events-none absolute from-[#090f1bcc] via-[#090f1b66] to-transparent";
+  "pointer-events-none absolute from-white/20 via-white/50 dark:from-[#090f1bcc] dark:via-[#090f1b66] to-transparent";
 
 function EdgeOverlay({
   side,

@@ -134,7 +134,7 @@ export function CreateExerciseModal({
       <DialogContent className="max-w-3xl backdrop-blur-3xl">
         <DialogHeader>
           <DialogTitle>Criar Exercício</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Defina os detalhes e casos de teste para o exercício
           </DialogDescription>
         </DialogHeader>
@@ -154,7 +154,7 @@ export function CreateExerciseModal({
                     <Input
                       {...field}
                       placeholder="Ex: Hello World em Java--"
-                      className="h-12 bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="h-12"
                     />
                   </FormControl>
                   <FormMessage />
@@ -173,7 +173,7 @@ export function CreateExerciseModal({
                       {...field}
                       rows={4}
                       placeholder="Descreva o exercício em detalhes..."
-                      className="bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="focus:border-primary/50"
                     />
                   </FormControl>
                   <FormMessage />
@@ -194,7 +194,7 @@ export function CreateExerciseModal({
                         min="0"
                         step="0.1"
                         {...field}
-                        className="h-12 bg-black/30 border-white/10 text-slate-100 focus:border-[#0dccf2]/50"
+                        className="h-12"
                       />
                     </FormControl>
                     <FormMessage />
@@ -208,7 +208,7 @@ export function CreateExerciseModal({
                 <AccordionTrigger>
                   <div className="flex w-full items-center justify-between pr-2">
                     <span>Casos de Teste (Opcional)</span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-muted-foreground">
                       Expandir para configurar
                     </span>
                   </div>
@@ -221,12 +221,12 @@ export function CreateExerciseModal({
           </form>
         </Form>
 
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>
@@ -234,7 +234,7 @@ export function CreateExerciseModal({
             type="submit"
             form="create-exercise-form"
             disabled={createExercise.isPending}
-            className="bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 hover:opacity-90"
+            className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
             {createExercise.isPending ? "Criando..." : "Criar Exercício"}
           </HeroButton>

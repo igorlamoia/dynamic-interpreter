@@ -5,8 +5,10 @@ os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from tests.factories import create_organization, create_user
+from app.models.test_case import TestCase
 from app.models.user import UserRole
 
 
@@ -33,6 +35,50 @@ class TestCreateExercise:
         data = response.json()
         assert data["title"] == "Hello World"
         assert data["teacherId"] == teacher.id
+
+    async def test_create_exercise_persists_nested_test_cases(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        org = await create_organization(async_session)
+        await create_user(
+            async_session,
+            org,
+            role=UserRole.TEACHER,
+            email="teacher_e1_cases@ex.com",
+            password="secret",
+        )
+        token = await get_token(async_client, "teacher_e1_cases@ex.com", "secret")
+
+        response = await async_client.post(
+            "/exercises",
+            json={
+                "title": "With cases",
+                "description": "Persist nested cases",
+                "testCases": [
+                    {"label": "first", "input": "1", "expectedOutput": "one"},
+                    {"label": "second", "input": "2", "expectedOutput": "two"},
+                ],
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        assert response.status_code == 201
+        data = response.json()
+        assert [tc["label"] for tc in data["testCases"]] == ["first", "second"]
+        assert [tc["expectedOutput"] for tc in data["testCases"]] == ["one", "two"]
+        assert [tc["orderIndex"] for tc in data["testCases"]] == [0, 1]
+
+        rows = (
+            await async_session.execute(
+                select(TestCase)
+                .where(TestCase.exercise_id == data["id"])
+                .order_by(TestCase.order_index)
+            )
+        ).scalars().all()
+        assert [(tc.input, tc.expected_output, tc.order_index) for tc in rows] == [
+            ("1", "one", 0),
+            ("2", "two", 1),
+        ]
 
     async def test_student_cannot_create_exercise(
         self, async_client: AsyncClient, async_session: AsyncSession
@@ -118,6 +164,79 @@ class TestUpdateDeleteExercise:
 
         assert response.status_code == 200
         assert response.json()["title"] == "New Title"
+
+    async def test_teacher_can_replace_exercise_and_test_cases(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        org = await create_organization(async_session)
+        await create_user(
+            async_session,
+            org,
+            role=UserRole.TEACHER,
+            email="teacher_e4_put@ex.com",
+            password="secret",
+        )
+        token = await get_token(async_client, "teacher_e4_put@ex.com", "secret")
+
+        create_resp = await async_client.post(
+            "/exercises",
+            json={
+                "title": "Old Title",
+                "description": "old",
+                "testCases": [
+                    {
+                        "input": "old 1",
+                        "expectedOutput": "old out 1",
+                        "label": "old 1",
+                    },
+                    {
+                        "input": "old 2",
+                        "expectedOutput": "old out 2",
+                        "label": "old 2",
+                    },
+                ],
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        ex_id = create_resp.json()["id"]
+
+        response = await async_client.put(
+            f"/exercises/{ex_id}",
+            json={
+                "title": "New Title",
+                "description": "new",
+                "testCases": [
+                    {
+                        "input": "new",
+                        "expectedOutput": "new out",
+                        "label": "new case",
+                    },
+                ],
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["title"] == "New Title"
+        assert data["description"] == "new"
+        assert [
+            (tc["input"], tc["expectedOutput"], tc["orderIndex"])
+            for tc in data["testCases"]
+        ] == [
+            ("new", "new out", 0),
+        ]
+
+        rows = (
+            await async_session.execute(
+                select(TestCase)
+                .where(TestCase.exercise_id == ex_id)
+                .order_by(TestCase.order_index)
+            )
+        ).scalars().all()
+        assert [(tc.input, tc.expected_output, tc.order_index) for tc in rows] == [
+            ("new", "new out", 0),
+        ]
 
     async def test_teacher_can_delete_own_exercise(
         self, async_client: AsyncClient, async_session: AsyncSession

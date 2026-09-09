@@ -5,7 +5,7 @@ import type {
 import type { BlockDelimiters, KeywordMapping } from "@/contexts/keyword/types";
 import ui from "@/i18n/locales/pt-BR/ui";
 
-export const OPERATOR_ALIAS_REGEX = /^[A-Za-z_][A-Za-z0-9_]*$/;
+export const OPERATOR_ALIAS_REGEX = /^[A-Za-z_çÇ][A-Za-z0-9_çÇ]*$/;
 
 export const OPERATOR_WORD_FIELDS: Array<{
   key: keyof IDEOperatorWordMap;

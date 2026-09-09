@@ -62,8 +62,8 @@ export function buildIdentityStepProps(
   return {
     values: {
       selectedPresetId: context.selectedPresetId,
-      languageName: context.languageName,
-      languageDescription: context.languageDescription,
+      name: context.name,
+      description: context.description,
       imageSearchQuery: context.languageImageQuery,
       imageSearchResults: context.languageImageResults,
       selectedImageUrl: context.languageImageUrl,
@@ -72,8 +72,8 @@ export function buildIdentityStepProps(
     },
     actions: {
       selectPreset: context.actions.applyPreset,
-      setLanguageName: context.actions.setLanguageName,
-      setLanguageDescription: context.actions.setLanguageDescription,
+      setName: context.actions.setName,
+      setDescription: context.actions.setDescription,
       setImageSearchQuery: context.actions.setImageSearchQuery,
       searchImages: context.actions.searchLanguageImages,
       selectImage: context.actions.selectLanguageImage,
@@ -86,7 +86,7 @@ export function buildTypeStepProps(
 ): TypeStepProps {
   const variableKeywords =
     context.draftCustomization.modes.typing === "untyped"
-      ? (["variavel", "funcao"] as const)
+      ? (["variable", "function"] as const)
       : (["int", "float", "bool", "string", "void"] as const);
 
   return {
@@ -97,7 +97,7 @@ export function buildTypeStepProps(
       typingMode: context.draftCustomization.modes.typing,
       printKeyword: getKeywordValue(context, "print"),
       typingBeamKeywords: {
-        variavel: getKeywordValue(context, "variavel"),
+        variable: getKeywordValue(context, "variable"),
         string: getKeywordValue(context, "string"),
         float: getKeywordValue(context, "float"),
         int: getKeywordValue(context, "int"),
@@ -276,8 +276,8 @@ const FLOW_FIELDS = [
 ] as const;
 
 const TYPE_FIELDS = [
-  "variavel",
-  "funcao",
+  "variable",
+  "function",
   "int",
   "float",
   "bool",

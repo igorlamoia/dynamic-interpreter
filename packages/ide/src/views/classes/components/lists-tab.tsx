@@ -46,8 +46,8 @@ export function ListsTab({
 }) {
   if (loadingLists) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 text-slate-500 gap-4">
-        <div className="w-10 h-10 rounded-full border-4 border-[#0dccf2]/20 border-t-[#0dccf2] animate-spin" />
+      <div className="flex flex-col items-center justify-center py-32 text-muted-foreground gap-4">
+        <div className="w-10 h-10 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
         <span className="text-sm font-medium">Carregando listas...</span>
       </div>
     );
@@ -55,14 +55,14 @@ export function ListsTab({
 
   if (exerciseLists.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 bg-white/2 rounded-3xl border border-white/5 backdrop-blur-xl">
-        <div className="w-20 h-20 mb-5 rounded-full bg-linear-to-br from-[#0dccf2]/10 to-[#10b981]/10 flex items-center justify-center border border-white/10">
+      <div className="flex flex-col items-center justify-center py-24 bg-card/70 dark:bg-white/2 rounded-3xl border border-border dark:border-white/5 backdrop-blur-xl">
+        <div className="w-20 h-20 mb-5 rounded-full bg-linear-to-br from-primary/10 to-[#10b981]/10 flex items-center justify-center border border-border dark:border-white/10">
           <BookOpen className="w-10 h-10 text-slate-600" />
         </div>
-        <p className="text-slate-200 text-lg font-bold">
+        <p className="text-foreground text-lg font-bold">
           Nenhuma lista publicada
         </p>
-        <p className="text-slate-500 text-sm mt-2 max-w-xs text-center leading-relaxed">
+        <p className="text-muted-foreground text-sm mt-2 max-w-xs text-center leading-relaxed">
           {isTeacher
             ? "Publique uma lista de exercícios para esta turma em 'Minhas Listas'."
             : "Seu professor ainda não publicou listas para esta turma."}
@@ -77,23 +77,23 @@ export function ListsTab({
         {exerciseLists.map((entry: any) => (
           <div
             key={entry.exerciseListId}
-            className="overflow-hidden group relative bg-white/3 backdrop-blur-xl border border-white/8 rounded-2xl p-5 hover:border-[#0dccf2]/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3"
+            className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3"
           >
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-[#0dccf2] to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
-            <h3 className="font-bold text-slate-100 leading-snug line-clamp-2">
+            <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
+            <h3 className="font-bold text-foreground leading-snug line-clamp-2">
               {entry.exerciseList.title}
             </h3>
             {entry.exerciseList.description && (
-              <p className="text-xs text-slate-400 line-clamp-2">
+              <p className="text-xs text-muted-foreground line-clamp-2">
                 {entry.exerciseList.description}
               </p>
             )}
-            <div className="flex flex-wrap gap-2 text-xs text-slate-400">
+            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-[#0dccf2]/60" />
+                <BookOpen className="w-3.5 h-3.5 text-primary/60" />
                 {entry.totalCount} exercício{entry.totalCount !== 1 ? "s" : ""}
               </span>
-              <span className="flex items-center gap-1.5 text-slate-500">
+              <span className="flex items-center gap-1.5 text-muted-foreground">
                 Mínimo: {entry.minRequired}
               </span>
             </div>
@@ -110,10 +110,10 @@ export function ListsTab({
                 </div>
               );
             })()}
-            <div className="mt-auto pt-3 border-t border-white/5">
+            <div className="mt-auto pt-3 border-t border-border dark:border-white/5">
               <Link
                 href={`/exercise-lists/${entry.exerciseListId}`}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-xs font-semibold hover:bg-[#0dccf2]/20 transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
               >
                 Gerenciar
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -148,10 +148,10 @@ export function ListsTab({
         return (
           <div
             key={entry.exerciseListId}
-            className="group bg-white/3 backdrop-blur-xl border border-white/8 rounded-2xl p-5 hover:border-[#0dccf2]/30 hover:shadow-[0_4px_24px_rgba(13,204,242,0.08)] transition-all duration-300"
+            className="group bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/30 hover:shadow-[0_4px_24px_rgba(13,204,242,0.08)] transition-all duration-300"
           >
             <div className="flex items-start justify-between gap-3 mb-3">
-              <h3 className="font-bold text-slate-100 leading-snug">
+              <h3 className="font-bold text-foreground leading-snug">
                 {entry.exerciseList.title}
               </h3>
               <span
@@ -161,7 +161,7 @@ export function ListsTab({
               </span>
             </div>
             <div className="flex flex-wrap gap-2 mb-4">
-              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 bg-white/5 border border-white/8 px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/70 dark:bg-white/5 border border-border dark:border-white/8 px-2.5 py-1 rounded-full">
                 Mínimo: {entry.minRequired} exercício
                 {entry.minRequired !== 1 ? "s" : ""}
               </span>
@@ -170,7 +170,7 @@ export function ListsTab({
                 if (!dl) return null;
                 return (
                   <span
-                    className={`inline-flex items-center gap-1.5 text-xs bg-white/5 border border-white/8 px-2.5 py-1 rounded-full ${dl.color}`}
+                    className={`inline-flex items-center gap-1.5 text-xs bg-muted/70 dark:bg-white/5 border border-border dark:border-white/8 px-2.5 py-1 rounded-full ${dl.color}`}
                   >
                     <Calendar className="w-3 h-3" />
                     {dl.label} — {dl.formatted}
@@ -179,22 +179,22 @@ export function ListsTab({
               })()}
             </div>
             <div className="mb-4">
-              <div className="flex justify-between text-xs text-slate-500 mb-1.5">
+              <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
                 <span>
                   {entry.completedCount} de {entry.totalCount} concluídos
                 </span>
                 <span className="font-medium">{progress}%</span>
               </div>
-              <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-muted dark:bg-white/8 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-linear-to-r from-[#0dccf2] to-[#10b981] rounded-full transition-all duration-500"
+                  className="h-full bg-linear-to-r from-primary to-[#10b981] rounded-full transition-all duration-500"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
             <Link
               href={`/exercise-lists/${entry.exerciseListId}?classId=${classId}`}
-              className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0dccf2]/10 border border-[#0dccf2]/20 text-[#0dccf2] text-sm font-semibold hover:bg-[#0dccf2]/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
+              className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
             >
               Abrir Lista
               <ChevronRight className="w-4 h-4" />

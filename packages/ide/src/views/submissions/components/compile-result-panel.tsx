@@ -50,7 +50,7 @@ export function CompileResultPanel({
       )}
 
       {testCaseResults.length > 0 && (
-        <div className="mt-4 bg-[#182f34]/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+        <div className="mt-4 bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl p-6">
           <TestCaseResults
             results={testCaseResults}
             passed={compileResult.testCasesPassed ?? 0}

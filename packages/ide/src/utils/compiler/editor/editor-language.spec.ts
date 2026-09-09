@@ -17,6 +17,47 @@ function getDelimiterRules(
 }
 
 describe("buildJavaMMLanguageMetadata", () => {
+  it("tokenizes customized words containing ç and Ç as identifiers", () => {
+    const language = buildJavaMMMonarchLanguage({
+      allKeywords: ["começar", "AÇAO"],
+      operatorWords: [],
+      semanticGroups: {
+        types: [],
+        conditionals: ["começar"],
+        loops: [],
+        flow: [],
+        io: [],
+      },
+    });
+    const identifierRules = language.tokenizer.root.filter(
+      (rule): rule is [RegExp, unknown] => Array.isArray(rule) && rule[0] instanceof RegExp,
+    );
+
+    expect(identifierRules.some(([pattern]) => pattern.test("começar"))).toBe(true);
+    expect(identifierRules.some(([pattern]) => pattern.test("AÇAO"))).toBe(true);
+  });
+
+  it("recognizes ternary punctuation as operators", () => {
+    const language = buildJavaMMMonarchLanguage({
+      allKeywords: [],
+      operatorWords: [],
+      semanticGroups: { types: [], conditionals: [], loops: [], flow: [], io: [] },
+    });
+
+    expect(language.operators).toEqual(expect.arrayContaining(["?", ":"]));
+  });
+
+  it("recognizes strict equality as an editor operator", () => {
+    const language = buildJavaMMMonarchLanguage({
+      allKeywords: [],
+      operatorWords: [],
+      semanticGroups: { types: [], conditionals: [], loops: [], flow: [], io: [] },
+    });
+
+    expect(language.operators).toContain("===");
+    expect(language.operators).not.toContain("====");
+  });
+
   it("maps customized words into semantic keyword groups", () => {
     const metadata = buildJavaMMLanguageMetadata([
       { original: "if", custom: "se", tokenId: 28 },
@@ -153,7 +194,8 @@ describe("buildJavaMMLanguageMetadata", () => {
       (rule): rule is [RegExp, { cases: Record<string, string> }] =>
         Array.isArray(rule) &&
         rule[0] instanceof RegExp &&
-        String(rule[0]) === "/[a-zA-Z_]\\w*(?=\\s*\\()/" &&
+        String(rule[0]) ===
+          "/[a-zA-Z_çÇ][a-zA-Z0-9_çÇ]*(?=\\s*\\()/" &&
         typeof rule[1] === "object" &&
         rule[1] !== null &&
         "cases" in rule[1],
@@ -554,7 +596,7 @@ describe("buildJavaMMLanguageMetadata", () => {
       monaco as never,
       [
         { original: "int", custom: "int", tokenId: 21 },
-        { original: "variavel", custom: "variavel", tokenId: 62 },
+        { original: "variable", custom: "variable", tokenId: 62 },
       ] as never,
       {
         typingMode: "untyped",
@@ -608,7 +650,7 @@ describe("buildJavaMMLanguageMetadata", () => {
       monaco as never,
       [
         { original: "int", custom: "int", tokenId: 21 },
-        { original: "variavel", custom: "variavel", tokenId: 62 },
+        { original: "variable", custom: "variable", tokenId: 62 },
       ] as never,
       {
         typingMode: "untyped",

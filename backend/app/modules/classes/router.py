@@ -6,7 +6,7 @@ from app.modules.classes.service import (
     join_class_by_code, get_class_members, get_class_exercise_lists,
 )
 from app.schemas.classes import (
-    ClassCreate, ClassResponse, JoinClassRequest, JoinClassResponse,
+    ClassCreate, ClassResponse, ClassSummaryResponse, JoinClassRequest, JoinClassResponse,
     ClassExerciseListWithProgress, ClassMembersResponse,
 )
 
@@ -18,7 +18,7 @@ async def create_class_endpoint(data: ClassCreate, user_id: AcademicUserIdDep, s
     return await create_class(data, user_id, session)
 
 
-@router.get("", response_model=list[ClassResponse])
+@router.get("", response_model=list[ClassSummaryResponse])
 async def list_classes_endpoint(user_id: AcademicUserIdDep, session: SessionDep):
     return await list_classes(user_id, session)
 

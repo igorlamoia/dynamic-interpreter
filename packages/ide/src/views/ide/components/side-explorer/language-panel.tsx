@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -25,6 +25,8 @@ import {
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-panel/categories-list";
 import { getCategoryLexemes } from "./category-lexemes";
+import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
 
 export type LanguageCustomization = StoredKeywordCustomization;
 
@@ -46,11 +48,17 @@ function getLanguageDNA(customization: LanguageCustomization): string[] {
 
 export function LanguagePanel() {
   const editor = useEditor();
+  const router = useRouter();
   // Sem efeito de "aplicar a linguagem ativa ao montar": o KeywordContext já
   // faz isso nos dois caminhos, e duas fontes disputando o mesmo estado é
   // pedir para elas divergirem.
-  const { choices, activeKey, activeLanguage, selectLanguage } =
-    useLanguageChoices();
+  const {
+    choices,
+    activeKey,
+    activeLanguage,
+    isSelectionLocked,
+    selectLanguage,
+  } = useLanguageChoices();
 
   const handleLexemeClick = (lexeme: string) => {
     editor.insertTextAtCursor(lexeme);
@@ -67,7 +75,7 @@ export function LanguagePanel() {
   return (
     <PerfectScrollbar className="flex h-full min-h-0 flex-col gap-4  p-4">
       <div className="relative shrink-0 overflow-visible">
-        <div className="group relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
+        <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
           <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
             <Image
               src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
@@ -82,12 +90,13 @@ export function LanguagePanel() {
 
           <div className="relative flex min-h-35 flex-col justify-between p-4 sm:min-h-40 sm:p-5">
             <div className="flex items-start justify-between gap-3">
-              <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
+              <div className="rounded-full border dark:border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
                 Linguagem ativa
               </div>
               <LanguageOptionsMenu
                 choices={choices}
                 activeKey={activeKey}
+                isLocked={isSelectionLocked}
                 onSelect={selectLanguage}
               />
             </div>
@@ -158,6 +167,9 @@ export function LanguagePanel() {
           </div>
         </div>
       </div>
+      <div className="flex justify-center">
+        <AddLanguageButton onClick={() => router.push("/language-creator")} />
+      </div>
     </PerfectScrollbar>
   );
 }
@@ -193,15 +205,17 @@ function LanguageDescription({
 interface LanguageOptionsMenuProps {
   choices: LanguageChoice[];
   activeKey: string;
+  isLocked: boolean;
   onSelect: (key: string) => Promise<void>;
 }
 
 function LanguageOptionsMenu({
   choices,
   activeKey,
+  isLocked,
   onSelect,
 }: LanguageOptionsMenuProps) {
-
+  const router = useRouter();
   return (
     <div className="relative z-20">
       <TooltipProvider>
@@ -212,23 +226,28 @@ function LanguageOptionsMenu({
                 <button
                   type="button"
                   aria-label="Abrir seleção de linguagem"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:border-white/20 hover:bg-black/35"
+                  disabled={isLocked}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border dark:border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:dark:border-white/20 hover:bg-black/35 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <ChevronDown className="h-4 w-4 transition-transform duration-200" />
                 </button>
               </TooltipTrigger>
             </DropdownMenuTrigger>
-            <TooltipContent>Selecionar linguagem ativa</TooltipContent>
+            <TooltipContent>
+              {isLocked
+                ? "Linguagem travada pelo exercicio"
+                : "Selecionar linguagem ativa"}
+            </TooltipContent>
 
             <DropdownMenuContent
               align="end"
-              className="w-max max-w-[calc(100vw-2rem)] rounded-2xl border border-white/10 bg-slate-950/70 p-3 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
+              className="w-max max-w-[calc(100vw-2rem)] rounded-2xl border dark:border-white/10 bg-slate-950/70 p-3 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
             >
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
                   Seleção de linguagem
                 </p>
-                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
+                <span className="rounded-full border dark:border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
                   {choices.length}
                 </span>
               </div>
@@ -246,8 +265,8 @@ function LanguageOptionsMenu({
                           className={cn(
                             "group relative overflow-hidden rounded-xl border px-3 py-2 text-left transition backdrop-blur-sm",
                             isSelected
-                              ? "border-white/60 bg-white/12 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
-                              : "border-white/10 bg-white/5 text-white/90 hover:border-white/20 hover:bg-white/10",
+                              ? "dark:border-white/60 bg-white/12 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
+                              : "dark:border-white/10 bg-white/5 text-white/90 hover:dark:border-white/20 hover:bg-white/10",
                           )}
                         >
                           <div className="pointer-events-none absolute inset-0">
@@ -273,10 +292,37 @@ function LanguageOptionsMenu({
                   })}
                 </div>
               </PerfectScrollbar>
+              <div className="flex justify-center pt-3">
+                <AddLanguageButton
+                  onClick={() => router.push("/language-creator")}
+                />
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </Tooltip>
       </TooltipProvider>
     </div>
+  );
+}
+
+function AddLanguageButton({ onClick }: { onClick: () => void }) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
+            aria-label="Criar linguagem"
+            onClick={onClick}
+            className="rounded-full shadow-md hover:shadow-lg"
+          >
+            <Plus aria-hidden="true" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Criar linguagem</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

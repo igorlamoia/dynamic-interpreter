@@ -5,7 +5,7 @@ import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import TerminalView from ".";
+import TerminalView, { appendOutputLines, createOutputLines } from ".";
 
 vi.mock("motion/react", () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => (
@@ -58,5 +58,34 @@ describe("TerminalView", () => {
     await act(async () => {
       root.unmount();
     });
+  });
+
+  it("matches normal execution line splitting for debug output with trailing newlines", () => {
+    expect(createOutputLines("debug hello\r\n", "output")).toMatchObject([
+      { content: "debug hello", type: "output" },
+    ]);
+    expect(createOutputLines("a\r\n\r\n", "output")).toMatchObject([
+      { content: "a", type: "output" },
+      { content: "", type: "output" },
+    ]);
+  });
+
+  it("merges debugger output chunks until a printed newline closes the line", () => {
+    let state = { lines: [], lineOpen: false };
+
+    for (const chunk of ["#", "\r\n", "#", "#", "\r\n", "#", "#", "#"]) {
+      state = appendOutputLines(
+        state.lines,
+        chunk,
+        "output",
+        state.lineOpen,
+      );
+    }
+
+    expect(state.lines).toMatchObject([
+      { content: "#", type: "output" },
+      { content: "##", type: "output" },
+      { content: "###", type: "output" },
+    ]);
   });
 });

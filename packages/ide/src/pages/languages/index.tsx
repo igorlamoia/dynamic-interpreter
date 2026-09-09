@@ -5,7 +5,7 @@ import { LanguagesView } from "@/views/languages/languages-view";
 
 export default function LanguagesPage() {
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[#0A0A0F] font-sans">
+    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground font-sans">
       <SpaceBackground />
       <Navbar />
       <div className="relative z-10 flex flex-1 overflow-hidden">

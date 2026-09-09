@@ -50,14 +50,9 @@ export function RegisterForm({
 }) {
   return (
     <Form {...form}>
-      <form
-        className="space-y-5"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
         {serverError && (
-          <div className="text-red-400 text-sm text-center">
-            {serverError}
-          </div>
+          <div className="text-red-400 text-sm text-center">{serverError}</div>
         )}
 
         {/* Role Selector */}
@@ -67,7 +62,7 @@ export function RegisterForm({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex p-1 dark:bg-black/20 bg-slate-300/20 rounded-md border border-white/5">
+                <div className="flex p-1 bg-muted/70 dark:bg-black/20 rounded-md border border-border dark:border-white/5">
                   <RadioSelector
                     options={[
                       {
@@ -97,7 +92,7 @@ export function RegisterForm({
           name="name"
           render={({ field }) => (
             <FormItem className="text-left">
-              <FormLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">
+              <FormLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
                 Nome Completo
               </FormLabel>
               <FormControl>
@@ -118,15 +113,11 @@ export function RegisterForm({
           name="email"
           render={({ field }) => (
             <FormItem className="text-left">
-              <FormLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">
+              <FormLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
                 Endereço de E-mail
               </FormLabel>
               <FormControl>
-                <Input
-                  placeholder="voce@exemplo.com"
-                  type="email"
-                  {...field}
-                />
+                <Input placeholder="voce@exemplo.com" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,7 +130,7 @@ export function RegisterForm({
           name="password"
           render={({ field }) => (
             <FormItem className="text-left">
-              <FormLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">
+              <FormLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
                 Senha
               </FormLabel>
               <FormControl>
@@ -160,7 +151,7 @@ export function RegisterForm({
           name="organizationId"
           render={({ field }) => (
             <FormItem className="text-left">
-              <FormLabel className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">
+              <FormLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
                 Instituição
                 {form.watch("role") === "community" && (
                   <span className="ml-1 normal-case text-cyan-300/80">
@@ -172,12 +163,12 @@ export function RegisterForm({
                 <select
                   {...field}
                   disabled={loadingOrgs}
-                  className="w-full h-10 px-3 rounded-md border border-white/10 dark:bg-black/20 bg-slate-300/20 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#0dccf2]/50 disabled:opacity-50"
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background/80 dark:bg-black/20 text-foreground dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
                 >
                   <option
                     value=""
                     disabled={form.watch("role") !== "community"}
-                    className="bg-slate-900"
+                    className="bg-background text-foreground"
                   >
                     {loadingOrgs
                       ? "Carregando..."
@@ -186,7 +177,11 @@ export function RegisterForm({
                         : "Selecione sua instituição"}
                   </option>
                   {organizations.map((org) => (
-                    <option key={org.id} value={org.id} className="bg-slate-900">
+                    <option
+                      key={org.id}
+                      value={org.id}
+                      className="bg-background text-foreground"
+                    >
                       {org.name}
                     </option>
                   ))}
