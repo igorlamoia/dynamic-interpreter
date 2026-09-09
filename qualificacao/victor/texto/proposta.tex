@@ -159,7 +159,7 @@ A partir desses casos de uso, consolidaram-se os requisitos que orientaram a con
 
 
 
-O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepostas: (I) revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais; (II) definição dos requisitos e da arquitetura do sistema; (III) implementação da análise léxica e sintática com suporte a regras gramaticais configuráveis; (IV) geração e execução do código intermediário e verificação semântica; (V) integração entre o núcleo do interpretador e a plataforma web; e (VI) testes automatizados do núcleo de tradução e definição do protocolo de avaliação junto a usuários, cuja aplicação é registrada como encaminhamento futuro. O cronograma de execução dessas etapas está na Tabela~\ref{tab:cronograma}, onde cada coluna numerada representa um mês corrido e as células marcadas com ``X'' indicam os meses de execução previstos.
+O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepostas: (I) revisão bibliográfica sobre interpretadores, compiladores e ferramentas educacionais; (II) definição dos requisitos e da arquitetura do sistema; (III) implementação da análise léxica e sintática com suporte ao vocabulário configurável e às variantes predefinidas de escrita; (IV) geração e execução do código intermediário e verificação semântica; (V) integração entre o núcleo do interpretador e a plataforma web; e (VI) testes automatizados do núcleo de tradução e definição do protocolo de avaliação junto a usuários, cuja aplicação é registrada como encaminhamento futuro. O cronograma dessas etapas e das atividades de redação está na Tabela~\ref{tab:cronograma}, onde cada coluna numerada representa um mês corrido e as células marcadas com ``X'' indicam os meses de execução previstos.
 
 \begin{table}[H]
     \centering
@@ -179,7 +179,7 @@ O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepost
         \hline
         Escrita da Introdução e Revisão de Literatura & & X & X & X & & & & & & & & \\
         \hline
-        Predefinição de escopo e Especificação dos comandos dinâmicos & & & X & X & & & & & & & & \\
+        Definição de requisitos e dos elementos configuráveis da linguagem & & & X & X & & & & & & & & \\
         \hline
         Escrita da Metodologia & & & X & & X & X & X & & & & & \\
         \hline
@@ -187,11 +187,11 @@ O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepost
         \hline
         Implementação da Análise Léxica e Sintática & & & & X & X & & & & & & & \\
         \hline
-        Geração de Código Intermediário e Análise Semântica & & & & X & X & X & & & & & & \\
+        Geração e Execução de Código Intermediário e Análise Semântica & & & & X & X & X & & & & & & \\
         \hline
         Integração entre a plataforma e interpretador & & & & & X & X & X & & & & & \\
         \hline
-        Testes, Validação com Usuários e Coleta de \textit{Feedback} & & & & & & & & & X & X & X & \\
+        Testes Automatizados e Definição do Protocolo de Avaliação & & & & & & & & & X & X & X & \\
         \hline
         Escrita do TCC (Resultados, Discussão e Conclusão) & & & & & & & & & X & X & X & X \\
         \hline
@@ -202,6 +202,6 @@ O desenvolvimento foi dividido em seis etapas principais, parcialmente sobrepost
 
 Este trabalho foi desenvolvido em dupla, conforme a pré-proposta aprovada, que distribui o projeto em \textbf{funções complementares}: o desenvolvimento da plataforma web e da interface de personalização da linguagem ficou a cargo de Igor Lamoia Queiroz, enquanto a concepção e a implementação do \textbf{núcleo do interpretador} (análise léxica, sintática e semântica, geração e execução de código intermediário) constituem a demanda desta monografia. As etapas iniciais de revisão bibliográfica e de definição da arquitetura geral foram conduzidas conjuntamente, e o regime de dupla manifestou-se sobretudo nas atividades de fronteira entre os subsistemas: a definição dos contratos de comunicação entre os módulos e a integração do núcleo à plataforma, em que decisões de uma camada exigiam ajustes na outra. O aprofundamento técnico e analítico do núcleo de tradução, objeto de avaliação deste documento, é de responsabilidade individual do autor.
 
-A divisão de eixos de aprofundamento individual, prevista na pré-proposta, aparece nos capítulos de redação acadêmica. Neste documento, o foco está no núcleo de tradução: as fases de análise léxica, sintática e semântica, a geração de código intermediário e o funcionamento do interpretador. O aluno Igor Lamoia Queiroz aprofunda, em seu documento, a IDE web: a interface de personalização da linguagem, a experiência de uso da plataforma e o protocolo de coleta de \textit{feedback} dos estudantes. Essa divisão se justifica pela amplitude do projeto, que seria difícil de cobrir com profundidade suficiente por apenas um autor.
+A divisão de eixos de aprofundamento individual, prevista na pré-proposta, orienta o conteúdo técnico do Capítulo~\ref{cap:modelagem}, especialmente as Seções~\ref{sec:metodologia-interpretador} e~\ref{sec:integracao-plataforma}, e é detalhada no Apêndice~\ref{ap:plano}. Neste documento, o foco está no núcleo de tradução: as fases de análise léxica, sintática e semântica, a geração de código intermediário e o funcionamento do interpretador. O aluno Igor Lamoia Queiroz aprofunda, em seu documento, a IDE web: a interface de personalização da linguagem, a experiência de uso da plataforma e o protocolo de coleta de \textit{feedback} dos estudantes. Essa divisão se justifica pela amplitude do projeto, que seria difícil de cobrir com profundidade suficiente por apenas um autor.
 
-Com o TCC I concluído, o TCC II dará continuidade ao aprofundamento do núcleo de tradução, ampliando a cobertura de testes e a avaliação técnica do interpretador (a correção do código intermediário gerado e a robustez frente às variações configuráveis da linguagem) e consolidando a análise comparativa entre a solução desenvolvida e as ferramentas discutidas no referencial teórico, sob a ótica das capacidades do compilador. Essa comparação evidencia a convergência da proposta com sistemas relacionados de compiladores, pois o projeto também explicita as etapas de análise léxica, análise sintática e geração de representação intermediária; contudo, diferencia-se ao integrar essas etapas a uma linguagem configurável e a uma IDE educacional voltada ao estudante iniciante. O próximo capítulo descreve a modelagem e a implementação realizadas até o fim do TCC~I.
+Com o TCC I concluído, o TCC II dará continuidade ao aprofundamento do núcleo de tradução, ampliando a cobertura de testes e a avaliação técnica do interpretador (a correção do código intermediário gerado e a robustez frente às variações configuráveis da linguagem) e consolidando a análise comparativa entre a solução desenvolvida e as ferramentas discutidas no referencial teórico, sob a ótica das capacidades do núcleo de tradução e execução. Essa comparação evidencia a convergência da proposta com sistemas relacionados de compiladores, pois o projeto também explicita as etapas de análise léxica, análise sintática e geração de representação intermediária; contudo, diferencia-se ao integrar essas etapas a uma linguagem configurável e a uma IDE educacional voltada ao estudante iniciante. O próximo capítulo descreve a modelagem e a implementação realizadas até o fim do TCC~I.

@@ -1,0 +1,39 @@
+% Gerado por scripts/gerar-dicionario-dados.py.
+\resizebox{0.90\linewidth}{!}{%
+\begin{tikzpicture}[entity/.style={draw,rounded corners,fill=white,align=center,text width=3.2cm,minimum height=1.25cm,inner sep=6pt,font=\small},fk/.style={-{Latex},semithick,draw=black!70}]
+\node[entity] (n7) at (4.5,-8) {\texttt{class\_\allowbreak{}exercise\_\allowbreak{}lists}\\7 atributos};
+\node[entity] (n6) at (0,-8) {\texttt{class\_\allowbreak{}members}\\3 atributos};
+\node[entity] (n3) at (0,-4) {\texttt{classes}\\8 atributos};
+\node[entity] (n9) at (14,-8) {\texttt{exercise\_\allowbreak{}list\_\allowbreak{}items}\\4 atributos};
+\node[entity] (n8) at (9,-8) {\texttt{exercise\_\allowbreak{}lists}\\8 atributos};
+\node[entity] (n5) at (14,-4) {\texttt{exercises}\\9 atributos};
+\node[entity] (n2) at (14,0) {\texttt{languages}\\13 atributos};
+\node[entity] (n0) at (0,0) {\texttt{organizations}\\3 atributos};
+\node[entity] (n4) at (7,-4) {\texttt{submissions}\\11 atributos};
+\node[entity] (n10) at (19,-4) {\texttt{test\_\allowbreak{}cases}\\6 atributos};
+\node[entity] (n1) at (7,0) {\texttt{users}\\9 atributos};
+\begin{scope}[on background layer]
+\draw[fk] (n7) -- (n8);
+\draw[fk] (n7) -- (n3);
+\draw[fk] (n6) -- (n3);
+\draw[fk] (n6.west) -- (-2.4,-8) -- (-2.4,2.4) -- (7,2.4) -- (n1.north);
+\draw[fk] (n3) -- (n0);
+\draw[fk] (n3) -- (n1);
+\draw[fk] (n9) -- (n8);
+\draw[fk] (n9) -- (n5);
+\draw[fk] (n8.north) -- (9,-6.3) -- (4.8,-6.3) -- (4.8,-1.6) -- (n1.south west);
+\draw[fk] (n8.south) -- (9,-9.6) -- (17,-9.6) -- (17,0) -- (n2.east);
+\draw[fk] (n5) -- (n1);
+\draw[fk] (n5) -- (n2);
+\draw[fk] (n2) -- (n1);
+\draw[fk] (n2) to[loop above,min distance=18mm] (n2);
+\draw[fk] (n4) -- (n5);
+\draw[fk] (n4) -- (n8);
+\draw[fk] (n4) -- (n3);
+\draw[fk] (n4) -- (n1);
+\draw[fk] (n10) -- (n5);
+\draw[fk] (n1) -- (n0);
+\draw[fk] (n1) to[bend left=25] (n2);
+\end{scope}
+\node[font=\small,align=left,anchor=north west] at (-2,-10.3) {Cada seta parte da tabela que contém a FK e aponta para a tabela referenciada.\\Setas em sentidos opostos entre usuários e linguagens representam propriedade e linguagem ativa.\\A autorreferência de linguagens registra sua origem por clonagem.};
+\end{tikzpicture}}

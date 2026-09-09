@@ -1,0 +1,257 @@
+% Gerado por scripts/gerar-dicionario-dados.py. Não editar manualmente.
+\chapter[APÊNDICE D -- DICIONÁRIO DE DADOS]{\parbox{0.9\textwidth}{\centering APÊNDICE D \textendash{} DICIONÁRIO DE DADOS}}
+\label{ap:dicionario-dados}
+
+Este apêndice documenta os modelos SQLAlchemy de \texttt{backend/app/models}, sem consultar um banco em execução. Os tipos são apresentados para o dialeto PostgreSQL. PK identifica chave primária; FK, chave estrangeira; UQ, unicidade; e a coluna Nulo informa se o atributo admite valor nulo. Os valores enumerados, as restrições compostas e os índices declarados são registrados após cada tabela. Uma FK sem ação de exclusão explicitada não equivale a uma cascata de exclusão no banco.
+
+O relacionamento ORM de submissão com publicação utiliza os identificadores de lista e turma, mas não declara uma FK composta correspondente. Cascatas definidas apenas por \texttt{relationship} pertencem ao ORM, não às restrições SQL listadas aqui. A tabela técnica \texttt{alembic\_version}, mantida pelo Alembic, não integra o conjunto de entidades de domínio.
+
+\section*{\texttt{class\_\allowbreak{}exercise\_\allowbreak{}lists}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{exercise\_\allowbreak{}list\_\allowbreak{}id} & \texttt{INTEGER} & Não & PK; FK: \texttt{exercise\_\allowbreak{}lists.id}; exclusão: \texttt{CASCADE} \\ \hline
+\texttt{class\_\allowbreak{}id} & \texttt{INTEGER} & Não & PK; FK: \texttt{classes.id}; exclusão: \texttt{CASCADE} \\ \hline
+\texttt{deadline} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\texttt{total\_\allowbreak{}grade} & \texttt{FLOAT} & Não & -- \\ \hline
+\texttt{min\_\allowbreak{}required} & \texttt{INTEGER} & Não & -- \\ \hline
+\texttt{published\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\texttt{updated\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item Chave primária composta: \texttt{exercise\_\allowbreak{}list\_\allowbreak{}id}, \texttt{class\_\allowbreak{}id}.
+\item Índice \texttt{ix\_\allowbreak{}class\_\allowbreak{}exercise\_\allowbreak{}lists\_\allowbreak{}class\_\allowbreak{}id} sobre \texttt{class\_\allowbreak{}id}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{class\_\allowbreak{}members}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{class\_\allowbreak{}id} & \texttt{INTEGER} & Não & PK; FK: \texttt{classes.id} \\ \hline
+\texttt{student\_\allowbreak{}id} & \texttt{INTEGER} & Não & PK; FK: \texttt{users.id} \\ \hline
+\texttt{joined\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item Chave primária composta: \texttt{class\_\allowbreak{}id}, \texttt{student\_\allowbreak{}id}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{classes}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{organization\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{organizations.id} \\ \hline
+\texttt{teacher\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{users.id} \\ \hline
+\texttt{name} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{description} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{access\_\allowbreak{}code} & \texttt{VARCHAR} & Não & UQ \\ \hline
+\texttt{created\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\texttt{status} & \texttt{classstatus} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item \texttt{status}: \texttt{ACTIVE}, \texttt{ARCHIVED}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{exercise\_\allowbreak{}list\_\allowbreak{}items}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{exercise\_\allowbreak{}list\_\allowbreak{}id} & \texttt{INTEGER} & Não & PK; FK: \texttt{exercise\_\allowbreak{}lists.id}; exclusão: \texttt{CASCADE} \\ \hline
+\texttt{exercise\_\allowbreak{}id} & \texttt{INTEGER} & Não & PK; FK: \texttt{exercises.id}; exclusão: \texttt{RESTRICT} \\ \hline
+\texttt{grade\_\allowbreak{}weight} & \texttt{FLOAT} & Não & -- \\ \hline
+\texttt{order\_\allowbreak{}index} & \texttt{INTEGER} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item Chave primária composta: \texttt{exercise\_\allowbreak{}list\_\allowbreak{}id}, \texttt{exercise\_\allowbreak{}id}.
+\item Índice \texttt{ix\_\allowbreak{}exercise\_\allowbreak{}list\_\allowbreak{}items\_\allowbreak{}exercise\_\allowbreak{}id} sobre \texttt{exercise\_\allowbreak{}id}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{exercise\_\allowbreak{}lists}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{teacher\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{users.id} \\ \hline
+\texttt{title} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{description} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{language\_\allowbreak{}policy} & \texttt{languagepolicy} & Não & -- \\ \hline
+\texttt{locked\_\allowbreak{}language\_\allowbreak{}id} & \texttt{INTEGER} & Sim & FK: \texttt{languages.id}; exclusão: \texttt{RESTRICT} \\ \hline
+\texttt{created\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\texttt{updated\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item \texttt{language\_\allowbreak{}policy}: \texttt{OPEN}, \texttt{LOCKED}.
+\item Restrição \texttt{ck\_\allowbreak{}exercise\_\allowbreak{}lists\_\allowbreak{}locked\_\allowbreak{}language\_\allowbreak{}consistency}: \texttt{(language\_\allowbreak{}policy = 'LOCKED') = (locked\_\allowbreak{}language\_\allowbreak{}id IS NOT NULL)}.
+\item Índice \texttt{ix\_\allowbreak{}exercise\_\allowbreak{}lists\_\allowbreak{}teacher\_\allowbreak{}id} sobre \texttt{teacher\_\allowbreak{}id}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{exercises}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{teacher\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{users.id} \\ \hline
+\texttt{title} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{description} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{attachments} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{language\_\allowbreak{}policy} & \texttt{languagepolicy} & Não & -- \\ \hline
+\texttt{locked\_\allowbreak{}language\_\allowbreak{}id} & \texttt{INTEGER} & Sim & FK: \texttt{languages.id}; exclusão: \texttt{RESTRICT} \\ \hline
+\texttt{created\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\texttt{updated\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item \texttt{language\_\allowbreak{}policy}: \texttt{OPEN}, \texttt{LOCKED}.
+\item Restrição \texttt{ck\_\allowbreak{}exercises\_\allowbreak{}locked\_\allowbreak{}language\_\allowbreak{}consistency}: \texttt{(language\_\allowbreak{}policy = 'LOCKED') = (locked\_\allowbreak{}language\_\allowbreak{}id IS NOT NULL)}.
+\item Índice \texttt{ix\_\allowbreak{}exercises\_\allowbreak{}teacher\_\allowbreak{}id} sobre \texttt{teacher\_\allowbreak{}id}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{languages}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{owner\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{users.id}; exclusão: \texttt{CASCADE} \\ \hline
+\texttt{name} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{description} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{customization} & \texttt{JSONB} & Não & -- \\ \hline
+\texttt{image\_\allowbreak{}url} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{image\_\allowbreak{}query} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{preset\_\allowbreak{}id} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{cloned\_\allowbreak{}from\_\allowbreak{}id} & \texttt{INTEGER} & Sim & FK: \texttt{languages.id}; exclusão: \texttt{SET NULL} \\ \hline
+\texttt{is\_\allowbreak{}public} & \texttt{BOOLEAN} & Não & -- \\ \hline
+\texttt{published\_\allowbreak{}at} & \texttt{TIMESTAMP WITH TIME ZONE} & Sim & -- \\ \hline
+\texttt{created\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\texttt{updated\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item Unicidade conjunta: \texttt{owner\_\allowbreak{}id}, \texttt{name}.
+\item Índice \texttt{ix\_\allowbreak{}languages\_\allowbreak{}owner\_\allowbreak{}id} sobre \texttt{owner\_\allowbreak{}id}.
+\item Índice \texttt{ix\_\allowbreak{}languages\_\allowbreak{}public\_\allowbreak{}published\_\allowbreak{}at} sobre \texttt{is\_\allowbreak{}public}, \texttt{published\_\allowbreak{}at}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{organizations}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{name} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{created\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\endgroup
+
+\section*{\texttt{submissions}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{exercise\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{exercises.id} \\ \hline
+\texttt{exercise\_\allowbreak{}list\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{exercise\_\allowbreak{}lists.id} \\ \hline
+\texttt{class\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{classes.id} \\ \hline
+\texttt{student\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{users.id} \\ \hline
+\texttt{code\_\allowbreak{}snapshot} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{language\_\allowbreak{}snapshot} & \texttt{JSONB} & Não & -- \\ \hline
+\texttt{status} & \texttt{submissionstatus} & Não & -- \\ \hline
+\texttt{score} & \texttt{FLOAT} & Sim & -- \\ \hline
+\texttt{teacher\_\allowbreak{}feedback} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{submitted\_\allowbreak{}at} & \texttt{TIMESTAMP WITHOUT TIME ZONE} & Não & -- \\ \hline
+\end{longtable}
+\begin{itemize}
+\item \texttt{status}: \texttt{PENDING}, \texttt{SUBMITTED}, \texttt{GRADED}, \texttt{LATE}.
+\item Índice \texttt{ix\_\allowbreak{}submissions\_\allowbreak{}exercise\_\allowbreak{}list\_\allowbreak{}class} sobre \texttt{exercise\_\allowbreak{}list\_\allowbreak{}id}, \texttt{class\_\allowbreak{}id}.
+\item Índice \texttt{ix\_\allowbreak{}submissions\_\allowbreak{}student\_\allowbreak{}id} sobre \texttt{student\_\allowbreak{}id}.
+\end{itemize}
+\endgroup
+
+\section*{\texttt{test\_\allowbreak{}cases}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{exercise\_\allowbreak{}id} & \texttt{INTEGER} & Não & FK: \texttt{exercises.id}; exclusão: \texttt{CASCADE} \\ \hline
+\texttt{label} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{input} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{expected\_\allowbreak{}output} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{order\_\allowbreak{}index} & \texttt{INTEGER} & Não & -- \\ \hline
+\end{longtable}
+\endgroup
+
+\section*{\texttt{users}}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.28\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.09\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.40\linewidth-2\tabcolsep-5\arrayrulewidth\relax}|}
+\hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endfirsthead
+\hline \textbf{Atributo} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chaves e referências} \\ \hline
+\endhead
+\texttt{id} & \texttt{INTEGER} & Não & PK \\ \hline
+\texttt{organization\_\allowbreak{}id} & \texttt{INTEGER} & Sim & FK: \texttt{organizations.id} \\ \hline
+\texttt{role} & \texttt{userrole} & Não & -- \\ \hline
+\texttt{email} & \texttt{VARCHAR} & Não & UQ \\ \hline
+\texttt{password} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{name} & \texttt{VARCHAR} & Não & -- \\ \hline
+\texttt{avatar\_\allowbreak{}url} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{bio} & \texttt{VARCHAR} & Sim & -- \\ \hline
+\texttt{active\_\allowbreak{}language\_\allowbreak{}id} & \texttt{INTEGER} & Sim & FK: \texttt{languages.id}; exclusão: \texttt{SET NULL} \\ \hline
+\end{longtable}
+\begin{itemize}
+\item \texttt{role}: \texttt{ADMIN}, \texttt{TEACHER}, \texttt{STUDENT}, \texttt{COMMUNITY}, \texttt{SYSTEM}.
+\end{itemize}
+\endgroup

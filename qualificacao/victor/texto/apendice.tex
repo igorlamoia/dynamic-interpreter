@@ -25,7 +25,7 @@ A partir da base técnica construída em conjunto, cada autor aprofundou sua an�
     \item Detalhamento das fases de análise léxica e do sistema de varredura por escâneres especializados (\textit{factory pattern});
     \item Descrição aprofundada da análise sintática por descida recursiva e da correspondência entre as produções do analisador e a gramática formal da linguagem Java-{}-;
     \item Detalhamento e documentação da geração de código de três endereços: instrução a instrução, tabela de temporários e tabela de rótulos;
-    \item Análise aprofundada dos mecanismos de injeção dinâmica de regras gramaticais no interpretador, que permitem ao núcleo reconfigurar o vocabulário e as regras estruturais a cada execução;
+    \item Análise aprofundada dos parâmetros de configuração da linguagem, que permitem ao núcleo aplicar o vocabulário escolhido e selecionar variantes de escrita predefinidas a cada nova análise e execução;
     \item Análise do funcionamento do interpretador, da tabela de símbolos e do despacho das chamadas de sistema de entrada e saída;
     \item Desenvolvimento do \textit{back-end} da plataforma em FastAPI, incluindo a modelagem das entidades de domínio, a implementação das rotas REST, a persistência com SQLAlchemy assíncrono e o suporte a autenticação, turmas, exercícios, listas e submissões;
     \item Verificação técnica do núcleo de tradução, aferindo o comportamento do interpretador frente a programas de teste elaborados para cobrir as construções da linguagem.
@@ -57,6 +57,8 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
         \hline
         \texttt{/auth} & Registro e \textit{login} de usuários, com emissão de \textit{tokens} JWT. \\
         \hline
+        \texttt{/languages} & Configurações de linguagem, publicação no catálogo e importação. \\
+        \hline
         \texttt{/organizations} & Gestão das instituições de ensino cadastradas. \\
         \hline
         \texttt{/users} & Consulta e atualização de perfil, com controle de acesso por \texttt{role}. \\
@@ -77,7 +79,7 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
 
 \chapter[APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS]{\parbox{0.9\textwidth}{\centering APÊNDICE C \textendash{} CASOS DE TESTE AUTOMATIZADOS}} \label{ap:testes}
 
-Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{215 casos} distribuídos em 22 arquivos, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. O conjunto completo dos casos e o respectivo relatório de execução estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}, em \texttt{packages/compiler/src/tests}); à data desta qualificação, a totalidade dos casos é aprovada.
+Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{215 casos} distribuídos em 21 arquivos de teste, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. Os casos estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}), no diretório \texttt{packages/compiler/src/tests}. Na execução de verificação realizada em 9 de setembro de 2026, o comando \texttt{npm test -- --run}, a partir do pacote \texttt{compiler}, aprovou os 215 casos, sem falhas. Esse resultado documenta o estado atual da suíte, sem atribuir a esta execução evidências sobre o que foi demonstrado na apresentação de qualificação.
 
 \begin{table}[H]
     \centering
@@ -95,8 +97,10 @@ Este apêndice resume a suíte de testes automatizados do núcleo do compilador,
         \hline
         Interpretação & 2 & 13 & Execução do código de três endereços e sessões de depuração. \\
         \hline
-        \textbf{Total} & \textbf{22} & \textbf{215} & \\
+        \textbf{Total} & \textbf{21} & \textbf{215} & \\
         \hline
     \end{tabular}
     \legend{Fonte: elaborado pelo autor.}
 \end{table}
+
+\input{texto/dicionario-dados}
