@@ -20,6 +20,7 @@ const loadLocalMock = vi.fn();
 const loadActiveLocalMock = vi.fn();
 const setActiveLocalMock = vi.fn();
 const getDetailMock = vi.fn();
+let externalLanguageOverlayMock: unknown = null;
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => useAuthMock(),
@@ -35,7 +36,10 @@ vi.mock("@/hooks/useLanguages", () => ({
 }));
 
 vi.mock("@/contexts/keyword/KeywordContext", () => ({
-  useKeywords: () => ({ setCustomization: setCustomizationMock }),
+  useKeywords: () => ({
+    externalLanguageOverlay: externalLanguageOverlayMock,
+    setCustomization: setCustomizationMock,
+  }),
 }));
 
 vi.mock("@/lib/languages-api", () => ({
@@ -87,6 +91,7 @@ describe("useLanguageChoices", () => {
     loadActiveLocalMock.mockReset().mockReturnValue(null);
     setActiveLocalMock.mockReset();
     getDetailMock.mockReset();
+    externalLanguageOverlayMock = null;
   });
 
   afterEach(() => {
@@ -229,6 +234,54 @@ describe("useLanguageChoices", () => {
     expect(setCustomizationMock).toHaveBeenCalledWith(CUSTOMIZATION);
     expect(setActiveMutateMock).not.toHaveBeenCalled();
     expect(getDetailMock).not.toHaveBeenCalled();
+
+    act(() => root.unmount());
+  });
+
+  it("usa a linguagem travada como ativa e bloqueia selecao", async () => {
+    externalLanguageOverlayMock = {
+      id: 21,
+      name: "Travada",
+      description: "Definida pelo exercicio",
+      imageUrl: "/locked.png",
+      customization: CUSTOMIZATION,
+    };
+    useAuthMock.mockReturnValue({ isAuthenticated: true });
+    listQueryMock.mockReturnValue({
+      data: [{ id: 3, name: "Outra", imageUrl: "/other.png" }],
+    });
+    activeQueryMock.mockReturnValue({
+      data: {
+        id: 3,
+        name: "Outra",
+        description: "",
+        imageUrl: "/other.png",
+        customization: CUSTOMIZATION,
+      },
+    });
+
+    const { captured, root } = mount();
+
+    expect(captured.current?.choices).toEqual([
+      { key: "21", name: "Travada", imageUrl: "/locked.png" },
+    ]);
+    expect(captured.current?.activeLanguage).toEqual({
+      key: "21",
+      name: "Travada",
+      description: "Definida pelo exercicio",
+      imageUrl: "/locked.png",
+      customization: CUSTOMIZATION,
+    });
+    expect(captured.current?.activeKey).toBe("21");
+    expect(captured.current?.isSelectionLocked).toBe(true);
+
+    await act(async () => {
+      await captured.current?.selectLanguage("3");
+    });
+
+    expect(getDetailMock).not.toHaveBeenCalled();
+    expect(setActiveMutateMock).not.toHaveBeenCalled();
+    expect(setCustomizationMock).not.toHaveBeenCalled();
 
     act(() => root.unmount());
   });

@@ -34,6 +34,7 @@ import {
 } from "./keyword-validator";
 import { CUSTOMIZABLE_KEYWORDS, ORIGINAL_KEYWORDS } from ".";
 import {
+  ExternalLanguageOverlay,
   KeywordContextType,
   KeywordMapping,
   BlockDelimiters,
@@ -278,6 +279,8 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     useState<StoredKeywordCustomization>(getDefaultCustomizationState);
   const [isHydrated, setIsHydrated] = useState(false);
   const [activeLanguageId, setActiveLanguageId] = useState<number | null>(null);
+  const [externalLanguageOverlay, setExternalLanguageOverlay] =
+    useState<ExternalLanguageOverlay | null>(null);
   // Snapshot of the user's "own" customization, captured before a LOCKED
   // exercise overlay is applied. Restored when the overlay is dismissed.
   const overlaySavedRef = useRef<StoredKeywordCustomization | null>(null);
@@ -307,6 +310,9 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
       setActiveLanguageId(null);
       return;
     }
+    if (externalLanguageOverlay) {
+      return;
+    }
     if (activeLanguageData) {
       setActiveLanguageId(activeLanguageData.id);
       setCustomizationState(
@@ -315,13 +321,14 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     } else if (activeLanguageData === null) {
       setActiveLanguageId(null);
     }
-  }, [isHydrated, isLoggedIn, activeLanguageData]);
+  }, [isHydrated, isLoggedIn, activeLanguageData, externalLanguageOverlay]);
 
   // Persistir no localStorage quando mudar
   useEffect(() => {
     if (!isHydrated) return;
+    if (externalLanguageOverlay) return;
     persistCustomization(customization);
-  }, [customization, isHydrated]);
+  }, [customization, externalLanguageOverlay, isHydrated]);
 
   // Atualizar syntax highlighting do Monaco
   const updateMonacoHighlighting = useCallback(
@@ -422,20 +429,35 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const applyExternalCustomization = useCallback(
-    (next: StoredKeywordCustomization) => {
-      // Save the current customization as the "user own" baseline only once
-      // per overlay session (avoids clobbering it on re-applies).
-      if (overlaySavedRef.current === null) {
-        overlaySavedRef.current = customization;
-      }
-      setCustomizationState(normalizeStoredKeywordCustomization(next));
+    (
+      next: StoredKeywordCustomization,
+      language?: Omit<ExternalLanguageOverlay, "customization">,
+    ) => {
+      const normalized = normalizeStoredKeywordCustomization(next);
+      setCustomizationState((current) => {
+        // Save the current customization as the "user own" baseline only once
+        // per overlay session (avoids clobbering it on re-applies).
+        if (overlaySavedRef.current === null) {
+          overlaySavedRef.current = current;
+        }
+        return normalized;
+      });
+      setExternalLanguageOverlay(
+        language
+          ? {
+              ...language,
+              customization: normalized,
+            }
+          : null,
+      );
     },
-    [customization],
+    [],
   );
 
   const restoreActiveCustomization = useCallback(() => {
     const saved = overlaySavedRef.current;
     overlaySavedRef.current = null;
+    setExternalLanguageOverlay(null);
     if (saved) {
       setCustomizationState(saved);
     } else if (activeLanguageData) {
@@ -459,6 +481,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     () => ({
       customization,
       activeLanguageId,
+      externalLanguageOverlay,
       applyExternalCustomization,
       restoreActiveCustomization,
       setCustomization,
@@ -474,6 +497,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     [
       customization,
       activeLanguageId,
+      externalLanguageOverlay,
       applyExternalCustomization,
       restoreActiveCustomization,
       setCustomization,

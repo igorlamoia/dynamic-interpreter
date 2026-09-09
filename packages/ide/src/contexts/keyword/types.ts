@@ -27,12 +27,24 @@ export type StoredKeywordCustomization = {
   languageDocumentation: IDELanguageDocumentationMap;
 };
 
+export type ExternalLanguageOverlay = {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  customization: StoredKeywordCustomization;
+};
+
 export type KeywordContextType = {
   customization: StoredKeywordCustomization;
   /** ID da linguagem ativa do usuário no backend (null = sem ativa / não logado). */
   activeLanguageId: number | null;
+  externalLanguageOverlay: ExternalLanguageOverlay | null;
   /** Aplica uma customização externa (ex.: linguagem travada de exercício). */
-  applyExternalCustomization: (customization: StoredKeywordCustomization) => void;
+  applyExternalCustomization: (
+    customization: StoredKeywordCustomization,
+    language?: Omit<ExternalLanguageOverlay, "customization">,
+  ) => void;
   /** Restaura a customização da linguagem ativa (após sair de exercício travado). */
   restoreActiveCustomization: () => void;
   setCustomization: (

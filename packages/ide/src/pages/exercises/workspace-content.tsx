@@ -35,17 +35,31 @@ export function WorkspaceContent({
     applyExternalCustomization,
     restoreActiveCustomization,
   } = useKeywords();
+  const effectiveLanguage = exercise?.effectiveLanguage;
 
   // O backend já resolveu a precedência (exercício > lista > livre). O front
   // só aplica o que veio.
   useEffect(() => {
-    const effective = exercise?.effectiveLanguage;
+    const effective = effectiveLanguage;
     if (effective?.customization) {
-      applyExternalCustomization(effective.customization);
+      applyExternalCustomization(effective.customization, {
+        id: effective.id,
+        name: effective.name,
+        description: effective.description ?? "",
+        imageUrl: effective.imageUrl ?? "",
+      });
       return () => restoreActiveCustomization();
     }
     return undefined;
-  }, [exercise, applyExternalCustomization, restoreActiveCustomization]);
+  }, [
+    effectiveLanguage?.customization,
+    effectiveLanguage?.description,
+    effectiveLanguage?.id,
+    effectiveLanguage?.imageUrl,
+    effectiveLanguage?.name,
+    applyExternalCustomization,
+    restoreActiveCustomization,
+  ]);
   const validateSubmission = useValidateSubmissionMutation();
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -147,13 +161,9 @@ export function WorkspaceContent({
         validateSubmission={validateSubmission}
       />
       {exercise?.effectiveLanguage && (
-        <div className="relative z-10 px-6 py-2">
+        <div className="relative z-10">
           <LockedLanguageBanner
-            language={{
-              id: exercise.effectiveLanguage.id,
-              name: exercise.effectiveLanguage.name,
-              description: exercise.effectiveLanguage.description,
-            }}
+            language={effectiveLanguage}
             source={exercise.effectiveLanguageSource ?? "exercise"}
             listTitle={list?.title}
           />

@@ -17,7 +17,7 @@ export function SubmitPanel({
   setShowSubmitPanel: (show: boolean) => void;
 }) {
   return (
-    <div className="relative z-10 border-b border-border dark:border-white/5">
+    <div className="relative z-10 border-x-2 border-red-500/80">
       <div
         className={`px-6 py-3 ${submitErrors.length > 0 ? "bg-red-500/5" : "bg-emerald-500/5"} backdrop-blur-md`}
       >

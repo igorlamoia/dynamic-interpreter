@@ -52,8 +52,13 @@ export function LanguagePanel() {
   // Sem efeito de "aplicar a linguagem ativa ao montar": o KeywordContext já
   // faz isso nos dois caminhos, e duas fontes disputando o mesmo estado é
   // pedir para elas divergirem.
-  const { choices, activeKey, activeLanguage, selectLanguage } =
-    useLanguageChoices();
+  const {
+    choices,
+    activeKey,
+    activeLanguage,
+    isSelectionLocked,
+    selectLanguage,
+  } = useLanguageChoices();
 
   const handleLexemeClick = (lexeme: string) => {
     editor.insertTextAtCursor(lexeme);
@@ -91,6 +96,7 @@ export function LanguagePanel() {
               <LanguageOptionsMenu
                 choices={choices}
                 activeKey={activeKey}
+                isLocked={isSelectionLocked}
                 onSelect={selectLanguage}
               />
             </div>
@@ -199,12 +205,14 @@ function LanguageDescription({
 interface LanguageOptionsMenuProps {
   choices: LanguageChoice[];
   activeKey: string;
+  isLocked: boolean;
   onSelect: (key: string) => Promise<void>;
 }
 
 function LanguageOptionsMenu({
   choices,
   activeKey,
+  isLocked,
   onSelect,
 }: LanguageOptionsMenuProps) {
   const router = useRouter();
@@ -218,13 +226,18 @@ function LanguageOptionsMenu({
                 <button
                   type="button"
                   aria-label="Abrir seleção de linguagem"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border dark:border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:dark:border-white/20 hover:bg-black/35"
+                  disabled={isLocked}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border dark:border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:dark:border-white/20 hover:bg-black/35 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <ChevronDown className="h-4 w-4 transition-transform duration-200" />
                 </button>
               </TooltipTrigger>
             </DropdownMenuTrigger>
-            <TooltipContent>Selecionar linguagem ativa</TooltipContent>
+            <TooltipContent>
+              {isLocked
+                ? "Linguagem travada pelo exercicio"
+                : "Selecionar linguagem ativa"}
+            </TooltipContent>
 
             <DropdownMenuContent
               align="end"
