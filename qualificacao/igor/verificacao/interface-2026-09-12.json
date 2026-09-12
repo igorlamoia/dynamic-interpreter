@@ -1,0 +1,841 @@
+{
+  "checkedAt": "2026-09-12T18:47:58.847Z",
+  "browser": "153.0.8010.12",
+  "route": "/language-creator",
+  "authenticated": false,
+  "scope": "Initial wizard step; keyboard transition to second step; WCAG A/AA rules implemented by axe, excluding Next.js development portal. No screen reader assessment.",
+  "results": [
+    {
+      "name": "light-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "theme": "light",
+      "layout": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "stepDirection": "column",
+        "hiddenStepLabel": "static"
+      },
+      "keyboard": {
+        "firstStepReachedWithTab": true,
+        "tabs": 5,
+        "secondStepActivatedWithEnter": true
+      },
+      "axeVersion": "4.13.0",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "description": "Ensure buttons have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".border-r > div:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk20"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.52 (foreground color: #0f766e, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk11"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.05 (foreground color: #004785, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(3) > .mtk18.mtkb"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #047857, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(3) > .mtk29"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.45 (foreground color: #a31515, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(5) > .mtk18.mtkb"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #047857, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk1:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.08 (foreground color: #000000, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(7) > .mtk18.mtkb"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #047857, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(7) > .mtk29"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.45 (foreground color: #a31515, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk1:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.08 (foreground color: #000000, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "document-title",
+          "impact": "serious",
+          "description": "Ensure each HTML document contains a non-empty <title> element",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/document-title?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  Document does not have a non-empty <title> element"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/nested-interactive?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".z-20"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Tipos e Declaracoes\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Estrutura\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Operadores\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Fluxo\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Lacos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            }
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "description": "Ensure elements that have scrollable content are accessible by keyboard in Safari",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/scrollable-region-focusable?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".border-white\\/12 > .code-scroll-area.bg-\\[\\#0a1020\\]\\/80.ring-white\\/8"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            },
+            {
+              "target": [
+                ".ring-white\\/6.shadow-\\[0_10px_24px_-18px_rgba\\(0\\,0\\,0\\,0\\.6\\)\\].hover\\:border-white\\/12:nth-child(2) > .code-scroll-area.bg-\\[\\#0a1020\\]\\/80.ring-white\\/8"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            },
+            {
+              "target": [
+                ".ring-white\\/6.shadow-\\[0_10px_24px_-18px_rgba\\(0\\,0\\,0\\,0\\.6\\)\\].hover\\:border-white\\/12:nth-child(3) > .code-scroll-area.bg-\\[\\#0a1020\\]\\/80.ring-white\\/8"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "description": "Ensure touch targets have sufficient size and space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 75
+        }
+      ],
+      "passes": 27
+    },
+    {
+      "name": "light-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "layout": {
+        "width": 390,
+        "scrollWidth": 390,
+        "stepDirection": "row",
+        "hiddenStepLabel": "absolute"
+      },
+      "keyboard": {
+        "firstStepReachedWithTab": true,
+        "tabs": 5,
+        "secondStepActivatedWithEnter": true
+      },
+      "axeVersion": "4.13.0",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "description": "Ensure buttons have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".border-r > div:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk20"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.52 (foreground color: #0f766e, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk11"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.05 (foreground color: #004785, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(3) > .mtk18.mtkb"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #047857, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(3) > .mtk29"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.45 (foreground color: #a31515, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(5) > .mtk18.mtkb"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #047857, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk1:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.08 (foreground color: #000000, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(7) > .mtk18.mtkb"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #047857, background color: #090e1a, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "span:nth-child(7) > .mtk29"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.45 (foreground color: #a31515, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".mtk1:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.08 (foreground color: #000000, background color: #090e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "document-title",
+          "impact": "serious",
+          "description": "Ensure each HTML document contains a non-empty <title> element",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/document-title?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  Document does not have a non-empty <title> element"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "description": "Ensure links have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".-tracking-tighter"
+              ],
+              "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/nested-interactive?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".z-20"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Tipos e Declaracoes\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Estrutura\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Operadores\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Fluxo\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Lacos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "description": "Ensure touch targets have sufficient size and space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 55
+        }
+      ],
+      "passes": 26
+    },
+    {
+      "name": "dark-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "theme": "dark",
+      "layout": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "stepDirection": "column",
+        "hiddenStepLabel": "static"
+      },
+      "keyboard": {
+        "firstStepReachedWithTab": true,
+        "tabs": 5,
+        "secondStepActivatedWithEnter": true
+      },
+      "axeVersion": "4.13.0",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "description": "Ensure buttons have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".border-r > div:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "document-title",
+          "impact": "serious",
+          "description": "Ensure each HTML document contains a non-empty <title> element",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/document-title?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  Document does not have a non-empty <title> element"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/nested-interactive?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".z-20"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Tipos e Declaracoes\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Estrutura\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Operadores\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Fluxo\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Lacos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            }
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "description": "Ensure elements that have scrollable content are accessible by keyboard in Safari",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/scrollable-region-focusable?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".border-white\\/12 > .code-scroll-area.bg-\\[\\#0a1020\\]\\/80.ring-white\\/8"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            },
+            {
+              "target": [
+                ".ring-white\\/6.shadow-\\[0_10px_24px_-18px_rgba\\(0\\,0\\,0\\,0\\.6\\)\\].hover\\:border-white\\/12:nth-child(2) > .code-scroll-area.bg-\\[\\#0a1020\\]\\/80.ring-white\\/8"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            },
+            {
+              "target": [
+                ".ring-white\\/6.shadow-\\[0_10px_24px_-18px_rgba\\(0\\,0\\,0\\,0\\.6\\)\\].hover\\:border-white\\/12:nth-child(3) > .code-scroll-area.bg-\\[\\#0a1020\\]\\/80.ring-white\\/8"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "description": "Ensure touch targets have sufficient size and space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 79
+        }
+      ],
+      "passes": 27
+    },
+    {
+      "name": "dark-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "layout": {
+        "width": 390,
+        "scrollWidth": 390,
+        "stepDirection": "row",
+        "hiddenStepLabel": "absolute"
+      },
+      "keyboard": {
+        "firstStepReachedWithTab": true,
+        "tabs": 5,
+        "secondStepActivatedWithEnter": true
+      },
+      "axeVersion": "4.13.0",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "description": "Ensure buttons have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".border-r > div:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-r > div:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.08 (foreground color: #62748e, background color: #080d17, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "document-title",
+          "impact": "serious",
+          "description": "Ensure each HTML document contains a non-empty <title> element",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/document-title?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  Document does not have a non-empty <title> element"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "description": "Ensure links have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".-tracking-tighter"
+              ],
+              "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/nested-interactive?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".z-20"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Tipos e Declaracoes\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Estrutura\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Operadores\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Fluxo\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            },
+            {
+              "target": [
+                "div[data-preview-category=\"Lacos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "description": "Ensure touch targets have sufficient size and space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".rounded"
+              ],
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 55
+        }
+      ],
+      "passes": 26
+    }
+  ]
+}

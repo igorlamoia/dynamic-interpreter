@@ -1,7 +1,7 @@
 
-A finalidade deste capítulo é delimitar o que se pretende construir ao longo das duas fases do Trabalho de Conclusão de Curso e, em seguida, apresentar a cadeia temporal de atividades prevista na pré-proposta aprovada. A descrição parte da plataforma vista como produto educacional, atravessa as macroatividades técnicas necessárias à sua materialização e culmina na exposição do cronograma e do regime de trabalho em dupla adotado.
+A finalidade deste capítulo é delimitar o que se pretende construir ao longo das duas fases do Trabalho de Conclusão de Curso e, em seguida, apresentar o planejamento de atividades derivado da pré-proposta. A descrição parte da plataforma vista como produto educacional, atravessa as macroatividades técnicas necessárias à sua materialização e culmina na exposição do cronograma e do regime de trabalho em dupla adotado.
 
-O artefato que orienta este trabalho não é apenas um compilador ou um editor de código, mas sim uma plataforma educacional web cuja unidade de valor é a possibilidade de o estudante personalizar a própria linguagem que utilizará para aprender programação. Em termos concretos, oferece-se ao usuário a possibilidade de redefinir o vocabulário das palavras-chave, escolher os delimitadores de bloco que melhor representem sua noção de escopo, substituir operadores lógicos e relacionais por palavras de uso natural, reescrever os literais booleanos no idioma de sua preferência e ajustar as regras de finalização de instrução. Cada uma dessas dimensões responde, em alguma medida, a uma fonte conhecida de atrito sintático no contato inicial com linguagens consolidadas no mercado, sendo a sua reunião sob uma mesma interface o que sustenta o caráter inovador da proposta. A Tabela~\ref{tab:elementos-configuraveis} detalha cada um desses elementos, confrontando a forma canônica herdada da família C com um exemplo de personalização e com as restrições verificadas pela plataforma no momento da configuração.
+O artefato que orienta este trabalho não é apenas um compilador ou um editor de código, mas sim uma plataforma educacional web cuja unidade de valor é a possibilidade de o estudante personalizar a própria linguagem que utilizará para aprender programação. Em termos concretos, oferece-se ao usuário a possibilidade de redefinir o vocabulário das palavras-chave, escolher os delimitadores de bloco que melhor representem sua noção de escopo, substituir operadores lógicos e relacionais por palavras de uso natural, reescrever os literais booleanos no idioma de sua preferência e ajustar as regras de finalização de instrução. Cada uma dessas dimensões responde, em alguma medida, a uma fonte conhecida de atrito sintático no contato inicial com linguagens consolidadas no mercado, sendo a integração desses recursos na interface o recorte da proposta. A Tabela~\ref{tab:elementos-configuraveis} detalha cada um desses elementos, confrontando a forma canônica herdada da família C com um exemplo de personalização e com as restrições verificadas pela plataforma no momento da configuração.
 
 \begin{table}[htbp]
     \centering
@@ -26,16 +26,19 @@ O artefato que orienta este trabalho não é apenas um compilador ou um editor d
         \hline
         Literais booleanos & \texttt{true}, \texttt{false} & \texttt{verdadeiro}, \texttt{falso} & Forma de identificador; sem duplicatas; não podem conflitar com operadores em forma de palavra nem com delimitadores \\
         \hline
-        Delimitadores de bloco & \texttt{\{} e \texttt{\}} & \texttt{inicio} e \texttt{fim}, ou indentação & Ambos preenchidos, com forma de identificador, distintos entre si e sem reusar palavra reservada \\
+        Delimitadores de bloco & \texttt{\{} e \texttt{\}} & \texttt{inicio} e \texttt{fim}, ou indentação & No modo delimitado, o par alternativo deve ter identificadores distintos e sem colisões; no modo por indentação, o recuo determina os blocos \\
         \hline
-        Terminador de instrução & \texttt{;} & \texttt{ponto} ou ausência de terminador & Não pode ser vazio, conter espaços, reusar o ponto e vírgula ou caracteres de operadores fixos, nem colidir com palavras já definidas na linguagem \\
+        Terminador de instrução & \texttt{;} & \texttt{ponto} ou terminação por fim de linha & Quando um lexema alternativo for definido, não pode ser vazio, conter espaços, reusar o ponto e vírgula ou caracteres de operadores fixos, nem colidir com palavras já definidas na linguagem \\
         \hline
     \end{tabular}
     \legend{Fonte: elaborado pelo autor, a partir das funções de validação do módulo \texttt{config.ts} do pacote \texttt{compiler}.}
 \end{table}
 
+Além das substituições lexicais, a configuração \texttt{GrammarConfig} seleciona alternativas de análise e execução: terminador obrigatório ou opcional por fim de linha; blocos delimitados ou por indentação; modo tipado ou não tipado; e arranjos fixos ou dinâmicos. Essas variantes são combinadas pelo módulo \texttt{compiler-config.ts}; não são novas produções fornecidas pelo usuário. No modo por indentação, delimitadores textuais deixam de ser o mecanismo de delimitação de blocos.
 
-O conjunto completo de funcionalidades previstas para a plataforma, com os respectivos atores, é apresentado no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso}. O diagrama distingue quatro atores: o visitante, que apenas se cadastra e se autentica; o usuário autenticado, que concentra as funcionalidades comuns de personalização da linguagem e de uso do ambiente de desenvolvimento; e os papéis de aluno e de professor, que dele herdam e acrescentam, respectivamente, as funcionalidades de participação em turmas e de gestão pedagógica.
+
+
+Os fluxos de uso da IDE e de gestão pedagógica especificados neste trabalho, com os respectivos atores, são apresentados no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso}. O diagrama distingue quatro atores: o visitante, que pode usar a IDE e a personalização local, além de cadastrar-se e autenticar-se; o usuário autenticado, que acrescenta persistência remota e compartilhamento de linguagens; e os papéis de aluno e de professor, que dele herdam e acrescentam, respectivamente, as funcionalidades de participação em turmas e de gestão pedagógica.
 
 \begin{landscape}
 \begin{figure}[p]
@@ -83,14 +86,14 @@ O conjunto completo de funcionalidades previstas para a plataforma, com os respe
     \node[uc] (ucTur)  at (20.0, 4.5) {Gerenciar turmas};
     \node[uc] (ucMem)  at (20.0, 3.0) {Gerenciar membros\\da turma};
     \node[uc] (ucEx)   at (20.0, 1.5) {Gerenciar exercícios\\e casos de teste};
-    \node[uc] (ucVinc) at (20.0, 0.0) {Vincular linguagem\\a exercício};
+    \node[uc] (ucVinc) at (20.0, 0.0) {Vincular linguagem\\a exercício ou lista};
     \node[uc] (ucLis)  at (20.0,-1.5) {Gerenciar listas\\de exercícios};
     \node[uc] (ucPub)  at (20.0,-3.0) {Publicar lista\\para a turma};
     \node[uc] (ucAva)  at (20.0,-4.5) {Acompanhar e avaliar\\submissões};
 
     %% ---------- associacoes (camada de fundo: passam atras das elipses) ----------
     \begin{scope}[on background layer]
-      \foreach \d in {ucCad,ucAut}
+      \foreach \d in {ucCad,ucAut,ucLing,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep}
         \draw[liga] (0.35,4.2) -- (\d);
       \foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep}
         \draw[liga] (0.35,0.5) -- (\d);
@@ -105,6 +108,8 @@ O conjunto completo de funcionalidades previstas para a plataforma, com os respe
 \end{figure}
 \end{landscape}
 
+Os atores do diagrama representam capacidades de interação, e não uma reprodução literal da enumeração de papéis do banco. No recorte da interface, o perfil administrador compartilha os recursos pedagógicos do professor; o perfil comunidade utiliza os recursos de linguagens do usuário autenticado. O papel interno de sistema não representa uma pessoa operando a IDE. A gestão de linguagens pelo visitante refere-se ao estado local; publicação e persistência remota exigem autenticação.
+
 A partir desses casos de uso, consolidaram-se os requisitos que orientaram a construção da plataforma. A Tabela~\ref{tab:requisitos-funcionais} relaciona os requisitos funcionais, isto é, o que o sistema deve fazer; a Tabela~\ref{tab:requisitos-nao-funcionais}, os requisitos não funcionais, que estabelecem as qualidades esperadas da solução e os critérios sob os quais ela será verificada.
 
 \begin{table}[htbp]
@@ -118,7 +123,7 @@ A partir desses casos de uso, consolidaram-se os requisitos que orientaram a con
         \hline
         \textbf{ID} & \textbf{Descrição} \\
         \hline
-        RF01 & Permitir o cadastro e a autenticação de usuários, distinguindo os papéis de aluno e de professor \\
+        RF01 & Permitir o cadastro e a autenticação de usuários, distinguindo aluno, professor, administrador e comunidade \\
         \hline
         RF02 & Permitir ao usuário autenticado consultar e editar os dados de seu perfil \\
         \hline
@@ -150,7 +155,7 @@ A partir desses casos de uso, consolidaram-se os requisitos que orientaram a con
         \hline
         RF16 & Permitir ao professor criar e gerir exercícios, com casos de teste de entrada e saída esperada \\
         \hline
-        RF17 & Permitir vincular uma configuração de linguagem a um exercício, restringindo o vocabulário disponível ao aluno \\
+        RF17 & Permitir vincular uma linguagem obrigatória a um exercício ou a uma lista, conforme a política de linguagem definida \\
         \hline
         RF18 & Permitir organizar exercícios em listas e publicá-las para uma turma \\
         \hline
@@ -185,7 +190,7 @@ A partir desses casos de uso, consolidaram-se os requisitos que orientaram a con
         \hline
         RNF06 & \textbf{Consistência visual:} os temas claro e escuro devem manter paridade de contraste e legibilidade, inclusive no editor \\
         \hline
-        RNF07 & \textbf{Testabilidade:} as construções críticas devem ser cobertas por testes automatizados, executados localmente e no \textit{pipeline} de integração contínua \\
+        RNF07 & \textbf{Testabilidade:} as construções críticas devem ser cobertas por testes automatizados, executados localmente e em uma futura etapa de testes do fluxo de integração \\
         \hline
         RNF08 & \textbf{Segregação de acesso:} as rotas e operações restritas devem verificar o papel do usuário antes de permitir o acesso \\
         \hline
@@ -202,10 +207,10 @@ Conforme definido na pré-proposta, a metodologia foi organizada em seis macroet
     \item \textbf{Desenvolvimento da plataforma:} implementação da aplicação web, contemplando os fluxos de edição, navegação, personalização, autenticação e uso educacional da IDE;
     \item \textbf{Implementação da análise dinâmica léxica e sintática:} integração entre o código escrito na IDE e as fases de reconhecimento de \textit{tokens} e validação sintática com suporte às regras configuradas pelo usuário;
     \item \textbf{Geração e interpretação do código intermediário:} disponibilização, no ambiente da IDE, da execução do código intermediário e do retorno de avisos, erros e resultados ao usuário;
-    \item \textbf{Integração e testes entre plataforma e interpretador:} validação dos fluxos principais, com atenção à consistência da experiência, à acessibilidade, à responsividade e à preparação para os estudos com usuários.
+    \item \textbf{Integração, testes e preparação da avaliação:} execução de testes técnicos e elaboração de tarefas, instrumentos e medidas para uma avaliação futura. As atividades de documentação acompanham as etapas técnicas e culminam na redação dos resultados e das limitações.
 \end{itemize}
 
-A distribuição temporal dessas atividades ao longo dos doze meses que compreendem o TCC~I e o TCC~II é apresentada na Tabela~\ref{tab:cronograma}, conforme o cronograma registrado na pré-proposta. Cada coluna numerada corresponde a um mês corrido das duas etapas e cada célula marcada com ``X'' sinaliza a previsão de execução da respectiva atividade no período indicado.
+A distribuição temporal dessas atividades ao longo dos doze meses que compreendem o TCC~I e o TCC~II é apresentada na Tabela~\ref{tab:cronograma}, preservando as marcações temporais da pré-proposta e ajustando a descrição da avaliação ao escopo atual. A tabela expressa planejamento, não comprovação de execução. Cada coluna numerada corresponde a um mês corrido das duas etapas e cada célula marcada com ``X'' sinaliza a previsão de execução da respectiva atividade no período indicado.
 
 \begin{table}[H]
     \centering
@@ -227,7 +232,7 @@ A distribuição temporal dessas atividades ao longo dos doze meses que compreen
         \hline
         Predefinição de escopo e Especificação dos comandos dinâmicos & & & X & X & & & & & & & & \\
         \hline
-        Escrita da Metodologia & & & X & & X & X & & & & & & \\
+        Documentação dos procedimentos de desenvolvimento & & & X & & X & X & & & & & & \\
         \hline
         Arquitetura e Modelagem da Plataforma & & & X & X & & & & & & & & \\
         \hline
@@ -239,7 +244,7 @@ A distribuição temporal dessas atividades ao longo dos doze meses que compreen
         \hline
         Finalização de fluxos, acessibilidade e responsividade & & & & & & X & X & X & & & & \\
         \hline
-        Testes, Validação com Usuários e Coleta de \textit{Feedback} & & & & & & & & & X & X & X & \\
+        Testes técnicos e preparação do protocolo de avaliação & & & & & & & & & X & X & X & \\
         \hline
         Escrita do TCC (Resultados, Discussão e Conclusão) & & & & & & & & & X & X & X & X \\
         \hline
@@ -252,4 +257,4 @@ Convém retomar, neste ponto, o regime de trabalho em dupla já apresentado na i
 
 A partir dessa base comum, a divisão complementar de eixos de aprofundamento manifesta-se nos capítulos de redação acadêmica e nas evoluções incrementais subsequentes. No presente documento, o autor concentra a investigação na plataforma e na customização de comandos: arquitetura da aplicação web, concepção do assistente de personalização, experiência de uso da IDE, execução do código no terminal integrado e procedimentos de coleta de \textit{feedback} junto aos estudantes. O detalhamento aprofundado da evolução do núcleo do interpretador, incluindo a geração de código intermediário e sua integração técnica ao restante da plataforma, é desenvolvido em paralelo pelo estudante Victor de Souza Vilela da Silva. Essa divisão de eixos não fragmenta o produto: o que se distribui é a profundidade analítica de cada autor sobre partes específicas do mesmo artefato, conduzido pelos dois em todas as etapas. Tal arranjo justifica-se pela amplitude do escopo, que, individualmente, tenderia a resultar em um interpretador simplificado ou em uma plataforma incompleta, restrita a um terminal.
 
-Concluídas as etapas cobertas por este documento, dedicadas à fundamentação teórica, à modelagem da plataforma, à customização dinâmica de \textit{tokens} e sintaxe, à execução das análises léxica e sintática a partir da IDE e à execução do código intermediário no terminal integrado, a fase subsequente direcionará seus esforços à consolidação da plataforma e à definição do protocolo de avaliação: os instrumentos de coleta, as métricas e os critérios que permitirão, posteriormente, aferir em que medida a personalização da linguagem contribui para a aprendizagem. A aplicação desse protocolo junto a estudantes, com a consequente coleta de evidências empíricas em sala de aula, não integra o escopo deste trabalho e é registrada como encaminhamento futuro. O próximo capítulo, dedicado à modelagem, descreve o estado em que o sistema se encontra ao término do TCC~I.
+O planejamento do TCC~I concentrou a arquitetura e a integração inicial. Esta revisão para o TCC~II documenta a implementação disponível, os testes executados e a proposta de protocolo. A coleta com estudantes permanece futura. O próximo capítulo apresenta esse estado técnico e distingue as verificações realizadas das avaliações ainda previstas.

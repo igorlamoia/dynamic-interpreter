@@ -1,0 +1,36 @@
+% Fonte: hooks da IDE, terminal/body.tsx e pages/api/submissions/validate.ts.
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, align=center, text width=11.7cm, inner sep=8pt, font=\small},
+  flow/.style={-{Latex},thick},
+  note/.style={font=\footnotesize,align=center,fill=white,inner sep=3pt}
+]
+\node[box,fill=gray!8] (browser) at (0,0) {
+  \textbf{Navegador: IDE e núcleo TypeScript}\\[4pt]
+  Editor + configuração da linguagem\\
+  $\downarrow$\\
+  \texttt{Lexer} $\rightarrow$ \textit{tokens} $\rightarrow$ \texttt{TokenIterator} + \texttt{Emitter}\\
+  $\downarrow$\\
+  Instruções de três endereços $\rightarrow$ \texttt{Interpreter}\\
+  $\updownarrow$\\
+  Terminal e depuração: entrada, saída e estado da execução
+};
+\node[box,fill=gray!8] (next) at (0,-5.8) {
+  \textbf{Servidor Next.js: avaliação de exercícios}\\[4pt]
+  \texttt{POST /api/submissions/validate}\\
+  Reutiliza \texttt{Lexer}, \texttt{TokenIterator} e \texttt{Interpreter}\\
+  Traduz o programa e executa os casos de teste com entrada simulada
+};
+\node[box,fill=gray!8] (api) at (0,-9.4) {
+  \textbf{Serviço FastAPI + SQLAlchemy}\\[4pt]
+  Autenticação; usuários; organizações; linguagens; turmas;\\
+  exercícios; listas; submissões
+};
+\node[box,text width=6cm,fill=gray!8] (db) at (0,-12.1) {
+  \textbf{PostgreSQL}\\Persistência das onze tabelas de domínio
+};
+\draw[flow] (browser.south) -- node[note] {HTTP: código, configuração e identificação do exercício\\Resposta: vereditos dos casos de teste} (next.north);
+\draw[flow] (next.south) -- node[note] {HTTP: consulta de casos de teste e registro da submissão} (api.north);
+\draw[flow] (api.south) -- node[note] {SQL} (db.north);
+\draw[flow] (browser.west) -- ++(-0.8,0) |- (api.west);
+\node[note,rotate=90] at (-7.1,-4.2) {HTTP: gestão de recursos};
+\end{tikzpicture}

@@ -1,0 +1,6 @@
+{
+  "node": "v25.2.1",
+  "playwright": "1.63.0",
+  "@axe-core/playwright": "4.13.0",
+  "axe-core": "4.13.0"
+}

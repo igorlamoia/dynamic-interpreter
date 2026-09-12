@@ -1,117 +1,43 @@
 
-Este capítulo apresenta a abordagem metodológica adotada para o desenvolvimento da plataforma web proposta neste trabalho, detalhando a arquitetura do Ambiente de Desenvolvimento Integrado (IDE), as estratégias empregadas para a customização dinâmica de \textit{tokens} e sintaxe, os mecanismos de integração com o núcleo do interpretador e os fluxos de execução, avaliação e \textit{feedback} ao usuário. A condução do trabalho seguiu rigorosamente as etapas previstas no cronograma do projeto, contemplando, nesta primeira fase do Trabalho de Conclusão de Curso, a revisão bibliográfica, a especificação do escopo dos comandos dinâmicos, a modelagem da arquitetura da plataforma, a implementação da customização interativa da linguagem, a execução das análises léxica e sintática a partir do código produzido na IDE, a apresentação dos resultados intermediários no terminal embutido e a finalização dos fluxos principais, com atenção à acessibilidade e à responsividade.
+Este capítulo apresenta a abordagem metodológica adotada para o desenvolvimento da plataforma web proposta neste trabalho, detalhando a arquitetura do Ambiente de Desenvolvimento Integrado (IDE), as estratégias empregadas para a customização dinâmica de \textit{tokens} e sintaxe, os mecanismos de integração com o núcleo do interpretador e os fluxos de execução, avaliação e \textit{feedback} ao usuário. O capítulo registra o estado técnico da plataforma durante a revisão para o TCC~II, a partir da implementação e dos testes disponíveis, contemplando a revisão bibliográfica, a especificação do escopo dos comandos dinâmicos, a modelagem da arquitetura da plataforma, a implementação da customização interativa da linguagem, a execução das análises léxica e sintática a partir do código produzido na IDE, a apresentação dos resultados intermediários no terminal embutido e a finalização dos fluxos principais, com atenção à acessibilidade e à responsividade.
 
 O desenvolvimento foi conduzido de forma incremental e iterativa, orientado pelas práticas técnicas do \textit{Extreme Programming} discutidas na Seção~\ref{subsec:xp}. Convém explicitar de que modo essas práticas foram efetivamente instanciadas em uma equipe de dois integrantes, uma vez que o método foi adotado de forma parcial e deliberada. Não se estabeleceram ciclos de duração fixa: o trabalho partiu de um conjunto mínimo de requisitos e avançou por acréscimos funcionais, e sempre que uma melhoria não prevista se mostrava pertinente durante a implementação, ela era incorporada naquele momento, em vez de ser postergada para um planejamento posterior. Essa incorporação contínua da mudança, e não a cadência fixa de entregas, é o traço do método que efetivamente governou o projeto \cite{beck2004,wildt2015}.
 
-Quanto à divisão de trabalho, não houve especialização de papéis: ambos os autores atuaram no levantamento de requisitos, no projeto, na implementação, no teste e na revisão, em regime de propriedade coletiva do código, no qual qualquer integrante alterava qualquer parte do sistema, com revisão mútua antes da incorporação ao ramo principal \cite{wildt2015}. As demais práticas do método foram adotadas nos termos descritos ao longo deste capítulo: o desenvolvimento guiado por testes, detalhado na Seção~\ref{sec:testes-plataforma}; a integração contínua, acionada a cada mudança submetida ao repositório; o \textit{design} simples e a refatoração contínua, que orientaram a organização em camadas descrita na Seção~\ref{sec:arquitetura-plataforma}.
+Quanto à divisão de trabalho, não houve especialização de papéis: ambos os autores atuaram no levantamento de requisitos, no projeto, na implementação, no teste e na revisão, em regime de propriedade coletiva do código, no qual qualquer integrante alterava qualquer parte do sistema, com alterações registradas no histórico do repositório \cite{wildt2015}. As demais práticas do método foram adotadas nos termos descritos ao longo deste capítulo: o uso de testes automatizados, detalhado na Seção~\ref{sec:testes-plataforma}; o versionamento e a configuração de implantação; o \textit{design} simples e a refatoração contínua, que orientaram a organização em camadas descrita na Seção~\ref{sec:arquitetura-plataforma}.
 
-O restante deste capítulo está organizado da seguinte maneira. A Seção~\ref{sec:arquitetura-plataforma} descreve a modelagem da arquitetura e a divisão em camadas; a Seção~\ref{sec:interpretador-nucleo} situa o núcleo de tradução compartilhado entre os dois volumes; a Seção~\ref{sec:customizacao-dinamica} detalha o mecanismo de customização dinâmica da linguagem, funcionalidade central da plataforma. Em seguida, a Seção~\ref{sec:edicao-codigo} trata da edição de código e do sistema de arquivos virtual; a Seção~\ref{sec:execucao-analises} e a Seção~\ref{sec:terminal-feedback} descrevem, respectivamente, o acionamento das análises a partir da IDE e a execução do código intermediário com retorno ao usuário; e a Seção~\ref{sec:sistema-correcao} apresenta o subsistema de avaliação automatizada. Por fim, a Seção~\ref{sec:acessibilidade-responsividade} discute acessibilidade e responsividade, a Seção~\ref{sec:telas-plataforma} reúne as telas implementadas e a Seção~\ref{sec:testes-plataforma} expõe a estratégia de testes automatizados.
+O restante deste capítulo está organizado da seguinte maneira. A Seção~\ref{sec:arquitetura-plataforma} descreve a modelagem da arquitetura e a divisão em camadas; a Seção~\ref{sec:interpretador-nucleo} situa o núcleo de tradução compartilhado entre os dois textos; a Seção~\ref{sec:customizacao-dinamica} detalha o mecanismo de customização dinâmica da linguagem, funcionalidade central da plataforma. Em seguida, a Seção~\ref{sec:edicao-codigo} trata da edição de código e do sistema de arquivos virtual; a Seção~\ref{sec:execucao-analises} e a Seção~\ref{sec:terminal-feedback} descrevem, respectivamente, o acionamento das análises a partir da IDE e a execução do código intermediário com retorno ao usuário; e a Seção~\ref{sec:sistema-correcao} apresenta o subsistema de avaliação automatizada. Por fim, a Seção~\ref{sec:acessibilidade-responsividade} apresenta a verificação da interface, a Seção~\ref{sec:telas-plataforma} reúne as telas, a Seção~\ref{sec:testes-plataforma} expõe os testes e a Seção~\ref{sec:protocolo-avaliacao} propõe a avaliação futura.
 
-Em razão da elevada quantidade de telas, componentes interativos e estados compartilhados característicos de uma IDE web, cada fluxo da plataforma, desde a autenticação do usuário até a submissão de exercícios --- o conjunto completo deles está sistematizado no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso} ---, foi tratado como uma unidade autônoma de entrega, modelada, implementada e validada antes da agregação à etapa seguinte. Essa abordagem foi sustentada por testes automatizados unitários e de integração escritos com o \textit{framework} Vitest, conforme as práticas de Desenvolvimento Guiado por Testes consolidadas por \citeonline{aniche2012} e \citeonline{martin_coder}, permitindo a verificação contínua de regressões diante das frequentes mudanças impostas pela natureza altamente interativa da plataforma.
+Em razão da elevada quantidade de telas, componentes interativos e estados compartilhados característicos de uma IDE web, cada fluxo da plataforma, desde a autenticação do usuário até a submissão de exercícios --- o conjunto completo deles está sistematizado no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso} ---, foi tratado como uma unidade autônoma de entrega, implementada e revista ao longo dos incrementos. Essa abordagem foi sustentada por testes automatizados unitários e de integração escritos com o \textit{framework} Vitest, relacionados à discussão de Desenvolvimento Guiado por Testes de \citeonline{aniche2012} e \citeonline{martin_coder}, permitindo a verificação contínua de regressões diante das frequentes mudanças impostas pela natureza altamente interativa da plataforma.
 
 \section{Modelagem da Arquitetura da Plataforma}
 \label{sec:arquitetura-plataforma}
 
-A organização da plataforma foi concebida sob a ótica da Separação de Responsabilidades defendida por \citeonline{martin_clean}, dividindo o projeto em três camadas independentes e bem delimitadas: o pacote \texttt{compiler}, responsável pelo núcleo do interpretador; o pacote \texttt{ide}, responsável pela camada de apresentação e por toda a interação com o usuário; e o serviço de \textit{back-end}, responsável pela persistência das entidades de domínio do Ambiente Virtual de Aprendizagem. Os pacotes \texttt{compiler} e \texttt{ide} são versionados em um único repositório no formato \textit{monorepo}, viabilizando o consumo direto do compilador como dependência local da IDE, sem qualquer empacotamento intermediário e sem comunicação remota entre as duas camadas. Essa decisão arquitetural reduz drasticamente a latência da execução de programas no navegador e simplifica a propagação de mudanças no compilador para a interface.
+A organização da plataforma foi concebida sob a ótica da Separação de Responsabilidades defendida por \citeonline{martin_clean}, dividindo o projeto em três responsabilidades principais: o pacote \texttt{compiler}, responsável pelo núcleo do interpretador; o pacote \texttt{ide}, responsável pela camada de apresentação e por toda a interação com o usuário; e o serviço de \textit{back-end}, responsável pela persistência das entidades de domínio do Ambiente Virtual de Aprendizagem. Os pacotes \texttt{compiler} e \texttt{ide} são versionados em um único repositório no formato \textit{monorepo}, viabilizando o consumo direto do compilador como dependência local da IDE, sem qualquer empacotamento intermediário e sem comunicação remota entre as duas camadas. Esse consumo elimina a requisição remota na análise interativa e permite compartilhar a implementação entre navegador e servidor; não foi medida a redução de latência.
 
-O \textit{front-end} foi implementado com o \textit{framework} Next.js, em sua arquitetura de \textit{Pages Router} e sobre o \textit{Node.js Runtime} padrão --- nenhuma rota declara \texttt{runtime = 'edge'}, de modo que o \textit{Edge Runtime} discutido no referencial teórico não é utilizado neste projeto, opção coerente com a necessidade de acesso pleno às APIs do Node.js pelas rotas de validação de submissões ---, sobre a biblioteca React 19, utilizando TypeScript em todo o código-fonte para garantir a verificação estática de tipos discutida por \citeonline{martin_clean_code}. A estilização foi conduzida com Tailwind CSS em sua quarta versão, complementada por componentes acessíveis das bibliotecas \textit{shadcn/ui} e \textit{Radix UI}, escolhidos por implementarem as recomendações da \textit{Web Accessibility Initiative} (WAI-ARIA) por padrão. O gerenciamento de estado assíncrono foi delegado à biblioteca \textit{TanStack React Query}, responsável pela orquestração de cache, sincronização e revalidação dos dados consumidos das rotas HTTP, enquanto a validação de formulários foi modelada com a biblioteca \textit{Zod}, integrada ao \textit{React Hook Form}.
+O \textit{front-end} foi implementado com o \textit{framework} Next.js, em sua arquitetura de \textit{Pages Router} e sobre o \textit{Node.js Runtime} padrão --- nenhuma rota declara \texttt{runtime = 'edge'}, de modo que o \textit{Edge Runtime} discutido no referencial teórico não é utilizado neste projeto, opção coerente com a necessidade de acesso pleno às APIs do Node.js pelas rotas de validação de submissões ---, sobre a biblioteca React 19, utilizando TypeScript em todo o código-fonte para verificar tipos durante o desenvolvimento. A estilização foi conduzida com Tailwind CSS em sua quarta versão, complementada por componentes das bibliotecas \textit{shadcn/ui} e \textit{Radix UI}, que fornecem primitivas de semântica e interação, sem garantir a acessibilidade da composição final \cite{radixaccess2026}. O gerenciamento de estado assíncrono foi delegado à biblioteca \textit{TanStack React Query}, responsável pela orquestração de cache, sincronização e revalidação dos dados consumidos das rotas HTTP, enquanto a validação de formulários foi modelada com a biblioteca \textit{Zod}, integrada ao \textit{React Hook Form}.
 
 A camada de \textit{back-end} foi implementada em Python sobre o \textit{framework} FastAPI, escolhido pelas características de alto desempenho, validação automática via \textit{Pydantic} e geração automatizada de documentação OpenAPI discutidas por \citeonline{fastapi2026}. A persistência foi sustentada pelo ORM SQLAlchemy assíncrono, com versionamento de \textit{schema} via Alembic, isolando o modelo de dados das regras de negócio em conformidade com os princípios de Arquitetura Limpa apresentados por \citeonline{martin_clean}. Essa separação mantém o modelo de persistência confinado a uma camada própria, de modo que o núcleo de compilação e a interface web não dependam diretamente do banco de dados nem de suas particularidades. Não se trata de minimizar a importância da persistência, mas de restringir seu alcance: mudanças no esquema ou no mecanismo de armazenamento não devem propagar-se para as regras de tradução nem para a camada de apresentação.
 
-O fluxo geral de comunicação entre as camadas, ilustrado pela Figura \ref{fig:arquitetura-plataforma}, foi estruturado de modo que a execução do código submetido pelo usuário ocorra integralmente nos limites do servidor Next.js. A IDE invoca rotas HTTP locais sob o caminho \texttt{/api}, que importam diretamente as classes \texttt{Lexer}, \texttt{TokenIterator} e \texttt{Interpreter} do pacote \texttt{compiler}. As requisições destinadas à persistência são, por sua vez, delegadas ao serviço FastAPI por meio do cliente HTTP \textit{axios}. Essa segregação confere à plataforma a flexibilidade de executar programas mesmo na ausência de conexão com o serviço de persistência, mantendo plenamente funcionais os recursos de edição, análise léxica, geração de código intermediário e interpretação.
+O fluxo geral da Figura~\ref{fig:arquitetura-plataforma} distingue dois ambientes de execução. No navegador, os \textit{hooks} \texttt{useLexerAnalyse} e \texttt{useIntermediatorCode} e o terminal instanciam o núcleo diretamente para analisar, traduzir e executar o programa do editor. No servidor Node.js do Next.js, a rota \texttt{/api/submissions/validate} reutiliza as mesmas classes para avaliar soluções de exercícios. O serviço FastAPI fornece autenticação e recursos persistentes. Após o carregamento da aplicação, os recursos locais não exigem uma chamada a esse serviço para cada análise; isso não equivale a garantir o carregamento inicial da plataforma sem conexão.
 
 \begin{figure}[htbp]
     \centering
     \caption[Arquitetura da plataforma.]{Arquitetura da plataforma: camadas, módulos internos e fluxos de comunicação.}
     \label{fig:arquitetura-plataforma}
-    \resizebox{\linewidth}{!}{%
-    \begin{tikzpicture}[
-      x=1cm, y=1cm,
-      camada/.style={draw, rounded corners, thick, inner sep=8pt},
-      mod/.style={draw, rectangle, align=center, font=\scriptsize,
-                  minimum height=0.9cm, minimum width=2.5cm, fill=white},
-      rot/.style={draw, rectangle, rounded corners=2pt, align=center, font=\scriptsize,
-                  minimum height=0.8cm, fill=white},
-      fase/.style={draw, rectangle, align=center, font=\scriptsize,
-                   minimum height=0.9cm, minimum width=2.2cm, fill=white},
-      titulo/.style={font=\footnotesize\bfseries, anchor=west},
-      fl/.style={-{Stealth[length=2.5mm]}, semithick},
-      rotulo/.style={font=\tiny, fill=white, inner sep=1.5pt},
-    ]
-
-    %% ================= CAMADA 1: apresentacao =================
-    \node[mod] (views)   at ( 1.7, 9.0) {\texttt{views}\\composições de tela};
-    \node[mod] (comps)   at ( 4.8, 9.0) {\texttt{components}\\\textit{shadcn/ui} e Radix};
-    \node[mod] (ctxs)    at ( 7.9, 9.0) {\texttt{contexts}\\Editor, Keyword,\\Terminal, Theme};
-    \node[mod] (hooks)   at (11.0, 9.0) {\texttt{hooks}\\useLexerAnalyse,\\useFileSystem};
-    \node[mod] (monaco)  at (14.1, 9.0) {Monaco Editor\\dialeto \texttt{java-{}-}};
-    \node[mod] (storage) at (17.2, 9.0) {\textit{localStorage}\\arquivos e\\customização ativa};
-    \begin{scope}[on background layer]
-      \node[camada, fill=blue!4, fit=(views)(storage), inner ysep=17pt] (c1) {};
-    \end{scope}
-    \node[titulo] at ([shift={(0.15,-0.34)}]c1.north west)
-      {Camada de apresentação --- pacote \texttt{ide} (Next.js \textit{Pages Router}, React 19)};
-
-    %% ================= CAMADA 2: nucleo de traducao =================
-    \node[fase] (lex)    at ( 2.4, 5.0) {\texttt{Lexer}\\análise léxica};
-    \node[fase] (iter)   at ( 6.0, 5.0) {\texttt{TokenIterator}\\\textit{parser} descendente};
-    \node[fase] (emit)   at ( 9.6, 5.0) {\texttt{Emitter}\\código de três endereços};
-    \node[fase] (interp) at (13.2, 5.0) {\texttt{Interpreter}\\execução};
-    \node[fase] (issue)  at (16.8, 5.0) {\texttt{issue} e \texttt{i18n}\\erros e mensagens};
-    \draw[fl] (lex) -- (iter);
-    \draw[fl] (iter) -- (emit);
-    \draw[fl] (emit) -- (interp);
-    \begin{scope}[on background layer]
-      \node[camada, fill=green!5, fit=(lex)(issue), inner ysep=17pt] (c2) {};
-    \end{scope}
-    \node[titulo] at ([shift={(0.15,-0.34)}]c2.north west)
-      {Núcleo de tradução --- pacote \texttt{compiler} (consumido como dependência local)};
-
-    %% ================= CAMADA 3: rotas locais =================
-    \node[rot, minimum width=4.6cm] (apival)    at (3.4, 1.4) {\texttt{/api/submissions/validate}};
-    \node[rot, minimum width=4.6cm] (apisearch) at (8.8, 1.4) {\texttt{/api/language-images/search}};
-    \begin{scope}[on background layer]
-      \node[camada, fill=orange!6, fit=(apival)(apisearch), inner ysep=15pt] (c3) {};
-    \end{scope}
-    \node[titulo] at ([shift={(0.15,-0.32)}]c3.north west) {Rotas locais do servidor Next.js};
-
-    %% ================= CAMADA 4: persistencia =================
-    \node[mod, minimum width=8.4cm] (routers) at (9.5,-2.6)
-      {\textit{routers}: \texttt{auth}, \texttt{users}, \texttt{classes}, \texttt{exercises},
-       \texttt{exercise-lists}, \texttt{submissions}, \texttt{languages}};
-    \node[mod, minimum width=3.9cm] (orm)     at (7.3,-4.2) {SQLAlchemy assíncrono};
-    \node[mod, minimum width=3.9cm] (alembic) at (11.7,-4.2) {Alembic (migrações)};
-    \begin{scope}[on background layer]
-      \node[camada, fill=red!4, fit=(routers)(orm)(alembic), inner ysep=16pt] (c4) {};
-    \end{scope}
-    \node[titulo] at ([shift={(0.15,-0.32)}]c4.north west)
-      {Serviço de persistência --- FastAPI (Python)};
-
-    \node[draw, cylinder, shape border rotate=90, aspect=0.2, minimum width=2.3cm,
-          minimum height=1.1cm, align=center, font=\scriptsize] (bd) at (9.5,-6.6) {Banco de\\dados};
-    \draw[fl] (c4.south) -- (bd.north);
-
-    %% ================= fluxos entre camadas =================
-    \draw[fl] ([xshift=-4cm]c1.south) -- node[rotulo] {\textit{import} direto (\textit{monorepo}), sem rede}
-              ([xshift=-4cm]c2.north);
-    \draw[fl] (c3.north) -- node[rotulo] {instancia \texttt{Lexer}, \texttt{TokenIterator} e \texttt{Interpreter}} ([xshift=-3.5cm]c2.south);
-    \draw[fl] (c3.south) -- node[rotulo] {HTTP} ([xshift=-3cm]c4.north);
-    \draw[fl] (c1.east) -- ++(1.1,0) |- node[rotulo, pos=0.28] {\textit{axios} / HTTP (TanStack Query)} (c4.east);
-
-    \end{tikzpicture}}
+    \resizebox{\linewidth}{!}{\input{Figuras/arquitetura-atual.tex}}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
 A organização interna do código da IDE seguiu a topologia clássica de aplicações Next.js, com diretórios dedicados para páginas (\texttt{pages}), componentes reutilizáveis (\texttt{components}), \textit{contexts} de estado global (\texttt{contexts}), \textit{hooks} personalizados (\texttt{hooks}), entidades de domínio (\texttt{entities}), bibliotecas de apoio (\texttt{lib}) e composições de tela (\texttt{views}). Essa segmentação é um primeiro passo na direção da coesão funcional discutida por \citeonline{silveira2012}: a organização em diretórios, isoladamente, não a garante, mas torna explícita a responsabilidade atribuída a cada módulo e facilita que ela seja preservada ao longo da evolução do código, favorecendo a legibilidade e a testabilidade do sistema.
 
-Cabe explicitar quais padrões de projeto foram efetivamente empregados nessa organização. Na camada de apresentação, adota-se o padrão \textit{Provider} da biblioteca React: cada preocupação transversal da aplicação (autenticação, editor, customização da linguagem, terminal, tema, notificações e erros de execução) é isolada em um \textit{context} próprio, sob o diretório \texttt{contexts}, que expõe estado e operações aos componentes descendentes sem exigir a propagação manual de propriedades. Os \textit{hooks} personalizados, por sua vez, operam como fachadas sobre esses \textit{contexts} e sobre o pacote \texttt{compiler}, oferecendo aos componentes uma interface reduzida e estável, independente da forma como o núcleo de tradução é instanciado. No núcleo de tradução, empregam-se os padrões \textit{Factory Method}, \textit{Strategy} e \textit{Iterator}, cujo detalhamento é objeto do trabalho complementar.
+Cabe explicitar quais padrões de projeto foram efetivamente empregados nessa organização. Na camada de apresentação, adota-se o padrão \textit{Provider} da biblioteca React: cada preocupação transversal da aplicação (autenticação, editor, customização da linguagem, terminal, tema, notificações e erros de execução) é isolada em um \textit{context} próprio, sob o diretório \texttt{contexts}, que expõe estado e operações aos componentes descendentes sem exigir a propagação manual de propriedades. Os \textit{hooks} personalizados, por sua vez, operam como fachadas sobre esses \textit{contexts} e sobre o pacote \texttt{compiler}, oferecendo aos componentes uma interface reduzida e estável, independente da forma como o núcleo de tradução é instanciado. A organização interna do núcleo de tradução é detalhada no trabalho complementar; neste texto, o foco recai nos contratos consumidos pelos componentes da IDE.
 
 \section{Interpretador}
 \label{sec:interpretador-nucleo}
 
 O interpretador constitui o núcleo de tradução comum a este projeto e foi desenvolvido de forma colaborativa pelos dois autores, Victor de Souza Vilela da Silva e Igor Lamoia Queiroz, conforme a divisão de responsabilidades registrada no Apêndice~\ref{ap:plano}. Implementado em TypeScript e consumido pela IDE como dependência local, conforme descrito na Seção~\ref{sec:arquitetura-plataforma}, o núcleo encadeia as fases de análise léxica, análise sintática, geração de código intermediário em três endereços e execução pelo interpretador, recebendo dinamicamente a configuração da linguagem definida pelo usuário (palavras-chave, operadores em forma de palavra, literais booleanos, delimitadores de bloco e terminador de instrução).
 
-Por se tratar da base técnica compartilhada entre os dois volumes, o detalhamento interno de cada fase do núcleo, incluindo as estratégias de varredura léxica, a análise sintática por descida recursiva, a geração de código de três endereços e o funcionamento do interpretador, é objeto do trabalho complementar de autoria de Victor de Souza Vilela da Silva. Este texto concentra-se na forma como a IDE aciona e integra esse núcleo, detalhada nas seções seguintes.
+Por se tratar da base técnica compartilhada entre os dois textos, o detalhamento interno de cada fase do núcleo, incluindo as estratégias de varredura léxica, a análise sintática por descida recursiva, a geração de código de três endereços e o funcionamento do interpretador, é objeto do trabalho complementar de autoria de Victor de Souza Vilela da Silva. Este texto concentra-se na forma como a IDE aciona e integra esse núcleo, detalhada nas seções seguintes.
 
 \section{Customização Dinâmica de \textit{Tokens} e Sintaxe}
 \label{sec:customizacao-dinamica}
@@ -219,7 +145,7 @@ export function buildDelimiterSnippet(
 }
 \end{lstlisting}
 
-Essa estratégia de \textit{feedback} contínuo segue as recomendações de \citeonline{nystrom2021} para ambientes interativos de aprendizagem, reduzindo a distância cognitiva entre a configuração e o resultado observável.
+A pré-visualização permite inspecionar a escrita resultante antes de salvar a configuração. Sua utilidade para iniciantes será examinada pelas tarefas propostas na Seção~\ref{sec:protocolo-avaliacao}.
 
 A validação das customizações é centralizada em um conjunto de funções utilitárias dedicadas, hospedadas no diretório \texttt{contexts/keyword/keyword-validator.ts}. A função \texttt{validateCustomKeyword} garante que palavras-chave personalizadas atendam às restrições léxicas elementares e não colidam entre si; \texttt{validateBlockDelimiters} verifica a consistência dos delimitadores de bloco. Toda a verificação ocorre de forma preventiva, no momento da alteração pelo usuário, impedindo que configurações inválidas sejam persistidas ou propagadas ao analisador léxico, em conformidade com os princípios de detecção precoce de erros discutidos por \citeonline{cooper2012}.
 
@@ -258,7 +184,7 @@ export function validateBlockDelimiters(
 
 A persistência da customização foi modelada em duas camadas complementares. As configurações ativas no editor são salvas localmente, no \textit{localStorage} do navegador, por meio do utilitário \texttt{keyword-language-storage}, garantindo que o estado da personalização sobreviva ao recarregamento da página e à navegação entre rotas da aplicação. Linguagens nomeadas e exportadas pelo usuário, por sua vez, são persistidas no \textit{back-end} via API, viabilizando o compartilhamento entre dispositivos e a vinculação de linguagens específicas a exercícios oferecidos pelo professor. O utilitário \texttt{language-creator-navigation} orquestra as transições entre as etapas de criação, gravação e ativação de linguagens, mantendo coesão entre o estado em memória, o estado no \textit{localStorage} e o estado remoto.
 
-Por fim, o impacto visual imediato da customização sobre o editor Monaco é mediado pela função \texttt{updateJavaMMKeywords}. Essa função reconstrói dinamicamente a gramática léxica registrada no editor cada vez que o \texttt{KeywordContext} sinaliza uma alteração na customização, refletindo de imediato o realce de sintaxe, a sugestão automática de palavras-chave e a documentação contextual exibida pelo Monaco. O Trecho de Código~\ref{lst:update-monaco} apresenta sua assinatura, evidenciando o desacoplamento entre o módulo de personalização e o módulo de edição: a função recebe a instância do Monaco, o conjunto atualizado de mapeamentos e as opções de linguagem, delegando à função interna \texttt{registerJavaMMLanguage} o registro completo do dialeto sob o identificador \texttt{java--}. Essa abordagem evita a necessidade de reinicializar o editor a cada mudança e oferece ao usuário uma sensação de continuidade absoluta no ato de personalização.
+Por fim, o impacto visual imediato da customização sobre o editor Monaco é mediado pela função \texttt{updateJavaMMKeywords}. Essa função reconstrói dinamicamente a gramática léxica registrada no editor cada vez que o \texttt{KeywordContext} sinaliza uma alteração na customização, refletindo de imediato o realce de sintaxe, a sugestão automática de palavras-chave e a documentação contextual exibida pelo Monaco. O Trecho de Código~\ref{lst:update-monaco} apresenta sua assinatura, evidenciando o desacoplamento entre o módulo de personalização e o módulo de edição: a função recebe a instância do Monaco, o conjunto atualizado de mapeamentos e as opções de linguagem, delegando à função interna \texttt{registerJavaMMLanguage} o registro completo do dialeto sob o identificador \texttt{java--}. Essa abordagem evita a necessidade de reinicializar o editor a cada mudança e preserva a instância do editor durante a personalização.
 
 \begin{lstlisting}[language=typescript, caption={Função \texttt{updateJavaMMKeywords}, ponto de integração entre o estado da customização e o Monaco Editor.}, label={lst:update-monaco}, captionpos=b]
 export const JAVAMM_LANGUAGE_ID = "java--";
@@ -285,7 +211,7 @@ A experiência de edição foi construída em torno do \textit{Microsoft Monaco 
 
 O gerenciamento do editor foi encapsulado no \texttt{EditorContext}, que abriga a referência da instância Monaco, o código-fonte corrente, o nome do arquivo ativo, os marcadores de linha utilizados para destacar erros e o conjunto de configurações de exibição. A interação entre o usuário e o editor foi enriquecida pelo \textit{hook} \texttt{useDebugger}, responsável por sinalizar visualmente, durante a execução passo a passo, qual instrução do código intermediário está sendo processada pelo interpretador, em consonância com o requisito pedagógico de tornar visível o processo de tradução.
 
-A persistência local dos arquivos do usuário foi modelada pelo \textit{hook} \texttt{useFileSystem}, que implementa um sistema de arquivos virtual sustentado pelo \textit{localStorage} do navegador. Essa abordagem permite que múltiplos arquivos sejam criados, renomeados, removidos e alternados sem qualquer dependência de servidor remoto, mantendo a plataforma plenamente funcional inclusive em cenários de uso \textit{offline}. O \textit{hook} \texttt{useEditorWithFileSystem} combina o estado do editor com o sistema de arquivos virtual, garantindo a sincronização bidirecional entre o conteúdo exibido no Monaco e o conteúdo persistido localmente. Complementarmente, os \textit{hooks} \texttt{useExplorer} e \texttt{useSearch} oferecem, no painel lateral, navegação por estrutura de arquivos e busca textual sobre todos os arquivos do projeto, replicando as funcionalidades essenciais de uma IDE profissional.
+A persistência local dos arquivos do usuário foi modelada pelo \textit{hook} \texttt{useFileSystem}, que implementa um sistema de arquivos virtual sustentado pelo \textit{localStorage} do navegador. Essa abordagem permite que múltiplos arquivos sejam criados, renomeados, removidos e alternados sem qualquer dependência de servidor remoto, permitindo trabalhar com documentos locais após o carregamento da aplicação, sem comprovar funcionamento integral \textit{offline}. O \textit{hook} \texttt{useEditorWithFileSystem} combina o estado do editor com o sistema de arquivos virtual, garantindo a sincronização bidirecional entre o conteúdo exibido no Monaco e o conteúdo persistido localmente. Complementarmente, os \textit{hooks} \texttt{useExplorer} e \texttt{useSearch} oferecem, no painel lateral, navegação por estrutura de arquivos e busca textual sobre todos os arquivos do projeto, replicando as funcionalidades essenciais de uma IDE profissional.
 
 \section{Execução das Análises Léxica e Sintática a partir da IDE}
 \label{sec:execucao-analises}
@@ -332,9 +258,9 @@ Os \textit{tokens} obtidos por essa execução local são renderizados na IDE co
 
 O \textit{hook} \texttt{useIntermediatorCode} segue uma abordagem análoga. Após reaproveitar a tabela de \textit{tokens} produzida pela fase léxica, o \textit{hook} instancia um \texttt{TokenIterator} e aciona o analisador sintático diretamente no cliente, integrado a um \texttt{Emitter} responsável pela geração das instruções de código intermediário em três endereços. A lista de instruções resultante é igualmente exibida na IDE em um painel dedicado, permitindo ao estudante inspecionar a tradução do código-fonte para uma forma de representação intermediária. Essa execução também ocorre integralmente no navegador, sem qualquer requisição HTTP intermediária.
 
-A escolha por executar as análises léxica e sintática diretamente no cliente, em vez de delegá-las ao servidor por meio de rotas internas do Next.js, atende a três objetivos correlacionados. Primeiro, minimiza a latência percebida pelo usuário, ao eliminar o ciclo de requisição e resposta exigido por uma arquitetura cliente-servidor convencional. Segundo, permite que a plataforma permaneça plenamente funcional mesmo na ausência de conectividade com o servidor de persistência, sustentando os recursos essenciais de edição, análise e interpretação. Terceiro, simplifica a manutenção do código, uma vez que a lógica do compilador é consumida como dependência direta, sem necessidade de empacotamento, serialização ou conversão de tipos entre cliente e servidor. As rotas HTTP do servidor Next.js, situadas sob o caminho \texttt{/api}, são reservadas exclusivamente ao subsistema de validação automatizada de submissões e à intermediação das chamadas ao \textit{back-end} FastAPI, conforme detalhado na Seção~\ref{sec:sistema-correcao}.
+A escolha por executar as análises léxica e sintática diretamente no cliente, em vez de delegá-las ao servidor por meio de rotas internas do Next.js, atende a três objetivos correlacionados. Primeiro, minimiza a latência percebida pelo usuário, ao eliminar o ciclo de requisição e resposta exigido por uma arquitetura cliente-servidor convencional. Segundo, permite acionar edição, análise e interpretação sem uma requisição ao serviço de persistência, após o carregamento da aplicação. Terceiro, simplifica a manutenção do código, uma vez que a lógica do compilador é consumida como dependência direta, sem necessidade de empacotamento, serialização ou conversão de tipos entre cliente e servidor. As rotas HTTP do servidor Next.js, situadas sob o caminho \texttt{/api}, atendem à validação automatizada de submissões e a recursos como busca de imagens de linguagem, conforme detalhado na Seção~\ref{sec:sistema-correcao}.
 
-Por fim, o \textit{hook} \texttt{use-api-queries} consolida, por meio do \textit{TanStack React Query}, todas as consultas relacionadas a turmas, exercícios, listas de exercícios e submissões, oferecendo cache automático, revalidação em segundo plano e tratamento padronizado de erros para toda a aplicação. Essas consultas, distintamente das análises locais discutidas anteriormente, são as únicas que envolvem comunicação remota efetiva com o serviço de persistência, mantendo claras as fronteiras entre a execução local do compilador e o consumo de recursos do Ambiente Virtual de Aprendizagem.
+Por fim, o \textit{hook} \texttt{use-api-queries} consolida, por meio do \textit{TanStack React Query}, todas as consultas relacionadas a turmas, exercícios, listas de exercícios e submissões, oferecendo cache automático, revalidação em segundo plano e tratamento padronizado de erros para toda a aplicação. Essas consultas, distintamente das análises locais discutidas anteriormente, envolvem comunicação remota com o serviço de persistência, mantendo claras as fronteiras entre a execução local do compilador e o consumo de recursos do Ambiente Virtual de Aprendizagem.
 
 \section{Execução do Código Intermediário e \textit{Feedback} no Terminal}
 \label{sec:terminal-feedback}
@@ -350,23 +276,27 @@ Para garantir que mensagens de erro sejam pedagogicamente úteis, mesmo quando a
 \section{Sistema de Correção e Avaliação Automatizada}
 \label{sec:sistema-correcao}
 
-A plataforma incorpora um subsistema de avaliação automatizada inspirado nos juízes \textit{online} discutidos por \citeonline{ferreira2025} e \citeonline{garcia2024}, materializado pela rota \texttt{/api/submissions/validate}. A modelagem do fluxo de submissão de exercícios partiu da estrutura conceitual desses juízes, mas foi adaptada ao contexto da linguagem dinâmica: enquanto os juízes tradicionais exigem que o aluno se adapte à sintaxe rígida de uma linguagem comercial, a plataforma proposta permite que cada exercício carregue sua própria configuração da linguagem, podendo, inclusive, restringir o aluno a um vocabulário específico definido pelo professor.
+A plataforma incorpora um subsistema de avaliação automatizada relacionado ao ciclo de submissão e veredito documentado pelo Beecrowd \cite{beecrowd2026faq}, materializado pela rota \texttt{/api/submissions/validate}. A modelagem do fluxo de submissão de exercícios partiu da estrutura conceitual desses juízes, mas foi adaptada ao contexto da linguagem dinâmica: enquanto os juízes tradicionais exigem que o aluno se adapte à sintaxe rígida de uma linguagem comercial, a plataforma proposta permite que cada exercício carregue sua própria configuração da linguagem, podendo, inclusive, restringir o aluno a um vocabulário específico definido pelo professor.
 
 
-O modelo de dados que sustenta o Ambiente Virtual de Aprendizagem foi estruturado em torno das entidades \texttt{User}, \texttt{Class}, \texttt{Exercise}, \texttt{ExerciseList}, \texttt{Submission} e \texttt{LanguageImage}. Essa modelagem permite que professores criem turmas, vinculem exercícios estruturados em listas, definam casos de teste com entradas e saídas esperadas, e associem a cada exercício uma ``imagem de linguagem'', isto é, uma configuração da linguagem dinâmica que será imposta ao aluno no momento da resolução. As consultas e mutações sobre essas entidades são tratadas pelo \textit{back-end} FastAPI, com persistência em SQLAlchemy assíncrono, e gerenciadas no \textit{front-end} pelo \textit{TanStack React Query}, que cuida do cache e da revalidação automática.
+Entre as entidades persistidas estão \texttt{User}, \texttt{Class}, \texttt{Exercise}, \texttt{ExerciseList}, \texttt{Submission} e \texttt{Language}. A linguagem armazena a configuração do vocabulário e das variantes gramaticais; não se resume à imagem utilizada como identificação visual. Exercícios e listas podem definir uma política aberta ou vincular uma linguagem obrigatória, e a submissão registra uma cópia da configuração utilizada. O FastAPI e o SQLAlchemy mantêm esses registros, enquanto o \textit{TanStack React Query} gerencia consultas e atualização de dados na interface.
+
+Na avaliação automática, a rota Next.js recebe código e configuração, normaliza as opções, executa a análise e gera as instruções intermediárias uma vez. Em seguida, consulta os casos de teste, executa cada caso com entrada simulada, coleta a saída e a compara à esperada após normalização de quebras de linha e remoção de espaços finais. A resposta reúne os vereditos; fora do modo de simulação, o resultado é encaminhado ao FastAPI para registro. A limitação temporal implementada por uma promessa concorrente não constitui isolamento de processo nem demonstra contenção de todo programa que bloqueie a execução.
 
 \section{Acessibilidade, Responsividade e Finalização de Fluxos}
 \label{sec:acessibilidade-responsividade}
 
-A finalização dos fluxos da plataforma foi conduzida com especial atenção aos requisitos de acessibilidade e responsividade. A escolha das bibliotecas \textit{shadcn/ui} e \textit{Radix UI} como base dos componentes primitivos, incluindo diálogos, menus, \textit{tooltips}, alertas, abas e \textit{popovers}, garante, por padrão, o cumprimento das diretrizes WAI-ARIA apresentadas na Seção~\ref{subsec:uxui}, com suporte nativo à navegação por teclado, à leitura por tecnologias assistivas e ao gerenciamento correto de foco. Essa abordagem alinha-se aos princípios de \textit{design} inclusivo discutidos por \citeonline{stefik2013} e \citeonline{ladner2019} na concepção da linguagem Quorum, segundo os quais a acessibilidade não pode ser uma camada adicional, mas deve estar incorporada à fundação dos componentes utilizados.
+A acessibilidade foi examinada por inspeção de componentes e por uma verificação técnica delimitada, apresentada a seguir. O módulo \texttt{ui/dialog.tsx} encapsula as primitivas de diálogo, título e descrição do Radix. O componente \texttt{WizardStepper} usa botões nativos e mantém os nomes das etapas com a classe \texttt{sr-only} quando os rótulos deixam de ser visíveis em telas estreitas. Entretanto, a indicação de etapa ativa nesse componente é visual, sem atributo \texttt{aria-current}. Essas evidências mostram recursos e lacunas da implementação; não permitem declarar conformidade global com WAI-ARIA ou WCAG.
 
-A responsividade da plataforma foi modelada pelo \textit{hook} \texttt{useBreakpoint}, que monitora as dimensões da janela e expõe, de forma reativa, qual \textit{breakpoint} Tailwind está ativo. As composições de tela, hospedadas no diretório \texttt{views}, foram concebidas para reorganizar dinamicamente seus painéis conforme a faixa de resolução: em telas amplas, o editor, o painel lateral e o terminal são apresentados simultaneamente; em telas estreitas, esses componentes assumem disposições alternativas, com a possibilidade de alternância controlada pelo usuário. Essa adaptação foi sustentada pelas utilidades de responsividade do Tailwind CSS v4 e pela função utilitária \texttt{cn}, que compõe classes condicionais com a biblioteca \textit{tailwind-merge}.
+A adaptação visual usa utilidades responsivas do Tailwind CSS. No assistente, abaixo do limite \texttt{lg}, a lista de etapas assume disposição horizontal, os botões tornam-se circulares e o cartão da linguagem-base é ocultado. Acima desse limite, as etapas ficam na lateral. O \textit{hook} \texttt{useBreakpoint} também disponibiliza consultas por largura, mas não é o único mecanismo de adaptação da aplicação. Na IDE, a composição usa \texttt{flex-col} e \texttt{sm:flex-row} para reorganizar os painéis. A organização visual deve ser verificada em cada fluxo, pois a existência dessas classes não demonstra, isoladamente, ausência de cortes ou de rolagem indevida.
 
-O tratamento de temas claro e escuro foi delegado à biblioteca \textit{next-themes}, integrada ao \texttt{ThemeContext}, que mantém o tema corrente sincronizado entre o sistema operacional do usuário, a preferência salva e os múltiplos componentes da aplicação. Os temas do editor Monaco são alternados de forma coordenada, garantindo consistência visual entre o ambiente de edição e o restante da interface. As notificações ao usuário, por sua vez, são gerenciadas pelo \texttt{ToastContext}, oferecendo uma fila padronizada de mensagens com diferentes níveis de severidade.
+\input{texto/verificacao-interface}
 
-A internacionalização da plataforma foi implementada por meio do mecanismo nativo do Next.js, com suporte aos locais \textit{pt-BR} (padrão), \textit{pt-PT}, \textit{es} e \textit{en}, organizados em arquivos JSON sob o diretório \texttt{i18n/locales}. Todas as cadeias visíveis ao usuário foram externalizadas para esses arquivos, permitindo que a plataforma seja oferecida em diferentes idiomas e que o conteúdo pedagógico se ajuste ao público-alvo. Essa decisão atende à premissa central do projeto, segundo a qual barreiras linguísticas devem ser sistematicamente reduzidas no contexto da aprendizagem introdutória de programação.
+Os temas claro e escuro são administrados pelo \texttt{ThemeContext}, que aplica a classe \texttt{dark} e persiste a preferência no navegador, com alternância dos temas do Monaco. As Figuras~\ref{fig:home-light} e \ref{fig:home-dark} ilustram essa escolha; a aparência de uma captura não substitui a medição de contraste. As notificações são centralizadas no \texttt{ToastContext}. A configuração do Next.js declara os locais \textit{pt-BR}, \textit{pt-PT}, \textit{es} e \textit{en}. Há textos externalizados em \texttt{i18n/locales}, mas também cadeias literais em componentes, como o aviso de carregamento de \texttt{language-creator.tsx}; assim, a internacionalização integral permanece um requisito a verificar.
 
-A autenticação de usuários foi modelada por um fluxo simplificado, sustentado pelo \texttt{AuthContext} no \textit{front-end} e pelas rotas \texttt{/api/auth/login}, \texttt{/api/auth/register} e \texttt{/api/auth/me}. As credenciais são propagadas entre as camadas por meio de \textit{cookies} HTTP gerenciados pelo utilitário \texttt{auth-cookies}, e a navegação protegida é controlada pelos \textit{layouts} compartilhados, que verificam a presença de uma sessão válida antes de renderizar páginas restritas. Essa estratégia atende aos requisitos mínimos de segregação entre os papéis de aluno, professor e administrador, e mantém a complexidade do modelo de autenticação compatível com o caráter educacional do projeto.
+O \texttt{AuthContext} recupera o perfil autenticado e o utilitário \texttt{auth-cookies} mantém o token em um \textit{cookie} acessível por JavaScript. A interface distingue os papéis administrador, professor, aluno e comunidade, e o modelo de dados inclui ainda um papel interno de sistema. A restrição visual de páginas não substitui as verificações de autorização no serviço. Esta revisão descreve a implementação e não constitui auditoria de segurança.
+
+
 
 \section{Apresentação das Telas da Plataforma}
 \label{sec:telas-plataforma}
@@ -377,11 +307,11 @@ Com o intuito de tornar tangíveis as decisões arquiteturais, os \textit{contex
 
 A página inicial materializa a identidade visual da plataforma e funciona como porta de entrada para os fluxos de autenticação, navegação e divulgação dos recursos disponíveis. A composição segue o sistema de temas claro e escuro discutido na Seção~\ref{sec:acessibilidade-responsividade}, com troca controlada pelo \texttt{ThemeContext}, e foi modelada com componentes da biblioteca \textit{shadcn/ui} para garantir consistência tipográfica, contraste adequado e respeito às diretrizes de acessibilidade WAI-ARIA. As Figuras~\ref{fig:home-light} e \ref{fig:home-dark} apresentam, lado a lado, as duas variações de tema, evidenciando o cuidado com a paridade visual entre as versões clara e escura.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{home_page_light.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{home_page_light.png}
         \caption{Tema claro.}
         \label{fig:home-light}
     \end{subfigure}
@@ -390,7 +320,7 @@ A página inicial materializa a identidade visual da plataforma e funciona como 
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{home_page_dark.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{home_page_dark.png}
         \caption{Tema escuro.}
         \label{fig:home-dark}
     \end{subfigure}
@@ -407,7 +337,7 @@ O painel do aluno consolida, em uma única tela, todas as turmas em que o estuda
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Aluno/painel_aluno.png}
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Aluno/painel_aluno.png}
     \caption{Painel principal do aluno, com acesso às turmas, listas e exercícios.}
     \label{fig:painel-aluno}
     \legend{Fonte: elaborado pelo autor.}
@@ -415,27 +345,19 @@ O painel do aluno consolida, em uma única tela, todas as turmas em que o estuda
 
 Ao selecionar uma turma específica, o aluno é conduzido à tela de detalhamento, na qual visualiza informações da disciplina, listas publicadas pelo professor e seu progresso individual em cada exercício. A Figura~\ref{fig:aluno-turma} apresenta essa visão, enquanto a Figura~\ref{fig:aluno-listas} detalha a estrutura interna de uma lista de exercícios, na qual cada item exibe o respectivo estado (não iniciado, em andamento ou submetido) e a configuração da linguagem dinâmica vinculada ao enunciado.
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}{\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Aluno/detail_turma.png}
+\begin{figure}[htbp]
+\centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Aluno/detail_turma.png}
         \caption{Detalhamento de uma turma do aluno.}
         \label{fig:aluno-turma}
-    \end{subfigure}
-
+    \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-\begin{figure}[h]\ContinuedFloat
-
-    \begin{subfigure}{\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Aluno/Listas/Listas.png}
+\begin{figure}[htbp]
+\centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Aluno/Listas/Listas.png}
         \caption{Lista de exercícios sob a ótica do aluno.}
         \label{fig:aluno-listas}
-    \end{subfigure}
-    \caption{Composições da experiência do aluno: visão da turma e visão da lista de exercícios.}
-    \label{fig:aluno-fluxo}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -447,33 +369,25 @@ O painel do professor segue a mesma metáfora de organização do painel do alun
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Professor/painel_professor.png}
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/painel_professor.png}
     \caption{Painel principal do professor.}
     \label{fig:painel-professor}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}{\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Professor/detail_turma.png}
+\begin{figure}[htbp]
+\centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/detail_turma.png}
         \caption{Detalhamento de uma turma do professor.}
         \label{fig:professor-turma}
-    \end{subfigure}
-
+    \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-\begin{figure}[h]\ContinuedFloat
+\begin{figure}[htbp]
 \centering
-    \begin{subfigure}{\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Professor/listas_turma.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/listas_turma.png}
         \caption{Listas de exercícios vinculadas à turma.}
         \label{fig:professor-listas-turma}
-    \end{subfigure}
-    \caption{Composições da experiência do professor: visão da turma e visão das listas associadas.}
-    \label{fig:professor-fluxo-turma}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -483,12 +397,12 @@ O painel do professor segue a mesma metáfora de organização do painel do alun
 
 A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas que isolam cada operação em um fluxo independente. As Figuras~\ref{fig:professor-listas-preparo} e \ref{fig:professor-listas-publicacao} documentam as quatro etapas centrais desse processo: a primeira reúne a visualização das listas existentes e a configuração dos parâmetros gerais da lista (título, descrição e prazo); a segunda, a vinculação de exercícios à lista por meio do utilitário de busca e seleção e a publicação da lista para a turma escolhida.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Listas/list.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/list.png}
         \caption{Listagem das listas existentes.}
         \label{fig:prof-lista-list}
     \end{subfigure}
@@ -497,7 +411,7 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Listas/config.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/config.png}
         \caption{Configuração dos parâmetros gerais.}
         \label{fig:prof-lista-config}
     \end{subfigure}
@@ -514,7 +428,7 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Listas/add_exec.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/add_exec.png}
         \caption{Vinculação de exercícios à lista.}
         \label{fig:prof-lista-add}
     \end{subfigure}
@@ -523,7 +437,7 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Listas/publish.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/publish.png}
         \caption{Publicação da lista para a turma.}
         \label{fig:prof-lista-publish}
     \end{subfigure}
@@ -535,13 +449,13 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
 \FloatBarrier
 
-A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, ilustrado pelas Figuras~\ref{fig:professor-exercicios-criacao} e \ref{fig:professor-exercicios-acompanhamento}. A tela de listagem permite a busca, a filtragem e a ordenação dos enunciados; a tela de criação centraliza, em um único formulário, a descrição do problema, os casos de teste com entradas e saídas esperadas e a vinculação a uma imagem de linguagem que delimita o vocabulário disponível ao aluno; a tela de detalhamento mostra a composição final do exercício; e a tela de submissões consolida todas as resoluções enviadas pelos alunos, com os respectivos vereditos do subsistema de avaliação automatizada discutido na Seção~\ref{sec:sistema-correcao}.
+A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, ilustrado pelas Figuras~\ref{fig:professor-exercicios-criacao} e \ref{fig:professor-exercicios-acompanhamento}. A tela de listagem permite a busca, a filtragem e a ordenação dos enunciados; a tela de criação centraliza, em um único formulário, a descrição do problema, os casos de teste com entradas e saídas esperadas e a vinculação a uma configuração de linguagem que delimita o vocabulário disponível ao aluno; a tela de detalhamento mostra a composição final do exercício; e a tela de submissões consolida todas as resoluções enviadas pelos alunos, com os respectivos vereditos do subsistema de avaliação automatizada discutido na Seção~\ref{sec:sistema-correcao}.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Exercicios/list.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Exercicios/list.png}
         \caption{Listagem dos enunciados existentes.}
         \label{fig:prof-exec-list}
     \end{subfigure}
@@ -550,7 +464,7 @@ A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, il
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Exercicios/create.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Exercicios/create.png}
         \caption{Criação de um novo enunciado.}
         \label{fig:prof-exec-create}
     \end{subfigure}
@@ -567,7 +481,7 @@ A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, il
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Exercicios/detail.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Exercicios/detail.png}
         \caption{Detalhamento de um exercício.}
         \label{fig:prof-exec-detail}
     \end{subfigure}
@@ -576,7 +490,7 @@ A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, il
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Professor/Exercicios/execs.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Exercicios/execs.png}
         \caption{Submissões dos alunos para o exercício.}
         \label{fig:prof-exec-execs}
     \end{subfigure}
@@ -590,13 +504,13 @@ A gestão dos enunciados individuais ocorre em um conjunto análogo de telas, il
 
 \noindent\textbf{Personalização da linguagem pelo estudante (RF03 a RF06)}
 
-A funcionalidade central da plataforma, que corresponde à personalização dinâmica do vocabulário e das regras estruturais da linguagem, foi materializada em um assistente progressivo composto por seis etapas sequenciais. Esse \textit{wizard}, discutido na Seção~\ref{sec:customizacao-dinamica}, conduz o usuário por escolhas independentes, validadas isoladamente, com geração de \textit{preview} em tempo real do código resultante. As figuras a seguir documentam, em ordem, cada uma das etapas efetivamente implementadas.
+A funcionalidade central da plataforma, que corresponde à personalização dinâmica do vocabulário e das regras estruturais da linguagem, foi materializada em um assistente progressivo cuja versão atual contém sete etapas: identidade, entrada/saída, tipagem, estrutura, operadores, fluxo e revisão. Esse \textit{wizard}, discutido na Seção~\ref{sec:customizacao-dinamica}, conduz o usuário por escolhas independentes, validadas isoladamente, com geração de \textit{preview} em tempo real do código resultante. As capturas a seguir registram a organização anterior em seis etapas, preservada como histórico da implementação; não representam a sequência atual. A Figura~\ref{fig:responsividade-wizard} mostra o assistente na versão verificada nesta revisão.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa1.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa1.png}
         \caption{Etapa 1: definição do nome da linguagem e da identidade da customização.}
         \label{fig:etapa1}
     \end{subfigure}
@@ -605,7 +519,7 @@ A funcionalidade central da plataforma, que corresponde à personalização din�
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa2.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa2.png}
         \caption{Etapa 2: configuração das palavras-chave de tipos primitivos.}
         \label{fig:etapa2}
     \end{subfigure}
@@ -618,11 +532,11 @@ A funcionalidade central da plataforma, que corresponde à personalização din�
 
 A terceira etapa concentra-se na personalização das palavras-chave de controle de fluxo, oferecendo ao usuário a possibilidade de redefinir comandos como \texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{break}, \texttt{continue} e \texttt{return}. A Figura~\ref{fig:etapas-3} apresenta as duas variações dessa etapa, contemplando a configuração das palavras-chave básicas e a configuração estendida com construtores como \texttt{switch} e \texttt{case}.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa3_1.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa3_1.png}
         \caption{Etapa 3.1: palavras-chave básicas de controle de fluxo.}
         \label{fig:etapa3-1}
     \end{subfigure}
@@ -631,7 +545,7 @@ A terceira etapa concentra-se na personalização das palavras-chave de controle
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa3_2.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa3_2.png}
         \caption{Etapa 3.2: construtores estendidos de controle de fluxo.}
         \label{fig:etapa3-2}
     \end{subfigure}
@@ -642,13 +556,13 @@ A terceira etapa concentra-se na personalização das palavras-chave de controle
 
 \FloatBarrier
 
-A quarta etapa habilita a substituição de operadores lógicos e relacionais por palavras de uso natural, em consonância com os achados empíricos de \citeonline{stefik2013} sobre o impacto de símbolos obscuros na carga cognitiva inicial. A Figura~\ref{fig:etapas-4} ilustra as duas variações dessa etapa, contemplando, primeiro, a definição de operadores lógicos como \texttt{e}, \texttt{ou} e \texttt{não} e, em seguida, a redefinição dos operadores relacionais por meio do mesmo princípio de palavras significativas.
+A quarta etapa habilita a substituição de operadores lógicos e relacionais por palavras de uso natural, como uma alternativa de escrita a ser investigada, motivada pela discussão de escolhas sintáticas de \citeonline{stefik2013}. A Figura~\ref{fig:etapas-4} ilustra as duas variações dessa etapa, contemplando, primeiro, a definição de operadores lógicos como \texttt{e}, \texttt{ou} e \texttt{não} e, em seguida, a redefinição dos operadores relacionais por meio do mesmo princípio de palavras significativas.
 
 \begin{figure}[p]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa4_1.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa4_1.png}
         \caption{Etapa 4.1: operadores lógicos em forma de palavra.}
         \label{fig:etapa4-1}
     \end{subfigure}
@@ -657,7 +571,7 @@ A quarta etapa habilita a substituição de operadores lógicos e relacionais po
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa4_2.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa4_2.png}
         \caption{Etapa 4.2: operadores relacionais em forma de palavra.}
         \label{fig:etapa4-2}
     \end{subfigure}
@@ -682,7 +596,7 @@ A quinta etapa, apresentada na Figura~\ref{fig:etapa5}, é responsável pela con
     \centering
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa6_1.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa6_1.png}
         \caption{Delimitadores de bloco.}
         \label{fig:etapa6-1}
     \end{subfigure}
@@ -691,7 +605,7 @@ A quinta etapa, apresentada na Figura~\ref{fig:etapa5}, é responsável pela con
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Etapas/etapa6_2.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa6_2.png}
         \caption{Terminador de instrução.}
         \label{fig:etapa6-2}
     \end{subfigure}
@@ -705,7 +619,7 @@ A quinta etapa, apresentada na Figura~\ref{fig:etapa5}, é responsável pela con
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{Etapas/etapa6_3.png}
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Etapas/etapa6_3.png}
     \caption{Pré-visualização final da linguagem personalizada, exibida ao término do assistente.}
     \label{fig:etapa6-3}
     \legend{Fonte: elaborado pelo autor.}
@@ -720,9 +634,13 @@ O conjunto de telas apresentado consolida, sob o ponto de vista visual, as decis
 
 A validação contínua da plataforma foi sustentada por uma suíte de testes automatizados construída com o \textit{framework} Vitest, complementada por \textit{jsdom} para simulação do ambiente de navegador em testes que envolvem componentes React. A organização dos testes refletiu a topologia interna do projeto: testes unitários acompanham diretamente os módulos correspondentes em diretórios \texttt{\_\_tests\_\_}, enquanto testes de integração foram concentrados em arquivos com sufixos \texttt{.spec.ts} ou \texttt{.spec.tsx} próximos aos componentes que validam.
 
-A adoção do TDD discutido por \citeonline{aniche2012} foi particularmente útil em construções críticas, como o validador de palavras-chave personalizadas, o construtor de \textit{preview} interativo da customização, o adaptador do grafo de gramática e o \textit{pipeline} de validação de submissões. Nesses pontos, pequenas alterações na lógica poderiam comprometer fluxos inteiros da plataforma, e a presença de testes automatizados garantiu a estabilidade do comportamento mesmo diante de refatorações estruturais frequentes. Em conformidade com a pirâmide de testes apresentada na Seção~\ref{subsec:testes-tdd}, a maior parte da suíte concentra-se no nível unitário, garantindo execuções rápidas e \textit{feedback} imediato, enquanto os testes de integração verificam o comportamento agregado entre componentes, \textit{contexts} e \textit{hooks}.
+Os testes disponíveis verificam construções como configuração da linguagem, persistência, componentes do assistente, depuração e submissões. Eles oferecem evidência do comportamento coberto e apoio à detecção de regressões. A presença de uma suíte, por si só, não comprova que o ciclo teste antes da implementação tenha sido seguido em todos os incrementos. A pirâmide apresentada na Seção~\ref{subsec:testes-tdd} orienta a distinção entre verificações isoladas e integração; não se apresenta aqui uma medição da cobertura total do sistema.
 
-Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-storage} reproduz um dos casos que verificam a persistência da customização, construção sobre a qual repousa a continuidade da linguagem escolhida pelo usuário entre recarregamentos da página. O primeiro caso verifica a normalização do nome da linguagem em uma chave de armazenamento; o segundo, que a gravação propaga a linguagem simultaneamente para o registro de linguagens salvas, para a chave de linguagem ativa e para o estado de customização em uso pelo editor.
+Na revisão de 12 de setembro de 2026, o comando \texttt{npm test} do pacote IDE, que utiliza \texttt{vitest.integration.config.ts}, executou 120 testes em 27 arquivos, todos aprovados. Essa configuração seleciona parte dos arquivos de teste do pacote. Portanto, esse resultado não equivale à execução de toda a suíte existente nem a uma auditoria de acessibilidade.
+
+Também foram executados separadamente os cinco testes de \texttt{keyword-language-storage.spec.ts} e o teste de \texttt{wizard-stepper.spec.tsx}, com seis aprovações. No Node.js 25.2.1 utilizado na revisão, foi necessário desabilitar o armazenamento web experimental do Node por meio de \texttt{NODE\_OPTIONS=--no-experimental-webstorage}, permitindo que esses testes utilizassem o \texttt{localStorage} do jsdom. Sem esse ajuste de ambiente, os cinco casos de armazenamento falharam antes de verificar a lógica da aplicação.
+
+Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-storage} apresenta um recorte de dois casos que verificam a persistência da customização, construção sobre a qual repousa a continuidade da linguagem escolhida pelo usuário entre recarregamentos da página. Os auxiliares e algumas asserções foram omitidos para abreviar a listagem; o arquivo original contém a verificação completa. O primeiro caso verifica a normalização do nome da linguagem em uma chave de armazenamento; o segundo, que a gravação permite recuperar a linguagem pelo identificador.
 
 \begin{lstlisting}[language=typescript, caption={Casos de teste da persistência da linguagem personalizada (\texttt{keyword-language-storage.spec.ts}).}, label={lst:teste-storage}, captionpos=b]
 describe("keyword-language-storage", () => {
@@ -747,4 +665,6 @@ describe("keyword-language-storage", () => {
 \end{lstlisting}
 
 
-Os mesmos testes são executados localmente durante o desenvolvimento e também acionados pelo \textit{pipeline} de integração contínua antes da incorporação de qualquer mudança ao ramo principal do repositório, assegurando que as características essenciais da plataforma, como a consistência da customização ativa entre recarregamentos, a sincronização correta entre o editor e o sistema de arquivos virtual, a fidelidade do \textit{feedback} de erros ao usuário e a correção dos resultados das submissões, sejam preservadas ao longo de toda a evolução incremental do projeto.
+O repositório contém um fluxo de implantação acionado por alterações na branch \texttt{main}, que chama um \textit{script} externo por SSH. O arquivo versionado não inclui uma etapa de execução do Vitest, e o conteúdo desse \textit{script} externo não faz parte das evidências examinadas. A execução automática dos testes como condição de integração permanece uma melhoria de processo; os resultados acima correspondem à execução local registrada nesta revisão.
+
+\input{texto/protocolo-avaliacao}

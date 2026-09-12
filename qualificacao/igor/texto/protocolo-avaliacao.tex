@@ -1,0 +1,42 @@
+\section{Proposta de Protocolo de Avaliação}
+\label{sec:protocolo-avaliacao}
+
+Esta seção propõe uma avaliação futura da experiência de uso, vinculando os conceitos de UX/UI aos recursos implementados. O protocolo ainda não foi aplicado com estudantes. Sua finalidade inicial é verificar se o participante consegue configurar uma linguagem, compreender o exemplo apresentado e executar um algoritmo. A pergunta sobre contribuição pedagógica exige uma etapa comparativa e medidas de aprendizagem, que não podem ser substituídas por opiniões sobre a interface.
+
+\subsection{Tarefas e critérios de observação}
+
+Propõe-se observar estudantes em contato inicial com programação, registrando previamente sua experiência com linguagens textuais e com outras IDEs. O observador apresentará as tarefas da Tabela~\ref{tab:tarefas-avaliacao}, sem demonstrar antecipadamente a sequência de comandos da interface. Solicitações de ajuda deverão ser registradas; a conclusão assistida será distinguida da conclusão sem ajuda.
+
+\begin{table}[htbp]
+\centering
+\caption{Tarefas propostas para avaliar os recursos de UX/UI.}
+\label{tab:tarefas-avaliacao}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{1cm}|p{4.3cm}|p{4.1cm}|p{3.7cm}|}
+\hline
+\textbf{Tarefa} & \textbf{Ação solicitada} & \textbf{Decisão de interface} & \textbf{Conclusão observável} \\\hline
+T1 & Selecionar uma base e localizar entrada/saída & Etapas nomeadas e indicação de progresso (RF03) & Localiza a etapa correta \\\hline
+T2 & Trocar \texttt{print} por \texttt{escreva} e conferir o exemplo & Pré-visualização da configuração (RF04, RF06) & Identifica a alteração no exemplo \\\hline
+T3 & Atribuir o mesmo nome a dois comandos e corrigir o conflito & Validação e apresentação de erro (RF05) & Reconhece o conflito e restaura uma configuração válida \\\hline
+T4 & Salvar a linguagem, ativá-la e executar um programa de saída & Continuidade entre assistente, editor e terminal (RF07, RF09, RF11) & Programa produz a saída esperada com o vocabulário configurado \\\hline
+T5 & Inserir um erro de escrita em um programa fornecido e corrigi-lo & Diagnóstico no editor e retorno de execução (RF14) & Localiza o problema e obtém nova execução correta \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor como proposta de avaliação futura.}
+\end{table}
+
+Para cada tarefa, a ficha de observação deverá conter: código anônimo do participante; experiência prévia; versão da aplicação; navegador, largura e tema; horário de início e término; conclusão sem ajuda, com ajuda ou não conclusão; quantidade de pedidos de ajuda; erros encontrados; e observações sobre o caminho seguido. O tempo será contado da apresentação da tarefa até a conclusão ou desistência. Interrupções externas serão anotadas separadamente. A proporção de conclusão será calculada por tarefa, apresentando também o número de participantes que a tentaram; os tempos serão descritos por mediana e intervalo, separando execuções assistidas.
+
+Ao final, propõem-se três perguntas com respostas de 1 (discordo totalmente) a 5 (concordo totalmente): ``Consegui entender em que etapa estava''; ``O exemplo ajudou a entender a alteração da linguagem''; e ``A mensagem de erro ajudou a identificar o que corrigir''. Duas perguntas abertas complementam o instrumento: ``Em qual tarefa você encontrou mais dificuldade e por quê?'' e ``O que deveria mudar na interface?''. Trata-se de um questionário elaborado para este projeto, sem validação psicométrica; seus itens devem ser analisados individualmente, sem produzir um índice validado de usabilidade, engajamento ou carga cognitiva.
+
+\subsection{Comparação e limites de interpretação}
+
+Para investigar o efeito da personalização, propõe-se comparar duas condições na mesma IDE: vocabulário padrão e vocabulário personalizado. Os participantes resolveriam tarefas equivalentes de entrada/saída, seleção e repetição, com alternância da ordem das condições para reduzir o efeito de prática. Antes da coleta, deverão ser fixados os enunciados, casos de teste, instruções, tempo disponível e critérios de classificação dos erros. Erros de escrita devem ser separados de falhas de lógica e de dificuldades de navegação, pois representam problemas distintos.
+
+Os registros permitiriam descrever acertos nos casos de teste, tempo até a primeira execução correta e frequência dos erros por condição. Uma diferença nessas medidas não demonstra, isoladamente, aprendizagem duradoura; esse resultado exigiria instrumentos de desempenho antes e depois da atividade e controle dos efeitos de experiência e de ordem. A opinião favorável de um participante tampouco comprova redução de carga cognitiva. O tamanho da amostra, o recrutamento e o plano de análise inferencial ainda precisam ser definidos com os orientadores antes da aplicação.
+
+A realização com participantes dependerá da definição do contexto de recrutamento, dos instrumentos de informação e consentimento, do tratamento dos dados e do encaminhamento aos procedimentos institucionais de ética em pesquisa aplicáveis. Esta proposta não representa autorização nem aprovação ética. Nenhum resultado de participantes é apresentado neste documento.
+
+\subsection{Continuidade da verificação técnica}
+
+A avaliação com estudantes deve ser precedida pela correção das barreiras registradas na Seção~\ref{sec:acessibilidade-responsividade} e pela ampliação dos testes de teclado aos fluxos de salvar linguagem, editar código, usar o terminal e submeter exercícios. Propõe-se verificar foco visível, entrada e saída de diálogos, nomes dos controles, anúncio de erros e compatibilidade com leitor de tela, registrando a combinação de sistema operacional, navegador e tecnologia assistiva. Devem ser incluídos os temas claro e escuro e larguras de 320, 390, 768 e 1440 pixels CSS. Os critérios WCAG apresentados no referencial orientam a inspeção, mas a declaração de conformidade exigiria examinar as páginas e processos completos \cite{w3cwcag22,w3capg2026}.
