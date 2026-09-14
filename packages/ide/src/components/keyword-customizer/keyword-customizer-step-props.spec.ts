@@ -90,15 +90,15 @@ describe("buildStructureStepProps", () => {
 
     const props = buildStructureStepProps(context);
 
-    expect(props.values.delimiterSnippet).toContain("function main()");
-    expect(props.values.identationSnippet).toContain("function main():");
-    expect(props.values.optionalTerminatorSnippet).toBe('print("ok")');
-    expect(props.values.requiredTerminatorSnippet).toBe('print("ok");');
+    expect(props.values.delimiterSnippet).toContain("funcao main()inicio");
+    expect(props.values.identationSnippet).toContain("funcao main():");
+    expect(props.values.optionalTerminatorSnippet).toBe('escreva("ok")');
+    expect(props.values.requiredTerminatorSnippet).toBe('escreva("ok");');
     expect(props.values.fixedArraySnippet).toBe(
-      'string animes[2] = ["Naruto", "AOT"]',
+      'texto animes[2] = ["Naruto", "AOT"];',
     );
     expect(props.values.dynamicArraySnippet).toBe(
-      'string animes[] = ["Naruto", "AOT"]',
+      'texto animes[] = ["Naruto", "AOT"];',
     );
   });
 

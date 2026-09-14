@@ -15,6 +15,7 @@ import { updateJavaMMKeywords } from "@/utils/compiler/editor/editor-language";
 import { normalizeLanguageDocumentationMap } from "@/lib/compiler-config";
 import { buildLexerConfigFromCustomization } from "@/lib/keyword-customization";
 import { loadActiveSavedKeywordLanguage } from "@/lib/keyword-language-storage";
+import { getDefaultLanguageCustomization } from "@/lib/default-languages";
 import type {
   IDEBooleanLiteralMap,
   IDECompilerConfigPayload,
@@ -138,15 +139,7 @@ function getDefaultModes(): IDEKeywordCustomizationModes {
 }
 
 export function getDefaultCustomizationState(): StoredKeywordCustomization {
-  return {
-    mappings: getDefaultKeywordMappings(),
-    operatorWordMap: getDefaultOperatorWordMap(),
-    booleanLiteralMap: getDefaultBooleanLiteralMap(),
-    statementTerminatorLexeme: getDefaultStatementTerminatorLexeme(),
-    blockDelimiters: getDefaultBlockDelimiters(),
-    modes: getDefaultModes(),
-    languageDocumentation: getDefaultLanguageDocumentationMap(),
-  };
+  return getDefaultLanguageCustomization();
 }
 
 type LegacyCustomizationPayload = Partial<StoredKeywordCustomization> & {
