@@ -71,7 +71,9 @@ export function LanguagesView() {
   const failure = (message: string) => showToast({ type: "error", message });
 
   const goToCreator = (id?: number) => {
-    void router.push(id === undefined ? "/language-creator" : `/language-creator?id=${id}`);
+    void router.push(
+      id === undefined ? "/language-creator" : `/language-creator/${id}`,
+    );
   };
 
   const handleSetActive = async (id: number, name: string) => {
@@ -160,7 +162,7 @@ export function LanguagesView() {
       )}
       <LanguageDnaDialog
         languageId={dnaLanguage?.id}
-        languageName={dnaLanguage?.name ?? ""}
+        name={dnaLanguage?.name ?? ""}
         open={dnaLanguage !== null}
         onOpenChange={(open) => {
           if (!open) setDnaLanguage(null);

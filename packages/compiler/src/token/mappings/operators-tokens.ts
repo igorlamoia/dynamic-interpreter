@@ -26,10 +26,16 @@ export const OPERATORS_TOKENS_MAP: TTokenMap = {
     lexer.addToken(
       lexer.matchAndAdvance("=") ? ASSIGNMENTS.modulo_equal : ARITHMETICS.modulo
     ),
-  "=": (lexer) =>
-    lexer.addToken(
-      lexer.matchAndAdvance("=") ? RELATIONALS.equal_equal : ASSIGNMENTS.equal
-    ),
+  "=": (lexer) => {
+    if (!lexer.matchAndAdvance("=")) {
+      return lexer.addToken(ASSIGNMENTS.equal);
+    }
+
+    if (lexer.matchAndAdvance("=")) {
+      return lexer.addToken(RELATIONALS.strict_equal);
+    }
+    return lexer.addToken(RELATIONALS.equal_equal);
+  },
   ">": (lexer) =>
     lexer.addToken(
       lexer.matchAndAdvance("=")

@@ -8,7 +8,12 @@ import { api } from "@/lib/api";
 import { localApi } from "@/lib/local-api";
 import { queryKeys } from "@/lib/query-keys";
 import type { AuthUser } from "@/contexts/AuthContext";
-import type { Exercise, ExerciseList, PaginatedResponse } from "@/types/api";
+import type {
+  ClassSummary,
+  Exercise,
+  ExerciseList,
+  PaginatedResponse,
+} from "@/types/api";
 import type { ClassOption } from "@/views/exercise-lists/components/types";
 
 type CreateClassInput = {
@@ -29,6 +34,10 @@ type CreateExerciseInput = {
     input: string;
     expectedOutput: string;
   }>;
+};
+
+type UpdateExerciseInput = CreateExerciseInput & {
+  id: string | number;
 };
 
 type CreateExerciseListInput = {
@@ -139,7 +148,7 @@ export function useClassesQuery(enabled = true) {
   return useQuery({
     queryKey: queryKeys.classes.all,
     queryFn: async () => {
-      const { data } = await api.get<any[]>("/classes");
+      const { data } = await api.get<ClassSummary[]>("/classes");
       return data;
     },
     enabled,
@@ -355,8 +364,12 @@ export function useJoinClassMutation() {
       const { data } = await api.post("/classes/join", { accessCode });
       return data;
     },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.classes.all });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.classes.all });
+      await queryClient.refetchQueries({
+        queryKey: queryKeys.classes.all,
+        type: "active",
+      });
     },
   });
 }
@@ -367,10 +380,33 @@ export function useCreateExerciseMutation() {
   return useMutation({
     mutationFn: async (input: CreateExerciseInput) => {
       const { data } = await api.post("/exercises", input);
+      if (input.testCases.length > 0 && data?.id) {
+        const createdTestCases = Array.isArray(data.testCases)
+          ? data.testCases
+          : [];
+
+        if (createdTestCases.length === 0) {
+          await Promise.all(
+            input.testCases.map((testCase, index) =>
+              api.post(`/exercises/${data.id}/test-cases`, {
+                ...testCase,
+                orderIndex: index,
+              }),
+            ),
+          );
+
+          const { data: exercise } = await api.get(`/exercises/${data.id}`);
+          return exercise;
+        }
+      }
       return data;
     },
     onSuccess: (_data, variables) => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.exercises.all });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.classes.all });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.exerciseLists.all,
+      });
       if (variables.classId) {
         void queryClient.invalidateQueries({
           queryKey: queryKeys.classes.exerciseLists(variables.classId),
@@ -392,6 +428,41 @@ export function useDeleteExerciseMutation() {
       void queryClient.invalidateQueries({
         queryKey: queryKeys.exerciseLists.all,
       });
+    },
+  });
+}
+
+export function useUpdateExerciseMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      classId: _classId,
+      gradeWeight: _gradeWeight,
+      ...body
+    }: UpdateExerciseInput) => {
+      const { data } = await api.put<Exercise>(`/exercises/${id}`, body);
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.exercises.all });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.exercises.detail(variables.id),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.exerciseLists.all,
+      });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.classes.all });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.submissions.byExercise(variables.id),
+      });
+      if (variables.classId) {
+        void queryClient.invalidateQueries({
+          queryKey: queryKeys.classes.exerciseLists(variables.classId),
+        });
+      }
+      queryClient.setQueryData(queryKeys.exercises.detail(variables.id), data);
     },
   });
 }

@@ -17,7 +17,12 @@ from app.modules.languages.policy import (
     validate_language_policy,
 )
 from app.modules.languages.service import user_can_read_language
-from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, TestCaseCreate
+from app.schemas.exercises import (
+    ExerciseCreate,
+    ExerciseReplace,
+    ExerciseUpdate,
+    TestCaseCreate,
+)
 
 
 async def create_exercise(data: ExerciseCreate, current_user_id: int, session: AsyncSession) -> Exercise:
@@ -38,6 +43,19 @@ async def create_exercise(data: ExerciseCreate, current_user_id: int, session: A
         locked_language_id=data.locked_language_id,
     )
     session.add(exercise)
+    await session.flush()
+
+    for index, test_case in enumerate(data.test_cases):
+        session.add(
+            TestCase(
+                exercise_id=exercise.id,
+                label=test_case.label,
+                input=test_case.input,
+                expected_output=test_case.expected_output,
+                order_index=index,
+            )
+        )
+
     await session.flush()
     return await get_exercise(exercise.id, session)
 
@@ -116,6 +134,41 @@ async def update_exercise(
 
     for field, value in payload.items():
         setattr(exercise, field, value)
+
+    await session.flush()
+    return await get_exercise(exercise.id, session)
+
+
+async def replace_exercise(
+    exercise_id: int,
+    current_user_id: int,
+    data: ExerciseReplace,
+    session: AsyncSession,
+) -> Exercise:
+    exercise = await get_exercise(exercise_id, session)
+    if exercise.teacher_id != current_user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed")
+
+    await validate_language_policy(
+        current_user_id, data.language_policy, data.locked_language_id, session
+    )
+
+    exercise.title = data.title
+    exercise.description = data.description
+    exercise.attachments = data.attachments
+    exercise.language_policy = data.language_policy
+    exercise.locked_language_id = data.locked_language_id
+    exercise.test_cases.clear()
+
+    for index, test_case in enumerate(data.test_cases):
+        exercise.test_cases.append(
+            TestCase(
+                label=test_case.label,
+                input=test_case.input,
+                expected_output=test_case.expected_output,
+                order_index=index,
+            )
+        )
 
     await session.flush()
     return await get_exercise(exercise.id, session)

@@ -56,7 +56,10 @@ export function CreateListModal({
   });
 
   const onSubmit = async (values: CreateListForm) => {
-    if (values.languagePolicy === "LOCKED" && values.lockedLanguageId === null) {
+    if (
+      values.languagePolicy === "LOCKED" &&
+      values.lockedLanguageId === null
+    ) {
       form.setError("lockedLanguageId", {
         type: "manual",
         message: "Escolha uma linguagem",
@@ -82,18 +85,19 @@ export function CreateListModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md backdrop-blur-3xl">
+      <DialogContent className="backdrop-blur-3xl">
         <DialogHeader>
           <DialogTitle>Nova Lista de Exercícios</DialogTitle>
-          <DialogDescription className="text-slate-400">
-            Crie uma lista para organizar seus exercícios e publicar para turmas.
+          <DialogDescription className="text-muted-foreground">
+            Crie uma lista para organizar seus exercícios e publicar para
+            turmas.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
             id="create-list-form"
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 p-1"
+            className="space-y-4 p-6"
           >
             <FormField
               control={form.control}
@@ -105,7 +109,7 @@ export function CreateListModal({
                     <Input
                       {...field}
                       placeholder="Ex: Algoritmos de Ordenação"
-                      className="h-11 bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="h-11"
                     />
                   </FormControl>
                   <FormMessage />
@@ -123,7 +127,7 @@ export function CreateListModal({
                       {...field}
                       rows={3}
                       placeholder="Descreva o objetivo desta lista..."
-                      className="bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="focus:border-primary/50"
                     />
                   </FormControl>
                   <FormMessage />
@@ -145,7 +149,10 @@ export function CreateListModal({
                       }}
                       onChange={(next) => {
                         field.onChange(next.policy);
-                        form.setValue("lockedLanguageId", next.lockedLanguageId);
+                        form.setValue(
+                          "lockedLanguageId",
+                          next.lockedLanguageId,
+                        );
                       }}
                       languages={languagesQuery.data ?? []}
                     />
@@ -169,11 +176,11 @@ export function CreateListModal({
             />
           </form>
         </Form>
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>

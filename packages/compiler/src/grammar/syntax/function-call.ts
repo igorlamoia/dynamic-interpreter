@@ -16,14 +16,14 @@ import { parameterListStmt } from "./parameterListStmt";
  */
 export function functionCall(iterator: TokenIterator): void {
   const { left_paren, right_paren } = TOKENS.SYMBOLS;
-  const { funcao } = TOKENS.RESERVEDS;
+  const { function: functionKeyword } = TOKENS.RESERVEDS;
   const typingMode = iterator.getTypingMode();
 
   const returnType: ValueType =
     typingMode === "untyped" ? "dynamic" : "void";
 
   if (typingMode === "untyped") {
-    iterator.consume(funcao);
+    iterator.consume(functionKeyword);
   } else {
     iterator.setCurrentFunctionReturnType(typeStmt(iterator, true));
   }

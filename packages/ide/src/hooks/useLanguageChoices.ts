@@ -45,7 +45,7 @@ export type ActiveLanguageDetail = {
  */
 export function useLanguageChoices() {
   const { isAuthenticated } = useAuth();
-  const { setCustomization } = useKeywords();
+  const { externalLanguageOverlay, setCustomization } = useKeywords();
   const listQuery = useLanguagesList(isAuthenticated);
   const activeQuery = useActiveLanguage(isAuthenticated);
   const setActiveMut = useSetActiveLanguage();
@@ -81,6 +81,16 @@ export function useLanguageChoices() {
   }, [isAuthenticated]);
 
   const choices = useMemo<LanguageChoice[]>(() => {
+    if (externalLanguageOverlay) {
+      return [
+        {
+          key: String(externalLanguageOverlay.id),
+          name: externalLanguageOverlay.name,
+          imageUrl: externalLanguageOverlay.imageUrl,
+        },
+      ];
+    }
+
     if (!isAuthenticated) return localChoices;
 
     return (listQuery.data ?? []).map((language) => ({
@@ -88,9 +98,19 @@ export function useLanguageChoices() {
       name: language.name,
       imageUrl: language.imageUrl ?? "",
     }));
-  }, [isAuthenticated, listQuery.data, localChoices]);
+  }, [externalLanguageOverlay, isAuthenticated, listQuery.data, localChoices]);
 
   const activeLanguage = useMemo<ActiveLanguageDetail | null>(() => {
+    if (externalLanguageOverlay) {
+      return {
+        key: String(externalLanguageOverlay.id),
+        name: externalLanguageOverlay.name,
+        description: externalLanguageOverlay.description,
+        imageUrl: externalLanguageOverlay.imageUrl,
+        customization: externalLanguageOverlay.customization,
+      };
+    }
+
     if (!isAuthenticated) return localActive;
 
     const language = activeQuery.data;
@@ -103,12 +123,15 @@ export function useLanguageChoices() {
       imageUrl: language.imageUrl ?? "",
       customization: language.customization,
     };
-  }, [activeQuery.data, isAuthenticated, localActive]);
+  }, [activeQuery.data, externalLanguageOverlay, isAuthenticated, localActive]);
 
   const activeKey = activeLanguage?.key ?? "";
+  const isSelectionLocked = externalLanguageOverlay !== null;
 
   const selectLanguage = useCallback(
     async (key: string) => {
+      if (externalLanguageOverlay) return;
+
       if (isAuthenticated) {
         const languageId = Number.parseInt(key, 10);
         if (!Number.isInteger(languageId)) return;
@@ -133,8 +156,14 @@ export function useLanguageChoices() {
         customization: language.customization,
       });
     },
-    [isAuthenticated, setActiveMut, setCustomization],
+    [externalLanguageOverlay, isAuthenticated, setActiveMut, setCustomization],
   );
 
-  return { choices, activeKey, activeLanguage, selectLanguage };
+  return {
+    choices,
+    activeKey,
+    activeLanguage,
+    isSelectionLocked,
+    selectLanguage,
+  };
 }

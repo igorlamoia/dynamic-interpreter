@@ -8,6 +8,100 @@ import {
 import { TokenIterator } from "../../token/TokenIterator";
 
 describe("Type semantics warnings", () => {
+  it("warns and throws when a function returns bool as int", async () => {
+    const source = `
+      int bigger(int x, int y) {
+        return x < y;
+      }
+
+      int main() {
+        return bigger(1, 2);
+      }
+    `;
+
+    const compiled = compileProgram(source);
+    expect(compiled.warnings).toEqual([
+      expect.objectContaining({
+        code: "grammar.incompatible_type_conversion",
+        params: expect.objectContaining({ sourceType: "bool", targetType: "int" }),
+      }),
+    ]);
+
+    await expect(executeProgram(source)).rejects.toMatchObject({
+      code: "interpreter.incompatible_return",
+    });
+  });
+
+  it("executes ternary expressions and only selects the matching branch", async () => {
+    const result = await executeProgram(`
+      string unselected() {
+        print("wrong-branch");
+        return "wrong";
+      }
+
+      int main() {
+        int z = 2;
+        string first = z === 2 ? "yes" : "no";
+        string second = false ? "wrong" : "right";
+        int nested = true ? false ? 1 : 2 : 3;
+        string lazy = true ? "lazy" : unselected();
+        print(first);
+        print(second);
+        print(nested);
+        print(lazy);
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("yesright2lazy");
+  });
+
+  it("warns at compile time and fails at runtime for string-to-int assignment", async () => {
+    const source = `
+      int main() {
+        int value = "not a number";
+        return 0;
+      }
+    `;
+
+    const compiled = compileProgram(source);
+    expect(compiled.warnings).toEqual([
+      expect.objectContaining({
+        code: "grammar.incompatible_type_conversion",
+        params: expect.objectContaining({ sourceType: "string", targetType: "int" }),
+      }),
+    ]);
+
+    await expect(executeProgram(source)).rejects.toMatchObject({
+      code: "interpreter.incompatible_assignment",
+    });
+  });
+
+  it("keeps strict equality false between string and int values", async () => {
+    const source = `
+      int main() {
+        string x = "1";
+        int z = 1;
+        print(x === z);
+        print(x == z);
+        float y = 1.0;
+        print(y === z);
+        return 0;
+      }
+    `;
+
+    const compiled = compileProgram(source);
+    expect(compiled.instructions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ op: "===" }),
+        expect.objectContaining({ op: "==" }),
+      ]),
+    );
+
+    const result = await executeProgram(source);
+    expect(result.output).toBe("falsetruefalse");
+  });
+
   it("preserves array symbol metadata while resolving scalar element type", () => {
     const iterator = new TokenIterator([], {
       grammar: { typingMode: "typed", arrayMode: "fixed" },
@@ -299,7 +393,7 @@ describe("Type semantics warnings", () => {
     expect(() =>
       compileToIr(
         `
-          funcao main() {
+          function main() {
             vetor[] = [0, 1];
             return 0;
           }
@@ -878,7 +972,7 @@ describe("Type semantics runtime", () => {
   it("supports untyped dynamic array declaration syntax at runtime", async () => {
     const result = await executeProgram(
       `
-        funcao main() {
+        function main() {
           lista[] = [];
           lista[0] = 1;
           print(lista[0]);
@@ -926,7 +1020,7 @@ describe("Type semantics runtime", () => {
   it("reads initialized untyped dynamic array values at runtime", async () => {
     const result = await executeProgram(
       `
-        funcao main() {
+        function main() {
           vetor[] = [0, 1];
           print(vetor[0]);
           print(vetor[1]);
@@ -962,7 +1056,7 @@ describe("Type semantics runtime", () => {
   it("reads directly into dynamic matrix elements at runtime in untyped mode", async () => {
     const result = await executeProgram(
       `
-        funcao main() {
+        function main() {
           lista[] = [];
           scan(lista[1][2]);
           print(lista[1][2]);

@@ -57,9 +57,9 @@ export const KEYWORD_SNIPPETS: Record<string, JavaMMSnippetVariant[]> = {
       typingMode: "typed",
     },
   ],
-  variavel: [
+  variable: [
     {
-      body: "variavel ${1:nome} = ${2:valor};",
+      body: "variable ${1:nome} = ${2:valor};",
       description: "Declaração não tipada",
       typingMode: "untyped",
       labelSuffix: "não tipado",
@@ -81,29 +81,29 @@ export const KEYWORD_SNIPPETS: Record<string, JavaMMSnippetVariant[]> = {
   ],
   void: [
     {
-      body: "void ${1:funcao}(${2:params}) {\n\t$3\n}",
+      body: "void ${1:functionName}(${2:params}) {\n\t$3\n}",
       description: "Função tipada",
       typingMode: "typed",
       blockMode: "delimited",
     },
     {
-      body: "void ${1:funcao}(${2:params}):\n\t$3",
+      body: "void ${1:functionName}(${2:params}):\n\t$3",
       description: "Função tipada por indentação",
       typingMode: "typed",
       blockMode: "indentation",
       labelSuffix: "indentado",
     },
   ],
-  funcao: [
+  function: [
     {
-      body: "funcao ${1:nome}(${2:param1, param2}) {\n\t$3\n}",
+      body: "function ${1:nome}(${2:param1, param2}) {\n\t$3\n}",
       description: "Função não tipada",
       typingMode: "untyped",
       blockMode: "delimited",
       labelSuffix: "não tipado",
     },
     {
-      body: "funcao ${1:nome}(${2:param1, param2}):\n\t$3",
+      body: "function ${1:nome}(${2:param1, param2}):\n\t$3",
       description: "Função não tipada por indentação",
       typingMode: "untyped",
       blockMode: "indentation",
@@ -138,12 +138,12 @@ export const KEYWORD_SNIPPETS: Record<string, JavaMMSnippetVariant[]> = {
   ],
   switch: [
     {
-      body: "switch (${1:variavel}) {\n\tcase ${2:valor}:\n\t\t$3\n\t\tbreak;\n\tdefault:\n\t\t$4\n}",
+      body: "switch (${1:variable}) {\n\tcase ${2:valor}:\n\t\t$3\n\t\tbreak;\n\tdefault:\n\t\t$4\n}",
       description: "Bloco switch",
       blockMode: "delimited",
     },
     {
-      body: "switch (${1:variavel}):\n\tcase ${2:valor}:\n\t\t$3\n\t\tbreak\n\tdefault:\n\t\t$4",
+      body: "switch (${1:variable}):\n\tcase ${2:valor}:\n\t\t$3\n\t\tbreak\n\tdefault:\n\t\t$4",
       description: "Bloco switch por indentação",
       blockMode: "indentation",
       labelSuffix: "indentado",
@@ -189,13 +189,13 @@ export const KEYWORD_SNIPPETS: Record<string, JavaMMSnippetVariant[]> = {
   print: [{ body: 'print(${1:"mensagem"});', description: "Imprimir valor" }],
   scan: [
     {
-      body: "scan(${1:int}, ${2:variavel});",
+      body: "scan(${1:int}, ${2:variable});",
       description: "Ler entrada (tipado)",
       typingMode: "typed",
       labelSuffix: "tipado",
     },
     {
-      body: "scan(${1:variavel});",
+      body: "scan(${1:variable});",
       description: "Ler entrada (não tipado)",
       typingMode: "untyped",
       labelSuffix: "não tipado",

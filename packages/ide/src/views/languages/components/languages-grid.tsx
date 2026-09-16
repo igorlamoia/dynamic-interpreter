@@ -30,17 +30,15 @@ export function LanguagesGrid({
   if (loading) {
     return (
       <div className="flex justify-center py-16">
-        <Loader2 className="size-6 animate-spin text-slate-500" />
+        <Loader2 className="size-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   if (languages.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-white/10 py-16 text-center">
-        <p className="text-slate-400">
-          Nenhuma linguagem salva ainda.
-        </p>
+      <div className="rounded-2xl border border-dashed border-border py-16 text-center dark:border-white/10">
+        <p className="text-muted-foreground">Nenhuma linguagem salva ainda.</p>
         <button
           type="button"
           onClick={onCreate}

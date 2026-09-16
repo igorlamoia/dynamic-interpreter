@@ -52,6 +52,7 @@ export default function TerminalView({
   const [isExecuting, setIsExecuting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const debugOutputLengthRef = useRef(0);
+  const debugOutputLineOpenRef = useRef(false);
 
   // Focar no input quando o terminal abrir
   useEffect(() => {
@@ -64,22 +65,31 @@ export default function TerminalView({
     const debugOutput = debugSession?.output;
     if (!debugOutput) {
       debugOutputLengthRef.current = 0;
+      debugOutputLineOpenRef.current = false;
       return;
     }
 
     if (debugOutput.length < debugOutputLengthRef.current) {
       debugOutputLengthRef.current = 0;
+      debugOutputLineOpenRef.current = false;
     }
 
     const nextOutput = debugOutput.slice(debugOutputLengthRef.current);
     if (nextOutput.length === 0) return;
 
-    setLines((previousLines) => [
-      ...previousLines,
-      ...nextOutput.flatMap((content) =>
-        createOutputLines(content, "output"),
-      ),
-    ]);
+    setLines((previousLines) => {
+      let nextLines = previousLines;
+      let lineOpen = debugOutputLineOpenRef.current;
+
+      for (const content of nextOutput) {
+        const next = appendOutputLines(nextLines, content, "output", lineOpen);
+        nextLines = next.lines;
+        lineOpen = next.lineOpen;
+      }
+
+      debugOutputLineOpenRef.current = lineOpen;
+      return nextLines;
+    });
     debugOutputLengthRef.current = debugOutput.length;
   }, [debugSession?.output]);
 
@@ -122,10 +132,58 @@ export default function TerminalView({
   );
 }
 
-function createOutputLines(
+export function createOutputLines(
   content: string,
   type: TerminalLine["type"],
 ): TerminalLine[] {
+  return appendOutputLines([], content, type, false).lines;
+}
+
+export function appendOutputLines(
+  previousLines: TerminalLine[],
+  content: string,
+  type: TerminalLine["type"],
+  lineOpen: boolean,
+): { lines: TerminalLine[]; lineOpen: boolean } {
   const normalizedContent = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-  return normalizedContent.split("\n").map((line) => createLine(line, type));
+  let lines = previousLines;
+  let hasOpenLine = lineOpen;
+
+  const ensureOutputLine = () => {
+    const lastLine = lines[lines.length - 1];
+    if (hasOpenLine && lastLine?.type === type) {
+      return;
+    }
+
+    lines = [...lines, createLine("", type)];
+    hasOpenLine = true;
+  };
+
+  const appendToLastOutputLine = (char: string) => {
+    const lastIndex = lines.length - 1;
+    const lastLine = lines[lastIndex];
+
+    lines = [
+      ...lines.slice(0, lastIndex),
+      {
+        ...lastLine,
+        content: `${lastLine.content}${char}`,
+      },
+    ];
+  };
+
+  for (const char of normalizedContent) {
+    if (char === "\n") {
+      if (!hasOpenLine) {
+        lines = [...lines, createLine("", type)];
+      }
+      hasOpenLine = false;
+      continue;
+    }
+
+    ensureOutputLine();
+    appendToLastOutputLine(char);
+  }
+
+  return { lines, lineOpen: hasOpenLine };
 }

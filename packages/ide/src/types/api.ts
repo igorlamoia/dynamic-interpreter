@@ -1,5 +1,27 @@
 import type { Language } from "@/lib/languages-api"
 
+export type ClassSummary = {
+  id: number
+  organizationId: number
+  teacherId: number
+  name: string
+  description: string
+  accessCode: string
+  createdAt: string
+  status: "ACTIVE" | "ARCHIVED"
+  _count: {
+    members: number
+    exerciseLists: number
+  }
+  teacher: {
+    id: number
+    name: string
+    email: string
+    avatarUrl: string | null
+    role: "ADMIN" | "TEACHER" | "STUDENT" | "COMMUNITY" | "SYSTEM"
+  } | null
+}
+
 export type PaginatedResponse<T> = {
   items: T[];
   total: number;

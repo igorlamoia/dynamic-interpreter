@@ -10,8 +10,8 @@ function resolveKeywordSemanticToken(original: string): SemanticToken {
     "bool",
     "string",
     "void",
-    "variavel",
-    "funcao",
+    "variable",
+    "function",
   ]);
   const CONDITIONALS = new Set(["if", "else", "switch", "case", "default"]);
   const LOOPS = new Set(["for", "while"]);
@@ -173,7 +173,7 @@ export function CategorySection(props: CategorySectionProps) {
   };
 
   return (
-    <div className="rounded-sm border border-slate-200/75 bg-[radial-gradient(circle_at_top,rgba(15,23,42,0.96),rgba(15,23,42,0.99))] shadow-[0_24px_70px_-44px_rgba(2,6,23,0.9)] dark:border-slate-800">
+    <div className="rounded-sm border border-slate-400/75 dark:bg-[radial-gradient(circle_at_top,rgba(15,23,42,0.96),rgba(15,23,42,0.99))] shadow-[0_24px_70px_-44px_rgba(2,6,23,0.9)] dark:border-slate-800">
       <CategoryHeader
         {...props}
         tone={tone}
@@ -188,12 +188,12 @@ export function CategorySection(props: CategorySectionProps) {
               key={item.original}
               className={`my-0.5 px-4 py-2 backdrop-blur-sm transition-all ${
                 item.isChanged
-                  ? `${tone.borderChanged} bg-slate-950/45`
-                  : "border-slate-700/60 bg-slate-950/35"
+                  ? `${tone.borderChanged} dark:bg-slate-950/45`
+                  : "border-slate-700/60 dark:bg-slate-950/35"
               }`}
             >
               <div className="grid grid-cols-[minmax(0,auto)_minmax(0,1fr)_minmax(0,auto)] items-center gap-3">
-                <span className="truncate text-sm font-medium text-slate-200">
+                <span className="truncate text-sm font-medium dark:text-slate-200">
                   {item.original}
                 </span>
 

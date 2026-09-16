@@ -87,7 +87,7 @@ export function CreateClassModal({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Criar Nova Turma</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Preencha os dados da sua turma
           </DialogDescription>
         </DialogHeader>
@@ -107,7 +107,7 @@ export function CreateClassModal({
                     <Input
                       {...field}
                       placeholder="Ex: Programação para Iniciantes"
-                      className="h-12 bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="h-12"
                     />
                   </FormControl>
                   <FormMessage />
@@ -126,7 +126,7 @@ export function CreateClassModal({
                       {...field}
                       rows={3}
                       placeholder="Descreva a turma..."
-                      className="bg-black/30 border-white/10 text-slate-100 placeholder:text-slate-600 focus:border-[#0dccf2]/50"
+                      className="focus:border-primary/50"
                     />
                   </FormControl>
                   <FormMessage />
@@ -136,12 +136,12 @@ export function CreateClassModal({
           </form>
         </Form>
 
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>
@@ -149,7 +149,7 @@ export function CreateClassModal({
             type="submit"
             form="create-class-form"
             disabled={createClass.isPending}
-            className="bg-linear-to-r from-[#0dccf2] to-[#10b981] text-slate-800 hover:opacity-90"
+            className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
             {createClass.isPending ? "Criando..." : "Criar Turma"}
           </HeroButton>

@@ -11,7 +11,12 @@ from app.models.submission import Submission
 from app.models.user import User, UserRole
 from app.schemas.classes import (
     ClassCreate, ClassUpdate, JoinClassResponse,
-    ClassExerciseListWithProgress, ExerciseListBrief, ExerciseItemProgress,
+    ClassCount,
+    ClassExerciseListWithProgress,
+    ClassSummaryResponse,
+    ExerciseListBrief,
+    ExerciseItemProgress,
+    TeacherBrief,
 )
 
 
@@ -37,19 +42,50 @@ async def create_class(data: ClassCreate, current_user_id: str, session: AsyncSe
     return new_class
 
 
-async def list_classes(current_user_id: str, session: AsyncSession) -> list[Class]:
+async def list_classes(current_user_id: str, session: AsyncSession) -> list[ClassSummaryResponse]:
     current_user = await session.get(User, current_user_id)
     if current_user.role in (UserRole.ADMIN, UserRole.TEACHER):
         result = await session.execute(
-            select(Class).where(Class.teacher_id == current_user_id)
+            select(Class)
+            .where(Class.teacher_id == current_user_id)
+            .options(
+                selectinload(Class.members),
+                selectinload(Class.exercise_lists),
+                selectinload(Class.teacher),
+            )
         )
     else:
         result = await session.execute(
             select(Class)
             .join(ClassMember, Class.id == ClassMember.class_id)
             .where(ClassMember.student_id == current_user_id)
+            .options(
+                selectinload(Class.members),
+                selectinload(Class.exercise_lists),
+                selectinload(Class.teacher),
+            )
         )
-    return list(result.scalars().all())
+    classes = list(result.scalars().all())
+    return [
+        ClassSummaryResponse(
+            id=cls.id,
+            organization_id=cls.organization_id,
+            teacher_id=cls.teacher_id,
+            name=cls.name,
+            description=cls.description,
+            access_code=cls.access_code,
+            created_at=cls.created_at,
+            status=cls.status,
+            count_=ClassCount(
+                members=len(cls.members),
+                exercise_lists=len(cls.exercise_lists),
+            ),
+            teacher=TeacherBrief.model_validate(cls.teacher)
+            if cls.teacher is not None
+            else None,
+        )
+        for cls in classes
+    ]
 
 
 async def get_class(class_id: int, session: AsyncSession) -> Class:

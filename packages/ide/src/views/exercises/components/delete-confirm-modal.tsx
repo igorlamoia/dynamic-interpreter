@@ -26,19 +26,19 @@ export function DeleteConfirmModal({
       <DialogContent className="max-w-sm backdrop-blur-3xl">
         <DialogHeader>
           <DialogTitle>Excluir Exercício</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Tem certeza que deseja excluir{" "}
-            <span className="font-semibold text-slate-200">
+            <span className="font-semibold text-foreground">
               &ldquo;{exerciseTitle}&rdquo;
             </span>
             ? Esta ação não pode ser desfeita.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>

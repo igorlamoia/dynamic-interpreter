@@ -11,19 +11,24 @@
 - [x] Personalizar operadores - Colorir também FEITO
 - [x] Desabilitar spell check (atrapalha blocos)
 - [ ] Fluxograma
-- [ ] Debug
-  - [ ] Código
+- [x] Debug
+  - [x] Código
   - [ ] Fluxograma
 - [ ] Fórum para turma, instituição e para o site como um todo (Victor)
 - [ ] Run terminal comands to compile (atalho para play)
 - [ ] Explicações avançadas de Lexer, código intermediário e Interpretação (pra ser didático)
-- [ ] Adicionar ternário
+- [x] Adicionar ternário
 - [x] Remover lógicas de se for identado vai ser não tipado e não tipado já ser array dinamico (deixar esse pré-set rápido de configurar, mas não tão engessado assim)
 - [x] identação tem que ser PERFEITA
 - [x] verificar tokens de bool conflitando com original (true e false)
-- [ ] Permitir caracteres como ç e acentos, tal como \_\_
-- [ ] ajustar ===
-- [ ] ajustar scan com string, hoje só funciona com int
+- [x] Permitir caracteres como ç e acentos, tal como \_\_
+- [x] ajustar ===
+- [x] ajustar scan com string, hoje só funciona com int
+- [ ] Ajustar somatório dentro de for, hj i -= 1 não funciona, tal como i+= 1 ou -=, i-- não está funcionadno
+- [ ] Ao criar uma lista com linguagem travada ou livre, ela sempre nasce livre
+- [ ] Para loops infinitos previnir bloqueio do browser, colocar um alerta, algo do tipo
+- [ ] os lexemas de scan por exemplo funcionam, sem precisar usar sua customização
+- [x] No debug, o imprime (print), quebra linha automaticamente, não deveria, até porque que executando normal isso não acontece
 
 Particles:
 https://particles.js.org/samples/index.html#amongUs

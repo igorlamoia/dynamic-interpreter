@@ -53,7 +53,12 @@ export function PublishModal({
   const publishList = usePublishExerciseListMutation();
   const form = useForm<PublishForm>({
     resolver: zodResolver(publishSchema),
-    defaultValues: { classId: "", totalGrade: "10", minRequired: "1", deadline: defaultDeadline() },
+    defaultValues: {
+      classId: "",
+      totalGrade: "10",
+      minRequired: "1",
+      deadline: defaultDeadline(),
+    },
   });
 
   const onSubmit = async (values: PublishForm) => {
@@ -72,8 +77,11 @@ export function PublishModal({
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: { detail?: string } } };
       const detail = axiosError?.response?.data?.detail;
-      console.error('[publish] erro:', err);
-      showToast({ type: "error", message: detail ? `Erro: ${detail}` : "Erro ao publicar lista." });
+      console.error("[publish] erro:", err);
+      showToast({
+        type: "error",
+        message: detail ? `Erro: ${detail}` : "Erro ao publicar lista.",
+      });
     }
   };
 
@@ -82,7 +90,7 @@ export function PublishModal({
       <DialogContent className="max-w-md backdrop-blur-3xl">
         <DialogHeader>
           <DialogTitle>Publicar Lista</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Configure prazo e requisitos antes de publicar para a turma.
           </DialogDescription>
         </DialogHeader>
@@ -101,11 +109,20 @@ export function PublishModal({
                   <FormControl>
                     <select
                       {...field}
-                      className="w-full h-11 bg-black/30 border border-white/10 rounded-md px-3 text-sm text-slate-100 focus:outline-none focus:border-[#0dccf2]/50"
+                      className="w-full h-11 bg-background/80 border border-input rounded-md px-3 text-sm text-foreground focus:outline-none focus:border-primary/50 dark:bg-black/30 dark:border-white/10 dark:text-slate-100"
                     >
-                      <option value="" className="bg-[#101f22]">Selecione...</option>
+                      <option
+                        value=""
+                        className="bg-background text-foreground"
+                      >
+                        Selecione...
+                      </option>
                       {classes.map((c) => (
-                        <option key={c.id} value={c.id} className="bg-[#101f22]">
+                        <option
+                          key={c.id}
+                          value={c.id}
+                          className="bg-background text-foreground"
+                        >
                           {c.name}
                         </option>
                       ))}
@@ -128,7 +145,7 @@ export function PublishModal({
                         min="1"
                         step="0.5"
                         {...field}
-                        className="h-11 bg-black/30 border-white/10 text-slate-100 focus:border-[#0dccf2]/50"
+                        className="h-11"
                       />
                     </FormControl>
                     <FormMessage />
@@ -146,7 +163,7 @@ export function PublishModal({
                         type="number"
                         min="1"
                         {...field}
-                        className="h-11 bg-black/30 border-white/10 text-slate-100 focus:border-[#0dccf2]/50"
+                        className="h-11"
                       />
                     </FormControl>
                     <FormMessage />
@@ -161,11 +178,7 @@ export function PublishModal({
                 <FormItem>
                   <FormLabel>Prazo de entrega</FormLabel>
                   <FormControl>
-                    <Input
-                      type="datetime-local"
-                      {...field}
-                      className="h-11 bg-black/30 border-white/10 text-slate-100 focus:border-[#0dccf2]/50"
-                    />
+                    <Input type="datetime-local" {...field} className="h-11" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -173,15 +186,19 @@ export function PublishModal({
             />
           </form>
         </Form>
-        <DialogFooter className="bg-white/5 border-t border-white/10">
+        <DialogFooter className="bg-muted/60 border-t border-border dark:bg-white/5 dark:border-white/10">
           <HeroButton
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
+            className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
             Cancelar
           </HeroButton>
-          <HeroButton type="submit" form="publish-form" disabled={publishList.isPending}>
+          <HeroButton
+            type="submit"
+            form="publish-form"
+            disabled={publishList.isPending}
+          >
             {publishList.isPending ? "Publicando..." : "Publicar"}
           </HeroButton>
         </DialogFooter>

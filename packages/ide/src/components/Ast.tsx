@@ -63,7 +63,7 @@ export function Ast({
   return (
     <section
       className={cn(
-        "grid gap-3 rounded-lg border border-slate-800 bg-slate-950 p-3 text-slate-100",
+        "grid gap-3 rounded-lg border border-border bg-card p-3 text-foreground dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100",
         showToolbar
           ? "grid-rows-[auto_auto_minmax(0,1fr)]"
           : "grid-rows-[auto_minmax(0,1fr)]",
@@ -73,10 +73,10 @@ export function Ast({
     >
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-base font-semibold text-slate-100">
+          <h1 className="text-base font-semibold text-foreground dark:text-slate-100">
             Grammar graph
           </h1>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             {filteredModel.nodes.length} nodes / {filteredModel.edges.length}{" "}
             edges
           </p>
@@ -119,7 +119,7 @@ function SelectedModesSummary({
 
   if (entries.length === 0) {
     return (
-      <span className="rounded-md border border-slate-800 bg-slate-900/70 px-2 py-1 text-xs text-slate-500">
+      <span className="rounded-md border border-border bg-muted/70 px-2 py-1 text-xs text-muted-foreground dark:border-slate-800 dark:bg-slate-900/70">
         all modes
       </span>
     );
@@ -130,11 +130,11 @@ function SelectedModesSummary({
       {entries.map(([mode, value]) => (
         <span
           key={mode}
-          className="inline-flex items-center gap-1 rounded-md border border-slate-800 bg-slate-900/70 px-2 py-1 font-mono text-xs text-slate-300"
+          className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/70 px-2 py-1 font-mono text-xs text-foreground dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300"
         >
-          <span className="text-slate-500">{mode}</span>
-          <span className="text-slate-600">=</span>
-          <span className="font-semibold text-cyan-100">{value}</span>
+          <span className="text-muted-foreground">{mode}</span>
+          <span className="text-muted-foreground/70">=</span>
+          <span className="font-semibold text-cyan-700 dark:text-cyan-100">{value}</span>
         </span>
       ))}
     </div>

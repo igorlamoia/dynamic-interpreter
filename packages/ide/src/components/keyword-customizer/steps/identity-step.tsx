@@ -15,6 +15,8 @@ import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { HeroButton } from "@/components/buttons/hero";
 import { Overlay } from "@/components/effect/overlay";
 import { InterpreterLottie } from "@/lottie/robot-brain";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 export type IdentityImageSearchResult = {
   id: number;
   provider: "pixabay" | "unsplash";
@@ -46,8 +48,8 @@ function getImageAttributionLabel(
 export type IdentityStepProps = {
   values: {
     selectedPresetId: WizardPresetId;
-    languageName: string;
-    languageDescription: string;
+    name: string;
+    description: string;
     imageSearchQuery: string;
     imageSearchResults: IdentityImageSearchResult[];
     selectedImageUrl: string;
@@ -56,8 +58,8 @@ export type IdentityStepProps = {
   };
   actions: {
     selectPreset: (presetId: WizardPresetId) => void;
-    setLanguageName: (value: string) => void;
-    setLanguageDescription: (value: string) => void;
+    setName: (value: string) => void;
+    setDescription: (value: string) => void;
     setImageSearchQuery: (value: string) => void;
     searchImages: () => void;
     selectImage: (imageUrl: string) => void;
@@ -282,13 +284,59 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
     <section className="space-y-6">
       <Step.Header>
         <Step.Index>Etapa 1</Step.Index>
-        <Step.Title>Que tipo de linguagem você quer criar?</Step.Title>
+        <Step.Title>Crie sua própria linguagem</Step.Title>
         <Step.Description>
-          Escolha um ponto de partida. A seleção apenas sugere lexemas iniciais
-          e continua totalmente editável.
+          A linguagem é apenas o início de algo grande.
         </Step.Description>
       </Step.Header>
+      <div className="flex flex-col gap-4">
+        <div className="space-y-3 rounded-lg border border-slate-200/80 bg-white/80 p-4 dark:border-slate-800/80 dark:bg-slate-900/80">
+          <div className="space-y-1">
+            <label
+              htmlFor="language-name"
+              className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
+            >
+              Nome da linguagem
+            </label>
+            <Input
+              id="language-name"
+              aria-label="Nome da linguagem"
+              value={values.name}
+              onChange={(event) => actions.setName(event.target.value)}
+              placeholder="Ex.: Didatica Neon"
+            />
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Esse nome será usado no preview, no salvamento e no seletor da
+              IDE.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <label
+              htmlFor="language-description"
+              className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
+            >
+              Descrição da linguagem
+            </label>
+            <Textarea
+              id="language-description"
+              aria-label="Descrição da linguagem"
+              value={values.description}
+              onChange={(event) => actions.setDescription(event.target.value)}
+              placeholder="Ex.: Uma linguagem didática inspirada em português para ensinar lógica de programação"
+            />
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              A descrição é opcional, mas pode ajudar a lembrar das escolhas
+              feitas
+            </p>
+          </div>
+        </div>
 
+        <ImageSearchFeature values={values} actions={actions} />
+      </div>
+      <p>
+        Escolha um ponto de partida. A seleção apenas sugere lexemas iniciais e
+        continua totalmente editável.
+      </p>
       <div className="space-y-3">
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {visiblePresets.map((preset) => (
@@ -326,55 +374,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
           </button>
         )}
       </div>
-      <InterpreterLottie />
-      <div className="flex flex-col gap-4">
-        <div className="space-y-3 rounded-lg border border-slate-200/80 bg-white/80 p-4 dark:border-slate-800/80 dark:bg-slate-900/80">
-          <div className="space-y-1">
-            <label
-              htmlFor="language-name"
-              className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
-            >
-              Nome da linguagem
-            </label>
-            <input
-              id="language-name"
-              aria-label="Nome da linguagem"
-              value={values.languageName}
-              onChange={(event) => actions.setLanguageName(event.target.value)}
-              placeholder="Ex.: Didatica Neon"
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition-colors focus:border-cyan-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-            />
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Esse nome será usado no preview, no salvamento e no seletor da
-              IDE.
-            </p>
-          </div>
-          <div className="space-y-1">
-            <label
-              htmlFor="language-description"
-              className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
-            >
-              Descrição da linguagem
-            </label>
-            <textarea
-              id="language-description"
-              aria-label="Descrição da linguagem"
-              value={values.languageDescription}
-              onChange={(event) =>
-                actions.setLanguageDescription(event.target.value)
-              }
-              placeholder="Ex.: Uma linguagem didática inspirada em português para ensinar lógica de programação"
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition-colors focus:border-cyan-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-            />
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              A descrição é opcional, mas pode ajudar a lembrar das escolhas
-              feitas
-            </p>
-          </div>
-        </div>
-
-        <ImageSearchFeature values={values} actions={actions} />
-      </div>
+      {/* <InterpreterLottie /> */}
     </section>
   );
 }
@@ -393,7 +393,7 @@ function ImageSearchFeature({
           htmlFor="language-image-search"
           className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
         >
-          Buscar imagem
+          Escolha uma imagem para a linguagem (opcional)
         </label>
 
         <div className="flex gap-2">

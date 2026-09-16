@@ -17,13 +17,16 @@ import {
 import { MainSection } from "./components/main-section";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { useKeyboardShortcuts } from "@/components/terminal/useKeyboardShortcuts";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { ScrollArrow } from "@/components/scroll-arrow";
 import { EditorContext, EditorProvider } from "@/contexts/editor/EditorContext";
 import { QuickFileSearch } from "@/components/quick-file-search";
 import { useIntermediatorCode } from "@/hooks/useIntermediatorCode";
 import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
-import { KeywordProvider, useKeywords } from "@/contexts/keyword/KeywordContext";
+import {
+  KeywordProvider,
+  useKeywords,
+} from "@/contexts/keyword/KeywordContext";
 import { useRouter } from "next/router";
 import { useDebugSession } from "@/hooks/useDebugSession";
 import type { MarkerSeverity } from "monaco-editor";
@@ -44,15 +47,21 @@ const DEFAULT_FILES = [
   { path: "README.md", initialCode: "# Project README\n" },
 ];
 
-export function IDEView() {
+export function IDEProvider({ children }: { children: React.ReactNode }) {
   return (
     <EditorProvider>
       <TerminalProvider>
-        <KeywordProvider>
-          <IDE />
-        </KeywordProvider>
+        <KeywordProvider>{children}</KeywordProvider>
       </TerminalProvider>
     </EditorProvider>
+  );
+}
+
+export function IDEView() {
+  return (
+    <IDEProvider>
+      <IDE />
+    </IDEProvider>
   );
 }
 export function IDE() {
@@ -138,7 +147,9 @@ export function IDE() {
       if (!fileSystem.fileExists(path)) {
         let code = fileDefaultCode;
         if (path === "src/main.?") {
-          code = initialCode ?? (storageScope ? "int main() {\n  \n}\n" : fileDefaultCode);
+          code =
+            initialCode ??
+            (storageScope ? "int main() {\n  \n}\n" : fileDefaultCode);
         }
         fileSystem.createOrUpdateFile(path, code);
       }
@@ -249,48 +260,36 @@ export function IDE() {
                     setActiveView={setActiveView}
                   />
                   {isSidebarOpen && (
-                    <motion.div
-                      initial={{ x: "-5%", opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      className="flex w-80 min-h-0 flex-col overflow-visible border-r border-black/10 dark:border-white/10"
-                      transition={{
-                        type: "spring",
-                        damping: 20,
-                        duration: 0.8,
-                        stiffness: 300,
+                    <SidebarPanel
+                      activeView={activeView}
+                      activeFile={activeFile}
+                      debugPanelProps={{
+                        breakpoints: selectedDebugLines,
+                        boundBreakpoints: debugSession.boundBreakpoints,
+                        locale,
+                        unboundBreakpoints: debugSession.unboundBreakpoints,
+                        snapshot: debugSession.snapshot,
+                        error: debugSession.error,
+                        isStale: debugSession.isStale,
+                        onStart: startDebug,
+                        onContinue: () => {
+                          void debugSession.continueExecution();
+                        },
+                        onStepInto: () => {
+                          void debugSession.stepInto();
+                        },
+                        onStepOver: () => {
+                          void debugSession.stepOver();
+                        },
+                        onStepOut: () => {
+                          void debugSession.stepOut();
+                        },
+                        onRestart: restartDebug,
+                        onStop: stopDebug,
                       }}
-                    >
-                      <SidebarPanel
-                        activeView={activeView}
-                        activeFile={activeFile}
-                        debugPanelProps={{
-                          breakpoints: selectedDebugLines,
-                          boundBreakpoints: debugSession.boundBreakpoints,
-                          locale,
-                          unboundBreakpoints: debugSession.unboundBreakpoints,
-                          snapshot: debugSession.snapshot,
-                          error: debugSession.error,
-                          isStale: debugSession.isStale,
-                          onStart: startDebug,
-                          onContinue: () => {
-                            void debugSession.continueExecution();
-                          },
-                          onStepInto: () => {
-                            void debugSession.stepInto();
-                          },
-                          onStepOver: () => {
-                            void debugSession.stepOver();
-                          },
-                          onStepOut: () => {
-                            void debugSession.stepOut();
-                          },
-                          onRestart: restartDebug,
-                          onStop: stopDebug,
-                        }}
-                        setActiveFile={setActiveFile}
-                        setOpenTabs={setOpenTabs}
-                      />
-                    </motion.div>
+                      setActiveFile={setActiveFile}
+                      setOpenTabs={setOpenTabs}
+                    />
                   )}
                   <MainSection
                     activeFile={activeFile}

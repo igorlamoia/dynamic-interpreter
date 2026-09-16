@@ -258,15 +258,20 @@ export class Interpreter {
       } else if (RELATIONALS.includes(op as TRelational)) {
         const val1 = this.parseOrGetVariableWithScope(operand1);
         const val2 = this.parseOrGetVariableWithScope(operand2);
+        const strictTypesMatch =
+          op !== "===" ||
+          this.resolveOperandRuntimeType(operand1, val1) ===
+            this.resolveOperandRuntimeType(operand2, val2);
         this.setVariable(
           result,
-          makeRelation(
-            op as TRelational,
-            val1 as number,
-            val2 as number,
-            (code, params) =>
-              this.throwRuntimeError(code, params, currentInstruction),
-          ),
+          strictTypesMatch &&
+            makeRelation(
+              op as TRelational,
+              val1,
+              val2,
+              (code, params) =>
+                this.throwRuntimeError(code, params, currentInstruction),
+            ),
         );
         this.instructionPointer++;
       } else if (op === "=") {
@@ -442,9 +447,21 @@ export class Interpreter {
         );
         this.instructionPointer++;
       } else if (op === "RETURN") {
-        const returnValue = this.parseOrGetVariableWithScope(result);
+        const hasReturnValue = result !== "null";
+        const returnValue = hasReturnValue
+          ? this.parseOrGetVariableWithScope(result)
+          : null;
         const returnType = typeof operand1 === "string" ? operand1 : "dynamic";
-        const coercedReturnValue = coerceValueForType(returnType, returnValue);
+        const functionName =
+          this.callStack[this.callStack.length - 1]?.name ?? "main";
+        const coercedReturnValue = hasReturnValue
+          ? this.coerceCheckedValue(
+              returnType,
+              returnValue,
+              `return value of ${functionName}`,
+              "interpreter.incompatible_return",
+            )
+          : null;
 
         if (this.callStack.length === 0) {
           // Return do main - terminar execução
@@ -907,7 +924,8 @@ export class Interpreter {
     }
     currentScope.set(name, {
       type,
-      value: coerceValueForType(type, value),
+      value:
+        value === null ? null : this.coerceCheckedValue(type, value, name),
     });
   }
 
@@ -918,7 +936,7 @@ export class Interpreter {
     if (currentSlot) {
       currentScope.set(name, {
         ...currentSlot,
-        value: coerceValueForType(currentSlot.type, value),
+        value: this.coerceCheckedValue(currentSlot.type, value, name),
       });
       return;
     }
@@ -927,12 +945,37 @@ export class Interpreter {
       const globalSlot = this.variables.get(name)!;
       this.variables.set(name, {
         ...globalSlot,
-        value: coerceValueForType(globalSlot.type, value),
+        value: this.coerceCheckedValue(globalSlot.type, value, name),
       });
       return;
     }
 
     currentScope.set(name, { type: "dynamic", value });
+  }
+
+  private coerceCheckedValue(
+    targetType: string,
+    value: unknown,
+    variableName: string,
+    errorCode = "interpreter.incompatible_assignment",
+  ): unknown {
+    const valueMatchesType =
+      targetType === "dynamic" ||
+      targetType === "unknown" ||
+      ((targetType === "int" || targetType === "float") &&
+        typeof value === "number") ||
+      (targetType === "string" && typeof value === "string") ||
+      (targetType === "bool" && typeof value === "boolean");
+
+    if (!valueMatchesType) {
+      this.throwRuntimeError(errorCode, {
+        variableName,
+        targetType,
+        sourceType: this.resolveOperandRuntimeType(value, value),
+      });
+    }
+
+    return coerceValueForType(targetType, value);
   }
 
   private parseOrGetVariableWithScope(value: unknown): unknown {
@@ -956,6 +999,36 @@ export class Interpreter {
       }
     }
     return value;
+  }
+
+  private resolveOperandRuntimeType(
+    operand: unknown,
+    resolvedValue: unknown,
+  ): string {
+    if (typeof operand === "string") {
+      if (operand.startsWith('"') && operand.endsWith('"')) return "string";
+      const normalized = operand.trim().toLowerCase();
+      if (normalized === "true" || normalized === "false") return "bool";
+      if (/^-?\d+$/.test(operand)) return "int";
+      if (/^-?\d+\.\d+$/.test(operand)) return "float";
+
+      try {
+        const declaredType = this.getVariableSlot(operand).type;
+        if (declaredType !== "dynamic" && declaredType !== "unknown") {
+          return declaredType;
+        }
+      } catch {
+        // Non-variable string operands are classified from their resolved value.
+      }
+    }
+
+    if (typeof resolvedValue === "boolean") return "bool";
+    if (typeof resolvedValue === "number") {
+      return Number.isInteger(resolvedValue) ? "int" : "float";
+    }
+    if (typeof resolvedValue === "string") return "string";
+    if (resolvedValue === null) return "null";
+    return typeof resolvedValue;
   }
 
   private parseArrayDeclaration(

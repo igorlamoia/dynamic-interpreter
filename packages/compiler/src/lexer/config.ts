@@ -33,7 +33,7 @@ export type LexerConfig = {
   tabWidth?: number;
 };
 
-const WORD_REGEX = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const WORD_REGEX = /^[A-Za-z_çÇ][A-Za-z0-9_çÇ]*$/;
 
 const OPERATOR_WORD_TOKEN_IDS = {
   logical_or: 6,

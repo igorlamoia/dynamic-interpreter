@@ -3,11 +3,24 @@ from fastapi import APIRouter, Query
 
 from app.core.dependencies import AcademicUserIdDep, SessionDep
 from app.modules.exercises.service import (
-    create_exercise, get_exercise_in_context, list_exercises,
+    add_test_case,
+    create_exercise,
+    delete_exercise,
+    delete_test_case,
+    get_exercise_in_context,
+    list_exercises,
     list_exercises_paginated,
-    update_exercise, delete_exercise, add_test_case, delete_test_case
+    replace_exercise,
+    update_exercise,
 )
-from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, ExerciseResponse, TestCaseCreate, TestCaseResponse
+from app.schemas.exercises import (
+    ExerciseCreate,
+    ExerciseReplace,
+    ExerciseResponse,
+    ExerciseUpdate,
+    TestCaseCreate,
+    TestCaseResponse,
+)
 from app.schemas.languages import LanguageResponse
 from app.schemas.pagination import PaginatedResponse
 
@@ -68,6 +81,16 @@ async def get_exercise_endpoint(
 @router.patch("/{exercise_id}", response_model=ExerciseResponse)
 async def update_exercise_endpoint(exercise_id: int, data: ExerciseUpdate, user_id: AcademicUserIdDep, session: SessionDep):
     return await update_exercise(exercise_id, user_id, data, session)
+
+
+@router.put("/{exercise_id}", response_model=ExerciseResponse)
+async def replace_exercise_endpoint(
+    exercise_id: int,
+    data: ExerciseReplace,
+    user_id: AcademicUserIdDep,
+    session: SessionDep,
+):
+    return await replace_exercise(exercise_id, user_id, data, session)
 
 
 @router.delete("/{exercise_id}", status_code=204)

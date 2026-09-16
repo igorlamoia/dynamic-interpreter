@@ -44,8 +44,8 @@ const token: Record<string, string> = {
   switch: "keyword switch",
   case: "keyword case",
   default: "keyword default",
-  variavel: "keyword variavel",
-  funcao: "keyword funcao",
+  variable: "keyword variable",
+  function: "keyword function",
 
   // Symbols
   semicolon: "semicolon (;)",

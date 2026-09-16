@@ -31,6 +31,10 @@ const interpreter = {
     "Escritura en array fuera de límites en el índice '{index}'",
   array_missing_value:
     "La lectura del array dinámico no encontró valor en el índice '{index}'",
+  incompatible_assignment:
+    "No se puede asignar un valor {sourceType} a la variable {targetType} '{variableName}'.",
+  incompatible_return:
+    "No se puede devolver un valor {sourceType} desde una funcion declarada como {targetType}.",
 };
 
 export default interpreter;

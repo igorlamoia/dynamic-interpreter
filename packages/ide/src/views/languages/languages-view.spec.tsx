@@ -201,7 +201,7 @@ describe("LanguagesView", () => {
 
     click(container.querySelector('button[aria-label="Editar PtBr-Lang"]'));
 
-    expect(pushMock).toHaveBeenCalledWith("/language-creator?id=1");
+    expect(pushMock).toHaveBeenCalledWith("/language-creator/1");
 
     act(() => root.unmount());
   });

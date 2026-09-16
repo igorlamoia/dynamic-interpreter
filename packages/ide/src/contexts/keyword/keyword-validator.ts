@@ -19,7 +19,7 @@ type StatementTerminatorValidationCustomization = {
   modes: IDEKeywordCustomizationModes;
 };
 
-export const WORD_REGEX = /^[A-Za-z_][A-Za-z0-9_]*$/;
+export const WORD_REGEX = /^[A-Za-z_çÇ][A-Za-z0-9_çÇ]*$/;
 
 export const RESERVED_STATEMENT_TERMINATOR_CHARS = new Set([
   ";",
@@ -56,7 +56,7 @@ export function createKeywordSchema(
         .string()
         .trim()
         .min(1, ui.validation_empty_word)
-        .regex(/^[a-zA-Z_][a-zA-Z0-9_]*$/, ui.validation_invalid_word_format),
+        .regex(WORD_REGEX, ui.validation_invalid_word_format),
     })
     .superRefine((value, ctx) => {
       const booleanLiteralWords = new Set(

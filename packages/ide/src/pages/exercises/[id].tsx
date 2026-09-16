@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import ExerciseWorkspace from './workspace';
+import ExerciseWorkspace from "@/components/exercise-workspace";
 
 export default function ExercisePage() {
     const router = useRouter();

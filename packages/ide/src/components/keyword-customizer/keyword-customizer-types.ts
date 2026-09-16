@@ -41,8 +41,8 @@ export type KeywordCustomizerWizardActions = {
   goToNextWizardStep: () => void;
   goToPreviousWizardStep: () => void;
   applyPreset: (presetId: WizardPresetId) => void;
-  setLanguageName: (value: string) => void;
-  setLanguageDescription: (value: string) => void;
+  setName: (value: string) => void;
+  setDescription: (value: string) => void;
   setImageSearchQuery: (value: string) => void;
   searchLanguageImages: () => Promise<void>;
   selectLanguageImage: (imageUrl: string) => void;
@@ -61,8 +61,8 @@ export type KeywordCustomizerContextValue = {
   visibleSteps: readonly WizardStep[];
   visitedStepIds: WizardStepId[];
   selectedPresetId: WizardPresetId;
-  languageName: string;
-  languageDescription: string;
+  name: string;
+  description: string;
   languageImageUrl: string;
   languageImageQuery: string;
   languageImageResults: IdentityImageSearchResult[];

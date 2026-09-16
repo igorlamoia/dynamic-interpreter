@@ -7,7 +7,7 @@ import { ChangedChip } from "../../changed-chip";
 type TypingRelationshipBeamProps = {
   typingMode: "typed" | "untyped";
   labels: {
-    variavel: string;
+    variable: string;
     string: string;
     float: string;
     int: string;
@@ -76,8 +76,8 @@ export function TypingRelationshipBeam({
         <div className={isDesktop ? "flex shrink-0 items-center" : "flex"}>
           <TypingBeamChip
             chipRef={untypedRef}
-            original="variavel"
-            changed={formatNodeLabel("variavel", labels.variavel)}
+            original="variable"
+            changed={formatNodeLabel("variable", labels.variable)}
             active={!isTyped}
           />
         </div>

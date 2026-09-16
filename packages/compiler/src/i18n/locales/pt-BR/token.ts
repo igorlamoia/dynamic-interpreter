@@ -44,8 +44,8 @@ const token: Record<string, string> = {
   switch: "palavra reservada switch",
   case: "palavra reservada case",
   default: "palavra reservada default",
-  variavel: "palavra reservada variavel",
-  funcao: "palavra reservada funcao",
+  variable: "palavra reservada variable",
+  function: "palavra reservada function",
 
   // Símbolos
   semicolon: "final de instrução",

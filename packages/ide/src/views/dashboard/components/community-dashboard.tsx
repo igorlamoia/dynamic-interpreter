@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { ArrowRight, Code2, Dna, Globe2, Languages, Plus, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Code2,
+  Dna,
+  Globe2,
+  Languages,
+  Plus,
+  Sparkles,
+} from "lucide-react";
 import { HeroButton } from "@/components/buttons/hero";
 import { GradientText } from "@/components/text/gradient";
 import { Title } from "@/components/text/title";
@@ -25,18 +33,18 @@ export function CommunityDashboard() {
 
   return (
     <>
-      <section className="relative mb-8 overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#101522]/80 p-7 shadow-[0_24px_80px_rgba(0,0,0,0.3)] sm:p-10">
+      <section className="relative mb-8 overflow-hidden rounded-3xl border border-cyan-500/20 bg-card/85 p-7 shadow-[0_24px_80px_rgba(15,23,42,0.12)] dark:border-cyan-300/12 dark:bg-[#101522]/80 dark:shadow-[0_24px_80px_rgba(0,0,0,0.3)] sm:p-10">
         <div className="pointer-events-none absolute -right-20 -top-28 size-80 rounded-full bg-cyan-400/10 blur-3xl" />
         <div className="pointer-events-none absolute bottom-0 right-16 h-px w-1/2 bg-linear-to-r from-transparent via-cyan-300/50 to-transparent" />
         <div className="relative max-w-3xl">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-cyan-700 dark:border-cyan-300/15 dark:bg-cyan-300/8 dark:text-cyan-200">
             <Sparkles className="size-3.5" />
             Laboratório de linguagens
           </div>
           <Title>
             Olá, <GradientText>{firstName}</GradientText>
           </Title>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
             Modele a sintaxe, escolha as regras e construa linguagens com uma
             identidade própria. Cada decisão passa a fazer parte do DNA da sua
             criação.
@@ -52,7 +60,7 @@ export function CommunityDashboard() {
             <button
               type="button"
               onClick={() => void router.push("/languages")}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-cyan-300/20 hover:bg-cyan-300/8"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/80 px-5 py-3 text-sm font-semibold text-foreground transition hover:border-cyan-300/20 hover:bg-cyan-300/10 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-cyan-300/8"
             >
               Ver meu acervo
               <ArrowRight className="size-4" />
@@ -60,7 +68,7 @@ export function CommunityDashboard() {
             <button
               type="button"
               onClick={() => void router.push("/community/languages")}
-              className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/6 px-5 py-3 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/30 hover:bg-emerald-300/10"
+              className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:border-emerald-400/40 hover:bg-emerald-500/15 dark:border-emerald-300/15 dark:bg-emerald-300/6 dark:text-emerald-100 dark:hover:border-emerald-300/30 dark:hover:bg-emerald-300/10"
             >
               <Globe2 className="size-4" />
               Explorar comunidade
@@ -78,9 +86,11 @@ export function CommunityDashboard() {
         <MetricCard
           icon={Code2}
           label="Linguagem ativa"
-          value={activeLanguageQuery.isPending
-            ? "Carregando"
-            : activeLanguageQuery.data?.name || "Nenhuma"}
+          value={
+            activeLanguageQuery.isPending
+              ? "Carregando"
+              : activeLanguageQuery.data?.name || "Nenhuma"
+          }
         />
         <MetricCard
           icon={Dna}
@@ -92,8 +102,10 @@ export function CommunityDashboard() {
       <section>
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-white">Criações recentes</h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <h2 className="text-xl font-bold text-foreground">
+              Criações recentes
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
               Uma leitura rápida das regras que tornam cada linguagem única.
             </p>
           </div>
@@ -109,22 +121,30 @@ export function CommunityDashboard() {
         </div>
 
         {languagesQuery.isPending ? (
-          <div className="grid gap-4 md:grid-cols-3" aria-label="Carregando linguagens">
+          <div
+            className="grid gap-4 md:grid-cols-3"
+            aria-label="Carregando linguagens"
+          >
             {[0, 1, 2].map((item) => (
-              <div key={item} className="h-44 animate-pulse rounded-2xl bg-white/5" />
+              <div
+                key={item}
+                className="h-44 animate-pulse rounded-2xl bg-muted/70 dark:bg-white/5"
+              />
             ))}
           </div>
         ) : recentLanguages.length === 0 ? (
           <button
             type="button"
             onClick={() => void router.push("/language-creator")}
-            className="group flex min-h-52 w-full flex-col items-center justify-center rounded-3xl border border-dashed border-cyan-300/15 bg-cyan-300/3 p-8 text-center transition hover:border-cyan-300/35 hover:bg-cyan-300/6"
+            className="group flex min-h-52 w-full flex-col items-center justify-center rounded-3xl border border-dashed border-cyan-500/20 bg-cyan-500/5 p-8 text-center transition hover:border-cyan-400/40 hover:bg-cyan-500/10 dark:border-cyan-300/15 dark:bg-cyan-300/3 dark:hover:border-cyan-300/35 dark:hover:bg-cyan-300/6"
           >
-            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-cyan-300/10 text-cyan-200 transition-transform group-hover:-translate-y-1">
+            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-cyan-500/10 text-cyan-700 transition-transform group-hover:-translate-y-1 dark:bg-cyan-300/10 dark:text-cyan-200">
               <Plus className="size-6" />
             </div>
-            <span className="font-bold text-white">Crie sua primeira linguagem</span>
-            <span className="mt-2 max-w-md text-sm text-slate-500">
+            <span className="font-bold text-foreground">
+              Crie sua primeira linguagem
+            </span>
+            <span className="mt-2 max-w-md text-sm text-muted-foreground">
               Comece por um estilo pronto ou defina cada detalhe da gramática.
             </span>
           </button>
@@ -133,7 +153,7 @@ export function CommunityDashboard() {
             {recentLanguages.map((language) => (
               <article
                 key={language.id}
-                className="flex min-h-48 flex-col rounded-2xl border border-white/7 bg-white/4 p-5 transition hover:-translate-y-0.5 hover:border-cyan-300/15 hover:bg-white/6"
+                className="flex min-h-48 flex-col rounded-2xl border border-border bg-card/80 p-5 transition hover:-translate-y-0.5 hover:border-cyan-300/25 hover:bg-accent/70 dark:border-white/7 dark:bg-white/4 dark:hover:border-cyan-300/15 dark:hover:bg-white/6"
               >
                 <div className="flex items-start gap-3">
                   <img
@@ -142,8 +162,10 @@ export function CommunityDashboard() {
                     className="size-11 rounded-xl object-cover"
                   />
                   <div className="min-w-0">
-                    <h3 className="truncate font-bold text-white">{language.name}</h3>
-                    <p className="mt-1 line-clamp-2 text-xs text-slate-500">
+                    <h3 className="truncate font-bold text-foreground">
+                      {language.name}
+                    </h3>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
                       {language.description || "Linguagem personalizada"}
                     </p>
                   </div>
@@ -152,7 +174,7 @@ export function CommunityDashboard() {
                   {getLanguageDNAChips(language.dna).map((item) => (
                     <span
                       key={item}
-                      className="rounded-full border border-cyan-300/12 bg-cyan-300/5 px-2 py-1 text-[10px] font-medium text-cyan-100/80"
+                      className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2 py-1 text-[10px] font-medium text-cyan-700 dark:border-cyan-300/12 dark:bg-cyan-300/5 dark:text-cyan-100/80"
                     >
                       {item}
                     </span>
@@ -160,8 +182,10 @@ export function CommunityDashboard() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setDnaLanguage({ id: language.id, name: language.name })}
-                  className="mt-auto inline-flex items-center gap-2 pt-4 text-xs font-bold text-cyan-300 hover:text-cyan-200"
+                  onClick={() =>
+                    setDnaLanguage({ id: language.id, name: language.name })
+                  }
+                  className="mt-auto inline-flex items-center gap-2 pt-4 text-xs font-bold text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200"
                 >
                   <Dna className="size-4" />
                   Explorar DNA
@@ -174,7 +198,7 @@ export function CommunityDashboard() {
 
       <LanguageDnaDialog
         languageId={dnaLanguage?.id}
-        languageName={dnaLanguage?.name ?? ""}
+        name={dnaLanguage?.name ?? ""}
         open={dnaLanguage !== null}
         onOpenChange={(open) => {
           if (!open) setDnaLanguage(null);
@@ -194,16 +218,18 @@ function MetricCard({
   value: string;
 }) {
   return (
-    <article className="rounded-2xl border border-white/7 bg-white/4 p-5 backdrop-blur-sm">
+    <article className="rounded-2xl border border-border bg-card/80 p-5 backdrop-blur-sm dark:border-white/7 dark:bg-white/4">
       <div className="flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-xl bg-white/5 text-cyan-200">
+        <div className="flex size-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-700 dark:bg-white/5 dark:text-cyan-200">
           <Icon className="size-5" />
         </div>
         <div className="min-w-0">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {label}
           </p>
-          <p className="mt-1 truncate text-lg font-bold text-slate-100">{value}</p>
+          <p className="mt-1 truncate text-lg font-bold text-foreground">
+            {value}
+          </p>
         </div>
       </div>
     </article>
