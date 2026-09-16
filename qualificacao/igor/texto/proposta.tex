@@ -38,77 +38,71 @@ Além das substituições lexicais, a configuração \texttt{GrammarConfig} sele
 
 
 
-Os fluxos de uso da IDE e de gestão pedagógica especificados neste trabalho, com os respectivos atores, são apresentados no diagrama de casos de uso da Figura~\ref{fig:casos-de-uso}. O diagrama distingue quatro atores: o visitante, que pode usar a IDE e a personalização local, além de cadastrar-se e autenticar-se; o usuário autenticado, que acrescenta persistência remota e compartilhamento de linguagens; e os papéis de aluno e de professor, que dele herdam e acrescentam, respectivamente, as funcionalidades de participação em turmas e de gestão pedagógica.
+Os fluxos de uso da IDE e de gestão pedagógica especificados neste trabalho, com os respectivos atores, são apresentados nas Figuras~\ref{fig:casos-de-uso} e~\ref{fig:casos-de-uso-pedagogicos}. As duas figuras distinguem quatro atores: o visitante, que pode usar a IDE e a personalização local, além de cadastrar-se e autenticar-se; o usuário autenticado, que acrescenta persistência remota e compartilhamento de linguagens; e os papéis de aluno e de professor, que dele herdam e acrescentam, respectivamente, as funcionalidades de participação em turmas e de gestão pedagógica.
 
-\begin{landscape}
 \begin{figure}[p]
-    \centering
-    \caption{Diagrama de casos de uso da plataforma.}
-    \label{fig:casos-de-uso}
-    \resizebox{\linewidth}{!}{%
-    \begin{tikzpicture}[x=1cm,y=1cm]
-
-    %% ---------- fronteira do sistema ----------
-    \draw[thick] (3.0,5.9) rectangle (23.2,-7.2);
-    \node[font=\bfseries, anchor=north] at (13.1,5.7) {Plataforma educacional web};
-
-    %% ---------- atores ----------
-    \pic at (0,4.6) {ator};  \node[font=\small, align=center] at (0,2.9) {Visitante};
-    \pic at (0,0.9) {ator};  \node[font=\small, align=center] at (0,-1.1) {Usuário\\autenticado};
-    \pic at (0,-4.4) {ator}; \node[font=\small, align=center] at (0,-6.1) {Aluno};
-    \pic at (26.0,-0.6) {ator};  \node[font=\small, align=center] at (26.0,-2.4) {Professor};
-
-    %% generalizacao: Aluno e Professor sao Usuarios autenticados.
-    %% A do Professor e roteada abaixo da fronteira para nao cruzar os casos de uso.
-    \draw[heranca] (0,-4.2) -- (0,-2.0);
-    \draw[heranca] (26.0,-1.9) -- (26.0,-8.3) -- (1.5,-8.3) -- (1.5,0.3) -- (0.45,0.3);
-
-    %% ---------- coluna A: acesso, conta e linguagem ----------
-    \node[uc] (ucCad)  at (7.2, 4.5)  {Cadastrar-se};
-    \node[uc] (ucAut)  at (7.2, 3.0)  {Autenticar-se};
-    \node[uc] (ucPer)  at (7.2, 1.5)  {Gerenciar perfil};
-    \node[uc] (ucLing) at (7.2, 0.0)  {Criar e gerenciar\\linguagens personalizadas};
-    \node[uc] (ucCom)  at (7.2,-1.5)  {Compartilhar e importar\\linguagens da comunidade};
-    \node[uc] (ucAtiv) at (7.2,-3.0)  {Ativar linguagem\\no editor};
-    \node[uc] (ucEdit) at (7.2,-4.5)  {Editar código na IDE};
-    \node[uc] (ucArq)  at (7.2,-6.0)  {Gerenciar arquivos\\do projeto};
-
-    %% ---------- coluna B: ambiente de desenvolvimento e aluno ----------
-    \node[uc] (ucExec) at (13.6, 4.5) {Executar programa\\no terminal};
-    \node[uc] (ucTok)  at (13.6, 3.0) {Inspecionar \textit{tokens} e\\código intermediário};
-    \node[uc] (ucDep)  at (13.6, 1.5) {Depurar execução\\passo a passo};
-    \node[uc] (ucIng)  at (13.6, 0.0) {Ingressar em turma};
-    \node[uc] (ucCons) at (13.6,-1.5) {Consultar listas\\e exercícios};
-    \node[uc] (ucSub)  at (13.6,-3.0) {Submeter solução\\de exercício};
-    \node[uc] (ucVer)  at (13.6,-4.5) {Consultar veredito\\e histórico};
-
-    %% ---------- coluna C: gestao pedagogica ----------
-    \node[uc] (ucTur)  at (20.0, 4.5) {Gerenciar turmas};
-    \node[uc] (ucMem)  at (20.0, 3.0) {Gerenciar membros\\da turma};
-    \node[uc] (ucEx)   at (20.0, 1.5) {Gerenciar exercícios\\e casos de teste};
-    \node[uc] (ucVinc) at (20.0, 0.0) {Vincular linguagem\\a exercício ou lista};
-    \node[uc] (ucLis)  at (20.0,-1.5) {Gerenciar listas\\de exercícios};
-    \node[uc] (ucPub)  at (20.0,-3.0) {Publicar lista\\para a turma};
-    \node[uc] (ucAva)  at (20.0,-4.5) {Acompanhar e avaliar\\submissões};
-
-    %% ---------- associacoes (camada de fundo: passam atras das elipses) ----------
-    \begin{scope}[on background layer]
-      \foreach \d in {ucCad,ucAut,ucLing,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep}
-        \draw[liga] (0.35,4.2) -- (\d);
-      \foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep}
-        \draw[liga] (0.35,0.5) -- (\d);
-      \foreach \d in {ucIng,ucCons,ucSub,ucVer}
-        \draw[liga] (0.35,-4.8) -- (\d);
-      \foreach \d in {ucTur,ucMem,ucEx,ucVinc,ucLis,ucPub,ucAva}
-        \draw[liga] (25.3,-0.9) -- (\d);
-    \end{scope}
-
-    \end{tikzpicture}}
-    \legend{Fonte: elaborado pelo autor.}
+\centering
+\caption{Casos de uso: acesso e ambiente de desenvolvimento.}
+\label{fig:casos-de-uso}
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=5cm,minimum height=.9cm}]
+\draw[thick] (3,1) rectangle (11,-13.5);
+\node[font=\small\bfseries] at (7,.65) {Plataforma educacional web};
+\pic at (0,0) {ator}; \node[font=\small] at (0,-1.65) {Visitante};
+\pic at (14,-6) {ator}; \node[font=\small,align=center] at (14,-7.8) {Usuário\\autenticado};
+\node[uc] (ucCad) at (7,-0.0) {Cadastrar-se};
+\node[uc] (ucAut) at (7,-1.25) {Autenticar-se};
+\node[uc] (ucPer) at (7,-2.5) {Gerenciar perfil};
+\node[uc] (ucLing) at (7,-3.75) {Criar e gerenciar\\linguagens personalizadas};
+\node[uc] (ucCom) at (7,-5.0) {Compartilhar e importar\\linguagens da comunidade};
+\node[uc] (ucAtiv) at (7,-6.25) {Ativar linguagem\\no editor};
+\node[uc] (ucEdit) at (7,-7.5) {Editar código na IDE};
+\node[uc] (ucArq) at (7,-8.75) {Gerenciar arquivos\\do projeto};
+\node[uc] (ucExec) at (7,-10.0) {Executar programa\\no terminal};
+\node[uc] (ucTok) at (7,-11.25) {Inspecionar \textit{tokens} e\\código intermediário};
+\node[uc] (ucDep) at (7,-12.5) {Depurar execução\\passo a passo};
+\begin{scope}[on background layer]
+\foreach \d in {ucCad,ucAut,ucLing,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep} \draw[liga] (0.35,-.4) -- (\d);
+\foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep} \draw[liga] (13.65,-6.4) -- (\d);
+\end{scope}
+\end{tikzpicture}}
+\legend{Fonte: elaborado pelo autor.}
 \end{figure}
-\end{landscape}
 
-Os atores do diagrama representam capacidades de interação, e não uma reprodução literal da enumeração de papéis do banco. No recorte da interface, o perfil administrador compartilha os recursos pedagógicos do professor; o perfil comunidade utiliza os recursos de linguagens do usuário autenticado. O papel interno de sistema não representa uma pessoa operando a IDE. A gestão de linguagens pelo visitante refere-se ao estado local; publicação e persistência remota exigem autenticação.
+\begin{figure}[p]
+\centering
+\caption{Casos de uso: participação e gestão pedagógica.}
+\label{fig:casos-de-uso-pedagogicos}
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=5cm,minimum height=.9cm}]
+\draw[thick] (3,1) rectangle (11,-13.5);
+\node[font=\small\bfseries] at (7,.65) {Plataforma educacional web};
+\pic at (7,4) {ator}; \node[font=\small,align=center] at (7,2.25) {Usuário autenticado};
+\pic at (0,1) {ator}; \node[font=\small] at (0,-.65) {Aluno};
+\pic at (14,1) {ator}; \node[font=\small] at (14,-.65) {Professor};
+\draw[heranca] (0,1.25) -- (0,3.6) -- (6.55,3.6);
+\draw[heranca] (14,1.25) -- (14,3.6) -- (7.45,3.6);
+\node[uc] (ucIng) at (7,-0.0) {Ingressar em turma};
+\node[uc] (ucCons) at (7,-1.25) {Consultar listas\\e exercícios};
+\node[uc] (ucSub) at (7,-2.5) {Submeter solução\\de exercício};
+\node[uc] (ucVer) at (7,-3.75) {Consultar veredito\\e histórico};
+\node[uc] (ucTur) at (7,-5.0) {Gerenciar turmas};
+\node[uc] (ucMem) at (7,-6.25) {Gerenciar membros\\da turma};
+\node[uc] (ucEx) at (7,-7.5) {Gerenciar exercícios\\e casos de teste};
+\node[uc] (ucVinc) at (7,-8.75) {Vincular linguagem\\a exercício ou lista};
+\node[uc] (ucLis) at (7,-10.0) {Gerenciar listas\\de exercícios};
+\node[uc] (ucPub) at (7,-11.25) {Publicar lista\\para a turma};
+\node[uc] (ucAva) at (7,-12.5) {Acompanhar e avaliar\\submissões};
+\begin{scope}[on background layer]
+\foreach \d in {ucIng,ucCons,ucSub,ucVer} \draw[liga] (0.35,.6) -- (\d);
+\foreach \d in {ucTur,ucMem,ucEx,ucVinc,ucLis,ucPub,ucAva} \draw[liga] (13.65,.6) -- (\d);
+\end{scope}
+\end{tikzpicture}}
+\legend{Fonte: elaborado pelo autor.}
+\end{figure}
+\FloatBarrier
+
+Os atores dos diagramas representam capacidades de interação, e não uma reprodução literal da enumeração de papéis do banco. No recorte da interface, o perfil administrador compartilha os recursos pedagógicos do professor; o perfil comunidade utiliza os recursos de linguagens do usuário autenticado. O papel interno de sistema não representa uma pessoa operando a IDE. A gestão de linguagens pelo visitante refere-se ao estado local; publicação e persistência remota exigem autenticação.
 
 A partir desses casos de uso, consolidaram-se os requisitos que orientaram a construção da plataforma. A Tabela~\ref{tab:requisitos-funcionais} relaciona os requisitos funcionais, isto é, o que o sistema deve fazer; a Tabela~\ref{tab:requisitos-nao-funcionais}, os requisitos não funcionais, que estabelecem as qualidades esperadas da solução e os critérios sob os quais ela será verificada.
 
@@ -212,7 +206,7 @@ Conforme definido na pré-proposta, a metodologia foi organizada em seis macroet
 
 A distribuição temporal dessas atividades ao longo dos doze meses que compreendem o TCC~I e o TCC~II é apresentada na Tabela~\ref{tab:cronograma}, preservando as marcações temporais da pré-proposta e ajustando a descrição da avaliação ao escopo atual. A tabela expressa planejamento, não comprovação de execução. Cada coluna numerada corresponde a um mês corrido das duas etapas e cada célula marcada com ``X'' sinaliza a previsão de execução da respectiva atividade no período indicado.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Cronograma de desenvolvimento do trabalho de conclusão de curso.}
     \label{tab:cronograma}

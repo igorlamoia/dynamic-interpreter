@@ -33,7 +33,6 @@ O servidor Next.js reutiliza as mesmas classes na rota \texttt{POST /api/submiss
 
 A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes de \texttt{backend/app/models}. A Figura~\ref{fig:esquema-banco} apresenta as onze tabelas de domínio e suas referências. O Apêndice~\ref{ap:dicionario-dados} completa a figura com os 81 atributos, seus tipos, nulabilidade, chaves, restrições e índices extraídos dos metadados SQLAlchemy. Essa documentação descreve a versão do código-fonte examinada em 9 de setembro de 2026; não constitui uma inspeção de um banco de produção.
 
-\begin{landscape}
 \begin{figure}[p]
     \centering
     \caption{Tabelas e referências do esquema lógico da plataforma.}
@@ -41,7 +40,7 @@ A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes
     \input{Figuras/esquema-banco-atual.tex}
     \legend{Fonte: elaborado pelo autor a partir dos modelos SQLAlchemy; atributos no Apêndice~\ref{ap:dicionario-dados}.}
 \end{figure}
-\end{landscape}
+\FloatBarrier
 
 O eixo de acesso reúne \texttt{organizations}, \texttt{users}, \texttt{classes} e \texttt{class\_members}. Os usuários compartilham uma tabela e são diferenciados pelo campo \texttt{role}, cujos valores no modelo são \texttt{ADMIN}, \texttt{TEACHER}, \texttt{STUDENT}, \texttt{COMMUNITY} e \texttt{SYSTEM}. O vínculo de um usuário com uma organização é opcional no esquema atual. A turma referencia uma organização e um professor; a associação entre aluno e turma é registrada por uma chave primária composta em \texttt{class\_members}. A existência dessas referências, por si só, não demonstra isolamento de acesso entre organizações, que depende também das regras dos serviços.
 

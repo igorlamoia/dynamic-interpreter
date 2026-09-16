@@ -325,18 +325,30 @@ Reúnem-se aqui as iniciativas voltadas ao ensino da construção de tradutores.
 
 A Tabela~\ref{tab:comparativo} sintetiza as principais características das ferramentas examinadas frente à plataforma proposta, evidenciando, em especial, a personalização da sintaxe pelo próprio estudante como traço distintivo da abordagem.
 
-\begin{landscape}
-\begin{table}[p]
-    \centering
-    \caption{Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.}
-    \label{tab:comparativo}
-    \footnotesize
-    \setlength{\tabcolsep}{4pt}
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|>{\raggedright\arraybackslash}p{2.3cm}|>{\raggedright\arraybackslash}p{4.3cm}|>{\raggedright\arraybackslash}p{4.7cm}|>{\raggedright\arraybackslash}p{4.7cm}|>{\raggedright\arraybackslash}p{4.4cm}|}
-        \hline
+\begingroup
+\footnotesize
+\captionsetup{width=\dimexpr\linewidth-8pt\relax}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.14\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.22\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.18\linewidth-2\tabcolsep-6\arrayrulewidth\relax}|}
+\caption[Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.]{Comparativo entre as ferramentas analisadas e a plataforma proposta,\\segundo os três eixos de análise.}
+\label{tab:comparativo}\\
+\hline
+
         \textbf{Ferramenta} & \textbf{Escolhas de interface} & \textbf{Recursos pedagógicos} & \textbf{Estratégias de interação} & \textbf{Personalização da sintaxe pelo estudante} \\
-        \hline
+\hline
+\endfirsthead
+\multicolumn{5}{c}{\tablename~\thetable{} -- continuação}\\
+\hline
+
+        \textbf{Ferramenta} & \textbf{Escolhas de interface} & \textbf{Recursos pedagógicos} & \textbf{Estratégias de interação} & \textbf{Personalização da sintaxe pelo estudante} \\
+\hline
+\endhead
+\multicolumn{5}{r}{Continua na próxima página.}\\
+\endfoot
+\multicolumn{5}{l}{Fonte: elaborado pelo autor.}\\
+\endlastfoot
+
         Portugol Studio e Webstudio
           & IDE própria, em versão local e em versão executada no navegador
           & Linguagem com palavras-chave em português; depurador, inspetor de variáveis e árvore sintática
@@ -373,10 +385,8 @@ A Tabela~\ref{tab:comparativo} sintetiza as principais características das ferr
           & Execução e depuração passo a passo; erros relatados no vocabulário escolhido pelo próprio estudante
           & Sim: palavras-chave, delimitadores de bloco, operadores, literais booleanos e terminador de instrução \\
         \hline
-    \end{tabular}
-    \legend{Fonte: elaborado pelo autor.}
-\end{table}
-\end{landscape}
+    \end{longtable}
+\endgroup
 
 No conjunto comparado, Portugol, Quorum e Beecrowd priorizam a prática em linguagens e ambientes definidos por seus desenvolvedores. Laila permite escrever especificações léxicas e sintáticas, e \textit{chibicc} permite estudar e modificar a implementação do compilador, exigindo conhecimentos próprios desse domínio. A IDE proposta oferece um assistente para configurar alternativas já suportadas pelo núcleo, dispensando a escrita de produções gramaticais ou alterações no código do tradutor.
 

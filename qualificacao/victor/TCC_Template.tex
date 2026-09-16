@@ -17,11 +17,19 @@
 \usepackage{color}			
 \usepackage{graphicx}		
 \usepackage{float}
+\usepackage{placeins}
 \usepackage{svg}
 \usepackage{microtype} 
 \usepackage{hyperref}
 \usepackage{xurl}
-\usepackage{pdflscape}
+% Mantém a área útil exata do modelo, sem arredondamento à linha do memoir.
+\setlrmarginsandblock{3cm}{2cm}{*}
+\setulmarginsandblock{3cm}{2cm}{*}
+\checkandfixthelayout[fixed]
+% Reserva 3pt para a extensão visual dos glifos na última linha.
+\addtolength{\textheight}{-3pt}
+% Pontuação também deve permanecer dentro das margens.
+\microtypesetup{protrusion=false}
 \usepackage[printonlyused]{acronym}
 \usepackage{multirow}
 \usepackage{array}
@@ -66,7 +74,7 @@
 
 \lstset{
     language=toml,
-    basicstyle=\ttfamily\small,        % Fonte monoespaçada e menor
+    basicstyle=\ttfamily\small\linespread{1}\selectfont,        % Fonte monoespaçada e menor
     keywordstyle=\color{blue},         % Palavras-chave em azul
     commentstyle=\color{gray},         % Comentários em cinza
     stringstyle=\color{red},           % Strings em vermelho
@@ -76,8 +84,13 @@
     numberstyle=\tiny\color{gray},     % Estilo dos números das linhas
     tabsize=2,                         % Tamanho do tabulação
     showstringspaces=false,            % Não mostra espaços em strings
-    float=htbp,                        % Listagem vira float: nunca quebra entre páginas
-    floatplacement=htbp                % (exigência da banca: listagem em página única)
+    everydisplay={\vspace*{4pt}},       % Inclui o topo da moldura na área útil
+    xleftmargin=22pt,                  % Reserva espaço para números e moldura
+    xrightmargin=4pt,
+    numbersep=6pt,
+    float=htbp,                        % Inicializa o ambiente flutuante
+    floatplacement=htbp,
+    float=true                         % Preserva o padrão em todas as listagens
 }
 
 \usepackage{lipsum}    % gera texto aleatório (remover)

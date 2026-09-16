@@ -358,18 +358,30 @@ Reúnem-se aqui as iniciativas voltadas ao ensino da construção de tradutores.
 
 A Tabela~\ref{tab:comparativo} sintetiza as ferramentas examinadas segundo os três eixos adotados nesta seção, acrescentando a coluna que expressa o traço distintivo da proposta: a possibilidade de o próprio estudante redefinir a sintaxe da linguagem.
 
-\begin{landscape}
-\begin{table}[p]
-    \centering
-    \caption{Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.}
-    \label{tab:comparativo}
-    \footnotesize
-    \setlength{\tabcolsep}{4pt}
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|>{\raggedright\arraybackslash}p{2.3cm}|>{\raggedright\arraybackslash}p{4.3cm}|>{\raggedright\arraybackslash}p{4.7cm}|>{\raggedright\arraybackslash}p{4.7cm}|>{\raggedright\arraybackslash}p{4.4cm}|}
-        \hline
+\begingroup
+\footnotesize
+\captionsetup{width=\dimexpr\linewidth-8pt\relax}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{\dimexpr.14\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.22\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.23\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.18\linewidth-2\tabcolsep-6\arrayrulewidth\relax}|}
+\caption[Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.]{Comparativo entre as ferramentas analisadas e a plataforma proposta,\\segundo os três eixos de análise.}
+\label{tab:comparativo}\\
+\hline
+
         \textbf{Ferramenta} & \textbf{Escolhas de interface} & \textbf{Recursos pedagógicos} & \textbf{Estratégias de interação} & \textbf{Personalização da sintaxe pelo estudante} \\
-        \hline
+\hline
+\endfirsthead
+\multicolumn{5}{c}{\tablename~\thetable{} -- continuação}\\
+\hline
+
+        \textbf{Ferramenta} & \textbf{Escolhas de interface} & \textbf{Recursos pedagógicos} & \textbf{Estratégias de interação} & \textbf{Personalização da sintaxe pelo estudante} \\
+\hline
+\endhead
+\multicolumn{5}{r}{Continua na próxima página.}\\
+\endfoot
+\multicolumn{5}{l}{Fonte: elaborado pelo autor.}\\
+\endlastfoot
+
         Portugol Studio e Webstudio
           & IDE própria, em versão local e em versão executada no navegador
           & Linguagem com palavras-chave em português; depurador, inspetor de variáveis e árvore sintática
@@ -406,10 +418,8 @@ A Tabela~\ref{tab:comparativo} sintetiza as ferramentas examinadas segundo os tr
           & Execução e depuração passo a passo; erros relatados no vocabulário escolhido pelo próprio estudante
           & Sim: palavras-chave, delimitadores de bloco, operadores, literais booleanos e terminador de instrução \\
         \hline
-    \end{tabular}
-    \legend{Fonte: elaborado pelo autor.}
-\end{table}
-\end{landscape}
+    \end{longtable}
+\endgroup
 
 A comparação evidencia propósitos distintos. Portugol Studio e Quorum oferecem linguagens voltadas à aprendizagem, enquanto Beecrowd organiza a prática por exercícios e vereditos automatizados. Esses recursos respondem a necessidades diferentes: compreender a execução de um programa, escolher uma sintaxe acessível e verificar uma solução contra casos de teste. Sua existência impede tratar a tradução para o português ou a simples execução de exercícios como diferenciais exclusivos da proposta \cite{univali2026,quorum2025,beecrowd2026faq}.
 

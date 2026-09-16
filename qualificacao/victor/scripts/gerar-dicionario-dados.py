@@ -71,15 +71,15 @@ for table in tables:
 
 # Visão de relacionamentos: uma seta por FK; os atributos completos estão no apêndice.
 positions = {
-    'organizations': (0, 0), 'users': (7, 0), 'languages': (14, 0),
-    'classes': (0, -4), 'submissions': (7, -4), 'exercises': (14, -4),
-    'class_members': (0, -8), 'class_exercise_lists': (4.5, -8),
-    'exercise_lists': (9, -8), 'exercise_list_items': (14, -8),
-    'test_cases': (19, -4),
+    'organizations': (0, 0), 'users': (5, 0), 'languages': (10, 0),
+    'class_members': (0, -4), 'classes': (5, -4), 'exercises': (10, -4),
+    'class_exercise_lists': (0, -8), 'submissions': (5, -8),
+    'test_cases': (10, -8), 'exercise_lists': (0, -12),
+    'exercise_list_items': (10, -12),
 }
 assert set(positions) == {table.name for table in tables}, 'Atualize o layout para as novas tabelas.'
 node_ids = {name:'n'+str(i) for i,name in enumerate(positions)}
-fig = [r'% Gerado por scripts/gerar-dicionario-dados.py.',r'\resizebox{0.90\linewidth}{!}{%',r'\begin{tikzpicture}[entity/.style={draw,rounded corners,fill=white,align=center,text width=3.2cm,minimum height=1.25cm,inner sep=6pt,font=\small},fk/.style={-{Latex},semithick,draw=black!70}]']
+fig = [r'% Gerado por scripts/gerar-dicionario-dados.py.',r'\resizebox{0.95\linewidth}{!}{%',r'\begin{tikzpicture}[entity/.style={draw,rounded corners,fill=white,align=center,text width=3.4cm,minimum height=1.25cm,inner sep=4pt,font=\small},fk/.style={-{Latex},semithick,draw=black!70}]']
 for table in tables:
     x,y = positions[table.name]
     label = code(table.name)
@@ -96,14 +96,18 @@ for table in tables:
             elif table.name=='users' and column.name=='active_language_id':
                 edge=r'\draw[fk] ('+start+r') to[bend left=25] ('+end+');'
             elif table.name=='exercise_lists' and fk.column.table.name=='users':
-                edge=r'\draw[fk] ('+start+r'.north) -- (9,-6.3) -- (4.8,-6.3) -- (4.8,-1.6) -- ('+end+'.south west);'
+                edge=r'\draw[fk] ('+start+r'.east) -- (2.5,-12) -- (2.5,-1.8) -- ('+end+'.south west);'
             elif table.name=='exercise_lists' and fk.column.table.name=='languages':
-                edge=r'\draw[fk] ('+start+r'.south) -- (9,-9.6) -- (17,-9.6) -- (17,0) -- ('+end+'.east);'
-            elif table.name=='class_members' and fk.column.table.name=='users':
-                edge=r'\draw[fk] ('+start+r'.west) -- (-2.4,-8) -- (-2.4,2.4) -- (7,2.4) -- ('+end+'.north);'
+                edge=r'\draw[fk] ('+start+r'.south) -- (0,-13.5) -- (12.5,-13.5) -- (12.5,0) -- ('+end+'.east);'
+            elif table.name=='classes' and fk.column.table.name=='organizations':
+                edge=r'\draw[fk] ('+start+r'.north west) -- ('+end+'.south east);'
+            elif table.name=='submissions' and fk.column.table.name=='users':
+                edge=r'\draw[fk] ('+start+r'.north east) -- (7.5,-6.5) -- (7.5,-1.8) -- ('+end+'.south east);'
+            elif table.name=='exercise_list_items' and fk.column.table.name=='exercises':
+                edge=r'\draw[fk] ('+start+r'.east) -- (12.1,-12) -- (12.1,-4) -- ('+end+'.east);'
             else:
                 edge=r'\draw[fk] ('+start+') -- ('+end+');'
             fig.append(edge)
-fig += [r'\end{scope}',r'\node[font=\small,align=left,anchor=north west] at (-2,-10.3) {Cada seta parte da tabela que contém a FK e aponta para a tabela referenciada.\\Setas em sentidos opostos entre usuários e linguagens representam propriedade e linguagem ativa.\\A autorreferência de linguagens registra sua origem por clonagem.};',r'\end{tikzpicture}}']
+fig += [r'\end{scope}',r'\node[font=\small,align=left,text width=14cm,anchor=north west,inner sep=0pt] at (-1.8,-14.1) {Cada seta parte da tabela que contém a FK e aponta para a tabela referenciada.\\Setas em sentidos opostos entre usuários e linguagens representam propriedade e linguagem ativa. A autorreferência de linguagens registra sua origem por clonagem.};',r'\end{tikzpicture}}']
 (VOLUME/'Figuras/esquema-banco-atual.tex').write_text('\n'.join(fig)+'\n')
 print(f'{len(tables)} tabelas, {sum(len(t.columns) for t in tables)} atributos, {fk_count} chaves estrangeiras documentadas.')
