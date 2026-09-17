@@ -58,7 +58,29 @@ Registradas aqui porque as tasks seguintes dependem delas.
    savepoint/join-transaction, o que é desproporcional aqui.
    **Não adicione retry nem polling nas fixtures para mascarar isso.**
 
-4. **Bug pré-existente a documentar no PR, não a consertar:** os `testCases`
+4a. **Bug consertado no caminho (commit `0799241`):** `FormControl` renderizava
+   `<div id={formItemId}>` com o input como filho, sem `Slot`, então nenhum
+   input recebia `id` e todo `htmlFor` apontava para um `<div>` — elemento não
+   rotulável. Todo campo do app ficava sem nome acessível. Alcance: 10
+   formulários, 29 usos. Corrigido com `<Slot>` do Radix. **Consequência
+   operacional: o frontend roda de imagem buildada, então qualquer conserto em
+   `packages/ide` exige `make local-up` antes de rodar as specs**, senão elas
+   testam o bundle antigo.
+
+4b. **Bug pré-existente a documentar no PR, não a consertar:** toda mensagem
+   de erro de API mostrada ao usuário é o texto genérico de fallback.
+   `getApiErrorMessage` (`packages/ide/src/lib/get-api-error-message.ts`) lê
+   `data.error`, mas o backend sempre responde `{"detail": ...}` e **nunca**
+   usa o campo `error` em rota alguma; `api.ts` só tem interceptor de request,
+   sem nada que renomeie o campo. Então a razão real do servidor é sempre
+   descartada em **10 pontos de chamada**: "Código inválido", "Erro ao criar
+   exercício", "Erro ao criar turma", "Erro ao salvar nota", "Falha ao entrar",
+   "Não foi possível importar a linguagem." Na prática, entrar numa turma com
+   código errado, numa turma cheia ou numa em que o aluno já está mostra a
+   mesma frase. Conserto seria ler `detail` com fallback para `error`, mas é
+   escopo de UX fora deste gate.
+
+5. **Bug pré-existente a documentar no PR, não a consertar:** os `testCases`
    que o modal de criar exercício envia são **descartados em silêncio**. A UI
    manda tudo num único `POST /exercises` (`use-api-queries.ts:325`), mas
    `ExerciseCreate` não declara o campo e `create_exercise` nunca o lê —
