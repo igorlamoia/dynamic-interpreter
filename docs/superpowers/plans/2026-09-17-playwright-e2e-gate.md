@@ -44,7 +44,22 @@ Registradas aqui porque as tasks seguintes dependem delas.
    `--with-deps` porque no `ubuntu-latest` do GitHub Actions ele funciona; a
    **Task 9 deve documentar o fallback local no README**.
 
-3. **Corrida de leitura-após-escrita, conhecida e aceita.** `get_session`
+3a. **Corrida no cadastro — CONSERTADA (commit `94cd17e`), severidade
+   subestimada duas vezes.** O caminho `register` → `GET /auth/me` falhava em
+   **4 de 60 cadastros (7%)** com 404 "User not found". Como
+   `useAuthProfileQuery` tem `retry: false`, o `AuthContext` limpava o token e
+   jogava o usuário recém-cadastrado de volta ao login, com a conta já criada.
+   Conserto: `TokenResponse` passou a devolver o `user`. O frontend já lia
+   `data.user` (`login.tsx:48`, `register.tsx:50`) e o `AuthContext` já
+   curto-circuitava quando o recebia — o campo simplesmente não existia no
+   backend, o que forçava a segunda requisição. Devolvê-lo remove o request e
+   com ele a corrida: medido 0 de 60 depois. Campo aditivo, pytest segue
+   172/172. As fixtures do E2E também deixaram de chamar `/auth/me`.
+   **Medido e descartado:** `await session.commit()` dentro de `register_user`
+   quebra **6 testes** do pytest, porque `conftest.py` isola por
+   `session.begin()` + rollback e um commit vaza entre testes.
+
+3b. **Corrida geral de leitura-após-escrita, conhecida e aceita.** `get_session`
    (`backend/app/db/session.py:24-30`) commita no teardown da dependência
    `yield`, então o cliente pode receber o `201` antes de o commit ficar visível
    para a requisição seguinte, em outra conexão do pool. Medido: 4 falhas em
