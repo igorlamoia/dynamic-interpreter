@@ -64,15 +64,15 @@ export class ApiClient {
     const response = await this.request.post(`${API_URL}/auth/register`, {
       data: { email, password: E2E_PASSWORD, name, role, organizationId },
     });
-    const { accessToken } = await this.unwrap<{ accessToken: string }>(
-      response,
-      "POST /auth/register",
-    );
+    // `register` devolve o usuário junto do token, então não há um segundo
+    // request para o id. Isso importa: o GET /auth/me logo após o register
+    // corria com o commit da transação e devolvia 404 em ~7% das vezes.
+    const { accessToken, user } = await this.unwrap<{
+      accessToken: string;
+      user: { id: number };
+    }>(response, "POST /auth/register");
 
-    // register devolve só o token; o id vem do /auth/me.
-    const profile = await this.me(accessToken);
-
-    return { token: accessToken, id: profile.id, email, password: E2E_PASSWORD, name };
+    return { token: accessToken, id: user.id, email, password: E2E_PASSWORD, name };
   }
 
   async login(email: string, password: string): Promise<string> {
