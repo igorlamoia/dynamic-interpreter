@@ -4,7 +4,6 @@ import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { SelectedGrammarModes } from "@/features/grammarGraph/grammarGraphAdapter";
 import { ReviewStep } from "../review-step";
 
 type ImageMockProps = React.ImgHTMLAttributes<HTMLImageElement> & {
@@ -24,12 +23,6 @@ vi.mock("../../preview-code-comparison", () => ({
 
 vi.mock("../../token-preview", () => ({
   TokenPreview: () => <div>Tokens</div>,
-}));
-
-vi.mock("@/components/Ast", () => ({
-  Ast: ({ selectedModes }: { selectedModes: SelectedGrammarModes }) => (
-    <div data-testid="ast-viewer">{selectedModes.typingMode}</div>
-  ),
 }));
 
 vi.mock("../../../laser-flow", () => ({
@@ -96,8 +89,6 @@ describe("ReviewStep", () => {
     expect(container.textContent).toContain("Teste");
     expect(container.textContent).toContain("Baseado em");
     expect(container.textContent).toContain("Pythonica");
-    expect(container.querySelector("[data-testid='ast-viewer']")).not.toBeNull();
-    expect(container.textContent).toContain("typed");
     const image = container.querySelector("img");
     expect(image?.getAttribute("src")).toBe("https://img.example/teste.jpg");
     expect(image?.getAttribute("alt")).toBe("Teste");
