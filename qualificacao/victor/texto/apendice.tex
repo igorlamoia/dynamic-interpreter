@@ -79,7 +79,7 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
 
 \chapter[APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS]{\parbox{0.9\textwidth}{\centering APÊNDICE C \textendash{} CASOS DE TESTE AUTOMATIZADOS}} \label{ap:testes}
 
-Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{215 casos} distribuídos em 21 arquivos de teste, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. Os casos estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}), no diretório \texttt{packages/compiler/src/tests}. Na execução de verificação realizada em 9 de setembro de 2026, o comando \texttt{npm test -- --run}, a partir do pacote \texttt{compiler}, aprovou os 215 casos, sem falhas. Esse resultado documenta o estado atual da suíte, sem atribuir a esta execução evidências sobre o que foi demonstrado na apresentação de qualificação.
+Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{224 casos} distribuídos em 21 arquivos de teste, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. Os casos estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}), no diretório \texttt{packages/compiler/src/tests}. Na execução de verificação realizada em 16 de setembro de 2026, o comando \texttt{npm test -- --run}, a partir do pacote \texttt{compiler}, aprovou os 224 casos, sem falhas. Esse resultado documenta o estado atual da suíte, sem atribuir a esta execução evidências sobre o que foi demonstrado na apresentação de qualificação.
 
 \begin{table}[H]
     \centering
@@ -89,15 +89,15 @@ Este apêndice resume a suíte de testes automatizados do núcleo do compilador,
         \hline
         \textbf{Camada} & \textbf{Arquivos} & \textbf{Casos} & \textbf{Escopo} \\
         \hline
-        Tokens & 1 & 8 & Estabilidade dos identificadores numéricos e dos agrupamentos por categoria. \\
+        Tokens & 1 & 12 & Estabilidade dos identificadores numéricos e dos agrupamentos por categoria. \\
         \hline
-        Análise léxica & 9 & 56 & \textit{Scanners} em isolamento: comentários, literais numéricos e de cadeia, terminador configurável, delimitadores de bloco, operadores em forma de palavra e geração de \textit{tokens} de indentação. \\
+        Análise léxica & 9 & 57 & \textit{Scanners} em isolamento: comentários, literais numéricos e de cadeia, terminador configurável, delimitadores de bloco, operadores em forma de palavra e geração de \textit{tokens} de indentação. \\
         \hline
-        Análise sintática e semântica & 9 & 138 & Aceitação ou rejeição de programas sob distintos modos de tipagem e de bloco, variantes do \texttt{switch} e verificação de tipos. \\
+        Análise sintática e semântica & 9 & 142 & Aceitação ou rejeição de programas sob distintos modos de tipagem e de bloco, variantes do \texttt{switch}, ternário, igualdade estrita e verificação de tipos. \\
         \hline
         Interpretação & 2 & 13 & Execução do código de três endereços e sessões de depuração. \\
         \hline
-        \textbf{Total} & \textbf{21} & \textbf{215} & \\
+        \textbf{Total} & \textbf{21} & \textbf{224} & \\
         \hline
     \end{tabular}
     \legend{Fonte: elaborado pelo autor.}

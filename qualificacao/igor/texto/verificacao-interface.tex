@@ -1,7 +1,7 @@
 \subsection{Verificação técnica do assistente}
 \label{subsec:verificacao-interface}
 
-Em 12 de setembro de 2026, foi verificada a rota local \texttt{/language-creator}, sem autenticação, em Chromium 153.0.8010.12, usando Playwright para interação e axe-core 4.13.0 para verificações automatizadas. Foram combinadas duas larguras (1440 e 390 pixels CSS) com os temas claro e escuro, em quatro cenários. O portal de ferramentas de desenvolvimento do Next.js foi ocultado e excluído da análise. A verificação abrangeu a etapa inicial do assistente e a navegação para entrada/saída; não incluiu contas, turmas, submissões ou leitor de tela.
+Em 16 de setembro de 2026, foi verificada a rota local \texttt{/language-creator}, sem autenticação, em Chromium 153.0.8010.12, usando Playwright para interação e axe-core 4.13.0 para verificações automatizadas. Foram combinadas duas larguras (1440 e 390 pixels CSS) com os temas claro e escuro, em quatro cenários. O portal de ferramentas de desenvolvimento do Next.js foi ocultado e excluído da análise. A verificação abrangeu a etapa inicial do assistente e a navegação para entrada/saída; não incluiu contas, turmas, submissões ou leitor de tela.
 
 Nos quatro cenários, cinco acionamentos de Tab alcançaram o botão da primeira etapa; Tab seguido de Enter ativou a segunda etapa. A lista de etapas apresentou direção vertical em 1440 pixels e horizontal em 390 pixels. A largura de rolagem do documento coincidiu com a largura da janela nos dois tamanhos. Esses resultados caracterizam o estado testado, não todos os componentes e estados da plataforma. A Figura~\ref{fig:responsividade-wizard} apresenta as capturas correspondentes no tema escuro.
 
@@ -9,14 +9,14 @@ Nos quatro cenários, cinco acionamentos de Tab alcançaram o botão da primeira
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=\textwidth,height=0.40\textheight,keepaspectratio]{wizard-desktop-atual.png}
+\includegraphics[width=\textwidth,height=0.40\textheight,keepaspectratio]{wizard-desktop-2026-09-16.png}
 \caption{Janela de 1440 por 1000 pixels CSS: etapas na lateral e conteúdo em colunas.}
 \end{subfigure}
 
 \medskip
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[height=0.32\textheight,keepaspectratio]{wizard-mobile-atual.png}
+\includegraphics[height=0.32\textheight,keepaspectratio]{wizard-mobile-2026-09-16.png}
 \caption{Janela de 390 por 844 pixels CSS: etapas em linha e cartões empilhados.}
 \end{subfigure}
 \caption{Adaptação do assistente na versão verificada em setembro de 2026.}
@@ -38,14 +38,14 @@ A análise automatizada selecionou as regras A e AA disponíveis no axe para WCA
 \textbf{Regra} & \textbf{Claro} & \textbf{Claro} & \textbf{Escuro} & \textbf{Escuro} \\
  & 1440 & 390 & 1440 & 390 \\\hline
 Botão sem nome acessível & 1 & 1 & 1 & 1 \\\hline
-Contraste insuficiente & 14 & 14 & 5 & 5 \\\hline
+Contraste insuficiente & 2 & 14 & 5 & 5 \\\hline
 Título de documento ausente & 1 & 1 & 1 & 1 \\\hline
-Link sem nome acessível & 0 & 1 & 0 & 1 \\\hline
+Link sem nome acessível & 0 & 0 & 0 & 0 \\\hline
 Elementos interativos aninhados & 6 & 6 & 6 & 6 \\\hline
 Região rolável sem foco & 3 & 0 & 3 & 0 \\\hline
 Alvo de interação pequeno & 1 & 1 & 1 & 1 \\\hline
 \end{tabular}
-\legend{Fonte: relatório automatizado da revisão de 12 de setembro de 2026.}
+\legend{Fonte: relatório automatizado da revisão de 16 de setembro de 2026.}
 \end{table}
 
 Esses achados impedem tratar a acessibilidade como requisito concluído. A aprovação da transição por teclado mostra apenas que os dois passos testados são acionáveis nesse contexto. Permanecem necessárias a correção e a inspeção dos problemas reportados, a verificação do foco visível e dos diálogos, a análise de outras páginas e testes com tecnologias assistivas, conforme a proposta da Seção~\ref{sec:protocolo-avaliacao}. O \textit{script} e o relatório estruturado da verificação acompanham este texto no repositório, nos diretórios \texttt{scripts} e \texttt{verificacao}.

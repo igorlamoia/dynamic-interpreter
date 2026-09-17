@@ -55,3 +55,12 @@ python qualificacao/scripts/verificar-diagramacao.py /tmp/tcc-layout-igor/TCC_Te
 ```
 
 Sem argumentos, o verificador examina os dois PDFs versionados no repositório.
+
+## Revalidação após a atualização do conteúdo — 17/09/2026
+
+A [sincronização dos textos com o código](ATUALIZACAO-CODIGO-2026-09-17.md)
+alterou a paginação para **96 páginas no Igor** e **84 no Victor**. Os dois PDFs
+foram recompilados sem `Overfull`, figuras grandes demais ou referências
+indefinidas. As 180 páginas passaram novamente na verificação de formato e
+limites dos objetos, sem ocorrências fora das margens; as páginas novas de
+conteúdo e tabelas também foram inspecionadas visualmente.

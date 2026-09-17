@@ -1,5 +1,5 @@
 
-Este capítulo retoma o percurso realizado nesta primeira etapa do Trabalho de Conclusão de Curso, confronta o que foi construído com os objetivos estabelecidos na introdução, explicita as limitações do que se apresenta e delimita os encaminhamentos previstos para a etapa seguinte.
+Este capítulo retoma o percurso realizado na revisão para o TCC~II, confronta o que foi construído com os objetivos estabelecidos na introdução, explicita as limitações do que se apresenta e delimita os encaminhamentos previstos para a etapa seguinte.
 
 \section{Retomada dos Objetivos}
 
@@ -13,6 +13,8 @@ O quarto, integrar o núcleo à interface web definindo os contratos de comunica
 
 O quinto, disponibilizar o núcleo em ambiente web e verificar seu comportamento por meio de uma suíte de testes automatizados, foi cumprido no que diz respeito à disponibilização e à cobertura das construções da linguagem, conforme a Seção~\ref{sec:metodologia-testes}.
 
+A revisão de 16 de setembro de 2026 acrescenta ao relato a igualdade estrita, a expressão condicional ternária, a validação de tipos durante a execução e o suporte à cedilha no léxico. A suíte do núcleo aprovou 224 casos em 21 arquivos, incluindo os comportamentos introduzidos. Esse resultado não implica compatibilidade integral com as linguagens que inspiram as predefinições da IDE.
+
 O sexto objetivo, definir o protocolo de avaliação da solução, encontra-se parcialmente cumprido: os requisitos que a solução deve satisfazer estão especificados nas Tabelas~\ref{tab:requisitos-funcionais} e \ref{tab:requisitos-nao-funcionais}, mas os critérios de aferição da contribuição pedagógica ainda precisam ser consolidados.
 
 \section{Limitações}
@@ -21,7 +23,7 @@ Cabe explicitar os limites do que aqui se apresenta, de modo que os resultados n
 
 A limitação mais relevante diz respeito à ausência de verificação empírica. A pergunta que orienta a pesquisa indaga em que medida a personalização da sintaxe contribui para reduzir a barreira do primeiro contato com a programação; o que este trabalho entrega é o artefato que torna essa investigação possível, e não a resposta a ela. Nenhuma afirmação sobre ganho de aprendizagem pode ser sustentada com os dados atualmente disponíveis.
 
-No plano técnico, a linguagem suportada é um subconjunto didático de linguagens imperativas tipadas. Ela cobre as construções típicas das disciplinas introdutórias, mas não contempla orientação a objetos, tratamento estruturado de exceções nem modularização em múltiplos arquivos de código-fonte.
+No plano técnico, a linguagem suportada é um subconjunto didático de linguagens imperativas, com declaração explícita de tipo ou modo dinâmico. Ela cobre as construções típicas das disciplinas introdutórias, mas não contempla orientação a objetos, tratamento estruturado de exceções nem modularização em múltiplos arquivos de código-fonte.
 
 A personalização abrange o vocabulário, operadores em forma de palavra, literais booleanos e delimitadores, além da seleção de variantes predefinidas de terminação de instruções, blocos, tipagem e arranjos. O conjunto de produções e as alternativas aceitas pelo analisador são definidos na implementação: o usuário não acrescenta novas produções nem redefine livremente a semântica das operações. Assim, o caráter dinâmico corresponde à aplicação de uma configuração a cada novo processamento do código, dentro dos limites suportados pelo núcleo.
 

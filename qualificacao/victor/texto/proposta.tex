@@ -23,7 +23,7 @@ Este capítulo apresenta o escopo do trabalho e o cronograma de desenvolvimento 
 \node[uc] (ucTok) at (7,-11.25) {Inspecionar \textit{tokens} e\\código intermediário};
 \node[uc] (ucDep) at (7,-12.5) {Depurar execução\\passo a passo};
 \begin{scope}[on background layer]
-\foreach \d in {ucCad,ucAut} \draw[liga] (0.35,-.4) -- (\d);
+\foreach \d in {ucCad,ucAut,ucLing,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep} \draw[liga] (0.35,-.4) -- (\d);
 \foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep} \draw[liga] (13.65,-6.4) -- (\d);
 \end{scope}
 \end{tikzpicture}}
@@ -50,7 +50,7 @@ Este capítulo apresenta o escopo do trabalho e o cronograma de desenvolvimento 
 \node[uc] (ucTur) at (7,-5.0) {Gerenciar turmas};
 \node[uc] (ucMem) at (7,-6.25) {Gerenciar membros\\da turma};
 \node[uc] (ucEx) at (7,-7.5) {Gerenciar exercícios\\e casos de teste};
-\node[uc] (ucVinc) at (7,-8.75) {Vincular linguagem\\a exercício};
+\node[uc] (ucVinc) at (7,-8.75) {Vincular linguagem\\a exercício ou lista};
 \node[uc] (ucLis) at (7,-10.0) {Gerenciar listas\\de exercícios};
 \node[uc] (ucPub) at (7,-11.25) {Publicar lista\\para a turma};
 \node[uc] (ucAva) at (7,-12.5) {Acompanhar e avaliar\\submissões};
@@ -108,7 +108,7 @@ A partir desses casos de uso, consolidaram-se os requisitos que orientaram a con
         \hline
         RF16 & Permitir ao professor criar e gerir exercícios, com casos de teste de entrada e saída esperada \\
         \hline
-        RF17 & Permitir vincular uma configuração de linguagem a um exercício, restringindo o vocabulário disponível ao aluno \\
+        RF17 & Permitir vincular uma configuração de linguagem a um exercício ou lista, restringindo o vocabulário disponível ao aluno \\
         \hline
         RF18 & Permitir organizar exercícios em listas e publicá-las para uma turma \\
         \hline

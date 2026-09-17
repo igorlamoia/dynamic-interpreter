@@ -1,0 +1,299 @@
+{
+  "reviewDate": "2026-09-17",
+  "sourceCommit": "b4372bf60218e61437d32af26d5f04a4595e7e22",
+  "baselineVictor": "d15acc103d39ea3031f1bec2f4d6323eaee75155",
+  "baselineIgor": "62ba7c5841290509611388c56d735c3ab5265804",
+  "node": "v25.2.1",
+  "suites": [
+    {
+      "name": "compiler",
+      "startedAt": "2026-09-16T22:50:29.708000+00:00",
+      "total": 224,
+      "passed": 224,
+      "failed": 0,
+      "files": [
+        {
+          "path": "packages/compiler/src/tests/interpreter/debug-execution-core.spec.ts",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "path": "packages/compiler/src/tests/interpreter/debug-session.spec.ts",
+          "status": "passed",
+          "tests": 12
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/block-delimiters.spec.ts",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/debug-source-metadata.spec.ts",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/indentation-config.spec.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/semicolon.spec.ts",
+          "status": "passed",
+          "tests": 27
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/switch-context.spec.ts",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/switch-errors.spec.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/switch-stmt.spec.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/type-semantics.spec.ts",
+          "status": "passed",
+          "tests": 71
+        },
+        {
+          "path": "packages/compiler/src/tests/grammar/typing-mode.spec.ts",
+          "status": "passed",
+          "tests": 25
+        },
+        {
+          "path": "packages/compiler/src/tests/tokens/index.spec.ts",
+          "status": "passed",
+          "tests": 12
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/block-delimiters.spec.ts",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/comments.spec.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/indentation-errors.spec.ts",
+          "status": "passed",
+          "tests": 5
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/indentation-tokens.spec.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/number.spec.ts",
+          "status": "passed",
+          "tests": 17
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/operator-word-aliases.spec.ts",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/statement-terminator-config.spec.ts",
+          "status": "passed",
+          "tests": 13
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/string.spec.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/compiler/src/tests/lexer/switch.spec.ts",
+          "status": "passed",
+          "tests": 1
+        }
+      ]
+    },
+    {
+      "name": "ide",
+      "startedAt": "2026-09-16T22:50:29.710000+00:00",
+      "total": 139,
+      "passed": 139,
+      "failed": 0,
+      "files": [
+        {
+          "path": "packages/ide/src/components/Ast.spec.tsx",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/ide/src/components/editor.spec.tsx",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "path": "packages/ide/src/hooks/useDebugSession.spec.ts",
+          "status": "passed",
+          "tests": 7
+        },
+        {
+          "path": "packages/ide/src/hooks/useLanguageChoices.spec.tsx",
+          "status": "passed",
+          "tests": 9
+        },
+        {
+          "path": "packages/ide/src/hooks/useLanguagePersistence.spec.tsx",
+          "status": "passed",
+          "tests": 7
+        },
+        {
+          "path": "packages/ide/src/components/keyword-customizer/keyword-customizer-save.spec.tsx",
+          "status": "passed",
+          "tests": 9
+        },
+        {
+          "path": "packages/ide/src/components/keyword-customizer/keyword-customizer-step-props.spec.ts",
+          "status": "passed",
+          "tests": 8
+        },
+        {
+          "path": "packages/ide/src/components/terminal/body.spec.tsx",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/ide/src/components/terminal/index.spec.tsx",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/ide/src/features/grammarGraph/GrammarGraphCanvas.spec.tsx",
+          "status": "passed",
+          "tests": 5
+        },
+        {
+          "path": "packages/ide/src/features/grammarGraph/GrammarGraphDetailsPanel.spec.tsx",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/ide/src/features/grammarGraph/GrammarGraphToolbar.spec.tsx",
+          "status": "passed",
+          "tests": 5
+        },
+        {
+          "path": "packages/ide/src/features/grammarGraph/grammarGraphAdapter.spec.ts",
+          "status": "passed",
+          "tests": 13
+        },
+        {
+          "path": "packages/ide/src/features/language-creator/server-props.spec.ts",
+          "status": "passed",
+          "tests": 13
+        },
+        {
+          "path": "packages/ide/src/contexts/editor/useDebugger.spec.tsx",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "path": "packages/ide/src/views/community/community-languages-view.spec.tsx",
+          "status": "passed",
+          "tests": 4
+        },
+        {
+          "path": "packages/ide/src/views/dashboard/sidebar.spec.tsx",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "path": "packages/ide/src/views/ide/ide-debug-sidebar.spec.tsx",
+          "status": "passed",
+          "tests": 4
+        },
+        {
+          "path": "packages/ide/src/views/languages/languages-view.spec.tsx",
+          "status": "passed",
+          "tests": 13
+        },
+        {
+          "path": "packages/ide/src/views/exercise-lists/components/list-language-panel.spec.tsx",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "path": "packages/ide/src/views/exercise-lists/components/submissions-panel.spec.tsx",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/ide/src/views/exercises/components/create-exercise-modal.spec.tsx",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/ide/src/views/ide/components/language-selector.spec.tsx",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/ide/src/views/ide/components/locked-language-banner.spec.tsx",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "path": "packages/ide/src/views/ide/components/main-section.spec.tsx",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/ide/src/views/ide/components/side-menu.spec.tsx",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "path": "packages/ide/src/components/keyword-customizer/steps/review-step/review-step.spec.tsx",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "path": "packages/ide/src/views/ide/components/side-explorer/debug-panel.spec.tsx",
+          "status": "passed",
+          "tests": 2
+        }
+      ]
+    },
+    {
+      "name": "exemplos",
+      "startedAt": "2026-09-16T22:51:53.044000+00:00",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "files": [
+        {
+          "path": "packages/ide/src/lib/keyword-language-storage.spec.ts",
+          "status": "passed",
+          "tests": 5
+        },
+        {
+          "path": "packages/ide/src/components/keyword-customizer/wizard-stepper.spec.tsx",
+          "status": "passed",
+          "tests": 1
+        }
+      ]
+    }
+  ],
+  "backend": {
+    "command": ".venv/bin/python -m pytest tests/test_exercises.py tests/test_classes.py -q",
+    "workingDirectory": "backend",
+    "database": "SQLite in memory",
+    "passed": 29,
+    "failed": 0,
+    "output": ".............................                                            [100%]\n29 passed in 12.32s"
+  }
+}

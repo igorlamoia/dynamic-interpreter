@@ -43,3 +43,26 @@ NODE_OPTIONS=--no-experimental-webstorage node node_modules/vitest/vitest.mjs ru
 ```
 
 No Node.js 25.2.1, a primeira tentativa dos cinco casos de armazenamento falhou no `beforeEach` com `localStorage.clear is not a function`. O comando final usou `NODE_OPTIONS=--no-experimental-webstorage`, para que os processos de teste utilizassem o armazenamento do jsdom. Não foram alterados os testes nem a implementação da aplicação. Os comandos e suas saídas resumidas estão documentados no TCC; a contagem de 120 não inclui esses seis casos adicionais.
+
+## Atualização em 16/09/2026
+
+A verificação foi repetida sobre o código `b4372bf`, após a incorporação de `main`.
+O procedimento e as versões das ferramentas permanecem os mesmos. Os quatro
+cenários passaram na navegação por teclado e não apresentaram rolagem horizontal
+do documento. O contraste insuficiente foi reportado em 2, 14, 5 e 5 elementos,
+respectivamente nos cenários claro/1440, claro/390, escuro/1440 e escuro/390.
+Não foram reportados links sem nome acessível nesta execução. Permanecem
+ocorrências de botões sem nome, título ausente, controles aninhados, alvos
+pequenos e, no desktop, regiões roláveis sem foco; há também itens inconclusivos.
+
+- [Relatório atual](interface-2026-09-16.json).
+- Capturas escuras: [desktop](../Figuras/wizard-desktop-2026-09-16.png) e
+  [celular](../Figuras/wizard-mobile-2026-09-16.png).
+- Capturas claras: [desktop](wizard-light-1440-2026-09-16.png) e
+  [celular](wizard-light-390-2026-09-16.png).
+
+A configuração de integração da IDE aprovou **139 testes em 28 arquivos**.
+Os dois arquivos de exemplos aprovaram novamente os **6 testes adicionais**.
+Ambas as execuções usaram `NODE_OPTIONS=--no-experimental-webstorage`.
+Os registros de 12/09 acima são históricos; os novos resultados não representam
+uma auditoria de toda a aplicação nem aprovação de conformidade WCAG.
