@@ -178,10 +178,22 @@ até o lexer.
 O levantamento mostrou que a UI já é mais testável do que o esperado, então a
 adição é menor do que se previa. Confirmado por inspeção:
 
-- Formulários de login/registro usam `Form`/`FormLabel` do shadcn, que fazem o
-  wiring `htmlFor` ↔ `id` (`components/ui/form.tsx:89-117`). `getByLabel` com
-  "Endereço de E-mail", "Senha", "Nome Completo", "Instituição" e "Código de
-  Acesso" funciona sem mudança.
+- ~~Formulários de login/registro usam `Form`/`FormLabel` do shadcn, que fazem
+  o wiring `htmlFor` ↔ `id`. `getByLabel` funciona sem mudança.~~
+  **ERRADO — corrigido em 2026-09-17.** Esta afirmação veio de um grep que viu
+  `htmlFor={formItemId}` e `id={formItemId}` no mesmo arquivo e concluiu que se
+  conectavam. Não se conectavam: `FormControl` renderizava
+  `<div id={formItemId}>` com o input como **filho**, sem `Slot`, então nenhum
+  input recebia `id` e o `htmlFor` apontava para um `<div>` — que não é
+  elemento rotulável. Verificado no DOM servido: 7 campos sem `id` e 6 labels
+  apontando para `<div>` em `/login` e `/register`.
+  Afetava **10 formulários e 29 usos de `<FormControl>`** — todo campo do app
+  ficava sem nome acessível para leitor de tela. Corrigido trocando o `<div>`
+  por `<Slot>` do Radix (commit `0799241`), que é o que o shadcn upstream usa.
+  Depois disso `getByLabel` funciona com "Endereço de E-mail", "Senha", "Nome
+  Completo", "Instituição" e "Código de Acesso".
+  **Lição de processo:** um grep que mostra dois atributos existindo não prova
+  que caem no mesmo elemento. Premissa de seletor só vale verificada no DOM.
 - Botões do IDE têm `aria-label` vindo do i18n: "Executar Análise Léxica" e
   "Executar" (`views/ide/components/menu.tsx:44-58`).
 - Cards de linguagem já expõem `aria-label` por nome ("Importar X", "Tornar X
