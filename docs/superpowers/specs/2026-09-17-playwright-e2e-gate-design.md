@@ -22,7 +22,8 @@ contra a stack Docker real, mais o encanamento que faz o deploy depender dela.
 | Stack Docker local seedada | `docker-compose.local.yml`, `Makefile` | Funciona (`make local-up`) |
 | Migrations + seed automáticos | `backend/entrypoint.sh` | `alembic upgrade head` + `seed.py` antes do uvicorn |
 | Deploy na VPS | `.github/workflows/deploy.yml` | **Sem gate algum** |
-| `data-testid` no IDE | — | **Zero ocorrências** |
+| `data-testid` no IDE | `views/ide/index.tsx:209`, `views/languages/components/language-card.tsx:38`, `views/community/community-languages-view.tsx:309` | Só 3: `ide-shell`, `language-card`, `community-language-card` |
+| `aria-label` nos cards de linguagem | `language-card.tsx:93-157`, `community-languages-view.tsx:336-341` | Já completo (`Importar X`, `Tornar X ativa`, `Ver DNA de X`) |
 
 ### Funcionalidades core mapeadas
 
@@ -174,18 +175,34 @@ até o lexer.
 
 ## Seletores a adicionar
 
-Aproximadamente 18 `data-testid`, apenas onde não existe âncora acessível
-estável:
+O levantamento mostrou que a UI já é mais testável do que o esperado, então a
+adição é menor do que se previa. Confirmado por inspeção:
 
-- container do Monaco, painel do terminal e sua área de saída;
-- lista de tokens e lista de código intermediário;
-- painel de resultado de submissão e cada linha de test case;
-- passos e botão de avançar do wizard `keyword-customizer`;
-- cards de turma, de exercício e de linguagem.
+- Formulários de login/registro usam `Form`/`FormLabel` do shadcn, que fazem o
+  wiring `htmlFor` ↔ `id` (`components/ui/form.tsx:89-117`). `getByLabel` com
+  "Endereço de E-mail", "Senha", "Nome Completo", "Instituição" e "Código de
+  Acesso" funciona sem mudança.
+- Botões do IDE têm `aria-label` vindo do i18n: "Executar Análise Léxica" e
+  "Executar" (`views/ide/components/menu.tsx:44-58`).
+- Cards de linguagem já expõem `aria-label` por nome ("Importar X", "Tornar X
+  ativa") e `data-language-active` para o estado ativo.
 
-Formulários de login/registro, botões e links usam `getByRole` / `getByLabel`.
-Onde faltar `label` associado a um input, o design corrige o markup — ganho de
-acessibilidade como efeito colateral.
+Restam **7 `data-testid`**, só onde não há âncora acessível alguma:
+
+| testid | Arquivo | Por quê |
+|---|---|---|
+| `monaco-editor` | `components/editor.tsx:32` | `<div>` nu; Monaco monta dentro |
+| `terminal-panel` | `components/terminal/index.tsx:93` | `motion.div` sem role |
+| `terminal-output` | `components/terminal/body.tsx:255` | Distinguir saída do input |
+| `terminal-input` | `components/terminal/body.tsx:280` | `<input>` sem label |
+| `token-list` | `views/tokens/show-tokens.tsx:80` | `<div>` de layout |
+| `intermediate-code-list` | `views/tokens/list-intermediate-code.tsx` | idem |
+| `submission-result-panel` | `pages/exercises/workspace.tsx:301` | idem |
+
+**Removido do escopo:** testids nos passos do wizard `keyword-customizer`. A
+versão anterior deste design os listava, mas nenhum dos quatro specs exercita
+o wizard — a linguagem customizada entra por importação do catálogo. Adicioná-
+los seria trabalho sem consumidor.
 
 ## O gate
 
