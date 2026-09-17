@@ -69,7 +69,10 @@ const Mixed = ({
   return (
     <div className="mt-4">
       {instructions && instructions.length > 0 ? (
-        <div className="relative ml-6 space-y-10 border-l-2 border-cyan-300/70 dark:border-cyan-700/60">
+        <div
+          data-testid="intermediate-code-list"
+          className="relative ml-6 space-y-10 border-l-2 border-cyan-300/70 dark:border-cyan-700/60"
+        >
           {instructions.map((instruction, index) => (
             <motion.div
               key={`instruction-${index + 1}`}
