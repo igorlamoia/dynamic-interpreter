@@ -4,14 +4,16 @@
     {
       "id": 1,
       "subject": "Task 1: Scaffold do pacote packages/e2e e smoke test",
-      "status": "pending",
+      "status": "completed",
       "description": "**Goal:** Um pacote Playwright que roda e prova que a stack Docker está de pé.\n\n**Files:**\n- Create: `packages/e2e/package.json`, `tsconfig.json`, `.gitignore`, `playwright.config.ts`, `support/env.ts`, `specs/smoke.e2e.ts`\n- Modify: `vitest.config.ts` (raiz, adicionar exclude), `Makefile` (alvos e2e/e2e-ui)\n\n**Acceptance Criteria:**\n- [ ] npm install na raiz reconhece @ts-compilator-for-java/e2e como workspace\n- [ ] smoke.e2e.ts passa com a stack no ar\n- [ ] npx vitest run na raiz não coleta nenhum arquivo de packages/e2e/\n\n**Verify:** `make local-up && npm run test -w @ts-compilator-for-java/e2e` → 2 passed\n\n**Steps:** criar package.json/tsconfig/.gitignore; criar support/env.ts com BASE_URL, API_URL e SEED_TEACHER; criar playwright.config.ts sem webServer (a stack sobe pelo Compose); escrever smoke.e2e.ts checando /health e o testid ide-shell já existente; instalar chromium; rodar e ver falhar sem stack; subir make local-up e ver passar; adicionar exclude packages/e2e/** no vitest.config.ts da raiz; adicionar alvos e2e e e2e-ui ao Makefile; commit.\n\n```json:metadata\n{\"files\": [\"packages/e2e/package.json\", \"packages/e2e/tsconfig.json\", \"packages/e2e/.gitignore\", \"packages/e2e/playwright.config.ts\", \"packages/e2e/support/env.ts\", \"packages/e2e/specs/smoke.e2e.ts\", \"vitest.config.ts\", \"Makefile\"], \"verifyCommand\": \"npm run test -w @ts-compilator-for-java/e2e\", \"acceptanceCriteria\": [\"workspace reconhecido pelo npm\", \"smoke.e2e.ts passa\", \"vitest da raiz ignora packages/e2e\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 2,
       "subject": "Task 2: Fixtures de API, autenticação e dados únicos",
-      "status": "pending",
-      "blockedBy": [1],
+      "status": "completed",
+      "blockedBy": [
+        1
+      ],
       "description": "**Goal:** Camada de fixtures que cria turma, exercício, lista e matrícula pela API e entrega página autenticada, sem spec montando payload HTTP na mão.\n\n**Files:**\n- Create: `packages/e2e/support/unique.ts`, `packages/e2e/fixtures/api.ts`, `packages/e2e/fixtures/auth.ts`, `packages/e2e/fixtures/index.ts`, `packages/e2e/specs/fixtures.e2e.ts`\n\n**Acceptance Criteria:**\n- [ ] ApiClient cobre register, login, me, classes, join, exercises, test-cases, exercise-lists, publish, languages\n- [ ] Dois usuários da mesma execução nunca colidem de e-mail\n- [ ] authedPage abre /dashboard logado sem passar pelo formulário\n- [ ] Rodar fixtures.e2e.ts duas vezes seguidas passa nas duas\n\n**Verify:** `npm run test -w @ts-compilator-for-java/e2e -- specs/fixtures.e2e.ts` → 3 passed, repetido → 3 passed\n\n**Steps:** unique.ts com RUN_ID e componente aleatório por identificador (contador colidiria entre workers); api.ts com ApiClient (organizationId vem de GET /organizations público; register devolve só token, id vem de /auth/me; payloads em camelCase); auth.ts injetando o cookie lms_access_token; index.ts estendendo test com api/teacher/student/loginAs; spec provando isolamento e cenário completo; rodar duas vezes; commit.\n\n```json:metadata\n{\"files\": [\"packages/e2e/support/unique.ts\", \"packages/e2e/fixtures/api.ts\", \"packages/e2e/fixtures/auth.ts\", \"packages/e2e/fixtures/index.ts\", \"packages/e2e/specs/fixtures.e2e.ts\"], \"verifyCommand\": \"npm run test -w @ts-compilator-for-java/e2e -- specs/fixtures.e2e.ts\", \"acceptanceCriteria\": [\"ApiClient cobre todos os endpoints do cenário\", \"identificadores únicos por execução\", \"cookie injetado autentica o dashboard\", \"duas execuções seguidas passam\"], \"requiresUserVerification\": false}\n```"
     },
     {
@@ -24,44 +26,64 @@
       "id": 4,
       "subject": "Task 4: Spec de autenticação",
       "status": "pending",
-      "blockedBy": [2],
+      "blockedBy": [
+        2
+      ],
       "description": "**Goal:** Cobrir login, registro, erro de credencial e proteção de rota.\n\n**Files:**\n- Create: `packages/e2e/specs/auth.e2e.ts`\n\n**Acceptance Criteria:**\n- [ ] Login com o professor do seed chega ao /dashboard\n- [ ] Registro de usuário novo chega ao /dashboard\n- [ ] Senha errada mostra erro e permanece em /login\n- [ ] Rota protegida sem sessão redireciona para /login\n\n**Verify:** `npm run test -w @ts-compilator-for-java/e2e -- specs/auth.e2e.ts` → 4 passed\n\n**Steps:** escrever os quatro casos usando getByLabel com os rótulos reais do shadcn Form (\"Endereço de E-mail\", \"Senha\", \"Nome Completo\", \"Instituição\") e o botão \"Entrar no Painel\"; rodar; fixar os dois seletores tolerantes (mensagem de erro de credencial e rótulo do submit do registro) nas strings exatas depois de descobri-las; commit.\n\n```json:metadata\n{\"files\": [\"packages/e2e/specs/auth.e2e.ts\"], \"verifyCommand\": \"npm run test -w @ts-compilator-for-java/e2e -- specs/auth.e2e.ts\", \"acceptanceCriteria\": [\"login do seed chega ao dashboard\", \"registro chega ao dashboard\", \"senha errada mostra erro e fica em /login\", \"rota protegida redireciona\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 5,
       "subject": "Task 5: Helper do Monaco e spec do compilador",
       "status": "pending",
-      "blockedBy": [2, 3],
+      "blockedBy": [
+        2,
+        3
+      ],
       "description": "**Goal:** Exercitar lexer, gerador de IR e interpretador pela UI pública (`/`), incluindo um caso de erro.\n\n**Files:**\n- Create: `packages/e2e/support/monaco.ts`, `packages/e2e/specs/ide-compiler.e2e.ts`\n\n**Acceptance Criteria:**\n- [ ] Escrever código no Monaco e executar produz a saída esperada no terminal\n- [ ] O painel de tokens lista os tokens do programa\n- [ ] O código intermediário mostra __temp ou __label\n- [ ] Um erro de sintaxe é reportado em vez de passar silenciosamente\n\n**Verify:** `npm run test -w @ts-compilator-for-java/e2e -- specs/ide-compiler.e2e.ts` → 4 passed\n\n**Contexto:** o lexer e o gerador de IR rodam no NAVEGADOR (useLexerAnalyse.ts e useIntermediatorCode.ts importam Lexer e TokenIterator do pacote compiler). Não existe /api/lexer. O IDE completo está na landing pública `/`.\n\n**Steps:** monaco.ts com waitForMonaco, setEditorCode (nunca fill; o textarea é .inputarea e autoClosingBrackets duplicaria caracteres, então usar insertText) e readEditorCode; spec com os quatro casos usando os rótulos do i18n pt-BR (\"Executar\", \"Executar Análise Léxica\", \"Mostrar Tokens\"); ajustar a asserção de saída ao valor real do interpretador (rodar `cd packages/compiler && npm run start` para conferir), sem relaxar para toBeVisible; usar o fallback de digitação se insertText não funcionar; commit.\n\n```json:metadata\n{\"files\": [\"packages/e2e/support/monaco.ts\", \"packages/e2e/specs/ide-compiler.e2e.ts\"], \"verifyCommand\": \"npm run test -w @ts-compilator-for-java/e2e -- specs/ide-compiler.e2e.ts\", \"acceptanceCriteria\": [\"execução mostra saída no terminal\", \"painel de tokens lista os tokens\", \"IR mostra __temp ou __label\", \"erro de sintaxe é reportado\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 6,
       "subject": "Task 6: Spec do ciclo LMS ponta a ponta",
       "status": "pending",
-      "blockedBy": [2, 3, 5],
+      "blockedBy": [
+        2,
+        3,
+        5
+      ],
       "description": "**Goal:** Provar que professor monta o cenário, aluno entra na turma, resolve e submete, e a submissão é avaliada pelos test cases.\n\n**Files:**\n- Create: `packages/e2e/specs/lms-flow.e2e.ts`\n\n**Acceptance Criteria:**\n- [ ] Aluno entra na turma pela UI usando o código de acesso\n- [ ] Submissão correta mostra os test cases passando e o badge \"✓ Enviado\"\n- [ ] Submissão com erro mostra os erros e NÃO marca como enviado\n- [ ] O estado de enviado persiste ao recarregar a página\n\n**Verify:** `npm run test -w @ts-compilator-for-java/e2e -- specs/lms-flow.e2e.ts` → 3 passed, duas vezes seguidas\n\n**Steps:** cenário montado pela API via helper montarCenario, verificação toda pela UI; aluno chega ao exercício por /exercises/{id}?listId=&classId= (mesma URL que student-detail-view.tsx gera); asserções em \"Casos de Teste\", \"1/1 passaram\", \"PASSED\", \"✓ Enviado\" e \"Submissão Falhou\"; reload provando que o estado vem do backend; fixar o rótulo do botão do JoinClassModal após lê-lo; se o dashboard não revalidar a lista após o join, adicionar reload E registrar no commit que é um bug de UX; commit.\n\n```json:metadata\n{\"files\": [\"packages/e2e/specs/lms-flow.e2e.ts\"], \"verifyCommand\": \"npm run test -w @ts-compilator-for-java/e2e -- specs/lms-flow.e2e.ts\", \"acceptanceCriteria\": [\"aluno entra na turma pelo código\", \"submissão correta passa nos test cases\", \"submissão com erro não é aceita\", \"estado enviado persiste no reload\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 7,
       "subject": "Task 7: Spec de linguagem customizada",
       "status": "pending",
-      "blockedBy": [2, 3, 5],
+      "blockedBy": [
+        2,
+        3,
+        5
+      ],
       "description": "**Goal:** Provar que uma linguagem do catálogo comunitário é importada, fica ativa e o remapeamento de palavras-chave chega até o lexer.\n\n**Files:**\n- Create: `packages/e2e/specs/custom-language.e2e.ts`\n\n**Acceptance Criteria:**\n- [ ] /community/languages lista as 5 linguagens oficiais do seed\n- [ ] Importar \"Didática em Português\" faz ela aparecer em /languages\n- [ ] Ativar a linguagem marca o card com data-language-active=\"true\"\n- [ ] Um programa com as palavras em português executa e imprime a saída\n\n**Verify:** `npm run test -w @ts-compilator-for-java/e2e -- specs/custom-language.e2e.ts` → 3 passed\n\n**Contexto:** o preset didactic-pt (backend/scripts/community_language_presets.py:81-117) mapeia int→numero_inteiro, print→escreva, blocos inicio/fim, ponto-e-vírgula obrigatório. Os cards já expõem aria-label por nome (\"Importar X\", \"Tornar X ativa\") e data-language-active, então quase nada precisa de testid novo.\n\n**Steps:** três casos (catálogo lista as oficiais; importar coloca em /languages e o backend concorda via api.myLanguages; ativar remapeia e o programa em português roda); se o estado ativo não sobreviver à navegação, conferir a chave de localStorage em keyword-language-storage.ts e injetar via context.addInitScript; rodar a suíte inteira no fim; commit.\n\n```json:metadata\n{\"files\": [\"packages/e2e/specs/custom-language.e2e.ts\"], \"verifyCommand\": \"npm run test -w @ts-compilator-for-java/e2e -- specs/custom-language.e2e.ts\", \"acceptanceCriteria\": [\"catálogo lista as 5 oficiais\", \"importação aparece em /languages e no backend\", \"ativação marca data-language-active\", \"programa em português executa\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 8,
       "subject": "Task 8: Gate no CI — deploy.yml vira pipeline completo",
       "status": "pending",
-      "blockedBy": [4, 5, 6, 7],
+      "blockedBy": [
+        4,
+        5,
+        6,
+        7
+      ],
       "description": "**Goal:** Fazer o deploy na VPS depender de unit tests e da suíte E2E, e rodar tudo em PR também.\n\n**Files:**\n- Modify: `.github/workflows/deploy.yml`\n\n**Acceptance Criteria:**\n- [ ] O workflow dispara em pull_request e em push na main\n- [ ] O job deploy tem needs: [unit, e2e] e só roda em push na main\n- [ ] Em falha, relatório e traces do Playwright vão como artifact\n- [ ] O job e2e despeja os logs do Compose quando falha\n- [ ] Uma quebra deliberada em fluxo core faz o lms-flow reprovar\n\n**Verify:** `python3 -c \"import yaml;yaml.safe_load(open('.github/workflows/deploy.yml'))\"` passa, e um PR de teste executa unit e e2e sem executar deploy\n\n**Steps:** substituir o workflow inteiro por jobs unit (lint + vitest compiler + vitest ide + pytest) e e2e (make local-up, poll de healthcheck, playwright, logs em falha, upload de artifact), com deploy ganhando needs e if — o job de SSH em si não muda; validar o YAML com python; confirmar que os scripts npm referenciados existem; confirmar backend/uv.lock antes de usar --frozen; provar que a suíte pega uma quebra real (passed = false em validate.ts, rebuild, ver lms-flow falhar, desfazer); push e abrir PR conferindo que deploy fica skipped.\n\n```json:metadata\n{\"files\": [\".github/workflows/deploy.yml\"], \"verifyCommand\": \"python3 -c \\\"import yaml;yaml.safe_load(open('.github/workflows/deploy.yml'));print('YAML ok')\\\"\", \"acceptanceCriteria\": [\"dispara em PR e push main\", \"deploy depende de unit e e2e\", \"artifacts de falha publicados\", \"logs do Compose em falha\", \"quebra deliberada reprova o lms-flow\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 9,
       "subject": "Task 9: Hook local pre-push e documentação",
       "status": "pending",
-      "blockedBy": [8],
+      "blockedBy": [
+        8
+      ],
       "description": "**Goal:** Dar feedback rápido antes do push e documentar como rodar a suíte.\n\n**Files:**\n- Create: `.githooks/pre-push`\n- Modify: `README.MD`\n\n**Acceptance Criteria:**\n- [ ] .githooks/pre-push é executável e versionado\n- [ ] O hook reprova um push quando um unit test quebra\n- [ ] O hook NÃO sobe Docker nem roda Playwright\n- [ ] O README documenta make e2e e a ativação do hook\n\n**Verify:** `git config core.hooksPath .githooks && .githooks/pre-push` → exit 0 com a árvore limpa\n\n**Steps:** criar o hook rodando vitest do compiler, vitest do ide e lint (sem E2E — Docker a cada push seria atrito demais); chmod +x e git config core.hooksPath; provar que reprova quebrando packages/compiler/src/tests/tokens/index.spec.ts e desfazendo com git checkout; documentar no README a seção de E2E e a de pre-push; conferir que as cercas de código do README ficaram em número par; verificação final com make local-reset, suíte duas vezes, vitest da raiz ignorando packages/e2e, e gh pr checks.\n\n```json:metadata\n{\"files\": [\".githooks/pre-push\", \"README.MD\"], \"verifyCommand\": \".githooks/pre-push\", \"acceptanceCriteria\": [\"hook executável e versionado\", \"hook reprova unit test quebrado\", \"hook não roda Docker nem Playwright\", \"README documenta make e2e e a ativação do hook\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-17T15:20:00-03:00"
+  "lastUpdated": "2026-09-17T16:23:21.902203-03:00"
 }

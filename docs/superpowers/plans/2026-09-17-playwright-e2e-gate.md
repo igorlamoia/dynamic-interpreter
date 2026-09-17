@@ -27,6 +27,46 @@ Leia a spec antes de começar: `docs/superpowers/specs/2026-09-17-playwright-e2e
 7. **O `entrypoint.sh` do backend roda `alembic upgrade head` e `scripts/seed.py`** antes do uvicorn. Depois de `make local-up`, o banco já tem CEFET-MG, `professor@gmail.com`/`professor`, `aluno@gmail.com`/`aluno` e as 5 linguagens oficiais.
 8. **O `vitest.config.ts` da raiz não declara `include`**, então o glob padrão capturaria arquivos novos `*.spec.ts` em qualquer lugar do repo. Por isso os arquivos Playwright usam sufixo `.e2e.ts` **e** a Task 1 adiciona um `exclude`.
 
+## Emendas descobertas durante a execução
+
+Registradas aqui porque as tasks seguintes dependem delas.
+
+1. **E-mails de teste usam `@example.com`, não `@test.local`.** O rascunho da
+   Task 2 usava `.local`, que o `email_validator` (via `EmailStr`) rejeita como
+   special-use domain da RFC 6761/6762 — é checagem de **sintaxe**, então falha
+   mesmo com `check_deliverability=False`. Verificado: `POST /auth/register`
+   devolve 422 com "The part after the @-sign is a special-use or reserved name"
+   para `.local`, e 201 para `example.com`.
+
+2. **`playwright install --with-deps` exige sudo sem senha.** Não disponível
+   nesta máquina (Fedora). O fallback `npx playwright install chromium` (sem
+   `--with-deps`) funciona e basta. O script `install-browsers` mantém
+   `--with-deps` porque no `ubuntu-latest` do GitHub Actions ele funciona; a
+   **Task 9 deve documentar o fallback local no README**.
+
+3. **Corrida de leitura-após-escrita, conhecida e aceita.** `get_session`
+   (`backend/app/db/session.py:24-30`) commita no teardown da dependência
+   `yield`, então o cliente pode receber o `201` antes de o commit ficar visível
+   para a requisição seguinte, em outra conexão do pool. Medido: 4 falhas em
+   ~165 tentativas (2,4%), zero nas últimas 140 — sequenciais, com atraso, e
+   concorrentes até 40 cadeias. **Nenhuma escrita é perdida** (as linhas que
+   deram 404 todas existem no banco); só a leitura imediata perde a janela.
+   **Decisão: não consertar neste trabalho.** Os `retries: 2` do CI absorvem, e
+   um teste que só passa no retry é reportado como *flaky* — visível, não
+   escondido. Consertar exigiria commit explícito em ~15 serviços **mais**
+   migrar o `backend/tests/conftest.py` de `session.begin()`+rollback para
+   savepoint/join-transaction, o que é desproporcional aqui.
+   **Não adicione retry nem polling nas fixtures para mascarar isso.**
+
+4. **Bug pré-existente a documentar no PR, não a consertar:** os `testCases`
+   que o modal de criar exercício envia são **descartados em silêncio**. A UI
+   manda tudo num único `POST /exercises` (`use-api-queries.ts:325`), mas
+   `ExerciseCreate` não declara o campo e `create_exercise` nunca o lê —
+   verificado, a resposta volta com `"testCases": []`. Como a correção de
+   submissão depende dos casos, o fluxo de nota está quebrado pela UI. As
+   fixtures do E2E contornam usando o endpoint separado
+   `POST /exercises/{id}/test-cases`, que funciona.
+
 ## Estrutura de arquivos
 
 | Arquivo | Responsabilidade | Task |
