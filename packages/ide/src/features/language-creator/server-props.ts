@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from "next";
 import { isAxiosError } from "axios";
 import { api } from "@/lib/api";
+import { getServerApiUrl } from "@/lib/server-api-url";
 import type { Language } from "@/lib/languages-api";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -30,6 +31,8 @@ export const getServerSideProps: GetServerSideProps<{
     const { data } = await api.get<Language>(
       `/languages/${editingLanguageId}`,
       {
+        // Roda no servidor: o baseURL do `api` e o do navegador.
+        baseURL: getServerApiUrl(),
         headers: { Authorization: `Bearer ${token}` },
       },
     );
