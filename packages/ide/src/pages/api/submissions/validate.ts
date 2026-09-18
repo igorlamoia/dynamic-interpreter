@@ -16,7 +16,17 @@ import { normalizeCompilerConfig } from '../../../lib/compiler-config'
 import type { IDEGrammarConfig } from '@/entities/compiler-config'
 import type { TTestCaseResult, TValidationResult } from '@/types/submissions'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
+// Esta rota roda no servidor, dentro do container do frontend. Ela precisa
+// de um endereco diferente do que o navegador usa: NEXT_PUBLIC_API_URL e
+// substituida por literal no build (vale para o bundle de servidor tambem),
+// e costuma ser localhost ou a URL publica -- de dentro do container,
+// localhost aponta para o proprio frontend. INTERNAL_API_URL nao tem o
+// prefixo NEXT_PUBLIC_, entao o Next.js nao a inlina e ela e lida em
+// runtime; a compose aponta para o DNS interno do Docker.
+const BACKEND_URL =
+    process.env.INTERNAL_API_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    'http://localhost:8000'
 
 async function runTestCase(
     instructions: Instruction[],

@@ -57,6 +57,10 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${LOCAL_API_URL:-http://localhost:8000}
     restart: unless-stopped
+    environment:
+      # Endereco usado pelas rotas de API do Next.js, que rodam dentro deste
+      # container. Ver packages/ide/src/pages/api/submissions/validate.ts.
+      INTERNAL_API_URL: http://backend:8000
     ports:
       - "${LOCAL_FRONTEND_PORT:-3001}:3001"
     depends_on:
