@@ -17,7 +17,7 @@ test("monta turma, exercicio, lista e publicacao pela API", async ({
   student,
 }) => {
   const turma = await api.createClass(teacher.token);
-  expect(turma.accessCode).toHaveLength(8);
+  expect(turma.accessCode).toHaveLength(6);
 
   const exercicio = await api.createExercise(teacher.token, {
     description: "Imprima a palavra ok",
