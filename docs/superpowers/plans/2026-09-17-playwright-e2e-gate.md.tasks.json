@@ -66,7 +66,7 @@
     {
       "id": 8,
       "subject": "Task 8: Gate no CI — deploy.yml vira pipeline completo",
-      "status": "pending",
+      "status": "completed",
       "blockedBy": [
         4,
         5,
@@ -85,5 +85,5 @@
       "description": "**Goal:** Dar feedback rápido antes do push e documentar como rodar a suíte.\n\n**Files:**\n- Create: `.githooks/pre-push`\n- Modify: `README.MD`\n\n**Acceptance Criteria:**\n- [ ] .githooks/pre-push é executável e versionado\n- [ ] O hook reprova um push quando um unit test quebra\n- [ ] O hook NÃO sobe Docker nem roda Playwright\n- [ ] O README documenta make e2e e a ativação do hook\n\n**Verify:** `git config core.hooksPath .githooks && .githooks/pre-push` → exit 0 com a árvore limpa\n\n**Steps:** criar o hook rodando vitest do compiler, vitest do ide e lint (sem E2E — Docker a cada push seria atrito demais); chmod +x e git config core.hooksPath; provar que reprova quebrando packages/compiler/src/tests/tokens/index.spec.ts e desfazendo com git checkout; documentar no README a seção de E2E e a de pre-push; conferir que as cercas de código do README ficaram em número par; verificação final com make local-reset, suíte duas vezes, vitest da raiz ignorando packages/e2e, e gh pr checks.\n\n```json:metadata\n{\"files\": [\".githooks/pre-push\", \"README.MD\"], \"verifyCommand\": \".githooks/pre-push\", \"acceptanceCriteria\": [\"hook executável e versionado\", \"hook reprova unit test quebrado\", \"hook não roda Docker nem Playwright\", \"README documenta make e2e e a ativação do hook\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-09-18T01:18:35.163664-03:00"
+  "lastUpdated": "2026-09-18T10:54:51.628935-03:00"
 }
