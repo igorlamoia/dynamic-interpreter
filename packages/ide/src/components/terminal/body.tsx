@@ -253,6 +253,7 @@ export function Body(props: BodyProps) {
   return (
     <PerfectScrollbar
       ref={scrollRef}
+      data-testid="terminal-output"
       className="overflow-x-hidden p-4 font-mono text-sm h-65 terminal-scroll"
     >
       {lines.map((line, index) => (
@@ -279,6 +280,8 @@ export function Body(props: BodyProps) {
         <span className="text-(--color-primary) select-none">$</span>
         <input
           ref={inputRef}
+          data-testid="terminal-input"
+          aria-label="Entrada do terminal"
           type="text"
           value={currentInput}
           onChange={(e) => setCurrentInput(e.target.value)}

@@ -10,6 +10,7 @@ from app.modules.exercises.service import (
     get_exercise_in_context,
     list_exercises,
     list_exercises_paginated,
+    list_own_submissions,
     replace_exercise,
     update_exercise,
 )
@@ -17,6 +18,7 @@ from app.schemas.exercises import (
     ExerciseCreate,
     ExerciseReplace,
     ExerciseResponse,
+    ExerciseSubmissionBrief,
     ExerciseUpdate,
     TestCaseCreate,
     TestCaseResponse,
@@ -75,6 +77,10 @@ async def get_exercise_endpoint(
         else None
     )
     response.effective_language_source = ctx.effective_language_source
+    response.submission_history = [
+        ExerciseSubmissionBrief.model_validate(submission)
+        for submission in await list_own_submissions(exercise_id, user_id, list_id, session)
+    ]
     return response
 
 

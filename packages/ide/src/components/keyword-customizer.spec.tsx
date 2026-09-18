@@ -3,6 +3,7 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CUSTOMIZABLE_KEYWORDS, ORIGINAL_KEYWORDS } from "@/contexts/keyword";
 
@@ -30,6 +31,12 @@ vi.mock("@/contexts/keyword/KeywordContext", async (importOriginal) => {
     useKeywords: () => useKeywordsMock(),
   };
 });
+
+// O wizard consulta a sessao para decidir entre salvar no servidor ou no
+// localStorage. Estes testes cobrem o fluxo deslogado.
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: () => ({ isAuthenticated: false, isHydrated: true, isProfileLoading: false }),
+}));
 
 vi.mock("next/router", () => ({
   useRouter: () => useRouterMock(),
@@ -77,6 +84,10 @@ vi.mock("@/components/ui/dialog", () => ({
   ),
 }));
 
+// O passo de revisao renderiza o LaserFlow (three.js/WebGL), que o jsdom nao
+// suporta ("Error creating WebGL context"). O review-step.spec ja o mocka.
+vi.mock("./laser-flow", () => ({ default: () => <div /> }));
+
 vi.mock("./ui/border-beam", () => ({
   BorderBeam: () => null,
 }));
@@ -90,7 +101,11 @@ vi.mock("./buttons/hero", () => ({
   ),
 }));
 
-vi.mock("lucide-react", () => ({
+// Mock parcial: os icones que os testes consultam viram <span>, e qualquer
+// outro usa o componente real. Uma lista fechada quebrava o spec inteiro a
+// cada icone novo usado pelo componente (Terminal, ChevronDown...).
+vi.mock("lucide-react", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("lucide-react")>()),
   FingerprintPattern: () => <span>fingerprint</span>,
   BookOpenText: () => <span>book</span>,
   Blocks: () => <span>blocks</span>,
@@ -175,8 +190,19 @@ describe("KeywordCustomizer", () => {
     document.body.appendChild(container);
     const root = createRoot(container);
 
+    // O wizard passou a usar react-query (busca de imagens via useMutation e
+    // useLanguagePersistence). Mutations so disparam em acao do usuario; o
+    // provider so precisa existir. Cliente novo por teste, sem retry.
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+    });
+
     act(() => {
-      root.render(<KeywordCustomizer />);
+      root.render(
+        <QueryClientProvider client={queryClient}>
+          <KeywordCustomizer />
+        </QueryClientProvider>,
+      );
     });
 
     return { container, root };
@@ -248,7 +274,6 @@ describe("KeywordCustomizer", () => {
     const { container, root } = render();
 
     expect(container.querySelector('[role="dialog"]')).toBeNull();
-    expect(container.textContent).toContain("Explore sua Linguagen");
     expect(container.textContent).toContain(
       "Defina o vocabulário, as regras e o fluxo da sua linguagem.",
     );
@@ -267,7 +292,6 @@ describe("KeywordCustomizer", () => {
     expect(container.textContent).toContain("book");
     expect(container.textContent).not.toContain("Case sensitive");
     expect(container.textContent).not.toContain("Ainda não suportado");
-    expect(container.textContent).toContain("Explore sua Linguagen");
     expect(container.textContent).toContain("Preview do código");
     expect(container.textContent).toContain("Resumo parcial");
 

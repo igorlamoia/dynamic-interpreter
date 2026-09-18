@@ -84,6 +84,9 @@ describe("language documentation", () => {
 
   it("does not resolve empty delimiters or unknown lexemes", () => {
     const customization = getDefaultCustomizationState();
+    // Fixado aqui: o padrao passou a ser Portugol, que delimita blocos com
+    // inicio/fim (86a138a). O teste e sobre delimitadores vazios.
+    customization.blockDelimiters = { open: "", close: "" };
 
     expect(resolveDocumentationByLexeme("inicio", customization)).toBeNull();
     expect(resolveDocumentationByLexeme("desconhecido", customization)).toBeNull();

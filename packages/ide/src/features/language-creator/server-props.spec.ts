@@ -5,6 +5,12 @@ import { getServerSideProps } from "./server-props";
 
 vi.mock("@/lib/api", () => ({ api: { get: vi.fn() } }));
 
+// getServerSideProps roda no servidor, dentro do container do frontend. Ele
+// precisa chamar o backend pelo endereco interno (INTERNAL_API_URL), e nao
+// pelo baseURL do cliente axios, que vem de NEXT_PUBLIC_API_URL inlinado no
+// build e aponta para localhost -- o proprio container.
+process.env.INTERNAL_API_URL = "http://backend.internal:8000";
+
 function context(id?: string | string[], token?: string) {
   return {
     params: id === undefined ? {} : { id },
@@ -31,6 +37,7 @@ describe("language creator server props", () => {
       props: { editingLanguageId: 12, initialLanguage: language },
     });
     expect(api.get).toHaveBeenCalledWith("/languages/12", {
+      baseURL: "http://backend.internal:8000",
       headers: { Authorization: "Bearer session-token" },
     });
     expect(ctx.res.setHeader).toHaveBeenCalledWith("Cache-Control", "private, no-store");

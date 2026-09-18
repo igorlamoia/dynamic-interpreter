@@ -11,6 +11,30 @@ export const MASCOT_PASS_DURATION_MS = 20000;
 
 type RandomSource = () => number;
 
+// Funcoes puras (so usam os parametros e as constantes acima). Ficavam dentro
+// do componente, recriadas a cada render e fora do alcance do spec.
+export function getRandomMascotDelay(random: RandomSource = Math.random): number {
+  const span = MAX_MASCOT_DELAY_MS - MIN_MASCOT_DELAY_MS + 1;
+  const offset = Math.floor(random() * span);
+  return Math.min(MAX_MASCOT_DELAY_MS, MIN_MASCOT_DELAY_MS + offset);
+}
+
+export function pickNextMascotIndex(
+  currentIndex: number,
+  total: number,
+  random: RandomSource = Math.random,
+): number {
+  if (total <= 1) return 0;
+  const nextIndex = Math.floor(random() * (total - 1));
+  return nextIndex >= currentIndex ? nextIndex + 1 : nextIndex;
+}
+
+export function getMascotTraversalDirection(
+  cycle: number,
+): "left-to-right" | "right-to-left" {
+  return cycle % 2 === 0 ? "left-to-right" : "right-to-left";
+}
+
 export function BackgroundMascotMarquee() {
   const [cycle, setCycle] = useState<number>(0);
   const [activeMascotIndex, setActiveMascotIndex] = useState<number>(0);
@@ -19,28 +43,6 @@ export function BackgroundMascotMarquee() {
 
   const activeMascot = BACKGROUND_MASCOTS[activeMascotIndex];
   const direction = getMascotTraversalDirection(cycle);
-
-  function getRandomMascotDelay(random: RandomSource = Math.random): number {
-    const span = MAX_MASCOT_DELAY_MS - MIN_MASCOT_DELAY_MS + 1;
-    const offset = Math.floor(random() * span);
-    return Math.min(MAX_MASCOT_DELAY_MS, MIN_MASCOT_DELAY_MS + offset);
-  }
-
-  function pickNextMascotIndex(
-    currentIndex: number,
-    total: number,
-    random: RandomSource = Math.random,
-  ): number {
-    if (total <= 1) return 0;
-    const nextIndex = Math.floor(random() * (total - 1));
-    return nextIndex >= currentIndex ? nextIndex + 1 : nextIndex;
-  }
-
-  function getMascotTraversalDirection(
-    cycle: number,
-  ): "left-to-right" | "right-to-left" {
-    return cycle % 2 === 0 ? "left-to-right" : "right-to-left";
-  }
 
   useEffect(() => {
     const timeoutId = window.setTimeout(

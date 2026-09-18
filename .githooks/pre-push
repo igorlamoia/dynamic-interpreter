@@ -1,0 +1,22 @@
+#!/bin/sh
+# Gate local rápido: testes unitários do compiler e do IDE antes do push.
+#
+# O que NÃO roda aqui, de propósito:
+# - A suíte E2E: precisa da stack Docker e leva minutos. Ela é o gate do CI
+#   (.github/workflows/deploy.yml) e roda local sob demanda com `make e2e`.
+# - O pytest do backend (~2 min): também roda no CI.
+# - Lint: o Next 16 removeu `next lint`, então o script do IDE está quebrado.
+#
+# Ativar uma vez por clone:  git config core.hooksPath .githooks
+# Pular uma vez:             git push --no-verify
+set -e
+
+echo "▶ pre-push: testes do compilador"
+# `vitest run`, não o script `test` do pacote: `vitest` puro entra em modo
+# watch quando há terminal e o push ficaria preso.
+(cd packages/compiler && npx vitest run)
+
+echo "▶ pre-push: testes do IDE"
+npm run test -w @ts-compilator-for-java/ide
+
+echo "✅ pre-push: tudo verde. A suíte E2E e o pytest rodam no CI (ou local com make e2e)."

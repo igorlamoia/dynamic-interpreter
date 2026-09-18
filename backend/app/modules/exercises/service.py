@@ -9,6 +9,7 @@ from app.models.exercise import Exercise
 from app.models.exercise_list import ExerciseList
 from app.models.exercise_list_item import ExerciseListItem
 from app.models.language import Language
+from app.models.submission import Submission
 from app.models.test_case import TestCase
 from app.models.user import User, UserRole
 from app.modules.languages.policy import (
@@ -285,3 +286,22 @@ async def get_exercise_in_context(
             effective = None
 
     return ExerciseContext(exercise, effective, source, can_read_locked)
+
+
+async def list_own_submissions(
+    exercise_id: int, student_id: int, list_id: int | None, session: AsyncSession
+) -> list[Submission]:
+    """Submissões do próprio solicitante para o exercício, mais recentes primeiro.
+
+    Filtra por `student_id` sempre: é isso que impede um aluno de receber as
+    submissões dos colegas. Para um professor a lista sai vazia.
+    """
+    query = select(Submission).where(
+        Submission.exercise_id == exercise_id,
+        Submission.student_id == student_id,
+    )
+    if list_id is not None:
+        query = query.where(Submission.exercise_list_id == list_id)
+    query = query.order_by(Submission.submitted_at.desc(), Submission.id.desc())
+    result = await session.execute(query)
+    return list(result.scalars().all())

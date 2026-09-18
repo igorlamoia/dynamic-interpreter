@@ -3,7 +3,7 @@ name = "ts-compilator-backend"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi>=0.115.0",
+    "fastapi>=0.121.0",  # Depends(scope=) em app/core/dependencies.py
     "uvicorn[standard]>=0.32.0",
     "sqlalchemy[asyncio]>=2.0.0",
     "asyncpg>=0.30.0",

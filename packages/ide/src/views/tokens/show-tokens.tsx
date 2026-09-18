@@ -77,7 +77,10 @@ export function ShowTokens({ analyseData }: IShowTokensProps) {
               <h2 className="text-xl font-bold">
                 {t(locale, "ui.sequence_tokens")}
               </h2>
-              <div className="flex gap-2 flex-wrap w-full bg-transparent">
+              <div
+                data-testid="token-list"
+                className="flex gap-2 flex-wrap w-full bg-transparent"
+              >
                 {allFormattedTokens.map(({ token, info: { styles } }) => (
                   <motion.div
                     key={token.line + "c" + token.column + "sequence"}

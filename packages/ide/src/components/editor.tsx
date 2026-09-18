@@ -30,5 +30,11 @@ export function Editor({ bottomPadding = 0 }: EditorProps) {
     });
   }, [bottomPadding, setConfig]);
 
-  return <div ref={editorContainerRef} className="h-full w-full" />;
+  return (
+    <div
+      ref={editorContainerRef}
+      data-testid="monaco-editor"
+      className="h-full w-full"
+    />
+  );
 }

@@ -12,6 +12,8 @@ import { Overlay } from "./overlay";
   }
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
+// O Tailwind 4 aceita bg-linear-to-* e o nome antigo bg-gradient-to-*; o
+// componente usa o antigo desde 2fd359b. O teste verifica a direcao, nao a grafia.
 describe("Overlay", () => {
   afterEach(() => {
     document.body.innerHTML = "";
@@ -32,8 +34,9 @@ describe("Overlay", () => {
     expect(overlay?.className).toContain("absolute");
     expect(overlay?.className).toContain("inset-y-0");
     expect(overlay?.className).toContain("right-0");
-    expect(overlay?.className).toContain("w-44");
-    expect(overlay?.className).toContain("bg-linear-to-l");
+    // A largura virou a prop `size` (padrao 44), aplicada via style.
+    expect(overlay?.style.width).toBe("44px");
+    expect(overlay?.className).toMatch(/\bbg-(?:linear|gradient)-to-l\b/);
 
     act(() => {
       root.unmount();
@@ -53,8 +56,9 @@ describe("Overlay", () => {
 
     expect(overlay?.className).toContain("inset-y-0");
     expect(overlay?.className).toContain("left-0");
-    expect(overlay?.className).toContain("w-44");
-    expect(overlay?.className).toContain("bg-linear-to-r");
+    // A largura virou a prop `size` (padrao 44), aplicada via style.
+    expect(overlay?.style.width).toBe("44px");
+    expect(overlay?.className).toMatch(/\bbg-(?:linear|gradient)-to-r\b/);
 
     act(() => {
       root.unmount();
@@ -74,9 +78,9 @@ describe("Overlay", () => {
 
     expect(overlays).toHaveLength(2);
     expect(overlays[0].className).toContain("left-0");
-    expect(overlays[0].className).toContain("bg-linear-to-r");
+    expect(overlays[0].className).toMatch(/\bbg-(?:linear|gradient)-to-r\b/);
     expect(overlays[1].className).toContain("right-0");
-    expect(overlays[1].className).toContain("bg-linear-to-l");
+    expect(overlays[1].className).toMatch(/\bbg-(?:linear|gradient)-to-l\b/);
 
     act(() => {
       root.unmount();
