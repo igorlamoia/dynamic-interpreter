@@ -59,7 +59,12 @@ Registradas aqui porque as tasks seguintes dependem delas.
    quebra **6 testes** do pytest, porque `conftest.py` isola por
    `session.begin()` + rollback e um commit vaza entre testes.
 
-3b. **Corrida geral de leitura-após-escrita, conhecida e aceita.** `get_session`
+3b. **Corrida geral de leitura-após-escrita — CONSERTADA depois (commit
+   seguinte a `dec86d6`, `scope="function"` em `SessionDep`).** O texto abaixo
+   registra a decisão original, que foi revista quando a medição com a suíte
+   completa (19 testes) mostrou 3 de 8 rodadas com falha, não ~1 em 6.
+   Depois do conserto: 8 de 8 rodadas limpas, 0 falhas em 60 cadeias
+   completas via API. **Decisão original, superada:** `get_session`
    (`backend/app/db/session.py:24-30`) commita no teardown da dependência
    `yield`, então o cliente pode receber o `201` antes de o commit ficar visível
    para a requisição seguinte, em outra conexão do pool. Medido: 4 falhas em
