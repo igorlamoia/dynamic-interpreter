@@ -20,6 +20,7 @@ export default defineConfig({
       "src/views/**/*.spec.tsx",
     ],
     environment: "node",
+    setupFiles: ["./src/test/setup-local-storage.ts"],
     maxWorkers: 1,
   },
   resolve: {
