@@ -20,6 +20,13 @@ import {
 import { buildLexerConfigFromCustomization } from "@/lib/keyword-customization";
 import { saveSavedKeywordLanguage } from "@/lib/keyword-language-storage";
 import { vi, beforeEach, afterEach } from "vitest";
+import ui from "@/i18n/locales/pt-BR/ui";
+
+// As mensagens de validacao sao geradas a partir de locales/pt-BR/ui
+// (46f0a7b). Comparar com o template, e nao com o texto literal, faz o teste
+// sobreviver a uma revisao de copy mas continuar pegando a mensagem errada.
+const conflictMessage = (key: keyof typeof ui, value: string) =>
+  (ui[key] as string).replace("{value}", value);
 
 (
   globalThis as typeof globalThis & {
@@ -48,6 +55,17 @@ vi.mock("@/hooks/useEditor", () => ({
 
 vi.mock("@/utils/compiler/editor/editor-language", () => ({
   updateJavaMMKeywords: updateJavaMMKeywordsMock,
+}));
+
+// O KeywordProvider passou a consultar a sessao (useAuth) e a linguagem ativa
+// no servidor (useActiveLanguage). Estes testes cobrem o caminho deslogado,
+// em que a customizacao vem do localStorage.
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: () => ({ isAuthenticated: false, isHydrated: true }),
+}));
+
+vi.mock("@/hooks/useLanguages", () => ({
+  useActiveLanguage: () => ({ data: null }),
 }));
 
 let capturedKeywords: ReturnType<typeof useKeywords> | null = null;
@@ -92,6 +110,7 @@ describe("keyword context lexer config", () => {
     act(() => {
       capturedKeywords?.setModes((prev) => ({
         ...prev,
+        semicolon: "optional-eol",
         typing: "untyped",
         array: "fixed",
       }));
@@ -116,6 +135,10 @@ describe("keyword context lexer config", () => {
 
   it("builds the same lexer config shape as the shared helper", () => {
     const customization = getDefaultCustomizationState();
+    // Fixado aqui: o padrao passou a ser a linguagem Portugol (ponto e virgula
+    // obrigatorio) em 86a138a. O teste verifica o mapeamento dos modos, nao o
+    // padrao.
+    customization.modes.semicolon = "optional-eol";
     customization.modes.typing = "untyped";
     customization.modes.array = "dynamic";
     customization.statementTerminatorLexeme = " @@ ";
@@ -576,7 +599,7 @@ describe("boolean literal customization", () => {
     );
 
     expect(error).toBe(
-      '"inteiro" conflicts with an existing keyword customization.',
+      conflictMessage("validation_conflicts_keyword_customization", "inteiro"),
     );
   });
 });
@@ -638,7 +661,7 @@ describe("statement terminator customization", () => {
     );
 
     expect(error).toBe(
-      '"uai" conflicts with an existing keyword customization.',
+      conflictMessage("validation_conflicts_keyword_customization", "uai"),
     );
   });
 
@@ -651,7 +674,7 @@ describe("statement terminator customization", () => {
     );
 
     expect(error).toBe(
-      '"if" conflicts with an existing keyword customization.',
+      conflictMessage("validation_conflicts_keyword_customization", "if"),
     );
   });
 
@@ -663,7 +686,7 @@ describe("statement terminator customization", () => {
       }),
     );
 
-    expect(error).toBe('"uai" conflicts with an existing operator alias.');
+    expect(error).toBe(conflictMessage("validation_conflicts_operator_alias", "uai"));
   });
 
   it("rejects terminators that collide with boolean aliases", () => {
@@ -675,7 +698,7 @@ describe("statement terminator customization", () => {
     );
 
     expect(error).toBe(
-      '"uai" conflicts with an existing boolean literal alias.',
+      conflictMessage("validation_conflicts_boolean_literal_alias", "uai"),
     );
   });
 
@@ -688,7 +711,7 @@ describe("statement terminator customization", () => {
     );
 
     expect(error).toBe(
-      '"true" conflicts with an existing keyword customization.',
+      conflictMessage("validation_conflicts_keyword_customization", "true"),
     );
   });
 
@@ -700,6 +723,6 @@ describe("statement terminator customization", () => {
       }),
     );
 
-    expect(error).toBe('"uai" conflicts with the configured block delimiters.');
+    expect(error).toBe(conflictMessage("validation_conflicts_block_delimiters", "uai"));
   });
 });

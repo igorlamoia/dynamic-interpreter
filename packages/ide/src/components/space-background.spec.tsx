@@ -30,7 +30,7 @@ describe("SpaceBackground", () => {
     document.body.innerHTML = "";
   });
 
-  it("renders the extracted marquee component together with meteors and particles", () => {
+  it("renders meteors and particles", () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
     const root = createRoot(container);
@@ -39,7 +39,8 @@ describe("SpaceBackground", () => {
       root.render(<SpaceBackground />);
     });
 
-    expect(container.querySelector('[data-testid="background-mascot-marquee"]')).not.toBeNull();
+    // O <BackgroundMascotMarquee /> esta comentado no SpaceBackground desde
+    // a61c581; o componente continua com o proprio spec.
     expect(container.querySelector('[data-testid="meteors"]')).not.toBeNull();
     expect(container.querySelector('[data-testid="particles"]')).not.toBeNull();
 
