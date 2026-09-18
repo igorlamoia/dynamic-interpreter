@@ -121,4 +121,13 @@ test("submissao com erro mostra os erros e nao marca como enviado", async ({
   await expect(panel).toContainText("Submissão Falhou");
 
   await expect(page.getByText("✓ Enviado", { exact: true })).toHaveCount(0);
+
+  // Checar so o estado local nao basta: uma submissao invalida gravada no
+  // backend so apareceria depois de recarregar. Com o exercicio sem
+  // submissao, o botao e "Submeter Resposta"; com uma, vira "Resubmeter".
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Submeter Resposta", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("✓ Enviado", { exact: true })).toHaveCount(0);
 });

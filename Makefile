@@ -18,7 +18,7 @@ local-reset:
 	$(LOCAL_COMPOSE) down --volumes
 
 e2e:
-	$(LOCAL_COMPOSE) up --build --detach
+	$(LOCAL_COMPOSE) up --build --detach --wait
 	npm run test -w @ts-compilator-for-java/e2e
 
 e2e-ui:
