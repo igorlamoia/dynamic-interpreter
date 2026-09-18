@@ -3,9 +3,13 @@ from fastapi import APIRouter, Query
 from app.core.dependencies import AcademicUserIdDep, SessionDep
 from app.modules.exercises.service import (
     create_exercise, get_exercise_in_context, list_exercises,
-    update_exercise, delete_exercise, add_test_case, delete_test_case
+    update_exercise, delete_exercise, add_test_case, delete_test_case,
+    list_own_submissions,
 )
-from app.schemas.exercises import ExerciseCreate, ExerciseUpdate, ExerciseResponse, TestCaseCreate, TestCaseResponse
+from app.schemas.exercises import (
+    ExerciseCreate, ExerciseUpdate, ExerciseResponse, ExerciseSubmissionBrief,
+    TestCaseCreate, TestCaseResponse,
+)
 from app.schemas.languages import LanguageResponse
 
 router = APIRouter(prefix="/exercises", tags=["exercises"])
@@ -41,6 +45,10 @@ async def get_exercise_endpoint(
         else None
     )
     response.effective_language_source = ctx.effective_language_source
+    response.submission_history = [
+        ExerciseSubmissionBrief.model_validate(submission)
+        for submission in await list_own_submissions(exercise_id, user_id, list_id, session)
+    ]
     return response
 
 
