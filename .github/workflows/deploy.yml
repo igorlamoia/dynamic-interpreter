@@ -8,9 +8,17 @@ on:
       - main
   pull_request:
 
+# O token do workflow so precisa ler o repositorio. O deploy usa segredos
+# proprios de SSH, nao o GITHUB_TOKEN.
+permissions:
+  contents: read
+
+# Um push novo cancela o CI anterior do mesmo ref SO em PR. Na main nada e
+# cancelado: cancelar derrubaria a sessao SSH de um deploy em andamento e
+# deixaria a VPS pela metade.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   unit:
@@ -112,6 +120,11 @@ jobs:
     needs: [unit, e2e]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    # Deploys enfileiram, nunca se cancelam: um deploy interrompido no meio
+    # do build ou do restart deixaria producao fora do ar.
+    concurrency:
+      group: deploy-vps
+      cancel-in-progress: false
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
