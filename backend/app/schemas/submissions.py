@@ -19,6 +19,19 @@ class SubmissionGrade(CamelModel):
     teacher_feedback: str | None = None
 
 
+class StudentSimple(CamelModel):
+    id: int
+    name: str
+    email: str
+
+
+class ExerciseSimple(CamelModel):
+    id: int
+    title: str
+    description: str | None = None
+    grade_weight: float | None = None
+
+
 class SubmissionResponse(CamelModel):
     id: int
     exercise_id: int
@@ -31,3 +44,5 @@ class SubmissionResponse(CamelModel):
     score: float | None = None
     teacher_feedback: str | None = None
     submitted_at: datetime
+    student: StudentSimple | None = None
+    exercise: ExerciseSimple | None = None

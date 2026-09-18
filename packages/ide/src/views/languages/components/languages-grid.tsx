@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import type { LanguageSummary } from "@/lib/languages-api";
+import { Pagination } from "@/components/ui/pagination";
 import { LanguageCard, type LanguageCardProps } from "./language-card";
 
 type LanguagesGridProps = Omit<LanguageCardProps, "language" | "isActive"> & {
@@ -7,6 +8,11 @@ type LanguagesGridProps = Omit<LanguageCardProps, "language" | "isActive"> & {
   loading: boolean;
   activeLanguageId: number | null;
   onCreate: () => void;
+  page?: number;
+  totalPages?: number;
+  totalItems?: number;
+  pageSize?: number;
+  onPageChange?: (page: number) => void;
 };
 
 export function LanguagesGrid({
@@ -14,22 +20,25 @@ export function LanguagesGrid({
   loading,
   activeLanguageId,
   onCreate,
+  page = 1,
+  totalPages = 1,
+  totalItems,
+  pageSize = 12,
+  onPageChange,
   ...actions
 }: LanguagesGridProps) {
   if (loading) {
     return (
       <div className="flex justify-center py-16">
-        <Loader2 className="size-6 animate-spin text-slate-500" />
+        <Loader2 className="size-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   if (languages.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-white/10 py-16 text-center">
-        <p className="text-slate-400">
-          Nenhuma linguagem salva ainda.
-        </p>
+      <div className="rounded-2xl border border-dashed border-border py-16 text-center dark:border-white/10">
+        <p className="text-muted-foreground">Nenhuma linguagem salva ainda.</p>
         <button
           type="button"
           onClick={onCreate}
@@ -42,15 +51,26 @@ export function LanguagesGrid({
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {languages.map((language) => (
-        <LanguageCard
-          key={language.id}
-          language={language}
-          isActive={language.id === activeLanguageId}
-          {...actions}
+    <div className="space-y-6">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {languages.map((language) => (
+          <LanguageCard
+            key={language.id}
+            language={language}
+            isActive={language.id === activeLanguageId}
+            {...actions}
+          />
+        ))}
+      </div>
+      {onPageChange && (
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+          totalItems={totalItems ?? languages.length}
+          pageSize={pageSize}
         />
-      ))}
+      )}
     </div>
   );
 }

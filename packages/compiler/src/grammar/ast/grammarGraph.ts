@@ -100,7 +100,7 @@ const grammarOptions = [
     values: ["typed", "untyped"],
     default: "typed",
     description:
-      "Selects typed declarations/functions or dynamic funcao/variavel syntax.",
+      "Selects typed declarations/functions or dynamic function/variable syntax.",
   },
   {
     id: "arrayMode",
@@ -1260,8 +1260,8 @@ const grammarGraphNodes = [
   { id: "kwBool", label: "'bool'", kind: "terminal", group: "tokens" },
   { id: "kwString", label: "'string'", kind: "terminal", group: "tokens" },
   { id: "kwVoid", label: "'void'", kind: "terminal", group: "tokens" },
-  { id: "kwFuncao", label: "'funcao'", kind: "terminal", group: "tokens" },
-  { id: "kwVariavel", label: "'variavel'", kind: "terminal", group: "tokens" },
+  { id: "kwFuncao", label: "'function'", kind: "terminal", group: "tokens" },
+  { id: "kwVariavel", label: "'variable'", kind: "terminal", group: "tokens" },
   { id: "kwFor", label: "'for'", kind: "terminal", group: "tokens" },
   { id: "kwWhile", label: "'while'", kind: "terminal", group: "tokens" },
   { id: "kwBreak", label: "'break'", kind: "terminal", group: "tokens" },

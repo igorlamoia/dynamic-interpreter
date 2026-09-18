@@ -7,6 +7,7 @@ export const RELATIONALS = {
   greater_equal: 12, // >=
   less: 13, // <
   less_equal: 14, // <=
+  strict_equal: 64, // ===
 };
 
 export const RELATIONAL_OPERATOR_TOKEN_IDS = {
@@ -16,6 +17,7 @@ export const RELATIONAL_OPERATOR_TOKEN_IDS = {
   greater_equal: RELATIONALS.greater_equal,
   less: RELATIONALS.less,
   less_equal: RELATIONALS.less_equal,
+  strict_equal: RELATIONALS.strict_equal,
 } as const;
 
 export const RELATIONALS_STYLE = {
@@ -27,6 +29,7 @@ export const RELATIONALS_STYLE = {
 
 export const RELATIONAL_SYMBOLS: Record<number, OpName> = {
   [RELATIONALS.equal_equal]: "==",
+  [RELATIONALS.strict_equal]: "===",
   [RELATIONALS.not_equal]: "<>",
   [RELATIONALS.greater]: ">",
   [RELATIONALS.greater_equal]: "≥",

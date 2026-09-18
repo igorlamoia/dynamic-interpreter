@@ -37,10 +37,11 @@ export default function Dashboard() {
 
   const handleClassJoined = (message: string) => {
     setSuccess(message);
+    void classesQuery.refetch();
   };
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-[#0A0A0F]">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
       <div className="flex flex-1 overflow-hidden relative z-10">
@@ -51,33 +52,35 @@ export default function Dashboard() {
               <CommunityDashboard />
             ) : (
               <>
-            {/* Alerts */}
-            {error && (
-              <Alert
-                variant="error"
-                onClose={() => setError("")}
-                className="mb-8"
-              >
-                {error}
-              </Alert>
-            )}
-            {success && (
-              <Alert
-                variant="success"
-                onClose={() => setSuccess("")}
-                className="mb-8"
-              >
-                {success}
-              </Alert>
-            )}
+                {/* Alerts */}
+                {error && (
+                  <Alert
+                    variant="error"
+                    onClose={() => setError("")}
+                    className="mb-8"
+                  >
+                    {error}
+                  </Alert>
+                )}
+                {success && (
+                  <Alert
+                    variant="success"
+                    onClose={() => setSuccess("")}
+                    className="mb-8"
+                  >
+                    {success}
+                  </Alert>
+                )}
 
-            <DashboardHeader onCreateClass={() => setShowCreateClass(true)} />
+                <DashboardHeader
+                  onCreateClass={() => setShowCreateClass(true)}
+                />
 
-            <ClassesGrid
-              classes={classes}
-              loading={classesQuery.isPending}
-              onJoinClass={() => setShowJoinClass(true)}
-            />
+                <ClassesGrid
+                  classes={classes}
+                  loading={classesQuery.isPending}
+                  onJoinClass={() => setShowJoinClass(true)}
+                />
               </>
             )}
           </main>

@@ -32,13 +32,13 @@ export function CategoryHeader(props: CategoryHeaderProps) {
       type="button"
       onClick={onToggle}
       aria-expanded={isOpen}
-      className="flex w-full flex-col border-b border-slate-800/80 py-2 text-left outline-none"
+      className="flex w-full flex-col border-b dark:border-slate-800/80 py-2 text-left outline-none"
     >
       <div className="flex items-center gap-3">
         <ShineBorder color={tone.progress} />
         <div className="flex flex-1 flex-col gap-1 pr-4">
           <div className="flex items-center justify-between gap-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-slate-300">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] dark:text-slate-300">
               {title}
             </p>
             <span

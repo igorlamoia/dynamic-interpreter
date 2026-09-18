@@ -121,6 +121,8 @@ describe("CommunityLanguagesView", () => {
     expect(catalogQueryMock).toHaveBeenLastCalledWith({
       typing: "typed",
       block: "indentation",
+      page: 1,
+      pageSize: 12,
     });
     expect(
       container
@@ -133,7 +135,10 @@ describe("CommunityLanguagesView", () => {
       (button) => button.textContent?.includes("Limpar DNA"),
     ) ?? null);
 
-    expect(catalogQueryMock).toHaveBeenLastCalledWith({});
+    expect(catalogQueryMock).toHaveBeenLastCalledWith({
+      page: 1,
+      pageSize: 12,
+    });
 
     act(() => root.unmount());
   });

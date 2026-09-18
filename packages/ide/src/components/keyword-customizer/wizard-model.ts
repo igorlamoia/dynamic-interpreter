@@ -48,8 +48,8 @@ type StyledPresetMappings = {
   switch: string;
   case: string;
   default: string;
-  variavel: string;
-  funcao: string;
+  variable: string;
+  function: string;
 };
 
 type StyledOperatorWordMap = Required<
@@ -85,8 +85,8 @@ const DIDACTIC_PT_PRESET: StyledWizardPresetDefinition = {
     switch: "escolha",
     case: "caso",
     default: "padrao",
-    variavel: "variavel",
-    funcao: "funcao",
+    variable: "variavel",
+    function: "funcao",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -133,8 +133,8 @@ const PYTHON_LIKE_PRESET: StyledWizardPresetDefinition = {
     switch: "match",
     case: "case",
     default: "padrao",
-    variavel: "nome",
-    funcao: "defina",
+    variable: "nome",
+    function: "defina",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -181,8 +181,8 @@ const MINIMAL_PRESET: StyledWizardPresetDefinition = {
     switch: "sw",
     case: "cs",
     default: "df",
-    variavel: "var",
-    funcao: "fn",
+    variable: "var",
+    function: "fn",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -229,8 +229,8 @@ const RUBY_LIKE_PRESET: StyledWizardPresetDefinition = {
     switch: "case_of",
     case: "when_case",
     default: "otherwise",
-    variavel: "var",
-    funcao: "def",
+    variable: "var",
+    function: "def",
   },
   operatorWordMap: {
     logical_or: "or_word",
@@ -277,8 +277,8 @@ const MINERES_LIKE_PRESET: StyledWizardPresetDefinition = {
     switch: "dependenu",
     case: "du_casu",
     default: "deixa_assim",
-    variavel: "trem",
-    funcao: "bora_cumpade",
+    variable: "trem",
+    function: "bora_cumpade",
   },
   operatorWordMap: {
     logical_or: "quarque_um",
@@ -378,13 +378,13 @@ export const WIZARD_STEPS = [
 const STEP_FIELDS: Record<WizardStepId, string[]> = {
   identity: [],
   IO: ["print", "scan"],
-  types: ["int", "float", "bool", "string", "variavel", "modes.typing"],
+  types: ["int", "float", "bool", "string", "variable", "modes.typing"],
   structure: [
     "statementTerminatorLexeme",
     "modes.semicolon",
     "modes.array",
     "void",
-    "funcao",
+    "function",
     "modes.block",
     "blockDelimiters",
   ],

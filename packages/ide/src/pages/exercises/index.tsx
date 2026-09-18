@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useDeferredValue } from "react";
 import { SpaceBackground } from "@/components/space-background";
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
@@ -10,7 +10,9 @@ import { Title } from "@/components/text/title";
 import { Subtitle } from "@/components/text/subtitle";
 import { Plus, Search } from "lucide-react";
 import type { Exercise } from "@/types/api";
+import { Pagination } from "@/components/ui/pagination";
 import { CreateExerciseModal } from "@/views/exercises/components/create-exercise-modal";
+import { EditExerciseModal } from "@/views/exercises/components/edit-exercise-modal";
 import { ExerciseCard } from "@/views/exercises/components/exercise-card";
 import { ExerciseDetailModal } from "@/views/exercises/components/exercise-detail-modal";
 import { DeleteConfirmModal } from "@/views/exercises/components/delete-confirm-modal";
@@ -24,23 +26,48 @@ import {
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
 
+const PAGE_SIZE = 12;
+
 export default function ExercisesPage() {
   const { isTeacher, userId } = useAuth();
   const { showToast } = useToast();
 
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const deferredSearch = useDeferredValue(search.trim());
   const [showCreate, setShowCreate] = useState(false);
   const [viewExercise, setViewExercise] = useState<Exercise | null>(null);
+  const [editTarget, setEditTarget] = useState<Exercise | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null);
-  const exercisesQuery = useExercisesQuery(undefined, Boolean(userId));
+  const [hasShownSearch, setHasShownSearch] = useState(false);
+
+  const exercisesQuery = useExercisesQuery(
+    { page, pageSize: PAGE_SIZE, q: deferredSearch || undefined },
+    Boolean(userId),
+  );
   const deleteExercise = useDeleteExerciseMutation();
-  const exercises = exercisesQuery.data ?? [];
+
+  const exercises = Array.isArray(exercisesQuery.data)
+    ? exercisesQuery.data
+    : (exercisesQuery.data?.items ?? []);
+  const totalPages = Array.isArray(exercisesQuery.data)
+    ? 1
+    : (exercisesQuery.data?.totalPages ?? 1);
+  const totalItems = Array.isArray(exercisesQuery.data)
+    ? exercisesQuery.data.length
+    : (exercisesQuery.data?.total ?? exercises.length);
 
   useEffect(() => {
     if (exercisesQuery.error) {
       showToast({ type: "error", message: "Erro ao carregar exercícios." });
     }
   }, [exercisesQuery.error, showToast]);
+
+  useEffect(() => {
+    if (!exercisesQuery.isPending && exercises.length > 0) {
+      setHasShownSearch(true);
+    }
+  }, [exercises.length, exercisesQuery.isPending]);
 
   const handleDelete = async () => {
     if (!deleteTarget || !userId) return;
@@ -53,16 +80,19 @@ export default function ExercisesPage() {
     }
   };
 
-  const filtered = exercises.filter(
-    (e: Exercise) =>
-      e.title.toLowerCase().includes(search.toLowerCase()) ||
-      e.description.toLowerCase().includes(search.toLowerCase()),
-  );
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
+
+  const filtered = exercises;
+  const hasSearch = search.trim().length > 0;
+  const shouldShowSearch = hasSearch || hasShownSearch || exercises.length > 0;
 
   if (!userId) return null;
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-[#0A0A0F]">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
       <div className="flex flex-1 overflow-hidden relative z-10 w-full">
@@ -96,16 +126,16 @@ export default function ExercisesPage() {
             )}
 
             {/* Search */}
-            {!exercisesQuery.isPending && exercises.length > 0 && (
+            {shouldShowSearch && (
               <div className="mb-6">
                 <div className="relative max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                   <input
                     type="text"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder="Buscar exercícios..."
-                    className="w-full h-11 pl-10 pr-4 rounded-xl bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-[#0dccf2]/50 transition-colors"
+                    className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-card/80 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors dark:bg-white/5"
                   />
                 </div>
               </div>
@@ -114,7 +144,7 @@ export default function ExercisesPage() {
             {/* Content */}
             {exercisesQuery.isPending ? (
               <LoadingSpinner label="Carregando exercícios..." />
-            ) : filtered.length === 0 && search ? (
+            ) : filtered.length === 0 && hasSearch ? (
               <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-3">
                 <Search className="w-8 h-8 text-slate-600" />
                 <p className="text-sm font-medium">
@@ -124,16 +154,27 @@ export default function ExercisesPage() {
             ) : exercises.length === 0 ? (
               <EmptyState />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filtered.map((exercise: Exercise) => (
-                  <ExerciseCard
-                    key={exercise.id}
-                    exercise={exercise}
-                    onView={() => setViewExercise(exercise)}
-                    onDelete={() => setDeleteTarget(exercise)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {filtered.map((exercise: Exercise) => (
+                    <ExerciseCard
+                      key={exercise.id}
+                      exercise={exercise}
+                      onView={() => setViewExercise(exercise)}
+                      onEdit={() => setEditTarget(exercise)}
+                      onDelete={() => setDeleteTarget(exercise)}
+                    />
+                  ))}
+                </div>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                  totalItems={totalItems}
+                  pageSize={PAGE_SIZE}
+                  className="mt-6"
+                />
+              </>
             )}
           </main>
         </div>
@@ -141,6 +182,18 @@ export default function ExercisesPage() {
 
       {/* Modals */}
       <CreateExerciseModal open={showCreate} onOpenChange={setShowCreate} />
+
+      <EditExerciseModal
+        open={!!editTarget}
+        onOpenChange={(v) => !v && setEditTarget(null)}
+        exercise={editTarget}
+        onUpdated={(exercise) => {
+          setEditTarget(null);
+          setViewExercise((current) =>
+            current?.id === exercise.id ? exercise : current,
+          );
+        }}
+      />
 
       <ExerciseDetailModal
         open={!!viewExercise}

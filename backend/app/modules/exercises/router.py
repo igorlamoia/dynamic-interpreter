@@ -1,16 +1,30 @@
+import math
 from fastapi import APIRouter, Query
 
 from app.core.dependencies import AcademicUserIdDep, SessionDep
 from app.modules.exercises.service import (
-    create_exercise, get_exercise_in_context, list_exercises,
-    update_exercise, delete_exercise, add_test_case, delete_test_case,
+    add_test_case,
+    create_exercise,
+    delete_exercise,
+    delete_test_case,
+    get_exercise_in_context,
+    list_exercises,
+    list_exercises_paginated,
     list_own_submissions,
+    replace_exercise,
+    update_exercise,
 )
 from app.schemas.exercises import (
-    ExerciseCreate, ExerciseUpdate, ExerciseResponse, ExerciseSubmissionBrief,
-    TestCaseCreate, TestCaseResponse,
+    ExerciseCreate,
+    ExerciseReplace,
+    ExerciseResponse,
+    ExerciseSubmissionBrief,
+    ExerciseUpdate,
+    TestCaseCreate,
+    TestCaseResponse,
 )
 from app.schemas.languages import LanguageResponse
+from app.schemas.pagination import PaginatedResponse
 
 router = APIRouter(prefix="/exercises", tags=["exercises"])
 
@@ -20,8 +34,26 @@ async def create_exercise_endpoint(data: ExerciseCreate, user_id: AcademicUserId
     return await create_exercise(data, user_id, session)
 
 
-@router.get("", response_model=list[ExerciseResponse])
-async def list_exercises_endpoint(user_id: AcademicUserIdDep, session: SessionDep):
+@router.get("", response_model=PaginatedResponse[ExerciseResponse] | list[ExerciseResponse])
+async def list_exercises_endpoint(
+    user_id: AcademicUserIdDep,
+    session: SessionDep,
+    page: int | None = Query(default=None, ge=1),
+    page_size: int = Query(default=12, ge=1, le=100, alias="pageSize"),
+    q: str | None = Query(default=None, max_length=100),
+):
+    if page is not None:
+        items, total = await list_exercises_paginated(
+            user_id, session, page=page, page_size=page_size, query=q
+        )
+        total_pages = math.ceil(total / page_size) if total > 0 else 1
+        return PaginatedResponse(
+            items=[ExerciseResponse.model_validate(e) for e in items],
+            total=total,
+            page=page,
+            page_size=page_size,
+            total_pages=total_pages,
+        )
     return await list_exercises(user_id, session)
 
 
@@ -55,6 +87,16 @@ async def get_exercise_endpoint(
 @router.patch("/{exercise_id}", response_model=ExerciseResponse)
 async def update_exercise_endpoint(exercise_id: int, data: ExerciseUpdate, user_id: AcademicUserIdDep, session: SessionDep):
     return await update_exercise(exercise_id, user_id, data, session)
+
+
+@router.put("/{exercise_id}", response_model=ExerciseResponse)
+async def replace_exercise_endpoint(
+    exercise_id: int,
+    data: ExerciseReplace,
+    user_id: AcademicUserIdDep,
+    session: SessionDep,
+):
+    return await replace_exercise(exercise_id, user_id, data, session)
 
 
 @router.delete("/{exercise_id}", status_code=204)

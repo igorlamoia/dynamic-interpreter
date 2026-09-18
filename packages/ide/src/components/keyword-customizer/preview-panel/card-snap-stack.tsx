@@ -41,37 +41,43 @@ export function resolveCardSnapAccent(key: string): CardSnapAccent {
     case "entrada":
       return {
         activeButton:
-          "border-emerald-300/60 bg-emerald-300/15 text-emerald-200",
+          "border-emerald-300/60 bg-emerald-300/15 text-emerald-500 dark:text-emerald-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(52,211,153,0.85)]",
       };
     case "tipos":
       return {
-        activeButton: "border-cyan-300/60 bg-cyan-300/15 text-cyan-200",
+        activeButton:
+          "border-cyan-300/60 bg-cyan-300/15 text-cyan-500 dark:text-cyan-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(34,211,238,0.85)]",
       };
     case "lacos":
       return {
-        activeButton: "border-pink-300/60 bg-pink-300/15 text-pink-200",
+        activeButton:
+          "border-pink-300/60 bg-pink-300/15 text-pink-500 dark:text-pink-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(244,114,182,0.85)]",
       };
     case "fluxo":
       return {
-        activeButton: "border-violet-300/60 bg-violet-300/15 text-violet-200",
+        activeButton:
+          "border-violet-300/60 bg-violet-300/15 text-violet-500 dark:text-violet-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(196,181,253,0.85)]",
       };
     case "booleanos":
       return {
-        activeButton: "border-lime-300/60 bg-lime-300/15 text-lime-200",
+        activeButton:
+          "border-lime-300/60 bg-lime-300/15 text-lime-500 dark:text-lime-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(163,230,53,0.85)]",
       };
     case "operadores":
       return {
-        activeButton: "border-sky-300/60 bg-sky-300/15 text-sky-200",
+        activeButton:
+          "border-sky-300/60 bg-sky-300/15 text-sky-500 dark:text-sky-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(125,211,252,0.85)]",
       };
     default:
       return {
-        activeButton: "border-slate-300/60 bg-slate-300/15 text-slate-200",
+        activeButton:
+          "border-slate-300/60 bg-slate-300/15 text-slate-500 dark:text-slate-200",
         activeShadow: "shadow-[0_24px_70px_-44px_rgba(203,213,225,0.75)]",
       };
   }
@@ -184,7 +190,7 @@ export function CardSnapStack({
                 "focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
                 isActive
                   ? `${accent.activeButton} ${accent.activeShadow}`
-                  : "border-slate-800 bg-slate-950/55 hover:border-slate-600 hover:text-slate-200",
+                  : "dark:border-slate-800 dark:bg-slate-950/55 hover:border-slate-600 hover:text-slate-500 dark:text-slate-200",
               )}
             >
               {renderItemIcon(item)}

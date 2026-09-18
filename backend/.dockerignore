@@ -7,3 +7,7 @@ htmlcov
 tests
 *.pyc
 *.pyo
+.env
+.env.*
+!.env.example
+.git

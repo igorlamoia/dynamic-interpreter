@@ -14,9 +14,9 @@ export type TypeStepKeyword =
   | "float"
   | "bool"
   | "string"
-  | "variavel"
+  | "variable"
   | "void"
-  | "funcao";
+  | "function";
 
 export type TypeStepProps = {
   values: {
@@ -26,7 +26,7 @@ export type TypeStepProps = {
     typingMode: StoredKeywordCustomization["modes"]["typing"];
     printKeyword: string;
     typingBeamKeywords: {
-      variavel: string;
+      variable: string;
       string: string;
       float: string;
       int: string;
@@ -48,9 +48,9 @@ export type TypeStepProps = {
 type TypeKeywordField = TypeStepProps["values"]["variableKeywords"][number];
 
 const TYPE_REFERENCE_META: Partial<Record<string, KeywordReference>> = {
-  variavel: {
+  variable: {
     glyph: "x",
-    label: "VARIAVEL",
+    label: "VARIABLE",
     className: "text-amber-300 shadow-[0_0_20px_-8px_rgba(251,191,36,0.9)]",
   },
   void: {
@@ -58,9 +58,9 @@ const TYPE_REFERENCE_META: Partial<Record<string, KeywordReference>> = {
     label: "VOID",
     className: "text-slate-400 shadow-[0_0_20px_-8px_rgba(148,163,184,0.9)]",
   },
-  funcao: {
+  function: {
     glyph: "ƒ",
-    label: "FUNCAO",
+    label: "FUNCTION",
     className: "text-green-300 shadow-[0_0_20px_-8px_rgba(132,204,22,0.9)]",
   },
   int: {

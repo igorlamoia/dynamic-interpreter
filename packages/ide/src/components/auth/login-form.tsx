@@ -66,7 +66,7 @@ export function LoginForm({
                 </FormLabel>
                 <Link
                   href="#"
-                  className="text-xs text-[#0dccf2] hover:text-emerald-400 transition-colors"
+                  className="text-xs text-primary hover:text-emerald-400 transition-colors"
                 >
                   Esqueceu a senha?
                 </Link>

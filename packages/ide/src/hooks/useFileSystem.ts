@@ -8,9 +8,13 @@ export interface FileData {
   language: string;
 }
 
-export function useFileSystem() {
+export function useFileSystem(storageScope?: string) {
   const [files, setFiles] = useState<Map<string, FileData>>(new Map());
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const filesStorageKey = storageScope
+    ? `${storageScope}:files-storage`
+    : FILES_STORAGE_KEY;
 
   // Initialize files from localStorage
   useEffect(() => {
@@ -18,7 +22,7 @@ export function useFileSystem() {
       if (typeof window === "undefined") return;
 
       try {
-        const stored = localStorage.getItem(FILES_STORAGE_KEY);
+        const stored = localStorage.getItem(filesStorageKey);
         const filesMap = new Map<string, FileData>();
 
         if (stored) {
@@ -37,7 +41,7 @@ export function useFileSystem() {
     };
 
     initializeFiles();
-  }, []);
+  }, [filesStorageKey]);
 
   // Save files to localStorage whenever they change
   useEffect(() => {
@@ -45,11 +49,11 @@ export function useFileSystem() {
 
     try {
       const filesArray = Array.from(files.values());
-      localStorage.setItem(FILES_STORAGE_KEY, JSON.stringify(filesArray));
+      localStorage.setItem(filesStorageKey, JSON.stringify(filesArray));
     } catch (error) {
       console.error("Falha ao salvar arquivos no localStorage:", error);
     }
-  }, [files, isLoaded]);
+  }, [files, isLoaded, filesStorageKey]);
 
   const getFile = useCallback(
     (path: string): FileData | undefined => {

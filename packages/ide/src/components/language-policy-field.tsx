@@ -27,7 +27,9 @@ export function LanguagePolicyField({
             aria-label="Aberto"
             checked={value.policy === "OPEN"}
             disabled={disabled}
-            onChange={() => onChange({ policy: "OPEN", lockedLanguageId: null })}
+            onChange={() =>
+              onChange({ policy: "OPEN", lockedLanguageId: null })
+            }
           />
           Aberto (aluno usa sua linguagem)
         </label>
@@ -51,7 +53,7 @@ export function LanguagePolicyField({
       {value.policy === "LOCKED" && (
         <select
           aria-label="Linguagem"
-          className="h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 text-sm text-slate-100"
+          className="h-10 w-full rounded-md border border-input bg-background/80 px-3 text-sm text-foreground dark:border-white/10 dark:bg-black/30 dark:text-slate-100"
           value={value.lockedLanguageId ?? ""}
           disabled={disabled}
           onChange={(e) =>

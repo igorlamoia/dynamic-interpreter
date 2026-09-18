@@ -51,6 +51,8 @@ vi.mock("@/contexts/AuthContext", () => ({
 vi.mock("lucide-react", () => ({
   AlertCircle: () => <span>alert-circle</span>,
   CheckCircle2: () => <span>check-circle</span>,
+  ChevronLeft: () => <span>chevron-left</span>,
+  ChevronRight: () => <span>chevron-right</span>,
   Copy: () => <span>copy</span>,
   Dna: () => <span>dna</span>,
   Globe2: () => <span>globe</span>,
@@ -199,7 +201,7 @@ describe("LanguagesView", () => {
 
     click(container.querySelector('button[aria-label="Editar PtBr-Lang"]'));
 
-    expect(pushMock).toHaveBeenCalledWith("/language-creator?id=1");
+    expect(pushMock).toHaveBeenCalledWith("/language-creator/1");
 
     act(() => root.unmount());
   });

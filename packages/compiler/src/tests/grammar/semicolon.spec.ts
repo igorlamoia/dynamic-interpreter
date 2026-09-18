@@ -118,8 +118,8 @@ describe("Grammar Optional Semicolons", () => {
 
   it("should allow bare untyped scan without semicolon at end of line", () => {
     const source = `
-      funcao main() {
-        variavel x = 0;
+      function main() {
+        variable x = 0;
         scan(x)
       }
     `;

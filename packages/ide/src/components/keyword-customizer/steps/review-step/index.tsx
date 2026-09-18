@@ -78,7 +78,7 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
                   {values.preview.languageImageUrl ? (
                     <Image
                       src={values.preview.languageImageUrl}
-                      alt={values.preview.languageLabel}
+                      alt={values.preview.name}
                       width={64}
                       height={64}
                       className="rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700"
@@ -86,7 +86,7 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
                   ) : null}
                   <div className="space-y-1">
                     <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                      {values.preview.languageLabel}
+                      {values.preview.name}
                     </p>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
                       Baseado em {values.preview.basedOnLabel}

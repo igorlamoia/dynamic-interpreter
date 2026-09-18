@@ -20,8 +20,8 @@ RUN uv sync --frozen --no-cache
 # Copy application code
 COPY . .
 
-# Make entrypoint executable
-RUN chmod +x entrypoint.sh
+# Windows checkouts may use CRLF; the Linux shell requires LF.
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 
 # Expose port
 EXPOSE 8000

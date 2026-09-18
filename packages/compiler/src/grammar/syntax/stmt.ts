@@ -52,7 +52,7 @@ export function stmt(iterator: TokenIterator): void {
           [RESERVEDS.string]: declarationStmt,
         }
       : {
-          [RESERVEDS.variavel]: declarationStmt,
+          [RESERVEDS.variable]: declarationStmt,
         }),
     [RESERVEDS.return]: returnStmt,
     [RESERVEDS.break]: breakStmt,

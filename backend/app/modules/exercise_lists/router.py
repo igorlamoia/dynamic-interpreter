@@ -1,3 +1,4 @@
+import math
 from fastapi import APIRouter, Query
 
 from app.core.dependencies import AcademicUserIdDep, SessionDep
@@ -7,6 +8,7 @@ from app.modules.exercise_lists.service import (
     get_exercise_list,
     get_submitted_exercise_ids,
     list_exercise_lists,
+    list_exercise_lists_paginated,
     publish_exercise_list,
     remove_exercise_from_list,
     update_exercise_list,
@@ -20,12 +22,31 @@ from app.schemas.exercise_lists import (
     PublishRequest,
     PublishResponse,
 )
+from app.schemas.pagination import PaginatedResponse
 
 router = APIRouter(prefix="/exercise-lists", tags=["exercise-lists"])
 
 
-@router.get("", response_model=list[ExerciseListResponse])
-async def list_exercise_lists_endpoint(user_id: AcademicUserIdDep, session: SessionDep):
+@router.get("", response_model=PaginatedResponse[ExerciseListResponse] | list[ExerciseListResponse])
+async def list_exercise_lists_endpoint(
+    user_id: AcademicUserIdDep,
+    session: SessionDep,
+    page: int | None = Query(default=None, ge=1),
+    page_size: int = Query(default=12, ge=1, le=100, alias="pageSize"),
+    q: str | None = Query(default=None, max_length=100),
+):
+    if page is not None:
+        items, total = await list_exercise_lists_paginated(
+            user_id, session, page=page, page_size=page_size, query=q
+        )
+        total_pages = math.ceil(total / page_size) if total > 0 else 1
+        return PaginatedResponse(
+            items=[ExerciseListResponse.model_validate(el) for el in items],
+            total=total,
+            page=page,
+            page_size=page_size,
+            total_pages=total_pages,
+        )
     lists = await list_exercise_lists(user_id, session)
     return [ExerciseListResponse.model_validate(el) for el in lists]
 

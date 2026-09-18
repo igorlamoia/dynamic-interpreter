@@ -9,6 +9,7 @@ export const SYMBOLS = {
   left_bracket: 60, // [
   right_bracket: 61, // ]
   colon: 53, // :
+  question: 65, // ?
   newline: 54,
   indent: 58,
   dedent: 59,

@@ -3,6 +3,19 @@ import { Lexer } from "../../lexer";
 import { TOKENS } from "../../token/constants";
 
 describe("operator word aliases", () => {
+  it("accepts ç and Ç in customized lexemes", () => {
+    const lexer = new Lexer("começar maçcaÇ", {
+      customKeywords: { começar: TOKENS.RESERVEDS.print },
+      operatorWordMap: { logical_and: "maçcaÇ" },
+    });
+
+    const tokens = lexer.scanTokens();
+    expect(tokens.map((token) => token.type)).toEqual([
+      TOKENS.RESERVEDS.print,
+      TOKENS.LOGICALS.logical_and,
+    ]);
+  });
+
   it("tokenizes logical aliases with the same token IDs as symbols", () => {
     const lexer = new Lexer("if a and not b {}", {
       operatorWordMap: {

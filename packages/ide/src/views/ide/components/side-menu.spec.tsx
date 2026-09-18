@@ -40,6 +40,7 @@ vi.mock("lucide-react", () => ({
   Languages: () => <span>languages</span>,
   Search: () => <span>search</span>,
   Settings: () => <span>settings</span>,
+  Sparkles: () => <span>sparkles</span>,
 }));
 
 describe("SideMenu", () => {
@@ -72,7 +73,7 @@ describe("SideMenu", () => {
     });
 
     const settingsButton = container.querySelector(
-      'button[aria-label="Configurações"]',
+      'button[aria-label="Linguagem personalizada"]',
     );
     expect(settingsButton).toBeTruthy();
 

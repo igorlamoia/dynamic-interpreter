@@ -1,7 +1,9 @@
 from datetime import datetime
 
-from pydantic import Field
 from typing import Literal
+
+from pydantic import Field
+
 from app.schemas.base import CamelModel
 from app.models.language import LanguagePolicy
 from app.models.submission import SubmissionStatus
@@ -30,6 +32,7 @@ class ExerciseCreate(CamelModel):
     attachments: str = ""
     language_policy: LanguagePolicy = LanguagePolicy.OPEN
     locked_language_id: int | None = None
+    test_cases: list[TestCaseCreate] = Field(default_factory=list)
 
 
 class ExerciseUpdate(CamelModel):
@@ -38,6 +41,15 @@ class ExerciseUpdate(CamelModel):
     attachments: str | None = None
     language_policy: LanguagePolicy | None = None
     locked_language_id: int | None = None
+
+
+class ExerciseReplace(CamelModel):
+    title: str
+    description: str
+    attachments: str = ""
+    language_policy: LanguagePolicy = LanguagePolicy.OPEN
+    locked_language_id: int | None = None
+    test_cases: list[TestCaseCreate] = Field(default_factory=list)
 
 
 class ExerciseSubmissionBrief(CamelModel):

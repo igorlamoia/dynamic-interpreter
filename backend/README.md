@@ -2,6 +2,73 @@
 
 Serviço FastAPI independente que substitui as API Routes do Next.js. Fornece autenticação, gerenciamento de turmas, exercícios e submissões para o IDE de Java--.
 
+## Windows: backend no Docker, frontend no computador
+
+No PowerShell, dentro de `backend`, com o Docker Desktop iniciado em modo Linux containers:
+
+```powershell
+docker compose -f ../docker-compose.local.yml up -d --build --wait backend
+```
+
+Esse comando inicia somente a API e sua dependência PostgreSQL. Não precisa instalar
+Python, uv ou PostgreSQL no Windows, nem copiar/editar `backend/.env`: o Compose local
+já define as variáveis. A API usa `database:5432` dentro da rede Docker. O Compose
+aguarda o PostgreSQL ficar saudável; o entrypoint aplica migrations e executa o seed
+antes de iniciar a API. As credenciais do Compose são apenas para desenvolvimento local.
+
+- API: http://localhost:8000
+- Swagger: http://localhost:8000/docs
+- Frontend: http://localhost:3001
+- PostgreSQL, para um cliente no Windows: `localhost:5434`, banco/usuário
+  `tscompilator_local`, senha `local_only_password`.
+
+Em outro PowerShell, na raiz do repositório (um nível acima de `backend`):
+
+```powershell
+npm.cmd install
+$env:NEXT_PUBLIC_API_URL = "http://localhost:8000"
+npm.cmd run dev --workspace=packages/ide
+```
+
+Defina essa variável em cada terminal antes de iniciar o frontend. Ela tem precedência
+sobre a URL hospedada em `packages/ide/.env`. Para persistir a configuração, defina
+`NEXT_PUBLIC_API_URL=http://localhost:8000` em `packages/ide/.env.local`.
+Reinicie o frontend depois de alterar a URL. Use `localhost:3001` para corresponder ao CORS.
+
+Contas de demonstração: `professor@gmail.com` / `professor` e
+`aluno@gmail.com` / `aluno`. O seed é executado em cada inicialização e redefine
+as contas de demonstração e as linguagens oficiais.
+
+Comandos úteis, dentro de `backend`:
+
+```powershell
+# Estado e logs
+docker compose -f ../docker-compose.local.yml ps
+docker compose -f ../docker-compose.local.yml logs --tail=100 -f backend
+
+# Verificar API
+Invoke-RestMethod http://localhost:8000/health
+
+# Reconstruir após alterações no código Python (não há hot reload)
+docker compose -f ../docker-compose.local.yml up -d --build --wait backend
+
+# Parar mantendo os dados
+docker compose -f ../docker-compose.local.yml stop backend database
+
+# Remover containers/rede mantendo o volume do banco
+docker compose -f ../docker-compose.local.yml down
+```
+
+Os dados ficam no volume `ts-compilator-local-postgres-data`. Não use `down -v`
+a menos que queira apagar o banco local. O primeiro build pode levar alguns minutos.
+Se a porta 8000 estiver ocupada, execute `$env:LOCAL_BACKEND_PORT = "8001"` antes
+do comando Compose e use `http://localhost:8001` no frontend e nas verificações.
+Para conflito na porta do banco, use `$env:LOCAL_DB_PORT = "5435"`; a conexão
+entre API e banco continua usando `database:5432`.
+
+Os passos de instalação manual abaixo são uma alternativa ao Docker.
+
+
 ## Stack
 
 | Tecnologia                     | Uso                         |

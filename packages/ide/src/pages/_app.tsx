@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppPropsWithAuth) {
         <AuthLayout>
           <AlertProvider>
             <ToastProvider>
-              <div className="bg-white dark:bg-[#202020] text-gray-900 dark:text-gray-100 transition-colors duration-300">
+              <div className="bg-background text-foreground transition-colors duration-300">
                 <AuthGuard requireAuth={Component.requireAuth}>
                   <Component {...pageProps} />
                 </AuthGuard>

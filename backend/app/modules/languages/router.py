@@ -1,3 +1,4 @@
+import math
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query
@@ -9,7 +10,9 @@ from app.modules.languages.service import (
     delete_language,
     get_language,
     list_public_languages,
+    list_public_languages_paginated,
     list_my_languages,
+    list_my_languages_paginated,
     set_language_publication,
     update_language,
 )
@@ -20,12 +23,31 @@ from app.schemas.languages import (
     LanguageSummary,
     LanguageUpdate,
 )
+from app.schemas.pagination import PaginatedResponse
 
 router = APIRouter(prefix="/languages", tags=["languages"])
 
 
-@router.get("", response_model=list[LanguageSummary])
-async def list_endpoint(user_id: CurrentUserIdDep, session: SessionDep):
+@router.get("", response_model=PaginatedResponse[LanguageSummary] | list[LanguageSummary])
+async def list_endpoint(
+    user_id: CurrentUserIdDep,
+    session: SessionDep,
+    page: int | None = Query(default=None, ge=1),
+    page_size: int = Query(default=12, ge=1, le=100, alias="pageSize"),
+    q: str | None = Query(default=None, max_length=100),
+):
+    if page is not None:
+        items, total = await list_my_languages_paginated(
+            user_id, session, page=page, page_size=page_size, query=q
+        )
+        total_pages = math.ceil(total / page_size) if total > 0 else 1
+        return PaginatedResponse(
+            items=items,
+            total=total,
+            page=page,
+            page_size=page_size,
+            total_pages=total_pages,
+        )
     return await list_my_languages(user_id, session)
 
 
@@ -36,7 +58,7 @@ async def create_endpoint(
     return await create_language(data, user_id, session)
 
 
-@router.get("/community", response_model=list[LanguageSummary])
+@router.get("/community", response_model=PaginatedResponse[LanguageSummary] | list[LanguageSummary])
 async def community_list_endpoint(
     user_id: CurrentUserIdDep,
     session: SessionDep,
@@ -47,8 +69,30 @@ async def community_list_endpoint(
     semicolon: Literal["optional-eol", "required"] | None = None,
     limit: Annotated[int, Query(ge=1, le=100)] = 24,
     offset: Annotated[int, Query(ge=0)] = 0,
+    page: Annotated[int | None, Query(ge=1)] = None,
+    page_size: Annotated[int | None, Query(ge=1, le=100, alias="pageSize")] = None,
 ):
     del user_id  # autenticação obrigatória; o catálogo é igual para todos.
+    if page is not None:
+        effective_page_size = page_size or limit
+        items, total = await list_public_languages_paginated(
+            session,
+            query=q,
+            typing=typing,
+            array=array,
+            block=block,
+            semicolon=semicolon,
+            page=page,
+            page_size=effective_page_size,
+        )
+        total_pages = math.ceil(total / effective_page_size) if total > 0 else 1
+        return PaginatedResponse(
+            items=items,
+            total=total,
+            page=page,
+            page_size=effective_page_size,
+            total_pages=total_pages,
+        )
     return await list_public_languages(
         session,
         query=q,

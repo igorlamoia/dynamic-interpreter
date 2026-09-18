@@ -8,11 +8,19 @@ import {
 } from "@/hooks/useLanguages";
 import { languagesApi } from "@/lib/languages-api";
 import {
+  ACTIVE_KEYWORD_CUSTOMIZATION_STORAGE_KEY,
+  ACTIVE_SAVED_KEYWORD_LANGUAGE_STORAGE_KEY,
   listSavedKeywordLanguages,
   loadActiveSavedKeywordLanguage,
   loadSavedKeywordLanguage,
   setActiveSavedKeywordLanguage,
 } from "@/lib/keyword-language-storage";
+import {
+  DEFAULT_LANGUAGES,
+  PORTUGOL_LANGUAGE_KEY,
+  getDefaultLanguage,
+  isDefaultLanguageKey,
+} from "@/lib/default-languages";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 
 export type LanguageChoice = {
@@ -31,6 +39,11 @@ export type ActiveLanguageDetail = {
   customization: StoredKeywordCustomization;
 };
 
+function getBrowserLocalStorage(): Storage | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage ?? null;
+}
+
 /**
  * Fonte única das linguagens oferecidas no IDE.
  *
@@ -45,7 +58,7 @@ export type ActiveLanguageDetail = {
  */
 export function useLanguageChoices() {
   const { isAuthenticated } = useAuth();
-  const { setCustomization } = useKeywords();
+  const { externalLanguageOverlay, setCustomization } = useKeywords();
   const listQuery = useLanguagesList(isAuthenticated);
   const activeQuery = useActiveLanguage(isAuthenticated);
   const setActiveMut = useSetActiveLanguage();
@@ -53,6 +66,17 @@ export function useLanguageChoices() {
   const [localChoices, setLocalChoices] = useState<LanguageChoice[]>([]);
   const [localActive, setLocalActive] = useState<ActiveLanguageDetail | null>(
     null,
+  );
+  const [activeDefaultKey, setActiveDefaultKey] = useState<string | null>(null);
+
+  const defaultChoices = useMemo<LanguageChoice[]>(
+    () =>
+      DEFAULT_LANGUAGES.map((language) => ({
+        key: language.key,
+        name: language.name,
+        imageUrl: language.imageUrl,
+      })),
+    [],
   );
 
   useEffect(() => {
@@ -67,6 +91,18 @@ export function useLanguageChoices() {
     );
 
     const saved = loadActiveSavedKeywordLanguage();
+    const activeStorageKey = getBrowserLocalStorage()?.getItem(
+      ACTIVE_SAVED_KEYWORD_LANGUAGE_STORAGE_KEY,
+    );
+
+    if (!saved && activeStorageKey && isDefaultLanguageKey(activeStorageKey)) {
+      setActiveDefaultKey(activeStorageKey);
+    } else if (!saved) {
+      setActiveDefaultKey(PORTUGOL_LANGUAGE_KEY);
+    } else {
+      setActiveDefaultKey(null);
+    }
+
     setLocalActive(
       saved
         ? {
@@ -81,20 +117,69 @@ export function useLanguageChoices() {
   }, [isAuthenticated]);
 
   const choices = useMemo<LanguageChoice[]>(() => {
-    if (!isAuthenticated) return localChoices;
+    if (externalLanguageOverlay) {
+      return [
+        {
+          key: String(externalLanguageOverlay.id),
+          name: externalLanguageOverlay.name,
+          imageUrl: externalLanguageOverlay.imageUrl,
+        },
+      ];
+    }
 
-    return (listQuery.data ?? []).map((language) => ({
-      key: String(language.id),
-      name: language.name,
-      imageUrl: language.imageUrl ?? "",
-    }));
-  }, [isAuthenticated, listQuery.data, localChoices]);
+    if (!isAuthenticated) return [...defaultChoices, ...localChoices];
+
+    return [
+      ...defaultChoices,
+      ...(listQuery.data ?? []).map((language) => ({
+        key: String(language.id),
+        name: language.name,
+        imageUrl: language.imageUrl ?? "",
+      })),
+    ];
+  }, [
+    defaultChoices,
+    externalLanguageOverlay,
+    isAuthenticated,
+    listQuery.data,
+    localChoices,
+  ]);
 
   const activeLanguage = useMemo<ActiveLanguageDetail | null>(() => {
+    if (externalLanguageOverlay) {
+      return {
+        key: String(externalLanguageOverlay.id),
+        name: externalLanguageOverlay.name,
+        description: externalLanguageOverlay.description,
+        imageUrl: externalLanguageOverlay.imageUrl,
+        customization: externalLanguageOverlay.customization,
+      };
+    }
+
+    if (activeDefaultKey) {
+      const language = getDefaultLanguage(activeDefaultKey);
+      return {
+        key: language.key,
+        name: language.name,
+        description: language.description,
+        imageUrl: language.imageUrl,
+        customization: language.customization,
+      };
+    }
+
     if (!isAuthenticated) return localActive;
 
     const language = activeQuery.data;
-    if (!language) return null;
+    if (!language) {
+      const fallbackLanguage = getDefaultLanguage(PORTUGOL_LANGUAGE_KEY);
+      return {
+        key: fallbackLanguage.key,
+        name: fallbackLanguage.name,
+        description: fallbackLanguage.description,
+        imageUrl: fallbackLanguage.imageUrl,
+        customization: fallbackLanguage.customization,
+      };
+    }
 
     return {
       key: String(language.id),
@@ -103,12 +188,37 @@ export function useLanguageChoices() {
       imageUrl: language.imageUrl ?? "",
       customization: language.customization,
     };
-  }, [activeQuery.data, isAuthenticated, localActive]);
+  }, [
+    activeDefaultKey,
+    activeQuery.data,
+    externalLanguageOverlay,
+    isAuthenticated,
+    localActive,
+  ]);
 
   const activeKey = activeLanguage?.key ?? "";
+  const isSelectionLocked = externalLanguageOverlay !== null;
 
   const selectLanguage = useCallback(
     async (key: string) => {
+      if (externalLanguageOverlay) return;
+
+      if (isDefaultLanguageKey(key)) {
+        const language = getDefaultLanguage(key);
+        const storage = getBrowserLocalStorage();
+        if (storage) {
+          storage.setItem(ACTIVE_SAVED_KEYWORD_LANGUAGE_STORAGE_KEY, key);
+          storage.setItem(
+            ACTIVE_KEYWORD_CUSTOMIZATION_STORAGE_KEY,
+            JSON.stringify(language.customization),
+          );
+        }
+        setActiveDefaultKey(key);
+        setLocalActive(null);
+        setCustomization(language.customization);
+        return;
+      }
+
       if (isAuthenticated) {
         const languageId = Number.parseInt(key, 10);
         if (!Number.isInteger(languageId)) return;
@@ -116,6 +226,7 @@ export function useLanguageChoices() {
         // O detalhe traz a `customization`, que o resumo da lista não tem.
         const language = await languagesApi.get(languageId);
         await setActiveMut.mutateAsync(languageId);
+        setActiveDefaultKey(null);
         setCustomization(language.customization);
         return;
       }
@@ -124,6 +235,7 @@ export function useLanguageChoices() {
       if (!language) return;
 
       setActiveSavedKeywordLanguage(key);
+      setActiveDefaultKey(null);
       setCustomization(language.customization);
       setLocalActive({
         key: language.slug,
@@ -133,8 +245,14 @@ export function useLanguageChoices() {
         customization: language.customization,
       });
     },
-    [isAuthenticated, setActiveMut, setCustomization],
+    [externalLanguageOverlay, isAuthenticated, setActiveMut, setCustomization],
   );
 
-  return { choices, activeKey, activeLanguage, selectLanguage };
+  return {
+    choices,
+    activeKey,
+    activeLanguage,
+    isSelectionLocked,
+    selectLanguage,
+  };
 }

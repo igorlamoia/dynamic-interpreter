@@ -8,13 +8,16 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { normalizeStoredKeywordCustomization } from "@/contexts/keyword/KeywordContext";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import {
-  useKeywords,
-} from "@/contexts/keyword/KeywordContext";
-import type { BlockDelimiters, KeywordMapping, StoredKeywordCustomization } from "@/contexts/keyword/types";
+import { useKeywords } from "@/contexts/keyword/KeywordContext";
+import type {
+  BlockDelimiters,
+  KeywordMapping,
+  StoredKeywordCustomization,
+} from "@/contexts/keyword/types";
 import type {
   IDEBooleanLiteralMap,
   IDEKeywordCustomizationState,
@@ -83,10 +86,12 @@ export function KeywordCustomizerProvider({
     validateKeyword,
     validateBlockDelimiters,
   } = useKeywords();
-  // Quando o wizard abre em `?id=N`, a linguagem carregada é a base da sessão
+  // Quando o wizard abre em `/language-creator/[id]`, a linguagem carregada é a base da sessão
   // inteira: rascunho, formulário e presets partem dela, não da customização
   // global ativa.
-  const seededCustomization = initialLanguage?.customization ?? customization;
+  const seededCustomization = initialLanguage?.customization
+    ? normalizeStoredKeywordCustomization(initialLanguage.customization)
+    : customization;
   const [draftCustomization, setDraftCustomization] =
     useState<IDEKeywordCustomizationState>(seededCustomization);
   const [currentError, setCurrentError] = useState<string | null>(null);
@@ -106,26 +111,29 @@ export function KeywordCustomizerProvider({
   const [selectedPresetId, setSelectedPresetId] = useState<WizardPresetId>(
     (initialLanguage?.presetId as WizardPresetId | null) ?? "free",
   );
-  const [languageName, setLanguageNameState] = useState(
-    initialLanguage?.name ?? "",
-  );
-  const [languageDescription, setLanguageDescription] = useState(
-    initialLanguage?.description ?? "",
-  );
-  const [languageImageUrl, setLanguageImageUrl] = useState(
-    initialLanguage?.imageUrl ?? "",
-  );
-  const [languageImageQuery, setLanguageImageQuery] = useState(
-    initialLanguage?.imageQuery ?? "",
-  );
-  const [languageImageResults, setLanguageImageResults] = useState<
-    IdentityImageSearchResult[]
-  >([]);
-  const [isSearchingLanguageImages, setIsSearchingLanguageImages] =
-    useState(false);
-  const [languageImageSearchError, setLanguageImageSearchError] = useState<
-    string | null
-  >(null);
+  const [identity, setIdentity] = useState({
+    name: initialLanguage?.name ?? "",
+    description: initialLanguage?.description ?? "",
+    imageUrl: initialLanguage?.imageUrl ?? "",
+  });
+  const [imageSearch, setImageSearch] = useState<{
+    query: string;
+    results: IdentityImageSearchResult[];
+    isSearching: boolean;
+    error: string | null;
+  }>({
+    query: initialLanguage?.imageQuery ?? "",
+    results: [],
+    isSearching: false,
+    error: null,
+  });
+  const { name, description, imageUrl: languageImageUrl } = identity;
+  const {
+    query: languageImageQuery,
+    results: languageImageResults,
+    isSearching: isSearchingLanguageImages,
+    error: languageImageSearchError,
+  } = imageSearch;
   const { mutateAsync: searchLanguageImagesMutation } = useMutation({
     mutationFn: async (query: string) => {
       const response = await fetch(
@@ -146,11 +154,8 @@ export function KeywordCustomizerProvider({
   });
   const wizardSessionBaseCustomization = useRef(seededCustomization);
   const shouldReturnOnExit = useRef(false);
-  // O efeito de reset abaixo zera identidade e rascunho sempre que a
-  // customização global muda — inclusive na montagem. Com `?id=N` isso
-  // apagaria a linguagem que acabamos de semear, então a primeira execução é
-  // pulada quando há uma linguagem em edição.
-  const shouldSkipInitialReset = useRef(initialLanguage !== null);
+  // Edit sessions keep their server-provided state across global hydration.
+  const isEditingSession = useRef(initialLanguage !== null);
   const form = useForm<StoredKeywordCustomization>({
     defaultValues: seededCustomization,
   });
@@ -180,8 +185,7 @@ export function KeywordCustomizerProvider({
   }, []);
 
   useEffect(() => {
-    if (shouldSkipInitialReset.current) {
-      shouldSkipInitialReset.current = false;
+    if (isEditingSession.current) {
       return;
     }
 
@@ -195,13 +199,8 @@ export function KeywordCustomizerProvider({
     setActiveWizardStepId("identity");
     setVisitedWizardStepIds(["identity"]);
     setSelectedPresetId("free");
-    setLanguageNameState("");
-    setLanguageDescription("");
-    setLanguageImageUrl("");
-    setLanguageImageQuery("");
-    setLanguageImageResults([]);
-    setIsSearchingLanguageImages(false);
-    setLanguageImageSearchError(null);
+    setIdentity({ name: "", description: "", imageUrl: "" });
+    setImageSearch({ query: "", results: [], isSearching: false, error: null });
   }, [customization, syncDraftCustomization]);
 
   const getOperatorValidationDelimiters = useCallback(
@@ -299,7 +298,8 @@ export function KeywordCustomizerProvider({
       ) ||
       OPERATOR_WORD_FIELDS.some(
         ({ key }) =>
-          draftCustomization.operatorWordMap[key] !== customization.operatorWordMap[key],
+          draftCustomization.operatorWordMap[key] !==
+          customization.operatorWordMap[key],
       ) ||
       draftCustomization.booleanLiteralMap.true !==
         customization.booleanLiteralMap.true ||
@@ -338,7 +338,11 @@ export function KeywordCustomizerProvider({
       syncDraftCustomization(nextDraft);
       setCurrentError(
         nextMapping
-          ? validateDraftKeyword(original, nextMapping.custom, nextDraft.mappings)
+          ? validateDraftKeyword(
+              original,
+              nextMapping.custom,
+              nextDraft.mappings,
+            )
           : null,
       );
     },
@@ -366,7 +370,9 @@ export function KeywordCustomizerProvider({
 
   const syncDelimiter = useCallback(
     (field: keyof BlockDelimiters, value: string) => {
-      syncDraftCustomization((current) => syncDelimiterInDraft(current, field, value));
+      syncDraftCustomization((current) =>
+        syncDelimiterInDraft(current, field, value),
+      );
     },
     [syncDraftCustomization],
   );
@@ -444,14 +450,14 @@ export function KeywordCustomizerProvider({
       buildWizardPreview(draftCustomization, {
         activeStepId: activeStep.id,
         presetId: selectedPresetId,
-        languageName,
+        name,
         languageImageUrl,
       }),
     [
       activeStep.id,
       draftCustomization,
       languageImageUrl,
-      languageName,
+      name,
       selectedPresetId,
     ],
   );
@@ -479,7 +485,7 @@ export function KeywordCustomizerProvider({
       const visibleVariableKeywords =
         draftCustomization.modes.typing === "typed"
           ? ["int", "float", "bool", "string"]
-          : ["variavel"];
+          : ["variable"];
       const keywordError = validateWizardKeywordGroup(visibleVariableKeywords);
       if (keywordError) return;
     }
@@ -516,8 +522,8 @@ export function KeywordCustomizerProvider({
     [syncDraftCustomization],
   );
 
-  const setLanguageName = useCallback((value: string) => {
-    setLanguageNameState(value);
+  const setName = useCallback((value: string) => {
+    setIdentity((current) => ({ ...current, name: value }));
     if (value.trim()) {
       setCurrentError((current) =>
         current === "Informe um nome para a linguagem." ? null : current,
@@ -525,38 +531,45 @@ export function KeywordCustomizerProvider({
     }
   }, []);
 
+  const setDescription = useCallback((value: string) => {
+    setIdentity((current) => ({ ...current, description: value }));
+  }, []);
+
   const setImageSearchQuery = useCallback((value: string) => {
-    setLanguageImageQuery(value);
+    setImageSearch((current) => ({ ...current, query: value }));
   }, []);
 
   const searchLanguageImages = useCallback(async () => {
     const trimmedQuery = languageImageQuery.trim();
     if (!trimmedQuery) {
-      setLanguageImageSearchError("Digite um termo para buscar imagens.");
-      setLanguageImageResults([]);
+      setImageSearch((current) => ({
+        ...current,
+        error: "Digite um termo para buscar imagens.",
+        results: [],
+      }));
       return;
     }
 
-    setIsSearchingLanguageImages(true);
-    setLanguageImageSearchError(null);
+    setImageSearch((current) => ({ ...current, isSearching: true, error: null }));
 
     try {
       const images = await searchLanguageImagesMutation(trimmedQuery);
-      setLanguageImageResults(images);
+      setImageSearch((current) => ({ ...current, results: images }));
     } catch (error) {
-      setLanguageImageResults([]);
-      setLanguageImageSearchError(
-        error instanceof Error
+      setImageSearch((current) => ({
+        ...current,
+        results: [],
+        error: error instanceof Error
           ? error.message
           : "Nao foi possivel buscar imagens agora.",
-      );
+      }));
     } finally {
-      setIsSearchingLanguageImages(false);
+      setImageSearch((current) => ({ ...current, isSearching: false }));
     }
   }, [languageImageQuery, searchLanguageImagesMutation]);
 
   const selectLanguageImage = useCallback((imageUrl: string) => {
-    setLanguageImageUrl(imageUrl);
+    setIdentity((current) => ({ ...current, imageUrl }));
   }, []);
 
   const resetDraft = useCallback(() => {
@@ -573,13 +586,8 @@ export function KeywordCustomizerProvider({
     setActiveWizardStepId("identity");
     setVisitedWizardStepIds(["identity"]);
     setSelectedPresetId("free");
-    setLanguageNameState("");
-    setLanguageDescription("");
-    setLanguageImageUrl("");
-    setLanguageImageQuery("");
-    setLanguageImageResults([]);
-    setIsSearchingLanguageImages(false);
-    setLanguageImageSearchError(null);
+    setIdentity({ name: "", description: "", imageUrl: "" });
+    setImageSearch({ query: "", results: [], isSearching: false, error: null });
   }, [setCustomization, syncDraftCustomization]);
 
   const exit = useCallback(() => {
@@ -592,8 +600,8 @@ export function KeywordCustomizerProvider({
   }, [router]);
 
   const save = useCallback(() => {
-    const trimmedLanguageName = languageName.trim();
-    if (!trimmedLanguageName) {
+    const trimmedName = name.trim();
+    if (!trimmedName) {
       setCurrentError("Informe um nome para a linguagem.");
       setActiveWizardStepId("identity");
       return;
@@ -693,8 +701,8 @@ export function KeywordCustomizerProvider({
     setOperatorError(null);
 
     void persist({
-      name: trimmedLanguageName,
-      description: languageDescription.trim(),
+      name: trimmedName,
+      description: description.trim(),
       imageUrl: languageImageUrl,
       imageQuery: languageImageQuery.trim(),
       presetId: selectedPresetId,
@@ -737,8 +745,8 @@ export function KeywordCustomizerProvider({
     getOperatorValidationDelimiters,
     languageImageQuery,
     languageImageUrl,
-    languageDescription,
-    languageName,
+    description,
+    name,
     persist,
     router,
     selectedPresetId,
@@ -753,15 +761,16 @@ export function KeywordCustomizerProvider({
     preview,
     errors: {
       ...errors,
-      currentError: getActiveWizardStepError(activeStep.id, errors) ?? currentError,
+      currentError:
+        getActiveWizardStepError(activeStep.id, errors) ?? currentError,
     },
     activeStep,
     activeStepIndex,
     visibleSteps,
     visitedStepIds: visitedWizardStepIds,
     selectedPresetId,
-    languageName,
-    languageDescription,
+    name,
+    description,
     languageImageUrl,
     languageImageQuery,
     languageImageResults,
@@ -783,8 +792,8 @@ export function KeywordCustomizerProvider({
       goToNextWizardStep,
       goToPreviousWizardStep,
       applyPreset,
-      setLanguageName,
-      setLanguageDescription,
+      setName,
+      setDescription,
       setImageSearchQuery,
       searchLanguageImages,
       selectLanguageImage,

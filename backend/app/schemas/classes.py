@@ -1,4 +1,5 @@
 from datetime import datetime
+from pydantic import Field
 from app.schemas.base import CamelModel
 from app.models.class_ import ClassStatus
 from app.models.user import UserRole
@@ -16,6 +17,19 @@ class ClassUpdate(CamelModel):
     status: ClassStatus | None = None
 
 
+class ClassCount(CamelModel):
+    members: int = 0
+    exercise_lists: int = 0
+
+
+class TeacherBrief(CamelModel):
+    id: int
+    name: str
+    email: str
+    avatar_url: str | None = None
+    role: UserRole
+
+
 class ClassResponse(CamelModel):
     id: int
     organization_id: int
@@ -25,6 +39,11 @@ class ClassResponse(CamelModel):
     access_code: str
     created_at: datetime
     status: ClassStatus
+
+
+class ClassSummaryResponse(ClassResponse):
+    count_: ClassCount = Field(default_factory=ClassCount, alias="_count")
+    teacher: TeacherBrief | None = None
 
 
 class JoinClassRequest(CamelModel):
@@ -66,14 +85,6 @@ class MemberWithProgress(CamelModel):
     bio: str | None = None
     joined_at: datetime
     progress: MemberProgress
-
-
-class TeacherBrief(CamelModel):
-    id: int
-    name: str
-    email: str
-    avatar_url: str | None = None
-    role: UserRole
 
 
 class ClassMembersResponse(CamelModel):

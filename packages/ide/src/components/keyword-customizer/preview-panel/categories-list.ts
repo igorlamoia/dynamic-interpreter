@@ -28,7 +28,7 @@ export const PREVIEW_CATEGORIES: PreviewCategory[] = [
     key: "tipos",
     title: "TIPOS E DECLARACOES",
     subtitle: "Valores, tipos e definições principais da linguagem.",
-    lexemes: ["int", "float", "bool", "string", "void", "variavel", "funcao"],
+    lexemes: ["int", "float", "bool", "string", "void", "variable", "function"],
     icon: Type,
   },
 

@@ -26,8 +26,8 @@ const STYLED_KEYWORDS = [
   "switch",
   "case",
   "default",
-  "variavel",
-  "funcao",
+  "variable",
+  "function",
 ] as const;
 
 const DEFAULT_OPERATOR_WORD_KEYS = [
@@ -61,8 +61,8 @@ const DIDACTIC_PT_EXPECTED = {
     switch: "escolha",
     case: "caso",
     default: "padrao",
-    variavel: "variavel",
-    funcao: "funcao",
+    variable: "variavel",
+    function: "funcao",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -105,8 +105,8 @@ const MINIMAL_EXPECTED = {
     switch: "sw",
     case: "cs",
     default: "df",
-    variavel: "var",
-    funcao: "fn",
+    variable: "var",
+    function: "fn",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -119,9 +119,9 @@ const MINIMAL_EXPECTED = {
     equal_equal: "eq",
     not_equal: "neq",
   },
-  booleanLiteralMap: { true: "1", false: "0" },
-  statementTerminatorLexeme: ".",
-  blockDelimiters: { open: "[", close: "]" },
+  booleanLiteralMap: { true: "tr", false: "fa" },
+  statementTerminatorLexeme: "",
+  blockDelimiters: { open: "", close: "" },
   modes: {
     semicolon: "optional-eol",
     block: "delimited",
@@ -149,8 +149,8 @@ const PYTHON_LIKE_EXPECTED = {
     switch: "match",
     case: "case",
     default: "padrao",
-    variavel: "nome",
-    funcao: "defina",
+    variable: "nome",
+    function: "defina",
   },
   operatorWordMap: {
     logical_or: "ou",
@@ -193,8 +193,8 @@ const MINERES_LIKE_EXPECTED = {
     switch: "dependenu",
     case: "du_casu",
     default: "deixa_assim",
-    variavel: "trem",
-    funcao: "bora_cumpade",
+    variable: "trem",
+    function: "bora_cumpade",
   },
   operatorWordMap: {
     logical_or: "quarque_um",
@@ -237,8 +237,8 @@ const RUBY_LIKE_EXPECTED = {
     switch: "case_of",
     case: "when_case",
     default: "otherwise",
-    variavel: "var",
-    funcao: "def",
+    variable: "var",
+    function: "def",
   },
   operatorWordMap: {
     logical_or: "or_word",
@@ -313,7 +313,7 @@ describe("wizard-model", () => {
       "float",
       "bool",
       "string",
-      "variavel",
+      "variable",
       "modes.typing",
     ]);
   });
@@ -324,7 +324,7 @@ describe("wizard-model", () => {
       "modes.semicolon",
       "modes.array",
       "void",
-      "funcao",
+      "function",
       "modes.block",
       "blockDelimiters",
     ]);

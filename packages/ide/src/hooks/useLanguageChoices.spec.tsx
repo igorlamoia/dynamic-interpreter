@@ -5,6 +5,10 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useLanguageChoices } from "./useLanguageChoices";
+import {
+  DEFAULT_LANGUAGES,
+  PORTUGOL_LANGUAGE_KEY,
+} from "@/lib/default-languages";
 
 (
   globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean }
@@ -20,6 +24,7 @@ const loadLocalMock = vi.fn();
 const loadActiveLocalMock = vi.fn();
 const setActiveLocalMock = vi.fn();
 const getDetailMock = vi.fn();
+let externalLanguageOverlayMock: unknown = null;
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => useAuthMock(),
@@ -35,7 +40,10 @@ vi.mock("@/hooks/useLanguages", () => ({
 }));
 
 vi.mock("@/contexts/keyword/KeywordContext", () => ({
-  useKeywords: () => ({ setCustomization: setCustomizationMock }),
+  useKeywords: () => ({
+    externalLanguageOverlay: externalLanguageOverlayMock,
+    setCustomization: setCustomizationMock,
+  }),
 }));
 
 vi.mock("@/lib/languages-api", () => ({
@@ -46,6 +54,8 @@ vi.mock("@/lib/languages-api", () => ({
 // setup do vitest o `localStorage` real não tem `.clear`, então specs que
 // encostam nele quebram.
 vi.mock("@/lib/keyword-language-storage", () => ({
+  ACTIVE_KEYWORD_CUSTOMIZATION_STORAGE_KEY: "keyword-customization",
+  ACTIVE_SAVED_KEYWORD_LANGUAGE_STORAGE_KEY: "keyword-customization-active",
   listSavedKeywordLanguages: () => listLocalMock(),
   loadSavedKeywordLanguage: (...args: unknown[]) => loadLocalMock(...args),
   loadActiveSavedKeywordLanguage: () => loadActiveLocalMock(),
@@ -54,6 +64,11 @@ vi.mock("@/lib/keyword-language-storage", () => ({
 }));
 
 const CUSTOMIZATION = { mappings: [] } as never;
+const DEFAULT_CHOICES = DEFAULT_LANGUAGES.map((language) => ({
+  key: language.key,
+  name: language.name,
+  imageUrl: language.imageUrl,
+}));
 
 function mount() {
   const captured: { current: ReturnType<typeof useLanguageChoices> | null } = {
@@ -87,6 +102,7 @@ describe("useLanguageChoices", () => {
     loadActiveLocalMock.mockReset().mockReturnValue(null);
     setActiveLocalMock.mockReset();
     getDetailMock.mockReset();
+    externalLanguageOverlayMock = null;
   });
 
   afterEach(() => {
@@ -115,6 +131,7 @@ describe("useLanguageChoices", () => {
     const { captured, root } = mount();
 
     expect(captured.current?.choices).toEqual([
+      ...DEFAULT_CHOICES,
       { key: "3", name: "PtBr-Lang", imageUrl: "https://cdn.example/p.png" },
     ]);
     expect(listLocalMock).not.toHaveBeenCalled();
@@ -131,6 +148,7 @@ describe("useLanguageChoices", () => {
     const { captured, root } = mount();
 
     expect(captured.current?.choices).toEqual([
+      ...DEFAULT_CHOICES,
       { key: "minhalang", name: "MinhaLang", imageUrl: "/local.png" },
     ]);
 
@@ -191,6 +209,24 @@ describe("useLanguageChoices", () => {
     act(() => root.unmount());
   });
 
+  it("usa Portugol como linguagem ativa inicial sem linguagem salva", () => {
+    useAuthMock.mockReturnValue({ isAuthenticated: false });
+
+    const { captured, root } = mount();
+    const portugol = DEFAULT_LANGUAGES[0];
+
+    expect(captured.current?.activeLanguage).toEqual({
+      key: PORTUGOL_LANGUAGE_KEY,
+      name: portugol.name,
+      description: portugol.description,
+      imageUrl: portugol.imageUrl,
+      customization: portugol.customization,
+    });
+    expect(captured.current?.activeKey).toBe(PORTUGOL_LANGUAGE_KEY);
+
+    act(() => root.unmount());
+  });
+
   it("ativa pelo backend quando logado", async () => {
     useAuthMock.mockReturnValue({ isAuthenticated: true });
     listQueryMock.mockReturnValue({ data: [] });
@@ -205,6 +241,26 @@ describe("useLanguageChoices", () => {
     expect(setActiveMutateMock).toHaveBeenCalledWith(5);
     expect(setCustomizationMock).toHaveBeenCalledWith(CUSTOMIZATION);
     expect(setActiveLocalMock).not.toHaveBeenCalled();
+
+    act(() => root.unmount());
+  });
+
+  it("ativa uma linguagem padrao sem chamar backend ou localStorage salvo", async () => {
+    useAuthMock.mockReturnValue({ isAuthenticated: true });
+    listQueryMock.mockReturnValue({ data: [] });
+    const pythonLike = DEFAULT_LANGUAGES[1];
+
+    const { captured, root } = mount();
+
+    await act(async () => {
+      await captured.current?.selectLanguage(pythonLike.key);
+    });
+
+    expect(setCustomizationMock).toHaveBeenCalledWith(pythonLike.customization);
+    expect(setActiveMutateMock).not.toHaveBeenCalled();
+    expect(setActiveLocalMock).not.toHaveBeenCalled();
+    expect(getDetailMock).not.toHaveBeenCalled();
+    expect(captured.current?.activeKey).toBe(pythonLike.key);
 
     act(() => root.unmount());
   });
@@ -229,6 +285,54 @@ describe("useLanguageChoices", () => {
     expect(setCustomizationMock).toHaveBeenCalledWith(CUSTOMIZATION);
     expect(setActiveMutateMock).not.toHaveBeenCalled();
     expect(getDetailMock).not.toHaveBeenCalled();
+
+    act(() => root.unmount());
+  });
+
+  it("usa a linguagem travada como ativa e bloqueia selecao", async () => {
+    externalLanguageOverlayMock = {
+      id: 21,
+      name: "Travada",
+      description: "Definida pelo exercicio",
+      imageUrl: "/locked.png",
+      customization: CUSTOMIZATION,
+    };
+    useAuthMock.mockReturnValue({ isAuthenticated: true });
+    listQueryMock.mockReturnValue({
+      data: [{ id: 3, name: "Outra", imageUrl: "/other.png" }],
+    });
+    activeQueryMock.mockReturnValue({
+      data: {
+        id: 3,
+        name: "Outra",
+        description: "",
+        imageUrl: "/other.png",
+        customization: CUSTOMIZATION,
+      },
+    });
+
+    const { captured, root } = mount();
+
+    expect(captured.current?.choices).toEqual([
+      { key: "21", name: "Travada", imageUrl: "/locked.png" },
+    ]);
+    expect(captured.current?.activeLanguage).toEqual({
+      key: "21",
+      name: "Travada",
+      description: "Definida pelo exercicio",
+      imageUrl: "/locked.png",
+      customization: CUSTOMIZATION,
+    });
+    expect(captured.current?.activeKey).toBe("21");
+    expect(captured.current?.isSelectionLocked).toBe(true);
+
+    await act(async () => {
+      await captured.current?.selectLanguage("3");
+    });
+
+    expect(getDetailMock).not.toHaveBeenCalled();
+    expect(setActiveMutateMock).not.toHaveBeenCalled();
+    expect(setCustomizationMock).not.toHaveBeenCalled();
 
     act(() => root.unmount());
   });
