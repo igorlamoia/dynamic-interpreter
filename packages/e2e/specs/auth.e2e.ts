@@ -15,7 +15,9 @@ test("login com credencial do seed chega ao dashboard", async ({ page }) => {
   // pagina passava por /dashboard e o AuthContext, apos um GET /auth/me com
   // 404, limpava o token e voltava ao login. O nome so aparece com o perfil
   // carregado.
-  await expect(page.getByText(SEED_TEACHER.name)).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: SEED_TEACHER.name }),
+  ).toBeVisible();
 });
 
 test("senha errada mostra erro e mantem o usuario no login", async ({
@@ -56,7 +58,7 @@ test("registro de aluno novo chega ao dashboard", async ({ page }) => {
   await expect(page).toHaveURL(/\/dashboard/);
   // Mesmo motivo do teste de login: prova que a sessao sobreviveu, e nao so
   // que a URL passou por /dashboard.
-  await expect(page.getByText(nome)).toBeVisible();
+  await expect(page.getByRole("button", { name: nome })).toBeVisible();
   await expect(page).toHaveURL(/\/dashboard/);
 });
 

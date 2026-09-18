@@ -49,5 +49,10 @@ test("cookie injetado autentica o dashboard sem passar pelo login", async ({
   await page.goto("/dashboard");
 
   await expect(page).toHaveURL(/\/dashboard/);
-  await expect(page.getByText(SEED_TEACHER.name)).toBeVisible();
+  // O menu do usuario na navbar (iniciais + nome) so existe com sessao
+  // autenticada. Por nome solto o seletor casaria tambem os cartoes das
+  // turmas do professor, que carregam depois.
+  await expect(
+    page.getByRole("button", { name: SEED_TEACHER.name }),
+  ).toBeVisible();
 });
