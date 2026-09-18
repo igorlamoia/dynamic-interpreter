@@ -95,6 +95,34 @@ Registradas aqui porque as tasks seguintes dependem delas.
    mesma frase. Conserto seria ler `detail` com fallback para `error`, mas é
    escopo de UX fora deste gate.
 
+4c. **Submissões de aluno falhavam com HTTP 500 — CONSERTADO (`e43b50b`).**
+   `/api/submissions/validate` roda no servidor, dentro do container do
+   frontend, e usava `NEXT_PUBLIC_API_URL`. O Next.js substitui variáveis
+   `NEXT_PUBLIC_*` por literal **no build, inclusive no bundle de servidor**
+   (confirmado no chunk compilado: `let h="http://localhost:8000"`, sem
+   `process.env`). De dentro do container, `localhost` é o próprio frontend:
+   `connect ECONNREFUSED 127.0.0.1:8000`. Declarar a variável em runtime não
+   resolveria, porque o valor já está congelado. Conserto: variável só de
+   servidor `INTERNAL_API_URL` (sem prefixo, logo lida em runtime), definida
+   nas duas composes com o DNS interno do Docker. **Em produção o impacto
+   depende do valor usado no build da VPS** — se for URL pública alcançável de
+   dentro do container já funcionava; se for `localhost`, estava quebrado.
+   Conferir na VPS:
+   `docker exec dynamic-interpreter-frontend grep -o 'let h="[^"]*"' -r /app/packages/ide/.next/server/chunks | head -1`.
+   **Consequência operacional:** o `deploy.yml` faz deploy no push para a
+   `main`, então a mudança no `docker-compose.yml` vai para a VPS no merge.
+
+4d. **Estado de "enviado" e a nota sumiam ao recarregar — CONSERTADO
+   (`30a75ba`).** O workspace lê `exercise.submissions[0]`, mas
+   `ExerciseResponse` não tinha o campo. Ao recarregar, o aluno perdia o badge
+   "Enviado", a nota ("Nota: X", mesmo depois de corrigido) e a data da
+   última submissão, e o botão voltava a "Submeter Resposta". O campo novo
+   chama-se `submission_history` e é serializado como `submissions` **de
+   propósito**: o ORM `Exercise` tem uma relação `submissions` com as
+   submissões de todos os alunos, e um campo homônimo faria o
+   `model_validate(orm)` carregá-la inteira — vazando o código dos colegas.
+   É preenchido só com as do solicitante, sem `code_snapshot`.
+
 5. **Bug pré-existente a documentar no PR, não a consertar:** os `testCases`
    que o modal de criar exercício envia são **descartados em silêncio**. A UI
    manda tudo num único `POST /exercises` (`use-api-queries.ts:325`), mas
