@@ -1,19 +1,24 @@
 import enFooter from "./locales/en/footer";
+import enIde from "./locales/en/ide";
 import enToast from "./locales/en/toast";
 import enUi from "./locales/en/ui";
 import esFooter from "./locales/es/footer";
+import esIde from "./locales/es/ide";
 import esToast from "./locales/es/toast";
 import esUi from "./locales/es/ui";
 import ptBrFooter from "./locales/pt-BR/footer";
+import ptBrIde from "./locales/pt-BR/ide";
 import ptBrToast from "./locales/pt-BR/toast";
 import ptBrUi from "./locales/pt-BR/ui";
 import ptPtFooter from "./locales/pt-PT/footer";
+import ptPtIde from "./locales/pt-PT/ide";
 import ptPtToast from "./locales/pt-PT/toast";
 import ptPtUi from "./locales/pt-PT/ui";
 import enToken from "@ts-compilator-for-java/compiler/src/i18n/locales/en/token";
 import esToken from "@ts-compilator-for-java/compiler/src/i18n/locales/es/token";
 import ptBrToken from "@ts-compilator-for-java/compiler/src/i18n/locales/pt-BR/token";
 import ptPtToken from "@ts-compilator-for-java/compiler/src/i18n/locales/pt-PT/token";
+import type { IdeIntl } from "./types/ide";
 
 export const SUPPORTED_LOCALES = [
   { code: "pt-BR", flag: "🇧🇷" },
@@ -32,7 +37,13 @@ type TranslationParams = Record<
   string | number | boolean | null | undefined
 >;
 type TranslationNamespace = Record<string, string>;
-type TranslationTree = Record<string, TranslationNamespace>;
+interface TranslationTree {
+  ui: TranslationNamespace;
+  toast: TranslationNamespace;
+  footer: TranslationNamespace;
+  token: TranslationNamespace;
+  ide: IdeIntl;
+}
 
 const LOCALES: Record<SupportedLocale, TranslationTree> = {
   "pt-BR": {
@@ -40,24 +51,28 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     toast: ptBrToast,
     footer: ptBrFooter,
     token: ptBrToken,
+    ide: ptBrIde,
   },
   "pt-PT": {
     ui: ptPtUi,
     toast: ptPtToast,
     footer: ptPtFooter,
     token: ptPtToken,
+    ide: ptPtIde,
   },
   es: {
     ui: esUi,
     toast: esToast,
     footer: esFooter,
     token: esToken,
+    ide: esIde,
   },
   en: {
     ui: enUi,
     toast: enToast,
     footer: enFooter,
     token: enToken,
+    ide: enIde,
   },
 };
 
@@ -77,9 +92,11 @@ export function resolveLocale(locale: string | undefined): SupportedLocale {
 function resolveFromTree(tree: TranslationTree, key: string): string | null {
   const [namespace, ...parts] = key.split(".");
   if (!namespace || parts.length === 0) return null;
+  if (namespace === "ide") return null;
 
   const messageKey = parts.join(".");
-  return tree[namespace]?.[messageKey] ?? null;
+  const messages = tree[namespace as keyof Omit<TranslationTree, "ide">];
+  return messages?.[messageKey] ?? null;
 }
 
 export function t(
@@ -104,4 +121,8 @@ export function translateTokenDescription(
   tokenName: string,
 ): string {
   return t(locale, `token.${tokenName}`);
+}
+
+export function getIdeIntl(locale: string | undefined): IdeIntl {
+  return LOCALES[resolveLocale(locale)].ide;
 }

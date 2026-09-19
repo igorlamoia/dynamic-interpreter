@@ -29,12 +29,12 @@ const Icons = {
 const DATA = {
   navbar: [
     {
-      href: "https://github.com/igorlamoia/ts-compilator-for-java/tree/main/packages/compiler",
+      href: "https://github.com/igorlamoia/dynamic-interpreter/tree/main/packages/compiler",
       icon: FileCodeIcon,
       label: "Lexer Code",
     },
     {
-      href: "https://github.com/igorlamoia/ts-compilator-for-java/tree/main/packages/ide",
+      href: "https://github.com/igorlamoia/dynamic-interpreter/tree/main/packages/ide",
       icon: MonitorIcon,
       label: "IDE Source",
     },
@@ -43,7 +43,7 @@ const DATA = {
     social: {
       GitHub: {
         name: "GitHub Project",
-        url: "https://github.com/igorlamoia/ts-compilator-for-java",
+        url: "https://github.com/igorlamoia/dynamic-interpreter",
         icon: Icons.github,
       },
     },
