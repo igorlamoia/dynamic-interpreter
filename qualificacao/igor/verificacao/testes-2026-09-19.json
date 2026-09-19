@@ -1,0 +1,447 @@
+{
+  "date": "2026-09-19",
+  "code_commit": "3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c",
+  "scope": "Execução local; serviços Docker já ativos, sem reconstrução das imagens nesta revisão. Não representa execução remota do GitHub Actions.",
+  "environment": {
+    "node": "25.2.1",
+    "playwright": "1.63.0",
+    "vitest": "4.0.18",
+    "frontend": "http://localhost:3001",
+    "backend": "http://localhost:8000",
+    "ci_mode": true,
+    "workers": 2,
+    "fail_on_flaky_tests": true
+  },
+  "e2e": {
+    "command": "E2E_BASE_URL=http://localhost:3001 E2E_API_URL=http://localhost:8000 CI=1 npx playwright test --config packages/e2e/playwright.config.ts --reporter=json",
+    "stats": {
+      "startTime": "2026-09-19T18:57:06.952Z",
+      "duration": 23715.519,
+      "expected": 31,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "file": "auth.e2e.ts",
+        "line": 6,
+        "title": "login com credencial do seed chega ao dashboard",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1021
+          }
+        ]
+      },
+      {
+        "file": "auth.e2e.ts",
+        "line": 23,
+        "title": "senha errada mostra erro e mantem o usuario no login",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 799
+          }
+        ]
+      },
+      {
+        "file": "auth.e2e.ts",
+        "line": 43,
+        "title": "registro de aluno novo chega ao dashboard",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 795
+          }
+        ]
+      },
+      {
+        "file": "auth.e2e.ts",
+        "line": 65,
+        "title": "rota protegida sem sessao redireciona para o login",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 485
+          }
+        ]
+      },
+      {
+        "file": "custom-language.e2e.ts",
+        "line": 63,
+        "title": "o catalogo comunitario lista as 5 linguagens oficiais do seed",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 753
+          }
+        ]
+      },
+      {
+        "file": "custom-language.e2e.ts",
+        "line": 78,
+        "title": "importar uma linguagem do catalogo a leva para /languages, e o backend concorda",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1095
+          }
+        ]
+      },
+      {
+        "file": "custom-language.e2e.ts",
+        "line": 112,
+        "title": "ativar a linguagem importada remapeia o lexer usado por /",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 2778
+          }
+        ]
+      },
+      {
+        "file": "fixtures.e2e.ts",
+        "line": 4,
+        "title": "cria professor e aluno isolados por execução",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 309
+          }
+        ]
+      },
+      {
+        "file": "fixtures.e2e.ts",
+        "line": 14,
+        "title": "monta turma, exercicio, lista e publicacao pela API",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 372
+          }
+        ]
+      },
+      {
+        "file": "fixtures.e2e.ts",
+        "line": 41,
+        "title": "cookie injetado autentica o dashboard sem passar pelo login",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 686
+          }
+        ]
+      },
+      {
+        "file": "grading.e2e.ts",
+        "line": 43,
+        "title": "professor atribui nota e feedback, e a correcao persiste",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 2700
+          }
+        ]
+      },
+      {
+        "file": "grading.e2e.ts",
+        "line": 102,
+        "title": "a nota atribuida pelo professor chega ao aluno no exercicio",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 2279
+          }
+        ]
+      },
+      {
+        "file": "ide-compiler.e2e.ts",
+        "line": 29,
+        "title": "escrever codigo no Monaco e executar produz a saida esperada no terminal",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1089
+          }
+        ]
+      },
+      {
+        "file": "ide-compiler.e2e.ts",
+        "line": 47,
+        "title": "o painel de tokens lista os tokens do programa",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1409
+          }
+        ]
+      },
+      {
+        "file": "ide-compiler.e2e.ts",
+        "line": 65,
+        "title": "o codigo intermediario mostra temporarios ou labels gerados",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1026
+          }
+        ]
+      },
+      {
+        "file": "ide-compiler.e2e.ts",
+        "line": 79,
+        "title": "um erro de sintaxe e reportado em vez de passar silenciosamente",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 975
+          }
+        ]
+      },
+      {
+        "file": "language-creator.e2e.ts",
+        "line": 48,
+        "title": "criar uma linguagem pelo wizard salva no acervo da conta",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 3983
+          }
+        ]
+      },
+      {
+        "file": "language-creator.e2e.ts",
+        "line": 88,
+        "title": "editar uma linguagem pelo wizard atualiza a existente em vez de criar outra",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 3089
+          }
+        ]
+      },
+      {
+        "file": "language-creator.e2e.ts",
+        "line": 123,
+        "title": "salvar com um nome que ja existe na conta mostra o erro e nao cria duplicata",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 2930
+          }
+        ]
+      },
+      {
+        "file": "languages.e2e.ts",
+        "line": 10,
+        "title": "duplicar uma linguagem deixa as duas no acervo",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 904
+          }
+        ]
+      },
+      {
+        "file": "languages.e2e.ts",
+        "line": 55,
+        "title": "excluir uma linguagem pede confirmacao e some com ela",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 899
+          }
+        ]
+      },
+      {
+        "file": "languages.e2e.ts",
+        "line": 93,
+        "title": "usuario da comunidade publica e despublica sua linguagem no acervo",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 984
+          }
+        ]
+      },
+      {
+        "file": "languages.e2e.ts",
+        "line": 132,
+        "title": "o botao de publicar nao existe para quem nao e da comunidade",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 754
+          }
+        ]
+      },
+      {
+        "file": "lms-flow.e2e.ts",
+        "line": 21,
+        "title": "aluno entra na turma pela UI usando o codigo de acesso",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1306
+          }
+        ]
+      },
+      {
+        "file": "lms-flow.e2e.ts",
+        "line": 43,
+        "title": "submissao com codigo correto mostra os test cases passando e o badge \"Enviado\"",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1601
+          }
+        ]
+      },
+      {
+        "file": "lms-flow.e2e.ts",
+        "line": 78,
+        "title": "submissao com erro mostra os erros e nao marca como enviado",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1697
+          }
+        ]
+      },
+      {
+        "file": "smoke.e2e.ts",
+        "line": 4,
+        "title": "o backend responde no /health",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 4
+          }
+        ]
+      },
+      {
+        "file": "smoke.e2e.ts",
+        "line": 11,
+        "title": "a landing renderiza o shell do IDE",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 854
+          }
+        ]
+      },
+      {
+        "file": "teacher-flow.e2e.ts",
+        "line": 24,
+        "title": "professor cria turma pela UI e o codigo gerado serve para o aluno entrar",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 1917
+          }
+        ]
+      },
+      {
+        "file": "teacher-flow.e2e.ts",
+        "line": 56,
+        "title": "professor cria exercicio com caso de teste pela UI e ele aparece no catalogo",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 2219
+          }
+        ]
+      },
+      {
+        "file": "teacher-flow.e2e.ts",
+        "line": 101,
+        "title": "professor monta a lista, adiciona exercicio e publica; o aluno passa a ver a lista",
+        "status": "expected",
+        "attempts": [
+          {
+            "retry": 0,
+            "status": "passed",
+            "duration_ms": 2521
+          }
+        ]
+      }
+    ]
+  },
+  "ide": {
+    "command": "npm run test -w @ts-compilator-for-java/ide",
+    "passed_tests": 274,
+    "passed_files": 54,
+    "duration_seconds": 23.56,
+    "excluded_spec_files": 8
+  },
+  "typecheck": {
+    "command": "npx tsc --noEmit -p packages/e2e/tsconfig.json",
+    "exit_code": 0
+  },
+  "initial_attempt": {
+    "result": "28 casos falharam antes da abertura do navegador; 3 casos de API passaram.",
+    "cause": "Executável Chromium headless shell ausente.",
+    "resolution": "npx playwright install chromium; repetição integral da suíte concluída com 31 aprovações."
+  }
+}

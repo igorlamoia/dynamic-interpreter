@@ -216,6 +216,17 @@ Mais do que uma técnica de verificação, o TDD também influencia o \textit{de
 
 A estratégia de testes de um sistema costuma ser distribuída em diferentes níveis de granularidade, arranjo frequentemente ilustrado pela chamada pirâmide de testes. A base é composta pelos testes de unidade, rápidos e isolados, que verificam o comportamento de pequenas partes do código. O nível intermediário abriga os testes de integração, responsáveis por garantir a correta comunicação entre componentes e serviços de infraestrutura. No topo situam-se os testes de ponta a ponta (\textit{end-to-end}), que validam o sistema inteiro a partir da interface do usuário, ao custo de execuções mais lentas e frágeis. A recomendação decorrente é concentrar o maior volume de casos na base e reservar os níveis superiores para os fluxos mais críticos \cite{aniche2012,silveira2012}.
 
+\subsubsection{Testes de ponta a ponta no front-end}
+\label{subsec:fundamentos-e2e}
+
+Os testes de ponta a ponta (E2E) complementam as verificações isoladas ao exercitar jornadas que atravessam diferentes partes da aplicação. Em uma interface web, permitem observar se navegação, componentes, serviços e persistência produzem conjuntamente o resultado esperado. Como essas verificações envolvem mais dependências e tendem a apresentar maior custo de execução e manutenção, sua adoção deve priorizar jornadas relevantes e preservar os testes de menor granularidade. Essa recomendação fundamenta a inclusão de E2E como parte de uma estratégia de regressão, sem pressupor que todos os comportamentos devam ser verificados pela interface \cite{vocke2018pyramid}.
+
+O Playwright Test é uma ferramenta de automação de testes de aplicações web, com executor, asserções e suporte aos navegadores Chromium, Firefox e WebKit. Sua documentação apresenta a execução em diferentes navegadores e ambientes como possibilidades de configuração; usar a ferramenta não implica, por si só, que um projeto tenha exercitado todas essas combinações \cite{playwright2026intro}.
+
+A documentação recomenda verificar comportamentos visíveis ao usuário, manter testes independentes e preferir localizadores baseados em papéis, nomes acessíveis e contratos explícitos de identificação. As asserções que aguardam uma condição, como a visibilidade de uma mensagem, ajudam a sincronizar o teste com a interface. Essas práticas orientam a escrita dos cenários e reduzem a dependência de detalhes incidentais da estrutura visual \cite{playwright2026practices}.
+
+Outra parte da estratégia é executar a suíte no processo de integração contínua, com instalação das dependências e dos navegadores e disponibilização dos relatórios de execução. A documentação do Playwright exemplifica essa configuração no GitHub Actions para eventos de envio de alterações e abertura ou atualização de solicitações de integração. Assim, a verificação passa a ser repetível no fluxo de desenvolvimento, além de permanecer disponível localmente \cite{playwright2026ci}.
+
 \subsection{Arquitetura Limpa e Separação de Responsabilidades}
 
 O projeto arquitetural de um sistema deve separar responsabilidades em camadas com papéis independentes e bem definidos. A interface de usuário no \textit{front-end} concentra-se na experiência de uso e na integração visual, enquanto regras de negócio, persistência e serviços de apoio devem permanecer desacoplados de detalhes periféricos de entrega. Essa separação reduz dependências indevidas e facilita testes, manutenção e evolução do software \cite{martin_clean,silveira2012}.

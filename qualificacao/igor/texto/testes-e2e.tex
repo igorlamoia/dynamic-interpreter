@@ -1,0 +1,51 @@
+\subsection{Testes de ponta a ponta da interface}
+\label{subsec:e2e-plataforma}
+
+As integrações de 18 de setembro de 2026 acrescentaram o pacote \texttt{packages/e2e} e ampliaram os cenários automatizados dos fluxos educacionais e de gestão de linguagens. A revisão documental de 19 de setembro examinou esse código na versão \texttt{3ffae01}, que incorpora os merges \texttt{9b1e506} e \texttt{c9b8178}. A implementação utiliza Playwright Test, cuja versão fixada no arquivo de dependências é 1.63.0. O pacote reúne 31 casos em dez arquivos e configura somente o Chromium, com perfil de computador, idioma português do Brasil e fuso de São Paulo \cite{projeto2026e2e,playwright2026intro}.
+
+O ambiente de integração utiliza o front-end Next.js, o serviço FastAPI e o PostgreSQL definidos na composição Docker local. As rotinas de preparação (\textit{fixtures}) criam contas e dados pela API, com identificadores aleatórios, e podem autenticar o navegador mediante inserção do cookie de sessão. Os casos específicos de autenticação verificam o formulário de entrada e o cadastro pela interface; os demais podem iniciar com uma sessão preparada. Portanto, nem todo caso repete a jornada desde o login, e dois testes de preparação e um de saúde do serviço verificam diretamente a API \cite{projeto2026e2e,projeto2026ci}.
+
+A Tabela~\ref{tab:escopo-e2e} descreve os casos existentes, agrupados pela finalidade. Suas quantidades representam cenários implementados, sem constituir uma porcentagem de cobertura dos requisitos, do código ou das combinações possíveis de interação \cite{projeto2026e2e}.
+
+\begin{table}[htbp]
+\centering
+\caption{Escopo dos casos automatizados do pacote E2E.}
+\label{tab:escopo-e2e}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{0.24\textwidth}|c|>{\raggedright\arraybackslash}p{0.59\textwidth}|}
+\hline
+\textbf{Grupo} & \textbf{Casos} & \textbf{Comportamentos verificados} \\\hline
+Autenticação & 4 & Login válido, senha incorreta, cadastro e proteção de rota. \\\hline
+IDE e compilador & 4 & Execução e saída, tokens, código intermediário e erro de sintaxe. \\\hline
+Catálogo comunitário & 3 & Listagem das cinco linguagens do seed, importação e ativação no analisador léxico. \\\hline
+Acervo de linguagens & 4 & Duplicação, exclusão, publicação e despublicação, além da restrição do botão por perfil. \\\hline
+Assistente de linguagem & 3 & Criação, edição sem duplicação e rejeição de nome já utilizado. \\\hline
+Jornada do aluno & 3 & Entrada em turma e submissões de programas corretos e incorretos. \\\hline
+Jornada do professor & 3 & Criação de turma, exercício com caso de teste e publicação de lista. \\\hline
+Correção & 2 & Persistência de nota e comentário e apresentação da nota ao aluno. \\\hline
+Preparação e sessão & 3 & Contas independentes, montagem de atividade pela API e autenticação por cookie. \\\hline
+Disponibilidade básica & 2 & Saúde do serviço e carregamento da estrutura inicial da IDE. \\\hline
+\textbf{Total} & \textbf{31} & Casos do pacote, incluindo verificações de infraestrutura. \\\hline
+\end{tabular}
+\legend{Fonte: elaboração própria a partir dos arquivos de teste de \citeonline{projeto2026e2e}.}
+\end{table}
+\FloatBarrier
+
+Os testes utilizam localizadores por papel e nome, além de identificadores explícitos para editor, terminal e resultados de submissão. O auxiliar do Monaco aguarda sua montagem por até 45 segundos e insere o programa diretamente no modelo do editor; a execução e a inspeção dos resultados prosseguem pela interface. Esse procedimento delimita a evidência: verifica a integração com o programa preparado, mas não simula sua digitação caractere a caractere. Nos testes de correção, recarregar a página e conferir novamente nota e comentário verifica a recuperação dos dados persistidos, além da mensagem imediata de sucesso \cite{projeto2026e2e,playwright2026practices}.
+
+\subsection{Integração contínua e diagnóstico de falhas}
+\label{subsec:ci-plataforma}
+
+O fluxo versionado no GitHub Actions executa testes em solicitações de integração e em envios à branch \texttt{main}. O job \texttt{unit} executa Vitest no compilador e na IDE, além de pytest no back-end. O job \texttt{e2e} instala o Chromium, constrói e inicia os serviços locais, aguarda suas respostas e executa o Playwright. O job de implantação depende da aprovação de ambos e só é acionado por envio à \texttt{main}. Essa configuração estabelece uma condição para o deploy automatizado; o arquivo não demonstra que as regras de proteção da branch obriguem a aprovação antes de qualquer merge \cite{projeto2026ci}.
+
+No CI, a configuração utiliza dois processos de execução, permite duas novas tentativas após uma falha e ativa \texttt{failOnFlakyTests}. O Playwright classifica como intermitente (\textit{flaky}) o caso que falha inicialmente e passa em uma nova tentativa; a opção adotada faz essa condição reprovar a execução. As repetições, portanto, auxiliam o diagnóstico sem converter a instabilidade em aprovação. São configurados rastros de execução na primeira repetição, capturas de tela em falhas e retenção de vídeos de falhas; o workflow disponibiliza os relatórios e resultados por sete dias \cite{projeto2026e2e,projeto2026ci,playwright2026retries,playwright2026config}.
+
+As mesmas integrações incluem correções relacionadas aos fluxos exercitados: a resolução de endereço interno do serviço no código de servidor do Next.js passou a ser compartilhada pela edição de linguagens e validação de submissões; o componente de formulário passou a transferir identificação e atributos de acessibilidade ao controle filho por meio de \texttt{Slot}. Esses registros documentam alterações concretas no front-end, sem equivaler a uma nova auditoria completa de acessibilidade \cite{projeto2026frontend}.
+
+\subsection{Resultado da execução local}
+\label{subsec:resultado-e2e}
+
+Em 19 de setembro de 2026, os 31 casos foram aprovados na primeira tentativa de cada caso, sem falhas, ocorrências intermitentes ou casos ignorados, em aproximadamente 24 segundos. A execução utilizou Node.js 25.2.1, Playwright 1.63.0 e as opções de CI da configuração versionada, com dois processos, contra os serviços Docker locais já ativos. O relatório estruturado registra os arquivos, cenários e resultados. Também foi aprovada a verificação de tipos do pacote E2E. Esses resultados são locais e não constituem evidência de uma execução específica do GitHub Actions nem de uma reconstrução das imagens dos serviços nesta revisão \cite{queiroz2026verificacaotestes}.
+
+Antes dessa execução completa, uma tentativa foi interrompida pela ausência do executável Chromium esperado pelo Playwright: os 28 casos que precisavam do navegador falharam na inicialização e os três casos diretos de API passaram. Após instalar o navegador, a suíte foi repetida integralmente e produziu os resultados acima. O registro distingue, assim, uma falha de preparação do ambiente dos comportamentos funcionais exercitados na execução concluída \cite{queiroz2026verificacaotestes}.

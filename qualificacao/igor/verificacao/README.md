@@ -66,3 +66,43 @@ Os dois arquivos de exemplos aprovaram novamente os **6 testes adicionais**.
 Ambas as execuções usaram `NODE_OPTIONS=--no-experimental-webstorage`.
 Os registros de 12/09 acima são históricos; os novos resultados não representam
 uma auditoria de toda a aplicação nem aprovação de conformidade WCAG.
+
+## Atualização dos testes após os merges — 19/09/2026
+
+Código examinado: `3ffae01`, que incorpora `9b1e506` (Playwright e CI) e
+`c9b8178` (ampliação dos fluxos E2E). A comparação parte de `4a66457`, última
+atualização documental. O TCC agora descreve o pacote E2E, os cenários de
+interface e API, as correções relacionadas e a condição de testes para deploy.
+
+- IDE: **274 testes aprovados em 54 arquivos**; oito arquivos do assistente
+  continuam explicitamente excluídos pela configuração.
+- Pacote E2E: **31 casos aprovados**, zero falhas, zero intermitentes e zero
+  ignorados, usando as opções de CI (dois processos). Três desses casos
+  verificam diretamente a API; os demais utilizam navegador. Não é uma
+  medição percentual de cobertura.
+- TypeScript do pacote E2E: `npx tsc --noEmit -p packages/e2e/tsconfig.json`
+  concluído sem erros.
+- [Registro estruturado e comandos](testes-2026-09-19.json).
+
+A execução foi local, contra os serviços Docker já ativos, sem reconstruir
+suas imagens nesta revisão. A primeira tentativa encontrou o Chromium ausente;
+após `npx playwright install chromium`, a suíte completa passou. O relatório
+preserva essa ocorrência, sem armazenar tokens, cookies ou dados das contas.
+Os testes criam suas próprias contas e registros no banco local; não apagam
+os dados existentes.
+
+O workflow foi inspecionado, mas esta verificação não executou os jobs no
+GitHub Actions nem consultou regras de proteção de branch. Os resultados de
+acessibilidade de 16/09 permanecem históricos e não foram repetidos aqui.
+
+### Fontes incorporadas ao texto
+
+- [Ham Vocke — The Practical Test Pyramid (2018)](https://martinfowler.com/articles/practical-test-pyramid.html): complementaridade e custo dos níveis de teste.
+- [Playwright — Installation](https://playwright.dev/docs/intro): ferramenta e navegadores suportados.
+- [Playwright — Best Practices](https://playwright.dev/docs/best-practices): isolamento, comportamentos visíveis, localizadores e asserções.
+- [Playwright — Continuous Integration](https://playwright.dev/docs/ci): execução e relatórios no CI.
+- [Playwright — Retries](https://playwright.dev/docs/test-retries) e [TestConfig](https://playwright.dev/docs/api/class-testconfig): classificação de intermitência e opção que reprova esses casos.
+
+As afirmações sobre a implementação citam o próprio repositório em URLs fixadas
+no commit examinado. As contagens medidas citam o registro estruturado acima.
+Todas as novas referências foram consultadas em 19/09/2026.

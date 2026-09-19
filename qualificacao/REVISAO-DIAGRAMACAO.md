@@ -64,3 +64,17 @@ foram recompilados sem `Overfull`, figuras grandes demais ou referências
 indefinidas. As 180 páginas passaram novamente na verificação de formato e
 limites dos objetos, sem ocorrências fora das margens; as páginas novas de
 conteúdo e tabelas também foram inspecionadas visualmente.
+
+## TCC do Igor após os merges de testes E2E — 19/09/2026
+
+A atualização do referencial, da metodologia e das considerações do Igor,
+com novas referências bibliográficas, resultou em **103 páginas** no PDF.
+A compilação final terminou sem `Overfull`, figuras grandes demais ou
+referências indefinidas. O verificador encontrou **zero ocorrências** nas
+103 páginas A4, com as margens de 3 cm acima/à esquerda e 2 cm abaixo/à direita.
+Foram conferidas visualmente a nova tabela, a discussão dos testes e do CI,
+os resultados locais e as referências. O PDF do Victor não foi alterado
+nesta revisão e conserva as 84 páginas da atualização anterior.
+
+Os [resultados de testes e suas limitações](igor/verificacao/README.md)
+acompanham o texto, com [registro estruturado](igor/verificacao/testes-2026-09-19.json).
