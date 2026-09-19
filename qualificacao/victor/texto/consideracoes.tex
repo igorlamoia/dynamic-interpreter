@@ -15,6 +15,8 @@ O quinto, disponibilizar o núcleo em ambiente web e verificar seu comportamento
 
 A revisão de 16 de setembro de 2026 acrescenta ao relato a igualdade estrita, a expressão condicional ternária, a validação de tipos durante a execução e o suporte à cedilha no léxico. A suíte do núcleo aprovou 224 casos em 21 arquivos, incluindo os comportamentos introduzidos. Esse resultado não implica compatibilidade integral com as linguagens que inspiram as predefinições da IDE.
 
+A revisão de 19 de setembro de 2026 acrescenta a descrição dos contratos de resposta e dos controles do serviço Python. A execução local aprovou os 188 testes do back-end em 17 arquivos e confirmou os 224 casos do compilador. Os exemplos de minimização incluem resumos de linguagens, respostas de usuário sem senha e histórico de submissões restrito ao solicitante, com omissão do código enviado \cite{projeto2026backend,silva2026verificacaobackend}.
+
 O sexto objetivo, definir o protocolo de avaliação da solução, encontra-se parcialmente cumprido: os requisitos que a solução deve satisfazer estão especificados nas Tabelas~\ref{tab:requisitos-funcionais} e \ref{tab:requisitos-nao-funcionais}, mas os critérios de aferição da contribuição pedagógica ainda precisam ser consolidados.
 
 \section{Limitações}
@@ -27,11 +29,15 @@ No plano técnico, a linguagem suportada é um subconjunto didático de linguage
 
 A personalização abrange o vocabulário, operadores em forma de palavra, literais booleanos e delimitadores, além da seleção de variantes predefinidas de terminação de instruções, blocos, tipagem e arranjos. O conjunto de produções e as alternativas aceitas pelo analisador são definidos na implementação: o usuário não acrescenta novas produções nem redefine livremente a semântica das operações. Assim, o caráter dinâmico corresponde à aplicação de uma configuração a cada novo processamento do código, dentro dos limites suportados pelo núcleo.
 
+No serviço Python, os testes utilizam SQLite em memória e não verificam migrações ou características específicas do PostgreSQL. A inspeção também identificou lacunas de autorização por objeto e caminhos de listagem sem paginação obrigatória, descritos na Seção~\ref{subsec:limites-seguranca-backend}. A aprovação da suíte e a filtragem de campos nas respostas não constituem garantia de segurança integral \cite{projeto2026backend,projeto2026backendtestes,silva2026verificacaobackend}.
+
 Por fim, o interpretador executa o código intermediário por percurso direto das instruções, sem etapa de otimização. As técnicas discutidas no referencial teórico foram estudadas, mas não implementadas, uma vez que o porte dos programas produzidos em contexto introdutório não as torna necessárias.
 
 \section{Encaminhamentos}
 
 A etapa seguinte do Trabalho de Conclusão de Curso concentrará esforços no aprofundamento do núcleo de tradução e na conclusão do protocolo de avaliação. No plano técnico, prevê-se a ampliação da cobertura de testes, sobretudo quanto à robustez do analisador diante das variações configuráveis da linguagem, e a verificação sistemática da correção do código intermediário gerado. No plano metodológico, prevê-se a consolidação dos critérios que permitirão aferir a contribuição da solução.
+
+Para o back-end, os próximos passos incluem revisar as permissões entre usuários e instituições, acrescentar cenários negativos para os vínculos exigidos, limitar as listagens e conferir os controles no ambiente PostgreSQL. A política de credenciais e tokens também requer revisão periódica. Esses encaminhamentos complementam o fluxo já implementado de execução automática dos testes como condição para deploy \cite{owasp2026authorization,owasp2023recursos,owasp2026password,projeto2026workflow}.
 
 A aplicação desse protocolo junto a estudantes, com a coleta de evidências empíricas em ambiente educacional, é registrada como trabalho futuro. Sua condução exigirá, além do protocolo consolidado, a articulação com turmas em andamento e a observância dos procedimentos éticos aplicáveis a pesquisas que envolvem seres humanos.
 

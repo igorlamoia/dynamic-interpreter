@@ -1,0 +1,1012 @@
+{
+  "date": "2026-09-19",
+  "code_commit": "e0a012bb833fa829e6e694bc2f5b99fdff4863a0",
+  "environment": {
+    "python": "3.12.12",
+    "pytest": "9.0.2",
+    "pytest_asyncio": "1.3.0",
+    "httpx": "0.28.1",
+    "fastapi": "0.135.1",
+    "pydantic": "2.12.5",
+    "sqlalchemy": "2.0.48",
+    "aiosqlite": "0.22.1"
+  },
+  "backend": {
+    "command": "cd backend && uv run --frozen pytest -q --junitxml=/tmp/tcc-victor-backend-2026-09-19.xml",
+    "tests": 188,
+    "files": 17,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_seconds": 59.075,
+    "cases_by_file": {
+      "test_auth.py": [
+        {
+          "name": "test_register_creates_user_and_returns_token",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_returns_the_created_user",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_persists_public_role[student-STUDENT]",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_persists_public_role[teacher-TEACHER]",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_persists_public_role[community-COMMUNITY]",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_community_can_register_without_organization",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_academic_roles_require_organization[student]",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_academic_roles_require_organization[teacher]",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_rejects_internal_role",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_fails_for_duplicate_email",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_register_fails_for_invalid_organization",
+          "class": "tests.test_auth.TestRegister",
+          "status": "passed"
+        },
+        {
+          "name": "test_login_returns_token",
+          "class": "tests.test_auth.TestLogin",
+          "status": "passed"
+        },
+        {
+          "name": "test_login_returns_the_authenticated_user",
+          "class": "tests.test_auth.TestLogin",
+          "status": "passed"
+        },
+        {
+          "name": "test_login_fails_for_wrong_password",
+          "class": "tests.test_auth.TestLogin",
+          "status": "passed"
+        },
+        {
+          "name": "test_login_fails_for_unknown_email",
+          "class": "tests.test_auth.TestLogin",
+          "status": "passed"
+        },
+        {
+          "name": "test_me_returns_current_user",
+          "class": "tests.test_auth.TestMe",
+          "status": "passed"
+        },
+        {
+          "name": "test_me_fails_without_token",
+          "class": "tests.test_auth.TestMe",
+          "status": "passed"
+        },
+        {
+          "name": "test_me_fails_with_invalid_token",
+          "class": "tests.test_auth.TestMe",
+          "status": "passed"
+        }
+      ],
+      "test_classes.py": [
+        {
+          "name": "test_teacher_can_create_class",
+          "class": "tests.test_classes.TestCreateClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_create_class",
+          "class": "tests.test_classes.TestCreateClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_duplicate_access_code_fails",
+          "class": "tests.test_classes.TestCreateClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_sees_own_classes",
+          "class": "tests.test_classes.TestListClasses",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_classes_returns_member_and_list_counts",
+          "class": "tests.test_classes.TestListClasses",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_can_join_with_valid_code",
+          "class": "tests.test_classes.TestJoinClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_join_fails_with_wrong_code",
+          "class": "tests.test_classes.TestJoinClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_by_id",
+          "class": "tests.test_classes.TestGetClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_not_found",
+          "class": "tests.test_classes.TestGetClass",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_remove_member",
+          "class": "tests.test_classes.TestRemoveMember",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_remove_member",
+          "class": "tests.test_classes.TestRemoveMember",
+          "status": "passed"
+        },
+        {
+          "name": "test_join_class_success",
+          "class": "tests.test_classes.TestJoinClassByCode",
+          "status": "passed"
+        },
+        {
+          "name": "test_join_class_not_found",
+          "class": "tests.test_classes.TestJoinClassByCode",
+          "status": "passed"
+        },
+        {
+          "name": "test_join_class_as_teacher_forbidden",
+          "class": "tests.test_classes.TestJoinClassByCode",
+          "status": "passed"
+        },
+        {
+          "name": "test_join_class_already_member",
+          "class": "tests.test_classes.TestJoinClassByCode",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_members_as_teacher",
+          "class": "tests.test_classes.TestGetClassMembers",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_members_forbidden_for_non_teacher",
+          "class": "tests.test_classes.TestGetClassMembers",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_exercise_lists_empty",
+          "class": "tests.test_classes.TestGetClassExerciseLists",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_exercise_lists_with_progress",
+          "class": "tests.test_classes.TestGetClassExerciseLists",
+          "status": "passed"
+        }
+      ],
+      "test_coverage_completion.py": [
+        {
+          "name": "test_list_classes_as_student",
+          "class": "tests.test_coverage_completion",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_list_unauthorized",
+          "class": "tests.test_coverage_completion",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_unauthorized_actions",
+          "class": "tests.test_coverage_completion",
+          "status": "passed"
+        },
+        {
+          "name": "test_delete_test_case_success_and_failures",
+          "class": "tests.test_coverage_completion",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_submissions_as_teacher",
+          "class": "tests.test_coverage_completion",
+          "status": "passed"
+        }
+      ],
+      "test_coverage_gap_filler.py": [
+        {
+          "name": "test_health_check",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_invalid_token_format",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_token_missing_sub",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_current_user_not_found",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_class_duplicate_access_code",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_remove_member_not_found",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_members_not_found",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_class_exercise_lists_not_found",
+          "class": "tests.test_coverage_gap_filler",
+          "status": "passed"
+        }
+      ],
+      "test_exercise_list_policy.py": [
+        {
+          "name": "test_exercise_lock_wins_over_list_lock",
+          "class": "tests.test_exercise_list_policy.TestResolveEffectiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_open_exercise_inherits_list_lock",
+          "class": "tests.test_exercise_list_policy.TestResolveEffectiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_lock_applies_with_open_list",
+          "class": "tests.test_exercise_list_policy.TestResolveEffectiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_both_open_leaves_student_free",
+          "class": "tests.test_exercise_list_policy.TestResolveEffectiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_no_list_falls_back_to_exercise_only",
+          "class": "tests.test_exercise_list_policy.TestResolveEffectiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_owner_locks_the_list",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_non_owner_gets_404",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_locked_without_language_returns_400",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_open_with_language_returns_400",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_other_teachers_language_returns_403",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_partial_patch_preserves_policy",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_published_list_can_still_change_language",
+          "class": "tests.test_exercise_list_policy.TestPatchExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_open_exercise_inherits_list_language",
+          "class": "tests.test_exercise_list_policy.TestEffectiveLanguageEndpoint",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_lock_wins",
+          "class": "tests.test_exercise_list_policy.TestEffectiveLanguageEndpoint",
+          "status": "passed"
+        },
+        {
+          "name": "test_both_open_returns_null",
+          "class": "tests.test_exercise_list_policy.TestEffectiveLanguageEndpoint",
+          "status": "passed"
+        },
+        {
+          "name": "test_without_list_id_resolves_from_exercise_only",
+          "class": "tests.test_exercise_list_policy.TestEffectiveLanguageEndpoint",
+          "status": "passed"
+        },
+        {
+          "name": "test_unknown_list_id_returns_400",
+          "class": "tests.test_exercise_list_policy.TestEffectiveLanguageEndpoint",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_not_in_list_returns_400",
+          "class": "tests.test_exercise_list_policy.TestEffectiveLanguageEndpoint",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_reads_language_locked_by_the_list",
+          "class": "tests.test_exercise_list_policy.TestListLockSideEffects",
+          "status": "passed"
+        },
+        {
+          "name": "test_outsider_still_gets_403",
+          "class": "tests.test_exercise_list_policy.TestListLockSideEffects",
+          "status": "passed"
+        },
+        {
+          "name": "test_delete_language_locked_by_list_returns_409",
+          "class": "tests.test_exercise_list_policy.TestListLockSideEffects",
+          "status": "passed"
+        },
+        {
+          "name": "test_snapshot_comes_from_the_list",
+          "class": "tests.test_exercise_list_policy.TestListLockSideEffects",
+          "status": "passed"
+        },
+        {
+          "name": "test_open_list_and_open_exercise_keep_client_snapshot",
+          "class": "tests.test_exercise_list_policy.TestListLockSideEffects",
+          "status": "passed"
+        },
+        {
+          "name": "test_outsider_gets_null_languages_but_keeps_source",
+          "class": "tests.test_exercise_list_policy.TestExerciseResponseReadGate",
+          "status": "passed"
+        },
+        {
+          "name": "test_enrolled_student_sees_both_expanded",
+          "class": "tests.test_exercise_list_policy.TestExerciseResponseReadGate",
+          "status": "passed"
+        },
+        {
+          "name": "test_owner_teacher_sees_expanded",
+          "class": "tests.test_exercise_list_policy.TestExerciseResponseReadGate",
+          "status": "passed"
+        },
+        {
+          "name": "test_system_language_is_expanded_for_anyone",
+          "class": "tests.test_exercise_list_policy.TestExerciseResponseReadGate",
+          "status": "passed"
+        },
+        {
+          "name": "test_outsider_cannot_read_list_language_via_list_id",
+          "class": "tests.test_exercise_list_policy.TestExerciseResponseReadGate",
+          "status": "passed"
+        },
+        {
+          "name": "test_enrolled_student_reads_list_language_via_list_id",
+          "class": "tests.test_exercise_list_policy.TestExerciseResponseReadGate",
+          "status": "passed"
+        }
+      ],
+      "test_exercise_lists.py": [
+        {
+          "name": "test_list_exercise_lists_empty",
+          "class": "tests.test_exercise_lists.TestListExerciseLists",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_exercise_lists_returns_own_lists",
+          "class": "tests.test_exercise_lists.TestListExerciseLists",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_exercise_list",
+          "class": "tests.test_exercise_lists.TestCreateExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_list",
+          "class": "tests.test_exercise_lists.TestGetExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_list_not_found",
+          "class": "tests.test_exercise_lists.TestGetExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_list_with_submitted_ids",
+          "class": "tests.test_exercise_lists.TestGetExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_list_without_class_id_has_empty_submitted",
+          "class": "tests.test_exercise_lists.TestGetExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_add_exercise_to_list",
+          "class": "tests.test_exercise_lists.TestAddExerciseToList",
+          "status": "passed"
+        },
+        {
+          "name": "test_add_exercise_forbidden_for_non_owner",
+          "class": "tests.test_exercise_lists.TestAddExerciseToList",
+          "status": "passed"
+        },
+        {
+          "name": "test_remove_exercise_from_list",
+          "class": "tests.test_exercise_lists.TestRemoveExerciseFromList",
+          "status": "passed"
+        },
+        {
+          "name": "test_remove_exercise_not_found",
+          "class": "tests.test_exercise_lists.TestRemoveExerciseFromList",
+          "status": "passed"
+        },
+        {
+          "name": "test_remove_exercise_forbidden_for_non_owner",
+          "class": "tests.test_exercise_lists.TestRemoveExerciseFromList",
+          "status": "passed"
+        },
+        {
+          "name": "test_publish_exercise_list",
+          "class": "tests.test_exercise_lists.TestPublishExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_publish_exercise_list_updates_existing",
+          "class": "tests.test_exercise_lists.TestPublishExerciseList",
+          "status": "passed"
+        },
+        {
+          "name": "test_publish_forbidden_for_non_owner",
+          "class": "tests.test_exercise_lists.TestPublishExerciseList",
+          "status": "passed"
+        }
+      ],
+      "test_exercise_own_submissions.py": [
+        {
+          "name": "test_student_sees_own_submissions_newest_first",
+          "class": "tests.test_exercise_own_submissions",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_never_receives_other_students_submissions",
+          "class": "tests.test_exercise_own_submissions",
+          "status": "passed"
+        },
+        {
+          "name": "test_submissions_do_not_carry_code_snapshot",
+          "class": "tests.test_exercise_own_submissions",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_gets_empty_submissions",
+          "class": "tests.test_exercise_own_submissions",
+          "status": "passed"
+        }
+      ],
+      "test_exercise_policy_and_snapshot.py": [
+        {
+          "name": "test_create_open_default",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_open_with_locked_id_returns_400",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_locked_without_id_returns_400",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_locked_with_other_teachers_language_returns_403",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_locked_with_own_language_ok_and_expands",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_locked_with_system_language_ok",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_expands_locked_language",
+          "class": "tests.test_exercise_policy_and_snapshot.TestExerciseLanguagePolicy",
+          "status": "passed"
+        },
+        {
+          "name": "test_open_exercise_keeps_client_snapshot",
+          "class": "tests.test_exercise_policy_and_snapshot.TestSubmissionSnapshot",
+          "status": "passed"
+        },
+        {
+          "name": "test_locked_exercise_overrides_snapshot",
+          "class": "tests.test_exercise_policy_and_snapshot.TestSubmissionSnapshot",
+          "status": "passed"
+        },
+        {
+          "name": "test_snapshot_immutable_after_language_update",
+          "class": "tests.test_exercise_policy_and_snapshot.TestSubmissionSnapshot",
+          "status": "passed"
+        }
+      ],
+      "test_exercises.py": [
+        {
+          "name": "test_teacher_can_create_exercise",
+          "class": "tests.test_exercises.TestCreateExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_exercise_persists_nested_test_cases",
+          "class": "tests.test_exercises.TestCreateExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_create_exercise",
+          "class": "tests.test_exercises.TestCreateExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_returns_with_test_cases",
+          "class": "tests.test_exercises.TestGetExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_exercise_not_found",
+          "class": "tests.test_exercises.TestGetExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_update_own_exercise",
+          "class": "tests.test_exercises.TestUpdateDeleteExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_replace_exercise_and_test_cases",
+          "class": "tests.test_exercises.TestUpdateDeleteExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_delete_own_exercise",
+          "class": "tests.test_exercises.TestUpdateDeleteExercise",
+          "status": "passed"
+        },
+        {
+          "name": "test_add_test_case",
+          "class": "tests.test_exercises.TestTestCases",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_list_own_exercises",
+          "class": "tests.test_exercises.TestListExercises",
+          "status": "passed"
+        }
+      ],
+      "test_languages.py": [
+        {
+          "name": "test_create_language",
+          "class": "tests.test_languages.TestCreate",
+          "status": "passed"
+        },
+        {
+          "name": "test_create_duplicate_name_returns_409",
+          "class": "tests.test_languages.TestCreate",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_returns_only_my_languages",
+          "class": "tests.test_languages.TestList",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_includes_normalized_dna",
+          "class": "tests.test_languages.TestList",
+          "status": "passed"
+        },
+        {
+          "name": "test_legacy_customization_uses_dna_defaults",
+          "class": "tests.test_languages.TestList",
+          "status": "passed"
+        },
+        {
+          "name": "test_community_can_manage_languages_but_not_academic_modules",
+          "class": "tests.test_languages.TestCommunityAccess",
+          "status": "passed"
+        },
+        {
+          "name": "test_community_user_can_publish_and_unpublish_own_language",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_only_community_user_can_publish",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_catalog_lists_only_public_languages_and_supports_search",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_catalog_combines_dna_filters_with_and_semantics",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_catalog_dna_filters_use_defaults_for_legacy_customization",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_catalog_rejects_unknown_dna_filter",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_public_language_can_be_read_and_imported_by_another_user",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_unpublished_language_is_removed_from_catalog_and_read_gate",
+          "class": "tests.test_languages.TestCommunityCatalog",
+          "status": "passed"
+        },
+        {
+          "name": "test_owner_can_read_full_customization",
+          "class": "tests.test_languages.TestGet",
+          "status": "passed"
+        },
+        {
+          "name": "test_other_user_gets_403",
+          "class": "tests.test_languages.TestGet",
+          "status": "passed"
+        },
+        {
+          "name": "test_owner_can_update",
+          "class": "tests.test_languages.TestUpdate",
+          "status": "passed"
+        },
+        {
+          "name": "test_non_owner_gets_404",
+          "class": "tests.test_languages.TestUpdate",
+          "status": "passed"
+        },
+        {
+          "name": "test_owner_can_delete",
+          "class": "tests.test_languages.TestDelete",
+          "status": "passed"
+        },
+        {
+          "name": "test_delete_in_use_returns_409",
+          "class": "tests.test_languages.TestDelete",
+          "status": "passed"
+        },
+        {
+          "name": "test_clone_by_owner",
+          "class": "tests.test_languages.TestClone",
+          "status": "passed"
+        },
+        {
+          "name": "test_clone_generates_unique_name",
+          "class": "tests.test_languages.TestClone",
+          "status": "passed"
+        },
+        {
+          "name": "test_clone_by_unrelated_user_403",
+          "class": "tests.test_languages.TestClone",
+          "status": "passed"
+        },
+        {
+          "name": "test_clone_system_language_allowed",
+          "class": "tests.test_languages.TestClone",
+          "status": "passed"
+        },
+        {
+          "name": "test_clone_via_locked_exercise_in_my_class",
+          "class": "tests.test_languages.TestClone",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_returns_null_when_not_set",
+          "class": "tests.test_languages.TestActiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_set_and_get",
+          "class": "tests.test_languages.TestActiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_set_to_other_users_language_returns_403",
+          "class": "tests.test_languages.TestActiveLanguage",
+          "status": "passed"
+        },
+        {
+          "name": "test_set_to_null",
+          "class": "tests.test_languages.TestActiveLanguage",
+          "status": "passed"
+        }
+      ],
+      "test_languages_presentation.py": [
+        {
+          "name": "test_create_persists_presentation_fields",
+          "class": "tests.test_languages_presentation.TestPresentationFields",
+          "status": "passed"
+        },
+        {
+          "name": "test_presentation_fields_default_to_null",
+          "class": "tests.test_languages_presentation.TestPresentationFields",
+          "status": "passed"
+        },
+        {
+          "name": "test_update_changes_presentation_fields",
+          "class": "tests.test_languages_presentation.TestPresentationFields",
+          "status": "passed"
+        },
+        {
+          "name": "test_clone_copies_presentation_fields",
+          "class": "tests.test_languages_presentation.TestPresentationFields",
+          "status": "passed"
+        },
+        {
+          "name": "test_summary_exposes_only_image_url",
+          "class": "tests.test_languages_presentation.TestPresentationFields",
+          "status": "passed"
+        }
+      ],
+      "test_languages_schema.py": [
+        {
+          "name": "test_system_user_seeded",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_language_create_minimal",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_language_unique_per_owner",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_users_active_language_fk",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_locked_requires_language",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_open_rejects_locked_language",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_locked_with_language_ok",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        },
+        {
+          "name": "test_submission_language_snapshot_persists",
+          "class": "tests.test_languages_schema",
+          "status": "passed"
+        }
+      ],
+      "test_organizations.py": [
+        {
+          "name": "test_list_organizations_returns_only_system_when_no_orgs_created",
+          "class": "tests.test_organizations",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_organizations_returns_all_orgs",
+          "class": "tests.test_organizations",
+          "status": "passed"
+        },
+        {
+          "name": "test_list_organizations_no_auth_required",
+          "class": "tests.test_organizations",
+          "status": "passed"
+        }
+      ],
+      "test_pagination.py": [
+        {
+          "name": "test_exercises_pagination_and_search",
+          "class": "tests.test_pagination.TestPaginationEndpoints",
+          "status": "passed"
+        },
+        {
+          "name": "test_exercise_lists_pagination",
+          "class": "tests.test_pagination.TestPaginationEndpoints",
+          "status": "passed"
+        },
+        {
+          "name": "test_languages_and_community_pagination",
+          "class": "tests.test_pagination.TestPaginationEndpoints",
+          "status": "passed"
+        },
+        {
+          "name": "test_submissions_pagination",
+          "class": "tests.test_pagination.TestPaginationEndpoints",
+          "status": "passed"
+        }
+      ],
+      "test_seed_community_languages.py": [
+        {
+          "name": "test_seed_creates_complete_public_system_languages",
+          "class": "tests.test_seed_community_languages",
+          "status": "passed"
+        },
+        {
+          "name": "test_seed_is_idempotent_and_reconciles_official_languages",
+          "class": "tests.test_seed_community_languages",
+          "status": "passed"
+        }
+      ],
+      "test_submissions.py": [
+        {
+          "name": "test_student_can_submit",
+          "class": "tests.test_submissions.TestCreateSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_submit_requires_auth",
+          "class": "tests.test_submissions.TestCreateSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_sees_own_submissions",
+          "class": "tests.test_submissions.TestListSubmissions",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_can_filter_submissions_by_exercise",
+          "class": "tests.test_submissions.TestListSubmissions",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_grade_submission",
+          "class": "tests.test_submissions.TestGradeSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_grade",
+          "class": "tests.test_submissions.TestGradeSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_can_get_own_submission",
+          "class": "tests.test_submissions.TestGetSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_submission_not_found",
+          "class": "tests.test_submissions.TestGetSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_see_other_student_submission",
+          "class": "tests.test_submissions.TestGetSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_resubmission_replaces_old_submission_without_duplicates",
+          "class": "tests.test_submissions.TestGetSubmission",
+          "status": "passed"
+        },
+        {
+          "name": "test_teacher_can_filter_submissions_by_exercise_list",
+          "class": "tests.test_submissions.TestGetSubmission",
+          "status": "passed"
+        }
+      ],
+      "test_users.py": [
+        {
+          "name": "test_get_user_by_id_returns_profile",
+          "class": "tests.test_users.TestGetUser",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_user_not_found",
+          "class": "tests.test_users.TestGetUser",
+          "status": "passed"
+        },
+        {
+          "name": "test_get_user_requires_auth",
+          "class": "tests.test_users.TestGetUser",
+          "status": "passed"
+        },
+        {
+          "name": "test_user_can_update_own_profile",
+          "class": "tests.test_users.TestUpdateUser",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_update_other_user",
+          "class": "tests.test_users.TestUpdateUser",
+          "status": "passed"
+        },
+        {
+          "name": "test_community_can_update_only_own_profile",
+          "class": "tests.test_users.TestUpdateUser",
+          "status": "passed"
+        },
+        {
+          "name": "test_admin_can_list_users",
+          "class": "tests.test_users.TestListUsers",
+          "status": "passed"
+        },
+        {
+          "name": "test_student_cannot_list_users",
+          "class": "tests.test_users.TestListUsers",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "compiler": {
+    "command": "cd packages/compiler && npx vitest run --reporter=json --outputFile=/tmp/tcc-victor-compiler-2026-09-19.json",
+    "tests": 224,
+    "passed": 224,
+    "failed": 0,
+    "files": 21
+  },
+  "scope": [
+    "Execução local com SQLite em memória e dependência de sessão substituída; sem acesso à implantação pública.",
+    "As migrações Alembic e a transação da dependência de produção não são exercitadas por essa configuração.",
+    "O workflow foi inspecionado; nenhuma execução remota de CI é atestada por este registro.",
+    "A contagem de casos não equivale a cobertura percentual nem a auditoria integral de segurança."
+  ]
+}

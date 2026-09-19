@@ -212,7 +212,7 @@ Essa combinação torna o XP particularmente adequado a equipes reduzidas, nas q
 \subsection{Testes Automatizados e \textit{Test-Driven Development} (TDD)}
 \label{subsec:testes-tdd}
 
-A garantia da qualidade de um software exige a validação contínua de seus comportamentos. Em projetos modernos, a automação de testes substitui a exaustiva e falha verificação manual, fornecendo uma rede de segurança que permite aos desenvolvedores alterar, refatorar e evoluir o código com a certeza de que as funcionalidades preexistentes não foram comprometidas. Essa prevenção contra a quebra de comportamentos já consolidados é conhecida como teste de regressão. Além de atestar o funcionamento da aplicação, os testes automatizados atuam como uma documentação viva e executável das regras de negócio do sistema \cite{aniche2012}. %
+A garantia da qualidade de um software exige a validação contínua de seus comportamentos. Em projetos modernos, a automação de testes complementa a verificação manual e auxilia os desenvolvedores a detectar regressões nos comportamentos cobertos ao alterar, refatorar e evoluir o código. Essa prevenção contra a quebra de comportamentos já consolidados é conhecida como teste de regressão. Além de atestar o funcionamento da aplicação, os testes automatizados atuam como uma documentação viva e executável das regras de negócio do sistema \cite{aniche2012}. %
 
 Nesse contexto, destaca-se a prática do \textit{Test-Driven Development} (Desenvolvimento Guiado por Testes). O TDD inverte o ciclo tradicional de engenharia, exigindo que o desenvolvedor escreva um teste automatizado antes mesmo de implementar a funcionalidade do sistema \cite{aniche2012,martin_coder}.
 
@@ -269,6 +269,8 @@ Outra característica central do \textit{framework} é a integração profunda c
 Além disso, a plataforma é construída estritamente em torno de padrões abertos, notadamente a especificação OpenAPI e o JSON Schema. Essa aderência aos padrões permite que o FastAPI gere de forma automática e dinâmica a documentação interativa da API, disponibilizando interfaces prontas para o consumo do desenvolvedor, como o Swagger UI e o ReDoc. Isso reduz drasticamente o tempo gasto com a documentação manual, facilita a integração com sistemas de \textit{front-end} e permite a geração automática de clientes (\textit{SDKs}) em diversas linguagens \cite{fastapi2026}.
 
 Por fim, o \textit{framework} incorpora um sistema de Injeção de Dependência poderoso, porém intuitivo, que simplifica a integração do código da aplicação com bancos de dados relacionais (através de ORMs como o SQLAlchemy), além de prover mecanismos nativos e facilitados para a implementação de segurança e autenticação, como fluxos OAuth2 e \textit{tokens} JWT. Toda essa gama de funcionalidades faz do FastAPI uma escolha robusta, tanto para a criação rápida de protótipos quanto para sistemas corporativos altamente escaláveis \cite{dunossauro2026}.
+
+\input{texto/fundamentos-backend}
 
 \section{Softwares Educativos e Tecnologias de Apoio à Aprendizagem}
 

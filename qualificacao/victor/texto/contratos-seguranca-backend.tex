@@ -1,0 +1,37 @@
+\section{Contratos de Resposta e Controles do Back-end}
+\label{sec:contratos-seguranca-backend}
+
+A API separa as entidades persistidas dos modelos Pydantic usados nas requisições e respostas. As rotas declaram modelos de saída, enquanto os serviços aplicam filtros e regras de acesso. A Tabela~\ref{tab:contratos-backend} apresenta exemplos identificados na revisão do código. Esses contratos concretizam a seleção de propriedades discutida na Seção~\ref{subsec:fundamentos-respostas-api}; sua existência não demonstra que todos os endpoints retornem o menor conjunto possível de dados \cite{projeto2026backend,fastapi2026response}.
+
+\begin{table}[htbp]
+\centering
+\caption{Exemplos de seleção de dados nas respostas do back-end.}
+\label{tab:contratos-backend}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{0.24\textwidth}|>{\raggedright\arraybackslash}p{0.33\textwidth}|>{\raggedright\arraybackslash}p{0.33\textwidth}|}
+\hline
+\textbf{Contrato} & \textbf{Dados retornados} & \textbf{Delimitação} \\\hline
+Usuário & Identificação, organização, perfil e dados de apresentação. & O modelo de saída não declara senha; a atualização de perfil aceita nome, avatar e biografia. \\\hline
+Resumo de linguagem & Identificação, autoria, apresentação, publicação e resumo dos modos da linguagem. & Omite a configuração completa e os campos de consulta de imagem e predefinição. \\\hline
+Histórico no exercício & Identificador, estado, nota e data das submissões do solicitante. & Omite código e configuração capturados na submissão; filtra os registros por aluno autenticado. \\\hline
+Resumo de turma & Dados da turma, contagens e identificação resumida do professor. & Permite apresentar quantidades sem devolver as coleções completas de membros e listas. \\\hline
+\end{tabular}
+\legend{Fonte: elaboração própria a partir dos modelos e serviços de \citeonline{projeto2026backend}.}
+\end{table}
+\FloatBarrier
+
+No histórico associado à consulta de um exercício, o serviço filtra as submissões pelo identificador do solicitante e, quando informado, pelo da lista. Em seguida, a rota transforma cada registro no modelo de resumo. O campo interno foi denominado \texttt{submission\_history}, com o nome de saída \texttt{submissions}, para evitar que a conversão do objeto persistido expanda automaticamente a relação que reúne submissões de todos os alunos. A seleção de registros e a seleção de campos são, portanto, controles complementares nesse fluxo \cite{projeto2026backend}.
+
+Na autenticação, o serviço utiliza bcrypt para gerar e verificar hashes de senha e JWT assinado com HS256, contendo identificação e expiração. A dependência de autenticação verifica o token antes de disponibilizar o identificador às rotas protegidas; outra dependência restringe os recursos acadêmicos aos perfis previstos. O cadastro público admite aluno, professor e comunidade, sem permitir os perfis administrativo e de sistema. Essa restrição não comprova a identidade institucional de quem se cadastra como professor \cite{projeto2026backend}.
+
+A versão examinada utiliza bcrypt, enquanto a orientação atual da OWASP prioriza Argon2id para novos sistemas e trata bcrypt como opção para sistemas legados. Assim, o mecanismo existente é registrado como decisão de implementação, acompanhado da necessidade de avaliar sua evolução e sua política de parâmetros; não é apresentado como atendimento integral às recomendações atuais \cite{projeto2026backend,owasp2026password}.
+
+Os contratos de entrada restringem atributos conforme a operação. Por exemplo, o modelo de atualização de usuário não oferece campos para alterar senha, perfil ou organização. Nas listagens paginadas de linguagens, o tamanho de página tem limite de 100 registros. Entretanto, a listagem pessoal ainda aceita o caminho sem paginação; no serviço de submissões, a paginação recorta em memória uma coleção previamente carregada. Portanto, a redução do volume transmitido não demonstra, por si só, redução proporcional do trabalho no banco ou proteção completa contra consumo excessivo de recursos \cite{projeto2026backend,owasp2023recursos}.
+
+\subsection{Limites dos controles examinados}
+\label{subsec:limites-seguranca-backend}
+
+A inspeção identificou decisões de autorização que ainda precisam de revisão. Na leitura de usuário por identificador, a rota exige autenticação, mas o serviço consultado não recebe o solicitante para comparar organização ou vínculo. Na leitura individual de submissão, a restrição explícita de propriedade é aplicada ao aluno; a atribuição de nota rejeita esse perfil, mas não verifica nesse caminho o vínculo do professor com a atividade. A seleção correta de campos não resolve essas lacunas de autorização por objeto, cuja análise deve considerar a política de acesso pretendida \cite{projeto2026backend,owasp2023objetos}.
+
+Esses achados delimitam a segurança demonstrada pelo trabalho. A revisão compreende inspeção de código e testes funcionais locais, sem constituir teste de intrusão ou auditoria da implantação pública \cite{silva2026verificacaobackend}. A conferência sistemática das permissões entre perfis e instituições, da configuração de transporte e da proteção dos tokens permanece necessária. Os testes de autorização devem contemplar tanto operações permitidas quanto recusadas, conforme a orientação da OWASP \cite{owasp2026authorization,owasp2026rest}.

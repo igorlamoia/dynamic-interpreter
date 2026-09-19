@@ -1,0 +1,24 @@
+\subsection{Testes de integração de APIs assíncronas}
+\label{subsec:fundamentos-testes-api}
+
+Os testes de uma API podem verificar conjuntamente a interpretação da requisição, as regras de negócio, a persistência e a resposta. O pytest permite organizar a preparação e a liberação de recursos em \textit{fixtures}, compartilhadas pelos cenários que delas dependem. Para funções e recursos assíncronos, o plugin pytest-asyncio oferece integração com o ciclo de eventos e um modo automático de identificação dos testes. Esses mecanismos permitem explicitar as condições iniciais e reduzir a repetição do código de preparação \cite{pytest2026fixtures,pytestasyncio2026}.
+
+A documentação do FastAPI apresenta testes assíncronos com \texttt{AsyncClient} e \texttt{ASGITransport}, do HTTPX, para enviar requisições diretamente à aplicação. O transporte em processo dispensa um servidor HTTP externo nesse tipo de verificação. A substituição de dependências permite fornecer recursos próprios dos testes, como uma sessão de banco de dados, preservando as rotas e os serviços exercitados. Essa abordagem oferece um recorte de integração, cujo alcance depende dos componentes reais e substituídos no ambiente \cite{fastapi2026async,fastapi2026overrides}.
+
+\subsection{Contratos de resposta e minimização dos dados}
+\label{subsec:fundamentos-respostas-api}
+
+Uma resposta de API deve conter os campos necessários à operação e permitidos ao solicitante. A OWASP relaciona a exposição indevida de propriedades e a alteração de atributos sem permissão ao risco de autorização em nível de propriedade. Entre as medidas recomendadas estão selecionar explicitamente os campos de saída, restringir os atributos atualizáveis e validar as respostas por esquema. Enviar um objeto completo e ocultar campos na interface mantém esses dados acessíveis ao cliente \cite{owasp2023propriedades}.
+
+No FastAPI, o parâmetro \texttt{response\_model} declara o contrato de saída e permite validar, serializar e filtrar o resultado de acordo com esse contrato. Modelos distintos para entrada, resumo e detalhe tornam explícito o que cada operação recebe ou devolve. A documentação exemplifica a separação entre os dados usados para cadastrar um usuário e aqueles retornados na resposta, excluindo a senha do modelo de saída \cite{fastapi2026response}.
+
+Neste trabalho, a redução dos dados retornados é tratada como seleção de campos e minimização da resposta. Essa decisão é distinta da validação dos valores recebidos e do tratamento de conteúdo para apresentação. Por exemplo, omitir uma propriedade não sanitiza o HTML eventualmente contido em outra. A OWASP distingue a validação sintática e semântica das medidas específicas de prevenção de injeções e da codificação de saída adequada ao contexto de uso \cite{owasp2026input}.
+
+\subsection{Autorização e proteção de recursos no back-end}
+\label{subsec:fundamentos-seguranca-api}
+
+A autenticação identifica o solicitante; a autorização determina quais ações ele pode realizar. A OWASP recomenda o menor privilégio, a negação por padrão e a verificação de permissões em cada requisição. Quando uma operação recebe o identificador de um recurso, deve verificar também a relação entre esse recurso, a ação e o usuário autenticado. Assim, possuir uma sessão válida não basta para consultar ou modificar qualquer registro \cite{owasp2026authorization,owasp2023objetos}.
+
+A proteção das credenciais e do transporte complementa esses controles. Senhas devem ser armazenadas mediante funções próprias de derivação de hash, e tokens assinados precisam ter sua integridade e validade verificadas. A assinatura de um JWT não equivale à criptografia de seu conteúdo; o transporte protegido por HTTPS continua necessário. Essas medidas protegem aspectos diferentes do fluxo de autenticação e não substituem as decisões de autorização dos serviços \cite{owasp2026password,owasp2026rest}.
+
+Outro aspecto é limitar o consumo de recursos. A OWASP recomenda impor limites ao tamanho de entradas, à quantidade de registros retornados e à frequência das operações. A paginação pode restringir o volume de uma resposta, mas sua eficácia depende de como a consulta é implementada e de sua aplicação aos caminhos disponíveis. Esses limites devem ser considerados juntamente com testes das permissões, incluindo tentativas de acesso que precisam ser negadas \cite{owasp2023recursos,owasp2026authorization}.

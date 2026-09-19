@@ -1,0 +1,58 @@
+\subsection{Testes do serviço FastAPI}
+\label{subsec:testes-backend}
+
+A suíte do serviço Python utiliza pytest e pytest-asyncio, com modo assíncrono automático definido na configuração do projeto. Os cenários combinam verificações de esquemas com testes das rotas e de sua integração com serviços e persistência. As \textit{fixtures} centralizam a preparação da aplicação e do banco, e as fábricas de dados criam usuários, organizações e atividades necessários a cada cenário. Essa organização corresponde aos mecanismos de preparação reutilizável apresentados na Seção~\ref{subsec:fundamentos-testes-api} \cite{projeto2026backendtestes,pytest2026fixtures,pytestasyncio2026}.
+
+O ambiente emprega SQLite em memória e sessões assíncronas do SQLAlchemy. Uma fixture cria as tabelas a partir dos modelos e insere a organização e o usuário de sistema; ao final da suíte, remove as tabelas. Os testes que utilizam o banco recebem uma sessão com transação e reversão ao término. A dependência de sessão da aplicação é substituída por essa sessão, e o HTTPX utiliza transporte ASGI para enviar requisições às rotas no próprio processo. Assim, as verificações observam respostas HTTP e efeitos no banco de teste, sem depender do serviço PostgreSQL da implantação \cite{projeto2026backendtestes,fastapi2026async,fastapi2026overrides}.
+
+Entre os casos relacionados à segurança estão o cadastro com retorno dos dados do usuário sem senha, a recusa de credenciais inválidas, a restrição de acesso à submissão de outro aluno e a impossibilidade de um aluno atribuir notas. Também há verificações de ausência de propriedades nas respostas resumidas: os testes de apresentação de linguagens conferem a omissão da configuração completa, enquanto os testes do histórico do exercício verificam que códigos enviados e submissões de colegas não sejam expostos naquele retorno \cite{projeto2026backendtestes}.
+
+O Trecho de Código~\ref{lst:resumo-submissao} reproduz parte de um caso existente. A preparação da turma, dos alunos e das submissões foi omitida da listagem e está disponível no arquivo original. A asserção do estado HTTP precede a inspeção do conteúdo, de modo que uma resposta de erro sem os campos verificados não seja confundida com um resultado correto \cite{projeto2026backendtestes}.
+
+\begin{lstlisting}[language=Python, caption={Recorte do teste que verifica a ausência de código no histórico resumido do exercício.}, label={lst:resumo-submissao}, captionpos=b]
+response = await async_client.get(
+    f"/exercises/{exercise.id}?listId={exercise_list.id}",
+    headers={"Authorization": f"Bearer {token}"},
+)
+
+assert response.status_code == 200, response.text
+for submission in response.json()["submissions"]:
+    assert "codeSnapshot" not in submission
+assert "alice-v1" not in response.text
+\end{lstlisting}
+
+\subsection{Resultados e alcance da verificação}
+\label{subsec:resultados-testes-backend}
+
+Em 19 de setembro de 2026, a execução local da suíte completa do back-end aprovou 188 casos em 17 arquivos, sem falhas ou casos ignorados, em aproximadamente 59 segundos. Foram utilizados Python 3.12.12, pytest 9.0.2, pytest-asyncio 1.3.0, HTTPX 0.28.1 e FastAPI 0.135.1. A Tabela~\ref{tab:testes-backend} agrupa os arquivos por finalidade, contando separadamente os casos parametrizados coletados pelo executor. O registro estruturado da revisão apresenta a distribuição por arquivo e os comandos utilizados \cite{silva2026verificacaobackend}.
+
+\begin{table}[htbp]
+\centering
+\caption{Distribuição dos testes executados no back-end.}
+\label{tab:testes-backend}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{0.28\textwidth}|c|c|>{\raggedright\arraybackslash}p{0.43\textwidth}|}
+\hline
+\textbf{Grupo} & \textbf{Arquivos} & \textbf{Casos} & \textbf{Exemplos de verificação} \\\hline
+Autenticação, usuários e organizações & 3 & 29 & Cadastro, login, identificação e operações de perfil. \\\hline
+Turmas, exercícios e listas & 3 & 44 & Criação, edição, participação e organização de atividades. \\\hline
+Políticas de linguagem e registros de configuração & 2 & 39 & Precedência da linguagem obrigatória e configuração preservada na submissão. \\\hline
+Linguagens & 4 & 44 & Operações do acervo, esquemas, apresentação e carga inicial. \\\hline
+Submissões e histórico próprio & 2 & 15 & Envio, reenvio, correção, acesso e campos do resumo. \\\hline
+Paginação & 1 & 4 & Páginas, totais, busca e compatibilidade das listagens. \\\hline
+Cenários complementares & 2 & 13 & Saúde do serviço, erros de autenticação e operações recusadas. \\\hline
+\textbf{Total} & \textbf{17} & \textbf{188} & Casos coletados e aprovados na revisão local. \\\hline
+\end{tabular}
+\legend{Fonte: elaboração própria a partir de \citeonline{silva2026verificacaobackend}.}
+\end{table}
+\FloatBarrier
+
+A contagem corresponde a casos executados e não a uma porcentagem de cobertura do código ou das políticas de segurança. Como as tabelas são criadas diretamente pelos modelos e a dependência de sessão é substituída, essa execução não verifica as migrações Alembic, o comportamento específico do PostgreSQL nem o encerramento da transação da dependência de produção. A aprovação dos cenários existentes também não elimina as lacunas identificadas na Seção~\ref{subsec:limites-seguranca-backend} \cite{projeto2026backendtestes,projeto2026backend,silva2026verificacaobackend}.
+
+\subsection{Testes no fluxo de integração contínua}
+\label{subsec:ci-backend}
+
+O workflow atual executa verificações nas solicitações de integração e nos envios à branch \texttt{main}. O job denominado \texttt{unit} reúne Vitest para compilador e IDE e pytest para o back-end; seu nome não implica que todos os casos sejam unitários, pois há integração de rotas e persistência. Outro job executa Playwright com serviços locais em Docker. A implantação por SSH depende da aprovação dos dois jobs e só ocorre em envio à \texttt{main}. Esse arquivo documenta a condição para deploy, sem demonstrar a configuração das regras de proteção de branch \cite{projeto2026workflow}.
+
+Nos merges examinados, a dependência de sessão passou a encerrar a transação antes do envio da resposta, utilizando o escopo de função do FastAPI. A resposta de autenticação também passou a incluir o modelo de usuário, evitando uma consulta imediata adicional para obter seus dados. Essas alterações relacionam a consistência do serviço ao fluxo observado pela interface; sua presença no código é distinta da evidência produzida pela suíte com SQLite. A documentação do FastAPI descreve o momento de encerramento das dependências com esse escopo \cite{projeto2026backend,fastapi2026yield}.

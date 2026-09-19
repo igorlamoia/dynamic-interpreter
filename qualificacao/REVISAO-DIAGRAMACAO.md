@@ -78,3 +78,18 @@ nesta revisão e conserva as 84 páginas da atualização anterior.
 
 Os [resultados de testes e suas limitações](igor/verificacao/README.md)
 acompanham o texto, com [registro estruturado](igor/verificacao/testes-2026-09-19.json).
+
+## TCC do Victor: testes e práticas do back-end — 19/09/2026
+
+O acréscimo de fundamentação sobre testes de APIs, contratos de resposta e
+segurança, com descrição da implementação e dos resultados locais, resultou
+em **92 páginas** no PDF do Victor. A compilação final não apresenta
+`Overfull`, figuras grandes demais ou referências indefinidas. As 92 páginas
+passaram na verificação de A4 e margens, com **zero ocorrências** fora dos
+limites. As tabelas de contratos e de testes, a listagem e amostras das
+referências foram inspecionadas visualmente.
+
+O [registro técnico do Victor](victor/verificacao/README.md) descreve os
+188 testes do serviço Python e a confirmação dos 224 testes do compilador,
+além de distinguir controles existentes e limitações de segurança.
+O PDF do Igor permanece com as 103 páginas da atualização anterior.
