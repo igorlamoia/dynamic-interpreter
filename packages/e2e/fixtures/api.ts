@@ -54,10 +54,14 @@ export class ApiClient {
   }
 
   async register(
-    role: "teacher" | "student",
+    role: "teacher" | "student" | "community",
     namePrefix: string,
   ): Promise<Account> {
-    const organizationId = await this.academicOrganizationId();
+    // `community` é o único papel que se cadastra sem organização; para os
+    // acadêmicos o backend rejeita o registro sem ela
+    // (RegisterRequest.validate_organization_for_role).
+    const organizationId =
+      role === "community" ? undefined : await this.academicOrganizationId();
     const email = uniqueEmail(role);
     const name = uniqueName(namePrefix);
 
@@ -219,6 +223,27 @@ export class ApiClient {
       response,
       `POST /exercise-lists/${listId}/publish`,
     );
+  }
+
+  /**
+   * Cria uma linguagem direto na conta. `customization` vazio basta: o backend
+   * deriva o DNA sozinho (confirmado com um POST manual, que respondeu 201 com
+   * o dna default). Montar uma customização real é assunto do wizard, testado
+   * em language-creator.e2e.ts.
+   */
+  async createLanguage(
+    token: string,
+    namePrefix = "linguagem",
+  ): Promise<{ id: number; name: string }> {
+    const response = await this.request.post(`${API_URL}/languages`, {
+      headers: this.bearer(token),
+      data: {
+        name: uniqueName(namePrefix),
+        description: "Linguagem criada pela suite E2E",
+        customization: {},
+      },
+    });
+    return this.unwrap<{ id: number; name: string }>(response, "POST /languages");
   }
 
   async communityLanguages(token: string) {
