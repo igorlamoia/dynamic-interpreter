@@ -1,6 +1,6 @@
 import { expect, test } from "../fixtures";
-import type { ApiClient } from "../fixtures/api";
 import { setEditorCode } from "../support/monaco";
+import { montarListaPublicada } from "../support/scenario";
 
 // Programas Java-- mínimos para o exercício "imprima exatamente: ok".
 // `normalizeOutput` (packages/ide/src/pages/api/submissions/validate.ts:62)
@@ -17,28 +17,6 @@ const BROKEN_PROGRAM = `int main() {
   print("ok"
 }
 `;
-
-/** Monta turma + exercício + test case + lista publicada + aluno matriculado, tudo pela API. */
-async function montarCenario(
-  api: ApiClient,
-  teacherToken: string,
-  studentToken: string,
-) {
-  const turma = await api.createClass(teacherToken);
-  const exercicio = await api.createExercise(teacherToken, {
-    description: "Escreva um programa que imprima exatamente: ok",
-  });
-  await api.addTestCase(teacherToken, exercicio.id, {
-    label: "imprime ok",
-    input: "",
-    expectedOutput: "ok",
-  });
-  const lista = await api.createExerciseList(teacherToken);
-  await api.addExerciseToList(teacherToken, lista.id, exercicio.id);
-  await api.publishList(teacherToken, lista.id, turma.id);
-  await api.joinClass(studentToken, turma.accessCode);
-  return { turma, exercicio, lista };
-}
 
 test("aluno entra na turma pela UI usando o codigo de acesso", async ({
   api,
@@ -69,7 +47,7 @@ test('submissao com codigo correto mostra os test cases passando e o badge "Envi
   loginAs,
   page,
 }) => {
-  const { turma, exercicio, lista } = await montarCenario(
+  const { turma, exercicio, lista } = await montarListaPublicada(
     api,
     teacher.token,
     student.token,
@@ -104,7 +82,7 @@ test("submissao com erro mostra os erros e nao marca como enviado", async ({
   loginAs,
   page,
 }) => {
-  const { turma, exercicio, lista } = await montarCenario(
+  const { turma, exercicio, lista } = await montarListaPublicada(
     api,
     teacher.token,
     student.token,

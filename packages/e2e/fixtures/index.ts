@@ -9,6 +9,8 @@ type Fixtures = {
   teacher: Account;
   /** Aluno recém-criado, isolado desta execução. */
   student: Account;
+  /** Usuário da comunidade (sem organização), isolado desta execução. */
+  community: Account;
   /** Autentica o contexto atual do browser com o token informado. */
   loginAs: (token: string) => Promise<void>;
 };
@@ -24,6 +26,10 @@ export const test = base.extend<Fixtures>({
 
   student: async ({ api }, use) => {
     await use(await api.register("student", "aluno"));
+  },
+
+  community: async ({ api }, use) => {
+    await use(await api.register("community", "comunidade"));
   },
 
   loginAs: async ({ context }, use) => {

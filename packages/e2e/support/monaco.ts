@@ -8,11 +8,34 @@ declare global {
   }
 }
 
+/**
+ * Orçamento próprio para a montagem do Monaco, maior que os 15s padrão do
+ * `expect`.
+ *
+ * O bundle do editor é lazy e é o carregamento mais pesado da suíte: com a
+ * stack ocupada (logo depois de outra corrida paralela) os 15s estouraram uma
+ * vez, no `grading.e2e.ts`, enquanto o mesmo teste passava 12/12 isolado. Como
+ * o `playwright.config.ts` liga `failOnFlakyTests` no CI, um estouro raro
+ * reprova o gate mesmo quando o retry passa — daí o teto mais alto aqui.
+ *
+ * Isto afrouxa só a espera, não a asserção: um editor que de fato não monta
+ * continua reprovando, apenas 30s mais tarde.
+ */
+const MONACO_MOUNT_TIMEOUT = 45_000;
+
 /** Espera o Monaco terminar de montar dentro do container. */
 export async function waitForMonaco(page: Page): Promise<void> {
-  await expect(page.locator(EDITOR)).toBeVisible();
-  await expect(page.locator(`${EDITOR} .monaco-editor`)).toBeVisible();
-  await page.waitForFunction(() => Boolean(window.monaco?.editor.getEditors().length));
+  await expect(page.locator(EDITOR)).toBeVisible({
+    timeout: MONACO_MOUNT_TIMEOUT,
+  });
+  await expect(page.locator(`${EDITOR} .monaco-editor`)).toBeVisible({
+    timeout: MONACO_MOUNT_TIMEOUT,
+  });
+  await page.waitForFunction(
+    () => Boolean(window.monaco?.editor.getEditors().length),
+    undefined,
+    { timeout: MONACO_MOUNT_TIMEOUT },
+  );
 }
 
 /**
