@@ -9,6 +9,7 @@ import type {
 } from "@ts-compilator-for-java/compiler/interpreter/constants";
 import { Body } from "./body";
 import { Header } from "./header";
+import { t } from "@/i18n";
 
 export interface TerminalLine {
   id: number;
@@ -28,6 +29,7 @@ interface ITerminalViewProps {
   toggleTerminal: () => void;
   intermediateCode: Instruction[];
   debugSession?: DebugTerminalSession;
+  locale?: string;
 }
 
 let lineIdCounter = 0;
@@ -44,9 +46,10 @@ export default function TerminalView({
   toggleTerminal,
   intermediateCode,
   debugSession,
+  locale,
 }: ITerminalViewProps) {
   const [lines, setLines] = useState<TerminalLine[]>([
-    createLine("Van Hohenheim! O Henheim da luz", "info"),
+    createLine(t(locale, "ui.terminal_welcome"), "info"),
   ]);
   const [currentInput, setCurrentInput] = useState("");
   const [isExecuting, setIsExecuting] = useState(false);
@@ -110,6 +113,7 @@ export default function TerminalView({
             onClick={() => inputRef.current?.focus()}
           >
             <Header
+              locale={locale}
               toggleTerminal={toggleTerminal}
               setLines={setLines}
               isExecuting={isExecuting}
@@ -125,6 +129,7 @@ export default function TerminalView({
               setLines={setLines}
               toggleTerminal={toggleTerminal}
               debugSession={debugSession}
+              locale={locale}
             />
           </motion.div>
         )}

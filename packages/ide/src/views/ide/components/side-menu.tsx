@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import type { SidebarView } from "./side-explorer/sidebar-panel";
 import { markLanguageCreatorReturn } from "@/lib/language-creator-navigation";
+import { t } from "@/i18n";
 
 interface SideMenuProps {
   isSidebarOpen: boolean;
@@ -24,6 +25,7 @@ export function SideMenu({
   activeView,
   setActiveView,
 }: SideMenuProps) {
+  const { locale } = useRouter();
   const handleViewClick = (view: SidebarView) => {
     if (activeView === view && isSidebarOpen) {
       setIsSidebarOpen(false);
@@ -38,21 +40,21 @@ export function SideMenu({
       <IconButton
         selected={isSidebarOpen && activeView === "explorer"}
         onClick={() => handleViewClick("explorer")}
-        tooltip="Explorador de arquivos"
+        tooltip={t(locale, "ui.file_explorer")}
       >
         <FileCode2 className="h-4 w-4" />
       </IconButton>
       <IconButton
         selected={isSidebarOpen && activeView === "search"}
         onClick={() => handleViewClick("search")}
-        tooltip="Buscar"
+        tooltip={t(locale, "ui.search")}
       >
         <Search className="h-4 w-4" />
       </IconButton>
       <IconButton
         selected={isSidebarOpen && activeView === "language"}
         onClick={() => handleViewClick("language")}
-        tooltip="Linguagens"
+        tooltip={t(locale, "ui.languages")}
       >
         <Languages className="h-4 w-4" />
       </IconButton>
@@ -70,10 +72,11 @@ export function SideMenu({
 
 function ConfigButton() {
   const router = useRouter();
+  const { locale } = router;
 
   return (
     <IconButton
-      tooltip="Linguagem personalizada"
+      tooltip={t(locale, "ui.custom_language")}
       onClick={() => {
         markLanguageCreatorReturn();
         void router.push("/language-creator");

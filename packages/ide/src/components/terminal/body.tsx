@@ -10,6 +10,7 @@ import { Instruction } from "@ts-compilator-for-java/compiler/interpreter/consta
 import { getLineColor } from "@/utils/compiler/styles";
 import { cn } from "@/lib/utils";
 import { PerfectScrollbar } from "../ui/perfect-scrollbar";
+import { t } from "@/i18n";
 
 interface BodyProps {
   lines: TerminalLine[];
@@ -21,6 +22,7 @@ interface BodyProps {
   setLines: React.Dispatch<React.SetStateAction<TerminalLine[]>>;
   toggleTerminal: () => void;
   debugSession?: DebugTerminalSession;
+  locale?: string;
 }
 
 const scheduledExecutionKeys = new Set<string>();
@@ -50,6 +52,7 @@ export function Body(props: BodyProps) {
     setLines,
     toggleTerminal,
     debugSession,
+    locale,
   } = props;
   const { setRuntimeErrorInstructionPointer } = useRuntimeError();
 
@@ -91,10 +94,7 @@ export function Body(props: BodyProps) {
           setLines([]);
           break;
         case "help":
-          addLine(
-            "Available commands: ping, clear, cls, help, exit, 'ctrl+j' to toggle terminal",
-            "info",
-          );
+          addLine(t(locale, "ui.terminal_help"), "info");
           break;
         case "ping":
           addLine("Pong! 🏓", "output");
@@ -103,15 +103,18 @@ export function Body(props: BodyProps) {
           addLine("mei!", "output");
           break;
         case "exit":
-          addLine("❌  Exiting terminal...", "output");
+          addLine(`X  ${t(locale, "ui.terminal_exit")}`, "output");
           setTimeout(() => {
-            setLines([createLine("Welcome to the Lamoia's Terminal!", "info")]);
+            setLines([createLine(t(locale, "ui.terminal_welcome"), "info")]);
             toggleTerminal();
           }, 1000);
           break;
         default:
           if (trimmed !== "")
-            addLine(`Comando não reconhecido: ${command}`, "error");
+            addLine(
+              t(locale, "ui.terminal_unknown_command", { command }),
+              "error",
+            );
           break;
       }
     },
@@ -151,7 +154,7 @@ export function Body(props: BodyProps) {
     };
 
     addLine("", "output");
-    addLine("🟢  Iniciando execução do código...", "success");
+    addLine(`OK  ${t(locale, "ui.terminal_start_execution")}`, "success");
     addLine("", "output");
 
     const interpreter = new Interpreter(intermediateCode, io);
@@ -164,7 +167,7 @@ export function Body(props: BodyProps) {
       }
       setRuntimeErrorInstructionPointer(null);
       addLine("", "output");
-      addLine("🟢  Finalizando execução do código...", "success");
+      addLine(`OK  ${t(locale, "ui.terminal_finish_execution")}`, "success");
       addLine("", "output");
     } catch (e: unknown) {
       if (outputBuffer.length > 0) {
@@ -173,13 +176,13 @@ export function Body(props: BodyProps) {
       }
       if (e instanceof RuntimeError) {
         setRuntimeErrorInstructionPointer(e.instructionPointer);
-        addLine(`❌ Error: ${e.message}`, "error");
+        addLine(`X Error: ${e.message}`, "error");
       } else if (e instanceof Error) {
         setRuntimeErrorInstructionPointer(null);
-        addLine(`❌ Error: ${e.message}`, "error");
+        addLine(`X Error: ${e.message}`, "error");
       } else {
         setRuntimeErrorInstructionPointer(null);
-        addLine("❌ Erro: An unknown error occurred.", "error");
+        addLine(`X ${t(locale, "ui.terminal_unknown_error")}`, "error");
       }
     }
 
@@ -234,7 +237,7 @@ export function Body(props: BodyProps) {
         setCurrentInput("");
       }
     } else if (e.ctrlKey && e.key === "c") {
-      addLine("Process interrupted.", "error");
+      addLine(t(locale, "ui.terminal_process_interrupted"), "error");
       setCurrentInput("");
       resolveInput.current = null;
     }
@@ -281,7 +284,7 @@ export function Body(props: BodyProps) {
         <input
           ref={inputRef}
           data-testid="terminal-input"
-          aria-label="Entrada do terminal"
+          aria-label={t(locale, "ui.terminal_input")}
           type="text"
           value={currentInput}
           onChange={(e) => setCurrentInput(e.target.value)}

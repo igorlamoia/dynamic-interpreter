@@ -331,6 +331,7 @@ export function IDE() {
                     toggleTerminal={toggleTerminal}
                     intermediateCode={intermediateCode}
                     debugSession={debugSession}
+                    locale={locale}
                   />
                 </div>
               </AnimatePresence>

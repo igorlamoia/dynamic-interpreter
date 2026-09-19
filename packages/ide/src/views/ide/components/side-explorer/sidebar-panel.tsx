@@ -10,6 +10,8 @@ import { SideExplorer } from "./index";
 import { DebugPanel, type DebugPanelProps } from "./debug-panel";
 import { LanguagePanel } from "./language-panel";
 import { SearchPanel } from "./search-panel";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
 function getMinSidebarWidth() {
   if (window.innerWidth >= 1280) return 300;
@@ -39,6 +41,7 @@ export function SidebarPanel({
   setActiveFile,
   setOpenTabs,
 }: SidebarPanelProps) {
+  const { locale } = useRouter();
   const [width, setWidth] = useState(getMinSidebarWidth());
   const [isResizing, setIsResizing] = useState(false);
   const resizeStartRef = useRef({
@@ -116,7 +119,7 @@ export function SidebarPanel({
     case "settings":
       content = (
         <div className="flex h-full items-center justify-center p-4 text-xs text-muted-foreground">
-          Configurações em breve...
+          {t(locale, "ui.settings_coming_soon")}
         </div>
       );
       break;
@@ -140,7 +143,7 @@ export function SidebarPanel({
       {content}
       <div
         role="separator"
-        aria-label="Resize sidebar"
+        aria-label={t(locale, "ui.resize_sidebar")}
         aria-orientation="vertical"
         className="absolute inset-y-0 -right-1 z-10 w-2 touch-none cursor-col-resize"
         onPointerDown={handleResizeStart}

@@ -27,6 +27,7 @@ import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-pane
 import { getCategoryLexemes } from "./category-lexemes";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
+import { t } from "@/i18n";
 
 export type LanguageCustomization = StoredKeywordCustomization;
 
@@ -34,21 +35,27 @@ function getDefaultLanguageImage(imageUrl?: string) {
   return imageUrl?.trim() ? imageUrl : "/images/language-default.png";
 }
 
-function getLanguageDNA(customization: LanguageCustomization): string[] {
+function getLanguageDNA(
+  customization: LanguageCustomization,
+  locale?: string,
+): string[] {
   return [
-    customization.modes.typing === "typed" ? "tipada" : "nao tipada",
+    customization.modes.typing === "typed"
+      ? t(locale, "ui.language_dna_typed")
+      : t(locale, "ui.language_dna_untyped"),
     customization.modes.block === "delimited"
-      ? "blocos com delimitadores"
-      : "blocos por indentacao",
+      ? t(locale, "ui.language_dna_delimited_blocks")
+      : t(locale, "ui.language_dna_indentation_blocks"),
     customization.modes.semicolon === "required"
-      ? "terminador obrigatorio"
-      : "terminador opcional",
+      ? t(locale, "ui.language_dna_required_terminator")
+      : t(locale, "ui.language_dna_optional_terminator"),
   ];
 }
 
 export function LanguagePanel() {
   const editor = useEditor();
   const router = useRouter();
+  const { locale } = router;
   // Sem efeito de "aplicar a linguagem ativa ao montar": o KeywordContext já
   // faz isso nos dois caminhos, e duas fontes disputando o mesmo estado é
   // pedir para elas divergirem.
@@ -67,7 +74,7 @@ export function LanguagePanel() {
   if (!choices.length) {
     return (
       <div className="flex h-full items-center justify-center p-4 text-center text-xs text-muted-foreground">
-        Nenhuma linguagem salva foi encontrada.
+        {t(locale, "ui.no_saved_languages")}
       </div>
     );
   }
@@ -79,7 +86,7 @@ export function LanguagePanel() {
           <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
             <Image
               src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
-              alt={activeLanguage?.name ?? "Language default"}
+              alt={activeLanguage?.name ?? t(locale, "ui.language_default_alt")}
               fill
               sizes="(max-width: 768px) 100vw, 360px"
               className="object-cover opacity-70 transition duration-300 group-hover:scale-[1.03]"
@@ -91,21 +98,25 @@ export function LanguagePanel() {
           <div className="relative flex min-h-35 flex-col justify-between p-4 sm:min-h-40 sm:p-5">
             <div className="flex items-start justify-between gap-3">
               <div className="rounded-full border dark:border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
-                Linguagem ativa
+                {t(locale, "ui.active_language")}
               </div>
               <LanguageOptionsMenu
                 choices={choices}
                 activeKey={activeKey}
                 isLocked={isSelectionLocked}
                 onSelect={selectLanguage}
+                locale={locale}
               />
             </div>
 
-            <LanguageDescription activeLanguage={activeLanguage} />
+            <LanguageDescription
+              activeLanguage={activeLanguage}
+              locale={locale}
+            />
 
             <div className="mt-4 flex flex-wrap gap-2">
               {activeLanguage?.customization
-                ? getLanguageDNA(activeLanguage.customization).map((item) => (
+                ? getLanguageDNA(activeLanguage.customization, locale).map((item) => (
                     <span
                       key={item}
                       className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
@@ -121,7 +132,7 @@ export function LanguagePanel() {
       <div className="space-y-3 pb-4 pt-1">
         <div>
           <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Lexemas
+            {t(locale, "ui.lexemes")}
           </p>
           <div className="space-y-3">
             {PREVIEW_CATEGORIES.map((category) => {
@@ -140,10 +151,16 @@ export function LanguagePanel() {
                     <category.icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
                     <div>
                       <h3 className="text-sm font-semibold">
-                        {category.title}
+                        {t(
+                          locale,
+                          `ui.preview_category_${category.key}_title`,
+                        )}
                       </h3>
                       <p className="text-xs text-muted-foreground">
-                        {category.subtitle}
+                        {t(
+                          locale,
+                          `ui.preview_category_${category.key}_subtitle`,
+                        )}
                       </p>
                     </div>
                   </div>
@@ -168,7 +185,10 @@ export function LanguagePanel() {
         </div>
       </div>
       <div className="flex justify-center">
-        <AddLanguageButton onClick={() => router.push("/language-creator")} />
+        <AddLanguageButton
+          locale={locale}
+          onClick={() => router.push("/language-creator")}
+        />
       </div>
     </PerfectScrollbar>
   );
@@ -176,12 +196,14 @@ export function LanguagePanel() {
 
 function LanguageDescription({
   activeLanguage,
+  locale,
 }: {
   activeLanguage: ActiveLanguageDetail | null;
+  locale?: string;
 }) {
   const description =
     activeLanguage?.description ||
-    "Uma linguagem de programação personalizada criada com o Java--.";
+    t(locale, "ui.language_default_description");
 
   return (
     <div className="max-w-[83%]">
@@ -206,6 +228,7 @@ interface LanguageOptionsMenuProps {
   choices: LanguageChoice[];
   activeKey: string;
   isLocked: boolean;
+  locale?: string;
   onSelect: (key: string) => Promise<void>;
 }
 
@@ -213,6 +236,7 @@ function LanguageOptionsMenu({
   choices,
   activeKey,
   isLocked,
+  locale,
   onSelect,
 }: LanguageOptionsMenuProps) {
   const router = useRouter();
@@ -225,7 +249,7 @@ function LanguageOptionsMenu({
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  aria-label="Abrir seleção de linguagem"
+                  aria-label={t(locale, "ui.open_language_selection")}
                   disabled={isLocked}
                   className="flex h-8 w-8 items-center justify-center rounded-full border dark:border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:dark:border-white/20 hover:bg-black/35 disabled:cursor-not-allowed disabled:opacity-70"
                 >
@@ -235,8 +259,8 @@ function LanguageOptionsMenu({
             </DropdownMenuTrigger>
             <TooltipContent>
               {isLocked
-                ? "Linguagem travada pelo exercicio"
-                : "Selecionar linguagem ativa"}
+                ? t(locale, "ui.language_locked_by_exercise")
+                : t(locale, "ui.select_active_language")}
             </TooltipContent>
 
             <DropdownMenuContent
@@ -245,7 +269,7 @@ function LanguageOptionsMenu({
             >
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
-                  Seleção de linguagem
+                  {t(locale, "ui.language_selection")}
                 </p>
                 <span className="rounded-full border dark:border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
                   {choices.length}
@@ -294,6 +318,7 @@ function LanguageOptionsMenu({
               </PerfectScrollbar>
               <div className="flex justify-center pt-3">
                 <AddLanguageButton
+                  locale={locale}
                   onClick={() => router.push("/language-creator")}
                 />
               </div>
@@ -305,7 +330,13 @@ function LanguageOptionsMenu({
   );
 }
 
-function AddLanguageButton({ onClick }: { onClick: () => void }) {
+function AddLanguageButton({
+  locale,
+  onClick,
+}: {
+  locale?: string;
+  onClick: () => void;
+}) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -314,14 +345,14 @@ function AddLanguageButton({ onClick }: { onClick: () => void }) {
             type="button"
             size="icon"
             variant="outline"
-            aria-label="Criar linguagem"
+            aria-label={t(locale, "ui.create_language")}
             onClick={onClick}
             className="rounded-full shadow-md hover:shadow-lg"
           >
             <Plus aria-hidden="true" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Criar linguagem</TooltipContent>
+        <TooltipContent>{t(locale, "ui.create_language")}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
