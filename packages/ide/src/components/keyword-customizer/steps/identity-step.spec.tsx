@@ -12,7 +12,11 @@ import { IdentityStep } from "./identity-step";
   }
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
-vi.mock("lucide-react", () => ({
+// Mock parcial: os icones que os testes consultam viram <span>, e qualquer
+// outro usa o componente real. Uma lista fechada quebrava o spec inteiro a
+// cada icone novo usado pelo componente (Terminal, ChevronDown...).
+vi.mock("lucide-react", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("lucide-react")>()),
   Atom: () => <span>atom</span>,
   Code: () => <span>code</span>,
   Languages: () => <span>languages</span>,

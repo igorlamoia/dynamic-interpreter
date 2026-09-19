@@ -69,6 +69,40 @@ describe("Body", () => {
     });
   });
 
+  it("expõe os data-testid do output e do input do terminal para o E2E", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    await act(async () => {
+      root.render(
+        <RuntimeErrorProvider>
+          <Body
+            lines={[]}
+            currentInput=""
+            inputRef={createRef<HTMLInputElement>()}
+            setCurrentInput={vi.fn()}
+            intermediateCode={[]}
+            setIsExecuting={vi.fn()}
+            setLines={vi.fn()}
+            toggleTerminal={vi.fn()}
+          />
+        </RuntimeErrorProvider>,
+      );
+    });
+
+    expect(
+      container.querySelector('[data-testid="terminal-output"]'),
+    ).not.toBeNull();
+    expect(
+      container.querySelector('[data-testid="terminal-input"]'),
+    ).not.toBeNull();
+
+    await act(async () => {
+      root.unmount();
+    });
+  });
+
   it("routes terminal input to the waiting debug session and continues execution", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);

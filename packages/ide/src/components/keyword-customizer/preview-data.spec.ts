@@ -12,7 +12,9 @@ describe("buildWizardPreview", () => {
     draft.mappings = draft.mappings.map((item) =>
       item.original === "if" ? { ...item, custom: "se" } : item,
     );
-    draft.booleanLiteralMap = { true: "sim", false: "nao" };
+    // "nao" colidia com o operador logical_not do Portugol, que virou o padrao em
+    // 86a138a: o lexer rejeitava a linguagem e o preview de tokens saia vazio.
+    draft.booleanLiteralMap = { true: "sim", false: "negativo" };
 
     const preview = buildWizardPreview(draft, {
       activeStepId: "structure",

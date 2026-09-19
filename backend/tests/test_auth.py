@@ -33,6 +33,41 @@ class TestRegister:
         assert "accessToken" in data
         assert data["tokenType"] == "bearer"
 
+    async def test_register_returns_the_created_user(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        # O frontend grava este `user` direto no cache do AuthContext. Sem ele
+        # o AuthContext fazia GET /auth/me logo apos o cadastro, e essa
+        # requisicao corria com o commit: ~7% dos cadastros levavam 404 e o
+        # usuario era jogado de volta ao login com a conta ja criada.
+        # Arrange
+        org = await create_organization(async_session)
+        payload = {
+            "email": "returns-user@example.com",
+            "password": "secret123",
+            "name": "Returned User",
+            "role": "teacher",
+            "organization_id": org.id,
+        }
+
+        # Act
+        response = await async_client.post("/auth/register", json=payload)
+
+        # Assert
+        assert response.status_code == 201
+        user = response.json()["user"]
+        persisted = (
+            await async_session.execute(
+                select(User).where(User.email == "returns-user@example.com")
+            )
+        ).scalar_one()
+        assert user["id"] == persisted.id
+        assert user["email"] == "returns-user@example.com"
+        assert user["name"] == "Returned User"
+        assert user["role"] == "TEACHER"
+        assert user["organizationId"] == org.id
+        assert "password" not in user
+
     @pytest.mark.parametrize(
         ("role", "expected_role"),
         [
@@ -172,6 +207,28 @@ class TestLogin:
         data = response.json()
         assert "accessToken" in data
         assert data["tokenType"] == "bearer"
+
+    async def test_login_returns_the_authenticated_user(
+        self, async_client: AsyncClient, async_session: AsyncSession
+    ):
+        # Mesmo motivo do teste de register: o AuthContext usa este `user`
+        # em vez de disparar GET /auth/me.
+        # Arrange
+        org = await create_organization(async_session)
+        created = await create_user(
+            async_session, org, email="login-user@example.com", password="mypassword"
+        )
+        payload = {"email": "login-user@example.com", "password": "mypassword"}
+
+        # Act
+        response = await async_client.post("/auth/login", json=payload)
+
+        # Assert
+        assert response.status_code == 200
+        user = response.json()["user"]
+        assert user["id"] == created.id
+        assert user["email"] == "login-user@example.com"
+        assert "password" not in user
 
     async def test_login_fails_for_wrong_password(
         self, async_client: AsyncClient, async_session: AsyncSession

@@ -100,6 +100,79 @@ without duplicating them or changing copies imported by users.
 The existing `docker-compose.yml` remains available for externally configured
 deployments and must not be used as the default local environment.
 
+### End-to-end tests (Playwright)
+
+The `packages/e2e` workspace is the regression gate. Its 19 tests cover the
+core flows end to end against the real Docker stack:
+
+| Spec | What it protects |
+|------|------------------|
+| `auth.e2e.ts` | Login, registration, wrong-password error, protected routes |
+| `ide-compiler.e2e.ts` | Lexer → intermediate code → interpreter, through the in-browser IDE |
+| `lms-flow.e2e.ts` | Student joins a class, submits, gets graded by the test cases, and the result survives a reload |
+| `custom-language.e2e.ts` | Importing a community language and running code written with its keywords |
+| `smoke.e2e.ts`, `fixtures.e2e.ts` | The stack is up; the test data helpers work |
+
+Run them against the local stack:
+
+```bash
+npm install
+npm run install-browsers -w @ts-compilator-for-java/e2e   # once
+make e2e                                                  # builds and starts the stack, then runs the suite
+```
+
+`install-browsers` uses `playwright install --with-deps`, which needs
+passwordless `sudo` for system packages. If that fails on your machine,
+`npx playwright install chromium` (without `--with-deps`) is enough.
+
+Useful variants:
+
+```bash
+npm run test -w @ts-compilator-for-java/e2e -- specs/lms-flow.e2e.ts   # a single spec
+make e2e-ui                                                             # Playwright UI mode
+npm run report -w @ts-compilator-for-java/e2e                           # last HTML report
+```
+
+The frontend runs from a built image, so after changing anything in
+`packages/ide` run `make local-up` again before the suite, or the tests will
+exercise the old bundle.
+
+Test data is created per run through the backend API, with unique names and
+`@example.com` e-mails, so consecutive runs never collide. The seed is only
+read from: the `professor@gmail.com` account and the five official languages.
+
+### Continuous integration
+
+`.github/workflows/deploy.yml` runs on every pull request and on every push
+to `main`:
+
+- **unit**: compiler and IDE Vitest suites, backend pytest
+- **e2e**: starts the stack with `make local-up` and runs the Playwright suite;
+  on failure it uploads the report, traces and the stack logs
+- **deploy**: the SSH deploy to the VPS, which runs only on pushes to `main`
+  and only if both jobs above pass
+
+### Pre-push hook
+
+A fast local gate runs the compiler and IDE unit tests (about 20 seconds)
+before every push. Enable it once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The E2E suite and the backend tests are deliberately not in the hook, since
+they take minutes. They run in CI, and locally with `make e2e`.
+
+### Server-side API address
+
+The Next.js API routes (for example `/api/submissions/validate`) run inside
+the frontend container and call the backend from there. They read
+`INTERNAL_API_URL`, which both compose files set to the backend's Docker
+service name. `NEXT_PUBLIC_API_URL` can't be used for this: Next.js inlines it
+at build time, and it usually points at `localhost` or the public URL, which
+from inside the container is the wrong address.
+
 ## Database
 
 PostgreSQL schema for the LMS layer (organizations, classes, exercises, submissions). Migrations are managed by Alembic — see [`backend/migrations/`](./backend/migrations).

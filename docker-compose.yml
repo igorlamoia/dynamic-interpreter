@@ -25,6 +25,10 @@ services:
         - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
     container_name: dynamic-interpreter-frontend
     restart: always
+    environment:
+      # Endereco usado pelas rotas de API do Next.js, que rodam dentro deste
+      # container. Ver packages/ide/src/pages/api/submissions/validate.ts.
+      - INTERNAL_API_URL=http://dynamic-interpreter-backend:8000
     ports:
       - "3001:3001"  # Acessa via localhost:3001
     depends_on:

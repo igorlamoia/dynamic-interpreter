@@ -6,6 +6,7 @@ from app.core.security import hash_password, verify_password, create_access_toke
 from app.models.organization import Organization
 from app.models.user import User, UserRole
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
+from app.schemas.users import UserResponse
 
 
 async def register_user(data: RegisterRequest, session: AsyncSession) -> TokenResponse:
@@ -38,7 +39,10 @@ async def register_user(data: RegisterRequest, session: AsyncSession) -> TokenRe
     await session.flush()
 
     token = create_access_token(str(user.id))
-    return TokenResponse(access_token=token)
+    return TokenResponse(
+        access_token=token,
+        user=UserResponse.model_validate(user),
+    )
 
 
 async def login_user(data: LoginRequest, session: AsyncSession) -> TokenResponse:
@@ -52,7 +56,10 @@ async def login_user(data: LoginRequest, session: AsyncSession) -> TokenResponse
         )
 
     token = create_access_token(str(user.id))
-    return TokenResponse(access_token=token)
+    return TokenResponse(
+        access_token=token,
+        user=UserResponse.model_validate(user),
+    )
 
 
 async def get_current_user(user_id: str, session: AsyncSession) -> User:

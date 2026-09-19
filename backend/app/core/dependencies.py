@@ -28,7 +28,13 @@ async def get_current_user_id(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
 
-SessionDep = Annotated[AsyncSession, Depends(get_session)]
+# scope="function": o teardown do get_session (o commit) roda logo que a
+# funcao da rota retorna, ANTES de a resposta ser enviada. Com o escopo padrao
+# ("request") o commit rodava depois do envio, e o cliente podia receber o 201
+# de uma escrita e disparar a proxima requisicao antes de o commit ficar
+# visivel para outra conexao do pool -- a leitura seguinte dava 404. Medido
+# na suite E2E: ~37% das rodadas tinham ao menos um 404 desse tipo.
+SessionDep = Annotated[AsyncSession, Depends(get_session, scope="function")]
 CurrentUserIdDep = Annotated[int, Depends(get_current_user_id)]
 
 

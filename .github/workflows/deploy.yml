@@ -1,14 +1,130 @@
-name: Deploy to VPS
+name: CI e Deploy
 
+# Roda os testes em todo PR e em todo push na main. O deploy na VPS só
+# acontece em push na main, e só se os jobs `unit` e `e2e` passarem.
 on:
   push:
     branches:
       - main
+  pull_request:
+
+# O token do workflow so precisa ler o repositorio. O deploy usa segredos
+# proprios de SSH, nao o GITHUB_TOKEN.
+permissions:
+  contents: read
+
+# Um push novo cancela o CI anterior do mesmo ref SO em PR. Na main nada e
+# cancelado: cancelar derrubaria a sessao SSH de um deploy em andamento e
+# deixaria a VPS pela metade.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  deploy:
+  unit:
+    name: Testes unitários
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependências do monorepo
+        run: npm ci
+
+      - name: Testes do compilador
+        run: npx vitest run
+        working-directory: packages/compiler
+
+      - name: Testes do IDE
+        run: npm run test -w @ts-compilator-for-java/ide
+
+      # `npm run lint` não entra aqui: o Next 16 removeu `next lint`, então o
+      # script do IDE está quebrado (tenta abrir um diretório "lint"). O
+      # type-check continua coberto pelo `next build` do job e2e.
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Testes do backend
+        working-directory: backend
+        env:
+          SECRET_KEY: ci-only-secret-key-with-enough-length-for-hs256
+        run: |
+          uv sync --frozen
+          uv run pytest -q
+
+  e2e:
+    name: Testes E2E (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependências do monorepo
+        run: npm ci
+
+      - name: Instalar o Chromium do Playwright
+        run: npm run install-browsers -w @ts-compilator-for-java/e2e
+
+      # Sobe Postgres, backend (com migrations e seed) e frontend. O build da
+      # imagem do frontend roda `next build`, que também faz o type-check.
+      - name: Subir a stack local
+        run: make local-up
+
+      - name: Esperar a stack ficar saudável
+        run: |
+          wait_for() {
+            local name="$1" url="$2"
+            for _ in $(seq 1 60); do
+              if curl -fsS -o /dev/null "$url"; then
+                echo "$name ok"
+                return 0
+              fi
+              sleep 5
+            done
+            echo "$name não respondeu em $url"
+            return 1
+          }
+          wait_for backend http://localhost:8000/health
+          wait_for frontend http://localhost:3001
+
+      - name: Rodar a suíte E2E
+        run: npm run test -w @ts-compilator-for-java/e2e
+
+      - name: Logs da stack (em caso de falha)
+        if: failure()
+        run: docker compose --env-file /dev/null -f docker-compose.local.yml logs --tail 300
+
+      - name: Publicar relatório do Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            packages/e2e/playwright-report/
+            packages/e2e/test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy:
+    name: Deploy na VPS
+    needs: [unit, e2e]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Deploys enfileiram, nunca se cancelam: um deploy interrompido no meio
+    # do build ou do restart deixaria producao fora do ar.
+    concurrency:
+      group: deploy-vps
+      cancel-in-progress: false
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -16,6 +132,6 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          command_timeout: 30m   # build pode demorar
+          command_timeout: 30m # build pode demorar
           script: |
             /home/vitola/scripts/deploy-tcc/deploy.sh

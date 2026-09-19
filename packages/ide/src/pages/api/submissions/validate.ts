@@ -15,8 +15,10 @@ import { buildEffectiveKeywordMap } from '@/lib/keyword-map'
 import { normalizeCompilerConfig } from '../../../lib/compiler-config'
 import type { IDEGrammarConfig } from '@/entities/compiler-config'
 import type { TTestCaseResult, TValidationResult } from '@/types/submissions'
+import { getServerApiUrl } from '@/lib/server-api-url'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
+// Rota de servidor: ver getServerApiUrl sobre o porque do endereco interno.
+const BACKEND_URL = getServerApiUrl()
 
 async function runTestCase(
     instructions: Instruction[],

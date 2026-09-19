@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import handler from "../language-images/search";
 
+// A rota usa so o Unsplash (search.ts). Dois testes deste arquivo cobriam uma
+// integracao com o Pixabay que nunca existiu em nenhum commit da rota; foram
+// removidos quando o spec entrou no CI. Ficam no historico do git.
 describe("/api/language-images/search", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
@@ -101,53 +104,6 @@ describe("/api/language-images/search", () => {
     });
   });
 
-  it("maps Pixabay hits into the trimmed response payload", async () => {
-    process.env.PIXABAY_API_KEY = "pixabay-test-key";
-    const fetchMock = vi.fn(async () => ({
-      ok: true,
-      json: async () => ({
-        hits: [
-          {
-            id: 42,
-            previewURL: "https://img.example/preview.png",
-            webformatURL: "https://img.example/full.png",
-            tags: "neon, language",
-            user: "ignored",
-          },
-        ],
-      }),
-    }));
-    vi.stubGlobal("fetch", fetchMock);
-
-    const status = vi.fn().mockReturnThis();
-    const json = vi.fn();
-
-    await handler(
-      {
-        method: "GET",
-        query: { q: "neon language" },
-      } as any,
-      { status, json } as any,
-    );
-
-    expect(fetchMock).toHaveBeenCalledOnce();
-    expect(fetchMock.mock.calls[0]?.[0]).toContain(
-      "https://pixabay.com/api/",
-    );
-    expect(status).toHaveBeenCalledWith(200);
-    expect(json).toHaveBeenCalledWith({
-      images: [
-        {
-          id: 42,
-          provider: "pixabay",
-          previewURL: "https://img.example/preview.png",
-          webformatURL: "https://img.example/full.png",
-          tags: "neon, language",
-        },
-      ],
-    });
-  });
-
   it("surfaces upstream failures without exposing internals", async () => {
     process.env.PIXABAY_API_KEY = "pixabay-test-key";
     process.env.UNSPLASH_ACCESS_KEY = "unsplash-test-key";
@@ -182,64 +138,4 @@ describe("/api/language-images/search", () => {
     });
   });
 
-  it("falls back to Unsplash when Pixabay returns no hits", async () => {
-    process.env.PIXABAY_API_KEY = "pixabay-test-key";
-    process.env.UNSPLASH_ACCESS_KEY = "unsplash-test-key";
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          hits: [],
-        }),
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          results: [
-            {
-              id: "fallback-1",
-              alt_description: null,
-              description: "retro compiler desk",
-              urls: {
-                raw: "https://img.example/retro-raw.jpg",
-                small: "https://img.example/retro-small.jpg",
-                regular: "https://img.example/retro-regular.jpg",
-              },
-            },
-          ],
-        }),
-      });
-    vi.stubGlobal("fetch", fetchMock);
-
-    const status = vi.fn().mockReturnThis();
-    const json = vi.fn();
-
-    await handler(
-      {
-        method: "GET",
-        query: { q: "retro compiler" },
-      } as any,
-      { status, json } as any,
-    );
-
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(fetchMock.mock.calls[0]?.[0]).toContain("https://pixabay.com/api/");
-    expect(fetchMock.mock.calls[1]?.[0]).toContain(
-      "https://api.unsplash.com/search/photos",
-    );
-    expect(status).toHaveBeenCalledWith(200);
-    expect(json).toHaveBeenCalledWith({
-      images: [
-        {
-          id: 0,
-          provider: "unsplash",
-          previewURL:
-            "https://img.example/retro-raw.jpg?w=480&h=320&crop=entropy&fm=jpg&auto=format&q=80&fit=crop&dpr=1",
-          webformatURL: "https://img.example/retro-regular.jpg",
-          tags: "retro compiler desk",
-        },
-      ],
-    });
-  });
 });

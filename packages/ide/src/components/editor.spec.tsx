@@ -56,4 +56,22 @@ describe("Editor", () => {
       root.unmount();
     });
   });
+
+  it("expõe o container do Monaco por data-testid para o E2E", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    await act(async () => {
+      root.render(<Editor />);
+    });
+
+    expect(
+      container.querySelector('[data-testid="monaco-editor"]'),
+    ).not.toBeNull();
+
+    await act(async () => {
+      root.unmount();
+    });
+  });
 });
