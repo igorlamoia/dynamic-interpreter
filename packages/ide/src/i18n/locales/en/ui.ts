@@ -65,6 +65,11 @@ const ui = {
   language_dna_indentation_blocks: "indentation blocks",
   language_dna_required_terminator: "required terminator",
   language_dna_optional_terminator: "optional terminator",
+  language_sample_details: "View language sample",
+  language_sample_preview_title: "Active language sample",
+  language_sample_preview_description:
+    "Preview generated with the current lexemes. You can replace the selected file with this code.",
+  language_sample_override_file: "Replace selected file",
   preview_category_entrada_title: "INPUT/OUTPUT",
   preview_category_entrada_subtitle: "Reading and displaying data.",
   preview_category_tipos_title: "TYPES AND DECLARATIONS",

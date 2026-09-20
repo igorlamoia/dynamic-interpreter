@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown, FileCode2, Info, Plus } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type * as monacoEditor from "monaco-editor";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -27,7 +29,17 @@ import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-pane
 import { getCategoryLexemes } from "./category-lexemes";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
-import { t } from "@/i18n";
+import { getLanguageSampleIntl, t } from "@/i18n";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { buildHelloWorldSample } from "./language-sample";
+import { JAVAMM_LANGUAGE_ID } from "@/utils/compiler/editor/editor-language";
 
 export type LanguageCustomization = StoredKeywordCustomization;
 
@@ -81,109 +93,20 @@ export function LanguagePanel() {
 
   return (
     <PerfectScrollbar className="flex h-full min-h-0 flex-col gap-4  p-4">
-      <div className="relative shrink-0 overflow-visible">
-        <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
-          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-            <Image
-              src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
-              alt={activeLanguage?.name ?? t(locale, "ui.language_default_alt")}
-              fill
-              sizes="(max-width: 768px) 100vw, 360px"
-              className="object-cover opacity-70 transition duration-300 group-hover:scale-[1.03]"
-            />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.24),transparent_28%),radial-gradient(circle_at_20%_15%,rgba(59,130,246,0.24),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.08)_0%,rgba(2,6,23,0.55)_58%,rgba(2,6,23,0.92)_100%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_0%,rgba(34,211,238,0.08)_20%,rgba(34,211,238,0.28)_34%,rgba(34,211,238,0.06)_48%,transparent_66%)] opacity-90 mix-blend-screen" />
-          </div>
+      <LanguageSelection
+        choices={choices}
+        activeKey={activeKey}
+        isSelectionLocked={isSelectionLocked}
+        activeLanguage={activeLanguage}
+        selectLanguage={selectLanguage}
+        locale={locale}
+      />
+      <CategoryLexemesList
+        activeLanguage={activeLanguage}
+        handleLexemeClick={handleLexemeClick}
+        locale={locale}
+      />
 
-          <div className="relative flex min-h-35 flex-col justify-between p-4 sm:min-h-40 sm:p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div className="rounded-full border dark:border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
-                {t(locale, "ui.active_language")}
-              </div>
-              <LanguageOptionsMenu
-                choices={choices}
-                activeKey={activeKey}
-                isLocked={isSelectionLocked}
-                onSelect={selectLanguage}
-                locale={locale}
-              />
-            </div>
-
-            <LanguageDescription
-              activeLanguage={activeLanguage}
-              locale={locale}
-            />
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {activeLanguage?.customization
-                ? getLanguageDNA(activeLanguage.customization, locale).map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
-                    >
-                      {item}
-                    </span>
-                  ))
-                : null}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="space-y-3 pb-4 pt-1">
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            {t(locale, "ui.lexemes")}
-          </p>
-          <div className="space-y-3">
-            {PREVIEW_CATEGORIES.map((category) => {
-              const customization = activeLanguage?.customization;
-
-              if (!customization) return null;
-
-              const lexemes = getCategoryLexemes(category.key, customization);
-
-              return (
-                <section
-                  key={category.key}
-                  className="rounded-2xl border border-black/10 bg-background p-3 dark:border-white/10"
-                >
-                  <div className="mb-3 flex items-start gap-3">
-                    <category.icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <h3 className="text-sm font-semibold">
-                        {t(
-                          locale,
-                          `ui.preview_category_${category.key}_title`,
-                        )}
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        {t(
-                          locale,
-                          `ui.preview_category_${category.key}_subtitle`,
-                        )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {lexemes.map((lexeme) => (
-                      <button
-                        key={`${category.key}-${lexeme}`}
-                        type="button"
-                        onClick={() => handleLexemeClick(lexeme)}
-                        title={lexeme}
-                        className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium transition hover:border-primary hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5"
-                      >
-                        {lexeme}
-                      </button>
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
-          </div>
-        </div>
-      </div>
       <div className="flex justify-center">
         <AddLanguageButton
           locale={locale}
@@ -191,6 +114,75 @@ export function LanguagePanel() {
         />
       </div>
     </PerfectScrollbar>
+  );
+}
+
+function LanguageSelection({
+  choices,
+  activeKey,
+  isSelectionLocked,
+  activeLanguage,
+  selectLanguage,
+  locale,
+}: {
+  choices: LanguageChoice[];
+  activeKey: string;
+  isSelectionLocked: boolean;
+  activeLanguage: ActiveLanguageDetail | null;
+  selectLanguage: (key: string) => Promise<void>;
+  locale?: string;
+}) {
+  return (
+    <div className="relative shrink-0 overflow-visible">
+      <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+          <Image
+            src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
+            alt={activeLanguage?.name ?? t(locale, "ui.language_default_alt")}
+            fill
+            sizes="(max-width: 768px) 100vw, 360px"
+            className="object-cover opacity-70 transition duration-300 group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.24),transparent_28%),radial-gradient(circle_at_20%_15%,rgba(59,130,246,0.24),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.08)_0%,rgba(2,6,23,0.55)_58%,rgba(2,6,23,0.92)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_0%,rgba(34,211,238,0.08)_20%,rgba(34,211,238,0.28)_34%,rgba(34,211,238,0.06)_48%,transparent_66%)] opacity-90 mix-blend-screen" />
+        </div>
+
+        <div className="relative flex min-h-35 flex-col justify-between p-4 sm:min-h-40 sm:p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div className="rounded-full border dark:border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
+              {t(locale, "ui.active_language")}
+            </div>
+            <LanguageOptionsMenu
+              choices={choices}
+              activeKey={activeKey}
+              isLocked={isSelectionLocked}
+              onSelect={selectLanguage}
+              locale={locale}
+            />
+          </div>
+
+          <LanguageDescription
+            activeLanguage={activeLanguage}
+            locale={locale}
+          />
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {activeLanguage?.customization
+              ? getLanguageDNA(activeLanguage.customization, locale).map(
+                  (item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
+                    >
+                      {item}
+                    </span>
+                  ),
+                )
+              : null}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -202,8 +194,7 @@ function LanguageDescription({
   locale?: string;
 }) {
   const description =
-    activeLanguage?.description ||
-    t(locale, "ui.language_default_description");
+    activeLanguage?.description || t(locale, "ui.language_default_description");
 
   return (
     <div className="max-w-[83%]">
@@ -220,6 +211,219 @@ function LanguageDescription({
           <TooltipContent>{description}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
+    </div>
+  );
+}
+
+export function CategoryLexemesList({
+  activeLanguage,
+  handleLexemeClick,
+  locale,
+}: {
+  activeLanguage: ActiveLanguageDetail | null;
+  handleLexemeClick: (lexeme: string) => void;
+  locale?: string;
+}) {
+  const editor = useEditor();
+  const [isSampleOpen, setIsSampleOpen] = useState(false);
+  const sampleCode = useMemo(() => {
+    if (!activeLanguage?.customization) return "";
+    return buildHelloWorldSample(
+      activeLanguage.customization,
+      getLanguageSampleIntl(locale),
+    );
+  }, [activeLanguage?.customization, locale]);
+
+  const handleOverrideSelectedFile = () => {
+    if (!sampleCode || !editor.currentFilePath) return;
+
+    editor.fileSystem.createOrUpdateFile(editor.currentFilePath, sampleCode);
+    editor.updateSourceCode(sampleCode);
+    setIsSampleOpen(false);
+  };
+
+  return (
+    <div className="space-y-3 pb-4 pt-1">
+      <div>
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            {t(locale, "ui.lexemes")}
+          </p>
+          {activeLanguage?.customization ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    aria-label={t(locale, "ui.language_sample_details")}
+                    onClick={() => setIsSampleOpen(true)}
+                    className="h-8 w-8 rounded-full"
+                  >
+                    <Info className="h-4 w-4" aria-hidden="true" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {t(locale, "ui.language_sample_details")}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : null}
+        </div>
+        <div className="space-y-3">
+          {PREVIEW_CATEGORIES.map((category) => {
+            const customization = activeLanguage?.customization;
+
+            if (!customization) return null;
+
+            const lexemes = getCategoryLexemes(category.key, customization);
+
+            return (
+              <section
+                key={category.key}
+                className="rounded-2xl border border-black/10 bg-background p-3 dark:border-white/10"
+              >
+                <div className="mb-3 flex items-start gap-3">
+                  <category.icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <h3 className="text-sm font-semibold">
+                      {t(locale, `ui.preview_category_${category.key}_title`)}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {t(
+                        locale,
+                        `ui.preview_category_${category.key}_subtitle`,
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {lexemes.map((lexeme) => (
+                    <button
+                      key={`${category.key}-${lexeme}`}
+                      type="button"
+                      onClick={() => handleLexemeClick(lexeme)}
+                      title={lexeme}
+                      className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium transition hover:border-primary hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5"
+                    >
+                      {lexeme}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      </div>
+      <Dialog open={isSampleOpen} onOpenChange={setIsSampleOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader className="items-start">
+            <div className="flex items-center gap-2">
+              <FileCode2 className="h-5 w-5 text-primary" aria-hidden="true" />
+              <DialogTitle>
+                {t(locale, "ui.language_sample_preview_title")}
+              </DialogTitle>
+            </div>
+            <DialogDescription>
+              {t(locale, "ui.language_sample_preview_description")}
+            </DialogDescription>
+          </DialogHeader>
+          <LanguageSampleCodePreview
+            code={sampleCode}
+            monacoRef={editor.monacoRef}
+            theme={editor.config?.theme}
+          />
+          <DialogFooter className="gap-2 sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsSampleOpen(false)}
+            >
+              {t(locale, "ui.close")}
+            </Button>
+            <Button type="button" onClick={handleOverrideSelectedFile}>
+              {t(locale, "ui.language_sample_override_file")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+function LanguageSampleCodePreview({
+  code,
+  monacoRef,
+  theme,
+}: {
+  code: string;
+  monacoRef?: React.MutableRefObject<typeof monacoEditor | null>;
+  theme?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const previewEditorRef =
+    useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
+
+  useEffect(() => {
+    const monaco = monacoRef?.current;
+    const container = containerRef.current;
+    if (!monaco || !container) return;
+
+    previewEditorRef.current = monaco.editor.create(container, {
+      value: code,
+      language: JAVAMM_LANGUAGE_ID,
+      theme,
+      readOnly: true,
+      domReadOnly: true,
+      minimap: { enabled: false },
+      lineNumbers: "on",
+      folding: false,
+      glyphMargin: false,
+      lineDecorationsWidth: 8,
+      lineNumbersMinChars: 3,
+      scrollBeyondLastLine: false,
+      automaticLayout: true,
+      wordWrap: "on",
+      renderLineHighlight: "none",
+      overviewRulerLanes: 0,
+      hideCursorInOverviewRuler: true,
+      scrollbar: {
+        verticalScrollbarSize: 8,
+        horizontalScrollbarSize: 8,
+      },
+    });
+
+    return () => {
+      previewEditorRef.current?.dispose();
+      previewEditorRef.current = null;
+    };
+  }, [code, monacoRef, theme]);
+
+  useEffect(() => {
+    const previewEditor = previewEditorRef.current;
+    if (!previewEditor || previewEditor.getValue() === code) return;
+    previewEditor.setValue(code);
+  }, [code]);
+
+  if (!monacoRef?.current) {
+    return (
+      <div className="min-h-0 px-5 py-4">
+        <pre className="max-h-[52vh] overflow-auto rounded-lg border border-black/10 bg-black/5 p-4 text-xs leading-relaxed text-foreground dark:border-white/10 dark:bg-black/30">
+          <code>{code}</code>
+        </pre>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-0 px-5 py-4">
+      <div
+        ref={containerRef}
+        aria-label="Language sample code preview"
+        className="h-[52vh] min-h-64 overflow-hidden rounded-lg border border-black/10 dark:border-white/10"
+      />
     </div>
   );
 }

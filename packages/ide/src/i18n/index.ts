@@ -1,17 +1,21 @@
 import enFooter from "./locales/en/footer";
 import enIde from "./locales/en/ide";
+import enLanguageSample from "./locales/en/language-sample";
 import enToast from "./locales/en/toast";
 import enUi from "./locales/en/ui";
 import esFooter from "./locales/es/footer";
 import esIde from "./locales/es/ide";
+import esLanguageSample from "./locales/es/language-sample";
 import esToast from "./locales/es/toast";
 import esUi from "./locales/es/ui";
 import ptBrFooter from "./locales/pt-BR/footer";
 import ptBrIde from "./locales/pt-BR/ide";
+import ptBrLanguageSample from "./locales/pt-BR/language-sample";
 import ptBrToast from "./locales/pt-BR/toast";
 import ptBrUi from "./locales/pt-BR/ui";
 import ptPtFooter from "./locales/pt-PT/footer";
 import ptPtIde from "./locales/pt-PT/ide";
+import ptPtLanguageSample from "./locales/pt-PT/language-sample";
 import ptPtToast from "./locales/pt-PT/toast";
 import ptPtUi from "./locales/pt-PT/ui";
 import enToken from "@ts-compilator-for-java/compiler/src/i18n/locales/en/token";
@@ -19,6 +23,7 @@ import esToken from "@ts-compilator-for-java/compiler/src/i18n/locales/es/token"
 import ptBrToken from "@ts-compilator-for-java/compiler/src/i18n/locales/pt-BR/token";
 import ptPtToken from "@ts-compilator-for-java/compiler/src/i18n/locales/pt-PT/token";
 import type { IdeIntl } from "./types/ide";
+import type { LanguageSampleIntl } from "./types/language-sample";
 
 export const SUPPORTED_LOCALES = [
   { code: "pt-BR", flag: "🇧🇷" },
@@ -43,6 +48,7 @@ interface TranslationTree {
   footer: TranslationNamespace;
   token: TranslationNamespace;
   ide: IdeIntl;
+  languageSample: LanguageSampleIntl;
 }
 
 const LOCALES: Record<SupportedLocale, TranslationTree> = {
@@ -52,6 +58,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: ptBrFooter,
     token: ptBrToken,
     ide: ptBrIde,
+    languageSample: ptBrLanguageSample,
   },
   "pt-PT": {
     ui: ptPtUi,
@@ -59,6 +66,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: ptPtFooter,
     token: ptPtToken,
     ide: ptPtIde,
+    languageSample: ptPtLanguageSample,
   },
   es: {
     ui: esUi,
@@ -66,6 +74,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: esFooter,
     token: esToken,
     ide: esIde,
+    languageSample: esLanguageSample,
   },
   en: {
     ui: enUi,
@@ -73,6 +82,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: enFooter,
     token: enToken,
     ide: enIde,
+    languageSample: enLanguageSample,
   },
 };
 
@@ -92,10 +102,13 @@ export function resolveLocale(locale: string | undefined): SupportedLocale {
 function resolveFromTree(tree: TranslationTree, key: string): string | null {
   const [namespace, ...parts] = key.split(".");
   if (!namespace || parts.length === 0) return null;
-  if (namespace === "ide") return null;
+  if (namespace === "ide" || namespace === "languageSample") return null;
 
   const messageKey = parts.join(".");
-  const messages = tree[namespace as keyof Omit<TranslationTree, "ide">];
+  const messages =
+    tree[
+      namespace as keyof Omit<TranslationTree, "ide" | "languageSample">
+    ];
   return messages?.[messageKey] ?? null;
 }
 
@@ -125,4 +138,10 @@ export function translateTokenDescription(
 
 export function getIdeIntl(locale: string | undefined): IdeIntl {
   return LOCALES[resolveLocale(locale)].ide;
+}
+
+export function getLanguageSampleIntl(
+  locale: string | undefined,
+): LanguageSampleIntl {
+  return LOCALES[resolveLocale(locale)].languageSample;
 }

@@ -56,6 +56,11 @@ const ui = {
   language_dna_indentation_blocks: "bloques por indentacion",
   language_dna_required_terminator: "terminador obligatorio",
   language_dna_optional_terminator: "terminador opcional",
+  language_sample_details: "Ver ejemplo del lenguaje",
+  language_sample_preview_title: "Ejemplo del lenguaje activo",
+  language_sample_preview_description:
+    "Vista previa generada con los lexemas actuales. Puedes reemplazar el archivo seleccionado con este codigo.",
+  language_sample_override_file: "Reemplazar archivo seleccionado",
   preview_category_entrada_title: "ENTRADA/SALIDA",
   preview_category_entrada_subtitle: "Lectura y visualizacion de datos.",
   preview_category_tipos_title: "TIPOS Y DECLARACIONES",
