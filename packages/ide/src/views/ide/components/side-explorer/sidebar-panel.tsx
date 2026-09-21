@@ -12,6 +12,7 @@ import { LanguagePanel } from "./language-panel";
 import { SearchPanel } from "./search-panel";
 import { useRouter } from "next/router";
 import { t } from "@/i18n";
+import type { LanguageChoicesState } from "@/hooks/useLanguageChoices";
 
 function getMinSidebarWidth() {
   if (window.innerWidth >= 1280) return 300;
@@ -30,6 +31,7 @@ interface SidebarPanelProps {
   activeView: SidebarView;
   activeFile: string;
   debugPanelProps?: DebugPanelProps;
+  languageChoices: LanguageChoicesState;
   setActiveFile: (path: string) => void;
   setOpenTabs: (paths: string[] | ((prev: string[]) => string[])) => void;
 }
@@ -38,6 +40,7 @@ export function SidebarPanel({
   activeView,
   activeFile,
   debugPanelProps,
+  languageChoices,
   setActiveFile,
   setOpenTabs,
 }: SidebarPanelProps) {
@@ -111,7 +114,7 @@ export function SidebarPanel({
       content = <SearchPanel onFileSelect={handleFileSelect} />;
       break;
     case "language":
-      content = <LanguagePanel />;
+      content = <LanguagePanel languageChoices={languageChoices} />;
       break;
     case "debug":
       content = <DebugPanel {...debugPanelProps} />;

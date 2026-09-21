@@ -256,3 +256,5 @@ export function useLanguageChoices() {
     selectLanguage,
   };
 }
+
+export type LanguageChoicesState = ReturnType<typeof useLanguageChoices>;

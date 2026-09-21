@@ -39,6 +39,8 @@ import {
   createDefaultFiles,
   createLocaleSyncedDefaultFiles,
 } from "./defaultFiles";
+import { useLanguageChoices } from "@/hooks/useLanguageChoices";
+import { LanguageSampleDialog } from "./components/side-explorer/language-panel";
 
 export function IDEProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -61,6 +63,7 @@ export function IDE() {
   const { locale } = useRouter();
   const { showToast } = useToast();
   const { buildLexerConfig } = useKeywords();
+  const languageChoices = useLanguageChoices();
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
   const { handleRun, analyseData, showScrollArrow, setShowScrollArrow } =
@@ -240,6 +243,7 @@ export function IDE() {
   const [activeView, setActiveView] = useState<SidebarView>("explorer");
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isLanguageSampleOpen, setIsLanguageSampleOpen] = useState(false);
   const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
   const toggleFullscreen = () => setIsFullscreen((current) => !current);
   useKeyboardShortcuts(
@@ -270,6 +274,7 @@ export function IDE() {
             <Menu
               handleRun={handleRun}
               isFullscreen={isFullscreen}
+              onHelp={() => setIsLanguageSampleOpen(true)}
               runAll={runAll}
               toggleFullscreen={toggleFullscreen}
               toggleTerminal={toggleTerminal}
@@ -318,6 +323,7 @@ export function IDE() {
                         onRestart: restartDebug,
                         onStop: stopDebug,
                       }}
+                      languageChoices={languageChoices}
                       setActiveFile={setActiveFile}
                       setOpenTabs={setOpenTabs}
                     />
@@ -360,6 +366,12 @@ export function IDE() {
               setOpenTabs([...openTabs, filePath]);
             }
           }}
+        />
+        <LanguageSampleDialog
+          activeLanguage={languageChoices.activeLanguage}
+          locale={locale}
+          open={isLanguageSampleOpen}
+          onOpenChange={setIsLanguageSampleOpen}
         />
         <div className="flex flex-col gap-4">
           <ShowTokens analyseData={analyseData} />

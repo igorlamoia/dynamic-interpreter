@@ -20,8 +20,8 @@ import { useEditor } from "@/hooks/useEditor";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { cn } from "@/lib/utils";
 import {
-  useLanguageChoices,
   type ActiveLanguageDetail,
+  type LanguageChoicesState,
   type LanguageChoice,
 } from "@/hooks/useLanguageChoices";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
@@ -64,7 +64,11 @@ function getLanguageDNA(
   ];
 }
 
-export function LanguagePanel() {
+export function LanguagePanel({
+  languageChoices,
+}: {
+  languageChoices: LanguageChoicesState;
+}) {
   const editor = useEditor();
   const router = useRouter();
   const { locale } = router;
@@ -77,7 +81,7 @@ export function LanguagePanel() {
     activeLanguage,
     isSelectionLocked,
     selectLanguage,
-  } = useLanguageChoices();
+  } = languageChoices;
 
   const handleLexemeClick = (lexeme: string) => {
     editor.insertTextAtCursor(lexeme);
@@ -224,23 +228,7 @@ export function CategoryLexemesList({
   handleLexemeClick: (lexeme: string) => void;
   locale?: string;
 }) {
-  const editor = useEditor();
   const [isSampleOpen, setIsSampleOpen] = useState(false);
-  const sampleCode = useMemo(() => {
-    if (!activeLanguage?.customization) return "";
-    return buildHelloWorldSample(
-      activeLanguage.customization,
-      getLanguageSampleIntl(locale),
-    );
-  }, [activeLanguage?.customization, locale]);
-
-  const handleOverrideSelectedFile = () => {
-    if (!sampleCode || !editor.currentFilePath) return;
-
-    editor.fileSystem.createOrUpdateFile(editor.currentFilePath, sampleCode);
-    editor.updateSourceCode(sampleCode);
-    setIsSampleOpen(false);
-  };
 
   return (
     <div className="space-y-3 pb-4 pt-1">
@@ -317,39 +305,77 @@ export function CategoryLexemesList({
           })}
         </div>
       </div>
-      <Dialog open={isSampleOpen} onOpenChange={setIsSampleOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader className="items-start">
-            <div className="flex items-center gap-2">
-              <FileCode2 className="h-5 w-5 text-primary" aria-hidden="true" />
-              <DialogTitle>
-                {t(locale, "ui.language_sample_preview_title")}
-              </DialogTitle>
-            </div>
-            <DialogDescription>
-              {t(locale, "ui.language_sample_preview_description")}
-            </DialogDescription>
-          </DialogHeader>
-          <LanguageSampleCodePreview
-            code={sampleCode}
-            monacoRef={editor.monacoRef}
-            theme={editor.config?.theme}
-          />
-          <DialogFooter className="gap-2 sm:justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsSampleOpen(false)}
-            >
-              {t(locale, "ui.close")}
-            </Button>
-            <Button type="button" onClick={handleOverrideSelectedFile}>
-              {t(locale, "ui.language_sample_override_file")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <LanguageSampleDialog
+        activeLanguage={activeLanguage}
+        locale={locale}
+        open={isSampleOpen}
+        onOpenChange={setIsSampleOpen}
+      />
     </div>
+  );
+}
+
+export function LanguageSampleDialog({
+  activeLanguage,
+  locale,
+  open,
+  onOpenChange,
+}: {
+  activeLanguage: ActiveLanguageDetail | null;
+  locale?: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const editor = useEditor();
+  const sampleCode = useMemo(() => {
+    if (!activeLanguage?.customization) return "";
+    return buildHelloWorldSample(
+      activeLanguage.customization,
+      getLanguageSampleIntl(locale),
+    );
+  }, [activeLanguage?.customization, locale]);
+
+  const handleOverrideSelectedFile = () => {
+    if (!sampleCode || !editor.currentFilePath) return;
+
+    editor.fileSystem.createOrUpdateFile(editor.currentFilePath, sampleCode);
+    editor.updateSourceCode(sampleCode);
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader className="items-start">
+          <div className="flex items-center gap-2">
+            <FileCode2 className="h-5 w-5 text-primary" aria-hidden="true" />
+            <DialogTitle>
+              {t(locale, "ui.language_sample_preview_title")}
+            </DialogTitle>
+          </div>
+          <DialogDescription>
+            {t(locale, "ui.language_sample_preview_description")}
+          </DialogDescription>
+        </DialogHeader>
+        <LanguageSampleCodePreview
+          code={sampleCode}
+          monacoRef={editor.monacoRef}
+          theme={editor.config?.theme}
+        />
+        <DialogFooter className="gap-2 sm:justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
+            {t(locale, "ui.close")}
+          </Button>
+          <Button type="button" onClick={handleOverrideSelectedFile}>
+            {t(locale, "ui.language_sample_override_file")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
