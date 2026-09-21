@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { FormItem, FormLabel } from "../ui/form";
 import { PerfectScrollbar } from "../ui/perfect-scrollbar";
 import { OptionCardIcon, OptionCardIconProps } from "./option-card";
+import { useWizardTranslation } from "./use-wizard-translation";
 
 export type DocumentedFieldProps = {
   label: string;
@@ -23,10 +24,14 @@ export function DocumentedField({
   onValueChange,
   onDescriptionChange,
   placeholder,
-  descriptionPlaceholder = "Descreva como esse item funciona na linguagem.",
+  descriptionPlaceholder,
   disabled = false,
   icon,
 }: DocumentedFieldProps) {
+  const wt = useWizardTranslation();
+  const resolvedDescriptionPlaceholder =
+    descriptionPlaceholder ?? wt("field.descriptionPlaceholder");
+
   return (
     <div
       className="group relative overflow-hidden rounded-xl border bg-card p-4 dark:shadow-[0_18px_50px_-34px_rgba(0,0,0,0.98)] backdrop-blur-sm dark:border-white/6 dark:bg-[#0B1020]/96
@@ -54,14 +59,14 @@ export function DocumentedField({
         </FormItem>
 
         <FormItem className="text-left">
-          <FormLabel>Descrição</FormLabel>
+          <FormLabel>{wt("reference.semanticDefinition")}</FormLabel>
           <PerfectScrollbar>
             <Textarea
               value={description}
               onChange={(event) => onDescriptionChange(event.target.value)}
-              placeholder={descriptionPlaceholder}
+              placeholder={resolvedDescriptionPlaceholder}
               disabled={disabled}
-              aria-label={`${label} descrição`}
+              aria-label={wt("reference.semanticDefinitionFor", { label })}
             />
           </PerfectScrollbar>
         </FormItem>

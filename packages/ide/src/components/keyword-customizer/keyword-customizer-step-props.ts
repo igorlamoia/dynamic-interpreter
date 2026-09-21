@@ -24,6 +24,7 @@ import {
   typedVariableSnippet,
   untypedVariableSnippet,
 } from "./preview-builder";
+import { t } from "@/i18n";
 
 function getKeywordValue(
   context: KeywordCustomizerContextValue,
@@ -223,7 +224,7 @@ export function buildRulesStepProps(
     values: {
       booleanLiterals: (["true", "false"] as const).map((key) => ({
         key,
-        label: `Literal ${key}`,
+        label: t(context.locale, "wizard.rules.literalLabel", { value: key }),
         value: context.draftCustomization.booleanLiteralMap[key] ?? "",
         description: getDocumentationDescription(
           context,
@@ -346,31 +347,37 @@ export function buildReviewStepProps(
       grammarModes,
       vocabularySections: [
         {
-          title: "Tipos",
+          title: t(context.locale, "wizard.review.vocabulary.types"),
           items: typeLexemes,
         },
         {
-          title: "I/O",
+          title: t(context.locale, "wizard.review.vocabulary.io"),
           items: ioLexemes,
         },
         {
-          title: "Estrutura",
+          title: t(context.locale, "wizard.review.vocabulary.structure"),
           items: [
-            `terminador: ${statementTerminator}`,
-            `abrir: ${blockOpen}`,
-            `fechar: ${blockClose}`,
+            t(context.locale, "wizard.review.vocabulary.terminator", {
+              value: statementTerminator,
+            }),
+            t(context.locale, "wizard.review.vocabulary.open", {
+              value: blockOpen,
+            }),
+            t(context.locale, "wizard.review.vocabulary.close", {
+              value: blockClose,
+            }),
           ],
         },
         {
-          title: "Booleanos",
+          title: t(context.locale, "wizard.review.vocabulary.booleans"),
           items: booleanLexemes,
         },
         {
-          title: "Operadores",
+          title: t(context.locale, "wizard.review.vocabulary.operators"),
           items: operatorLexemes,
         },
         {
-          title: "Fluxo",
+          title: t(context.locale, "wizard.review.vocabulary.flow"),
           items: flowLexemes,
         },
       ],

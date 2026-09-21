@@ -1,4 +1,5 @@
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
+import { t } from "@/i18n";
 
 export type WizardStepId =
   | "identity"
@@ -25,6 +26,13 @@ export type WizardPresetId =
   | "ruby-like"
   | "mineres-like"
   | "free";
+
+export type WizardStepDefinition = {
+  id: WizardStepId;
+  title: string;
+  description: string;
+  icon: WizardStepIcon;
+};
 
 type WizardPresetDefinition = {
   label: string;
@@ -359,7 +367,14 @@ export const WIZARD_PRESET_LABELS: Record<WizardPresetId, string> = {
   free: FREE_PRESET.label,
 };
 
-export const WIZARD_STEPS = [
+export function getWizardPresetLabel(
+  presetId: WizardPresetId,
+  locale?: string,
+): string {
+  return t(locale, `wizard.preset.${presetId}`);
+}
+
+export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
   {
     id: "identity",
     title: "Identidade",
@@ -406,6 +421,19 @@ export const WIZARD_STEPS = [
     icon: "clipboard-check",
   },
 ] as const;
+
+export function getWizardSteps(
+  locale?: string,
+): readonly WizardStepDefinition[] {
+  return WIZARD_STEPS.map((step) => ({
+    ...step,
+    title: t(locale, `wizard.step.${step.id.toLowerCase()}.title`),
+    description: t(
+      locale,
+      `wizard.step.${step.id.toLowerCase()}.description`,
+    ),
+  }));
+}
 
 const STEP_FIELDS: Record<WizardStepId, string[]> = {
   identity: [],

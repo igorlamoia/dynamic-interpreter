@@ -1,3 +1,5 @@
+import { useWizardTranslation } from "./use-wizard-translation";
+
 type TokenPreviewProps = {
   tokens: Array<{
     lexeme: string;
@@ -6,10 +8,12 @@ type TokenPreviewProps = {
 };
 
 export function TokenPreview({ tokens }: TokenPreviewProps) {
+  const wt = useWizardTranslation();
+
   return (
     <section className="space-y-2">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-        Tokens
+        {wt("tokens.title")}
       </p>
       <div className="flex flex-wrap gap-2">
         {tokens.length ? (
@@ -28,8 +32,7 @@ export function TokenPreview({ tokens }: TokenPreviewProps) {
           ))
         ) : (
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            O preview de tokens aparece quando o exemplo atual pode ser
-            analisado.
+            {wt("tokens.empty")}
           </p>
         )}
       </div>

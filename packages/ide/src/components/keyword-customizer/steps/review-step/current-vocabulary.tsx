@@ -1,5 +1,6 @@
 import { ReviewStepProps } from ".";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
+import { useWizardTranslation } from "../../use-wizard-translation";
 
 const CATEGORY_TONES: Record<string, string> = {
   tipos: "bg-cyan-400/5 text-cyan-300 ring-cyan-400/30",
@@ -21,10 +22,12 @@ function resolveLexemeTone(title: string) {
 }
 
 export function CurrentVocabulary({ values }: Pick<ReviewStepProps, "values">) {
+  const wt = useWizardTranslation();
+
   return (
     <div className="rounded-lg border border-slate-200/80 bg-white/85 p-4 backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/70">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-        Vocabulário atual da linguagem
+        {wt("review.currentVocabulary")}
       </p>
       <PerfectScrollbar className="px-1 py-1  mt-3 max-h-30 gap-2 flex flex-wrap">
         {values.vocabularySections.map((section) => {

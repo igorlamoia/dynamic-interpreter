@@ -9,6 +9,7 @@ import { LucideIcon } from "lucide-react";
 
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { cn } from "@/lib/utils";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 type SnapDirection = "next" | "previous";
 type CardSnapAccent = {
@@ -101,6 +102,7 @@ export function CardSnapStack({
   focusKey,
   focusRequestId,
 }: CardSnapStackProps) {
+  const wt = useWizardTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<Array<HTMLDivElement | null>>([]);
@@ -170,7 +172,7 @@ export function CardSnapStack({
     >
       <div
         className="grid grid-cols-6 gap-1.5 pr-6"
-        aria-label="Categorias do preview"
+        aria-label={wt("preview.categoriesAria")}
       >
         {items.map((item, index) => {
           const isActive = index === activeIndex;
@@ -180,7 +182,7 @@ export function CardSnapStack({
             <button
               key={item.key}
               type="button"
-              aria-label={`Focar ${item.label}`}
+              aria-label={wt("preview.focusCategory", { label: item.label })}
               aria-pressed={isActive}
               data-card-snap-top-nav
               data-active={isActive}
@@ -220,7 +222,9 @@ export function CardSnapStack({
                   }}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Focar ${item.label}`}
+                  aria-label={wt("preview.focusCategory", {
+                    label: item.label,
+                  })}
                   data-card-snap-card
                   data-preview-category={item.label}
                   data-active={isActive}

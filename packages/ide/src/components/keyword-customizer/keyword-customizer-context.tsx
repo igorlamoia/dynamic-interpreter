@@ -12,6 +12,7 @@ import { normalizeStoredKeywordCustomization } from "@/contexts/keyword/KeywordC
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { t } from "@/i18n";
 import { useKeywords } from "@/contexts/keyword/KeywordContext";
 import type {
   BlockDelimiters,
@@ -38,7 +39,7 @@ import {
 import { buildWizardPreview } from "./preview-data";
 import {
   applyWizardPreset,
-  WIZARD_STEPS,
+  getWizardSteps,
   type WizardPresetId,
   type WizardStepId,
 } from "./wizard-model";
@@ -80,6 +81,7 @@ export function KeywordCustomizerProvider({
   initialLanguage?: Language | null;
 }) {
   const router = useRouter();
+  const locale = router.locale;
   const {
     customization,
     setCustomization,
@@ -148,7 +150,7 @@ export function KeywordCustomizerProvider({
 
       if (!response.ok) {
         throw new Error(
-          payload?.error ?? "Nao foi possivel buscar imagens agora.",
+          payload?.error ?? t(locale, "wizard.error.imageSearchFailed"),
         );
       }
 
@@ -433,7 +435,7 @@ export function KeywordCustomizerProvider({
     [draftCustomization.mappings, validateDraftKeyword],
   );
 
-  const visibleSteps = WIZARD_STEPS;
+  const visibleSteps = useMemo(() => getWizardSteps(locale), [locale]);
   const activeStepIndex = visibleSteps.findIndex(
     (step) => step.id === activeWizardStepId,
   );
@@ -456,11 +458,13 @@ export function KeywordCustomizerProvider({
         presetId: selectedPresetId,
         name,
         languageImageUrl,
+        locale,
       }),
     [
       activeStep.id,
       draftCustomization,
       languageImageUrl,
+      locale,
       name,
       selectedPresetId,
     ],
@@ -530,10 +534,10 @@ export function KeywordCustomizerProvider({
     setIdentity((current) => ({ ...current, name: value }));
     if (value.trim()) {
       setCurrentError((current) =>
-        current === "Informe um nome para a linguagem." ? null : current,
+        current === t(locale, "wizard.error.nameRequired") ? null : current,
       );
     }
-  }, []);
+  }, [locale]);
 
   const setDescription = useCallback((value: string) => {
     setIdentity((current) => ({ ...current, description: value }));
@@ -548,7 +552,7 @@ export function KeywordCustomizerProvider({
     if (!trimmedQuery) {
       setImageSearch((current) => ({
         ...current,
-        error: "Digite um termo para buscar imagens.",
+        error: t(locale, "wizard.error.imageSearchEmpty"),
         results: [],
       }));
       return;
@@ -565,12 +569,12 @@ export function KeywordCustomizerProvider({
         results: [],
         error: error instanceof Error
           ? error.message
-          : "Nao foi possivel buscar imagens agora.",
+          : t(locale, "wizard.error.imageSearchFailed"),
       }));
     } finally {
       setImageSearch((current) => ({ ...current, isSearching: false }));
     }
-  }, [languageImageQuery, searchLanguageImagesMutation]);
+  }, [languageImageQuery, locale, searchLanguageImagesMutation]);
 
   const selectLanguageImage = useCallback((imageUrl: string) => {
     setIdentity((current) => ({ ...current, imageUrl }));
@@ -606,7 +610,7 @@ export function KeywordCustomizerProvider({
   const save = useCallback(() => {
     const trimmedName = name.trim();
     if (!trimmedName) {
-      setCurrentError("Informe um nome para a linguagem.");
+      setCurrentError(t(locale, "wizard.error.nameRequired"));
       setActiveWizardStepId("identity");
       return;
     }
@@ -717,15 +721,15 @@ export function KeywordCustomizerProvider({
         // Não vale mandar ele para a etapa identity como se fosse problema de
         // preenchimento.
         if (result.reason === "not-ready") {
-          setCurrentError("Aguarde um instante e tente salvar de novo.");
+          setCurrentError(t(locale, "wizard.error.saveNotReady"));
           return;
         }
 
         // Mantém o usuário no wizard: o nome é corrigível ali mesmo.
         setCurrentError(
           result.reason === "duplicate-name"
-            ? "Você já tem uma linguagem com esse nome."
-            : "Não foi possível salvar a linguagem. Tente de novo.",
+            ? t(locale, "wizard.error.duplicateName")
+            : t(locale, "wizard.error.saveFailed"),
         );
         setActiveWizardStepId("identity");
         return;
@@ -749,6 +753,7 @@ export function KeywordCustomizerProvider({
     getOperatorValidationDelimiters,
     languageImageQuery,
     languageImageUrl,
+    locale,
     description,
     name,
     persist,
@@ -783,6 +788,7 @@ export function KeywordCustomizerProvider({
     hasChanges,
     saveMode,
     editingLanguageId,
+    locale,
     isSaveReady,
     actions: {
       syncKeyword,
