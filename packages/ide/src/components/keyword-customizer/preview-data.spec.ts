@@ -160,9 +160,11 @@ describe("buildWizardPreview", () => {
   });
 
   it("uses a richer full-program example on the review step", () => {
-    const preview = buildWizardPreview(getDefaultCustomizationState(), {
+    const draft = applyWizardPreset(getDefaultCustomizationState(), "free");
+
+    const preview = buildWizardPreview(draft, {
       activeStepId: "review",
-      presetId: "didactic-pt",
+      presetId: "free",
     });
 
     expect(preview.baselineSnippet).toContain("int idade = 25");
@@ -176,7 +178,7 @@ describe("buildWizardPreview", () => {
   });
 
   it("uses the generic variable keyword in review previews for untyped languages", () => {
-    const draft = getDefaultCustomizationState();
+    const draft = applyWizardPreset(getDefaultCustomizationState(), "free");
     draft.modes.typing = "untyped";
 
     const preview = buildWizardPreview(draft, {

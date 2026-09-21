@@ -121,7 +121,7 @@ const MINIMAL_EXPECTED = {
   },
   booleanLiteralMap: { true: "tr", false: "fa" },
   statementTerminatorLexeme: "",
-  blockDelimiters: { open: "", close: "" },
+  blockDelimiters: { open: "{", close: "}" },
   modes: {
     semicolon: "optional-eol",
     block: "delimited",
@@ -262,9 +262,45 @@ const RUBY_LIKE_EXPECTED = {
   },
 } as const;
 
+const FREE_EXPECTED = {
+  mappings: {
+    int: "int",
+    float: "float",
+    bool: "bool",
+    string: "string",
+    void: "void",
+    for: "for",
+    while: "while",
+    break: "break",
+    continue: "continue",
+    if: "if",
+    else: "else",
+    return: "return",
+    print: "print",
+    scan: "scan",
+    switch: "switch",
+    case: "case",
+    default: "default",
+    variable: "variable",
+    function: "function",
+  },
+  operatorWordMap: {},
+  booleanLiteralMap: { true: "true", false: "false" },
+  statementTerminatorLexeme: ";",
+  blockDelimiters: { open: "{", close: "}" },
+  modes: {
+    semicolon: "required",
+    block: "delimited",
+    typing: "typed",
+    array: "fixed",
+  },
+} as const;
+
 type StyledPresetExpectation = {
   mappings: Record<(typeof STYLED_KEYWORDS)[number], string>;
-  operatorWordMap: Record<(typeof DEFAULT_OPERATOR_WORD_KEYS)[number], string>;
+  operatorWordMap: Partial<
+    Record<(typeof DEFAULT_OPERATOR_WORD_KEYS)[number], string>
+  >;
   booleanLiteralMap: { true: string; false: string };
   statementTerminatorLexeme: string;
   blockDelimiters: { open: string; close: string };
@@ -365,7 +401,7 @@ describe("wizard-model", () => {
     expectStyledPreset(next, MINIMAL_EXPECTED);
   });
 
-  it("resets back to a clean base for the free preset", () => {
+  it("applies the free preset as a C-like base", () => {
     const base = getDefaultCustomizationState();
     const mutated = {
       ...base,
@@ -377,19 +413,19 @@ describe("wizard-model", () => {
             : item,
       ),
       operatorWordMap: { ...base.operatorWordMap, plus: "mais" },
-      statementTerminatorLexeme: ";",
+      statementTerminatorLexeme: "uai",
+      blockDelimiters: { open: "inicio", close: "fim" },
+      modes: {
+        semicolon: "optional-eol" as const,
+        block: "indentation" as const,
+        typing: "untyped" as const,
+        array: "dynamic" as const,
+      },
     };
 
     const free = applyWizardPreset(mutated, "free");
 
-    expect(
-      free.mappings.find((item) => item.original === "print")?.custom,
-    ).toBe("print");
-    expect(
-      free.mappings.find((item) => item.original === "return")?.custom,
-    ).toBe("return");
-    expect(free.operatorWordMap).toEqual({});
-    expect(free.statementTerminatorLexeme).toBe("");
+    expectStyledPreset(free, FREE_EXPECTED);
   });
 
   it("publishes labels for the stylized preset set", () => {

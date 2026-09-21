@@ -52,9 +52,7 @@ type StyledPresetMappings = {
   function: string;
 };
 
-type StyledOperatorWordMap = Required<
-  StoredKeywordCustomization["operatorWordMap"]
->;
+type StyledOperatorWordMap = StoredKeywordCustomization["operatorWordMap"];
 
 type StyledWizardPresetDefinition = WizardPresetDefinition & {
   mappings: StyledPresetMappings;
@@ -305,8 +303,42 @@ const MINERES_LIKE_PRESET: StyledWizardPresetDefinition = {
   },
 };
 
-const FREE_PRESET: WizardPresetDefinition = {
+const FREE_PRESET: StyledWizardPresetDefinition = {
   label: "Livre",
+  mappings: {
+    int: "int",
+    float: "float",
+    bool: "bool",
+    string: "string",
+    void: "void",
+    for: "for",
+    while: "while",
+    break: "break",
+    continue: "continue",
+    if: "if",
+    else: "else",
+    return: "return",
+    print: "print",
+    scan: "scan",
+    switch: "switch",
+    case: "case",
+    default: "default",
+    variable: "variable",
+    function: "function",
+  },
+  operatorWordMap: {},
+  booleanLiteralMap: {
+    true: "true",
+    false: "false",
+  },
+  statementTerminatorLexeme: ";",
+  blockDelimiters: { open: "{", close: "}" },
+  modes: {
+    semicolon: "required",
+    block: "delimited",
+    typing: "typed",
+    array: "fixed",
+  },
 };
 
 const WIZARD_PRESETS: Record<WizardPresetId, WizardPresetDefinition> = {

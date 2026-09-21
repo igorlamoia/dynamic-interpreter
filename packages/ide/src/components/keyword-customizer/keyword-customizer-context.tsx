@@ -92,8 +92,11 @@ export function KeywordCustomizerProvider({
   const seededCustomization = initialLanguage?.customization
     ? normalizeStoredKeywordCustomization(initialLanguage.customization)
     : customization;
+  const initialDraftCustomization = initialLanguage
+    ? seededCustomization
+    : applyWizardPreset(seededCustomization, "free");
   const [draftCustomization, setDraftCustomization] =
-    useState<IDEKeywordCustomizationState>(seededCustomization);
+    useState<IDEKeywordCustomizationState>(initialDraftCustomization);
   const [currentError, setCurrentError] = useState<string | null>(null);
   const [delimiterError, setDelimiterError] = useState<string | null>(null);
   const [booleanLiteralError, setBooleanLiteralError] = useState<string | null>(
@@ -157,7 +160,7 @@ export function KeywordCustomizerProvider({
   // Edit sessions keep their server-provided state across global hydration.
   const isEditingSession = useRef(initialLanguage !== null);
   const form = useForm<StoredKeywordCustomization>({
-    defaultValues: seededCustomization,
+    defaultValues: initialDraftCustomization,
   });
   const {
     mode: saveMode,
@@ -189,8 +192,9 @@ export function KeywordCustomizerProvider({
       return;
     }
 
+    const freeCustomization = applyWizardPreset(customization, "free");
     wizardSessionBaseCustomization.current = customization;
-    syncDraftCustomization(customization);
+    syncDraftCustomization(freeCustomization);
     setCurrentError(null);
     setDelimiterError(null);
     setBooleanLiteralError(null);

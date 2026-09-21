@@ -175,7 +175,7 @@ const ui = {
   validation_fill_delimiters:
     "Preencha os delimitadores de abertura e fechamento.",
   validation_invalid_delimiter_format:
-    "Use palavras válidas (letras, números e _, sem espaços).",
+    "Use delimitadores sem espaços.",
   validation_delimiters_must_differ:
     "Os delimitadores de abertura e fechamento devem ser diferentes.",
   validation_delimiters_reserved:

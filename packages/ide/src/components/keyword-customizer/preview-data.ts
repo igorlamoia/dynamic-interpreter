@@ -9,6 +9,7 @@ import {
 import { buildLexerConfigFromCustomization } from "@/lib/keyword-customization";
 import { buildPreviewSource } from "./preview-builder";
 import {
+  applyWizardPreset,
   WIZARD_PRESET_LABELS,
   type WizardPresetId,
   type WizardStepId,
@@ -146,7 +147,7 @@ export function buildWizardPreview(
   options: BuildPreviewOptions,
 ): WizardPreview {
   const baselineSnippet = buildPreviewSource(
-    getDefaultCustomizationState(),
+    applyWizardPreset(getDefaultCustomizationState(), "free"),
     options.activeStepId,
   );
   const snippet = buildPreviewSource(draft, options.activeStepId);
