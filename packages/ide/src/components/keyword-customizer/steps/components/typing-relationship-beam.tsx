@@ -64,7 +64,7 @@ export function TypingRelationshipBeam({
   return (
     <div
       ref={beamContainerRef}
-      className="relative overflow-hidden rounded-lg border border-slate-200/80 bg-slate-50/60 px-4 py-5 dark:border-slate-800/80 dark:bg-slate-900/50"
+      className="relative overflow-hidden rounded-lg border bg-white/90 border-slate-200/80  px-4 py-5 dark:border-slate-800/80 dark:bg-slate-900/50"
     >
       <div
         className={`relative z-10 flex min-h-52.5 gap-8 ${

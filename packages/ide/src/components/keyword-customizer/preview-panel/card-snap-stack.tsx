@@ -231,8 +231,8 @@ export function CardSnapStack({
                   onClick={() => focusCard(index)}
                   onKeyDown={(event) => handleCardKeyDown(event, index)}
                   className={cn(
-                    "relative snap-start cursor-pointer rounded-sm outline-none transition-[transform,opacity,filter] duration-300",
-                    "focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
+                    "relative bg-white/90 snap-start cursor-pointer rounded-sm outline-none transition-[transform,opacity,filter] duration-300",
+                    "focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2  dark:focus-visible:ring-offset-slate-950",
                     isActive
                       ? `z-20 scale-[1.01] opacity-100 ${accent.activeShadow}`
                       : "z-0 scale-[0.985] opacity-70 saturate-[0.75] hover:opacity-90",

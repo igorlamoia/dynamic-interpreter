@@ -23,6 +23,7 @@ export type IOStepProps = {
 
 export function IOStep({ values, actions }: IOStepProps) {
   const wt = useWizardTranslation();
+  const localizedHelloWorld = wt("io.localizedHelloWorld");
 
   return (
     <section className="space-y-6">
@@ -33,10 +34,11 @@ export function IOStep({ values, actions }: IOStepProps) {
           {wt("io.description.before")}{" "}
           <strong>Hello World</strong>, {wt("io.description.after")}{" "}
           <HyperText
+            key={localizedHelloWorld}
             as="span"
             className="text-sm text-slate-900 dark:text-slate-100"
           >
-            Olá Mundo!
+            {localizedHelloWorld}
           </HyperText>
         </Step.Description>
       </Step.Header>

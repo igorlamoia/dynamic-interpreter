@@ -1,23 +1,27 @@
 import enFooter from "./locales/en/footer";
 import enIde from "./locales/en/ide";
+import enLanguageDocumentation from "./locales/en/language-documentation";
 import enLanguageSample from "./locales/en/language-sample";
 import enToast from "./locales/en/toast";
 import enUi from "./locales/en/ui";
 import enWizard from "./locales/en/wizard";
 import esFooter from "./locales/es/footer";
 import esIde from "./locales/es/ide";
+import esLanguageDocumentation from "./locales/es/language-documentation";
 import esLanguageSample from "./locales/es/language-sample";
 import esToast from "./locales/es/toast";
 import esUi from "./locales/es/ui";
 import esWizard from "./locales/es/wizard";
 import ptBrFooter from "./locales/pt-BR/footer";
 import ptBrIde from "./locales/pt-BR/ide";
+import ptBrLanguageDocumentation from "./locales/pt-BR/language-documentation";
 import ptBrLanguageSample from "./locales/pt-BR/language-sample";
 import ptBrToast from "./locales/pt-BR/toast";
 import ptBrUi from "./locales/pt-BR/ui";
 import ptBrWizard from "./locales/pt-BR/wizard";
 import ptPtFooter from "./locales/pt-PT/footer";
 import ptPtIde from "./locales/pt-PT/ide";
+import ptPtLanguageDocumentation from "./locales/pt-PT/language-documentation";
 import ptPtLanguageSample from "./locales/pt-PT/language-sample";
 import ptPtToast from "./locales/pt-PT/toast";
 import ptPtUi from "./locales/pt-PT/ui";
@@ -52,6 +56,7 @@ interface TranslationTree {
   footer: TranslationNamespace;
   wizard: TranslationNamespace;
   token: TranslationNamespace;
+  languageDocumentation: TranslationNamespace;
   ide: IdeIntl;
   languageSample: LanguageSampleIntl;
 }
@@ -63,6 +68,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: ptBrFooter,
     wizard: ptBrWizard,
     token: ptBrToken,
+    languageDocumentation: ptBrLanguageDocumentation,
     ide: ptBrIde,
     languageSample: ptBrLanguageSample,
   },
@@ -72,6 +78,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: ptPtFooter,
     wizard: ptPtWizard,
     token: ptPtToken,
+    languageDocumentation: ptPtLanguageDocumentation,
     ide: ptPtIde,
     languageSample: ptPtLanguageSample,
   },
@@ -81,6 +88,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: esFooter,
     wizard: esWizard,
     token: esToken,
+    languageDocumentation: esLanguageDocumentation,
     ide: esIde,
     languageSample: esLanguageSample,
   },
@@ -90,6 +98,7 @@ const LOCALES: Record<SupportedLocale, TranslationTree> = {
     footer: enFooter,
     wizard: enWizard,
     token: enToken,
+    languageDocumentation: enLanguageDocumentation,
     ide: enIde,
     languageSample: enLanguageSample,
   },

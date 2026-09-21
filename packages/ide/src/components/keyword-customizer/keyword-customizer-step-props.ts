@@ -54,7 +54,10 @@ function getDocumentationDescription(
   const customDescription =
     context.draftCustomization.languageDocumentation[id]?.description?.trim();
 
-  return customDescription || getDefaultDocumentationDescription(id);
+  return (
+    customDescription ||
+    getDefaultDocumentationDescription(id, context.locale)
+  );
 }
 
 export function buildIdentityStepProps(

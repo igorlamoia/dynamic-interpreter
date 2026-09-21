@@ -94,6 +94,7 @@ const wizard = {
   "io.description.before":
     "Antes de criar regras complexas, sua linguagem precisa aprender a falar. Toda linguagem começa com uma primeira mensagem, famoso",
   "io.description.after": "ou melhor:",
+  "io.localizedHelloWorld": "Olá Mundo!",
   "io.question":
     "Como os programadores vão imprimir mensagens na tela? E como vão ler aquilo que o usuário digitar?",
   "io.scanLabel": "Capturar entrada",
