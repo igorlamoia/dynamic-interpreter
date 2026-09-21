@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -25,15 +25,17 @@ import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { HeroButton } from "@/components/buttons/hero";
 import { useJoinClassMutation } from "@/hooks/use-api-queries";
 import { useToast } from "@/contexts/ToastContext";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
-const joinClassSchema = z.object({
+const createJoinClassSchema = (locale?: string) => z.object({
   joinCode: z
     .string()
-    .min(1, "Código de acesso é obrigatório")
-    .max(6, "Código deve ter no máximo 6 caracteres"),
+    .min(1, t(locale, "ui.dashboard_join_code_required"))
+    .max(6, t(locale, "ui.dashboard_join_code_max")),
 });
 
-type JoinClassFormValues = z.infer<typeof joinClassSchema>;
+type JoinClassFormValues = z.infer<ReturnType<typeof createJoinClassSchema>>;
 
 interface JoinClassModalProps {
   open: boolean;
@@ -48,8 +50,13 @@ export function JoinClassModal({
   onSuccess,
   onError,
 }: JoinClassModalProps) {
+  const { locale } = useRouter();
   const joinClass = useJoinClassMutation();
   const { showToast } = useToast();
+  const joinClassSchema = useMemo(
+    () => createJoinClassSchema(locale),
+    [locale],
+  );
   const form = useForm<JoinClassFormValues>({
     resolver: zodResolver(joinClassSchema),
     defaultValues: {
@@ -69,11 +76,14 @@ export function JoinClassModal({
     try {
       await joinClass.mutateAsync(values.joinCode.toUpperCase());
 
-      onSuccess?.("Você entrou na turma!");
+      onSuccess?.(t(locale, "ui.dashboard_join_class_success"));
       form.reset();
       onOpenChange(false);
     } catch (error) {
-      const message = getApiErrorMessage(error, "Código inválido");
+      const message = getApiErrorMessage(
+        error,
+        t(locale, "ui.dashboard_join_class_invalid_code"),
+      );
       showToast({ type: "error", message });
       onError?.(message);
     }
@@ -83,9 +93,9 @@ export function JoinClassModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-popover text-popover-foreground dark:bg-[#182f34] dark:border-white/10 dark:text-white">
         <DialogHeader className="flex flex-col">
-          <DialogTitle>Entrar em Turma</DialogTitle>
+          <DialogTitle>{t(locale, "ui.dashboard_join_class_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Digite o código de acesso fornecido por seu professor
+            {t(locale, "ui.dashboard_join_class_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -99,7 +109,9 @@ export function JoinClassModal({
               name="joinCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Código de Acesso</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.dashboard_join_code_label")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -107,7 +119,10 @@ export function JoinClassModal({
                         field.onChange(event.target.value.toUpperCase())
                       }
                       maxLength={6}
-                      placeholder="EX: A3F9K2"
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_join_code_placeholder",
+                      )}
                       className="h-12 font-mono text-center text-base tracking-widest uppercase"
                     />
                   </FormControl>
@@ -125,7 +140,7 @@ export function JoinClassModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
@@ -133,7 +148,9 @@ export function JoinClassModal({
             disabled={joinClass.isPending}
             className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
-            {joinClass.isPending ? "Entrando..." : "Entrar"}
+            {joinClass.isPending
+              ? t(locale, "ui.dashboard_joining")
+              : t(locale, "ui.dashboard_join")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

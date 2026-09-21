@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 type TestCaseItem = {
   id: string;
@@ -23,11 +25,12 @@ export function TestCaseFields({
   fields: TestCaseItem[];
   control: Control<any>;
 }) {
+  const { locale } = useRouter();
+
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">
-        Defina pares de entrada/saída esperada para validação automática do
-        código do aluno.
+        {t(locale, "ui.dashboard_test_cases_help")}
       </p>
       {fields.map((field, idx) => (
         <div
@@ -44,7 +47,10 @@ export function TestCaseFields({
                   <FormControl>
                     <Input
                       {...caseField}
-                      placeholder="Nome do caso (opcional)"
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_test_case_name_placeholder",
+                      )}
                       className="h-9 text-xs"
                     />
                   </FormControl>
@@ -60,13 +66,16 @@ export function TestCaseFields({
               render={({ field: caseField }) => (
                 <FormItem>
                   <FormLabel className="text-xs normal-case tracking-normal text-muted-foreground">
-                    Entrada (stdin)
+                    {t(locale, "ui.dashboard_test_case_input_label")}
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       {...caseField}
                       rows={3}
-                      placeholder="Uma linha por entrada..."
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_test_case_input_placeholder",
+                      )}
                       className="text-xs font-mono focus:border-primary/50"
                     />
                   </FormControl>
@@ -80,13 +89,16 @@ export function TestCaseFields({
               render={({ field: caseField }) => (
                 <FormItem>
                   <FormLabel className="text-xs normal-case tracking-normal text-muted-foreground">
-                    Saída esperada (stdout)
+                    {t(locale, "ui.dashboard_test_case_output_label")}
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       {...caseField}
                       rows={3}
-                      placeholder="Saída esperada..."
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_test_case_output_placeholder",
+                      )}
                       className="text-xs font-mono focus:border-primary/50"
                     />
                   </FormControl>

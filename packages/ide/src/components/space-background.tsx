@@ -1,4 +1,3 @@
-import { BackgroundMascotMarquee } from "./background-mascot-marquee";
 import { Meteors } from "./ui/meteors";
 import { Particles } from "@/components/ui/particles";
 

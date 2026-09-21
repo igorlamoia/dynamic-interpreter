@@ -12,7 +12,7 @@ export function LanguagesHeader({ onCreate }: { onCreate: () => void }) {
           <GradientText>Minhas Linguagens</GradientText>
         </Title>
         <Subtitle className="mt-1">
-          Crie e mantenha suas próprias versões do Java--
+          Crie e mantenha suas próprias linguagens
         </Subtitle>
       </div>
       <HeroButton

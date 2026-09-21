@@ -2,9 +2,16 @@ import { ClipboardList, Users } from "lucide-react";
 import { HeroLink } from "@/components/buttons/hero";
 import { useAuth } from "@/contexts/AuthContext";
 import type { ClassSummary } from "@/types/api";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
   const { isTeacher } = useAuth();
+  const { locale } = useRouter();
+  const exerciseListLabel =
+    cls._count.exerciseLists === 1
+      ? t(locale, "ui.dashboard_exercise_list_singular")
+      : t(locale, "ui.dashboard_exercise_list_plural");
 
   return (
     <div className="overflow-hidden group shadow-[0_1px_10px_rgba(0,0,0,0.08)] dark:shadow-none relative bg-card/80 dark:bg-white/3 backdrop-blur-2xl border border-border dark:border-white/10 rounded-3xl p-7 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(13,204,242,0.15)] hover:-translate-y-1 flex flex-col h-full">
@@ -31,7 +38,7 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
       {isTeacher && (
         <div className="mb-3 p-2 bg-muted/70 dark:bg-gray-400/20 rounded-2xl border border-border dark:border-white/5 backdrop-blur-md flex items-center justify-between group/code cursor-copy">
           <span className="text-xs text-muted-foreground font-semibold tracking-wider">
-            CÓDIGO:
+            {t(locale, "ui.dashboard_access_code_label")}
           </span>
           <span className="text-base font-mono font-bold text-primary tracking-widest drop-shadow-[0_0_8px_rgba(13,204,242,0.4)] group-hover/code:text-accent-foreground transition-colors">
             {cls.accessCode}
@@ -43,15 +50,14 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
         <div className="flex items-center gap-2">
           <ClipboardList className="w-4 h-4 text-primary/70" />
           <span>
-            {cls._count.exerciseLists} lista
-            {cls._count.exerciseLists !== 1 ? "s" : ""}
+            {cls._count.exerciseLists} {exerciseListLabel}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-full bg-linear-to-br from-primary to-[#10b981] flex items-center justify-center text-[10px] font-bold text-slate-800">
             {(cls.teacher?.name || "P")[0].toUpperCase()}
           </div>
-          <span>{cls.teacher?.name || "Professor"}</span>
+          <span>{cls.teacher?.name || t(locale, "ui.dashboard_teacher_fallback")}</span>
         </div>
       </div>
 
@@ -61,7 +67,7 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
           href={`/classes/${cls.id}`}
           className="py-2 ml-auto"
         >
-          Acessar Turma
+          {t(locale, "ui.dashboard_access_class")}
         </HeroLink>
       </div>
     </div>
