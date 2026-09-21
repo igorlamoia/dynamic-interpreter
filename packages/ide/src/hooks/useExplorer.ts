@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo, useContext, useCallback } from "react";
 import { EditorContext } from "@/contexts/editor/EditorContext";
 import { useAlert } from "@/components/alert";
 import type { FileData } from "@/hooks/useFileSystem";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
 export type TreeNode = {
   type: "folder" | "file";
@@ -24,6 +26,7 @@ export function useExplorer({
   const editorContext = useContext(EditorContext);
   const { fileSystem, getSourceCodeStorageKey } = editorContext;
   const { showAlert, showMessage } = useAlert();
+  const { locale } = useRouter();
 
   const getFileStorageKey = useCallback(
     (path: string) =>
@@ -171,7 +174,7 @@ export function useExplorer({
   const moveFile = (currentPath: string, targetPath: string) => {
     if (currentPath === targetPath) return;
     if (fileSystem.fileExists(targetPath)) {
-      showMessage("Ja existe um arquivo com esse nome na pasta.");
+      showMessage(t(locale, "ui.explorer_file_exists_in_folder"));
       return;
     }
 
@@ -206,10 +209,12 @@ export function useExplorer({
   const deleteFile = async (currentPath: string) => {
     setContextMenu(null);
     const confirmed = await showAlert({
-      title: "Excluir arquivo",
-      description: `Tem certeza que deseja excluir "${currentPath}"?`,
-      confirmText: "Excluir",
-      cancelText: "Cancelar",
+      title: t(locale, "ui.explorer_delete_file_title"),
+      description: t(locale, "ui.explorer_delete_file_description", {
+        path: currentPath,
+      }),
+      confirmText: t(locale, "ui.explorer_delete_confirm"),
+      cancelText: t(locale, "ui.explorer_delete_cancel"),
       variant: "destructive",
     });
 
@@ -242,16 +247,25 @@ export function useExplorer({
       return filePath.startsWith(`${normalized}/`);
     });
 
-    let confirmMsg = `Tem certeza que deseja excluir a pasta "${currentPath}"?`;
+    let confirmMsg = t(locale, "ui.explorer_delete_folder_description", {
+      path: currentPath,
+    });
     if (childFiles.length > 0) {
-      confirmMsg = `Tem certeza que deseja excluir a pasta "${currentPath}" e ${childFiles.length} arquivo(s) dentro?`;
+      confirmMsg = t(
+        locale,
+        "ui.explorer_delete_folder_with_files_description",
+        {
+          path: currentPath,
+          count: childFiles.length,
+        },
+      );
     }
 
     const confirmed = await showAlert({
-      title: "Excluir pasta",
+      title: t(locale, "ui.explorer_delete_folder_title"),
       description: confirmMsg,
-      confirmText: "Excluir",
-      cancelText: "Cancelar",
+      confirmText: t(locale, "ui.explorer_delete_confirm"),
+      cancelText: t(locale, "ui.explorer_delete_cancel"),
       variant: "destructive",
     });
 
@@ -300,12 +314,12 @@ export function useExplorer({
 
     if (normalized === newPath) return;
     if (newPath.startsWith(`${normalized}/`)) {
-      showMessage("Nao pode mover uma pasta para dentro dela mesma.");
+      showMessage(t(locale, "ui.explorer_cannot_move_folder_into_itself"));
       return;
     }
 
     if (folderExists(newPath)) {
-      showMessage("Ja existe uma pasta com esse nome.");
+      showMessage(t(locale, "ui.explorer_folder_exists"));
       return;
     }
 
@@ -382,7 +396,7 @@ export function useExplorer({
     setPendingEntry({
       type: "file",
       parentPath,
-      name: "novo-arquivo.?",
+      name: t(locale, "ui.explorer_new_file_name"),
     });
     if (parentPath) {
       setOpenFolders((prev) => Array.from(new Set([...prev, parentPath])));
@@ -396,7 +410,7 @@ export function useExplorer({
     setPendingEntry({
       type: "folder",
       parentPath,
-      name: "nova-pasta",
+      name: t(locale, "ui.explorer_new_folder_name"),
     });
     if (parentPath) {
       setOpenFolders((prev) => Array.from(new Set([...prev, parentPath])));
@@ -431,7 +445,7 @@ export function useExplorer({
     const isFolder = folderExists(renameTarget.path);
     if (isFolder) {
       if (folderExists(targetPath)) {
-        setInlineError("Essa pasta ja existe.");
+        setInlineError(t(locale, "ui.explorer_folder_already_exists"));
         return;
       }
 
@@ -516,7 +530,7 @@ export function useExplorer({
       });
     } else {
       if (fileSystem.fileExists(targetPath)) {
-        setInlineError("Esse arquivo ja existe.");
+        setInlineError(t(locale, "ui.explorer_file_exists"));
         return;
       }
       moveFile(renameTarget.path, targetPath);
@@ -543,7 +557,7 @@ export function useExplorer({
 
     if (pendingEntry.type === "file") {
       if (fileSystem.fileExists(targetPath)) {
-        setInlineError("Esse arquivo ja existe.");
+        setInlineError(t(locale, "ui.explorer_file_exists"));
         return;
       }
       fileSystem.createOrUpdateFile(targetPath, "");
@@ -556,7 +570,7 @@ export function useExplorer({
     }
 
     if (folderExists(targetPath)) {
-      setInlineError("Essa pasta ja existe.");
+      setInlineError(t(locale, "ui.explorer_folder_already_exists"));
       return;
     }
 

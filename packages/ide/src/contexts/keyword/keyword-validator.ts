@@ -21,6 +21,8 @@ type StatementTerminatorValidationCustomization = {
 
 export const WORD_REGEX = /^[A-Za-z_çÇ][A-Za-z0-9_çÇ]*$/;
 
+const DELIMITER_REGEX = /^\S+$/;
+
 export const RESERVED_STATEMENT_TERMINATOR_CHARS = new Set([
   ";",
   ",",
@@ -119,7 +121,7 @@ export function validateBlockDelimiters(value: BlockDelimiters): string | null {
     return ui.validation_fill_delimiters;
   }
 
-  if (!WORD_REGEX.test(open) || !WORD_REGEX.test(close)) {
+  if (!DELIMITER_REGEX.test(open) || !DELIMITER_REGEX.test(close)) {
     return ui.validation_invalid_delimiter_format;
   }
 

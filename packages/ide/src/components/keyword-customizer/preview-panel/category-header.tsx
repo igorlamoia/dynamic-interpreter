@@ -1,5 +1,6 @@
 import { CategoryTone } from ".";
 import { CategorySectionProps } from "./category-section";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 interface CategoryHeaderProps extends CategorySectionProps {
   tone: CategoryTone;
@@ -26,6 +27,7 @@ export function CategoryHeader(props: CategoryHeaderProps) {
     isOpen,
     onToggle,
   } = props;
+  const wt = useWizardTranslation();
   const Icon = icon;
   return (
     <button
@@ -56,7 +58,10 @@ export function CategoryHeader(props: CategoryHeaderProps) {
       <div className="space-y-1.5 px-4 pt-2">
         <div className="flex items-center justify-between text-xs text-slate-400">
           <span>
-            Alterados {changedCount} de {items.length}
+            {wt("preview.changedCount", {
+              changed: changedCount,
+              total: items.length,
+            })}
           </span>
           <span className={tone.textChanged}>{percentage}%</span>
         </div>

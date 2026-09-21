@@ -1,6 +1,7 @@
 import { ExampleSnippet } from "../example-snippet";
 import { KeywordReferenceTable } from "./components/keyword-reference-table";
 import { Step } from "./components/step";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 const FLOW_FIELDS = [
   "if",
@@ -85,6 +86,7 @@ const FLOW_REFERENCE_META: Record<
 };
 
 export function FlowStep({ values, actions }: FlowStepProps) {
+  const wt = useWizardTranslation();
   const conditionalKeys: FlowFieldKey[] = [
     "if",
     "else",
@@ -133,14 +135,14 @@ export function FlowStep({ values, actions }: FlowStepProps) {
   return (
     <section className="space-y-6">
       <Step.Header>
-        <Step.Index>Etapa 6</Step.Index>
-        <Step.Title>Fluxo</Step.Title>
+        <Step.Index>{wt("flow.index")}</Step.Index>
+        <Step.Title>{wt("flow.title")}</Step.Title>
         <Step.Description>
-          Ajuste o vocabulário usado para controle de fluxo e navegação.
+          {wt("flow.description")}
         </Step.Description>
       </Step.Header>
       <KeywordReferenceTable
-        title="Condicionais"
+        title={wt("flow.conditionals")}
         items={conditionalItems.map((field) => ({
           id: field.key,
           value: field.value,
@@ -156,11 +158,11 @@ export function FlowStep({ values, actions }: FlowStepProps) {
         }
       />
       <ExampleSnippet
-        title="Exemplo de condicionais"
+        title={wt("flow.conditionalsExample")}
         code={conditionalSnippet}
       />
       <KeywordReferenceTable
-        title="Loops"
+        title={wt("flow.loops")}
         items={loopItems.map((field) => ({
           id: field.key,
           value: field.value,
@@ -175,9 +177,9 @@ export function FlowStep({ values, actions }: FlowStepProps) {
           actions.syncKeywordDescription(field, value)
         }
       />
-      <ExampleSnippet title="Exemplo de loops" code={loopSnippet} />
+      <ExampleSnippet title={wt("flow.loopsExample")} code={loopSnippet} />
       <KeywordReferenceTable
-        title="Fluxo"
+        title={wt("flow.flow")}
         items={flowItems.map((field) => ({
           id: field.key,
           value: field.value,
@@ -192,7 +194,7 @@ export function FlowStep({ values, actions }: FlowStepProps) {
           actions.syncKeywordDescription(field, value)
         }
       />
-      <ExampleSnippet title="Exemplo de fluxo" code={flowSnippet} />
+      <ExampleSnippet title={wt("flow.flowExample")} code={flowSnippet} />
     </section>
   );
 }

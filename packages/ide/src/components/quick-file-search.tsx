@@ -7,6 +7,8 @@ import { EditorContext } from "@/contexts/editor/EditorContext";
 import type { FileData } from "@/hooks/useFileSystem";
 import { Search, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
 interface QuickFileSearchProps {
   isOpen: boolean;
@@ -19,6 +21,7 @@ export function QuickFileSearch({
   onClose,
   onSelectFile,
 }: QuickFileSearchProps) {
+  const { locale } = useRouter();
   const { fileSystem } = useContext(EditorContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -89,7 +92,7 @@ export function QuickFileSearch({
             <Search className="mr-3 size-4 text-muted-foreground shrink-0" />
             <Input
               autoFocus
-              placeholder="Search files by name..."
+              placeholder={t(locale, "ui.quick_search_placeholder")}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -103,7 +106,7 @@ export function QuickFileSearch({
           <div className="max-h-96 overflow-y-auto">
             {filteredFiles.length === 0 ? (
               <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-                No files found
+                {t(locale, "ui.quick_search_no_files")}
               </div>
             ) : (
               filteredFiles.map((file, index) => (
@@ -131,14 +134,19 @@ export function QuickFileSearch({
           {filteredFiles.length > 0 && (
             <div className="px-4 py-2 border-t border-black/10 dark:border-white/10 text-xs text-muted-foreground flex justify-between">
               <span>
-                {filteredFiles.length} file
-                {filteredFiles.length !== 1 ? "s" : ""}
+                {filteredFiles.length}{" "}
+                {t(
+                  locale,
+                  filteredFiles.length === 1
+                    ? "ui.quick_search_file_singular"
+                    : "ui.quick_search_file_plural",
+                )}
               </span>
               <span className="text-xs">
                 <kbd className="px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10">
                   Enter
                 </kbd>{" "}
-                to open
+                {t(locale, "ui.quick_search_to_open")}
               </span>
             </div>
           )}

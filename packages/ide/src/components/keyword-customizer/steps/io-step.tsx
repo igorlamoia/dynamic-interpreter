@@ -3,6 +3,7 @@ import { DocumentedField } from "../documented-field";
 import { HyperText } from "@/components/ui/hyper-text";
 import { Terminal } from "lucide-react";
 import { Step } from "./components/step";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 export type IOKeyword = "print" | "scan";
 
@@ -21,31 +22,33 @@ export type IOStepProps = {
 };
 
 export function IOStep({ values, actions }: IOStepProps) {
+  const wt = useWizardTranslation();
+  const localizedHelloWorld = wt("io.localizedHelloWorld");
+
   return (
     <section className="space-y-6">
       <Step.Header>
-        <Step.Index>Etapa 2</Step.Index>
-        <Step.Title>I/O Entrada e saída</Step.Title>
+        <Step.Index>{wt("io.index")}</Step.Index>
+        <Step.Title>{wt("io.title")}</Step.Title>
         <Step.Description>
-          Antes de criar regras complexas, sua linguagem precisa aprender a
-          falar. Toda linguagem começa com uma primeira mensagem, famoso{" "}
-          <strong>Hello World</strong>, ou melhor:{" "}
+          {wt("io.description.before")}{" "}
+          <strong>Hello World</strong>, {wt("io.description.after")}{" "}
           <HyperText
+            key={localizedHelloWorld}
             as="span"
             className="text-sm text-slate-900 dark:text-slate-100"
           >
-            Olá Mundo!
+            {localizedHelloWorld}
           </HyperText>
         </Step.Description>
       </Step.Header>
 
       <p className="max-w-3xl text-sm text-slate-600 dark:text-slate-400">
-        Como os programadores vão imprimir mensagens na tela? E como vão ler
-        aquilo que o usuário digitar?
+        {wt("io.question")}
       </p>
       <div className="grid gap-4 lg:grid-cols-2">
         <DocumentedField
-          label="Capturar entrada"
+          label={wt("io.scanLabel")}
           value={values.scanKeyword}
           description={values.scanDescription}
           onValueChange={(value) => actions.syncKeyword("scan", value)}
@@ -58,7 +61,7 @@ export function IOStep({ values, actions }: IOStepProps) {
           }}
         />
         <DocumentedField
-          label="Exibir saída"
+          label={wt("io.printLabel")}
           value={values.printKeyword}
           description={values.printDescription}
           onValueChange={(value) => actions.syncKeyword("print", value)}
@@ -73,7 +76,7 @@ export function IOStep({ values, actions }: IOStepProps) {
       </div>
 
       <ExampleSnippet
-        title="Exemplo ao vivo"
+        title={wt("io.liveExample")}
         code={values.snippet ?? `${values.printKeyword}("Ola mundo")`}
         input={["Kiki"]}
         output={["Ola mundo", "Me chamo: Kiki"]}

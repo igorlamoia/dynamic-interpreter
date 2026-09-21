@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/input-with-actions";
 import IconButton from "@/components/buttons/icon-button";
 import { useSearch, type SearchResult } from "@/hooks/useSearch";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
 interface SearchPanelProps {
   onFileSelect: (filePath: string) => void;
 }
 
 export function SearchPanel({ onFileSelect }: SearchPanelProps) {
+  const { locale } = useRouter();
   const {
     query,
     setQuery,
@@ -44,11 +47,11 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <div className="flex items-center justify-between px-3 py-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        Buscar
+        {t(locale, "ui.search")}
         <IconButton
           onClick={() => setShowReplace(!showReplace)}
           selected={showReplace}
-          tooltip="Alternar substituir"
+          tooltip={t(locale, "ui.search_toggle_replace")}
           className="size-3 p-3 rounded-lg"
         >
           <Replace />
@@ -60,7 +63,7 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
           ref={searchInputRef}
           autoFocus
           type="text"
-          placeholder="Buscar..."
+          placeholder={t(locale, "ui.search_placeholder")}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           actions={
@@ -69,19 +72,19 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
                 icon={CaseSensitive}
                 active={caseSensitive}
                 onClick={() => setCaseSensitive(!caseSensitive)}
-                tooltip="Diferenciar maiúsculas de minúsculas"
+                tooltip={t(locale, "ui.search_case_sensitive")}
               />
               <InputActionButton
                 icon={WholeWord}
                 active={wholeWord}
                 onClick={() => setWholeWord(!wholeWord)}
-                tooltip="Palavra inteira"
+                tooltip={t(locale, "ui.search_whole_word")}
               />
               <InputActionButton
                 icon={Regex}
                 active={useRegex}
                 onClick={() => setUseRegex(!useRegex)}
-                tooltip="Usar Expressão Regular"
+                tooltip={t(locale, "ui.search_regex")}
               />
             </>
           }
@@ -91,7 +94,7 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
         {showReplace && (
           <InputWithActions
             type="text"
-            placeholder="Substituir..."
+            placeholder={t(locale, "ui.search_replace_placeholder")}
             value={replaceQuery}
             onChange={(e) => setReplaceQuery(e.target.value)}
             actions={
@@ -101,7 +104,7 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
                 disabled={
                   !query.trim() || !replaceQuery || results.length === 0
                 }
-                tooltip="Substituir tudo"
+                tooltip={t(locale, "ui.search_replace_all")}
               />
             }
           />
@@ -110,8 +113,22 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
         {/* Results Count */}
         {query && (
           <div className="text-[10px] text-muted-foreground">
-            {results.length} arquivo{results.length !== 1 ? "s" : ""} com{" "}
-            {totalMatches} resultado{totalMatches !== 1 ? "s" : ""}
+            {t(locale, "ui.search_results_summary", {
+              files: results.length,
+              filesLabel: t(
+                locale,
+                results.length === 1
+                  ? "ui.search_file_singular"
+                  : "ui.search_file_plural",
+              ),
+              matches: totalMatches,
+              matchesLabel: t(
+                locale,
+                totalMatches === 1
+                  ? "ui.search_result_singular"
+                  : "ui.search_result_plural",
+              ),
+            })}
           </div>
         )}
       </div>
@@ -123,6 +140,7 @@ export function SearchPanel({ onFileSelect }: SearchPanelProps) {
         handleResultClick={(filePath, line) =>
           handleResultClick(filePath, onFileSelect, line)
         }
+        locale={locale}
       />
     </div>
   );
@@ -134,12 +152,14 @@ function ResultsList({
   expandedFiles,
   toggleFileExpanded,
   handleResultClick,
+  locale,
 }: {
   results: SearchResult[];
   query: string;
   expandedFiles: Set<string>;
   toggleFileExpanded: (filePath: string) => void;
   handleResultClick: (filePath: string, line?: number) => void;
+  locale?: string;
 }) {
   return (
     <PerfectScrollbar
@@ -148,13 +168,13 @@ function ResultsList({
     >
       {results.length === 0 && query.trim() && (
         <div className="p-4 text-center text-xs text-muted-foreground">
-          Nenhum resultado encontrado
+          {t(locale, "ui.search_no_results")}
         </div>
       )}
 
       {results.length === 0 && !query.trim() && (
         <div className="p-4 text-center text-xs text-muted-foreground">
-          Digite para buscar nos arquivos
+          {t(locale, "ui.search_empty_state")}
         </div>
       )}
 

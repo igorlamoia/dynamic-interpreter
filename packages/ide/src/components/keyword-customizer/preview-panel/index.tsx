@@ -7,6 +7,9 @@ import { CardSnapStack } from "./card-snap-stack";
 import { CategorySection } from "./category-section";
 import { PREVIEW_CATEGORIES, PreviewCategory } from "./categories-list";
 import { Overlay } from "@/components/effect/overlay";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 export type PreviewPanelProps = {
   preview: WizardPreview;
@@ -132,7 +135,17 @@ function formatPreviewCategoryLabel(title: string): string {
     .replace(/\sE\s/g, " e ");
 }
 
+function getPreviewCategoryTitle(locale: string | undefined, key: string) {
+  return t(locale, `ui.preview_category_${key}_title`);
+}
+
+function getPreviewCategorySubtitle(locale: string | undefined, key: string) {
+  return t(locale, `ui.preview_category_${key}_subtitle`);
+}
+
 export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
+  const { locale } = useRouter();
+  const wt = useWizardTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const previousLexemeChangesRef = useRef<Map<string, string> | null>(null);
   const [focusRequest, setFocusRequest] = useState<{
@@ -143,15 +156,17 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
   const cardItems = groupedLexemes.map((category) => {
     const { key, title, icon, subtitle, items, changedCount, percentage } =
       category;
+    const translatedTitle = getPreviewCategoryTitle(locale, key);
+    const translatedSubtitle = getPreviewCategorySubtitle(locale, key);
 
     return {
       key,
-      label: formatPreviewCategoryLabel(title),
+      label: formatPreviewCategoryLabel(translatedTitle),
       icon,
       children: (
         <CategorySection
-          title={title}
-          subtitle={subtitle}
+          title={translatedTitle}
+          subtitle={translatedSubtitle}
           icon={icon}
           items={items}
           changedCount={changedCount}
@@ -216,7 +231,7 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
       }`}
     >
       <div className="relative flex h-full flex-col gap-6 overflow-hidden rounded-lg py-4 pr-4">
-        <ExampleSnippet title="Preview do código" code={preview.snippet} />
+        <ExampleSnippet title={wt("preview.code")} code={preview.snippet} />
 
         <CardSnapStack
           items={cardItems}

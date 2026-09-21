@@ -57,6 +57,10 @@ vi.mock("@/utils/compiler/editor/editor-language", () => ({
   updateJavaMMKeywords: updateJavaMMKeywordsMock,
 }));
 
+vi.mock("next/router", () => ({
+  useRouter: () => ({ locale: "pt-BR" }),
+}));
+
 // O KeywordProvider passou a consultar a sessao (useAuth) e a linguagem ativa
 // no servidor (useActiveLanguage). Estes testes cobrem o caminho deslogado,
 // em que a customizacao vem do localStorage.

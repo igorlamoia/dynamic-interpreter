@@ -152,4 +152,24 @@ describe("statement terminator config", () => {
         }),
     ).toThrow(/statement terminator/i);
   });
+
+  it("accepts symbolic block delimiters", () => {
+    expect(
+      () =>
+        new Lexer("int main() { print(1); }", {
+          blockDelimiters: { open: "{", close: "}" },
+          locale: "en",
+        }),
+    ).not.toThrow();
+  });
+
+  it("rejects block delimiters with whitespace", () => {
+    expect(
+      () =>
+        new Lexer("int main() { print(1); }", {
+          blockDelimiters: { open: "begin block", close: "end" },
+          locale: "en",
+        }),
+    ).toThrow(/block delimiters/i);
+  });
 });

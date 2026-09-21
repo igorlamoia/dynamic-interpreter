@@ -52,6 +52,7 @@ export type JavaMMLanguageOptions = {
   statementTerminatorLexeme?: string;
   typingMode?: "typed" | "untyped";
   arrayMode?: "fixed" | "dynamic";
+  locale?: string;
 };
 
 const BUILT_IN_LITERAL_LABEL = "Literal booleano";
@@ -728,6 +729,7 @@ export function registerJavaMMLanguage(
           const entry = resolveDocumentationByLexeme(
             hovered.lexeme,
             buildHoverCustomization(keywordMappings, options),
+            options.locale,
           );
           if (!entry) return null;
 

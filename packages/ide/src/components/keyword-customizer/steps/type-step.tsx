@@ -8,6 +8,7 @@ import { TypingRelationshipBeam } from "./components/typing-relationship-beam";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { ExampleSnippet } from "../example-snippet";
 import { Step } from "./components/step";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 export type TypeStepKeyword =
   | "int"
@@ -95,13 +96,15 @@ function getTypeReference(fieldKey: TypeKeywordField["key"]): KeywordReference {
 }
 
 export function TypeStep({ values, actions }: TypeStepProps) {
+  const wt = useWizardTranslation();
+
   return (
     <section className="space-y-6">
       <Step.Header>
-        <Step.Index>Etapa 3</Step.Index>
-        <Step.Title>Modelo de tipagem</Step.Title>
+        <Step.Index>{wt("types.index")}</Step.Index>
+        <Step.Title>{wt("types.title")}</Step.Title>
         <Step.Description>
-          Escolha primeiro se a linguagem será tipada ou não tipada.
+          {wt("types.description")}
         </Step.Description>
       </Step.Header>
       <div className="space-y-3">
@@ -111,9 +114,9 @@ export function TypeStep({ values, actions }: TypeStepProps) {
         />
         <div className="grid gap-3 sm:grid-cols-2">
           <OptionCard
-            title="Não tipado"
-            subtitle="Magico"
-            description="Mostra só uma palavra genérica para declarar variáveis."
+            title={wt("types.untypedTitle")}
+            subtitle={wt("types.untypedSubtitle")}
+            description={wt("types.untypedDescription")}
             selected={values.typingMode === "untyped"}
             onClick={() => actions.syncTypingMode("untyped")}
             icon={<WandSparkles className="h-5 w-5 text-cyan-300" />}
@@ -121,9 +124,9 @@ export function TypeStep({ values, actions }: TypeStepProps) {
             <ExampleSnippet showHeader={false} code={values.untypedSnippet} />
           </OptionCard>
           <OptionCard
-            title="Tipado"
-            subtitle="Dureza"
-            description="Libera palavras específicas para int, float, bool e string."
+            title={wt("types.typedTitle")}
+            subtitle={wt("types.typedSubtitle")}
+            description={wt("types.typedDescription")}
             selected={values.typingMode === "typed"}
             onClick={() => actions.syncTypingMode("typed")}
             icon={<BicepsFlexed className="h-5 w-5 text-cyan-300" />}
@@ -146,7 +149,7 @@ export function TypeStep({ values, actions }: TypeStepProps) {
         }
       />
       <ExampleSnippet
-        title="Exemplo ao vivo"
+        title={wt("types.liveExample")}
         code={values.snippet ?? `${values.printKeyword}("Ola mundo")`}
       />
     </section>

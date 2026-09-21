@@ -10,6 +10,8 @@ import { useExplorer } from "@/hooks/useExplorer";
 import type { TreeNode } from "@/hooks/useExplorer";
 import { HoverOptions } from "./hover-options";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
 interface SideExplorerProps {
   activeFile: string;
@@ -22,6 +24,7 @@ export function SideExplorer({
   setActiveFile,
   setOpenTabs,
 }: SideExplorerProps) {
+  const { locale } = useRouter();
   const [dragOverPath, setDragOverPath] = useState<string | null>(null);
   const dragTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -311,8 +314,9 @@ export function SideExplorer({
     <>
       <div className="group flex h-full flex-col">
         <div className="flex items-center justify-between px-3 py-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          Explorer
+          {t(locale, "ui.explorer")}
           <HoverOptions
+            locale={locale}
             onCollapseAll={explorer.collapseAll}
             onCreateFile={explorer.createFile}
             onCreateFolder={explorer.createFolder}
@@ -373,6 +377,7 @@ export function SideExplorer({
       </div>
       {explorer.contextMenu && (
         <ContextMenu
+          locale={locale}
           x={explorer.contextMenu.x}
           y={explorer.contextMenu.y}
           onRename={() => {
@@ -426,11 +431,13 @@ function InlineNameInput({
 }
 
 function ContextMenu({
+  locale,
   x,
   y,
   onRename,
   onDelete,
 }: {
+  locale?: string;
   x: number;
   y: number;
   onRename: () => void;
@@ -447,14 +454,14 @@ function ContextMenu({
         onClick={onRename}
         className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-xs text-foreground hover:bg-white/10"
       >
-        Renomear
+        {t(locale, "ui.rename")}
       </button>
       <button
         type="button"
         onClick={onDelete}
         className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-xs text-rose-400 hover:bg-white/10"
       >
-        Excluir
+        {t(locale, "ui.delete")}
       </button>
     </div>
   );

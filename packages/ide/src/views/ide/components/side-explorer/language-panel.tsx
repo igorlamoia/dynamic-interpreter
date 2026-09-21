@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown, FileCode2, Info, Plus } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type * as monacoEditor from "monaco-editor";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,8 +20,8 @@ import { useEditor } from "@/hooks/useEditor";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { cn } from "@/lib/utils";
 import {
-  useLanguageChoices,
   type ActiveLanguageDetail,
+  type LanguageChoicesState,
   type LanguageChoice,
 } from "@/hooks/useLanguageChoices";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
@@ -27,6 +29,17 @@ import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-pane
 import { getCategoryLexemes } from "./category-lexemes";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
+import { getLanguageSampleIntl, t } from "@/i18n";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { buildHelloWorldSample } from "./language-sample";
+import { JAVAMM_LANGUAGE_ID } from "@/utils/compiler/editor/editor-language";
 
 export type LanguageCustomization = StoredKeywordCustomization;
 
@@ -34,21 +47,31 @@ function getDefaultLanguageImage(imageUrl?: string) {
   return imageUrl?.trim() ? imageUrl : "/images/language-default.png";
 }
 
-function getLanguageDNA(customization: LanguageCustomization): string[] {
+function getLanguageDNA(
+  customization: LanguageCustomization,
+  locale?: string,
+): string[] {
   return [
-    customization.modes.typing === "typed" ? "tipada" : "nao tipada",
+    customization.modes.typing === "typed"
+      ? t(locale, "ui.language_dna_typed")
+      : t(locale, "ui.language_dna_untyped"),
     customization.modes.block === "delimited"
-      ? "blocos com delimitadores"
-      : "blocos por indentacao",
+      ? t(locale, "ui.language_dna_delimited_blocks")
+      : t(locale, "ui.language_dna_indentation_blocks"),
     customization.modes.semicolon === "required"
-      ? "terminador obrigatorio"
-      : "terminador opcional",
+      ? t(locale, "ui.language_dna_required_terminator")
+      : t(locale, "ui.language_dna_optional_terminator"),
   ];
 }
 
-export function LanguagePanel() {
+export function LanguagePanel({
+  languageChoices,
+}: {
+  languageChoices: LanguageChoicesState;
+}) {
   const editor = useEditor();
   const router = useRouter();
+  const { locale } = router;
   // Sem efeito de "aplicar a linguagem ativa ao montar": o KeywordContext já
   // faz isso nos dois caminhos, e duas fontes disputando o mesmo estado é
   // pedir para elas divergirem.
@@ -58,7 +81,7 @@ export function LanguagePanel() {
     activeLanguage,
     isSelectionLocked,
     selectLanguage,
-  } = useLanguageChoices();
+  } = languageChoices;
 
   const handleLexemeClick = (lexeme: string) => {
     editor.insertTextAtCursor(lexeme);
@@ -67,121 +90,115 @@ export function LanguagePanel() {
   if (!choices.length) {
     return (
       <div className="flex h-full items-center justify-center p-4 text-center text-xs text-muted-foreground">
-        Nenhuma linguagem salva foi encontrada.
+        {t(locale, "ui.no_saved_languages")}
       </div>
     );
   }
 
   return (
     <PerfectScrollbar className="flex h-full min-h-0 flex-col gap-4  p-4">
-      <div className="relative shrink-0 overflow-visible">
-        <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
-          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-            <Image
-              src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
-              alt={activeLanguage?.name ?? "Language default"}
-              fill
-              sizes="(max-width: 768px) 100vw, 360px"
-              className="object-cover opacity-70 transition duration-300 group-hover:scale-[1.03]"
+      <LanguageSelection
+        choices={choices}
+        activeKey={activeKey}
+        isSelectionLocked={isSelectionLocked}
+        activeLanguage={activeLanguage}
+        selectLanguage={selectLanguage}
+        locale={locale}
+      />
+      <CategoryLexemesList
+        activeLanguage={activeLanguage}
+        handleLexemeClick={handleLexemeClick}
+        locale={locale}
+      />
+
+      <div className="flex justify-center">
+        <AddLanguageButton
+          locale={locale}
+          onClick={() => router.push("/language-creator")}
+        />
+      </div>
+    </PerfectScrollbar>
+  );
+}
+
+function LanguageSelection({
+  choices,
+  activeKey,
+  isSelectionLocked,
+  activeLanguage,
+  selectLanguage,
+  locale,
+}: {
+  choices: LanguageChoice[];
+  activeKey: string;
+  isSelectionLocked: boolean;
+  activeLanguage: ActiveLanguageDetail | null;
+  selectLanguage: (key: string) => Promise<void>;
+  locale?: string;
+}) {
+  return (
+    <div className="relative shrink-0 overflow-visible">
+      <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+          <Image
+            src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
+            alt={activeLanguage?.name ?? t(locale, "ui.language_default_alt")}
+            fill
+            sizes="(max-width: 768px) 100vw, 360px"
+            className="object-cover opacity-70 transition duration-300 group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.24),transparent_28%),radial-gradient(circle_at_20%_15%,rgba(59,130,246,0.24),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.08)_0%,rgba(2,6,23,0.55)_58%,rgba(2,6,23,0.92)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_0%,rgba(34,211,238,0.08)_20%,rgba(34,211,238,0.28)_34%,rgba(34,211,238,0.06)_48%,transparent_66%)] opacity-90 mix-blend-screen" />
+        </div>
+
+        <div className="relative flex min-h-35 flex-col justify-between p-4 sm:min-h-40 sm:p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div className="rounded-full border dark:border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
+              {t(locale, "ui.active_language")}
+            </div>
+            <LanguageOptionsMenu
+              choices={choices}
+              activeKey={activeKey}
+              isLocked={isSelectionLocked}
+              onSelect={selectLanguage}
+              locale={locale}
             />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.24),transparent_28%),radial-gradient(circle_at_20%_15%,rgba(59,130,246,0.24),transparent_22%),linear-gradient(180deg,rgba(2,6,23,0.08)_0%,rgba(2,6,23,0.55)_58%,rgba(2,6,23,0.92)_100%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_0%,rgba(34,211,238,0.08)_20%,rgba(34,211,238,0.28)_34%,rgba(34,211,238,0.06)_48%,transparent_66%)] opacity-90 mix-blend-screen" />
           </div>
 
-          <div className="relative flex min-h-35 flex-col justify-between p-4 sm:min-h-40 sm:p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div className="rounded-full border dark:border-white/10 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
-                Linguagem ativa
-              </div>
-              <LanguageOptionsMenu
-                choices={choices}
-                activeKey={activeKey}
-                isLocked={isSelectionLocked}
-                onSelect={selectLanguage}
-              />
-            </div>
+          <LanguageDescription
+            activeLanguage={activeLanguage}
+            locale={locale}
+          />
 
-            <LanguageDescription activeLanguage={activeLanguage} />
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {activeLanguage?.customization
-                ? getLanguageDNA(activeLanguage.customization).map((item) => (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {activeLanguage?.customization
+              ? getLanguageDNA(activeLanguage.customization, locale).map(
+                  (item) => (
                     <span
                       key={item}
                       className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
                     >
                       {item}
                     </span>
-                  ))
-                : null}
-            </div>
+                  ),
+                )
+              : null}
           </div>
         </div>
       </div>
-      <div className="space-y-3 pb-4 pt-1">
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Lexemas
-          </p>
-          <div className="space-y-3">
-            {PREVIEW_CATEGORIES.map((category) => {
-              const customization = activeLanguage?.customization;
-
-              if (!customization) return null;
-
-              const lexemes = getCategoryLexemes(category.key, customization);
-
-              return (
-                <section
-                  key={category.key}
-                  className="rounded-2xl border border-black/10 bg-background p-3 dark:border-white/10"
-                >
-                  <div className="mb-3 flex items-start gap-3">
-                    <category.icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <h3 className="text-sm font-semibold">
-                        {category.title}
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        {category.subtitle}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {lexemes.map((lexeme) => (
-                      <button
-                        key={`${category.key}-${lexeme}`}
-                        type="button"
-                        onClick={() => handleLexemeClick(lexeme)}
-                        title={lexeme}
-                        className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium transition hover:border-primary hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5"
-                      >
-                        {lexeme}
-                      </button>
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <AddLanguageButton onClick={() => router.push("/language-creator")} />
-      </div>
-    </PerfectScrollbar>
+    </div>
   );
 }
 
 function LanguageDescription({
   activeLanguage,
+  locale,
 }: {
   activeLanguage: ActiveLanguageDetail | null;
+  locale?: string;
 }) {
   const description =
-    activeLanguage?.description ||
-    "Uma linguagem de programação personalizada criada com o Java--.";
+    activeLanguage?.description || t(locale, "ui.language_default_description");
 
   return (
     <div className="max-w-[83%]">
@@ -202,10 +219,246 @@ function LanguageDescription({
   );
 }
 
+export function CategoryLexemesList({
+  activeLanguage,
+  handleLexemeClick,
+  locale,
+}: {
+  activeLanguage: ActiveLanguageDetail | null;
+  handleLexemeClick: (lexeme: string) => void;
+  locale?: string;
+}) {
+  const [isSampleOpen, setIsSampleOpen] = useState(false);
+
+  return (
+    <div className="space-y-3 pb-4 pt-1">
+      <div>
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            {t(locale, "ui.lexemes")}
+          </p>
+          {activeLanguage?.customization ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    aria-label={t(locale, "ui.language_sample_details")}
+                    onClick={() => setIsSampleOpen(true)}
+                    className="h-8 w-8 rounded-full"
+                  >
+                    <Info className="h-4 w-4" aria-hidden="true" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {t(locale, "ui.language_sample_details")}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : null}
+        </div>
+        <div className="space-y-3">
+          {PREVIEW_CATEGORIES.map((category) => {
+            const customization = activeLanguage?.customization;
+
+            if (!customization) return null;
+
+            const lexemes = getCategoryLexemes(category.key, customization);
+
+            return (
+              <section
+                key={category.key}
+                className="rounded-2xl border border-black/10 bg-background p-3 dark:border-white/10"
+              >
+                <div className="mb-3 flex items-start gap-3">
+                  <category.icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <h3 className="text-sm font-semibold">
+                      {t(locale, `ui.preview_category_${category.key}_title`)}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {t(
+                        locale,
+                        `ui.preview_category_${category.key}_subtitle`,
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {lexemes.map((lexeme) => (
+                    <button
+                      key={`${category.key}-${lexeme}`}
+                      type="button"
+                      onClick={() => handleLexemeClick(lexeme)}
+                      title={lexeme}
+                      className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium transition hover:border-primary hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5"
+                    >
+                      {lexeme}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      </div>
+      <LanguageSampleDialog
+        activeLanguage={activeLanguage}
+        locale={locale}
+        open={isSampleOpen}
+        onOpenChange={setIsSampleOpen}
+      />
+    </div>
+  );
+}
+
+export function LanguageSampleDialog({
+  activeLanguage,
+  locale,
+  open,
+  onOpenChange,
+}: {
+  activeLanguage: ActiveLanguageDetail | null;
+  locale?: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const editor = useEditor();
+  const sampleCode = useMemo(() => {
+    if (!activeLanguage?.customization) return "";
+    return buildHelloWorldSample(
+      activeLanguage.customization,
+      getLanguageSampleIntl(locale),
+    );
+  }, [activeLanguage?.customization, locale]);
+
+  const handleOverrideSelectedFile = () => {
+    if (!sampleCode || !editor.currentFilePath) return;
+
+    editor.fileSystem.createOrUpdateFile(editor.currentFilePath, sampleCode);
+    editor.updateSourceCode(sampleCode);
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader className="items-start">
+          <div className="flex items-center gap-2">
+            <FileCode2 className="h-5 w-5 text-primary" aria-hidden="true" />
+            <DialogTitle>
+              {t(locale, "ui.language_sample_preview_title")}
+            </DialogTitle>
+          </div>
+          <DialogDescription>
+            {t(locale, "ui.language_sample_preview_description")}
+          </DialogDescription>
+        </DialogHeader>
+        <LanguageSampleCodePreview
+          code={sampleCode}
+          monacoRef={editor.monacoRef}
+          theme={editor.config?.theme}
+        />
+        <DialogFooter className="gap-2 sm:justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
+            {t(locale, "ui.close")}
+          </Button>
+          <Button type="button" onClick={handleOverrideSelectedFile}>
+            {t(locale, "ui.language_sample_override_file")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function LanguageSampleCodePreview({
+  code,
+  monacoRef,
+  theme,
+}: {
+  code: string;
+  monacoRef?: React.MutableRefObject<typeof monacoEditor | null>;
+  theme?: string;
+}) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const previewEditorRef =
+    useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
+
+  useEffect(() => {
+    const monaco = monacoRef?.current;
+    const container = containerRef.current;
+    if (!monaco || !container) return;
+
+    previewEditorRef.current = monaco.editor.create(container, {
+      value: code,
+      language: JAVAMM_LANGUAGE_ID,
+      theme,
+      readOnly: true,
+      domReadOnly: true,
+      minimap: { enabled: false },
+      lineNumbers: "on",
+      folding: false,
+      glyphMargin: false,
+      lineDecorationsWidth: 8,
+      lineNumbersMinChars: 3,
+      scrollBeyondLastLine: false,
+      automaticLayout: true,
+      wordWrap: "on",
+      renderLineHighlight: "none",
+      overviewRulerLanes: 0,
+      hideCursorInOverviewRuler: true,
+      scrollbar: {
+        verticalScrollbarSize: 8,
+        horizontalScrollbarSize: 8,
+      },
+    });
+
+    return () => {
+      previewEditorRef.current?.dispose();
+      previewEditorRef.current = null;
+    };
+  }, [code, monacoRef, theme]);
+
+  useEffect(() => {
+    const previewEditor = previewEditorRef.current;
+    if (!previewEditor || previewEditor.getValue() === code) return;
+    previewEditor.setValue(code);
+  }, [code]);
+
+  if (!monacoRef?.current) {
+    return (
+      <div className="min-h-0 px-5 py-4">
+        <pre className="max-h-[52vh] overflow-auto rounded-lg border border-black/10 bg-black/5 p-4 text-xs leading-relaxed text-foreground dark:border-white/10 dark:bg-black/30">
+          <code>{code}</code>
+        </pre>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-0 px-5 py-4">
+      <div
+        ref={containerRef}
+        aria-label="Language sample code preview"
+        className="h-[52vh] min-h-64 overflow-hidden rounded-lg border border-black/10 dark:border-white/10"
+      />
+    </div>
+  );
+}
+
 interface LanguageOptionsMenuProps {
   choices: LanguageChoice[];
   activeKey: string;
   isLocked: boolean;
+  locale?: string;
   onSelect: (key: string) => Promise<void>;
 }
 
@@ -213,6 +466,7 @@ function LanguageOptionsMenu({
   choices,
   activeKey,
   isLocked,
+  locale,
   onSelect,
 }: LanguageOptionsMenuProps) {
   const router = useRouter();
@@ -225,7 +479,7 @@ function LanguageOptionsMenu({
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  aria-label="Abrir seleção de linguagem"
+                  aria-label={t(locale, "ui.open_language_selection")}
                   disabled={isLocked}
                   className="flex h-8 w-8 items-center justify-center rounded-full border dark:border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:dark:border-white/20 hover:bg-black/35 disabled:cursor-not-allowed disabled:opacity-70"
                 >
@@ -235,8 +489,8 @@ function LanguageOptionsMenu({
             </DropdownMenuTrigger>
             <TooltipContent>
               {isLocked
-                ? "Linguagem travada pelo exercicio"
-                : "Selecionar linguagem ativa"}
+                ? t(locale, "ui.language_locked_by_exercise")
+                : t(locale, "ui.select_active_language")}
             </TooltipContent>
 
             <DropdownMenuContent
@@ -245,7 +499,7 @@ function LanguageOptionsMenu({
             >
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
-                  Seleção de linguagem
+                  {t(locale, "ui.language_selection")}
                 </p>
                 <span className="rounded-full border dark:border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/60 backdrop-blur-sm">
                   {choices.length}
@@ -294,6 +548,7 @@ function LanguageOptionsMenu({
               </PerfectScrollbar>
               <div className="flex justify-center pt-3">
                 <AddLanguageButton
+                  locale={locale}
                   onClick={() => router.push("/language-creator")}
                 />
               </div>
@@ -305,7 +560,13 @@ function LanguageOptionsMenu({
   );
 }
 
-function AddLanguageButton({ onClick }: { onClick: () => void }) {
+function AddLanguageButton({
+  locale,
+  onClick,
+}: {
+  locale?: string;
+  onClick: () => void;
+}) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -314,14 +575,14 @@ function AddLanguageButton({ onClick }: { onClick: () => void }) {
             type="button"
             size="icon"
             variant="outline"
-            aria-label="Criar linguagem"
+            aria-label={t(locale, "ui.create_language")}
             onClick={onClick}
             className="rounded-full shadow-md hover:shadow-lg"
           >
             <Plus aria-hidden="true" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Criar linguagem</TooltipContent>
+        <TooltipContent>{t(locale, "ui.create_language")}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

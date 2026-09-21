@@ -12,6 +12,25 @@ import { RulesStep } from "./rules-step";
   }
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
+Object.defineProperty(window, "matchMedia", {
+  configurable: true,
+  writable: true,
+  value: vi.fn().mockImplementation((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
+
+vi.mock("next/router", () => ({
+  useRouter: () => ({ locale: "pt-BR" }),
+}));
+
 describe("RulesStep", () => {
   afterEach(() => {
     document.body.innerHTML = "";

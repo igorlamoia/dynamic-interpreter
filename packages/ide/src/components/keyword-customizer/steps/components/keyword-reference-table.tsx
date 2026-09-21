@@ -3,6 +3,7 @@ import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { Textarea } from "@/components/ui/textarea";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { cn } from "@/lib/utils";
+import { useWizardTranslation } from "../../use-wizard-translation";
 
 export type KeywordReference = {
   glyph: string;
@@ -32,6 +33,7 @@ export function KeywordReferenceRow<TKey extends string>({
 }: KeywordReferenceRowProps<TKey>) {
   const editLabel = item.editLabel ?? item.id;
   const { matches } = useBreakpoint("md");
+  const wt = useWizardTranslation();
   return (
     <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 px-4 py-5 md:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)] md:items-center">
       <div className="flex w-16 flex-col items-center justify-center gap-2 sm:w-20">
@@ -51,13 +53,13 @@ export function KeywordReferenceRow<TKey extends string>({
 
       <label className="flex flex-col gap-2">
         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 md:sr-only">
-          Nome customizado
+          {wt("reference.customName")}
         </span>
         <Input
           value={item.value}
           onChange={(event) => onValueChange(item.id, event.target.value)}
           placeholder={item.placeholder}
-          aria-label={`Nome customizado para ${editLabel}`}
+          aria-label={wt("reference.customNameFor", { label: editLabel })}
           spellCheck={false}
           className="h-11  text-cyan-300"
         />
@@ -65,7 +67,7 @@ export function KeywordReferenceRow<TKey extends string>({
 
       <label className="col-span-2 flex flex-col gap-2 md:col-span-1">
         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 md:sr-only">
-          Definição semântica
+          {wt("reference.semanticDefinition")}
         </span>
         <PerfectScrollbar>
           <Textarea
@@ -73,7 +75,9 @@ export function KeywordReferenceRow<TKey extends string>({
             onChange={(event) =>
               onDescriptionChange(item.id, event.target.value)
             }
-            aria-label={`Definição semântica para ${editLabel}`}
+            aria-label={wt("reference.semanticDefinitionFor", {
+              label: editLabel,
+            })}
             rows={matches ? 1 : 2}
             className="min-h-11 resize-y  bg-transparent py-2.5 text-sm font-medium leading-6 md:resize-none"
           />
@@ -86,7 +90,7 @@ export function KeywordReferenceRow<TKey extends string>({
 export function KeywordReferenceTable<TKey extends string>({
   title,
   items,
-  referenceHeader = "Padrão",
+  referenceHeader,
   onValueChange,
   onDescriptionChange,
 }: {
@@ -96,6 +100,9 @@ export function KeywordReferenceTable<TKey extends string>({
   onValueChange: (id: TKey, value: string) => void;
   onDescriptionChange: (id: TKey, value: string) => void;
 }) {
+  const wt = useWizardTranslation();
+  const resolvedReferenceHeader = referenceHeader ?? wt("reference.default");
+
   return (
     <div className={cn(title && "space-y-3")}>
       {title && (
@@ -104,11 +111,13 @@ export function KeywordReferenceTable<TKey extends string>({
         </h4>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-black/7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.95)] dark:border-white/6 dark:bg-[#0D1424]">
+      <div className="overflow-hidden rounded-lg bg-white/90 border  border-black/7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.95)] dark:border-white/6 dark:bg-[#0D1424]">
         <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 border-b border-black/10 dark:border-white/7 px-4 py-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-600 dark:text-slate-500 md:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)]">
-          <span>{referenceHeader}</span>
-          <span>Nome customizado</span>
-          <span className="hidden md:block">Definição semântica</span>
+          <span>{resolvedReferenceHeader}</span>
+          <span>{wt("reference.customName")}</span>
+          <span className="hidden md:block">
+            {wt("reference.semanticDefinition")}
+          </span>
         </div>
 
         <div className="divide-y divide-black/10 dark:divide-white/6">

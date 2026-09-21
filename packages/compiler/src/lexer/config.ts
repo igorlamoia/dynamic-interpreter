@@ -34,6 +34,7 @@ export type LexerConfig = {
 };
 
 const WORD_REGEX = /^[A-Za-z_çÇ][A-Za-z0-9_çÇ]*$/;
+const DELIMITER_REGEX = /^\S+$/;
 
 const OPERATOR_WORD_TOKEN_IDS = {
   logical_or: 6,
@@ -188,8 +189,8 @@ export function validateBlockDelimiters(
 ): void {
   const { open, close } = delimiters;
 
-  if (!WORD_REGEX.test(open) || !WORD_REGEX.test(close)) {
-    throw new Error("block delimiters must be identifier-like words");
+  if (!DELIMITER_REGEX.test(open) || !DELIMITER_REGEX.test(close)) {
+    throw new Error("block delimiters cannot contain whitespace");
   }
 
   if (open === close) {

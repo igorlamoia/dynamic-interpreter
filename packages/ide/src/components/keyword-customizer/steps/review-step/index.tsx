@@ -1,5 +1,5 @@
 import type { WizardPreview } from "../../preview-data";
-import { WIZARD_STEPS, type WizardStepId } from "../../wizard-model";
+import { getWizardSteps, type WizardStepId } from "../../wizard-model";
 import { PreviewCodeComparison } from "../../preview-code-comparison";
 import { TokenPreview } from "../../token-preview";
 import Image from "next/image";
@@ -10,6 +10,8 @@ import type { SelectedGrammarModes } from "@/features/grammarGraph/grammarGraphA
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Step } from "../components/step";
 import { CurrentVocabulary } from "./current-vocabulary";
+import { useWizardTranslation } from "../../use-wizard-translation";
+import { useRouter } from "next/router";
 
 export type ReviewStepProps = {
   values: {
@@ -37,6 +39,7 @@ function getCurrentVerticalOffset(
 
 export function ReviewStep({ values, actions }: ReviewStepProps) {
   const { current } = useBreakpoint("xl");
+  const wt = useWizardTranslation();
   const verticalBeamOffset = getCurrentVerticalOffset(current);
   return (
     <section>
@@ -62,17 +65,17 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
         </div>
         <div className="h-290 xl:h-210 3xl:h-170">
           <Step.Header>
-            <Step.Index>Etapa 7</Step.Index>
-            <Step.Title>Revisão</Step.Title>
+            <Step.Index>{wt("review.index")}</Step.Index>
+            <Step.Title>{wt("review.title")}</Step.Title>
             <Step.Description>
-              Confira o resumo final antes de aplicar a configuração.
+              {wt("review.description")}
             </Step.Description>
           </Step.Header>
           <div className="relative z-10 space-y-6 mt-3">
             <div className="grid gap-4 xl:grid-cols-2">
               <div className="rounded-lg border border-slate-200/80 bg-white/85 p-4 backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/70">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-                  Nome da linguagem
+                  {wt("review.languageName")}
                 </p>
                 <div className="mt-3 flex items-center gap-3">
                   {values.preview.languageImageUrl ? (
@@ -89,7 +92,9 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
                       {values.preview.name}
                     </p>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                      Baseado em {values.preview.basedOnLabel}
+                      {wt("review.basedOn", {
+                        preset: values.preview.basedOnLabel,
+                      })}
                     </p>
                   </div>
                 </div>
@@ -97,7 +102,7 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
 
               <div className="rounded-lg border border-slate-200/80 bg-white/85 p-4 backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/70">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-                  Resumo das regras
+                  {wt("review.rulesSummary")}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2 overflow-x">
                   {values.preview.dna.map((item) => (
@@ -111,8 +116,7 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
                 </div>
                 <div className="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
                   <p>
-                    As regras visíveis aqui já fazem parte do fluxo atual da
-                    linguagem.
+                    {wt("review.rulesSummaryHelp")}
                   </p>
                 </div>
               </div>
@@ -133,8 +137,10 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
 }
 
 function BoxResult({ values, actions }: ReviewStepProps) {
+  const wt = useWizardTranslation();
+  const { locale } = useRouter();
   const stepLabels = new Map(
-    WIZARD_STEPS.map((step) => [step.id, step.title] as const),
+    getWizardSteps(locale).map((step) => [step.id, step.title] as const),
   );
   return (
     <div
@@ -143,7 +149,7 @@ function BoxResult({ values, actions }: ReviewStepProps) {
     "
     >
       <PreviewCodeComparison
-        title="Comparação do código final"
+        title={wt("review.codeComparison")}
         beforeCode={values.preview.baselineSnippet}
         afterCode={values.preview.snippet}
       />
@@ -151,7 +157,7 @@ function BoxResult({ values, actions }: ReviewStepProps) {
       {/* <Ast selectedModes={values.grammarModes} height={620} /> */}
       <div className="rounded-lg border border-slate-200/80 bg-white/90 p-4 backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/80">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-          Voltar para editar
+          {wt("review.backToEdit")}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {values.visitedStepIds

@@ -1,4 +1,5 @@
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
+import { t } from "@/i18n";
 
 export type WizardStepId =
   | "identity"
@@ -26,6 +27,13 @@ export type WizardPresetId =
   | "mineres-like"
   | "free";
 
+export type WizardStepDefinition = {
+  id: WizardStepId;
+  title: string;
+  description: string;
+  icon: WizardStepIcon;
+};
+
 type WizardPresetDefinition = {
   label: string;
 };
@@ -52,9 +60,7 @@ type StyledPresetMappings = {
   function: string;
 };
 
-type StyledOperatorWordMap = Required<
-  StoredKeywordCustomization["operatorWordMap"]
->;
+type StyledOperatorWordMap = StoredKeywordCustomization["operatorWordMap"];
 
 type StyledWizardPresetDefinition = WizardPresetDefinition & {
   mappings: StyledPresetMappings;
@@ -305,8 +311,42 @@ const MINERES_LIKE_PRESET: StyledWizardPresetDefinition = {
   },
 };
 
-const FREE_PRESET: WizardPresetDefinition = {
+const FREE_PRESET: StyledWizardPresetDefinition = {
   label: "Livre",
+  mappings: {
+    int: "int",
+    float: "float",
+    bool: "bool",
+    string: "string",
+    void: "void",
+    for: "for",
+    while: "while",
+    break: "break",
+    continue: "continue",
+    if: "if",
+    else: "else",
+    return: "return",
+    print: "print",
+    scan: "scan",
+    switch: "switch",
+    case: "case",
+    default: "default",
+    variable: "variable",
+    function: "function",
+  },
+  operatorWordMap: {},
+  booleanLiteralMap: {
+    true: "true",
+    false: "false",
+  },
+  statementTerminatorLexeme: ";",
+  blockDelimiters: { open: "{", close: "}" },
+  modes: {
+    semicolon: "required",
+    block: "delimited",
+    typing: "typed",
+    array: "fixed",
+  },
 };
 
 const WIZARD_PRESETS: Record<WizardPresetId, WizardPresetDefinition> = {
@@ -327,7 +367,14 @@ export const WIZARD_PRESET_LABELS: Record<WizardPresetId, string> = {
   free: FREE_PRESET.label,
 };
 
-export const WIZARD_STEPS = [
+export function getWizardPresetLabel(
+  presetId: WizardPresetId,
+  locale?: string,
+): string {
+  return t(locale, `wizard.preset.${presetId}`);
+}
+
+export const WIZARD_STEPS: readonly WizardStepDefinition[] = [
   {
     id: "identity",
     title: "Identidade",
@@ -374,6 +421,19 @@ export const WIZARD_STEPS = [
     icon: "clipboard-check",
   },
 ] as const;
+
+export function getWizardSteps(
+  locale?: string,
+): readonly WizardStepDefinition[] {
+  return WIZARD_STEPS.map((step) => ({
+    ...step,
+    title: t(locale, `wizard.step.${step.id.toLowerCase()}.title`),
+    description: t(
+      locale,
+      `wizard.step.${step.id.toLowerCase()}.description`,
+    ),
+  }));
+}
 
 const STEP_FIELDS: Record<WizardStepId, string[]> = {
   identity: [],

@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useLanguageChoices } from "@/hooks/useLanguageChoices";
+import { t } from "@/i18n";
 
-export function LanguageSelector() {
+export function LanguageSelector({ locale }: { locale?: string }) {
   const { choices, activeKey, isSelectionLocked, selectLanguage } =
     useLanguageChoices();
 
@@ -24,9 +25,9 @@ export function LanguageSelector() {
         />
       ) : null}
       <label className="flex items-center gap-2 text-xs text-muted-foreground">
-        <span className="hidden md:inline">Linguagem</span>
+        <span className="hidden md:inline">{t(locale, "ui.language")}</span>
         <select
-          aria-label="Selecionar linguagem salva"
+          aria-label={t(locale, "ui.select_saved_language")}
           value={activeKey}
           disabled={isSelectionLocked}
           onChange={(event) => {

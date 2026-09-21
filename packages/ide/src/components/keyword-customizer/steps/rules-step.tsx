@@ -7,6 +7,7 @@ import {
   type KeywordReference,
 } from "./components/keyword-reference-table";
 import { Step } from "./components/step";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 export type RulesStepProps = {
   values: {
@@ -90,18 +91,20 @@ function getRuleReference(field: RuleAliasField): KeywordReference {
 }
 
 export function RulesStep({ values, errors, actions }: RulesStepProps) {
+  const wt = useWizardTranslation();
+
   return (
     <section className="space-y-6">
       <Step.Header>
-        <Step.Index>Etapa 5</Step.Index>
-        <Step.Title>Operadores</Step.Title>
+        <Step.Index>{wt("rules.index")}</Step.Index>
+        <Step.Title>{wt("rules.title")}</Step.Title>
         <Step.Description>
-          Ajuste os operadores já suportados pelo domínio atual.
+          {wt("rules.description")}
         </Step.Description>
       </Step.Header>
 
       <KeywordReferenceTable
-        title="Literais booleanos"
+        title={wt("rules.booleanLiterals")}
         items={values.booleanLiterals.map((field) => ({
           id: field.key,
           value: field.value,
@@ -124,7 +127,7 @@ export function RulesStep({ values, errors, actions }: RulesStepProps) {
       )}
 
       <KeywordReferenceTable
-        title="Aliases de operadores"
+        title={wt("rules.operatorAliases")}
         items={values.operatorAliases.map((field) => ({
           id: field.key,
           value: field.value,

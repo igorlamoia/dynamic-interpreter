@@ -2,6 +2,7 @@ import { DEFAULT_BOOLEAN_LITERAL_MAP } from "@/lib/keyword-map";
 import { OPERATOR_WORD_FIELDS } from "@/lib/operator-word-map";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import type { IDEOperatorWordMap } from "@/entities/compiler-config";
+import { t } from "@/i18n";
 
 type KeywordCategory =
   | "Tipo"
@@ -102,8 +103,19 @@ export function getBooleanDocumentationId(
   return `boolean.${value}`;
 }
 
-export function getDefaultDocumentationDescription(id: string): string {
-  return DEFAULT_DESCRIPTIONS[id] ?? "Elemento customizável da linguagem.";
+export function getDefaultDocumentationDescription(
+  id: string,
+  locale?: string,
+): string {
+  const key = `languageDocumentation.${id}`;
+  const description = t(locale, key);
+
+  if (description !== key) return description;
+
+  return (
+    DEFAULT_DESCRIPTIONS[id] ??
+    t(locale, "languageDocumentation.fallback")
+  );
 }
 
 export function getDocumentationCategory(id: string): string {
@@ -123,6 +135,7 @@ export function getDocumentationCategory(id: string): string {
 function resolveKeywordLexeme(
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation | null {
   const mapping = customization.mappings.find(
     (item) => trimLexeme(item.custom) === lexeme,
@@ -130,12 +143,13 @@ function resolveKeywordLexeme(
   if (!mapping) return null;
 
   const id = getKeywordDocumentationId(mapping.original);
-  return buildResolvedEntry(id, lexeme, customization);
+  return buildResolvedEntry(id, lexeme, customization, locale);
 }
 
 function resolveOperatorLexeme(
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation | null {
   for (const field of OPERATOR_WORD_FIELDS) {
     if (trimLexeme(customization.operatorWordMap[field.key]) !== lexeme) {
@@ -146,6 +160,7 @@ function resolveOperatorLexeme(
       getOperatorDocumentationId(field.key),
       lexeme,
       customization,
+      locale,
     );
   }
 
@@ -155,6 +170,7 @@ function resolveOperatorLexeme(
 function resolveBooleanLexeme(
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation | null {
   const booleanLiterals = {
     ...DEFAULT_BOOLEAN_LITERAL_MAP,
@@ -168,6 +184,7 @@ function resolveBooleanLexeme(
       getBooleanDocumentationId(value),
       lexeme,
       customization,
+      locale,
     );
   }
 
@@ -177,28 +194,35 @@ function resolveBooleanLexeme(
 function resolveStatementTerminatorLexeme(
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation | null {
   if (trimLexeme(customization.statementTerminatorLexeme) !== lexeme) {
     return null;
   }
 
-  return buildResolvedEntry("terminator.statement", lexeme, customization);
+  return buildResolvedEntry(
+    "terminator.statement",
+    lexeme,
+    customization,
+    locale,
+  );
 }
 
 function resolveDelimiterLexeme(
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation | null {
   if (customization.modes.block !== "delimited") return null;
 
   const open = trimLexeme(customization.blockDelimiters.open);
   if (open && open === lexeme) {
-    return buildResolvedEntry("delimiter.open", lexeme, customization);
+    return buildResolvedEntry("delimiter.open", lexeme, customization, locale);
   }
 
   const close = trimLexeme(customization.blockDelimiters.close);
   if (close && close === lexeme) {
-    return buildResolvedEntry("delimiter.close", lexeme, customization);
+    return buildResolvedEntry("delimiter.close", lexeme, customization, locale);
   }
 
   return null;
@@ -208,6 +232,7 @@ function buildResolvedEntry(
   id: string,
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation {
   const userDescription = trimLexeme(
     customization.languageDocumentation[id]?.description,
@@ -217,22 +242,24 @@ function buildResolvedEntry(
     id,
     lexeme,
     category: getDocumentationCategory(id),
-    description: userDescription || getDefaultDocumentationDescription(id),
+    description:
+      userDescription || getDefaultDocumentationDescription(id, locale),
   };
 }
 
 export function resolveDocumentationByLexeme(
   lexeme: string,
   customization: StoredKeywordCustomization,
+  locale?: string,
 ): ResolvedLanguageDocumentation | null {
   const normalizedLexeme = trimLexeme(lexeme);
   if (!normalizedLexeme) return null;
 
   return (
-    resolveKeywordLexeme(normalizedLexeme, customization) ||
-    resolveOperatorLexeme(normalizedLexeme, customization) ||
-    resolveBooleanLexeme(normalizedLexeme, customization) ||
-    resolveStatementTerminatorLexeme(normalizedLexeme, customization) ||
-    resolveDelimiterLexeme(normalizedLexeme, customization)
+    resolveKeywordLexeme(normalizedLexeme, customization, locale) ||
+    resolveOperatorLexeme(normalizedLexeme, customization, locale) ||
+    resolveBooleanLexeme(normalizedLexeme, customization, locale) ||
+    resolveStatementTerminatorLexeme(normalizedLexeme, customization, locale) ||
+    resolveDelimiterLexeme(normalizedLexeme, customization, locale)
   );
 }

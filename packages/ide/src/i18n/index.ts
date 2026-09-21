@@ -1,19 +1,37 @@
 import enFooter from "./locales/en/footer";
+import enIde from "./locales/en/ide";
+import enLanguageDocumentation from "./locales/en/language-documentation";
+import enLanguageSample from "./locales/en/language-sample";
 import enToast from "./locales/en/toast";
 import enUi from "./locales/en/ui";
+import enWizard from "./locales/en/wizard";
 import esFooter from "./locales/es/footer";
+import esIde from "./locales/es/ide";
+import esLanguageDocumentation from "./locales/es/language-documentation";
+import esLanguageSample from "./locales/es/language-sample";
 import esToast from "./locales/es/toast";
 import esUi from "./locales/es/ui";
+import esWizard from "./locales/es/wizard";
 import ptBrFooter from "./locales/pt-BR/footer";
+import ptBrIde from "./locales/pt-BR/ide";
+import ptBrLanguageDocumentation from "./locales/pt-BR/language-documentation";
+import ptBrLanguageSample from "./locales/pt-BR/language-sample";
 import ptBrToast from "./locales/pt-BR/toast";
 import ptBrUi from "./locales/pt-BR/ui";
+import ptBrWizard from "./locales/pt-BR/wizard";
 import ptPtFooter from "./locales/pt-PT/footer";
+import ptPtIde from "./locales/pt-PT/ide";
+import ptPtLanguageDocumentation from "./locales/pt-PT/language-documentation";
+import ptPtLanguageSample from "./locales/pt-PT/language-sample";
 import ptPtToast from "./locales/pt-PT/toast";
 import ptPtUi from "./locales/pt-PT/ui";
+import ptPtWizard from "./locales/pt-PT/wizard";
 import enToken from "@ts-compilator-for-java/compiler/src/i18n/locales/en/token";
 import esToken from "@ts-compilator-for-java/compiler/src/i18n/locales/es/token";
 import ptBrToken from "@ts-compilator-for-java/compiler/src/i18n/locales/pt-BR/token";
 import ptPtToken from "@ts-compilator-for-java/compiler/src/i18n/locales/pt-PT/token";
+import type { IdeIntl } from "./types/ide";
+import type { LanguageSampleIntl } from "./types/language-sample";
 
 export const SUPPORTED_LOCALES = [
   { code: "pt-BR", flag: "🇧🇷" },
@@ -32,32 +50,57 @@ type TranslationParams = Record<
   string | number | boolean | null | undefined
 >;
 type TranslationNamespace = Record<string, string>;
-type TranslationTree = Record<string, TranslationNamespace>;
+interface TranslationTree {
+  ui: TranslationNamespace;
+  toast: TranslationNamespace;
+  footer: TranslationNamespace;
+  wizard: TranslationNamespace;
+  token: TranslationNamespace;
+  languageDocumentation: TranslationNamespace;
+  ide: IdeIntl;
+  languageSample: LanguageSampleIntl;
+}
 
 const LOCALES: Record<SupportedLocale, TranslationTree> = {
   "pt-BR": {
     ui: ptBrUi,
     toast: ptBrToast,
     footer: ptBrFooter,
+    wizard: ptBrWizard,
     token: ptBrToken,
+    languageDocumentation: ptBrLanguageDocumentation,
+    ide: ptBrIde,
+    languageSample: ptBrLanguageSample,
   },
   "pt-PT": {
     ui: ptPtUi,
     toast: ptPtToast,
     footer: ptPtFooter,
+    wizard: ptPtWizard,
     token: ptPtToken,
+    languageDocumentation: ptPtLanguageDocumentation,
+    ide: ptPtIde,
+    languageSample: ptPtLanguageSample,
   },
   es: {
     ui: esUi,
     toast: esToast,
     footer: esFooter,
+    wizard: esWizard,
     token: esToken,
+    languageDocumentation: esLanguageDocumentation,
+    ide: esIde,
+    languageSample: esLanguageSample,
   },
   en: {
     ui: enUi,
     toast: enToast,
     footer: enFooter,
+    wizard: enWizard,
     token: enToken,
+    languageDocumentation: enLanguageDocumentation,
+    ide: enIde,
+    languageSample: enLanguageSample,
   },
 };
 
@@ -77,9 +120,14 @@ export function resolveLocale(locale: string | undefined): SupportedLocale {
 function resolveFromTree(tree: TranslationTree, key: string): string | null {
   const [namespace, ...parts] = key.split(".");
   if (!namespace || parts.length === 0) return null;
+  if (namespace === "ide" || namespace === "languageSample") return null;
 
   const messageKey = parts.join(".");
-  return tree[namespace]?.[messageKey] ?? null;
+  const messages =
+    tree[
+      namespace as keyof Omit<TranslationTree, "ide" | "languageSample">
+    ];
+  return messages?.[messageKey] ?? null;
 }
 
 export function t(
@@ -104,4 +152,14 @@ export function translateTokenDescription(
   tokenName: string,
 ): string {
   return t(locale, `token.${tokenName}`);
+}
+
+export function getIdeIntl(locale: string | undefined): IdeIntl {
+  return LOCALES[resolveLocale(locale)].ide;
+}
+
+export function getLanguageSampleIntl(
+  locale: string | undefined,
+): LanguageSampleIntl {
+  return LOCALES[resolveLocale(locale)].languageSample;
 }

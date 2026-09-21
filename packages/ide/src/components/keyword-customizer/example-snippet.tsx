@@ -8,6 +8,7 @@ import {
 } from "@/utils/compiler/editor/editor-language";
 import { useKeywordCustomizer } from "./keyword-customizer-context";
 import { PerfectScrollbar } from "../ui/perfect-scrollbar";
+import { useWizardTranslation } from "./use-wizard-translation";
 
 type ExampleSnippetProps = {
   title?: string;
@@ -26,6 +27,7 @@ export function ExampleSnippet({
 }: ExampleSnippetProps) {
   const { darkMode } = useTheme();
   const { draftCustomization } = useKeywordCustomizer();
+  const wt = useWizardTranslation();
   const [highlightedCode, setHighlightedCode] = useState<string | null>(null);
   const lines = useMemo(() => code.split("\n"), [code]);
   const hasOutput = Boolean(output?.length);
@@ -100,7 +102,7 @@ export function ExampleSnippet({
               <span className="h-2.5 w-2.5 rounded-full bg-green-500/90" />
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
-              Editor
+              {wt("example.editor")}
             </span>
           </div>
         )}
@@ -134,14 +136,14 @@ export function ExampleSnippet({
           {(hasInput || hasOutput) && (
             <div className="flex flex-col border-t dark:border-white/8 dark:bg-[#050914] px-4 py-3">
               <span className="ml-auto text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Terminal
+                {wt("example.terminal")}
               </span>
               <div className="flex">
                 {hasInput && (
                   <div className="flex flex-col flex-1">
                     <div className="items-center justify-between">
                       <span className="text-[10px] uppercase tracking-[0.22em] text-slate-600">
-                        Entrada
+                        {wt("example.input")}
                       </span>
                     </div>
 
@@ -156,7 +158,7 @@ export function ExampleSnippet({
                   <div className="border-l flex flex-col flex-1 ml-2 pl-2 dark:border-white/8">
                     <div className=" items-center justify-between">
                       <span className="text-[10px] uppercase tracking-[0.22em] text-slate-600">
-                        Saída
+                        {wt("example.output")}
                       </span>
                     </div>
 

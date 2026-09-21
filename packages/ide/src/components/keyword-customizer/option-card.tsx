@@ -107,7 +107,7 @@ export function OptionCard({
       onClick={onClick}
       style={{ boxShadow }}
       className={[
-        "group relative flex w-full flex-col gap-4 overflow-hidden rounded-2xl border dark:border-white/8 dark:bg-[#0E1629]/95 p-5 text-left transition-all backdrop-blur-xl",
+        "bg-white/90 group relative flex w-full flex-col gap-4 overflow-hidden rounded-2xl border dark:border-white/8 dark:bg-[#0E1629]/95 p-5 text-left transition-all backdrop-blur-xl",
         "dark:border-white/6 dark:bg-[#0B1020]/96",
         "before:pointer-events-none before:absolute before:inset-0 before:bg-linear-to-br before:from-white/4 before:via-transparent before:to-primary/20 dark:before:to-black/20 before:opacity-90 before:transition-opacity before:duration-300 group-hover:before:opacity-100",
         "after:pointer-events-none after:absolute after:-left-12 after:top-4 after:h-28 after:w-28 after:rounded-full after:bg-white/3 after:blur-3xl after:transition-transform after:duration-500 group-hover:after:translate-x-2 group-hover:after:-translate-y-1",

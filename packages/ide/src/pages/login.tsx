@@ -1,7 +1,7 @@
 import { SpaceBackground } from "@/components/space-background";
 import { BorderBeam } from "@/components/ui/border-beam";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Title } from "@/components/text/title";
 import { GradientText } from "@/components/text/gradient";
@@ -14,11 +14,12 @@ import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useToast } from "@/contexts/ToastContext";
 import {
   LoginForm,
-  loginSchema,
+  createLoginSchema,
   type LoginFormValues,
 } from "@/components/auth/login-form";
 import { SocialLogin } from "@/components/auth/social-login";
 import { useLoginMutation } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export default function Login() {
   const router = useRouter();
@@ -26,6 +27,10 @@ export default function Login() {
   const { showToast } = useToast();
   const [serverError, setServerError] = useState("");
   const loginMutation = useLoginMutation();
+  const loginSchema = useMemo(
+    () => createLoginSchema(router.locale),
+    [router.locale],
+  );
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -42,14 +47,17 @@ export default function Login() {
       const data = await loginMutation.mutateAsync(values);
 
       if (!data.accessToken) {
-        throw new Error("Resposta de login sem token");
+        throw new Error(t(router.locale, "ui.login_error_missing_token"));
       }
 
       login({ token: data.accessToken, user: data.user });
 
       await router.push("/dashboard");
     } catch (error) {
-      const message = getApiErrorMessage(error, "Falha ao entrar");
+      const message = getApiErrorMessage(
+        error,
+        t(router.locale, "ui.login_error_failed"),
+      );
       setServerError(message);
       showToast({ type: "error", message });
     }
@@ -60,7 +68,9 @@ export default function Login() {
       <SpaceBackground />
 
       <Navbar
-        links={[{ label: "Cadastre-se", href: "/register" }]}
+        links={[
+          { label: t(router.locale, "ui.login_register"), href: "/register" },
+        ]}
         hasAuth={false}
       />
 
@@ -78,10 +88,12 @@ export default function Login() {
             {/* Header */}
             <div className="mb-10 text-center">
               <Title>
-                <GradientText>Bem-vindo de Volta</GradientText>
+                <GradientText>
+                  {t(router.locale, "ui.login_title")}
+                </GradientText>
               </Title>
               <Subtitle className="mt-1 text-sm">
-                Insira suas credenciais para acessar o LMS
+                {t(router.locale, "ui.login_subtitle")}
               </Subtitle>
             </div>
 
@@ -92,7 +104,7 @@ export default function Login() {
             />
 
             {/* Divider */}
-            <div className="relative flex py-4 items-center">
+            {/* <div className="relative flex py-4 items-center">
               <div className="grow border-t border-border dark:border-white/10"></div>
               <span className="shrink-0 mx-4 text-xs text-muted-foreground uppercase">
                 Ou continue com
@@ -100,17 +112,17 @@ export default function Login() {
               <div className="grow border-t border-border dark:border-white/10"></div>
             </div>
 
-            <SocialLogin />
+            <SocialLogin /> */}
 
             {/* Footer Link */}
             <div className="mt-8 text-center border-t border-border dark:border-white/10 pt-6">
               <p className="text-sm">
-                Não tem uma conta?{" "}
+                {t(router.locale, "ui.login_no_account")}{" "}
                 <Link
                   href="/register"
                   className="text-primary hover:text-emerald-400 font-semibold transition-colors"
                 >
-                  Cadastre-se
+                  {t(router.locale, "ui.login_register")}
                 </Link>
               </p>
             </div>

@@ -1,6 +1,7 @@
 import { Lexer } from "@ts-compilator-for-java/compiler/src/lexer";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
+import { t } from "@/i18n";
 import { buildEffectiveKeywordMap } from "@/lib/keyword-map";
 import {
   DEFAULT_BOOLEAN_LITERAL_MAP,
@@ -9,7 +10,8 @@ import {
 import { buildLexerConfigFromCustomization } from "@/lib/keyword-customization";
 import { buildPreviewSource } from "./preview-builder";
 import {
-  WIZARD_PRESET_LABELS,
+  applyWizardPreset,
+  getWizardPresetLabel,
   type WizardPresetId,
   type WizardStepId,
 } from "./wizard-model";
@@ -19,6 +21,7 @@ export type BuildPreviewOptions = {
   presetId: WizardPresetId;
   name?: string;
   languageImageUrl?: string;
+  locale?: string;
 };
 
 type PreviewToken = {
@@ -146,25 +149,33 @@ export function buildWizardPreview(
   options: BuildPreviewOptions,
 ): WizardPreview {
   const baselineSnippet = buildPreviewSource(
-    getDefaultCustomizationState(),
+    applyWizardPreset(getDefaultCustomizationState(), "free"),
     options.activeStepId,
   );
   const snippet = buildPreviewSource(draft, options.activeStepId);
 
   return {
     name:
-      options.name?.trim() || WIZARD_PRESET_LABELS[options.presetId],
-    basedOnLabel: WIZARD_PRESET_LABELS[options.presetId],
+      options.name?.trim() ||
+      getWizardPresetLabel(options.presetId, options.locale),
+    basedOnLabel: getWizardPresetLabel(options.presetId, options.locale),
     languageImageUrl: options.languageImageUrl?.trim() ?? "",
     dna: [
-      draft.modes.typing === "typed" ? "tipada" : "nao tipada",
+      t(
+        options.locale,
+        draft.modes.typing === "typed"
+          ? "wizard.dna.typed"
+          : "wizard.dna.untyped",
+      ),
       draft.modes.block === "delimited"
-        ? "blocos com delimitadores"
-        : "blocos por indentacao",
+        ? t(options.locale, "wizard.dna.delimited")
+        : t(options.locale, "wizard.dna.indentation"),
       draft.modes.semicolon === "required"
-        ? "terminador obrigatorio"
-        : "fim de linha opcional",
-      draft.modes.array === "fixed" ? "vetores fixos" : "vetores dinâmicos",
+        ? t(options.locale, "wizard.dna.requiredTerminator")
+        : t(options.locale, "wizard.dna.optionalTerminator"),
+      draft.modes.array === "fixed"
+        ? t(options.locale, "wizard.dna.fixedArray")
+        : t(options.locale, "wizard.dna.dynamicArray"),
     ],
     baselineSnippet,
     snippet,

@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/context-menu";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
 export function OpenFIlesList({
   openTabs,
@@ -22,6 +24,7 @@ export function OpenFIlesList({
   onActiveFileChange: (path: string) => void;
 }) {
   const editorContext = useContext(EditorContext);
+  const { locale } = useRouter();
 
   const handleTabClick = (tab: string) => {
     if (activeFile !== tab) {
@@ -87,16 +90,16 @@ export function OpenFIlesList({
               </ContextMenuTrigger>
               <ContextMenuContent>
                 <ContextMenuItem onSelect={() => closeTab(tab)}>
-                  Fechar
+                  {t(locale, "ui.close")}
                 </ContextMenuItem>
                 <ContextMenuItem
                   onSelect={() => handleCloseToRight(tab)}
                   disabled={tab === openTabs[openTabs.length - 1]}
                 >
-                  Fechar à Direita
+                  {t(locale, "ui.close_to_right")}
                 </ContextMenuItem>
                 <ContextMenuItem onSelect={handleCloseAll}>
-                  Fechar Tudo
+                  {t(locale, "ui.close_all")}
                 </ContextMenuItem>
               </ContextMenuContent>
             </ContextMenu>

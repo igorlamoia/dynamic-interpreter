@@ -81,6 +81,7 @@ export default class NumberScanner extends LexerScanner {
 }
 
 const ALLOWED_BEFORE_AFTER = [
+  "\0",
   ";",
   ",",
   "(",
