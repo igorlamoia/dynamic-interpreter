@@ -164,6 +164,19 @@ const ui = {
   intermediate_code_description:
     "O código intermediário é uma representação abstrata do código-fonte, que fica entre o código-fonte original e o código de máquina final. Ele é gerado após a análise sintática e antes da geração de código, permitindo otimizações e análises adicionais antes da execução final.",
   login: "Entrar",
+  login_title: "Bem-vindo de Volta",
+  login_subtitle: "Insira suas credenciais para acessar o LMS",
+  login_register: "Cadastre-se",
+  login_no_account: "Não tem uma conta?",
+  login_email_label: "Endereço de E-mail",
+  login_email_placeholder: "nome@empresa.com",
+  login_password_label: "Senha",
+  login_forgot_password: "Esqueceu a senha?",
+  login_submit: "Entrar no Painel",
+  login_error_invalid_email: "E-mail inválido",
+  login_error_password_min: "Senha deve ter pelo menos 4 caracteres",
+  login_error_missing_token: "Resposta de login sem token",
+  login_error_failed: "Falha ao entrar",
   // Validation error messages
   validation_empty_word: "A palavra não pode ser vazia.",
   validation_invalid_word_format:

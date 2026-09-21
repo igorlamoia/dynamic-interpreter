@@ -164,6 +164,20 @@ const ui = {
   intermediate_code_description:
     "El código intermedio es una representación abstracta del código fuente, que se encuentra entre el código fuente original y el código máquina final. Se genera después del análisis sintáctico y antes de la generación de código, permitiendo optimizaciones y análisis adicionales antes de la ejecución final.",
   login: "Iniciar Sesión",
+  login_title: "Bienvenido de nuevo",
+  login_subtitle: "Ingresa tus credenciales para acceder al LMS",
+  login_register: "Regístrate",
+  login_no_account: "¿No tienes una cuenta?",
+  login_email_label: "Correo electrónico",
+  login_email_placeholder: "nombre@empresa.com",
+  login_password_label: "Contraseña",
+  login_forgot_password: "¿Olvidaste tu contraseña?",
+  login_submit: "Entrar al panel",
+  login_error_invalid_email: "Correo electrónico inválido",
+  login_error_password_min:
+    "La contraseña debe tener al menos 4 caracteres",
+  login_error_missing_token: "La respuesta de inicio no incluyó un token",
+  login_error_failed: "No se pudo iniciar sesión",
 };
 
 export default ui;

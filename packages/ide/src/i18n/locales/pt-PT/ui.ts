@@ -148,6 +148,21 @@ const ui = {
   debug_no_variables: "Sem variáveis",
   debug_call_stack: "Pilha de chamadas",
   debug_no_stack_frames: "Sem quadros de pilha",
+  login: "Entrar",
+  login_title: "Bem-vindo de volta",
+  login_subtitle: "Introduza as suas credenciais para aceder ao LMS",
+  login_register: "Registar",
+  login_no_account: "Não tem uma conta?",
+  login_email_label: "Endereço de e-mail",
+  login_email_placeholder: "nome@empresa.com",
+  login_password_label: "Palavra-passe",
+  login_forgot_password: "Esqueceu-se da palavra-passe?",
+  login_submit: "Entrar no painel",
+  login_error_invalid_email: "E-mail inválido",
+  login_error_password_min:
+    "A palavra-passe deve ter pelo menos 4 caracteres",
+  login_error_missing_token: "A resposta de entrada não incluiu um token",
+  login_error_failed: "Não foi possível entrar",
 };
 
 export default ui;
