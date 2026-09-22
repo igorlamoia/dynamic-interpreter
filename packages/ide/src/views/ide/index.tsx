@@ -62,7 +62,7 @@ export function IDEView() {
 export function IDE() {
   const { locale } = useRouter();
   const { showToast } = useToast();
-  const { buildLexerConfig } = useKeywords();
+  const { buildLexerConfig, isReady: areKeywordsReady } = useKeywords();
   const languageChoices = useLanguageChoices();
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
@@ -214,6 +214,7 @@ export function IDE() {
   };
 
   const runAll = async () => {
+    if (!areKeywordsReady) return;
     const tokens = await handleRun();
     if (!tokens) return;
     const isIntermediateGenerated =
@@ -273,6 +274,7 @@ export function IDE() {
           >
             <Menu
               handleRun={handleRun}
+              isRunDisabled={!areKeywordsReady}
               isFullscreen={isFullscreen}
               onHelp={() => setIsLanguageSampleOpen(true)}
               runAll={runAll}

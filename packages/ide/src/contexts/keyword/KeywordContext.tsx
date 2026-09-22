@@ -285,8 +285,16 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
 
   const auth = useAuth();
   const isLoggedIn = auth?.isAuthenticated ?? false;
+  const isAuthReady =
+    (auth?.isHydrated ?? true) && !(auth?.isProfileLoading ?? false);
   const activeLanguageQuery = useActiveLanguage(isLoggedIn);
   const activeLanguageData = activeLanguageQuery.data;
+  const isReady =
+    isHydrated &&
+    isAuthReady &&
+    (externalLanguageOverlay !== null ||
+      !isLoggedIn ||
+      activeLanguageQuery.isFetched);
 
   // Carregar do localStorage após montar no client
   useEffect(() => {
@@ -476,6 +484,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
   const contextValue = useMemo(
     () => ({
       customization,
+      isReady,
       activeLanguageId,
       externalLanguageOverlay,
       applyExternalCustomization,
@@ -492,6 +501,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     }),
     [
       customization,
+      isReady,
       activeLanguageId,
       externalLanguageOverlay,
       applyExternalCustomization,

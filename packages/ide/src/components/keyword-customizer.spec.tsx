@@ -151,6 +151,7 @@ function createKeywordsContext(overrides: Record<string, unknown> = {}) {
 
   return {
     customization,
+    isReady: true,
     setCustomization: vi.fn(),
     setModes: vi.fn(),
     setMappings: vi.fn(),
