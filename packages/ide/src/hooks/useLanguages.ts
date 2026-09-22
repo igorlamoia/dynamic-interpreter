@@ -122,9 +122,40 @@ export function useSetLanguagePublication() {
 }
 
 export function useSetActiveLanguage() {
-  const invalidate = useInvalidateLanguages();
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (languageId: number | null) => languagesApi.setActive(languageId),
-    onSuccess: () => invalidate(),
+    onMutate: async (languageId) => {
+      await qc.cancelQueries({ queryKey: queryKeys.languages.active });
+      const previousActive = qc.getQueryData<Language | null>(
+        queryKeys.languages.active,
+      );
+      const cachedLanguages = qc.getQueriesData<
+        PaginatedResponse<LanguageSummary> | LanguageSummary[] | null
+      >({ queryKey: queryKeys.languages.all });
+      const nextActive =
+        languageId === null
+          ? null
+          : cachedLanguages
+              .flatMap(([, data]) =>
+                Array.isArray(data) ? data : (data?.items ?? []),
+              )
+              .find((language) => language.id === languageId) ?? null;
+
+      qc.setQueryData(queryKeys.languages.active, nextActive);
+
+      return { previousActive };
+    },
+    onSuccess: (activeLanguage) => {
+      qc.setQueryData(queryKeys.languages.active, activeLanguage);
+      qc.invalidateQueries({ queryKey: queryKeys.languages.all });
+      qc.invalidateQueries({ queryKey: ["languages", "community"] });
+    },
+    onError: (_error, _languageId, context) => {
+      qc.setQueryData(
+        queryKeys.languages.active,
+        context?.previousActive ?? null,
+      );
+    },
   });
 }
