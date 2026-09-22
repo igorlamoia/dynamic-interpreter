@@ -52,6 +52,7 @@ import {
 function createKeywordsContext() {
   return {
     customization: getDefaultCustomizationState(),
+    isReady: true,
     setCustomization: vi.fn(),
     setModes: vi.fn(),
     setMappings: vi.fn(),

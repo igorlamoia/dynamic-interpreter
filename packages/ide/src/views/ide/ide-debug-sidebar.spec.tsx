@@ -57,6 +57,7 @@ vi.mock("@/contexts/keyword/KeywordContext", () => ({
   ),
   useKeywords: () => ({
     buildLexerConfig: mocks.buildLexerConfig,
+    isReady: true,
   }),
 }));
 

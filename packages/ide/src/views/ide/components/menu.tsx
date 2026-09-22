@@ -8,6 +8,7 @@ import { markLanguageCreatorReturn } from "@/lib/language-creator-navigation";
 interface MenuProps {
   handleRun: () => void;
   isFullscreen: boolean;
+  isRunDisabled?: boolean;
   onHelp: () => void;
   runAll: () => void;
   toggleFullscreen: () => void;
@@ -17,6 +18,7 @@ interface MenuProps {
 export function Menu({
   handleRun,
   isFullscreen,
+  isRunDisabled = false,
   onHelp,
   runAll,
   toggleFullscreen,
@@ -64,13 +66,18 @@ export function Menu({
         </IconButton>
         <IconButton
           aria-label={t(locale, "ui.run_lexer")}
+          disabled={isRunDisabled}
           onClick={handleRun}
           tooltip={t(locale, "ui.run_lexer")}
           className="size-3 p-3 rounded-lg"
         >
           <StepForward />
         </IconButton>
-        <RainbowButton variant="outline" onClick={runAll}>
+        <RainbowButton
+          variant="outline"
+          disabled={isRunDisabled}
+          onClick={runAll}
+        >
           {t(locale, "ui.run_all")}
         </RainbowButton>
       </div>

@@ -37,6 +37,8 @@ export type ExternalLanguageOverlay = {
 
 export type KeywordContextType = {
   customization: StoredKeywordCustomization;
+  /** True after the IDE has loaded the active language customization. */
+  isReady: boolean;
   /** ID da linguagem ativa do usuário no backend (null = sem ativa / não logado). */
   activeLanguageId: number | null;
   externalLanguageOverlay: ExternalLanguageOverlay | null;
