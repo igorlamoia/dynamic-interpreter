@@ -73,6 +73,7 @@ export function OptionCardIcon({
 
 type OptionCardProps = {
   title: string;
+  searchLabel?: string;
   subtitle?: string;
   description: string;
   icon?: ReactNode;
@@ -86,6 +87,7 @@ type OptionCardProps = {
 
 export function OptionCard({
   title,
+  searchLabel,
   subtitle,
   description,
   icon,
@@ -103,6 +105,7 @@ export function OptionCard({
   return (
     <button
       type="button"
+      aria-label={searchLabel ? `${title} ${searchLabel}` : undefined}
       disabled={disabled}
       onClick={onClick}
       style={{ boxShadow }}

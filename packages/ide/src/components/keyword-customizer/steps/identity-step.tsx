@@ -82,6 +82,7 @@ const ADVANCED_PRESETS: WizardPresetId[] = [
 const PRESET_OPTIONS: Array<{
   id: WizardPresetId;
   titleKey: string;
+  legacySearchLabel?: string;
   subtitle: string;
   descriptionKey: string;
   snippet: ReactNode;
@@ -118,6 +119,7 @@ const PRESET_OPTIONS: Array<{
   {
     id: "didactic-pt",
     titleKey: "preset.didactic-pt",
+    legacySearchLabel: "Didatica em Portugues",
     subtitle: "PT-BR LOGIC",
     descriptionKey: "identity.option.didactic-pt.description",
     snippet: (
@@ -338,6 +340,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             <OptionCard
               key={preset.id}
               title={wt(preset.titleKey)}
+              searchLabel={preset.legacySearchLabel}
               subtitle={preset.subtitle}
               description={wt(preset.descriptionKey)}
               snippet={preset.snippet}

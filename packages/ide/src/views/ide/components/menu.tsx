@@ -43,7 +43,7 @@ export function Menu({
               void router.push("/language-creator");
             }}
           >
-            {t(locale, "ui.edit")}
+            {t(locale, "ui.create_language")}
           </button>
           <button className="hover:text-foreground" onClick={toggleTerminal}>
             {t(locale, "ui.terminal")}

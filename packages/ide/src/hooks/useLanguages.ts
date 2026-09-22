@@ -130,19 +130,20 @@ export function useSetActiveLanguage() {
       const previousActive = qc.getQueryData<Language | null>(
         queryKeys.languages.active,
       );
-      const cachedLanguages = qc.getQueriesData<
-        PaginatedResponse<LanguageSummary> | LanguageSummary[] | null
-      >({ queryKey: queryKeys.languages.all });
-      const nextActive =
-        languageId === null
-          ? null
-          : cachedLanguages
-              .flatMap(([, data]) =>
-                Array.isArray(data) ? data : (data?.items ?? []),
-              )
-              .find((language) => language.id === languageId) ?? null;
-
-      qc.setQueryData(queryKeys.languages.active, nextActive);
+      if (languageId === null) {
+        qc.setQueryData(queryKeys.languages.active, null);
+      } else {
+        try {
+          qc.setQueryData(
+            queryKeys.languages.active,
+            await languagesApi.get(languageId),
+          );
+        } catch {
+          // Keep the previous active detail until the mutation response arrives.
+          // A language summary is not enough here because the IDE needs the
+          // compiler customization from the detail payload.
+        }
+      }
 
       return { previousActive };
     },
