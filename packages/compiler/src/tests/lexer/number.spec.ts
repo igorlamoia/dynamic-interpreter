@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Lexer } from "../../lexer";
 import { Token } from "../../token";
+import { TOKENS } from "../../token/constants";
 
 describe("Lexer Number", () => {
   describe("Float Cases", () => {
@@ -48,6 +49,21 @@ describe("Lexer Number", () => {
         new Token(46, "3.0", 1, 12),
         new Token(36, ";", 1, 14),
         // new Token(99, "", 1, 15),
+      ];
+      // Act
+      const lexer = new Lexer(source);
+      const tokens = lexer.scanTokens();
+      // Assert
+      expect(tokens).toEqual(expected);
+    });
+    it("should scan a float number at the end of the file", () => {
+      // Arrange
+      const source = `float pi = 3.14`;
+      const expected = [
+        new Token(22, "float", 1, 1),
+        new Token(43, "pi", 1, 7),
+        new Token(15, "=", 1, 10),
+        new Token(46, "3.14", 1, 12),
       ];
       // Act
       const lexer = new Lexer(source);
@@ -119,6 +135,19 @@ describe("Lexer Number", () => {
       // Assert
       expect(tokens).toEqual(expected);
     });
+    it("should scan an integer number at the end of the file", () => {
+      // Arrange
+      const source = `return 1`;
+      const expected = [
+        new Token(30, "return", 1, 1),
+        new Token(45, "1", 1, 8),
+      ];
+      // Act
+      const lexer = new Lexer(source);
+      const tokens = lexer.scanTokens();
+      // Assert
+      expect(tokens).toEqual(expected);
+    });
     it("should throw an error when finishing with not valid char", () => {
       // Arrange
       const source = `float pi = 3b;`;
@@ -154,6 +183,62 @@ describe("Lexer Number", () => {
       // Assert
       expect(tokens).toEqual(expected);
     });
+    it("should scan an octal number at the end of the file", () => {
+      // Arrange
+      const source = `int x = 0123`;
+      const expected = [
+        new Token(21, "int", 1, 1),
+        new Token(43, "x", 1, 5),
+        new Token(15, "=", 1, 7),
+        new Token(48, "0123", 1, 9),
+      ];
+      // Act
+      const lexer = new Lexer(source);
+      const tokens = lexer.scanTokens();
+      // Assert
+      expect(tokens).toEqual(expected);
+    });
+    it("should scan zero at the end of the file", () => {
+      // Arrange
+      const source = `return 0`;
+      const expected = [
+        new Token(30, "return", 1, 1),
+        new Token(48, "0", 1, 8),
+      ];
+      // Act
+      const lexer = new Lexer(source);
+      const tokens = lexer.scanTokens();
+      // Assert
+      expect(tokens).toEqual(expected);
+    });
+    it("should scan an indentation sample that ends with a number", () => {
+      // Arrange
+      const source = `def main():
+  let nome = ""
+  print("Qual o seu nome?")
+  input(nome)
+  print("ola mundo, ", nome, "!")
+  contarAteTres()
+  return 0
+
+def contarAteTres():
+  let contador = 1
+  while (contador lte 3):
+    print(contador)
+    contador = contador + 1`;
+      // Act
+      const lexer = new Lexer(source, {
+        customKeywords: {
+          def: TOKENS.RESERVEDS.function,
+          input: TOKENS.RESERVEDS.scan,
+          let: TOKENS.RESERVEDS.variable,
+        },
+        indentationBlock: true,
+        operatorWordMap: { less_equal: "lte" },
+      });
+      // Assert
+      expect(() => lexer.scanTokens()).not.toThrow();
+    });
     it("should throw an error when the number is invalid", () => {
       // Arrange
       const source = `int pi = 07778;`;
@@ -174,6 +259,21 @@ describe("Lexer Number", () => {
         new Token(47, "0xFFF", 1, 9),
         new Token(36, ";", 1, 14),
         // new Token(99, "", 1, 15),
+      ];
+      // Act
+      const lexer = new Lexer(source);
+      const tokens = lexer.scanTokens();
+      // Assert
+      expect(tokens).toEqual(expected);
+    });
+    it("should scan a hex number at the end of the file", () => {
+      // Arrange
+      const source = `int x = 0xFFF`;
+      const expected = [
+        new Token(21, "int", 1, 1),
+        new Token(43, "x", 1, 5),
+        new Token(15, "=", 1, 7),
+        new Token(47, "0xFFF", 1, 9),
       ];
       // Act
       const lexer = new Lexer(source);

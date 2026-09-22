@@ -10,13 +10,12 @@ import {
   InputWithActions,
   InputActionButton,
 } from "@/components/ui/input-with-actions";
-import { Button } from "@/components/ui/button";
 import { PerfectScrollbar } from "@/components/ui/perfect-scrollbar";
 import { HeroButton } from "@/components/buttons/hero";
 import { Overlay } from "@/components/effect/overlay";
-import { InterpreterLottie } from "@/lottie/robot-brain";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useWizardTranslation } from "../use-wizard-translation";
 export type IdentityImageSearchResult = {
   id: number;
   provider: "pixabay" | "unsplash";
@@ -27,6 +26,7 @@ export type IdentityImageSearchResult = {
 
 function getImageAttributionLabel(
   providers: IdentityImageSearchResult["provider"][],
+  wt: ReturnType<typeof useWizardTranslation>,
 ): string {
   const uniqueProviders = Array.from(new Set(providers));
 
@@ -35,14 +35,14 @@ function getImageAttributionLabel(
     uniqueProviders.includes("pixabay") &&
     uniqueProviders.includes("unsplash")
   ) {
-    return "Resultados de imagem fornecidos por Pixabay e Unsplash.";
+    return wt("identity.imageAttributionBoth");
   }
 
   if (uniqueProviders[0] === "unsplash") {
-    return "Resultados de imagem fornecidos por Unsplash.";
+    return wt("identity.imageAttributionUnsplash");
   }
 
-  return "Resultados de imagem fornecidos por Pixabay.";
+  return wt("identity.imageAttributionPixabay");
 }
 
 export type IdentityStepProps = {
@@ -81,18 +81,19 @@ const ADVANCED_PRESETS: WizardPresetId[] = [
 
 const PRESET_OPTIONS: Array<{
   id: WizardPresetId;
-  title: string;
+  titleKey: string;
+  legacySearchLabel?: string;
   subtitle: string;
-  description: string;
+  descriptionKey: string;
   snippet: ReactNode;
   icon: ReactNode;
   iconColor?: OptionCardIconColor;
 }> = [
   {
     id: "free",
-    title: "Livre",
+    titleKey: "preset.free",
     subtitle: "CUSTOM DNA",
-    description: "Deixa a configuração manual começar sem sugestão fixa.",
+    descriptionKey: "identity.option.free.description",
     snippet: (
       <span className="flex flex-col gap-1">
         <p className="inline-flex flex-wrap gap-1">
@@ -117,10 +118,10 @@ const PRESET_OPTIONS: Array<{
   },
   {
     id: "didactic-pt",
-    title: "Didatica em Portugues",
+    titleKey: "preset.didactic-pt",
+    legacySearchLabel: "Didatica em Portugues",
     subtitle: "PT-BR LOGIC",
-    description:
-      "Traz o vocabulário de controle, tipos e blocos para português.",
+    descriptionKey: "identity.option.didactic-pt.description",
     snippet: (
       <span className="flex flex-col gap-1">
         <p className="inline-flex flex-wrap gap-1">
@@ -145,10 +146,9 @@ const PRESET_OPTIONS: Array<{
   },
   {
     id: "python-like",
-    title: "Pythonica",
+    titleKey: "preset.python-like",
     subtitle: "INDENTED FLOW",
-    description:
-      "Troca blocos por indentacao e remove terminadores explicitos.",
+    descriptionKey: "identity.option.python-like.description",
     snippet: (
       <span className="flex flex-col gap-1">
         <p className="inline-flex flex-wrap gap-1">
@@ -171,9 +171,9 @@ const PRESET_OPTIONS: Array<{
   },
   {
     id: "minimal",
-    title: "Minimalista",
+    titleKey: "preset.minimal",
     subtitle: "ZERO SURFACE",
-    description: "Mantém todos os comandos visíveis, mas com aliases curtos.",
+    descriptionKey: "identity.option.minimal.description",
     snippet: (
       <>
         <span className="flex flex-col gap-1">
@@ -201,9 +201,9 @@ const PRESET_OPTIONS: Array<{
 
   {
     id: "ruby-like",
-    title: "Ruby-like",
+    titleKey: "preset.ruby-like",
     subtitle: "BEGIN / END",
-    description: "Usa blocos com inicio e fim, com nomes proximos do Ruby.",
+    descriptionKey: "identity.option.ruby-like.description",
     snippet: (
       <span className="flex flex-col gap-1">
         <span className="flex flex-col gap-1">
@@ -240,10 +240,9 @@ const PRESET_OPTIONS: Array<{
   },
   {
     id: "mineres-like",
-    title: "Mineres",
+    titleKey: "preset.mineres-like",
     subtitle: "TREM BUNITO",
-    description:
-      "Puxa o vocabulário para um dialeto regional em tudo que o modelo suporta.",
+    descriptionKey: "identity.option.mineres-like.description",
     snippet: (
       <span className="flex flex-col gap-1">
         <span className="flex flex-col gap-1">
@@ -271,6 +270,7 @@ const PRESET_OPTIONS: Array<{
 ];
 
 export function IdentityStep({ values, actions }: IdentityStepProps) {
+  const wt = useWizardTranslation();
   const [showAdvancedMode, setShowAdvancedMode] = useState(false);
   const isAdvancedModeSelected = ADVANCED_PRESETS.includes(
     values.selectedPresetId,
@@ -283,10 +283,10 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
   return (
     <section className="space-y-6">
       <Step.Header>
-        <Step.Index>Etapa 1</Step.Index>
-        <Step.Title>Crie sua própria linguagem</Step.Title>
+        <Step.Index>{wt("identity.index")}</Step.Index>
+        <Step.Title>{wt("identity.title")}</Step.Title>
         <Step.Description>
-          A linguagem é apenas o início de algo grande.
+          {wt("identity.description")}
         </Step.Description>
       </Step.Header>
       <div className="flex flex-col gap-4">
@@ -296,18 +296,17 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
               htmlFor="language-name"
               className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
             >
-              Nome da linguagem
+              {wt("identity.nameLabel")}
             </label>
             <Input
               id="language-name"
-              aria-label="Nome da linguagem"
+              aria-label={wt("identity.nameLabel")}
               value={values.name}
               onChange={(event) => actions.setName(event.target.value)}
-              placeholder="Ex.: Didatica Neon"
+              placeholder={wt("identity.namePlaceholder")}
             />
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              Esse nome será usado no preview, no salvamento e no seletor da
-              IDE.
+              {wt("identity.nameHelp")}
             </p>
           </div>
           <div className="space-y-1">
@@ -315,18 +314,17 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
               htmlFor="language-description"
               className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
             >
-              Descrição da linguagem
+              {wt("identity.descriptionLabel")}
             </label>
             <Textarea
               id="language-description"
-              aria-label="Descrição da linguagem"
+              aria-label={wt("identity.descriptionLabel")}
               value={values.description}
               onChange={(event) => actions.setDescription(event.target.value)}
-              placeholder="Ex.: Uma linguagem didática inspirada em português para ensinar lógica de programação"
+              placeholder={wt("identity.descriptionPlaceholder")}
             />
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              A descrição é opcional, mas pode ajudar a lembrar das escolhas
-              feitas
+              {wt("identity.descriptionHelp")}
             </p>
           </div>
         </div>
@@ -334,17 +332,17 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
         <ImageSearchFeature values={values} actions={actions} />
       </div>
       <p>
-        Escolha um ponto de partida. A seleção apenas sugere lexemas iniciais e
-        continua totalmente editável.
+        {wt("identity.presetIntro")}
       </p>
       <div className="space-y-3">
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {visiblePresets.map((preset) => (
             <OptionCard
               key={preset.id}
-              title={preset.title}
+              title={wt(preset.titleKey)}
+              searchLabel={preset.legacySearchLabel}
               subtitle={preset.subtitle}
-              description={preset.description}
+              description={wt(preset.descriptionKey)}
               snippet={preset.snippet}
               icon={preset.icon}
               iconColor={preset.iconColor}
@@ -360,7 +358,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             onClick={() => setShowAdvancedMode(false)}
             className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
           >
-            <span>Mostrar menos</span>
+            <span>{wt("identity.showLess")}</span>
             <ChevronDown className="h-4 w-4 rotate-180" />
           </button>
         ) : (
@@ -369,7 +367,7 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
             onClick={() => setShowAdvancedMode(true)}
             className="ml-auto rounded-lg border border-slate-200 bg-white/50 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-950 flex items-center justify-center gap-2"
           >
-            <span>Mostrar mais</span>
+            <span>{wt("identity.showMore")}</span>
             <ChevronDown className="h-4 w-4" />
           </button>
         )}
@@ -386,6 +384,8 @@ function ImageSearchFeature({
   values: IdentityStepProps["values"];
   actions: IdentityStepProps["actions"];
 }) {
+  const wt = useWizardTranslation();
+
   return (
     <div className="space-y-3 rounded-lg border border-slate-200/80 bg-white/80 p-4 dark:border-slate-800/80 dark:bg-slate-900/80">
       <div className="flex flex-col gap-2 w-full">
@@ -393,13 +393,13 @@ function ImageSearchFeature({
           htmlFor="language-image-search"
           className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"
         >
-          Escolha uma imagem para a linguagem (opcional)
+          {wt("identity.imageLabel")}
         </label>
 
         <div className="flex gap-2">
           <InputWithActions
             id="language-image-search"
-            aria-label="Buscar imagem da linguagem"
+            aria-label={wt("identity.imageAria")}
             value={values.imageSearchQuery}
             onChange={(event) =>
               actions.setImageSearchQuery(event.target.value)
@@ -410,12 +410,12 @@ function ImageSearchFeature({
                 actions.searchImages();
               }
             }}
-            placeholder="Ex.: neon code"
+            placeholder={wt("identity.imagePlaceholder")}
             className="h-full w-full"
             actions={
               <InputActionButton
                 icon={Sparkles}
-                tooltip="Limpar"
+                tooltip={wt("identity.clear")}
                 onClick={() => actions.setImageSearchQuery("")}
               />
             }
@@ -427,7 +427,9 @@ function ImageSearchFeature({
             disabled={values.isSearchingImages}
             variant="ghost"
           >
-            {values.isSearchingImages ? "Buscando..." : "Buscar"}
+            {values.isSearchingImages
+              ? wt("identity.searching")
+              : wt("identity.search")}
           </HeroButton>
         </div>
       </div>
@@ -444,6 +446,7 @@ function ImageSearchFeature({
             <p className="text-sm text-slate-500 dark:text-slate-400">
               {getImageAttributionLabel(
                 values.imageSearchResults.map((image) => image.provider),
+                wt,
               )}
             </p>
 
@@ -479,7 +482,7 @@ function ImageSearchFeature({
                       </p>
                       {isSelected && (
                         <span className="absolute top-1/2 left-1/2 backdrop-blur-xs rounded-lg p-4 transform -translate-x-1/2 -translate-y-1/2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-600 dark:text-cyan-300">
-                          Selecionada
+                          {wt("identity.selected")}
                         </span>
                       )}
                     </div>

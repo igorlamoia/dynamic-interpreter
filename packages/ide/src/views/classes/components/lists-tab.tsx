@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { BookOpen, Calendar, ChevronRight } from "lucide-react";
+import { resolveLocale, t } from "@/i18n";
 
-function formatDeadline(deadline: string | undefined) {
+function formatDeadline(deadline: string | undefined, locale?: string) {
   if (!deadline) return null;
   const d = new Date(deadline);
   if (isNaN(d.getTime())) return null;
   const now = new Date();
   const diffMs = d.getTime() - now.getTime();
   const diffDays = Math.ceil(diffMs / 86400000);
-  const formatted = d.toLocaleDateString("pt-BR", {
+  const formatted = d.toLocaleDateString(resolveLocale(locale), {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -24,12 +25,12 @@ function formatDeadline(deadline: string | undefined) {
         ? "text-yellow-300"
         : "text-slate-400";
   const label = isOverdue
-    ? "Encerrado"
+    ? t(locale, "ui.class_deadline_overdue")
     : diffDays === 0
-      ? "Hoje"
+      ? t(locale, "ui.class_deadline_today")
       : diffDays === 1
-        ? "Amanhã"
-        : `${diffDays} dias`;
+        ? t(locale, "ui.class_deadline_tomorrow")
+        : t(locale, "ui.class_deadline_days", { count: diffDays });
   return { formatted, color, label, isOverdue };
 }
 
@@ -38,17 +39,21 @@ export function ListsTab({
   loadingLists,
   isTeacher,
   classId,
+  locale,
 }: {
   exerciseLists: any[];
   loadingLists: boolean;
   isTeacher: boolean;
   classId: string | string[] | undefined;
+  locale?: string;
 }) {
   if (loadingLists) {
     return (
       <div className="flex flex-col items-center justify-center py-32 text-muted-foreground gap-4">
         <div className="w-10 h-10 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-        <span className="text-sm font-medium">Carregando listas...</span>
+        <span className="text-sm font-medium">
+          {t(locale, "ui.class_loading_lists")}
+        </span>
       </div>
     );
   }
@@ -60,12 +65,12 @@ export function ListsTab({
           <BookOpen className="w-10 h-10 text-slate-600" />
         </div>
         <p className="text-foreground text-lg font-bold">
-          Nenhuma lista publicada
+          {t(locale, "ui.class_no_lists_title")}
         </p>
         <p className="text-muted-foreground text-sm mt-2 max-w-xs text-center leading-relaxed">
           {isTeacher
-            ? "Publique uma lista de exercícios para esta turma em 'Minhas Listas'."
-            : "Seu professor ainda não publicou listas para esta turma."}
+            ? t(locale, "ui.class_no_lists_teacher")
+            : t(locale, "ui.class_no_lists_student")}
         </p>
       </div>
     );
@@ -91,14 +96,22 @@ export function ListsTab({
             <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5 text-primary/60" />
-                {entry.totalCount} exercício{entry.totalCount !== 1 ? "s" : ""}
+                {t(
+                  locale,
+                  entry.totalCount === 1
+                    ? "ui.class_exercise_count_singular"
+                    : "ui.class_exercise_count_plural",
+                  { count: entry.totalCount },
+                )}
               </span>
               <span className="flex items-center gap-1.5 text-muted-foreground">
-                Mínimo: {entry.minRequired}
+                {t(locale, "ui.class_minimum_count", {
+                  count: entry.minRequired,
+                })}
               </span>
             </div>
             {(() => {
-              const dl = formatDeadline(entry.deadline);
+              const dl = formatDeadline(entry.deadline, locale);
               if (!dl) return null;
               return (
                 <div
@@ -115,7 +128,7 @@ export function ListsTab({
                 href={`/exercise-lists/${entry.exerciseListId}`}
                 className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
               >
-                Gerenciar
+                {t(locale, "ui.class_manage")}
                 <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -140,10 +153,10 @@ export function ListsTab({
               : "bg-slate-500/15 text-slate-400 border-slate-500/25";
         const statusText =
           entry.completedCount >= entry.minRequired
-            ? "Concluída"
+            ? t(locale, "ui.class_status_completed")
             : entry.completedCount > 0
-              ? "Em andamento"
-              : "Não iniciada";
+              ? t(locale, "ui.class_status_in_progress")
+              : t(locale, "ui.class_status_not_started");
 
         return (
           <div
@@ -162,18 +175,23 @@ export function ListsTab({
             </div>
             <div className="flex flex-wrap gap-2 mb-4">
               <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/70 dark:bg-white/5 border border-border dark:border-white/8 px-2.5 py-1 rounded-full">
-                Mínimo: {entry.minRequired} exercício
-                {entry.minRequired !== 1 ? "s" : ""}
+                {t(
+                  locale,
+                  entry.minRequired === 1
+                    ? "ui.class_minimum_exercise_singular"
+                    : "ui.class_minimum_exercise_plural",
+                  { count: entry.minRequired },
+                )}
               </span>
               {(() => {
-                const dl = formatDeadline(entry.deadline);
+                const dl = formatDeadline(entry.deadline, locale);
                 if (!dl) return null;
                 return (
                   <span
                     className={`inline-flex items-center gap-1.5 text-xs bg-muted/70 dark:bg-white/5 border border-border dark:border-white/8 px-2.5 py-1 rounded-full ${dl.color}`}
                   >
                     <Calendar className="w-3 h-3" />
-                    {dl.label} — {dl.formatted}
+                    {dl.label} - {dl.formatted}
                   </span>
                 );
               })()}
@@ -181,7 +199,10 @@ export function ListsTab({
             <div className="mb-4">
               <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
                 <span>
-                  {entry.completedCount} de {entry.totalCount} concluídos
+                  {t(locale, "ui.class_completed_progress", {
+                    completed: entry.completedCount,
+                    total: entry.totalCount,
+                  })}
                 </span>
                 <span className="font-medium">{progress}%</span>
               </div>
@@ -196,7 +217,7 @@ export function ListsTab({
               href={`/exercise-lists/${entry.exerciseListId}?classId=${classId}`}
               className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
             >
-              Abrir Lista
+              {t(locale, "ui.class_open_list")}
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>

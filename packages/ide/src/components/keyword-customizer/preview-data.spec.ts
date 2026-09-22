@@ -21,8 +21,8 @@ describe("buildWizardPreview", () => {
       presetId: "didactic-pt",
     });
 
-    expect(preview.name).toBe("Didatica em Portugues");
-    expect(preview.basedOnLabel).toBe("Didatica em Portugues");
+    expect(preview.name).toBe("Didática em Português");
+    expect(preview.basedOnLabel).toBe("Didática em Português");
     expect(preview.dna).toContain("blocos com delimitadores");
     expect(preview.snippet).toContain("escreva(");
     expect(preview.tokenPreview.map((token) => token.lexeme)).toContain(
@@ -40,7 +40,7 @@ describe("buildWizardPreview", () => {
     });
 
     expect(preview.name).toBe("Pythonica");
-    expect(preview.dna).toContain("blocos por indentacao");
+    expect(preview.dna).toContain("blocos por indentação");
     expect(preview.snippet).toContain(":");
     expect(preview.snippet).not.toContain("{");
   });
@@ -68,7 +68,7 @@ describe("buildWizardPreview", () => {
       presetId: "python-like",
     });
 
-    expect(preview.dna).toContain("nao tipada");
+    expect(preview.dna).toContain("não tipada");
     expect(preview.chosenLexemes).toContainEqual({
       original: "variable",
       custom: "nome",
@@ -125,8 +125,8 @@ describe("buildWizardPreview", () => {
       presetId: "mineres-like",
     });
 
-    expect(preview.name).toBe("Mineres");
-    expect(preview.dna).toContain("terminador obrigatorio");
+    expect(preview.name).toBe("Minerês");
+    expect(preview.dna).toContain("terminador obrigatório");
     expect(preview.snippet).toContain("uai");
     expect(preview.snippet).toContain("simbora");
     expect(preview.snippet).toContain("cabo");
@@ -160,9 +160,11 @@ describe("buildWizardPreview", () => {
   });
 
   it("uses a richer full-program example on the review step", () => {
-    const preview = buildWizardPreview(getDefaultCustomizationState(), {
+    const draft = applyWizardPreset(getDefaultCustomizationState(), "free");
+
+    const preview = buildWizardPreview(draft, {
       activeStepId: "review",
-      presetId: "didactic-pt",
+      presetId: "free",
     });
 
     expect(preview.baselineSnippet).toContain("int idade = 25");
@@ -176,7 +178,7 @@ describe("buildWizardPreview", () => {
   });
 
   it("uses the generic variable keyword in review previews for untyped languages", () => {
-    const draft = getDefaultCustomizationState();
+    const draft = applyWizardPreset(getDefaultCustomizationState(), "free");
     draft.modes.typing = "untyped";
 
     const preview = buildWizardPreview(draft, {

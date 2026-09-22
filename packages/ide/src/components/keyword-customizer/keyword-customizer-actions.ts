@@ -6,6 +6,7 @@ import type {
 import {
   getDefaultCustomizationState,
 } from "@/contexts/keyword/KeywordContext";
+import { applyWizardPreset } from "./wizard-model";
 import type {
   BlockDelimiters,
   StoredKeywordCustomization,
@@ -107,13 +108,5 @@ export function syncStatementTerminatorInDraft(
 }
 
 export function resetKeywordCustomizerDraft(): StoredKeywordCustomization {
-  const resetState = getDefaultCustomizationState();
-
-  return {
-    ...resetState,
-    mappings: resetState.mappings.map((mapping) => ({
-      ...mapping,
-      custom: mapping.original,
-    })),
-  };
+  return applyWizardPreset(getDefaultCustomizationState(), "free");
 }

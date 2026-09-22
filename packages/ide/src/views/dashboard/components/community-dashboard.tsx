@@ -16,6 +16,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useActiveLanguage, useLanguagesList } from "@/hooks/useLanguages";
 import { getLanguageDNAChips } from "@/views/languages/language-dna";
 import { LanguageDnaDialog } from "@/views/languages/components/language-dna-dialog";
+import { t } from "@/i18n";
 
 export function CommunityDashboard() {
   const router = useRouter();
@@ -29,7 +30,10 @@ export function CommunityDashboard() {
 
   const languages = languagesQuery.data ?? [];
   const recentLanguages = languages.slice(0, 3);
-  const firstName = user?.name.trim().split(/\s+/)[0] || "criador";
+  const { locale } = router;
+  const firstName =
+    user?.name.trim().split(/\s+/)[0] ||
+    t(locale, "ui.dashboard_creator_fallback");
 
   return (
     <>
@@ -39,15 +43,14 @@ export function CommunityDashboard() {
         <div className="relative max-w-3xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-cyan-700 dark:border-cyan-300/15 dark:bg-cyan-300/8 dark:text-cyan-200">
             <Sparkles className="size-3.5" />
-            Laboratório de linguagens
+            {t(locale, "ui.dashboard_language_lab_badge")}
           </div>
           <Title>
-            Olá, <GradientText>{firstName}</GradientText>
+            {t(locale, "ui.dashboard_greeting")}{" "}
+            <GradientText>{firstName}</GradientText>
           </Title>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-            Modele a sintaxe, escolha as regras e construa linguagens com uma
-            identidade própria. Cada decisão passa a fazer parte do DNA da sua
-            criação.
+            {t(locale, "ui.dashboard_community_intro")}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <HeroButton
@@ -55,14 +58,14 @@ export function CommunityDashboard() {
               className="group gap-2 px-5 py-3"
             >
               <Plus className="size-4 transition-transform group-hover:rotate-90" />
-              Nova Linguagem
+              {t(locale, "ui.dashboard_new_language")}
             </HeroButton>
             <button
               type="button"
               onClick={() => void router.push("/languages")}
               className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/80 px-5 py-3 text-sm font-semibold text-foreground transition hover:border-cyan-300/20 hover:bg-cyan-300/10 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-cyan-300/8"
             >
-              Ver meu acervo
+              {t(locale, "ui.dashboard_view_collection")}
               <ArrowRight className="size-4" />
             </button>
             <button
@@ -71,7 +74,7 @@ export function CommunityDashboard() {
               className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:border-emerald-400/40 hover:bg-emerald-500/15 dark:border-emerald-300/15 dark:bg-emerald-300/6 dark:text-emerald-100 dark:hover:border-emerald-300/30 dark:hover:bg-emerald-300/10"
             >
               <Globe2 className="size-4" />
-              Explorar comunidade
+              {t(locale, "ui.dashboard_explore_community")}
             </button>
           </div>
         </div>
@@ -80,22 +83,27 @@ export function CommunityDashboard() {
       <section className="mb-9 grid gap-4 sm:grid-cols-3">
         <MetricCard
           icon={Languages}
-          label="Linguagens criadas"
+          label={t(locale, "ui.dashboard_created_languages")}
           value={languagesQuery.isPending ? "—" : String(languages.length)}
         />
         <MetricCard
           icon={Code2}
-          label="Linguagem ativa"
+          label={t(locale, "ui.dashboard_active_language")}
           value={
             activeLanguageQuery.isPending
-              ? "Carregando"
-              : activeLanguageQuery.data?.name || "Nenhuma"
+              ? t(locale, "ui.dashboard_loading")
+              : activeLanguageQuery.data?.name ||
+                t(locale, "ui.dashboard_none")
           }
         />
         <MetricCard
           icon={Dna}
-          label="DNA disponível"
-          value={languages.length > 0 ? "Completo" : "Ao criar"}
+          label={t(locale, "ui.dashboard_available_dna")}
+          value={
+            languages.length > 0
+              ? t(locale, "ui.dashboard_complete")
+              : t(locale, "ui.dashboard_when_created")
+          }
         />
       </section>
 
@@ -103,10 +111,10 @@ export function CommunityDashboard() {
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-foreground">
-              Criações recentes
+              {t(locale, "ui.dashboard_recent_creations")}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Uma leitura rápida das regras que tornam cada linguagem única.
+              {t(locale, "ui.dashboard_recent_creations_description")}
             </p>
           </div>
           {languages.length > 3 && (
@@ -115,7 +123,7 @@ export function CommunityDashboard() {
               onClick={() => void router.push("/languages")}
               className="text-sm font-semibold text-cyan-300 hover:text-cyan-200"
             >
-              Ver todas
+              {t(locale, "ui.dashboard_view_all")}
             </button>
           )}
         </div>
@@ -123,7 +131,7 @@ export function CommunityDashboard() {
         {languagesQuery.isPending ? (
           <div
             className="grid gap-4 md:grid-cols-3"
-            aria-label="Carregando linguagens"
+            aria-label={t(locale, "ui.dashboard_loading_languages")}
           >
             {[0, 1, 2].map((item) => (
               <div
@@ -142,10 +150,10 @@ export function CommunityDashboard() {
               <Plus className="size-6" />
             </div>
             <span className="font-bold text-foreground">
-              Crie sua primeira linguagem
+              {t(locale, "ui.dashboard_create_first_language")}
             </span>
             <span className="mt-2 max-w-md text-sm text-muted-foreground">
-              Comece por um estilo pronto ou defina cada detalhe da gramática.
+              {t(locale, "ui.dashboard_create_first_language_description")}
             </span>
           </button>
         ) : (
@@ -166,12 +174,13 @@ export function CommunityDashboard() {
                       {language.name}
                     </h3>
                     <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                      {language.description || "Linguagem personalizada"}
+                      {language.description ||
+                        t(locale, "ui.dashboard_custom_language")}
                     </p>
                   </div>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-1.5">
-                  {getLanguageDNAChips(language.dna).map((item) => (
+                  {getLanguageDNAChips(language.dna, locale).map((item) => (
                     <span
                       key={item}
                       className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2 py-1 text-[10px] font-medium text-cyan-700 dark:border-cyan-300/12 dark:bg-cyan-300/5 dark:text-cyan-100/80"
@@ -188,7 +197,7 @@ export function CommunityDashboard() {
                   className="mt-auto inline-flex items-center gap-2 pt-4 text-xs font-bold text-cyan-700 hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200"
                 >
                   <Dna className="size-4" />
-                  Explorar DNA
+                  {t(locale, "ui.dashboard_explore_dna")}
                 </button>
               </article>
             ))}

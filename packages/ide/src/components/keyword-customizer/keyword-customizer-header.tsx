@@ -4,6 +4,7 @@ import { Title } from "@/components/text/title";
 import { useKeywordCustomizer } from "./keyword-customizer-context";
 import { WizardStep } from "./keyword-customizer-types";
 import { WizardStepId } from "./wizard-model";
+import { useWizardTranslation } from "./use-wizard-translation";
 
 export type KeywordCustomizerHeaderProps = {
   steps: readonly WizardStep[];
@@ -15,6 +16,7 @@ export function KeywordCustomizerHeader({
   activeStepId,
 }: KeywordCustomizerHeaderProps) {
   const { saveMode, name } = useKeywordCustomizer();
+  const wt = useWizardTranslation();
   const isEditing = saveMode === "update" && name.trim().length > 0;
   const activeIndex = steps.findIndex((step) => step.id === activeStepId);
   const progress = Math.round(((activeIndex + 1) / steps.length) * 100);
@@ -24,14 +26,16 @@ export function KeywordCustomizerHeader({
       <div className="flex items-center -mt-4">
         <Title as="h4" id="keyword-customizer-title">
           <GradientText>
-            {isEditing ? `Editando ${name}` : "Explorador Universal"}
+            {isEditing
+              ? wt("header.editTitle", { name })
+              : wt("header.createTitle")}
           </GradientText>
         </Title>
         <div className="backdrop-blur-[2px] p-2 bg-slate-400/10 rounded-md ml-2 mt-1">
           <Subtitle id="keyword-customizer-description">
             {isEditing
-              ? "Suas alterações substituem a linguagem salva."
-              : "Torne a experiência de codar tão única quanto você."}
+              ? wt("header.editDescription")
+              : wt("header.createDescription")}
           </Subtitle>
         </div>
         {/* <div className="pr-2">

@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useActiveLanguage } from "@/hooks/useLanguages";
 import { useEditor } from "@/hooks/useEditor";
+import { useRouter } from "next/router";
 import { updateJavaMMKeywords } from "@/utils/compiler/editor/editor-language";
 import { normalizeLanguageDocumentationMap } from "@/lib/compiler-config";
 import { buildLexerConfigFromCustomization } from "@/lib/keyword-customization";
@@ -268,6 +269,7 @@ function resolveNextValue<T>(value: T | ((current: T) => T), current: T): T {
 }
 
 export function KeywordProvider({ children }: { children: ReactNode }) {
+  const { locale } = useRouter();
   const [customization, setCustomizationState] =
     useState<StoredKeywordCustomization>(getDefaultCustomizationState);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -283,8 +285,16 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
 
   const auth = useAuth();
   const isLoggedIn = auth?.isAuthenticated ?? false;
+  const isAuthReady =
+    (auth?.isHydrated ?? true) && !(auth?.isProfileLoading ?? false);
   const activeLanguageQuery = useActiveLanguage(isLoggedIn);
   const activeLanguageData = activeLanguageQuery.data;
+  const isReady =
+    isHydrated &&
+    isAuthReady &&
+    (externalLanguageOverlay !== null ||
+      !isLoggedIn ||
+      activeLanguageQuery.isFetched);
 
   // Carregar do localStorage após montar no client
   useEffect(() => {
@@ -337,11 +347,12 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
           statementTerminatorLexeme: configToUse.statementTerminatorLexeme,
           typingMode: configToUse.modes.typing,
           arrayMode: configToUse.modes.array,
+          locale,
         });
         retokenize?.();
       }
     },
-    [monacoRef, retokenize, customization],
+    [monacoRef, retokenize, customization, locale],
   );
 
   // Atualizar Monaco quando a página é carregada
@@ -473,6 +484,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
   const contextValue = useMemo(
     () => ({
       customization,
+      isReady,
       activeLanguageId,
       externalLanguageOverlay,
       applyExternalCustomization,
@@ -489,6 +501,7 @@ export function KeywordProvider({ children }: { children: ReactNode }) {
     }),
     [
       customization,
+      isReady,
       activeLanguageId,
       externalLanguageOverlay,
       applyExternalCustomization,

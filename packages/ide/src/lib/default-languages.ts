@@ -243,7 +243,7 @@ export const DEFAULT_LANGUAGES: DefaultLanguage[] = [
     description: "Sintaxe com chaves, tipos explicitos e ponto e virgula.",
     imageUrl: "/images/ein.png",
     imageQuery: "c programming language braces",
-    presetId: "minimal",
+    presetId: "free",
     customization: C_LIKE_CUSTOMIZATION,
   },
   {

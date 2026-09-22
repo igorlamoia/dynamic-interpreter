@@ -3,7 +3,7 @@
 import { ShowTokens } from "../tokens/show-tokens";
 import { useLexerAnalyse } from "../../hooks/useLexerAnalyse";
 import { ListIntermediateCode } from "../tokens/list-intermediate-code";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Menu } from "./components/menu";
 import {
   SidebarPanel,
@@ -33,19 +33,14 @@ import type { MarkerSeverity } from "monaco-editor";
 import type { IssueDetails } from "@ts-compilator-for-java/compiler/issue";
 import { ESeverity, type TLineAlert } from "@/@types/editor";
 import { useToast } from "@/contexts/ToastContext";
-import { t } from "@/i18n";
+import { getIdeIntl, resolveLocale, t } from "@/i18n";
 import { cn } from "@/lib/utils";
-
-const DEFAULT_FILES = [
-  { path: "src/main.?", initialCode: "// Main file\n" },
-  { path: "src/grammar/stmt.?", initialCode: "// Grammar stmt\n" },
-  { path: "src/grammar/expr.?", initialCode: "// Grammar expr\n" },
-  { path: "src/grammar/token.?", initialCode: "// Grammar token\n" },
-  { path: "src/ir/emitter.ts", initialCode: "// IR Emitter\n" },
-  { path: "src/ir/interpreter.ts", initialCode: "// Interpreter\n" },
-  { path: "tests/lexer.spec.ts", initialCode: "// Lexer tests\n" },
-  { path: "README.md", initialCode: "# Project README\n" },
-];
+import {
+  createDefaultFiles,
+  createLocaleSyncedDefaultFiles,
+} from "./defaultFiles";
+import { useLanguageChoices } from "@/hooks/useLanguageChoices";
+import { LanguageSampleDialog } from "./components/side-explorer/language-panel";
 
 export function IDEProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -67,7 +62,8 @@ export function IDEView() {
 export function IDE() {
   const { locale } = useRouter();
   const { showToast } = useToast();
-  const { buildLexerConfig } = useKeywords();
+  const { buildLexerConfig, isReady: areKeywordsReady } = useKeywords();
+  const languageChoices = useLanguageChoices();
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
   const { handleRun, analyseData, showScrollArrow, setShowScrollArrow } =
@@ -77,6 +73,7 @@ export function IDE() {
     clearCurrentDebugLine,
     cleanIssues,
     fileSystem,
+    getSourceCodeStorageKey,
     getEditorCode,
     loadFileContent,
     selectedDebugLines,
@@ -85,6 +82,7 @@ export function IDE() {
     sourceCode,
     initialCode,
     storageScope,
+    updateSourceCode,
   } = useContext(EditorContext);
   const lexerConfig = buildLexerConfig();
 
@@ -138,12 +136,15 @@ export function IDE() {
 
   const [activeFile, setActiveFile] = useState("src/main.?");
   const [openTabs, setOpenTabs] = useState<string[]>(["src/main.?"]);
+  const syncedTemplateLocaleRef = useRef<string | null>(null);
 
   // Initialize default files on first load
   useEffect(() => {
     if (!fileSystem.isLoaded) return;
 
-    DEFAULT_FILES.forEach(({ path, initialCode: fileDefaultCode }) => {
+    const defaultFiles = createDefaultFiles(getIdeIntl(locale).files);
+
+    defaultFiles.forEach(({ path, initialCode: fileDefaultCode }) => {
       if (!fileSystem.fileExists(path)) {
         let code = fileDefaultCode;
         if (path === "src/main.?") {
@@ -155,10 +156,43 @@ export function IDE() {
       }
     });
 
-    // Load the initial active file
-    loadFileContent(activeFile);
+    // Load the initial active file using the same locale template used above.
+    const activeDefaultCode = defaultFiles.find(
+      (file) => file.path === activeFile,
+    )?.initialCode;
+    loadFileContent(activeFile, activeDefaultCode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileSystem.isLoaded]);
+
+  // Keep educational template files translated when the interface locale changes.
+  // The main program remains user-owned and is not overwritten.
+  useEffect(() => {
+    if (!fileSystem.isLoaded) return;
+    const resolvedLocale = resolveLocale(locale);
+    if (syncedTemplateLocaleRef.current === resolvedLocale) return;
+
+    const localizedTemplateFiles = createLocaleSyncedDefaultFiles(
+      getIdeIntl(resolvedLocale).files,
+    );
+
+    localizedTemplateFiles.forEach(({ path, initialCode: fileDefaultCode }) => {
+      fileSystem.createOrUpdateFile(path, fileDefaultCode);
+      localStorage.setItem(
+        getSourceCodeStorageKey?.(path) ?? `source-code-${path}`,
+        fileDefaultCode,
+      );
+    });
+
+    const activeTemplate = localizedTemplateFiles.find(
+      ({ path }) => path === activeFile,
+    );
+    if (activeTemplate) {
+      updateSourceCode(activeTemplate.initialCode);
+    }
+
+    syncedTemplateLocaleRef.current = resolvedLocale;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale, fileSystem.isLoaded]);
 
   // Handle active file changes
   useEffect(() => {
@@ -180,6 +214,7 @@ export function IDE() {
   };
 
   const runAll = async () => {
+    if (!areKeywordsReady) return;
     const tokens = await handleRun();
     if (!tokens) return;
     const isIntermediateGenerated =
@@ -209,6 +244,7 @@ export function IDE() {
   const [activeView, setActiveView] = useState<SidebarView>("explorer");
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isLanguageSampleOpen, setIsLanguageSampleOpen] = useState(false);
   const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
   const toggleFullscreen = () => setIsFullscreen((current) => !current);
   useKeyboardShortcuts(
@@ -238,7 +274,9 @@ export function IDE() {
           >
             <Menu
               handleRun={handleRun}
+              isRunDisabled={!areKeywordsReady}
               isFullscreen={isFullscreen}
+              onHelp={() => setIsLanguageSampleOpen(true)}
               runAll={runAll}
               toggleFullscreen={toggleFullscreen}
               toggleTerminal={toggleTerminal}
@@ -287,6 +325,7 @@ export function IDE() {
                         onRestart: restartDebug,
                         onStop: stopDebug,
                       }}
+                      languageChoices={languageChoices}
                       setActiveFile={setActiveFile}
                       setOpenTabs={setOpenTabs}
                     />
@@ -300,6 +339,7 @@ export function IDE() {
                     toggleTerminal={toggleTerminal}
                     intermediateCode={intermediateCode}
                     debugSession={debugSession}
+                    locale={locale}
                   />
                 </div>
               </AnimatePresence>
@@ -328,6 +368,12 @@ export function IDE() {
               setOpenTabs([...openTabs, filePath]);
             }
           }}
+        />
+        <LanguageSampleDialog
+          activeLanguage={languageChoices.activeLanguage}
+          locale={locale}
+          open={isLanguageSampleOpen}
+          onOpenChange={setIsLanguageSampleOpen}
         />
         <div className="flex flex-col gap-4">
           <ShowTokens analyseData={analyseData} />

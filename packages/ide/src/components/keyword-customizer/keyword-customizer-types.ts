@@ -11,14 +11,14 @@ import type {
 import type { WizardPreview } from "./preview-data";
 import type {
   WizardPresetId,
+  WizardStepDefinition,
   WizardStepId,
-  WIZARD_STEPS,
 } from "./wizard-model";
 import type { KeywordCustomizerErrorState } from "./keyword-customizer-validation";
 import type { IdentityImageSearchResult } from "./steps/identity-step";
 import type { LanguageSaveMode } from "@/hooks/useLanguagePersistence";
 
-export type WizardStep = (typeof WIZARD_STEPS)[number];
+export type WizardStep = WizardStepDefinition;
 
 export type KeywordCustomizerSyncActions = {
   syncKeyword: (original: string, value: string) => void;
@@ -71,6 +71,7 @@ export type KeywordCustomizerContextValue = {
   hasChanges: boolean;
   saveMode: LanguageSaveMode;
   editingLanguageId: number | null;
+  locale?: string;
   /** Falso enquanto a sessão não hidratou: salvar ainda não é confiável. */
   isSaveReady: boolean;
   actions: KeywordCustomizerSyncActions & KeywordCustomizerWizardActions;

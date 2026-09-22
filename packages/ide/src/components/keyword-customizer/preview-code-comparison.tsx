@@ -9,6 +9,7 @@ import {
   JAVAMM_LANGUAGE_ID,
   registerJavaMMLanguage,
 } from "@/utils/compiler/editor/editor-language";
+import { useWizardTranslation } from "./use-wizard-translation";
 
 type PreviewCodeComparisonProps = {
   title: string;
@@ -31,6 +32,7 @@ export function PreviewCodeComparison({
 }: PreviewCodeComparisonProps) {
   const { darkMode } = useTheme();
   const { draftCustomization } = useKeywordCustomizer();
+  const wt = useWizardTranslation();
   const [beforeHighlightedHtml, setBeforeHighlightedHtml] = useState("");
   const [afterHighlightedHtml, setAfterHighlightedHtml] = useState("");
 
@@ -117,7 +119,7 @@ export function PreviewCodeComparison({
         afterFocusedLines={afterFocusedLines}
         beforeFocusedWords={beforeFocusedWords}
         afterFocusedWords={afterFocusedWords}
-        filename="Linguagem.?"
+        filename={wt("codeComparison.filename")}
         lightTheme="github-light"
         darkTheme="github-dark"
         highlightColor="rgba(101, 117, 133, 0.16)"

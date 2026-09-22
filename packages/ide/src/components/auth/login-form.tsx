@@ -12,11 +12,18 @@ import {
 } from "@/components/ui/form";
 import type { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/router";
+import { t } from "@/i18n";
 
-export const loginSchema = z.object({
-  email: z.email("E-mail inválido"),
-  password: z.string().min(4, "Senha deve ter pelo menos 4 caracteres"),
-});
+export const createLoginSchema = (locale?: string) =>
+  z.object({
+    email: z.email(t(locale, "ui.login_error_invalid_email")),
+    password: z
+      .string()
+      .min(4, t(locale, "ui.login_error_password_min")),
+  });
+
+export const loginSchema = createLoginSchema();
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -29,6 +36,8 @@ export function LoginForm({
   onSubmit: (values: LoginFormValues) => Promise<void>;
   serverError: string;
 }) {
+  const { locale } = useRouter();
+
   return (
     <Form {...form}>
       <form
@@ -45,9 +54,13 @@ export function LoginForm({
           name="email"
           render={({ field }) => (
             <FormItem className="text-left">
-              <FormLabel>Endereço de E-mail</FormLabel>
+              <FormLabel>{t(locale, "ui.login_email_label")}</FormLabel>
               <FormControl>
-                <Input placeholder="nome@empresa.com" type="email" {...field} />
+                <Input
+                  placeholder={t(locale, "ui.login_email_placeholder")}
+                  type="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -62,13 +75,13 @@ export function LoginForm({
             <FormItem className="text-left">
               <div className="flex justify-between items-center ml-1">
                 <FormLabel className="text-xs font-semibold uppercase tracking-wider">
-                  Senha
+                  {t(locale, "ui.login_password_label")}
                 </FormLabel>
                 <Link
                   href="#"
                   className="text-xs text-primary hover:text-emerald-400 transition-colors"
                 >
-                  Esqueceu a senha?
+                  {t(locale, "ui.login_forgot_password")}
                 </Link>
               </div>
               <FormControl>
@@ -85,7 +98,7 @@ export function LoginForm({
           className="py-3"
           isLoading={form.formState.isSubmitting}
         >
-          Entrar no Painel
+          {t(locale, "ui.login_submit")}
           <LogIn />
         </HeroButton>
       </form>

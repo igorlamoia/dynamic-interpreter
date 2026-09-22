@@ -21,6 +21,7 @@ interface MainSectionProps {
   toggleTerminal: () => void;
   intermediateCode?: { instructions: Instruction[] };
   debugSession?: DebugTerminalSession;
+  locale?: string;
 }
 
 export function MainSection({
@@ -32,6 +33,7 @@ export function MainSection({
   toggleTerminal,
   intermediateCode,
   debugSession,
+  locale,
 }: MainSectionProps) {
   const editorContext = useContext(EditorContext);
 
@@ -75,6 +77,7 @@ export function MainSection({
           debugSession={debugSession}
           intermediateCode={intermediateCode?.instructions || []}
           isTerminalOpen={isTerminalOpen}
+          locale={locale}
           toggleTerminal={toggleTerminal}
         />
       </div>

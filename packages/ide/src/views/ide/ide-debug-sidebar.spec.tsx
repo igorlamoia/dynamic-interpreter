@@ -33,6 +33,7 @@ const mocks = vi.hoisted(() => ({
   }>,
   start: vi.fn(),
   markStale: vi.fn(),
+  selectLanguage: vi.fn(),
   stepInto: vi.fn(),
   stepOut: vi.fn(),
   stepOver: vi.fn(),
@@ -56,6 +57,7 @@ vi.mock("@/contexts/keyword/KeywordContext", () => ({
   ),
   useKeywords: () => ({
     buildLexerConfig: mocks.buildLexerConfig,
+    isReady: true,
   }),
 }));
 
@@ -83,6 +85,16 @@ vi.mock("@/contexts/ToastContext", () => ({
 
 vi.mock("@/hooks/useDebugSession", () => ({
   useDebugSession: mocks.useDebugSession,
+}));
+
+vi.mock("@/hooks/useLanguageChoices", () => ({
+  useLanguageChoices: () => ({
+    choices: [],
+    activeKey: "",
+    activeLanguage: null,
+    isSelectionLocked: false,
+    selectLanguage: mocks.selectLanguage,
+  }),
 }));
 
 vi.mock("@/hooks/useIntermediatorCode", () => ({
@@ -143,19 +155,26 @@ vi.mock("../tokens/list-intermediate-code", () => ({
 vi.mock("./components/menu", () => ({
   Menu: ({
     isFullscreen,
+    onHelp,
     toggleFullscreen,
   }: {
     isFullscreen?: boolean;
+    onHelp?: () => void;
     toggleFullscreen?: () => void;
   }) => (
-    <button
-      aria-label="Toggle fullscreen"
-      data-fullscreen={String(isFullscreen)}
-      onClick={toggleFullscreen}
-      type="button"
-    >
-      Toggle fullscreen
-    </button>
+    <div>
+      <button
+        aria-label="Toggle fullscreen"
+        data-fullscreen={String(isFullscreen)}
+        onClick={toggleFullscreen}
+        type="button"
+      >
+        Toggle fullscreen
+      </button>
+      <button aria-label="Help" onClick={onHelp} type="button">
+        Help
+      </button>
+    </div>
   ),
 }));
 
@@ -202,6 +221,11 @@ vi.mock("./components/side-explorer/sidebar-panel", () => ({
     mocks.sidebarPanelProps.push(props);
     return <div data-testid="sidebar-panel">{props.activeView}</div>;
   },
+}));
+
+vi.mock("./components/side-explorer/language-panel", () => ({
+  LanguageSampleDialog: ({ open }: { open: boolean }) =>
+    open ? <div data-testid="language-sample-dialog" /> : null,
 }));
 
 function createEditorContext(): TEditorContextType {
@@ -472,6 +496,41 @@ describe("IDE debug sidebar wiring", () => {
 
     expect(shell?.className).toContain("fixed");
     expect(toggle?.getAttribute("data-fullscreen")).toBe("true");
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("opens the language sample dialog from the menu help button", () => {
+    const editorContext = createEditorContext();
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <EditorContext.Provider value={editorContext}>
+          <IDE />
+        </EditorContext.Provider>,
+      );
+    });
+
+    expect(
+      container.querySelector('[data-testid="language-sample-dialog"]'),
+    ).toBeNull();
+
+    act(() => {
+      container
+        .querySelector('button[aria-label="Help"]')
+        ?.dispatchEvent(
+          new MouseEvent("click", { bubbles: true, cancelable: true }),
+        );
+    });
+
+    expect(
+      container.querySelector('[data-testid="language-sample-dialog"]'),
+    ).not.toBeNull();
 
     act(() => {
       root.unmount();

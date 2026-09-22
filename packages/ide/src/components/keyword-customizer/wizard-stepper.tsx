@@ -10,6 +10,7 @@ import type { WizardStepIcon, WizardStepId } from "./wizard-model";
 import React, { useEffect, useState } from "react";
 import { PreviewPanelProps } from "./preview-panel";
 import Image from "next/image";
+import { useWizardTranslation } from "./use-wizard-translation";
 // import { TokenPreview } from "./keyword-customizer/token-preview";
 
 type WizardStep = {
@@ -32,6 +33,7 @@ export function WizardStepper({
   onStepClick,
   preview,
 }: WizardStepperProps) {
+  const wt = useWizardTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const activeIndex = steps.findIndex((step) => step.id === activeStepId);
   const activeStep = steps[activeIndex] ?? steps[0];
@@ -83,7 +85,7 @@ export function WizardStepper({
                   {activeStep?.title}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  de {steps.length} etapas
+                  {wt("stepper.stepCount", { count: steps.length })}
                 </p>
               </div>
             </div>
@@ -153,6 +155,7 @@ function LanguageBasedCard({
 }: {
   preview: PreviewPanelProps["preview"];
 }) {
+  const wt = useWizardTranslation();
   const imageUrl = preview.languageImageUrl || "/images/language-default.png";
 
   return (
@@ -162,7 +165,7 @@ function LanguageBasedCard({
     >
       <div className="space-y-1 px-1">
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">
-          Baseado em
+          {wt("stepper.basedOn")}
         </p>
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
           {preview.basedOnLabel}
@@ -184,7 +187,7 @@ function LanguageBasedCard({
         <div className="absolute inset-x-0 bottom-0 z-10">
           <div className="rounded-xl border border-white/10 bg-slate-950/55 p-2 backdrop-blur-[3px]">
             <p className="text-[8px] font-semibold uppercase tracking-[0.32em] text-cyan-200/80">
-              Nome da linguagem
+              {wt("stepper.languageName")}
             </p>
             <p className="mt-1 text-sm font-semibold tracking-[0.02em] text-white">
               {preview.name}
@@ -197,7 +200,7 @@ function LanguageBasedCard({
 
       <div className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-          DNA da linguagem
+          {wt("stepper.languageDna")}
         </p>
         <div className="flex flex-wrap gap-2">
           {preview.dna.map((item) => (

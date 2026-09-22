@@ -4,6 +4,7 @@ import { DocumentedField } from "../documented-field";
 import { OptionCard } from "../option-card";
 import { Braces, Form, ListPlus, LockKeyhole, TextQuote } from "lucide-react";
 import { Step } from "./components/step";
+import { useWizardTranslation } from "../use-wizard-translation";
 
 export type StructureStepProps = {
   values: {
@@ -59,32 +60,34 @@ export type StructureStepProps = {
 };
 
 export function StructureStep({ values, errors, actions }: StructureStepProps) {
+  const wt = useWizardTranslation();
+
   return (
     <section className="space-y-6">
       <Step.Header>
-        <Step.Index>Etapa 4</Step.Index>
-        <Step.Title>Estrutura</Step.Title>
+        <Step.Index>{wt("structure.index")}</Step.Index>
+        <Step.Title>{wt("structure.title")}</Step.Title>
         <Step.Description>
-          Configure blocos, delimitadores e como cada instrução termina.
+          {wt("structure.description")}
         </Step.Description>
       </Step.Header>
 
       <div className="grid gap-3 md:grid-cols-2">
         <OptionCard
-          title="Delimitada"
-          subtitle="Abertura e fechamento"
+          title={wt("structure.delimitedTitle")}
+          subtitle={wt("structure.delimitedSubtitle")}
           icon={<Form className="h-5 w-5" />}
           iconColor="emerald"
-          description="Mantém a estrutura delimitada (início e fim)."
+          description={wt("structure.delimitedDescription")}
           selected={values.blockMode === "delimited"}
           onClick={() => actions.syncBlockMode("delimited")}
         >
           <ExampleSnippet showHeader={false} code={values.delimiterSnippet} />
         </OptionCard>
         <OptionCard
-          title="Indentação"
-          subtitle="Espaços em branco"
-          description="Organiza blocos pela indentação, sem delimitadores."
+          title={wt("structure.indentationTitle")}
+          subtitle={wt("structure.indentationSubtitle")}
+          description={wt("structure.indentationDescription")}
           selected={values.blockMode === "indentation"}
           onClick={() => actions.syncBlockMode("indentation")}
           icon={<TextQuote className="h-5 w-5" />}
@@ -96,7 +99,7 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <DocumentedField
-          label="Delimitador de abertura"
+          label={wt("structure.openDelimiter")}
           value={values.delimiters.open.value}
           description={values.delimiters.open.description}
           onValueChange={(value) => actions.syncDelimiter("open", value)}
@@ -112,7 +115,7 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
         />
 
         <DocumentedField
-          label="Delimitador de fechamento"
+          label={wt("structure.closeDelimiter")}
           value={values.delimiters.close.value}
           description={values.delimiters.close.description}
           onValueChange={(value) => actions.syncDelimiter("close", value)}
@@ -134,15 +137,15 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
         </p>
       )}
       <ExampleSnippet
-        title="Exemplo estrutural"
+        title={wt("structure.structuralExample")}
         code={values.snippet ?? 'if (condicao) {\n  print("ok")\n}'}
       />
 
       <div className="grid gap-3 sm:grid-cols-2">
         <OptionCard
-          title="Sem ponto e vírgula"
-          subtitle="Linha"
-          description="Não precisa se preocupar com terminadores, mas não pode colocar mais de uma instrução na mesma linha."
+          title={wt("structure.optionalTerminatorTitle")}
+          subtitle={wt("structure.optionalTerminatorSubtitle")}
+          description={wt("structure.optionalTerminatorDescription")}
           selected={values.semicolonMode === "optional-eol"}
           onClick={() => actions.syncSemicolonMode("optional-eol")}
           icon={<TextQuote className="h-5 w-5" />}
@@ -155,9 +158,9 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
         </OptionCard>
 
         <OptionCard
-          title="Exigir terminador"
-          subtitle="Explícito"
-          description="Mantém o terminador explícito. Pode ser um ponto e vírgula ou outro símbolo customizado. Se esquecer, o código não roda."
+          title={wt("structure.requiredTerminatorTitle")}
+          subtitle={wt("structure.requiredTerminatorSubtitle")}
+          description={wt("structure.requiredTerminatorDescription")}
           selected={values.semicolonMode === "required"}
           onClick={() => actions.syncSemicolonMode("required")}
           icon={<LockKeyhole className="h-5 w-5" />}
@@ -172,12 +175,12 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
 
       <div className="space-y-2">
         <DocumentedField
-          label="Terminador customizado"
+          label={wt("structure.statementTerminator")}
           value={values.statementTerminator.value}
           description={values.statementTerminator.description}
           onValueChange={actions.syncStatementTerminator}
           onDescriptionChange={actions.syncStatementTerminatorDescription}
-          placeholder="Opcional"
+          placeholder={wt("structure.optionalPlaceholder")}
           icon={{
             icon: ";",
           }}
@@ -192,9 +195,9 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
 
       <div className="grid gap-3 md:grid-cols-2">
         <OptionCard
-          title="Tamanho fixo"
-          subtitle="Vetor/Matriz"
-          description="Mantém os vetores e matrizes fixas. O tamanho deve ser declarado no momento da criação e não pode ser alterado depois."
+          title={wt("structure.fixedArrayTitle")}
+          subtitle={wt("structure.arraySubtitle")}
+          description={wt("structure.fixedArrayDescription")}
           selected={values.arrayMode === "fixed"}
           onClick={() => actions.syncArrayMode("fixed")}
           icon={<Braces className="h-5 w-5" />}
@@ -203,9 +206,9 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           <ExampleSnippet showHeader={false} code={values.fixedArraySnippet} />
         </OptionCard>
         <OptionCard
-          title="Tamanho dinâmico"
-          subtitle="Vetor/Matriz"
-          description="Permite explorar estruturas mais flexíveis, sem informar o tamanho previamente."
+          title={wt("structure.dynamicArrayTitle")}
+          subtitle={wt("structure.arraySubtitle")}
+          description={wt("structure.dynamicArrayDescription")}
           selected={values.arrayMode === "dynamic"}
           onClick={() => actions.syncArrayMode("dynamic")}
           icon={<ListPlus className="h-5 w-5" />}

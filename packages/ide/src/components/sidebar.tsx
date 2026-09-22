@@ -9,11 +9,11 @@ import {
   LayoutDashboard,
   ListChecks,
 } from "lucide-react";
-import { RainbowButton } from "./ui/rainbow-button";
+import { t } from "@/i18n";
 
 type MenuItem = {
   id: string;
-  label: string;
+  labelKey: string;
   icon: React.ReactNode;
   href: string;
   activeMatchers: string[];
@@ -24,7 +24,7 @@ type MenuItem = {
 // wizard é uma rota irmã, não filha de /languages.
 const languagesMenuItem: MenuItem = {
   id: "linguagens",
-  label: "Minhas Linguagens",
+  labelKey: "ui.sidebar_my_languages",
   icon: <Languages className="w-5 h-5" />,
   href: "/languages",
   activeMatchers: ["/languages", "/language-creator"],
@@ -32,7 +32,7 @@ const languagesMenuItem: MenuItem = {
 
 const communityCatalogMenuItem: MenuItem = {
   id: "comunidade",
-  label: "Comunidade",
+  labelKey: "ui.sidebar_community",
   icon: <Globe2 className="w-5 h-5" />,
   href: "/community/languages",
   activeMatchers: ["/community"],
@@ -41,7 +41,7 @@ const communityCatalogMenuItem: MenuItem = {
 const studentMenu: MenuItem[] = [
   {
     id: "turmas",
-    label: "Minhas Turmas",
+    labelKey: "ui.sidebar_my_classes",
     icon: <BookOpen className="w-5 h-5" />,
     href: "/dashboard",
     activeMatchers: ["/dashboard", "/classes"],
@@ -53,21 +53,21 @@ const studentMenu: MenuItem[] = [
 const teacherMenu: MenuItem[] = [
   {
     id: "painel",
-    label: "Painel do Professor",
+    labelKey: "ui.sidebar_teacher_dashboard",
     icon: <LayoutDashboard className="w-5 h-5" />,
     href: "/dashboard",
     activeMatchers: ["/dashboard", "/classes"],
   },
   {
     id: "exercicios",
-    label: "Meus Exercícios",
+    labelKey: "ui.sidebar_my_exercises",
     icon: <Code2 className="w-5 h-5" />,
     href: "/exercises",
     activeMatchers: ["/exercises"],
   },
   {
     id: "listas",
-    label: "Minhas Listas",
+    labelKey: "ui.sidebar_my_lists",
     icon: <ListChecks className="w-5 h-5" />,
     href: "/exercise-lists",
     activeMatchers: ["/exercise-lists"],
@@ -79,7 +79,7 @@ const teacherMenu: MenuItem[] = [
 const communityMenu: MenuItem[] = [
   {
     id: "painel",
-    label: "Meu Painel",
+    labelKey: "ui.sidebar_my_dashboard",
     icon: <LayoutDashboard className="w-5 h-5" />,
     href: "/dashboard",
     activeMatchers: ["/dashboard"],
@@ -89,7 +89,7 @@ const communityMenu: MenuItem[] = [
 ];
 
 export function Sidebar() {
-  const { pathname } = useRouter();
+  const { locale, pathname } = useRouter();
   const { isAuthenticated, isCommunity, isTeacher } = useAuth();
 
   if (!isAuthenticated) return null;
@@ -129,7 +129,7 @@ export function Sidebar() {
               <span
                 className={`text-[14px] font-bold ${isActive ? "text-foreground dark:text-white" : ""}`}
               >
-                {item.label}
+                {t(locale, item.labelKey)}
               </span>
             </Link>
           );

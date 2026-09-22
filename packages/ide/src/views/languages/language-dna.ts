@@ -1,4 +1,5 @@
 import type { LanguageDNA } from "@/lib/languages-api";
+import { t } from "@/i18n";
 
 const DEFAULT_DNA: LanguageDNA = {
   typing: "typed",
@@ -15,16 +16,21 @@ export function normalizeLanguageDNA(
 
 export function getLanguageDNAChips(
   dna?: Partial<LanguageDNA> | null,
+  locale?: string,
 ): string[] {
   const normalized = normalizeLanguageDNA(dna);
   return [
-    normalized.typing === "typed" ? "Tipada" : "Não tipada",
-    normalized.array === "fixed" ? "Arrays fixos" : "Arrays dinâmicos",
+    normalized.typing === "typed"
+      ? t(locale, "ui.language_dna_typed")
+      : t(locale, "ui.language_dna_untyped"),
+    normalized.array === "fixed"
+      ? t(locale, "ui.language_dna_fixed_arrays")
+      : t(locale, "ui.language_dna_dynamic_arrays"),
     normalized.block === "delimited"
-      ? "Blocos delimitados"
-      : "Blocos indentados",
+      ? t(locale, "ui.language_dna_delimited_blocks")
+      : t(locale, "ui.language_dna_indentation_blocks"),
     normalized.semicolon === "required"
-      ? "Terminador obrigatório"
-      : "Terminador opcional",
+      ? t(locale, "ui.language_dna_required_terminator")
+      : t(locale, "ui.language_dna_optional_terminator"),
   ];
 }

@@ -20,6 +20,10 @@ vi.mock("lucide-react", () => ({
   TextQuote: () => <span>text-quote</span>,
 }));
 
+vi.mock("next/router", () => ({
+  useRouter: () => ({ locale: "pt-BR" }),
+}));
+
 vi.mock("../documented-field", () => ({
   DocumentedField: ({ label }: { label: string }) => <label>{label}</label>,
 }));
@@ -121,7 +125,7 @@ describe("StructureStep", () => {
       expect.arrayContaining([
         "Sem ponto e vírgula",
         "Exigir terminador",
-        "Chaves",
+        "Delimitada",
         "Indentação",
         "Tamanho fixo",
         "Tamanho dinâmico",

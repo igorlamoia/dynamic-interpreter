@@ -122,9 +122,41 @@ export function useSetLanguagePublication() {
 }
 
 export function useSetActiveLanguage() {
-  const invalidate = useInvalidateLanguages();
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (languageId: number | null) => languagesApi.setActive(languageId),
-    onSuccess: () => invalidate(),
+    onMutate: async (languageId) => {
+      await qc.cancelQueries({ queryKey: queryKeys.languages.active });
+      const previousActive = qc.getQueryData<Language | null>(
+        queryKeys.languages.active,
+      );
+      if (languageId === null) {
+        qc.setQueryData(queryKeys.languages.active, null);
+      } else {
+        try {
+          qc.setQueryData(
+            queryKeys.languages.active,
+            await languagesApi.get(languageId),
+          );
+        } catch {
+          // Keep the previous active detail until the mutation response arrives.
+          // A language summary is not enough here because the IDE needs the
+          // compiler customization from the detail payload.
+        }
+      }
+
+      return { previousActive };
+    },
+    onSuccess: (activeLanguage) => {
+      qc.setQueryData(queryKeys.languages.active, activeLanguage);
+      qc.invalidateQueries({ queryKey: queryKeys.languages.all });
+      qc.invalidateQueries({ queryKey: ["languages", "community"] });
+    },
+    onError: (_error, _languageId, context) => {
+      qc.setQueryData(
+        queryKeys.languages.active,
+        context?.previousActive ?? null,
+      );
+    },
   });
 }

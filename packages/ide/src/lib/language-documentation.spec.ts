@@ -6,6 +6,15 @@ import {
 } from "./language-documentation";
 
 describe("language documentation", () => {
+  it("translates default descriptions by locale", () => {
+    expect(getDefaultDocumentationDescription("keyword.print", "en")).toBe(
+      "Displays values in the language output.",
+    );
+    expect(getDefaultDocumentationDescription("keyword.print", "es")).toBe(
+      "Muestra valores en la salida del lenguaje.",
+    );
+  });
+
   it("resolves renamed keywords by semantic id", () => {
     const customization = getDefaultCustomizationState();
     customization.mappings = customization.mappings.map((mapping) =>
@@ -106,6 +115,23 @@ describe("language documentation", () => {
       lexeme: "sim",
       category: "Literal booleano",
       description: getDefaultDocumentationDescription("boolean.true"),
+    });
+  });
+
+  it("uses translated fallbacks when resolving documentation by lexeme", () => {
+    const customization = getDefaultCustomizationState();
+    customization.booleanLiteralMap = {
+      true: "yes",
+      false: "no",
+    };
+
+    const entry = resolveDocumentationByLexeme("yes", customization, "en");
+
+    expect(entry).toEqual({
+      id: "boolean.true",
+      lexeme: "yes",
+      category: "Literal booleano",
+      description: "Represents the logical true value.",
     });
   });
 });
