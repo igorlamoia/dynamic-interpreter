@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { useToast } from "@/contexts/ToastContext";
 import {
   AlertDialog,
@@ -24,6 +25,7 @@ import {
   useExercisesQuery,
   useRemoveExerciseFromListMutation,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export function deadlineInfo(deadline: string) {
   const diff = new Date(deadline).getTime() - Date.now();
@@ -61,6 +63,7 @@ export function TeacherDetailView({
   list: ExerciseList;
   classes: ClassOption[];
 }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const [showPublish, setShowPublish] = useState(false);
   const [showAddExercise, setShowAddExercise] = useState(false);
@@ -102,9 +105,15 @@ export function TeacherDetailView({
   const handleRemoveExercise = async (exerciseId: string) => {
     try {
       await removeExercise.mutateAsync(exerciseId);
-      showToast({ type: "success", message: "Exercício removido." });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercise_lists_remove_exercise_success"),
+      });
     } catch {
-      showToast({ type: "error", message: "Erro ao remover exercício." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercise_lists_remove_exercise_error"),
+      });
     } finally {
       setRemoveTarget(null);
     }
@@ -129,7 +138,7 @@ export function TeacherDetailView({
               className="gap-2 px-4 py-2 text-sm"
             >
               <Send className="w-3.5 h-3.5" />
-              Publicar
+              {t(locale, "ui.exercise_lists_publish")}
             </HeroButton>
           </div>
         </div>
@@ -143,7 +152,7 @@ export function TeacherDetailView({
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-primary" />
             <h2 className="font-semibold text-foreground">
-              Exercícios nesta lista
+              {t(locale, "ui.exercise_lists_exercises_in_list")}
             </h2>
             <span className="text-xs text-muted-foreground ml-1">
               ({list.items.length})
@@ -155,14 +164,16 @@ export function TeacherDetailView({
             className="gap-1.5 px-3 py-1.5 text-xs"
           >
             <Plus className="w-3.5 h-3.5" />
-            Adicionar
+            {t(locale, "ui.exercise_lists_add")}
           </HeroButton>
         </div>
 
         {list.items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <BookOpen className="w-8 h-8 mb-3 opacity-40" />
-            <p className="text-sm">Nenhum exercício adicionado ainda.</p>
+            <p className="text-sm">
+              {t(locale, "ui.exercise_lists_no_exercises_added")}
+            </p>
           </div>
         ) : (
           <ul>
@@ -212,19 +223,20 @@ export function TeacherDetailView({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remover exercício?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t(locale, "ui.exercise_lists_remove_exercise_title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Este exercício será removido da lista. As submissões existentes
-              não serão afetadas.
+              {t(locale, "ui.exercise_lists_remove_exercise_description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t(locale, "ui.dashboard_cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => removeTarget && handleRemoveExercise(removeTarget)}
               className="bg-red-600 hover:bg-red-700"
             >
-              Remover
+              {t(locale, "ui.exercise_lists_remove")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

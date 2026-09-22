@@ -6,7 +6,9 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import { useRouter } from "next/router";
 import type { Exercise } from "@/types/api";
+import { t } from "@/i18n";
 
 export function ExerciseCard({
   exercise,
@@ -19,7 +21,8 @@ export function ExerciseCard({
   onEdit: () => void;
   onDelete: () => void;
 }) {
-  const createdDate = new Date(exercise.createdAt).toLocaleDateString("pt-BR", {
+  const { locale } = useRouter();
+  const createdDate = new Date(exercise.createdAt).toLocaleDateString(locale, {
     day: "2-digit",
     month: "short",
   });
@@ -47,8 +50,13 @@ export function ExerciseCard({
       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <FlaskConical className="w-3.5 h-3.5 text-emerald-400/60" />
-          {exercise.testCases.length} caso
-          {exercise.testCases.length !== 1 ? "s" : ""} de teste
+          {t(
+            locale,
+            exercise.testCases.length === 1
+              ? "ui.exercises_test_case_singular"
+              : "ui.exercises_test_case_plural",
+            { count: exercise.testCases.length },
+          )}
         </span>
         <span className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 text-slate-500/60" />
@@ -62,19 +70,23 @@ export function ExerciseCard({
           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors cursor-pointer"
         >
           <Eye className="w-3.5 h-3.5" />
-          Visualizar
+          {t(locale, "ui.exercises_view")}
         </button>
         <button
           onClick={onEdit}
           className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold hover:bg-amber-500/20 transition-colors cursor-pointer"
-          aria-label={`Editar ${exercise.title}`}
+          aria-label={t(locale, "ui.exercises_edit_named", {
+            title: exercise.title,
+          })}
         >
           <Pencil className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={onDelete}
           className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold hover:bg-rose-500/20 transition-colors cursor-pointer"
-          aria-label={`Excluir ${exercise.title}`}
+          aria-label={t(locale, "ui.exercises_delete_named", {
+            title: exercise.title,
+          })}
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>

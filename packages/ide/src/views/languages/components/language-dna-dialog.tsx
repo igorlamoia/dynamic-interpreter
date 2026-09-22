@@ -9,6 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getLanguageDNAChips } from "../language-dna";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 type LanguageDnaDialogProps = {
   languageId: number | undefined;
@@ -32,9 +34,11 @@ const OPERATOR_LABELS: Record<string, string> = {
 function ValueList({
   title,
   items,
+  locale,
 }: {
   title: string;
   items: Array<{ label: string; value: string }>;
+  locale?: string;
 }) {
   return (
     <section className="rounded-2xl border border-border bg-card/80 p-4 dark:border-white/8 dark:bg-white/3">
@@ -43,7 +47,7 @@ function ValueList({
       </h3>
       {items.length === 0 ? (
         <p className="mt-3 text-sm text-muted-foreground">
-          Configuração padrão
+          {t(locale, "ui.languages_default_config")}
         </p>
       ) : (
         <dl className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -56,7 +60,7 @@ function ValueList({
                 {item.label}
               </dt>
               <dd className="mt-1 break-words font-mono text-sm text-cyan-700 dark:text-cyan-100">
-                {item.value || "Padrão do compilador"}
+                {item.value || t(locale, "ui.languages_compiler_default")}
               </dd>
             </div>
           ))}
@@ -72,6 +76,7 @@ export function LanguageDnaDialog({
   open,
   onOpenChange,
 }: LanguageDnaDialogProps) {
+  const { locale } = useRouter();
   const languageQuery = useLanguageDetail(languageId, open);
   const language = languageQuery.data;
   const customization = language?.customization;
@@ -85,7 +90,10 @@ export function LanguageDnaDialog({
   );
   const booleans = Object.entries(customization?.booleanLiteralMap ?? {}).map(
     ([key, value]) => ({
-      label: key === "true" ? "Verdadeiro" : "Falso",
+      label:
+        key === "true"
+          ? t(locale, "ui.languages_boolean_true")
+          : t(locale, "ui.languages_boolean_false"),
       value,
     }),
   );
@@ -103,17 +111,17 @@ export function LanguageDnaDialog({
             </div>
             <div className="min-w-0">
               <DialogTitle className="truncate text-xl">
-                DNA da linguagem
+                {t(locale, "ui.languages_dna_title")}
               </DialogTitle>
               <DialogDescription className="truncate">
-                {name || "Configuração da linguagem"}
+                {name || t(locale, "ui.languages_config")}
               </DialogDescription>
             </div>
           </div>
           <DialogClose asChild>
             <button
               type="button"
-              aria-label="Fechar DNA da linguagem"
+              aria-label={t(locale, "ui.languages_close_dna")}
               className="rounded-xl p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 dark:hover:bg-white/8 dark:hover:text-white"
             >
               <X className="size-5" />
@@ -125,14 +133,14 @@ export function LanguageDnaDialog({
           {languageQuery.isPending && (
             <div className="flex min-h-72 flex-col items-center justify-center gap-3 text-muted-foreground">
               <Loader2 className="size-7 animate-spin text-cyan-300" />
-              <p>Decodificando a linguagem...</p>
+              <p>{t(locale, "ui.languages_decoding")}</p>
             </div>
           )}
 
           {languageQuery.isError && (
             <div className="flex min-h-72 flex-col items-center justify-center gap-4 text-center">
               <p className="max-w-sm text-muted-foreground">
-                Não foi possível carregar o DNA desta linguagem.
+                {t(locale, "ui.languages_dna_load_error")}
               </p>
               <button
                 type="button"
@@ -140,7 +148,7 @@ export function LanguageDnaDialog({
                 className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-100 hover:bg-cyan-300/15"
               >
                 <RefreshCw className="size-4" />
-                Tentar novamente
+                {t(locale, "ui.try_again")}
               </button>
             </div>
           )}
@@ -149,10 +157,10 @@ export function LanguageDnaDialog({
             <div className="space-y-4">
               <section>
                 <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                  Estrutura
+                  {t(locale, "ui.languages_structure")}
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {getLanguageDNAChips(language.dna).map((item) => (
+                  {getLanguageDNAChips(language.dna, locale).map((item) => (
                     <span
                       key={item}
                       className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1.5 text-xs font-medium text-cyan-700 dark:border-cyan-300/20 dark:bg-cyan-300/8 dark:text-cyan-100"
@@ -164,26 +172,43 @@ export function LanguageDnaDialog({
               </section>
 
               <ValueList
-                title="Delimitadores e terminador"
+                title={t(locale, "ui.languages_delimiters_terminator")}
+                locale={locale}
                 items={[
                   {
-                    label: "Abertura de bloco",
+                    label: t(locale, "ui.languages_block_open"),
                     value: customization.blockDelimiters?.open ?? "",
                   },
                   {
-                    label: "Fechamento de bloco",
+                    label: t(locale, "ui.languages_block_close"),
                     value: customization.blockDelimiters?.close ?? "",
                   },
                   {
-                    label: "Terminador",
+                    label: t(locale, "ui.languages_terminator"),
                     value: customization.statementTerminatorLexeme ?? "",
                   },
                 ]}
               />
-              <ValueList title="Palavras-chave" items={keywords} />
-              <ValueList title="Operadores por palavra" items={operators} />
-              <ValueList title="Literais booleanos" items={booleans} />
-              <ValueList title="Documentação" items={documentation} />
+              <ValueList
+                title={t(locale, "ui.languages_keywords")}
+                items={keywords}
+                locale={locale}
+              />
+              <ValueList
+                title={t(locale, "ui.languages_word_operators")}
+                items={operators}
+                locale={locale}
+              />
+              <ValueList
+                title={t(locale, "ui.languages_boolean_literals")}
+                items={booleans}
+                locale={locale}
+              />
+              <ValueList
+                title={t(locale, "ui.languages_documentation")}
+                items={documentation}
+                locale={locale}
+              />
             </div>
           )}
         </div>

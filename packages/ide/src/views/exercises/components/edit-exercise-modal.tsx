@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
@@ -34,6 +35,7 @@ import { useUpdateExerciseMutation } from "@/hooks/use-api-queries";
 import { useLanguagesList } from "@/hooks/useLanguages";
 import type { Exercise } from "@/types/api";
 import { TestCaseFields } from "./test-case-fields";
+import { t } from "@/i18n";
 
 const testCaseSchema = z.object({
   label: z.string(),
@@ -95,6 +97,7 @@ export function EditExerciseModal({
   exercise: Exercise | null;
   onUpdated?: (exercise: Exercise) => void;
 }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const updateExercise = useUpdateExerciseMutation();
   const languagesQuery = useLanguagesList(open);
@@ -122,7 +125,7 @@ export function EditExerciseModal({
     ) {
       form.setError("lockedLanguageId", {
         type: "manual",
-        message: "Selecione uma linguagem para travar o exercicio",
+        message: t(locale, "ui.exercises_select_locked_language"),
       });
       return;
     }
@@ -139,11 +142,17 @@ export function EditExerciseModal({
           (tc) => tc.input.trim() || tc.expectedOutput.trim(),
         ),
       });
-      showToast({ type: "success", message: "Exercicio atualizado!" });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercises_update_success"),
+      });
       onUpdated?.(updated);
       onOpenChange(false);
     } catch {
-      showToast({ type: "error", message: "Erro ao atualizar exercicio." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercises_update_error"),
+      });
     }
   };
 
@@ -151,9 +160,9 @@ export function EditExerciseModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Editar Exercicio</DialogTitle>
+          <DialogTitle>{t(locale, "ui.exercises_edit_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Atualize o enunciado e substitua os casos de teste.
+            {t(locale, "ui.exercises_edit_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -167,7 +176,7 @@ export function EditExerciseModal({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Titulo</FormLabel>
+                  <FormLabel>{t(locale, "ui.dashboard_exercise_title_label")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="h-12" />
                   </FormControl>
@@ -181,7 +190,9 @@ export function EditExerciseModal({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descricao / Enunciado</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.dashboard_exercise_description_label")}
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
@@ -199,7 +210,7 @@ export function EditExerciseModal({
               name="languagePolicy"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Linguagem permitida</FormLabel>
+                  <FormLabel>{t(locale, "ui.exercises_language_policy")}</FormLabel>
                   <FormControl>
                     <LanguagePolicyField
                       value={{
@@ -240,9 +251,15 @@ export function EditExerciseModal({
               <AccordionItem value="test-cases">
                 <AccordionTrigger>
                   <div className="flex w-full items-center justify-between pr-2">
-                    <span>Casos de Teste</span>
+                    <span>{t(locale, "ui.exercises_test_cases")}</span>
                     <span className="text-xs text-muted-foreground">
-                      {fields.length} casos
+                      {t(
+                        locale,
+                        fields.length === 1
+                          ? "ui.exercises_case_count_singular"
+                          : "ui.exercises_case_count_plural",
+                        { count: fields.length },
+                      )}
                     </span>
                   </div>
                 </AccordionTrigger>
@@ -257,7 +274,7 @@ export function EditExerciseModal({
                         className="px-3 py-2 text-xs"
                       >
                         <Plus className="h-3.5 w-3.5" />
-                        Adicionar Caso
+                        {t(locale, "ui.exercises_add_case")}
                       </HeroButton>
                       {fields.length > 1 && (
                         <HeroButton
@@ -267,7 +284,7 @@ export function EditExerciseModal({
                           className="px-3 py-2 text-xs text-rose-300 hover:text-rose-300 hover:border-rose-500/40 hover:bg-rose-500/10"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
-                          Remover Ultimo
+                          {t(locale, "ui.exercises_remove_last")}
                         </HeroButton>
                       )}
                     </div>
@@ -283,7 +300,7 @@ export function EditExerciseModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
@@ -291,7 +308,9 @@ export function EditExerciseModal({
             disabled={updateExercise.isPending}
             className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
-            {updateExercise.isPending ? "Salvando..." : "Salvar Alteracoes"}
+            {updateExercise.isPending
+              ? t(locale, "ui.exercises_saving")
+              : t(locale, "ui.exercises_save_changes")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

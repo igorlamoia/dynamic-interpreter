@@ -1,3 +1,6 @@
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
+
 export function GradingPanel({
   score,
   setScore,
@@ -19,12 +22,14 @@ export function GradingPanel({
   onSubmit: (e: React.FormEvent) => void;
   submissionStatus: string | undefined;
 }) {
+  const { locale } = useRouter();
+
   return (
     <div className="space-y-4">
       <div className="bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl p-6 sticky top-24">
         <h3 className="text-lg font-bold mb-6">
           <span className="bg-linear-to-r from-primary to-[#10b981] bg-clip-text text-transparent">
-            Avaliação
+            {t(locale, "ui.grading_title")}
           </span>
         </h3>
 
@@ -35,14 +40,14 @@ export function GradingPanel({
         )}
         {saved && (
           <div className="text-xs text-emerald-400 mb-3 p-2 bg-emerald-500/10 rounded-lg">
-            ✅ Nota salva com sucesso!
+            {t(locale, "ui.grading_saved_success")}
           </div>
         )}
 
         <form onSubmit={onSubmit} className="space-y-5">
           <div>
             <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
-              Nota
+              {t(locale, "ui.grading_score")}
             </label>
             <input
               type="number"
@@ -56,21 +61,21 @@ export function GradingPanel({
               placeholder="0.0"
             />
             <div className="flex justify-between mt-1.5 text-xs text-muted-foreground">
-              <span>Mínimo: 0</span>
-              <span>Máximo: 10</span>
+              <span>{t(locale, "ui.grading_min_score")}</span>
+              <span>{t(locale, "ui.grading_max_score")}</span>
             </div>
           </div>
 
           <div>
             <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
-              Feedback para o Aluno
+              {t(locale, "ui.grading_feedback")}
             </label>
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               rows={5}
               className="w-full px-4 py-3 bg-background/80 dark:bg-black/30 border border-input dark:border-white/10 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm resize-none"
-              placeholder="Escreva seu feedback sobre o código do aluno..."
+              placeholder={t(locale, "ui.grading_feedback_placeholder")}
             />
           </div>
 
@@ -80,10 +85,10 @@ export function GradingPanel({
             className="w-full py-3 rounded-xl text-sm font-bold bg-linear-to-r from-primary to-[#10b981] text-slate-800 shadow-[0_0_15px_rgba(13,204,242,0.3)] hover:shadow-[0_0_25px_rgba(13,204,242,0.5)] hover:opacity-90 transition-all disabled:opacity-50"
           >
             {saving
-              ? "Salvando..."
+              ? t(locale, "ui.exercises_saving")
               : submissionStatus === "GRADED"
-                ? "Atualizar Nota"
-                : "Atribuir Nota"}
+                ? t(locale, "ui.grading_update_score")
+                : t(locale, "ui.grading_assign_score")}
           </button>
         </form>
       </div>

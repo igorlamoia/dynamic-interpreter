@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useToast } from "@/contexts/ToastContext";
 import {
   Dialog,
@@ -15,6 +16,7 @@ import {
   useAddExerciseToListMutation,
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export function AddExerciseModal({
   open,
@@ -29,6 +31,7 @@ export function AddExerciseModal({
   existingIds: Set<number>;
   onAdded?: () => void;
 }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const [adding, setAdding] = useState<string | null>(null);
   const exercisesQuery = useExercisesQuery(undefined, open);
@@ -37,18 +40,27 @@ export function AddExerciseModal({
 
   useEffect(() => {
     if (exercisesQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar exercícios." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.class_load_exercises_error"),
+      });
     }
-  }, [exercisesQuery.error, showToast]);
+  }, [exercisesQuery.error, locale, showToast]);
 
   const handleAdd = async (exerciseId: string) => {
     setAdding(exerciseId);
     try {
       await addExercise.mutateAsync(exerciseId);
-      showToast({ type: "success", message: "Exercício adicionado!" });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercise_lists_add_exercise_success"),
+      });
       onAdded?.();
     } catch {
-      showToast({ type: "error", message: "Erro ao adicionar exercício." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercise_lists_add_exercise_error"),
+      });
     } finally {
       setAdding(null);
     }
@@ -60,9 +72,9 @@ export function AddExerciseModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Adicionar Exercício</DialogTitle>
+          <DialogTitle>{t(locale, "ui.exercise_lists_add_exercise_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Selecione um exercício para adicionar a esta lista.
+            {t(locale, "ui.exercise_lists_add_exercise_description")}
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-[50vh] overflow-y-auto space-y-2 py-2 px-1">
@@ -73,8 +85,8 @@ export function AddExerciseModal({
           ) : available.length === 0 ? (
             <p className="text-center text-muted-foreground text-sm py-8">
               {exercises.length === 0
-                ? "Você não possui exercícios criados."
-                : "Todos os seus exercícios já estão nesta lista."}
+                ? t(locale, "ui.exercise_lists_no_created_exercises")
+                : t(locale, "ui.exercise_lists_all_exercises_added")}
             </p>
           ) : (
             available.map((ex: Exercise) => (
@@ -87,8 +99,13 @@ export function AddExerciseModal({
                     {ex.title}
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    {ex.testCases.length} caso
-                    {ex.testCases.length !== 1 ? "s" : ""} de teste
+                    {t(
+                      locale,
+                      ex.testCases.length === 1
+                        ? "ui.exercises_test_case_singular"
+                        : "ui.exercises_test_case_plural",
+                      { count: ex.testCases.length },
+                    )}
                   </p>
                 </div>
                 <button
@@ -99,7 +116,7 @@ export function AddExerciseModal({
                   {adding === String(ex.id) ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : (
-                    "Adicionar"
+                    t(locale, "ui.exercise_lists_add")
                   )}
                 </button>
               </div>
@@ -112,7 +129,7 @@ export function AddExerciseModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
           >
-            Fechar
+            {t(locale, "ui.close")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>
