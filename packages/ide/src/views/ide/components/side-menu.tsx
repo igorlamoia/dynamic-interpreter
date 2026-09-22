@@ -4,7 +4,6 @@ import {
   FileCode2,
   Languages,
   Search,
-  Settings,
   Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/router";

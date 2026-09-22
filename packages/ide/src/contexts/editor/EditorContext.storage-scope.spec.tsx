@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { act, createElement } from "react";
-import { createRoot, Root } from "react-dom/client";
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
-import { useFileSystem, FileData } from "@/hooks/useFileSystem";
+import { createRoot } from "react-dom/client";
+import { describe, expect, it, beforeEach } from "vitest";
+import { useFileSystem } from "@/hooks/useFileSystem";
 import { getSourceCodeStorageKey } from "@/contexts/editor/EditorContext";
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean })

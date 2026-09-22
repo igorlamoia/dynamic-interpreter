@@ -7,7 +7,6 @@ import { Navbar } from "@/components/navbar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import { ArrowLeft, ChevronRight, Loader2 } from "lucide-react";
-import type { ExerciseList } from "@/types/api";
 import { TeacherDetailView } from "@/views/exercise-lists/components/teacher-detail-view";
 import { StudentDetailView } from "@/views/exercise-lists/components/student-detail-view";
 import type { ClassOption } from "@/views/exercise-lists/components/types";
