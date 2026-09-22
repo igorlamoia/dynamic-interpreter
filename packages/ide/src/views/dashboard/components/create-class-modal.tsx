@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -25,13 +25,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { HeroButton } from "@/components/buttons/hero";
 import { useCreateClassMutation } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
-const createClassSchema = z.object({
-  className: z.string().min(1, "Nome da turma é obrigatório"),
-  classDesc: z.string().min(1, "Descrição é obrigatória"),
-});
+const createCreateClassSchema = (locale?: string) =>
+  z.object({
+    className: z
+      .string()
+      .min(1, t(locale, "ui.dashboard_class_name_required")),
+    classDesc: z
+      .string()
+      .min(1, t(locale, "ui.dashboard_description_required")),
+  });
 
-type CreateClassFormValues = z.infer<typeof createClassSchema>;
+type CreateClassFormValues = z.infer<
+  ReturnType<typeof createCreateClassSchema>
+>;
 
 interface CreateClassModalProps {
   open: boolean;
@@ -46,7 +55,12 @@ export function CreateClassModal({
   onSuccess,
   onError,
 }: CreateClassModalProps) {
+  const { locale } = useRouter();
   const createClass = useCreateClassMutation();
+  const createClassSchema = useMemo(
+    () => createCreateClassSchema(locale),
+    [locale],
+  );
   const form = useForm<CreateClassFormValues>({
     resolver: zodResolver(createClassSchema),
     defaultValues: {
@@ -73,11 +87,17 @@ export function CreateClassModal({
         accessCode,
       });
 
-      onSuccess?.(`Turma criada! Código de acesso: ${accessCode}`, accessCode);
+      onSuccess?.(
+        t(locale, "ui.dashboard_create_class_success", { accessCode }),
+        accessCode,
+      );
       form.reset();
       onOpenChange(false);
     } catch (error) {
-      const message = getApiErrorMessage(error, "Erro ao criar turma");
+      const message = getApiErrorMessage(
+        error,
+        t(locale, "ui.dashboard_create_class_error"),
+      );
       onError?.(message);
     }
   };
@@ -86,9 +106,9 @@ export function CreateClassModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Criar Nova Turma</DialogTitle>
+          <DialogTitle>{t(locale, "ui.dashboard_create_class_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Preencha os dados da sua turma
+            {t(locale, "ui.dashboard_create_class_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -102,11 +122,14 @@ export function CreateClassModal({
               name="className"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome da Turma</FormLabel>
+                  <FormLabel>{t(locale, "ui.dashboard_class_name_label")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Ex: Programação para Iniciantes"
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_class_name_placeholder",
+                      )}
                       className="h-12"
                     />
                   </FormControl>
@@ -120,12 +143,15 @@ export function CreateClassModal({
               name="classDesc"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>{t(locale, "ui.dashboard_description_label")}</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       rows={3}
-                      placeholder="Descreva a turma..."
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_class_description_placeholder",
+                      )}
                       className="focus:border-primary/50"
                     />
                   </FormControl>
@@ -143,7 +169,7 @@ export function CreateClassModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
@@ -151,7 +177,9 @@ export function CreateClassModal({
             disabled={createClass.isPending}
             className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
-            {createClass.isPending ? "Criando..." : "Criar Turma"}
+            {createClass.isPending
+              ? t(locale, "ui.dashboard_creating")
+              : t(locale, "ui.dashboard_create_class_submit")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

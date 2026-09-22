@@ -1,6 +1,8 @@
 import { Plus } from "lucide-react";
 import type { ClassSummary } from "@/types/api";
 import { TeacherClassCard } from "./teacher-class-card";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 export function StudentClassCard({
   cls,
@@ -12,6 +14,8 @@ export function StudentClassCard({
 }
 
 export function JoinClassCard({ onJoinClick }: { onJoinClick: () => void }) {
+  const { locale } = useRouter();
+
   return (
     <button
       onClick={onJoinClick}
@@ -21,10 +25,10 @@ export function JoinClassCard({ onJoinClick }: { onJoinClick: () => void }) {
         <Plus className="w-8 h-8" />
       </div>
       <h3 className="font-bold text-lg mb-1 hidden sm:block">
-        Entrar em nova turma
+        {t(locale, "ui.dashboard_join_class_card_title")}
       </h3>
       <p className="text-muted-foreground text-sm hidden sm:block text-center px-4">
-        Insira o código fornecido pelo seu professor para participar.
+        {t(locale, "ui.dashboard_join_class_card_description")}
       </p>
     </button>
   );

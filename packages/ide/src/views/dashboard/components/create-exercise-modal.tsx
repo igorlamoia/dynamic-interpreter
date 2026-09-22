@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -32,6 +32,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { TestCaseFields } from "./test-case-fields";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 interface TestCase {
   label: string;
@@ -45,14 +47,23 @@ const testCaseSchema = z.object({
   expectedOutput: z.string(),
 });
 
-const createExerciseSchema = z.object({
-  exTitle: z.string().min(1, "Título é obrigatório"),
-  exDesc: z.string().min(1, "Descrição é obrigatória"),
-  exWeight: z.string().min(1, "Peso é obrigatório"),
-  testCases: z.array(testCaseSchema),
-});
+const createCreateExerciseSchema = (locale?: string) =>
+  z.object({
+    exTitle: z
+      .string()
+      .min(1, t(locale, "ui.dashboard_exercise_title_required")),
+    exDesc: z
+      .string()
+      .min(1, t(locale, "ui.dashboard_description_required")),
+    exWeight: z
+      .string()
+      .min(1, t(locale, "ui.dashboard_exercise_weight_required")),
+    testCases: z.array(testCaseSchema),
+  });
 
-type CreateExerciseFormValues = z.infer<typeof createExerciseSchema>;
+type CreateExerciseFormValues = z.infer<
+  ReturnType<typeof createCreateExerciseSchema>
+>;
 
 const defaultTestCases: TestCase[] = [
   { label: "", input: "", expectedOutput: "" },
@@ -75,7 +86,12 @@ export function CreateExerciseModal({
   onSuccess,
   onError,
 }: CreateExerciseModalProps) {
+  const { locale } = useRouter();
   const createExercise = useCreateExerciseMutation();
+  const createExerciseSchema = useMemo(
+    () => createCreateExerciseSchema(locale),
+    [locale],
+  );
   const form = useForm<CreateExerciseFormValues>({
     resolver: zodResolver(createExerciseSchema),
     defaultValues: {
@@ -111,11 +127,14 @@ export function CreateExerciseModal({
         ),
       });
 
-      onSuccess?.("Exercício criado com sucesso!");
+      onSuccess?.(t(locale, "ui.dashboard_create_exercise_success"));
       resetForm();
       onOpenChange(false);
     } catch (error) {
-      const message = getApiErrorMessage(error, "Erro ao criar exercício");
+      const message = getApiErrorMessage(
+        error,
+        t(locale, "ui.dashboard_create_exercise_error"),
+      );
       onError?.(message);
     }
   };
@@ -133,9 +152,11 @@ export function CreateExerciseModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Criar Exercício</DialogTitle>
+          <DialogTitle>
+            {t(locale, "ui.dashboard_create_exercise_title")}
+          </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Defina os detalhes e casos de teste para o exercício
+            {t(locale, "ui.dashboard_create_exercise_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -149,11 +170,16 @@ export function CreateExerciseModal({
               name="exTitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.dashboard_exercise_title_label")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Ex: Hello World em Java--"
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_exercise_title_placeholder",
+                      )}
                       className="h-12"
                     />
                   </FormControl>
@@ -167,12 +193,17 @@ export function CreateExerciseModal({
               name="exDesc"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição / Instruções</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.dashboard_exercise_description_label")}
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       rows={4}
-                      placeholder="Descreva o exercício em detalhes..."
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_exercise_description_placeholder",
+                      )}
                       className="focus:border-primary/50"
                     />
                   </FormControl>
@@ -187,7 +218,9 @@ export function CreateExerciseModal({
                 name="exWeight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Peso da Nota</FormLabel>
+                    <FormLabel>
+                      {t(locale, "ui.dashboard_exercise_weight_label")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -207,9 +240,9 @@ export function CreateExerciseModal({
               <AccordionItem value="test-cases">
                 <AccordionTrigger>
                   <div className="flex w-full items-center justify-between pr-2">
-                    <span>Casos de Teste (Opcional)</span>
+                    <span>{t(locale, "ui.dashboard_test_cases_title")}</span>
                     <span className="text-xs text-muted-foreground">
-                      Expandir para configurar
+                      {t(locale, "ui.dashboard_test_cases_expand")}
                     </span>
                   </div>
                 </AccordionTrigger>
@@ -228,7 +261,7 @@ export function CreateExerciseModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
@@ -236,7 +269,9 @@ export function CreateExerciseModal({
             disabled={createExercise.isPending}
             className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
-            {createExercise.isPending ? "Criando..." : "Criar Exercício"}
+            {createExercise.isPending
+              ? t(locale, "ui.dashboard_creating")
+              : t(locale, "ui.dashboard_create_exercise_submit")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

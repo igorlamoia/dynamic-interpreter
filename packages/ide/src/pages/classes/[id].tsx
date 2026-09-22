@@ -13,13 +13,14 @@ import {
   useClassMembersQuery,
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export default function ClassDetail() {
   const router = useRouter();
   const { isTeacher, user, userId } = useAuth();
   const { showToast } = useToast();
   const { id } = router.query;
-  const [expandedEx, setExpandedEx] = useState<string | null>(null);
+  const locale = router.locale;
   const [activeTab, setActiveTab] = useState<"members" | "lists">("members");
   const classId = typeof id === "string" ? id : undefined;
   const exercisesQuery = useExercisesQuery(
@@ -37,21 +38,30 @@ export default function ClassDetail() {
 
   useEffect(() => {
     if (exercisesQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar exercícios." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.class_load_exercises_error"),
+      });
     }
-  }, [exercisesQuery.error, showToast]);
+  }, [exercisesQuery.error, locale, showToast]);
 
   useEffect(() => {
     if (membersQuery.error) {
-      console.error("Erro ao carregar membros.", membersQuery.error);
+      console.error(
+        t(locale, "ui.class_load_members_error"),
+        membersQuery.error,
+      );
     }
-  }, [membersQuery.error]);
+  }, [locale, membersQuery.error]);
 
   useEffect(() => {
     if (exerciseListsQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar listas." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.class_load_lists_error"),
+      });
     }
-  }, [exerciseListsQuery.error, showToast]);
+  }, [exerciseListsQuery.error, locale, showToast]);
 
   if (!user || exercisesQuery.isPending) {
     return (
@@ -101,7 +111,7 @@ export default function ClassDetail() {
                       d="M15 19l-7-7 7-7"
                     />
                   </svg>
-                  Voltar ao Painel
+                  {t(locale, "ui.class_back_to_dashboard")}
                 </Link>
                 <div className="flex items-center gap-2 text-primary mb-2">
                   <svg
@@ -118,11 +128,11 @@ export default function ClassDetail() {
                     />
                   </svg>
                   <span className="text-xs font-bold uppercase tracking-wider">
-                    Dashboard da Turma
+                    {t(locale, "ui.class_dashboard")}
                   </span>
                 </div>
                 <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
-                  Recursos & Estudantes
+                  {t(locale, "ui.class_resources_students")}
                 </h1>
               </div>
               <div className="flex rounded-xl border border-border bg-card/70 p-1 dark:border-white/5 dark:bg-white/5">
@@ -130,13 +140,13 @@ export default function ClassDetail() {
                   className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "lists" ? "bg-primary/20 text-primary shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"}`}
                   onClick={() => setActiveTab("lists")}
                 >
-                  Listas
+                  {t(locale, "ui.class_lists_tab")}
                 </button>
                 <button
                   className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "members" ? "bg-primary/20 text-primary shadow-lg shadow-primary/20" : "text-muted-foreground hover:text-foreground"}`}
                   onClick={() => setActiveTab("members")}
                 >
-                  Todos da Turma
+                  {t(locale, "ui.class_members_tab")}
                 </button>
               </div>
             </div>
@@ -149,6 +159,7 @@ export default function ClassDetail() {
                   loadingLists={exerciseListsQuery.isPending}
                   isTeacher={isTeacher}
                   classId={id}
+                  locale={locale}
                 />
               ) : (
                 <MembersTab
@@ -156,6 +167,7 @@ export default function ClassDetail() {
                   members={members}
                   exercises={exercises}
                   classAveragePct={classAveragePct}
+                  locale={locale}
                 />
               )}
             </div>

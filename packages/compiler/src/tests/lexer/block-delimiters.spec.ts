@@ -24,11 +24,11 @@ describe("Lexer Block Delimiters", () => {
     ).toThrow();
   });
 
-  it("should reject non-word delimiters", () => {
+  it("should reject delimiters with whitespace", () => {
     expect(
       () =>
         new Lexer("int main() {}", {
-          blockDelimiters: { open: "<<", close: "end" },
+          blockDelimiters: { open: "begin block", close: "end" },
         }),
     ).toThrow();
   });

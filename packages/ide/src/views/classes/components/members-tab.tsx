@@ -1,13 +1,17 @@
+import { t } from "@/i18n";
+
 export function MembersTab({
   teacher,
   members,
   exercises,
   classAveragePct,
+  locale,
 }: {
   teacher: any;
   members: any[];
   exercises: any[];
   classAveragePct: number;
+  locale?: string;
 }) {
   return (
     <div className="grid grid-cols-12 gap-8">
@@ -17,7 +21,7 @@ export function MembersTab({
         {teacher && (
           <section>
             <h3 className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
-              Professor
+              {t(locale, "ui.class_teacher")}
             </h3>
             <div className="bg-card/80 dark:bg-white/5 backdrop-blur-md p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-primary border border-border dark:border-white/10 shadow-[0_8px_32px_rgba(13,204,242,0.1)]">
               <div className="flex items-center gap-5">
@@ -56,7 +60,7 @@ export function MembersTab({
                           d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>{" "}
-                      Verified
+                      {t(locale, "ui.class_verified")}
                     </span>
                     <span className="flex items-center gap-1 text-xs text-muted-foreground">
                       <svg
@@ -85,13 +89,15 @@ export function MembersTab({
         <section>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-muted-foreground text-xs font-bold uppercase tracking-widest">
-              Estudantes ({members.length})
+              {t(locale, "ui.class_students_count", {
+                count: members.length,
+              })}
             </h3>
           </div>
           {members.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 bg-card/70 dark:bg-white/2 rounded-2xl border border-border dark:border-white/5 backdrop-blur-xl">
               <p className="text-muted-foreground text-sm font-medium">
-                Nenhum estudante inscrito nesta turma ainda.
+                {t(locale, "ui.class_no_students")}
               </p>
             </div>
           ) : (
@@ -125,7 +131,8 @@ export function MembersTab({
                   <div className="text-right">
                     <div className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary rounded text-[10px] font-bold">
                       {member.progress?.completed || 0}/
-                      {member.progress?.total || 0} CONCLUÍDOS
+                      {member.progress?.total || 0}{" "}
+                      {t(locale, "ui.class_completed_upper")}
                     </div>
                     <div className="w-20 h-1 bg-muted dark:bg-black/40 rounded-full mt-2 ml-auto overflow-hidden">
                       <div
@@ -160,13 +167,13 @@ export function MembersTab({
                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
               />
             </svg>
-            Turma Stats
+            {t(locale, "ui.class_stats")}
           </h3>
           <div className="space-y-6">
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-muted-foreground text-sm">
-                  Total de Estudantes
+                  {t(locale, "ui.class_total_students")}
                 </span>
                 <span className="text-foreground font-bold">
                   {members.length}
@@ -176,7 +183,7 @@ export function MembersTab({
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-muted-foreground text-sm">
-                  Total de Exercícios
+                  {t(locale, "ui.class_total_exercises")}
                 </span>
                 <span className="text-foreground font-bold">
                   {exercises.length}
@@ -186,7 +193,7 @@ export function MembersTab({
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-muted-foreground text-sm">
-                  Média de Conclusões
+                  {t(locale, "ui.class_average_completion")}
                 </span>
                 <span className="text-foreground font-bold">
                   {classAveragePct.toFixed(0)}%

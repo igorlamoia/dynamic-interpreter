@@ -2,6 +2,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import type { ClassSummary } from "@/types/api";
 import { StudentClassCard, JoinClassCard } from "./student-class-card";
 import { TeacherClassCard } from "./teacher-class-card";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 export function ClassesGrid({
   classes,
@@ -13,12 +15,15 @@ export function ClassesGrid({
   onJoinClass: () => void;
 }) {
   const { isTeacher } = useAuth();
+  const { locale } = useRouter();
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-32 text-muted-foreground gap-4">
         <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-        <span className="font-medium tracking-wide">Carregando turmas...</span>
+        <span className="font-medium tracking-wide">
+          {t(locale, "ui.dashboard_loading_classes")}
+        </span>
       </div>
     );
   }
@@ -43,11 +48,10 @@ export function ClassesGrid({
           </span>
         </div>
         <p className="text-foreground text-xl font-bold tracking-tight">
-          Nenhuma turma encontrada
+          {t(locale, "ui.dashboard_no_classes_title")}
         </p>
         <p className="text-muted-foreground text-sm mt-3 max-w-sm text-center leading-relaxed">
-          Você ainda não criou nenhuma turma. Clique no botão acima para começar
-          a gerenciar seus alunos.
+          {t(locale, "ui.dashboard_no_classes_description")}
         </p>
       </div>
     );

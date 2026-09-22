@@ -10,8 +10,10 @@ import type { SelectedGrammarModes } from "@/features/grammarGraph/grammarGraphA
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { Step } from "../components/step";
 import { CurrentVocabulary } from "./current-vocabulary";
-import { useWizardTranslation } from "../../use-wizard-translation";
-import { useRouter } from "next/router";
+import {
+  useWizardLocale,
+  useWizardTranslation,
+} from "../../use-wizard-translation";
 
 export type ReviewStepProps = {
   values: {
@@ -138,7 +140,7 @@ export function ReviewStep({ values, actions }: ReviewStepProps) {
 
 function BoxResult({ values, actions }: ReviewStepProps) {
   const wt = useWizardTranslation();
-  const { locale } = useRouter();
+  const locale = useWizardLocale();
   const stepLabels = new Map(
     getWizardSteps(locale).map((step) => [step.id, step.title] as const),
   );
