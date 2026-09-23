@@ -1,9 +1,12 @@
 \babel@toc {brazil}{}\relax 
-\contentsline {table}{\numberline {2.1}{\ignorespaces Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.\relax }}{36}{table.caption.47}%
-\contentsline {table}{\numberline {3.1}{\ignorespaces Requisitos funcionais da plataforma.\relax }}{41}{table.caption.50}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Requisitos não funcionais da plataforma.\relax }}{42}{table.caption.51}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Cronograma de desenvolvimento do trabalho de conclusão de curso.\relax }}{42}{table.caption.52}%
-\contentsline {table}{\numberline {4.1}{\ignorespaces Elementos da linguagem passíveis de redefinição pelo usuário.\relax }}{54}{table.caption.61}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Analisadores especializados (\textit {scanners}) despachados pela \texttt {LexerScannerFactory}.\relax }}{56}{table.caption.65}%
-\contentsline {table}{\numberline {B.1}{\ignorespaces Grupos de recursos da API da plataforma.\relax }}{72}{table.caption.105}%
-\contentsline {table}{\numberline {C.1}{\ignorespaces Distribuição dos casos de teste por camada do compilador.\relax }}{73}{table.caption.107}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.}}{41}{table.51}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Requisitos funcionais da plataforma.\relax }}{46}{table.caption.55}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Requisitos não funcionais da plataforma.\relax }}{47}{table.caption.56}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Cronograma de desenvolvimento do trabalho de conclusão de curso.\relax }}{48}{table.caption.57}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Elementos da linguagem passíveis de redefinição pelo usuário.\relax }}{59}{table.caption.65}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Analisadores especializados (\textit {scanners}) despachados pela \texttt {LexerScannerFactory}.\relax }}{62}{table.caption.69}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Exemplos de seleção de dados nas respostas do back-end.\relax }}{68}{table.caption.76}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Distribuição dos testes executados no back-end.\relax }}{73}{table.caption.115}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Blocos do instrumento PA-01, procedência e número de itens.\relax }}{75}{table.caption.120}%
+\contentsline {table}{\numberline {B.1}{\ignorespaces Grupos de recursos da API da plataforma.\relax }}{91}{table.caption.147}%
+\contentsline {table}{\numberline {C.1}{\ignorespaces Distribuição dos casos de teste por camada do compilador.\relax }}{92}{table.caption.149}%

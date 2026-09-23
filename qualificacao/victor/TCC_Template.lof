@@ -1,8 +1,9 @@
 \babel@toc {brazil}{}\relax 
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{14}{figure.caption.18}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{16}{figure.caption.21}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes (TDD).\relax }}{26}{figure.caption.38}%
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Diagrama de casos de uso da plataforma.\relax }}{40}{figure.caption.49}%
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Fluxo de execução entre os módulos do interpretador dinâmico.\relax }}{47}{figure.caption.56}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Esquema lógico do banco de dados da plataforma.\relax }}{49}{figure.caption.58}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Funções de validação prévia da configuração léxica da linguagem.\relax }}{54}{figure.caption.62}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{16}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{18}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes (TDD).\relax }}{29}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Casos de uso: acesso e ambiente de desenvolvimento.\relax }}{44}{figure.caption.53}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Casos de uso: participação e gestão pedagógica.\relax }}{45}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura e locais de execução do núcleo na plataforma.\relax }}{52}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Tabelas e referências do esquema lógico da plataforma.\relax }}{53}{figure.caption.62}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Funções de validação prévia da configuração léxica da linguagem.\relax }}{60}{figure.caption.66}%

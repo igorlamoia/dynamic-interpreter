@@ -27,52 +27,51 @@ Dispon{\'\i}vel em: \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.
 {ANICHE, M. \textbf{Test-Driven Development: Teste e Design no Mundo Real}.
   S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
 
+\bibitem[Bangor, Kortum e Miller 2009]{bangor2009}
+\abntrefinfo{Bangor, Kortum e Miller}{BANGOR; KORTUM; MILLER}{2009}
+{BANGOR, A.; KORTUM, P.; MILLER, J. Determining what individual sus scores
+  mean: adding an adjective rating scale.
+\textbf{Journal of Usability Studies}, v.~4, n.~3, p. 114--123, 2009.}
+
 \bibitem[Beck e Andres 2004]{beck2004}
 \abntrefinfo{Beck e Andres}{BECK; ANDRES}{2004}
 {BECK, K.; ANDRES, C. \textbf{Extreme Programming Explained: Embrace Change}.
   2. ed. Boston: Addison-Wesley, 2004.}
 
-\bibitem[Benedetti 2025]{benedetti2025}
-\abntrefinfo{Benedetti}{BENEDETTI}{2025}
-{BENEDETTI, T. Como escolher a melhor plataforma educativa em 2025.
-\textbf{Blog TutorMundi}, 2025.
-Dispon{\'\i}vel em: \url{https://tutormundi.com/blog/}. Acesso em: 07 abr.
-  2026.}
+\bibitem[{Beecrowd} 2026]{beecrowd2026faq}
+\abntrefinfo{{Beecrowd}}{{Beecrowd}}{2026}
+{{Beecrowd}. \textbf{FAQs: Problems}. 2026.
+Dispon{\'\i}vel em: \url{https://judge.beecrowd.com/en/faqs/about/problems}.
+  Acesso em: 12 set. 2026.}
+
+\bibitem[Brooke 1996]{brooke1996}
+\abntrefinfo{Brooke}{BROOKE}{1996}
+{BROOKE, J. Sus: a quick and dirty usability scale. In:  JORDAN, P.~W.; THOMAS,
+  B.; WEERDMEESTER, B.~A.; MCCLELLAND, I.~L. (Ed.). \textbf{Usability
+  Evaluation in Industry}. London: Taylor \& Francis, 1996. p. 189--194.}
 
 \bibitem[Cooper e Torczon 2012]{cooper2012}
 \abntrefinfo{Cooper e Torczon}{COOPER; TORCZON}{2012}
 {COOPER, K.~D.; TORCZON, L. \textbf{Engineering a Compiler}. 2. ed. Waltham:
   Elsevier / Morgan Kaufmann, 2012.}
 
+\bibitem[Davis 1989]{davis1989}
+\abntrefinfo{Davis}{DAVIS}{1989}
+{DAVIS, F.~D. Perceived usefulness, perceived ease of use, and user acceptance
+  of information technology.
+\textbf{MIS Quarterly}, v.~13, n.~3, p. 319--340, 1989.}
+
 \bibitem[FASTAPI 2026]{fastapi2026}
 \abntrefinfo{FASTAPI}{FASTAPI}{2026}
 {FASTAPI. \textbf{Recursos e Documentação Oficial do FastAPI}. 2026.
-Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/}. Acesso em: 07 abr.
+Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/}. Acesso em: 12 set.
   2026.}
 
-\bibitem[Ferreira, Silva e Ribeiro 2025]{ferreira2025}
-\abntrefinfo{Ferreira, Silva e Ribeiro}{FERREIRA; SILVA; RIBEIRO}{2025}
-{FERREIRA, B.; SILVA, C.~L.; RIBEIRO, F. d. C.~L. Um estudo de caso da
-  ferramenta beecrowd como tecnologia da informa{\c{c}}{\~a}o e
-  comunica{\c{c}}{\~a}o na aprendizagem de algoritmos.
-\textbf{ForScience}, v.~13, n.~2, 2025.
-Dispon{\'\i}vel em: \url{https://doi.org/10.29069/forscience.2025v13n2.e1313}.
-  Acesso em: 07 abr. 2026.}
-
-\bibitem[Garcia 2024]{garcia2024}
-\abntrefinfo{Garcia}{GARCIA}{2024}
-{GARCIA, L. \textbf{Beecrowd: como desenvolver habilidades praticando
-  programa{\c{c}}{\~a}o}. Alura, 2024.
-Dispon{\'\i}vel em:
-  \url{https://www.alura.com.br/artigos/beecrowd-como-desenvolver-habilidades-praticando-programacao}.
-  Acesso em: 07 abr. 2026.}
-
-\bibitem[GOMES 2020]{gomes2020}
-\abntrefinfo{GOMES}{GOMES}{2020}
-{GOMES, D. \textbf{O que é Portugol Studio?} DevMedia, 2020.
-Dispon{\'\i}vel em:
-  \url{https://www.devmedia.com.br/o-que-e-portugol-studio/40764}. Acesso em:
-  07 abr. 2026.}
+\bibitem[Gadelha 2026]{webstudio2026}
+\abntrefinfo{Gadelha}{GADELHA}{2026}
+{GADELHA, D. \textbf{Portugol Webstudio: IDE online para o Portugol}. 2026.
+Dispon{\'\i}vel em: \url{https://github.com/dgadelha/Portugol-Webstudio}.
+  Acesso em: 12 set. 2026.}
 
 \bibitem[Ladner 2019]{ladner2019}
 \abntrefinfo{Ladner}{LADNER}{2019}
@@ -80,37 +79,7 @@ Dispon{\'\i}vel em:
   Teachers Association (CSTA), 2019.
 Dispon{\'\i}vel em:
   \url{https://csteachers.org/learn-about-the-new-quorum-studio/}. Acesso em:
-  07 abr. 2026.}
-
-\bibitem[Lai et al. 2025]{lai2025}
-\abntrefinfo{Lai et al.}{LAI et al.}{2025}
-{LAI, J.; STORY, J.; MARKB{\AA}GE, S.; NEUTKENS, T. \textbf{Next.js 16}.
-  Vercel, 2025.
-Dispon{\'\i}vel em: \url{https://nextjs.org/blog/next-16}. Acesso em: 14 ago.
-  2026.}
-
-\bibitem[Lima 2024]{lima2024}
-\abntrefinfo{Lima}{LIMA}{2024}
-{LIMA, G. de. \textbf{Arquitetura da informação: aprenda a organizar
-  conteúdos}. Alura, 2024.
-Dispon{\'\i}vel em:
-  \url{https://www.alura.com.br/artigos/arquitetura-da-informacao}. Acesso em:
-  07 abr. 2026.}
-
-\bibitem[{M{\~A}O NO C{\'O}DIGO} 2022]{maonocodigo2022}
-\abntrefinfo{{M{\~A}O NO C{\'O}DIGO}}{{M{\~A}O NO C{\'O}DIGO}}{2022}
-{{M{\~A}O NO C{\'O}DIGO}. \textbf{BEECROWD: Todo PROGRAMADOR deveria conhecer |
-  BEECROWD (antigo Uri Online Judge)}. 2022. V{\'i}deo do YouTube.
-Dispon{\'\i}vel em: \url{https://www.youtube.com/watch?v=VzOhnK0CuiE}. Acesso
-  em: 14 ago. 2026.}
-
-\bibitem[MakerKit 2026]{makerkit2026}
-\abntrefinfo{MakerKit}{MAKERKIT}{2026}
-{MAKERKIT. \textbf{Next.js Server Actions: The Complete Guide (2026)}.
-  MakerKit, 2026.
-Dispon{\'\i}vel em:
-  \url{https://makerkit.dev/blog/tutorials/nextjs-server-actions}. Acesso em:
-  14 ago. 2026.}
+  12 set. 2026.}
 
 \bibitem[Martin 2009]{martin_clean_code}
 \abntrefinfo{Martin}{MARTIN}{2009}
@@ -127,20 +96,42 @@ Dispon{\'\i}vel em:
 {MARTIN, R.~C. \textbf{Arquitetura Limpa: O Guia do Artes{\~a}o para Estrutura
   e Design de Software}. Rio de Janeiro: Alta Books, 2019.}
 
-\bibitem[MARTINS 2025]{martins2025}
-\abntrefinfo{MARTINS}{MARTINS}{2025}
-{MARTINS, C. \textbf{Portugol Studio: Guia Completo de Como Usar a Plataforma}.
-  HostGator, 2025.
-Dispon{\'\i}vel em: \url{https://www.hostgator.com.br/blog/portugol-studio/}.
-  Acesso em: 07 abr. 2026.}
+\bibitem[{Microsoft} 2026]{playwright2026practices}
+\abntrefinfo{{Microsoft}}{{Microsoft}}{2026a}
+{{Microsoft}. \textbf{Playwright: Best Practices}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/best-practices}. Acesso
+  em: 19 set. 2026.}
 
-\bibitem[{Mind Makers} 2025]{mindmakers2025}
-\abntrefinfo{{Mind Makers}}{{Mind Makers}}{2025}
-{{Mind Makers}. 10 tend{\^e}ncias em edtech para 2026: o que a escola precisa
-  saber.
-\textbf{Blog Mind Makers}, 2025.
-Dispon{\'\i}vel em: \url{https://mindmakers.com.br/blog/}. Acesso em: 07 abr.
+\bibitem[{Microsoft} 2026]{playwright2026ci}
+\abntrefinfo{{Microsoft}}{{Microsoft}}{2026b}
+{{Microsoft}. \textbf{Playwright: Continuous Integration}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/ci}. Acesso em: 19 set.
   2026.}
+
+\bibitem[{Microsoft} 2026]{playwright2026intro}
+\abntrefinfo{{Microsoft}}{{Microsoft}}{2026c}
+{{Microsoft}. \textbf{Playwright: Installation}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/intro}. Acesso em: 19 set.
+  2026.}
+
+\bibitem[{Microsoft} 2026]{playwright2026retries}
+\abntrefinfo{{Microsoft}}{{Microsoft}}{2026d}
+{{Microsoft}. \textbf{Playwright: Retries}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/test-retries}. Acesso em:
+  19 set. 2026.}
+
+\bibitem[{Microsoft} 2026]{playwright2026config}
+\abntrefinfo{{Microsoft}}{{Microsoft}}{2026e}
+{{Microsoft}. \textbf{Playwright: TestConfig}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/api/class-testconfig}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[Norman e Nielsen 1998]{normannielsen1998}
+\abntrefinfo{Norman e Nielsen}{NORMAN; NIELSEN}{1998}
+{NORMAN, D.; NIELSEN, J. \textbf{The Definition of User Experience (UX)}. 1998.
+Dispon{\'\i}vel em:
+  \url{https://www.nngroup.com/articles/definition-user-experience/}. Acesso
+  em: 12 set. 2026.}
 
 \bibitem[Nystrom 2021]{nystrom2021}
 \abntrefinfo{Nystrom}{NYSTROM}{2021}
@@ -152,44 +143,83 @@ ISBN 978-0990582939.}
 {PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens
   de Programa{\c{c}}{\~a}o: Compiladores}. Porto Alegre: Sagra Luzzatto, 2001.}
 
+\bibitem[Queiroz 2026]{queiroz2026verificacaotestes}
+\abntrefinfo{Queiroz}{QUEIROZ}{2026}
+{QUEIROZ, I.~L. \textbf{Registro de verificação local dos testes da IDE e do
+  pacote E2E: 19 de setembro de 2026}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/igor/verificacao/testes-2026-09-19.json}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[Queiroz e Silva 2026]{projeto2026ci}
+\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026a}
+{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter: fluxo de
+  integração contínua e implantação}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/.github/workflows/deploy.yml}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[Queiroz e Silva 2026]{projeto2026frontend}
+\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026b}
+{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter:
+  implementação e testes da IDE}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/packages/ide}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[Queiroz e Silva 2026]{projeto2026e2e}
+\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026c}
+{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter: suíte de
+  testes E2E}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/packages/e2e}.
+  Acesso em: 19 set. 2026.}
+
 \bibitem[QUORUM 2025]{quorum2025}
 \abntrefinfo{QUORUM}{QUORUM}{2025}
 {QUORUM. \textbf{The Quorum Programming Language: Documentation and
   Curriculum}. 2025.
-Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 07 abr.
+Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 12 set.
   2026.}
 
-\bibitem[Raposo 2012]{raposo2012}
-\abntrefinfo{Raposo}{RAPOSO}{2012}
-{RAPOSO, A.~B. \textbf{Avaliação Heurística: Introdução à Interação
-  Humano-Computador (IHC)}.
-Rio de Janeiro, RJ, 2012.}
-
-\bibitem[Seyffert 2026]{seyffert2026}
-\abntrefinfo{Seyffert}{SEYFFERT}{2026}
-{SEYFFERT, P. \textbf{UX e UI: entenda o que são, as diferenças e o impacto
-  no resultado do seu produto digital}. SoftDesign, 2026.
+\bibitem[{Radix} 2026]{radixaccess2026}
+\abntrefinfo{{Radix}}{{Radix}}{2026}
+{{Radix}. \textbf{Accessibility: Radix Primitives}. 2026.
 Dispon{\'\i}vel em:
-  \url{https://www.softdesign.com.br/blog/desvendando-a-diferenca-entre-ux-e-ui-design/}.
-  Acesso em: 07 abr. 2026.}
+  \url{https://www.radix-ui.com/primitives/docs/overview/accessibility}. Acesso
+  em: 12 set. 2026.}
 
-\bibitem[Silva et al. 2020]{silva2020evasao}
-\abntrefinfo{Silva et al.}{SILVA et al.}{2020}
-{SILVA, D. d.~S.; TAMAYO, S.~C.; PESSOA, M.; PIRES, F.; OLIVEIRA, D. B.~F.;
-  OLIVEIRA, E. H. T.~d.; CARVALHO, L. S. G.~d. Minerando dados de um juiz
-  on-line para prever a evas{\~a}o de estudantes em disciplinas
-  introdut{\'o}rias de programa{\c{c}}{\~a}o. In:  \textbf{Anais do XXXI
-  Simp{\'o}sio Brasileiro de Inform{\'a}tica na Educa{\c{c}}{\~a}o (SBIE)}.
-  Porto Alegre: Sociedade Brasileira de Computa{\c{c}}{\~a}o, 2020. p.
-  1343--1352.}
+\bibitem[Sa\'ude 2012]{cns466}
+\abntrefinfo{Sa\'ude}{SA\'UDE}{2012}
+{SA\'UDE, B. C.~N. de. \textbf{Resolu\c{c}\~ao n. 466, de 12 de dezembro de
+  2012}. Bras\'ilia: [s.n.], 2012. Di\'ario Oficial da Uni\~ao.}
 
-\bibitem[Silva 2021]{ladgelson2021}
-\abntrefinfo{Silva}{SILVA}{2021}
-{SILVA, M. L.~d.
-\textbf{Laila: Uma Plataforma Web para Aux{\'i}lio ao Ensino de Compiladores}.
-Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da
-  Computa{\c{c}}{\~a}o)) --- Instituto Federal de Educa{\c{c}}{\~a}o,
-  Ci{\^e}ncia e Tecnologia do Cear{\'a}, Aracati, 2021.}
+\bibitem[Sa\'ude 2016]{cns510}
+\abntrefinfo{Sa\'ude}{SA\'UDE}{2016}
+{SA\'UDE, B. C.~N. de. \textbf{Resolu\c{c}\~ao n. 510, de 7 de abril de 2016}.
+  Bras\'ilia: [s.n.], 2016. Di\'ario Oficial da Uni\~ao.}
+
+\bibitem[Sauro e Lewis 2012]{sauro2012}
+\abntrefinfo{Sauro e Lewis}{SAURO; LEWIS}{2012}
+{SAURO, J.; LEWIS, J.~R. \textbf{Quantifying the User Experience}: practical
+  statistics for user research. Waltham: Morgan Kaufmann, 2012.}
+
+\bibitem[Schrepp, Hinderks e Thomaschewski 2017]{schrepp2017}
+\abntrefinfo{Schrepp, Hinderks e Thomaschewski}{SCHREPP; HINDERKS;
+  THOMASCHEWSKI}{2017}
+{SCHREPP, M.; HINDERKS, A.; THOMASCHEWSKI, J. Design and evaluation of a short
+  version of the user experience questionnaire (ueq-s).
+\textbf{International Journal of Interactive Multimedia and Artificial
+  Intelligence}, v.~4, n.~6, p. 103--108, 2017.}
+
+\bibitem[Silva, Pereira e Lima 2021]{ladgelson2021}
+\abntrefinfo{Silva, Pereira e Lima}{SILVA; PEREIRA; LIMA}{2021}
+{SILVA, M. L.~d.; PEREIRA, S. S.~L.; LIMA, D.~R. \textbf{Laila: um gerador de
+  analisador l{\'e}xico e sint{\'a}tico online baseado em FLEX e Bison}. 2021.
+  Instituto Federal do Cear{\'a}, Campus Aracati.
+Dispon{\'\i}vel em:
+  \url{https://gestaoaracati.ifce.edu.br/attachments/download/2699/tcc.pdf}.
+  Acesso em: 12 set. 2026.}
 
 \bibitem[Silveira et al. 2012]{silveira2012}
 \abntrefinfo{Silveira et al.}{SILVEIRA et al.}{2012}
@@ -215,7 +245,7 @@ Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da
 \bibitem[Ueyama 2020]{ueyama2020}
 \abntrefinfo{Ueyama}{UEYAMA}{2020}
 {UEYAMA, R. \textbf{chibicc: A small C compiler}. 2020.
-Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 07 abr.
+Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 12 set.
   2026.}
 
 \bibitem[UNIVALI 2026]{univali2026}
@@ -223,20 +253,33 @@ Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 07 abr.
 {UNIVALI. \textbf{Portugol Studio - LITE}. Laborat{\'o}rio de
   Inova{\c{c}}{\~a}o Tecnol{\'o}gica na Educa{\c{c}}{\~a}o, 2026.
 Dispon{\'\i}vel em: \url{https://univali-lite.github.io/Portugol-Studio/}.
-  Acesso em: 07 abr. 2026.}
+  Acesso em: 12 set. 2026.}
 
-\bibitem[Vercel 2024]{vercel2024}
-\abntrefinfo{Vercel}{VERCEL}{2024}
-{VERCEL. \textbf{Rendering: Edge and Node.js Runtimes}. Vercel, 2024.
+\bibitem[{Vercel} 2026]{nextapi2026}
+\abntrefinfo{{Vercel}}{{Vercel}}{2026a}
+{{Vercel}. \textbf{API Routes}. 2026.
 Dispon{\'\i}vel em:
-  \url{https://nextjs.org/docs/14/app/building-your-application/rendering/edge-and-nodejs-runtimes}.
-  Acesso em: 14 ago. 2026.}
+  \url{https://nextjs.org/docs/pages/building-your-application/routing/api-routes}.
+  Acesso em: 12 set. 2026.}
+
+\bibitem[{Vercel} 2026]{nextpages2026}
+\abntrefinfo{{Vercel}}{{Vercel}}{2026b}
+{{Vercel}. \textbf{Pages Router}. 2026.
+Dispon{\'\i}vel em: \url{https://nextjs.org/docs/pages}. Acesso em: 12 set.
+  2026.}
+
+\bibitem[Vocke 2018]{vocke2018pyramid}
+\abntrefinfo{Vocke}{VOCKE}{2018}
+{VOCKE, H. \textbf{The Practical Test Pyramid}. 2018.
+Dispon{\'\i}vel em:
+  \url{https://martinfowler.com/articles/practical-test-pyramid.html}. Acesso
+  em: 19 set. 2026.}
 
 \bibitem[{W3C} 2023]{w3c2023aria}
 \abntrefinfo{{W3C}}{{W3C}}{2023}
 {{W3C}. \textbf{Accessible Rich Internet Applications (WAI-ARIA) 1.2}.
 [S.l.], 2023. Dispon{\'\i}vel em: \url{https://www.w3.org/TR/wai-aria-1.2/}.
-  Acesso em: 14 ago. 2026.}
+  Acesso em: 12 set. 2026.}
 
 \bibitem[Wildt et al. 2015]{wildt2015}
 \abntrefinfo{Wildt et al.}{WILDT et al.}{2015}
@@ -244,18 +287,19 @@ Dispon{\'\i}vel em:
   pr{\'a}ticas para o dia a dia no desenvolvimento {\'a}gil de software}.
   S{\~a}o Paulo: Casa do C{\'o}digo, 2015.}
 
-\bibitem[Yablonski 2020]{yablonski2020}
-\abntrefinfo{Yablonski}{YABLONSKI}{2020}
-{YABLONSKI, J. \textbf{Leis da Psicologia Aplicadas a UX: Usando psicologia
-  para projetar produtos e serviços melhores}. São Paulo, SP: Novatec
-  Editora, 2020.}
+\bibitem[{World Wide Web Consortium} 2024]{w3cwcag22}
+\abntrefinfo{{World Wide Web Consortium}}{{World Wide Web Consortium}}{2024}
+{{World Wide Web Consortium}. \textbf{Web Content Accessibility Guidelines
+  (WCAG) 2.2}. 2024.
+Dispon{\'\i}vel em: \url{https://www.w3.org/TR/WCAG22/}. Acesso em: 12 set.
+  2026.}
 
-\bibitem[Ziemann 2025]{ziemann2025}
-\abntrefinfo{Ziemann}{ZIEMANN}{2025}
-{ZIEMANN, K. Next.js app router vs page router comparison.
-\textbf{Pagepro}, 2025.
+\bibitem[{World Wide Web Consortium} 2026]{w3capg2026}
+\abntrefinfo{{World Wide Web Consortium}}{{World Wide Web Consortium}}{2026}
+{{World Wide Web Consortium}. \textbf{ARIA Authoring Practices Guide: Read Me
+  First}. 2026.
 Dispon{\'\i}vel em:
-  \url{https://pagepro.co/blog/nextjs-app-router-vs-pages-router/}. Acesso em:
-  07 abr. 2026.}
+  \url{https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/}. Acesso em: 12
+  set. 2026.}
 
 \end{thebibliography}

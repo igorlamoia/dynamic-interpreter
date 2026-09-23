@@ -1,0 +1,92 @@
+\section{Protocolo de Avaliação da Solução}
+\label{sec:protocolo-avaliacao}
+
+Esta seção descreve o instrumento de avaliação da plataforma, chamado de PA-01, e os critérios para interpretar seus resultados. O instrumento é um só e é compartilhado com o texto do coautor: o mesmo formulário vai para o mesmo grupo de respondentes, e cada trabalho analisa os itens que interessam ao seu tema. Aqui interessam os itens sobre o núcleo de tradução descrito neste capítulo. O protocolo ainda não foi aplicado, e nenhum resultado de participantes aparece neste documento.
+
+\subsection{Quem responde e o que é possível concluir}
+
+A avaliação será feita por um painel de especialistas, formado por professores e profissionais de computação. Não é um estudo com os alunos, que são o público-alvo da plataforma. Pede-se ao respondente que avalie se a ferramenta é adequada para um aluno em primeiro contato com programação, e não que relate a própria experiência de aprendizagem.
+
+Essa escolha limita o que o trabalho pode afirmar. Com um painel de especialistas é possível dizer que profissionais da área acham plausível que a personalização da sintaxe reduza a barreira enfrentada pelo iniciante. Não é possível dizer que ela reduz. Verificar isso exige medir o desempenho de estudantes, o que está registrado na Subseção~\ref{subsec:limites-interpretacao} como etapa seguinte.
+
+Para o tema deste trabalho, porém, o painel dá o que um aluno iniciante não teria como dar: uma avaliação técnica sobre se o subconjunto implementado da linguagem é suficiente, se a representação intermediária exibida corresponde à execução real e se as mensagens de erro continuam claras depois que o usuário troca o vocabulário da linguagem.
+
+\subsection{Composição do instrumento}
+
+O formulário é respondido pelo próprio participante, distribuído pela internet e criado por um programa, para que sua estrutura possa ser gerada de novo sempre que necessário. São dez páginas, oito delas com grades de itens em escala, como mostra a Tabela~\ref{tab:blocos-pa01}. Três blocos vêm de instrumentos já consolidados na literatura de avaliação de interfaces; os outros foram escritos para este projeto, porque nenhum instrumento pronto pergunta sobre o que se investiga aqui.
+
+\begin{table}[htbp]
+\centering
+\caption{Blocos do instrumento PA-01, procedência e número de itens.}
+\label{tab:blocos-pa01}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{5.2cm}|p{4.6cm}|c|}
+\hline
+\textbf{Bloco} & \textbf{Procedência} & \textbf{Itens} \\\hline
+Consentimento livre e esclarecido & Elaborado para o projeto & 1 \\\hline
+Perfil profissional & Elaborado para o projeto & 4 \\\hline
+Uso em sala (condicional) & Elaborado para o projeto & 8 \\\hline
+Como a plataforma foi usada & Elaborado para o projeto & 4 \\\hline
+Avaliação dos recursos & Elaborado para o projeto & 10 \\\hline
+Facilidade de uso & SUS \cite{brooke1996} & 10 \\\hline
+Impressão geral & UEQ-S \cite{schrepp2017} & 8 \\\hline
+Potencial pedagógico & Elaborado para o projeto & 8 \\\hline
+Riscos e limitações & Elaborado para o projeto & 4 \\\hline
+Qualidade técnica & Elaborado para o projeto & 7 \\\hline
+Utilidade e intenção de uso & TAM \cite{davis1989} & 6 \\\hline
+Comentários abertos & Elaborado para o projeto & 5 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Os instrumentos já conhecidos foram usados porque têm valores de referência publicados. Com eles é possível comparar o escore obtido com o de outros produtos avaliados, em vez de apenas descrever a opinião dos respondentes. Antes do bloco de avaliação dos recursos, o formulário mostra o mesmo programa em duas versões: uma na configuração padrão, com \texttt{int}, \texttt{for}, \texttt{if} e delimitadores simbólicos, e outra personalizada, com \texttt{numero\_inteiro}, \texttt{para}, \texttt{se}, operadores escritos por extenso e os delimitadores \texttt{inicio} e \texttt{fim}. O par mostra, em um caso concreto, a equivalência entre vocabulários diferentes que o núcleo de tradução garante.
+
+\subsection{Itens sobre o núcleo de tradução}
+
+O bloco de qualidade técnica é o que trata mais de perto do tema deste trabalho. Ele é dirigido a quem tem formação na área e traz a opção ``não sei''. As afirmações são:
+
+\begin{itemize}
+    \item o subconjunto da linguagem, com tipos, condicionais, repetição, arranjos, funções e entrada e saída, é suficiente para uma disciplina introdutória;
+    \item as mensagens de erro são claras e indicam o que corrigir;
+    \item a ferramenta respondeu de forma rápida e estável;
+    \item o assistente de criação de linguagem é compreensível para um professor sem formação em compiladores;
+    \item a validação prévia impede configurações inválidas;
+    \item o código intermediário exibido corresponde ao que o programa realmente executa.
+\end{itemize}
+
+
+Esse último item merece atenção. Ele coloca em avaliação externa uma propriedade que o texto sustenta pela forma como o sistema foi construído: a representação intermediária mostrada ao usuário é a mesma que o interpretador consome, e não uma ilustração feita à parte. Uma avaliação negativa nesse item indicaria diferença entre o que a interface exibe e o que a máquina executa, o que comprometeria a premissa central do trabalho.
+
+O bloco termina com uma questão de múltipla escolha sobre construções que faltam na linguagem, com alternativas para registros, orientação a objetos, tratamento de exceções, manipulação de cadeias mais completa, bibliotecas gráficas e divisão do programa em vários arquivos, além da alternativa que diz não ter faltado nada relevante para o ensino introdutório. Essa questão delimita, com base nas respostas, até onde vai o subconjunto implementado e ajuda a priorizar os trabalhos futuros no núcleo.
+
+Do bloco de avaliação dos recursos interessam três itens, todos sobre a exibição das fases intermediárias da tradução: se a tabela de \textit{tokens} ajuda a entender como a plataforma lê o código, se o código intermediário ajuda a entender o que o programa faz e se a execução passo a passo ajuda a acompanhá-lo. Soma-se o item sobre as mensagens de erro ajudarem a identificar o que corrigir, que mede o resultado prático de adaptar essas mensagens ao vocabulário em uso. O bloco de potencial pedagógico repete os três primeiros sob outro ângulo, perguntando pelo valor didático deles para quem está aprendendo, e acrescenta que mostrar os erros no vocabulário escolhido pelo próprio aluno facilita a correção. Essa repetição é proposital: separa o que o especialista achou útil para si, usando a ferramenta, do que ele considera útil para um iniciante.
+
+\subsection{Escalas usadas e cálculo dos escores}
+
+A facilidade de uso usa a escala de \citeonline{brooke1996}, com dez afirmações que alternam entre positivas e negativas. Essa alternância faz parte do instrumento e não deve ser corrigida. Para calcular o escore, subtrai-se 1 do valor marcado nos itens ímpares, subtrai-se de 5 o valor marcado nos itens pares, somam-se os resultados e multiplica-se o total por 2,5. O resultado vai de 0 a 100 e não é uma porcentagem. A média de referência fica perto de 68 pontos, e a interpretação segue \citeonline{bangor2009} e \citeonline{sauro2012}. A impressão geral usa a versão curta do questionário de \citeonline{schrepp2017}, com oito pares de adjetivos opostos em sete pontos; subtrai-se 4 do valor bruto e separam-se a dimensão pragmática e a hedônica. A utilidade e a intenção de uso vêm do modelo de \citeonline{davis1989}.
+
+O bloco de riscos funciona ao contrário dos outros: nele, concordar significa apontar um problema. As afirmações são:
+
+\begin{itemize}
+    \item aprender em uma sintaxe personalizada pode dificultar a migração para uma linguagem de mercado;
+    \item alunos da mesma turma usando sintaxes diferentes dificultaria o trabalho do professor;
+    \item a liberdade de personalizar pode desviar a atenção do raciocínio algorítmico;
+    \item o tempo gasto configurando a linguagem não compensa o ganho de aprendizagem.
+\end{itemize}
+ Os escores desse bloco serão relatados separadamente e não podem ser somados aos do bloco de potencial pedagógico, porque as duas medidas apontam em sentidos opostos e uma anularia a outra. O bloco foi incluído de propósito: se o instrumento trouxesse apenas afirmações favoráveis, a aprovação obtida diria muito pouco.
+
+\subsection{Participantes, procedimento e questões éticas}
+
+Os participantes são convidados diretamente e não são identificados. O formulário registra titulação, área de atuação, ferramentas de ensino que a pessoa já conhece e tempo de experiência com programação. Em uma avaliação feita por especialistas, esses dados fazem parte do resultado e serão apresentados junto com os escores. Um item pede que o respondente marque o que fez na plataforma e o que chegou a personalizar, o que permite separar a avaliação de quem usou a ferramenta da de quem não experimentou o recurso avaliado.
+
+Sobre o número de participantes: de cinco a oito pessoas já revelam a maior parte dos problemas de usabilidade e são suficientes para analisar as respostas abertas. Para apresentar o escore SUS com intervalo de confiança são necessários vinte respondentes ou mais. Com menos que isso, o resultado será apresentado como indicativo, sem afirmar que existe diferença entre subgrupos.
+
+O instrumento foi escrito como pesquisa de opinião pública com participantes não identificados, situação prevista no parágrafo único do artigo 1º da Resolução CNS n.º 510 de 2016 \cite{cns510}. O termo de consentimento segue a Resolução CNS n.º 466 de 2012 \cite{cns466}. Esse enquadramento não vale só porque os pesquisadores o declararam: ele depende de uma manifestação escrita do comitê de ética da instituição, que ainda não foi obtida. Esta especificação não é uma autorização nem uma aprovação ética, e nenhuma resposta pode ser coletada antes desse encaminhamento.
+
+\subsection{Limites de interpretação e continuidade}
+\label{subsec:limites-interpretacao}
+
+Além do limite já citado sobre o público, três ressalvas afetam a leitura dos resultados. A primeira é sobre o instrumento: no formulário, os pares de adjetivos do UEQ-S estão sempre com o polo negativo à esquerda, enquanto o instrumento original inverte alguns pares para evitar que o respondente concorde por hábito. Se a comparação com os valores de referência for importante para o argumento, essa ordem deve ser conferida antes da coleta. A segunda é sobre a redação em português dos itens do SUS, que precisa ser comparada com uma tradução validada. A terceira é sobre a análise: escores altos dados por especialistas não comprovam aprendizagem nem redução de carga cognitiva.
+
+Investigar a hipótese pedagógica é a etapa seguinte e exige outro desenho de estudo: comparar, na mesma plataforma, o vocabulário padrão e o vocabulário personalizado em tarefas equivalentes de entrada e saída, seleção e repetição. A ordem das condições deve ser alternada entre os participantes, e os enunciados, os casos de teste e os critérios de classificação dos erros precisam ser definidos antes da coleta, separando erros de escrita de falhas de lógica. Com isso seria possível descrever os acertos, o tempo até a primeira execução correta e a frequência de erros em cada condição. Ainda assim, uma diferença nessas medidas não comprova, sozinha, que houve aprendizagem duradoura.

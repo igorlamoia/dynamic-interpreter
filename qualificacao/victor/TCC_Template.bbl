@@ -27,10 +27,22 @@ Dispon{\'\i}vel em: \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.
 {ANICHE, M. \textbf{Test-Driven Development: Teste e Design no Mundo Real}.
   S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
 
+\bibitem[Bangor, Kortum e Miller 2009]{bangor2009}
+\abntrefinfo{Bangor, Kortum e Miller}{BANGOR; KORTUM; MILLER}{2009}
+{BANGOR, A.; KORTUM, P.; MILLER, J. Determining what individual sus scores
+  mean: adding an adjective rating scale.
+\textbf{Journal of Usability Studies}, v.~4, n.~3, p. 114--123, 2009.}
+
 \bibitem[Beck e Andres 2004]{beck2004}
 \abntrefinfo{Beck e Andres}{BECK; ANDRES}{2004}
 {BECK, K.; ANDRES, C. \textbf{Extreme Programming Explained: Embrace Change}.
   2. ed. Boston: Addison-Wesley, 2004.}
+
+\bibitem[{beecrowd} 2026]{beecrowd2026faq}
+\abntrefinfo{{beecrowd}}{{beecrowd}}{2026}
+{{beecrowd}. \textbf{FAQs Problems}. 2026.
+Dispon{\'\i}vel em: \url{https://judge.beecrowd.com/en/faqs/about/problems}.
+  Acesso em: 09 set. 2026.}
 
 \bibitem[Benedetti 2025]{benedetti2025}
 \abntrefinfo{Benedetti}{BENEDETTI}{2025}
@@ -38,6 +50,12 @@ Dispon{\'\i}vel em: \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.
 \textbf{Blog TutorMundi}, 2025.
 Dispon{\'\i}vel em: \url{https://tutormundi.com/blog/}. Acesso em: 07 abr.
   2026.}
+
+\bibitem[Brooke 1996]{brooke1996}
+\abntrefinfo{Brooke}{BROOKE}{1996}
+{BROOKE, J. Sus: a quick and dirty usability scale. In:  JORDAN, P.~W.; THOMAS,
+  B.; WEERDMEESTER, B.~A.; MCCLELLAND, I.~L. (Ed.). \textbf{Usability
+  Evaluation in Industry}. London: Taylor \& Francis, 1996. p. 189--194.}
 
 \bibitem[Cooper e Torczon 2012]{cooper2012}
 \abntrefinfo{Cooper e Torczon}{COOPER; TORCZON}{2012}
@@ -50,6 +68,12 @@ Dispon{\'\i}vel em: \url{https://tutormundi.com/blog/}. Acesso em: 07 abr.
   2026}. 2026.
 Dispon{\'\i}vel em: \url{https://dasroot.net}. Acesso em: 07 abr. 2026.}
 
+\bibitem[Davis 1989]{davis1989}
+\abntrefinfo{Davis}{DAVIS}{1989}
+{DAVIS, F.~D. Perceived usefulness, perceived ease of use, and user acceptance
+  of information technology.
+\textbf{MIS Quarterly}, v.~13, n.~3, p. 319--340, 1989.}
+
 \bibitem[DUNOSSAURO 2026]{dunossauro2026}
 \abntrefinfo{DUNOSSAURO}{DUNOSSAURO}{2026}
 {DUNOSSAURO, E. \textbf{FastAPI do Zero!} 2026.
@@ -61,11 +85,38 @@ Dispon{\'\i}vel em: \url{https://dunossauro.github.io/fastapi-do-zero/}. Acesso
 {ELMASRI, R.; NAVATHE, S.~B. \textbf{Fundamentals of Database Systems}. 7. ed.
   Hoboken: Pearson, 2015.}
 
+\bibitem[{FastAPI} 2026]{fastapi2026async}
+\abntrefinfo{{FastAPI}}{{FastAPI}}{2026a}
+{{FastAPI}. \textbf{Async Tests}. 2026.
+Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/advanced/async-tests/}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{FastAPI} 2026]{fastapi2026yield}
+\abntrefinfo{{FastAPI}}{{FastAPI}}{2026b}
+{{FastAPI}. \textbf{Dependencies with yield}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/}.
+  Acesso em: 19 set. 2026.}
+
 \bibitem[FASTAPI 2026]{fastapi2026}
 \abntrefinfo{FASTAPI}{FASTAPI}{2026}
 {FASTAPI. \textbf{Recursos e Documentação Oficial do FastAPI}. 2026.
 Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/}. Acesso em: 07 abr.
   2026.}
+
+\bibitem[{FastAPI} 2026]{fastapi2026response}
+\abntrefinfo{{FastAPI}}{{FastAPI}}{2026a}
+{{FastAPI}. \textbf{Response Model: Return Type}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://fastapi.tiangolo.com/tutorial/response-model/}. Acesso em: 19
+  set. 2026.}
+
+\bibitem[{FastAPI} 2026]{fastapi2026overrides}
+\abntrefinfo{{FastAPI}}{{FastAPI}}{2026b}
+{{FastAPI}. \textbf{Testing Dependencies with Overrides}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://fastapi.tiangolo.com/advanced/testing-dependencies/}. Acesso em:
+  19 set. 2026.}
 
 \bibitem[Ferreira, Silva e Ribeiro 2025]{ferreira2025}
 \abntrefinfo{Ferreira, Silva e Ribeiro}{FERREIRA; SILVA; RIBEIRO}{2025}
@@ -149,6 +200,58 @@ Dispon{\'\i}vel em: \url{https://mindmakers.com.br/blog/}. Acesso em: 07 abr.
 {NYSTROM, R. \textbf{Crafting Interpreters}. [S.l.]: Genever Benning, 2021.
 ISBN 978-0990582939.}
 
+\bibitem[{OWASP Foundation} 2023]{owasp2023objetos}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2023a}
+{{OWASP Foundation}. \textbf{API1:2023 Broken Object Level Authorization}.
+  2023.
+Dispon{\'\i}vel em:
+  \url{https://api-security.owasp.org/editions/2023/en/0xa1-broken-object-level-authorization/}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{OWASP Foundation} 2023]{owasp2023propriedades}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2023b}
+{{OWASP Foundation}. \textbf{API3:2023 Broken Object Property Level
+  Authorization}. 2023.
+Dispon{\'\i}vel em:
+  \url{https://api-security.owasp.org/editions/2023/en/0xa3-broken-object-property-level-authorization/}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{OWASP Foundation} 2023]{owasp2023recursos}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2023c}
+{{OWASP Foundation}. \textbf{API4:2023 Unrestricted Resource Consumption}.
+  2023.
+Dispon{\'\i}vel em:
+  \url{https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption/}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{OWASP Foundation} 2026]{owasp2026authorization}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2026a}
+{{OWASP Foundation}. \textbf{Authorization Cheat Sheet}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://cheatsheetseries.owasp.org/cheatsheets/Authorization\_Cheat\_Sheet.html}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{OWASP Foundation} 2026]{owasp2026input}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2026b}
+{{OWASP Foundation}. \textbf{Input Validation Cheat Sheet}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://cheatsheetseries.owasp.org/cheatsheets/Input\_Validation\_Cheat\_Sheet.html}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{OWASP Foundation} 2026]{owasp2026password}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2026c}
+{{OWASP Foundation}. \textbf{Password Storage Cheat Sheet}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://cheatsheetseries.owasp.org/cheatsheets/Password\_Storage\_Cheat\_Sheet.html}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[{OWASP Foundation} 2026]{owasp2026rest}
+\abntrefinfo{{OWASP Foundation}}{{OWASP Foundation}}{2026d}
+{{OWASP Foundation}. \textbf{REST Security Cheat Sheet}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://cheatsheetseries.owasp.org/cheatsheets/REST\_Security\_Cheat\_Sheet.html}.
+  Acesso em: 19 set. 2026.}
+
 \bibitem[Pressman e Maxim 2016]{pressman2016}
 \abntrefinfo{Pressman e Maxim}{PRESSMAN; MAXIM}{2016}
 {PRESSMAN, R.~S.; MAXIM, B.~R. \textbf{Engenharia de Software: uma Abordagem
@@ -159,30 +262,98 @@ ISBN 978-0990582939.}
 {PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens
   de Programa{\c{c}}{\~a}o: Compiladores}. Porto Alegre: Sagra Luzzatto, 2001.}
 
+\bibitem[{pytest-asyncio contributors} 2026]{pytestasyncio2026}
+\abntrefinfo{{pytest-asyncio contributors}}{{pytest-asyncio
+  contributors}}{2026}
+{{pytest-asyncio contributors}. \textbf{pytest-asyncio: Concepts}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://pytest-asyncio.readthedocs.io/en/stable/concepts.html}. Acesso
+  em: 19 set. 2026.}
+
+\bibitem[{pytest development team} 2026]{pytest2026fixtures}
+\abntrefinfo{{pytest development team}}{{pytest development team}}{2026}
+{{pytest development team}. \textbf{How to use fixtures}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://docs.pytest.org/en/stable/how-to/fixtures.html}. Acesso em: 19
+  set. 2026.}
+
+\bibitem[Queiroz e Silva 2026]{projeto2026workflow}
+\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026a}
+{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter: fluxo de
+  integração contínua e implantação}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/e0a012bb833fa829e6e694bc2f5b99fdff4863a0/.github/workflows/deploy.yml}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[Queiroz e Silva 2026]{projeto2026backend}
+\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026b}
+{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter:
+  implementação do serviço back-end}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/e0a012bb833fa829e6e694bc2f5b99fdff4863a0/backend/app}.
+  Acesso em: 19 set. 2026.}
+
+\bibitem[Queiroz e Silva 2026]{projeto2026backendtestes}
+\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026c}
+{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter: testes do
+  serviço back-end}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/e0a012bb833fa829e6e694bc2f5b99fdff4863a0/backend/tests}.
+  Acesso em: 19 set. 2026.}
+
 \bibitem[QUORUM 2025]{quorum2025}
 \abntrefinfo{QUORUM}{QUORUM}{2025}
 {QUORUM. \textbf{The Quorum Programming Language: Documentation and
   Curriculum}. 2025.
-Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 07 abr.
+Dispon{\'\i}vel em: \url{https://quorumlanguage.com/}. Acesso em: 09 set.
   2026.}
 
-\bibitem[Silva et al. 2020]{silva2020evasao}
-\abntrefinfo{Silva et al.}{SILVA et al.}{2020}
-{SILVA, D. d.~S.; TAMAYO, S.~C.; PESSOA, M.; PIRES, F.; OLIVEIRA, D. B.~F.;
-  OLIVEIRA, E. H. T.~d.; CARVALHO, L. S. G.~d. Minerando dados de um juiz
-  on-line para prever a evas{\~a}o de estudantes em disciplinas
-  introdut{\'o}rias de programa{\c{c}}{\~a}o. In:  \textbf{Anais do XXXI
-  Simp{\'o}sio Brasileiro de Inform{\'a}tica na Educa{\c{c}}{\~a}o (SBIE)}.
-  Porto Alegre: Sociedade Brasileira de Computa{\c{c}}{\~a}o, 2020. p.
-  1343--1352.}
+\bibitem[Sa\'ude 2012]{cns466}
+\abntrefinfo{Sa\'ude}{SA\'UDE}{2012}
+{SA\'UDE, B. C.~N. de. \textbf{Resolu\c{c}\~ao n. 466, de 12 de dezembro de
+  2012}. Bras\'ilia: [s.n.], 2012. Di\'ario Oficial da Uni\~ao.}
 
-\bibitem[Silva 2021]{ladgelson2021}
-\abntrefinfo{Silva}{SILVA}{2021}
-{SILVA, M. L.~d.
-\textbf{Laila: Uma Plataforma Web para Aux{\'i}lio ao Ensino de Compiladores}.
-Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da
-  Computa{\c{c}}{\~a}o)) --- Instituto Federal de Educa{\c{c}}{\~a}o,
-  Ci{\^e}ncia e Tecnologia do Cear{\'a}, Aracati, 2021.}
+\bibitem[Sa\'ude 2016]{cns510}
+\abntrefinfo{Sa\'ude}{SA\'UDE}{2016}
+{SA\'UDE, B. C.~N. de. \textbf{Resolu\c{c}\~ao n. 510, de 7 de abril de 2016}.
+  Bras\'ilia: [s.n.], 2016. Di\'ario Oficial da Uni\~ao.}
+
+\bibitem[Sauro e Lewis 2012]{sauro2012}
+\abntrefinfo{Sauro e Lewis}{SAURO; LEWIS}{2012}
+{SAURO, J.; LEWIS, J.~R. \textbf{Quantifying the User Experience}: practical
+  statistics for user research. Waltham: Morgan Kaufmann, 2012.}
+
+\bibitem[Schrepp, Hinderks e Thomaschewski 2017]{schrepp2017}
+\abntrefinfo{Schrepp, Hinderks e Thomaschewski}{SCHREPP; HINDERKS;
+  THOMASCHEWSKI}{2017}
+{SCHREPP, M.; HINDERKS, A.; THOMASCHEWSKI, J. Design and evaluation of a short
+  version of the user experience questionnaire (ueq-s).
+\textbf{International Journal of Interactive Multimedia and Artificial
+  Intelligence}, v.~4, n.~6, p. 103--108, 2017.}
+
+\bibitem[{Scratch Foundation} 2026]{scratch2026}
+\abntrefinfo{{Scratch Foundation}}{{Scratch Foundation}}{2026}
+{{Scratch Foundation}. \textbf{Getting Started}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://scratchfoundation.org/learn/learning-library/getting-started}.
+  Acesso em: 09 set. 2026.}
+
+\bibitem[Silva, Pereira e Lima 2021]{ladgelson2021}
+\abntrefinfo{Silva, Pereira e Lima}{SILVA; PEREIRA; LIMA}{2021}
+{SILVA, M. L.~d.; PEREIRA, S. S.~L.; LIMA, D.~R. \textbf{Laila: um gerador de
+  analisador l{\'e}xico e sint{\'a}tico online baseado em FLEX e Bison}. 2021.
+  Instituto Federal do Cear{\'a}, Campus Aracati.
+Dispon{\'\i}vel em:
+  \url{https://gestaoaracati.ifce.edu.br/attachments/download/2699/tcc.pdf}.
+  Acesso em: 09 set. 2026.}
+
+\bibitem[Silva 2026]{silva2026verificacaobackend}
+\abntrefinfo{Silva}{SILVA}{2026}
+{SILVA, V. d. S. V.~d. \textbf{Registro de verificação local dos testes do
+  back-end e do compilador: 19 de setembro de 2026}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/victor/verificacao/testes-backend-2026-09-19.json}.
+  Acesso em: 19 set. 2026.}
 
 \bibitem[Silveira et al. 2012]{silveira2012}
 \abntrefinfo{Silveira et al.}{SILVEIRA et al.}{2012}
@@ -213,7 +384,7 @@ Monografia (Trabalho de Conclus{\~a}o de Curso (Bacharelado em Ci{\^e}ncia da
 \bibitem[Ueyama 2020]{ueyama2020}
 \abntrefinfo{Ueyama}{UEYAMA}{2020}
 {UEYAMA, R. \textbf{chibicc: A small C compiler}. 2020.
-Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 07 abr.
+Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 09 set.
   2026.}
 
 \bibitem[UNIVALI 2026]{univali2026}
@@ -221,7 +392,7 @@ Dispon{\'\i}vel em: \url{https://github.com/rui314/chibicc}. Acesso em: 07 abr.
 {UNIVALI. \textbf{Portugol Studio - LITE}. Laborat{\'o}rio de
   Inova{\c{c}}{\~a}o Tecnol{\'o}gica na Educa{\c{c}}{\~a}o, 2026.
 Dispon{\'\i}vel em: \url{https://univali-lite.github.io/Portugol-Studio/}.
-  Acesso em: 07 abr. 2026.}
+  Acesso em: 09 set. 2026.}
 
 \bibitem[{W3C} 2023]{w3c2023aria}
 \abntrefinfo{{W3C}}{{W3C}}{2023}

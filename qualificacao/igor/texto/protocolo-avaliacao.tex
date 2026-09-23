@@ -1,42 +1,116 @@
 \section{Proposta de Protocolo de Avaliação}
 \label{sec:protocolo-avaliacao}
 
-Esta seção propõe uma avaliação futura da experiência de uso, vinculando os conceitos de UX/UI aos recursos implementados. O protocolo ainda não foi aplicado com estudantes. Sua finalidade inicial é verificar se o participante consegue configurar uma linguagem, compreender o exemplo apresentado e executar um algoritmo. A pergunta sobre contribuição pedagógica exige uma etapa comparativa e medidas de aprendizagem, que não podem ser substituídas por opiniões sobre a interface.
+Esta seção descreve o instrumento de avaliação da plataforma, chamado de PA-01, e explica o que ele permite concluir. O instrumento é um só e é compartilhado com o texto do coautor: o mesmo formulário vai para o mesmo grupo de respondentes, e cada trabalho analisa os itens que interessam ao seu tema. Aqui interessam os itens sobre a interface, o assistente de personalização e os fluxos do ambiente virtual de aprendizagem. O protocolo ainda não foi aplicado, e nenhum resultado de participantes aparece neste documento.
 
-\subsection{Tarefas e critérios de observação}
+\subsection{Quem responde e o que é possível concluir}
 
-Propõe-se observar estudantes em contato inicial com programação, registrando previamente sua experiência com linguagens textuais e com outras IDEs. O observador apresentará as tarefas da Tabela~\ref{tab:tarefas-avaliacao}, sem demonstrar antecipadamente a sequência de comandos da interface. Solicitações de ajuda deverão ser registradas; a conclusão assistida será distinguida da conclusão sem ajuda.
+A avaliação será feita por um painel de especialistas, formado por professores e profissionais de computação. Não é um estudo com os alunos, que são o público-alvo da plataforma. Pede-se ao respondente que avalie se a ferramenta é adequada para um aluno em primeiro contato com programação, e não que relate a própria experiência de aprendizagem.
+
+Essa escolha limita o que o trabalho pode afirmar, e por isso ela é explicada antes da descrição do instrumento. Com um painel de especialistas é possível dizer que profissionais da área acham plausível que a personalização da sintaxe reduza a barreira sintática. Não é possível dizer que ela reduz. A pergunta feita na introdução continua sem resposta empírica, e respondê-la exige medir o desempenho de estudantes, como descrito na Subseção~\ref{subsec:limites-interpretacao}.
+
+Em troca, o painel dá acesso a avaliações que um aluno iniciante não teria como fazer: se o subconjunto da linguagem é adequado a uma disciplina introdutória, como a plataforma se compara às ferramentas discutidas no Capítulo~\ref{cap:referencial} e quais riscos pedagógicos a proposta traz. Há ainda um motivo ligado ao tema deste trabalho. Personalizar a linguagem é uma tarefa de autoria: alguém precisa decidir quais palavras substituem quais e verificar se o vocabulário final faz sentido. Na escola, quem costuma fazer isso é o professor, que prepara o ambiente antes da aula. Perguntar a professores se o assistente é claro e se o trabalho de preparação compensa é, portanto, perguntar a quem de fato usa essa parte da plataforma.
+
+\subsection{Composição do instrumento}
+
+O formulário é respondido pelo próprio participante, distribuído pela internet e criado por um programa, para que sua estrutura possa ser gerada de novo sempre que necessário. São dez páginas, oito delas com grades de itens em escala, como mostra a Tabela~\ref{tab:blocos-pa01}. Três blocos vêm de instrumentos já consolidados na literatura de avaliação de interfaces e os outros foram escritos para este projeto.
 
 \begin{table}[htbp]
 \centering
-\caption{Tarefas propostas para avaliar os recursos de UX/UI.}
-\label{tab:tarefas-avaliacao}
+\caption{Blocos do instrumento PA-01, procedência e número de itens.}
+\label{tab:blocos-pa01}
 \footnotesize
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|p{1cm}|p{4.3cm}|p{4.1cm}|p{3.7cm}|}
+\begin{tabular}{|p{5.2cm}|p{4.6cm}|c|}
 \hline
-\textbf{Tarefa} & \textbf{Ação solicitada} & \textbf{Decisão de interface} & \textbf{Conclusão observável} \\\hline
-T1 & Selecionar uma base e localizar entrada/saída & Etapas nomeadas e indicação de progresso (RF03) & Localiza a etapa correta \\\hline
-T2 & Trocar \texttt{print} por \texttt{escreva} e conferir o exemplo & Pré-visualização da configuração (RF04, RF06) & Identifica a alteração no exemplo \\\hline
-T3 & Atribuir o mesmo nome a dois comandos e corrigir o conflito & Validação e apresentação de erro (RF05) & Reconhece o conflito e restaura uma configuração válida \\\hline
-T4 & Salvar a linguagem, ativá-la e executar um programa de saída & Continuidade entre assistente, editor e terminal (RF07, RF09, RF11) & Programa produz a saída esperada com o vocabulário configurado \\\hline
-T5 & Inserir um erro de escrita em um programa fornecido e corrigi-lo & Diagnóstico no editor e retorno de execução (RF14) & Localiza o problema e obtém nova execução correta \\\hline
+\textbf{Bloco} & \textbf{Procedência} & \textbf{Itens} \\\hline
+Consentimento livre e esclarecido & Elaborado para o projeto & 1 \\\hline
+Perfil profissional & Elaborado para o projeto & 4 \\\hline
+Uso em sala (condicional) & Elaborado para o projeto & 8 \\\hline
+Como a plataforma foi usada & Elaborado para o projeto & 4 \\\hline
+Avaliação dos recursos & Elaborado para o projeto & 10 \\\hline
+Facilidade de uso & SUS \cite{brooke1996} & 10 \\\hline
+Impressão geral & UEQ-S \cite{schrepp2017} & 8 \\\hline
+Potencial pedagógico & Elaborado para o projeto & 8 \\\hline
+Riscos e limitações & Elaborado para o projeto & 4 \\\hline
+Qualidade técnica & Elaborado para o projeto & 7 \\\hline
+Utilidade e intenção de uso & TAM \cite{davis1989} & 6 \\\hline
+Comentários abertos & Elaborado para o projeto & 5 \\\hline
 \end{tabular}
-\legend{Fonte: elaborado pelo autor como proposta de avaliação futura.}
+\legend{Fonte: elaborado pelo autor.}
 \end{table}
 
-Para cada tarefa, a ficha de observação deverá conter: código anônimo do participante; experiência prévia; versão da aplicação; navegador, largura e tema; horário de início e término; conclusão sem ajuda, com ajuda ou não conclusão; quantidade de pedidos de ajuda; erros encontrados; e observações sobre o caminho seguido. O tempo será contado da apresentação da tarefa até a conclusão ou desistência. Interrupções externas serão anotadas separadamente. A proporção de conclusão será calculada por tarefa, apresentando também o número de participantes que a tentaram; os tempos serão descritos por mediana e intervalo, separando execuções assistidas.
+Os instrumentos já conhecidos foram usados porque têm valores de referência publicados. Com eles é possível comparar o resultado obtido com o de outros produtos já avaliados, em vez de apenas descrever a opinião dos respondentes. Os blocos próprios foram escritos porque nenhum instrumento pronto pergunta sobre o que esta plataforma propõe. Antes do bloco de avaliação dos recursos, o formulário mostra o mesmo programa em duas versões: uma na configuração padrão, com \texttt{int}, \texttt{for}, \texttt{if} e delimitadores simbólicos, e outra personalizada, com \texttt{numero\_inteiro}, \texttt{para}, \texttt{se}, operadores escritos por extenso e os delimitadores \texttt{inicio} e \texttt{fim}. Assim o respondente avalia algo concreto, e não uma ideia abstrata de personalização.
 
-Ao final, propõem-se três perguntas com respostas de 1 (discordo totalmente) a 5 (concordo totalmente): ``Consegui entender em que etapa estava''; ``O exemplo ajudou a entender a alteração da linguagem''; e ``A mensagem de erro ajudou a identificar o que corrigir''. Duas perguntas abertas complementam o instrumento: ``Em qual tarefa você encontrou mais dificuldade e por quê?'' e ``O que deveria mudar na interface?''. Trata-se de um questionário elaborado para este projeto, sem validação psicométrica; seus itens devem ser analisados individualmente, sem produzir um índice validado de usabilidade, engajamento ou carga cognitiva.
+\subsection{Itens sobre a interface e a personalização}
 
-\subsection{Comparação e limites de interpretação}
+O bloco de avaliação dos recursos tem a opção ``não usei'' em cada linha, o que separa quem discorda de quem não chegou a experimentar o recurso. As afirmações são:
 
-Para investigar o efeito da personalização, propõe-se comparar duas condições na mesma IDE: vocabulário padrão e vocabulário personalizado. Os participantes resolveriam tarefas equivalentes de entrada/saída, seleção e repetição, com alternância da ordem das condições para reduzir o efeito de prática. Antes da coleta, deverão ser fixados os enunciados, casos de teste, instruções, tempo disponível e critérios de classificação dos erros. Erros de escrita devem ser separados de falhas de lógica e de dificuldades de navegação, pois representam problemas distintos.
+\begin{itemize}
+    \item criar ou ajustar uma linguagem no assistente foi simples;
+    \item ficou claro em que etapa o usuário estava;
+    \item o exemplo de código ajudou a entender o efeito de cada alteração;
+    \item escrever programas com a linguagem configurada foi confortável;
+    \item as mensagens de erro ajudaram a identificar o que corrigir;
+    \item resolver e enviar exercícios foi simples;
+    \item importar uma linguagem do acervo da comunidade foi simples.
+\end{itemize}
+ O bloco termina com três itens sobre a utilidade da tabela de \textit{tokens}, do código intermediário e da execução passo a passo.
 
-Os registros permitiriam descrever acertos nos casos de teste, tempo até a primeira execução correta e frequência dos erros por condição. Uma diferença nessas medidas não demonstra, isoladamente, aprendizagem duradoura; esse resultado exigiria instrumentos de desempenho antes e depois da atividade e controle dos efeitos de experiência e de ordem. A opinião favorável de um participante tampouco comprova redução de carga cognitiva. O tamanho da amostra, o recrutamento e o plano de análise inferencial ainda precisam ser definidos com os orientadores antes da aplicação.
+Os três primeiros itens correspondem a decisões de interface descritas na Seção~\ref{sec:customizacao-dinamica}: dividir a personalização em etapas, indicar em qual delas o usuário está e mostrar uma pré-visualização do código. Esses itens verificam escolhas que foram adotadas como hipótese durante o desenvolvimento.
 
-A realização com participantes dependerá da definição do contexto de recrutamento, dos instrumentos de informação e consentimento, do tratamento dos dados e do encaminhamento aos procedimentos institucionais de ética em pesquisa aplicáveis. Esta proposta não representa autorização nem aprovação ética. Nenhum resultado de participantes é apresentado neste documento.
+Quem declara que leciona, ou já lecionou, disciplina que envolva programação responde a um bloco extra sobre o ambiente virtual de aprendizagem. Ele pergunta:
+
+\begin{itemize}
+    \item se foi simples criar uma turma e receber alunos pelo código de acesso;
+    \item se foi simples criar um exercício com casos de teste;
+    \item se travar uma linguagem em um exercício ajuda a planejar as aulas;
+    \item se a correção automática ajuda a acompanhar a turma;
+    \item se o respondente conseguiria preparar uma aula sem apoio técnico;
+    \item se o trabalho de preparar a linguagem compensa o ganho em sala.
+\end{itemize}
+ Uma questão de múltipla escolha pergunta em que momento de uma disciplina introdutória a plataforma seria mais útil, e uma das alternativas diz que não há espaço para ela na disciplina. Essa alternativa foi mantida de propósito, pelo mesmo motivo que justifica o bloco de riscos.
+
+O bloco de potencial pedagógico, respondido em terceira pessoa, transforma em afirmações as premissas que sustentam a plataforma:
+
+\begin{itemize}
+    \item deixar o aluno definir as palavras-chave tende a reduzir a barreira sintática no primeiro contato;
+    \item usar palavras em português no lugar de termos em inglês facilita entender o código;
+    \item a personalização tende a reduzir os erros de sintaxe de iniciantes;
+    \item mostrar os erros no vocabulário escolhido pelo próprio aluno facilita a correção;
+    \item o conjunto de elementos configuráveis é adequado ao propósito da ferramenta.
+\end{itemize}
+
+
+\subsection{Escalas usadas e cálculo dos escores}
+
+A facilidade de uso usa a escala de \citeonline{brooke1996}, com dez afirmações que alternam entre positivas e negativas. Essa alternância faz parte do instrumento e não deve ser corrigida. Para calcular o escore, subtrai-se 1 do valor marcado nos itens ímpares, subtrai-se de 5 o valor marcado nos itens pares, somam-se os resultados e multiplica-se o total por 2,5. O resultado vai de 0 a 100 e não é uma porcentagem. A média de referência fica perto de 68 pontos, e a interpretação segue \citeonline{bangor2009} e \citeonline{sauro2012}. A impressão geral usa a versão curta do questionário de \citeonline{schrepp2017}, com oito pares de adjetivos opostos em sete pontos; subtrai-se 4 do valor bruto e separam-se a dimensão pragmática e a hedônica. A utilidade e a intenção de uso vêm do modelo de \citeonline{davis1989}, adaptado ao público de professores.
+
+O bloco de riscos funciona ao contrário dos outros: nele, concordar significa apontar um problema. As afirmações são:
+
+\begin{itemize}
+    \item aprender em uma sintaxe personalizada pode dificultar a migração para uma linguagem de mercado;
+    \item alunos da mesma turma usando sintaxes diferentes dificultaria o trabalho do professor;
+    \item a liberdade de personalizar pode desviar a atenção do raciocínio algorítmico;
+    \item o tempo gasto configurando a linguagem não compensa o ganho de aprendizagem.
+\end{itemize}
+ Os escores desse bloco serão relatados separadamente e não podem ser somados aos do bloco de potencial pedagógico, porque as duas medidas apontam em sentidos opostos e uma anularia a outra. O bloco foi incluído de propósito: se o questionário trouxesse apenas afirmações favoráveis, a aprovação obtida diria muito pouco.
+
+\subsection{Participantes, procedimento e questões éticas}
+
+Os participantes são convidados diretamente e não são identificados. O formulário registra titulação, área de atuação, ferramentas de ensino que a pessoa já conhece e tempo de experiência com programação. Em uma avaliação feita por especialistas, esses dados fazem parte do resultado e serão apresentados junto com os escores. Um item pede que o respondente marque o que fez na plataforma e o que chegou a personalizar. Com isso é possível saber se uma avaliação negativa veio de quem usou o assistente até o fim ou de quem nem chegou a abri-lo.
+
+Sobre o número de participantes: de cinco a oito pessoas já revelam a maior parte dos problemas de usabilidade e são suficientes para analisar as respostas abertas. Para apresentar o escore SUS com intervalo de confiança são necessários vinte respondentes ou mais. Com menos que isso, o resultado será apresentado como indicativo, sem afirmar que existe diferença entre subgrupos.
+
+O instrumento foi escrito como pesquisa de opinião pública com participantes não identificados, situação prevista no parágrafo único do artigo 1º da Resolução CNS n.º 510 de 2016 \cite{cns510}. O termo de consentimento segue a Resolução CNS n.º 466 de 2012 \cite{cns466}. Esse enquadramento não vale só porque os pesquisadores o declararam: ele depende de uma manifestação escrita do comitê de ética da instituição, que ainda não foi obtida. Esta proposta não é uma autorização nem uma aprovação ética, e nenhuma resposta pode ser coletada antes desse encaminhamento.
+
+\subsection{Limites de interpretação e continuidade}
+\label{subsec:limites-interpretacao}
+
+Além do limite já citado sobre o público, três ressalvas afetam a leitura dos resultados. A primeira é sobre o instrumento: no formulário, os pares de adjetivos do UEQ-S estão sempre com o polo negativo à esquerda, enquanto o instrumento original inverte alguns pares para evitar que o respondente concorde por hábito. Se a comparação com os valores de referência for importante para o argumento, essa ordem deve ser conferida antes da coleta. A segunda é sobre a redação em português dos itens do SUS, que precisa ser comparada com uma tradução validada para que o escore possa ser comparado com a média histórica. A terceira é sobre a análise: escores altos dados por especialistas não comprovam aprendizagem, redução de carga cognitiva nem aumento de engajamento.
+
+Investigar a hipótese pedagógica é a etapa seguinte e exige outro desenho de estudo: comparar, na mesma IDE, o vocabulário padrão e o vocabulário personalizado, com tarefas equivalentes de entrada e saída, seleção e repetição. A ordem das condições deve ser alternada entre os participantes para reduzir o efeito de prática, e os enunciados, os casos de teste, o tempo disponível e os critérios de classificação dos erros precisam ser definidos antes da coleta, separando erros de escrita de falhas de lógica e de dificuldades de navegação. Com isso seria possível descrever os acertos, o tempo até a primeira execução correta e a frequência de erros em cada condição. Ainda assim, uma diferença nessas medidas não comprova, sozinha, que houve aprendizagem duradoura.
 
 \subsection{Continuidade da verificação técnica}
 
-A avaliação com estudantes deve ser precedida pela correção das barreiras registradas na Seção~\ref{sec:acessibilidade-responsividade} e pela ampliação dos testes de teclado aos fluxos de salvar linguagem, editar código, usar o terminal e submeter exercícios. Propõe-se verificar foco visível, entrada e saída de diálogos, nomes dos controles, anúncio de erros e compatibilidade com leitor de tela, registrando a combinação de sistema operacional, navegador e tecnologia assistiva. Devem ser incluídos os temas claro e escuro e larguras de 320, 390, 768 e 1440 pixels CSS. Os critérios WCAG apresentados no referencial orientam a inspeção, mas a declaração de conformidade exigiria examinar as páginas e processos completos \cite{w3cwcag22,w3capg2026}.
+Antes da avaliação com participantes, é preciso corrigir as barreiras registradas na Seção~\ref{sec:acessibilidade-responsividade} e ampliar os testes de teclado para os fluxos de salvar linguagem, editar código, usar o terminal e enviar exercícios. A verificação deve cobrir foco visível, entrada e saída de diálogos, nomes dos controles, anúncio de erros e compatibilidade com leitor de tela, registrando qual sistema operacional, navegador e tecnologia assistiva foram usados. Também devem entrar os temas claro e escuro e as larguras de 320, 390, 768 e 1440 pixels CSS. Os critérios WCAG apresentados no referencial orientam essa inspeção, mas declarar conformidade exigiria examinar as páginas e os processos completos \cite{w3cwcag22,w3capg2026}.

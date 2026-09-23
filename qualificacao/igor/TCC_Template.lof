@@ -1,20 +1,24 @@
 \babel@toc {brazil}{}\relax 
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{16}{figure.caption.19}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{18}{figure.caption.22}%
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Diagrama de casos de uso da plataforma.\relax }}{44}{figure.caption.47}%
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura da plataforma.}}{52}{figure.caption.53}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Página inicial da plataforma em suas duas variações de tema.\relax }}{68}{figure.caption.220}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Painel principal do aluno, com acesso às turmas, listas e exercícios.\relax }}{69}{figure.caption.221}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Composições da experiência do aluno: visão da turma e visão da lista de exercícios.\relax }}{70}{figure.caption.223}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Painel principal do professor.\relax }}{70}{figure.caption.224}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Composições da experiência do professor: visão da turma e visão das listas associadas.\relax }}{71}{figure.caption.226}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Preparo de uma lista de exercícios pelo professor: listagem das listas existentes e configuração dos parâmetros gerais.\relax }}{72}{figure.caption.227}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Conclusão da lista de exercícios: vinculação dos enunciados e publicação para a turma.\relax }}{73}{figure.caption.228}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Criação de enunciados pelo professor: listagem dos exercícios existentes e formulário de cadastro.\relax }}{75}{figure.caption.229}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Acompanhamento dos enunciados pelo professor: detalhamento do exercício e submissões recebidas.\relax }}{76}{figure.caption.230}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Etapas 1 e 2 do assistente de personalização da linguagem dinâmica.\relax }}{77}{figure.caption.231}%
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Etapa 3 do assistente, dedicada às palavras-chave de controle de fluxo.\relax }}{78}{figure.caption.232}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Etapa 4 do assistente, dedicada à substituição de operadores por palavras.\relax }}{79}{figure.caption.233}%
-\contentsline {figure}{\numberline {4.14}{\ignorespaces Etapa 5: personalização dos literais booleanos.\relax }}{80}{figure.caption.234}%
-\contentsline {figure}{\numberline {4.15}{\ignorespaces Etapa 6 do assistente: definição dos delimitadores de bloco e do terminador de instrução.\relax }}{81}{figure.caption.235}%
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Pré-visualização final da linguagem personalizada, exibida ao término do assistente.\relax }}{82}{figure.caption.236}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{17}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{19}{figure.caption.22}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Casos de uso: acesso e ambiente de desenvolvimento.\relax }}{43}{figure.caption.48}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Casos de uso: participação e gestão pedagógica.\relax }}{44}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura da plataforma.}}{52}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Adaptação do assistente na versão verificada em setembro de 2026.\relax }}{69}{figure.caption.233}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Página inicial da plataforma em suas duas variações de tema.\relax }}{72}{figure.caption.236}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Painel principal do aluno, com acesso às turmas, listas e exercícios.\relax }}{73}{figure.caption.237}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Detalhamento de uma turma do aluno.\relax }}{74}{figure.caption.238}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Lista de exercícios sob a ótica do aluno.\relax }}{74}{figure.caption.239}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Painel principal do professor.\relax }}{75}{figure.caption.240}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Detalhamento de uma turma do professor.\relax }}{75}{figure.caption.241}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Listas de exercícios vinculadas à turma.\relax }}{76}{figure.caption.242}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Preparo de uma lista de exercícios pelo professor: listagem das listas existentes e configuração dos parâmetros gerais.\relax }}{77}{figure.caption.243}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Conclusão da lista de exercícios: vinculação dos enunciados e publicação para a turma.\relax }}{78}{figure.caption.244}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Criação de enunciados pelo professor: listagem dos exercícios existentes e formulário de cadastro.\relax }}{79}{figure.caption.245}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Acompanhamento dos enunciados pelo professor: detalhamento do exercício e submissões recebidas.\relax }}{80}{figure.caption.246}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Etapas 1 e 2 do assistente de personalização da linguagem dinâmica.\relax }}{81}{figure.caption.247}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Etapa 3 do assistente, dedicada às palavras-chave de controle de fluxo.\relax }}{82}{figure.caption.248}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Etapa 4 do assistente, dedicada à substituição de operadores por palavras.\relax }}{84}{figure.caption.249}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Etapa 5: personalização dos literais booleanos.\relax }}{85}{figure.caption.250}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Etapa 6 do assistente: definição dos delimitadores de bloco e do terminador de instrução.\relax }}{86}{figure.caption.251}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Pré-visualização final da linguagem personalizada, exibida ao término do assistente.\relax }}{87}{figure.caption.252}%
