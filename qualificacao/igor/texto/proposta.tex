@@ -46,24 +46,30 @@ Os fluxos de uso da IDE e de gestão pedagógica especificados neste trabalho, c
 \label{fig:casos-de-uso}
 \resizebox{0.95\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=5cm,minimum height=.9cm}]
-\draw[thick] (3,1) rectangle (11,-13.5);
+\draw[thick] (3,1) rectangle (11,-16.0);
 \node[font=\small\bfseries] at (7,.65) {Plataforma educacional web};
-\pic at (0,0) {ator}; \node[font=\small] at (0,-1.65) {Visitante};
-\pic at (14,-6) {ator}; \node[font=\small,align=center] at (14,-7.8) {Usuário\\autenticado};
-\node[uc] (ucCad) at (7,-0.0) {Cadastrar-se};
-\node[uc] (ucAut) at (7,-1.25) {Autenticar-se};
-\node[uc] (ucPer) at (7,-2.5) {Gerenciar perfil};
-\node[uc] (ucLing) at (7,-3.75) {Criar e gerenciar\\linguagens personalizadas};
-\node[uc] (ucCom) at (7,-5.0) {Compartilhar e importar\\linguagens da comunidade};
-\node[uc] (ucAtiv) at (7,-6.25) {Ativar linguagem\\no editor};
-\node[uc] (ucEdit) at (7,-7.5) {Editar código na IDE};
-\node[uc] (ucArq) at (7,-8.75) {Gerenciar arquivos\\do projeto};
-\node[uc] (ucExec) at (7,-10.0) {Executar programa\\no terminal};
-\node[uc] (ucTok) at (7,-11.25) {Inspecionar \textit{tokens} e\\código intermediário};
-\node[uc] (ucDep) at (7,-12.5) {Depurar execução\\passo a passo};
+% Cada ator fica na altura media dos casos a que se liga, para que o leque de
+% ligacoes saia equilibrado em vez de descer todo para um lado.
+\pic at (0,-7.7) {ator}; \node[font=\small] at (0,-9.35) {Visitante};
+\pic at (14,-8.6) {ator}; \node[font=\small,align=center] at (14,-10.4) {Usuário\\autenticado};
+\node[uc] (ucCad)  at (7,-0.0)   {Cadastrar-se};
+\node[uc] (ucAut)  at (7,-1.5)  {Autenticar-se};
+\node[uc] (ucPer)  at (7,-3.0)   {Gerenciar perfil};
+\node[uc] (ucLing) at (7,-4.5)  {Criar e gerenciar\\linguagens personalizadas};
+\node[uc] (ucCom)  at (7,-6.0)   {Compartilhar e importar\\linguagens da comunidade};
+\node[uc] (ucAtiv) at (7,-7.5)  {Ativar linguagem\\no editor};
+\node[uc] (ucEdit) at (7,-9.0)   {Editar código na IDE};
+\node[uc] (ucArq)  at (7,-10.5)  {Gerenciar arquivos\\do projeto};
+\node[uc] (ucExec) at (7,-12.0)  {Executar programa\\no terminal};
+\node[uc] (ucTok)  at (7,-13.5) {Inspecionar \textit{tokens} e\\código intermediário};
+\node[uc] (ucDep)  at (7,-15.0)  {Depurar execução\\passo a passo};
+% As ligacoes partem de alturas ligeiramente diferentes, e nao de um unico
+% ponto: junto ao ator elas ficam separadas, em vez de se sobreporem.
 \begin{scope}[on background layer]
-\foreach \d in {ucCad,ucAut,ucLing,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep} \draw[liga] (0.35,-.4) -- (\d);
-\foreach \d in {ucPer,ucLing,ucCom,ucAtiv,ucEdit,ucArq,ucExec,ucTok,ucDep} \draw[liga] (13.65,-6.4) -- (\d);
+\foreach \d/\o in {ucCad/0.8,ucAut/0.6,ucLing/0.4,ucAtiv/0.2,ucEdit/0,ucArq/-0.2,ucExec/-0.4,ucTok/-0.6,ucDep/-0.8}
+  \draw[liga] (0.35,{-8.1+\o}) -- (\d);
+\foreach \d/\o in {ucPer/0.8,ucLing/0.6,ucCom/0.4,ucAtiv/0.2,ucEdit/0,ucArq/-0.2,ucExec/-0.4,ucTok/-0.6,ucDep/-0.8}
+  \draw[liga] (13.65,{-9.0+\o}) -- (\d);
 \end{scope}
 \end{tikzpicture}}
 \legend{Fonte: elaborado pelo autor.}
@@ -75,27 +81,32 @@ Os fluxos de uso da IDE e de gestão pedagógica especificados neste trabalho, c
 \label{fig:casos-de-uso-pedagogicos}
 \resizebox{0.95\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=5cm,minimum height=.9cm}]
-\draw[thick] (3,1) rectangle (11,-13.5);
+\draw[thick] (3,1) rectangle (11,-16.4);
 \node[font=\small\bfseries] at (7,.65) {Plataforma educacional web};
-\pic at (7,4) {ator}; \node[font=\small,align=center] at (7,2.25) {Usuário autenticado};
-\pic at (0,1) {ator}; \node[font=\small] at (0,-.65) {Aluno};
-\pic at (14,1) {ator}; \node[font=\small] at (14,-.65) {Professor};
-\draw[heranca] (0,1.25) -- (0,3.6) -- (6.55,3.6);
-\draw[heranca] (14,1.25) -- (14,3.6) -- (7.45,3.6);
-\node[uc] (ucIng) at (7,-0.0) {Ingressar em turma};
-\node[uc] (ucCons) at (7,-1.25) {Consultar listas\\e exercícios};
-\node[uc] (ucSub) at (7,-2.5) {Submeter solução\\de exercício};
-\node[uc] (ucVer) at (7,-3.75) {Consultar veredito\\e histórico};
-\node[uc] (ucTur) at (7,-5.0) {Gerenciar turmas};
-\node[uc] (ucMem) at (7,-6.25) {Gerenciar membros\\da turma};
-\node[uc] (ucEx) at (7,-7.5) {Gerenciar exercícios\\e casos de teste};
-\node[uc] (ucVinc) at (7,-8.75) {Vincular linguagem\\a exercício ou lista};
-\node[uc] (ucLis) at (7,-10.0) {Gerenciar listas\\de exercícios};
-\node[uc] (ucPub) at (7,-11.25) {Publicar lista\\para a turma};
-\node[uc] (ucAva) at (7,-12.5) {Acompanhar e avaliar\\submissões};
+\pic at (7,3.2) {ator}; \node[font=\small,align=center] at (7,1.55) {Usuário autenticado};
+% Aluno e professor ficam cada um na altura do seu proprio grupo de casos.
+% Antes os dois ficavam no topo, e as sete ligacoes do professor cruzavam o
+% diagrama inteiro ate a metade de baixo.
+\pic at (0,-1.85) {ator}; \node[font=\small] at (0,-3.5) {Aluno};
+\pic at (14,-10.4) {ator}; \node[font=\small] at (14,-12.05) {Professor};
+\draw[heranca] (0,-1.65) -- (0,2.8) -- (6.55,2.8);
+\draw[heranca] (14,-10.2) -- (14,2.8) -- (7.45,2.8);
+\node[uc] (ucIng)  at (7,-0.0)   {Ingressar em turma};
+\node[uc] (ucCons) at (7,-1.5)  {Consultar listas\\e exercícios};
+\node[uc] (ucSub)  at (7,-3.0)   {Submeter solução\\de exercício};
+\node[uc] (ucVer)  at (7,-4.5)  {Consultar veredito\\e histórico};
+\node[uc] (ucTur)  at (7,-6.4)   {Gerenciar turmas};
+\node[uc] (ucMem)  at (7,-7.9)  {Gerenciar membros\\da turma};
+\node[uc] (ucEx)   at (7,-9.4)   {Gerenciar exercícios\\e casos de teste};
+\node[uc] (ucVinc) at (7,-10.9)  {Vincular linguagem\\a exercício ou lista};
+\node[uc] (ucLis)  at (7,-12.4)  {Gerenciar listas\\de exercícios};
+\node[uc] (ucPub)  at (7,-13.9) {Publicar lista\\para a turma};
+\node[uc] (ucAva)  at (7,-15.4)  {Acompanhar e avaliar\\submissões};
 \begin{scope}[on background layer]
-\foreach \d in {ucIng,ucCons,ucSub,ucVer} \draw[liga] (0.35,.6) -- (\d);
-\foreach \d in {ucTur,ucMem,ucEx,ucVinc,ucLis,ucPub,ucAva} \draw[liga] (13.65,.6) -- (\d);
+\foreach \d/\o in {ucIng/0.45,ucCons/0.15,ucSub/-0.15,ucVer/-0.45}
+  \draw[liga] (0.35,{-2.25+\o}) -- (\d);
+\foreach \d/\o in {ucTur/0.75,ucMem/0.5,ucEx/0.25,ucVinc/0,ucLis/-0.25,ucPub/-0.5,ucAva/-0.75}
+  \draw[liga] (13.65,{-10.8+\o}) -- (\d);
 \end{scope}
 \end{tikzpicture}}
 \legend{Fonte: elaborado pelo autor.}

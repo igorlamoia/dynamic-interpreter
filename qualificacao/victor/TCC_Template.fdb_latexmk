@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1790133792.4466 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1790133793.71266 0
+["bibtex TCC_Template"] 1790133792.4466 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1790135189.74362 0
   "./referencias.bib" 1790120583.26806 16821 621ed963b567929d2f7cc84bef451d77 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1790133793.59167 88353 d1a929f092a6c5a0d10be1dc9815320d "pdflatex"
+  "TCC_Template.aux" 1790135189.63571 88353 d1a929f092a6c5a0d10be1dc9815320d "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1790133792.4625 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1790133793.7129 0
+["pdflatex"] 1790135188.62681 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1790135189.7439 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -271,12 +271,12 @@
   "Figuras/validateBooleanLiteralMap.png" 1789843636.06854 691463 91357b0118ec47d60a28ee23c17fe916 ""
   "Figuras/validateOperatorWordMap.png" 1789843636.06954 574760 0e589371d19c4fe55edfc41c0c182685 ""
   "Figuras/validateStatementTerminatorLexeme.png" 1789843636.07054 361468 cc046c10a12f4e3b9b1fe218dbf8516e ""
-  "TCC_Template.aux" 1790133793.59167 88353 d1a929f092a6c5a0d10be1dc9815320d "pdflatex"
+  "TCC_Template.aux" 1790135189.63571 88353 d1a929f092a6c5a0d10be1dc9815320d "pdflatex"
   "TCC_Template.bbl" 1790133792.45902 17579 c5bd12a77cd86dbe06e9c2ab9a138cbf "bibtex TCC_Template"
-  "TCC_Template.lof" 1790133793.60273 1174 0820f1bf1a133dd3f2f3da0e8767399c "pdflatex"
-  "TCC_Template.lot" 1790133793.60273 1648 01d93ea8c3384aa6722661b28783c3ad "pdflatex"
+  "TCC_Template.lof" 1790135189.64395 1174 0820f1bf1a133dd3f2f3da0e8767399c "pdflatex"
+  "TCC_Template.lot" 1790135189.64395 1648 01d93ea8c3384aa6722661b28783c3ad "pdflatex"
   "TCC_Template.tex" 1790120794.26759 20469 673a2369e51a323c853b087dcce9a0b0 ""
-  "TCC_Template.toc" 1790133793.60273 9790 3e035ab52cc33b0ff804d0c3941269df "pdflatex"
+  "TCC_Template.toc" 1790135189.64395 9790 3e035ab52cc33b0ff804d0c3941269df "pdflatex"
   "configcefetmglpd.cls" 1789843636.10154 32155 38db3c17483f77cb07fce742951daac2 ""
   "texto/apendice.tex" 1789846228.8102 8986 15f94a5073831620a18dc791584e53cd ""
   "texto/consideracoes.tex" 1790133657.22094 7802 2959b83cbd82eb455cc9611a7a1d29cb ""
@@ -285,7 +285,7 @@
   "texto/fundamentos-backend.tex" 1789845982.45309 4570 eaa7e3c7fb5e950aaf3910ee5e184c83 ""
   "texto/introducao.tex" 1789843636.1032 8575 cf928d741de32f6f3fea6f9ce28ae435 ""
   "texto/metodologia.tex" 1790120794.26737 52617 94fb7d54f84c7b9033d7ee2f12376953 ""
-  "texto/proposta.tex" 1789843636.1032 15219 9a50163cdf416b368ce5725d7e501d38 ""
+  "texto/proposta.tex" 1790135166.92386 15934 7f00cb1554c17fbedf300b0afc7c0652 ""
   "texto/protocolo-avaliacao.tex" 1790133776.04608 11731 e61e480ce26c29ae7909e9a15c1ec55f ""
   "texto/referencial.tex" 1789846156.23683 65070 848c1336b273068d8af4abab770eebd4 ""
   "texto/resultados-avaliacao.tex" 1790133613.60652 5348 b6041f0be6333d5009c53815dc259f21 ""
