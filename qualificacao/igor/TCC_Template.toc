@@ -52,39 +52,40 @@
 \contentsline {subsection}{\numberline {{4.7}.2}Resolução de exercícios e linguagem obrigatória}{67}{subsection.230}%
 \contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{67}{section.231}%
 \contentsline {subsection}{\numberline {{4.8}.1}Verificação técnica do assistente}{68}{subsection.232}%
-\contentsline {section}{\numberline {4.9}Apresentação das Telas da Plataforma}{71}{section.235}%
-\contentsline {section}{\numberline {4.10}Estratégia de Testes Automatizados}{87}{section.253}%
-\contentsline {subsection}{\numberline {{4.10}.1}Testes de ponta a ponta da interface}{88}{subsection.275}%
-\contentsline {subsection}{\numberline {{4.10}.2}Integração contínua e diagnóstico de falhas}{90}{subsection.277}%
-\contentsline {subsection}{\numberline {{4.10}.3}Resultado da execução local}{91}{subsection.278}%
-\contentsline {section}{\numberline {4.11}Proposta de Protocolo de Avaliação}{92}{section.279}%
-\contentsline {subsection}{\numberline {{4.11}.1}Quem responde e o que é possível concluir}{92}{subsection.280}%
-\contentsline {subsection}{\numberline {{4.11}.2}Composição do instrumento}{93}{subsection.281}%
-\contentsline {subsection}{\numberline {{4.11}.3}Itens sobre a interface e a personalização}{93}{subsection.283}%
-\contentsline {subsection}{\numberline {{4.11}.4}Escalas usadas e cálculo dos escores}{95}{subsection.284}%
-\contentsline {subsection}{\numberline {{4.11}.5}Participantes, procedimento e questões éticas}{96}{subsection.285}%
-\contentsline {subsection}{\numberline {{4.11}.6}Limites de interpretação e continuidade}{96}{subsection.286}%
-\contentsline {subsection}{\numberline {{4.11}.7}Continuidade da verificação técnica}{97}{subsection.287}%
+\contentsline {subsection}{\numberline {{4.8}.2}Internacionalização da interface}{70}{subsection.235}%
+\contentsline {section}{\numberline {4.9}Apresentação das Telas da Plataforma}{71}{section.236}%
+\contentsline {section}{\numberline {4.10}Estratégia de Testes Automatizados}{88}{section.254}%
+\contentsline {subsection}{\numberline {{4.10}.1}Testes de ponta a ponta da interface}{89}{subsection.276}%
+\contentsline {subsection}{\numberline {{4.10}.2}Integração contínua e diagnóstico de falhas}{91}{subsection.278}%
+\contentsline {subsection}{\numberline {{4.10}.3}Resultado da execução local}{92}{subsection.279}%
+\contentsline {section}{\numberline {4.11}Proposta de Protocolo de Avaliação}{93}{section.280}%
+\contentsline {subsection}{\numberline {{4.11}.1}Quem responde e o que é possível concluir}{93}{subsection.281}%
+\contentsline {subsection}{\numberline {{4.11}.2}Composição do instrumento}{94}{subsection.282}%
+\contentsline {subsection}{\numberline {{4.11}.3}Itens sobre a interface e a personalização}{94}{subsection.284}%
+\contentsline {subsection}{\numberline {{4.11}.4}Escalas usadas e cálculo dos escores}{96}{subsection.285}%
+\contentsline {subsection}{\numberline {{4.11}.5}Participantes, procedimento e questões éticas}{97}{subsection.286}%
+\contentsline {subsection}{\numberline {{4.11}.6}Limites de interpretação e continuidade}{97}{subsection.287}%
+\contentsline {subsection}{\numberline {{4.11}.7}Continuidade da verificação técnica}{98}{subsection.288}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{98}{chapter.288}%
-\contentsline {section}{\numberline {5.1}Composição do Painel}{98}{section.289}%
-\contentsline {section}{\numberline {5.2}Assistente de Personalização da Linguagem}{98}{section.290}%
-\contentsline {section}{\numberline {5.3}Uso do Ambiente Virtual de Aprendizagem}{98}{section.291}%
-\contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{98}{section.292}%
-\contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{98}{section.293}%
-\contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{98}{section.294}%
-\contentsline {section}{\numberline {5.7}Respostas Abertas}{98}{section.295}%
-\contentsline {section}{\numberline {5.8}Síntese e Confronto com os Objetivos}{98}{section.296}%
+\contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{99}{chapter.289}%
+\contentsline {section}{\numberline {5.1}Composição do Painel}{99}{section.290}%
+\contentsline {section}{\numberline {5.2}Assistente de Personalização da Linguagem}{99}{section.291}%
+\contentsline {section}{\numberline {5.3}Uso do Ambiente Virtual de Aprendizagem}{99}{section.292}%
+\contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{99}{section.293}%
+\contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{99}{section.294}%
+\contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{99}{section.295}%
+\contentsline {section}{\numberline {5.7}Respostas Abertas}{99}{section.296}%
+\contentsline {section}{\numberline {5.8}Síntese e Confronto com os Objetivos}{99}{section.297}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{99}{chapter.297}%
-\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{99}{section.298}%
-\contentsline {section}{\numberline {6.2}Limitações}{99}{section.299}%
-\contentsline {section}{\numberline {6.3}Encaminhamentos}{100}{section.300}%
+\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{100}{chapter.298}%
+\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{100}{section.299}%
+\contentsline {section}{\numberline {6.2}Limitações}{100}{section.300}%
+\contentsline {section}{\numberline {6.3}Encaminhamentos}{101}{section.301}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{102}{chapter*.302}%
+\contentsline {chapter}{REFERÊNCIAS}{103}{chapter*.303}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{105}{appendix.303}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{105}{section.304}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{105}{section.305}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{105}{subsection.306}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{106}{subsection.307}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{106}{appendix.304}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{106}{section.305}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{106}{section.306}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{106}{subsection.307}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{107}{subsection.308}%
