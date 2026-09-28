@@ -16,6 +16,7 @@ import { normalizeCompilerConfig } from '../../../lib/compiler-config'
 import type { IDEGrammarConfig } from '@/entities/compiler-config'
 import type { TTestCaseResult, TValidationResult } from '@/types/submissions'
 import { getServerApiUrl } from '@/lib/server-api-url'
+import { t } from '@/i18n'
 
 // Rota de servidor: ver getServerApiUrl sobre o porque do endereco interno.
 const BACKEND_URL = getServerApiUrl()
@@ -54,7 +55,7 @@ async function runTestCase(
         return { output, error: null }
     } catch (err) {
         if (err instanceof Error && err.message === 'TIMEOUT') {
-            return { output, error: 'Tempo limite excedido (5s)' }
+            return { output, error: t(undefined, 'ui.validation_timeout') }
         }
         return { output, error: (err as Error).message }
     }
@@ -66,11 +67,13 @@ function normalizeOutput(s: string): string {
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<TValidationResult>) {
-    if (req.method !== 'POST') return res.status(405).json({ valid: false, errors: ['Metodo nao permitido'], warnings: [] })
+    const requestLocale = typeof req.body?.locale === 'string' ? req.body.locale : undefined
+
+    if (req.method !== 'POST') return res.status(405).json({ valid: false, errors: [t(requestLocale, 'ui.validation_method_not_allowed')], warnings: [] })
 
     const userId = req.headers['x-user-id'] as string
     const jwtToken = req.headers['x-authorization'] as string | undefined
-    if (!userId) return res.status(401).json({ valid: false, errors: ['Não autorizado'], warnings: [] })
+    if (!userId) return res.status(401).json({ valid: false, errors: [t(requestLocale, 'ui.validation_unauthorized')], warnings: [] })
 
     const { exerciseId, exerciseListId, classId, sourceCode, keywordMap, operatorWordMap, booleanLiteralMap, statementTerminatorLexeme, blockDelimiters, indentationBlock, grammar, locale } = req.body as {
         exerciseId: string
@@ -89,11 +92,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const dryRun = req.query.dryRun === 'true'
 
     if (!exerciseId || !sourceCode) {
-        return res.status(400).json({ valid: false, errors: ['Código e exercício são obrigatórios'], warnings: [] })
+        return res.status(400).json({ valid: false, errors: [t(locale, 'ui.validation_code_exercise_required')], warnings: [] })
     }
 
     if (!dryRun && (!exerciseListId || !classId)) {
-        return res.status(400).json({ valid: false, errors: ['exerciseListId e classId são obrigatórios para submissão'], warnings: [] })
+        return res.status(400).json({ valid: false, errors: [t(locale, 'ui.validation_submission_context_required')], warnings: [] })
     }
 
     const errors: string[] = []
@@ -123,7 +126,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const tokens = lexer.scanTokens()
 
         if (lexer.warnings.length > 0) {
-            lexer.warnings.forEach(w => warnings.push(`Aviso (linha ${w.line}): ${w.message}`))
+            lexer.warnings.forEach(w => warnings.push(t(locale, 'ui.validation_warning_line', { line: w.line, message: w.message })))
         }
 
         // Step 2: Intermediate Code Generation (Syntax + Semantic)
@@ -136,16 +139,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             instructions = iterator.generateIntermediateCode()
         } catch (error) {
             if (error instanceof IssueError) {
-                errors.push(`Erro de compilação (linha ${error.details.line}): ${error.details.message}`)
+                errors.push(t(locale, 'ui.validation_compile_error_line', { line: error.details.line, message: error.details.message }))
             } else {
-                errors.push(`Erro de compilação: ${(error as Error).message}`)
+                errors.push(t(locale, 'ui.validation_compile_error', { message: (error as Error).message }))
             }
         }
     } catch (error) {
         if (error instanceof IssueError) {
-            errors.push(`Erro léxico (linha ${error.details.line}): ${error.details.message}`)
+            errors.push(t(locale, 'ui.validation_lexical_error_line', { line: error.details.line, message: error.details.message }))
         } else {
-            errors.push(`Erro léxico: ${(error as Error).message}`)
+            errors.push(t(locale, 'ui.validation_lexical_error', { message: (error as Error).message }))
         }
     }
 
@@ -178,7 +181,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     const { output, error } = await runTestCase(instructions, tc.input)
 
                     const actualOutput = error
-                        ? `[Erro] ${error}`
+                        ? t(locale, 'ui.validation_runtime_error', { error })
                         : normalizeOutput(output)
                     const expectedNormalized = normalizeOutput(tc.expectedOutput)
                     const passed = !error && actualOutput === expectedNormalized
@@ -186,10 +189,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     if (passed) testCasesPassed++
 
                     testCaseResults.push({
-                        label: tc.label || `Caso ${tc.orderIndex + 1}`,
+                        label: tc.label || t(locale, 'ui.validation_case_label', { number: tc.orderIndex + 1 }),
                         input: tc.input,
                         expectedOutput: tc.expectedOutput,
-                        actualOutput: error ? `[Erro] ${error}` : output,
+                        actualOutput: error ? t(locale, 'ui.validation_runtime_error', { error }) : output,
                         passed,
                     })
                 }
@@ -254,7 +257,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             : (error as Error).message
         return res.status(500).json({
             valid: false,
-            errors: [`Erro ao salvar a submissão: ${msg}`],
+            errors: [t(locale, 'ui.validation_save_submission_error', { message: msg })],
             warnings
         })
     }

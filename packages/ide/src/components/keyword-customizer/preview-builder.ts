@@ -11,16 +11,16 @@ function getKeyword(
   );
 }
 
-function buildLineEnding(draft: StoredKeywordCustomization): string {
+export function buildLineEnding(draft: StoredKeywordCustomization): string {
   if (draft.modes.semicolon !== "required") {
     return "";
   }
 
-  return draft.statementTerminatorLexeme.trim() || ";";
+  return ` ${draft.statementTerminatorLexeme.trim() || ";"}`;
 }
 
 function buildRequiredLineEnding(draft: StoredKeywordCustomization): string {
-  return draft.statementTerminatorLexeme.trim() || ";";
+  return ` ${draft.statementTerminatorLexeme.trim() || ";"}`;
 }
 
 function buildOperatorWord(
@@ -249,7 +249,7 @@ export function buildDelimiterSnippet(
   const close = draft.blockDelimiters.close.trim() || "}";
 
   return `${baseCodeSnippet}${open}\n\t${print}("Olá Mundo!")${lineEnding}
-  ${scan}(nome)${lineEnding}\n\t${print}("Me chamo:", nome)\n${close}`;
+  ${scan}(nome)${lineEnding}\n\t${print}("Me chamo:", nome)${lineEnding}\n${close}`;
 }
 
 export function buildBlockSnippet(draft: StoredKeywordCustomization): string {

@@ -177,6 +177,11 @@ const ui = {
   login_error_password_min: "Senha deve ter pelo menos 4 caracteres",
   login_error_missing_token: "Resposta de login sem token",
   login_error_failed: "Falha ao entrar",
+  register_title: "Crie sua Conta",
+  register_subtitle: "Entre para o futuro da educacao em programacao.",
+  register_continue_with: "OU CONTINUE COM",
+  register_have_account: "Ja tem uma conta?",
+  register_network_error: "Erro de rede. Tente novamente.",
   dashboard_student_title: "Minhas Turmas",
   dashboard_student_subtitle: "Gerencie seu progresso acadêmico.",
   dashboard_current_semester: "Semestre Atual",
@@ -186,6 +191,7 @@ const ui = {
     "Gerencie suas turmas, crie exercícios e acompanhe alunos",
   dashboard_new_class: "Nova Turma",
   dashboard_loading_classes: "Carregando turmas...",
+  dashboard_load_classes_error: "Erro ao carregar turmas.",
   dashboard_no_classes_title: "Nenhuma turma encontrada",
   dashboard_no_classes_description:
     "Você ainda não criou nenhuma turma. Clique no botão acima para começar a gerenciar seus alunos.",
@@ -355,6 +361,22 @@ const ui = {
     "Use palavras válidas para operadores (letras, números e _).",
   validation_operator_already_used:
     '"{value}" já está sendo usado por outro alias de operador.',
+  validation_timeout: "Tempo limite excedido (5s)",
+  validation_method_not_allowed: "Metodo nao permitido",
+  validation_unauthorized: "Nao autorizado",
+  validation_code_exercise_required:
+    "Codigo e exercicio sao obrigatorios",
+  validation_submission_context_required:
+    "exerciseListId e classId sao obrigatorios para submissao",
+  validation_warning_line: "Aviso (linha {line}): {message}",
+  validation_compile_error_line:
+    "Erro de compilacao (linha {line}): {message}",
+  validation_compile_error: "Erro de compilacao: {message}",
+  validation_lexical_error_line: "Erro lexico (linha {line}): {message}",
+  validation_lexical_error: "Erro lexico: {message}",
+  validation_runtime_error: "[Erro] {error}",
+  validation_case_label: "Caso {number}",
+  validation_save_submission_error: "Erro ao salvar a submissao: {message}",
   intermediate_code_empty: "Nenhuma instrucao de codigo intermediario disponivel.",
   intermediate_code_result: "Resultado",
   intermediate_code_operand1: "Op1",
@@ -379,8 +401,8 @@ const ui = {
   grading_feedback_placeholder: "Escreva seu feedback sobre o codigo do aluno...",
   grading_update_score: "Atualizar nota",
   grading_assign_score: "Atribuir nota",
-  submissions_title: "Submissoes",
-  submissions_empty: "Nenhuma submissao ainda.",
+  submissions_title: "Submissões",
+  submissions_empty: "Nenhuma submissão ainda.",
   submissions_student: "Aluno",
   submissions_exercise: "Exercicio",
   submissions_submitted_at: "Enviado",
@@ -396,7 +418,23 @@ const ui = {
   submission_status_corrected: "Corrigido",
   submission_status_sent: "Enviado",
   submission_status_pending_icon: "Pendente",
+  submission_not_found: "Submissao nao encontrada.",
+  submission_recompile_error: "Erro ao recompilar submissao.",
+  submission_loading: "Carregando submissao...",
+  submission_back_dashboard: "← Painel",
+  submission_back_list: "← Voltar a Lista",
+  submission_grade_title: "Correcao de Exercicio",
+  connection_error: "Erro de conexao",
   exercises_total_exercises: "Total de exercicios",
+  exercises_title: "Meus Exercicios",
+  exercises_subtitle: "Crie e gerencie exercicios para usar nas suas listas",
+  exercises_new: "Novo Exercicio",
+  exercises_load_error: "Erro ao carregar exercicios.",
+  exercises_delete_success: "Exercicio excluido.",
+  exercises_delete_error: "Erro ao excluir exercicio.",
+  exercises_search_placeholder: "Buscar exercicios...",
+  exercises_loading: "Carregando exercicios...",
+  exercises_no_search_results: "Nenhum resultado para \"{search}\"",
   exercises_test_cases: "Casos de teste",
   exercises_empty_title: "Nenhum exercicio encontrado",
   exercises_empty_description:
@@ -414,7 +452,7 @@ const ui = {
   exercises_delete_description_before: "Tem certeza que deseja excluir",
   exercises_delete_description_after: "? Esta acao nao pode ser desfeita.",
   exercises_deleting: "Excluindo...",
-  exercises_select_locked_language: "Selecione uma linguagem para travar o exercicio",
+  exercises_select_locked_language: "Selecione uma linguagem para travar o exercício",
   exercises_create_success: "Exercicio criado!",
   exercises_create_title: "Novo exercicio",
   exercises_create_description:
@@ -435,6 +473,8 @@ const ui = {
   exercise_lists_exercise_plural: "{count} exercicios",
   exercise_lists_manage: "Gerenciar",
   exercise_lists_load_error: "Erro ao carregar listas.",
+  exercise_lists_not_found: "Lista nao encontrada.",
+  exercise_lists_breadcrumb: "Listas",
   exercise_lists_my_lists: "Minhas listas",
   exercise_lists_teacher_subtitle:
     "Organize exercicios em listas e publique para suas turmas",
@@ -470,14 +510,14 @@ const ui = {
   exercise_lists_language_title: "Linguagem da lista",
   exercise_lists_change_language: "Alterar linguagem",
   exercise_lists_change: "Alterar",
-  exercise_lists_open_language: "Aberta - o aluno usa a propria linguagem",
+  exercise_lists_open_language: "Aberta - o aluno usa a própria linguagem",
   exercise_lists_save_language: "Salvar linguagem",
   exercise_lists_save: "Salvar",
   exercise_lists_cancel_language_change: "Cancelar alteracao de linguagem",
   exercise_lists_locked_items_note_singular:
-    "{count} exercicio tem trava propria e mantem a linguagem dele.",
+    "{count} exercício tem trava própria e mantém a linguagem dele.",
   exercise_lists_locked_items_note_plural:
-    "{count} exercicios tem travas proprias e mantem suas linguagens.",
+    "{count} exercícios têm trava própria e mantêm suas linguagens.",
   exercise_lists_published_note_singular:
     "Esta lista esta publicada em {count} turma. Alterar a linguagem vale para quem ainda nao entregou; o que ja foi enviado nao muda.",
   exercise_lists_published_note_plural:
@@ -537,7 +577,7 @@ const ui = {
   languages_delete_confirm: "Excluir a linguagem \"{name}\"?",
   languages_delete_success: "\"{name}\" excluida.",
   languages_delete_locked_error:
-    "Esta linguagem esta travada em algum exercicio e nao pode ser excluida.",
+    "Esta linguagem está travada em algum exercício e não pode ser excluída.",
   languages_delete_error: "Nao foi possivel excluir.",
   languages_publish_success: "\"{name}\" agora esta no acervo da comunidade.",
   languages_unpublish_success:
@@ -586,11 +626,11 @@ const ui = {
   community_loading_catalog: "Carregando catalogo",
   community_load_error: "Nao foi possivel carregar o acervo.",
   community_empty_filtered: "Nenhuma linguagem encontrada",
-  community_empty_atlas: "O atlas ainda esta vazio",
+  community_empty_atlas: "O atlas ainda está vazio",
   community_empty_filtered_description:
     "Tente remover algum filtro de DNA ou alterar a busca.",
   community_empty_atlas_description:
-    "Usuarios da comunidade podem publicar pelo acervo pessoal.",
+    "Usuários da comunidade podem publicar pelo acervo pessoal.",
   community_filter_by_dna: "Filtrar pelo DNA",
   community_filter_description: "Combine caracteristicas de diferentes eixos.",
   community_filter_count_singular: "{count} filtro",
@@ -604,6 +644,14 @@ const ui = {
   community_import_named: "Importar {name}",
   community_importing: "Importando",
   community_import: "Importar",
+  loading: "Carregando...",
+  grading_save_error: "Erro ao salvar nota",
+  test_card_1_title: "Cartao 1",
+  test_card_1_description: "Este e o primeiro cartao da pilha",
+  test_card_2_title: "Cartao 2",
+  test_card_2_description: "Este e o segundo cartao da pilha",
+  test_card_3_title: "Cartao 3",
+  test_card_3_description: "Este e o terceiro cartao da pilha",
 };
 
 export default ui;

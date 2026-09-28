@@ -71,7 +71,7 @@ describe("StructureStep", () => {
       values: {
         snippet: "estrutura",
         optionalTerminatorSnippet: 'mostrar("ok")',
-        requiredTerminatorSnippet: 'mostrar("ok")fim',
+        requiredTerminatorSnippet: 'mostrar("ok") fim',
         delimiterSnippet: "if (ok) {\n}",
         identationSnippet: "if ok:\n  print()",
         fixedArraySnippet: 'animes[2] = ["Naruto", "AOT"]',
@@ -132,7 +132,7 @@ describe("StructureStep", () => {
       ]),
     );
     expect(container.textContent).toContain('mostrar("ok")');
-    expect(container.textContent).toContain('mostrar("ok")fim');
+    expect(container.textContent).toContain('mostrar("ok") fim');
     expect(container.textContent).toContain('animes[2] = ["Naruto", "AOT"]');
     expect(container.textContent).toContain('animes[] = ["Naruto", "AOT"]');
 

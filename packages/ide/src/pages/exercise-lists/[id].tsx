@@ -14,9 +14,11 @@ import {
   useClassOptionsQuery,
   useExerciseListQuery,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export default function ExerciseListDetailPage() {
   const router = useRouter();
+  const locale = router.locale;
   const { id, classId } = router.query as { id?: string; classId?: string };
   const { isTeacher, userId } = useAuth();
   const { showToast } = useToast();
@@ -31,10 +33,13 @@ export default function ExerciseListDetailPage() {
 
   useEffect(() => {
     if (listQuery.error) {
-      showToast({ type: "error", message: "Lista não encontrada." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercise_lists_not_found"),
+      });
       void router.push("/exercise-lists");
     }
-  }, [listQuery.error, router, showToast]);
+  }, [listQuery.error, locale, router, showToast]);
 
   if (listQuery.isPending || !userId) {
     return (
@@ -59,7 +64,7 @@ export default function ExerciseListDetailPage() {
                 className="hover:text-foreground transition-colors flex items-center gap-1"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                Listas
+                {t(locale, "ui.exercise_lists_breadcrumb")}
               </Link>
               <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/70" />
               <span className="text-foreground font-medium">

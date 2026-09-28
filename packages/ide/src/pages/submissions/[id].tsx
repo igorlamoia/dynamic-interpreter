@@ -13,9 +13,11 @@ import {
   useSubmissionQuery,
   useValidateSubmissionMutation,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export default function GradeSubmission() {
   const router = useRouter();
+  const locale = router.locale;
   const { userId } = useAuth();
   const { showToast } = useToast();
   const { id } = router.query;
@@ -38,10 +40,11 @@ export default function GradeSubmission() {
 
   useEffect(() => {
     if (submissionQuery.error) {
-      setError("Submissão não encontrada");
-      showToast({ type: "error", message: "Submissão não encontrada." });
+      const message = t(locale, "ui.submission_not_found");
+      setError(message);
+      showToast({ type: "error", message });
     }
-  }, [showToast, submissionQuery.error]);
+  }, [locale, showToast, submissionQuery.error]);
 
   const handleGrade = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +59,10 @@ export default function GradeSubmission() {
       });
       setSaved(true);
     } catch (error) {
-      const message = getApiErrorMessage(error, "Erro ao salvar nota");
+      const message = getApiErrorMessage(
+        error,
+        t(locale, "ui.grading_save_error"),
+      );
       setError(message);
       showToast({ type: "error", message });
     }
@@ -78,15 +84,18 @@ export default function GradeSubmission() {
     } catch {
       setCompileResult({
         valid: false,
-        errors: ["Erro de conexão"],
+        errors: [t(locale, "ui.connection_error")],
         warnings: [],
       });
-      showToast({ type: "error", message: "Erro ao recompilar submissão." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.submission_recompile_error"),
+      });
     }
   };
 
   const formatDate = (d: string) =>
-    new Date(d).toLocaleDateString("pt-BR", {
+    new Date(d).toLocaleDateString(locale ?? "pt-BR", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -97,7 +106,9 @@ export default function GradeSubmission() {
   if (submissionQuery.isPending) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-muted-foreground">Carregando submissão...</div>
+        <div className="text-muted-foreground">
+          {t(locale, "ui.submission_loading")}
+        </div>
       </div>
     );
   }
@@ -110,7 +121,7 @@ export default function GradeSubmission() {
           href="/dashboard"
           className="text-sm text-primary hover:underline"
         >
-          Voltar ao Painel
+          {t(locale, "ui.class_back_to_dashboard")}
         </Link>
       </div>
     );
@@ -126,7 +137,7 @@ export default function GradeSubmission() {
             href="/dashboard"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            ← Painel
+            {t(locale, "ui.submission_back_dashboard")}
           </Link>
           {submission?.exerciseListId && (
             <>
@@ -135,13 +146,13 @@ export default function GradeSubmission() {
                 href={`/exercise-lists/${submission.exerciseListId}`}
                 className="text-sm text-primary hover:text-primary/80 transition-colors"
               >
-                ← Voltar à Lista
+                {t(locale, "ui.submission_back_list")}
               </Link>
             </>
           )}
           <div className="h-4 w-px bg-border" />
           <h1 className="text-lg font-bold text-foreground">
-            Correção de Exercício
+            {t(locale, "ui.submission_grade_title")}
           </h1>
         </div>
       </header>

@@ -52,7 +52,7 @@ describe("preview-builder variable snippets", () => {
     const draft = createDraft();
 
     expect(typedVariableSnippet(draft)).toBe(
-      'texto nome = "Kiki"fim\nnumero idade = 25fim\ndecimal altura = 1.75fim\nlogico estudante = truefim',
+      'texto nome = "Kiki" fim\nnumero idade = 25 fim\ndecimal altura = 1.75 fim\nlogico estudante = true fim',
     );
   });
 
@@ -61,7 +61,7 @@ describe("preview-builder variable snippets", () => {
     draft.modes.typing = "untyped";
 
     expect(untypedVariableSnippet(draft)).toBe(
-      'var nome = "Kiki"fim\nvar idade = 25fim\nvar altura = 1.75fim\nvar estudante = truefim',
+      'var nome = "Kiki" fim\nvar idade = 25 fim\nvar altura = 1.75 fim\nvar estudante = true fim',
     );
   });
 });
@@ -70,12 +70,14 @@ describe("preview-builder structure option snippets", () => {
   it("builds semicolon option examples from the current language", () => {
     const draft = getDefaultCustomizationState();
     draft.mappings = draft.mappings.map((mapping) =>
-      mapping.original === "print" ? { ...mapping, custom: "mostrar" } : mapping,
+      mapping.original === "print"
+        ? { ...mapping, custom: "mostrar" }
+        : mapping,
     );
     draft.statementTerminatorLexeme = "fim";
 
     expect(buildOptionalTerminatorSnippet(draft)).toBe('mostrar("ok")');
-    expect(buildRequiredTerminatorSnippet(draft)).toBe('mostrar("ok")fim');
+    expect(buildRequiredTerminatorSnippet(draft)).toBe('mostrar("ok") fim');
   });
 
   it("builds typed array option examples with exact fixed sizes", () => {
@@ -91,10 +93,10 @@ describe("preview-builder structure option snippets", () => {
     draft.statementTerminatorLexeme = "fim";
 
     expect(buildFixedArraySnippet(draft)).toBe(
-      'texto animes[2] = ["Naruto", "AOT"]fim',
+      'texto animes[2] = ["Naruto", "AOT"] fim',
     );
     expect(buildDynamicArraySnippet(draft)).toBe(
-      'texto animes[] = ["Naruto", "AOT"]fim',
+      'texto animes[] = ["Naruto", "AOT"] fim',
     );
   });
 
@@ -103,9 +105,7 @@ describe("preview-builder structure option snippets", () => {
     draft.modes.typing = "untyped";
     draft.modes.semicolon = "optional-eol";
 
-    expect(buildFixedArraySnippet(draft)).toBe(
-      'animes[2] = ["Naruto", "AOT"]',
-    );
+    expect(buildFixedArraySnippet(draft)).toBe('animes[2] = ["Naruto", "AOT"]');
     expect(buildDynamicArraySnippet(draft)).toBe(
       'animes[] = ["Naruto", "AOT"]',
     );

@@ -22,9 +22,11 @@ import {
   useOrganizationsQuery,
   useRegisterMutation,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export default function Register() {
   const router = useRouter();
+  const locale = router.locale;
   const { login } = useAuth();
   const { showToast } = useToast();
   const [serverError, setServerError] = useState("");
@@ -52,7 +54,7 @@ export default function Register() {
     } catch (error) {
       const message = getApiErrorMessage(
         error,
-        "Erro de rede. Tente novamente.",
+        t(locale, "ui.register_network_error"),
       );
       setServerError(message);
       showToast({ type: "error", message });
@@ -63,7 +65,10 @@ export default function Register() {
     <div className="relative min-h-screen text-foreground flex flex-col overflow-hidden">
       <SpaceBackground />
 
-      <Navbar links={[{ label: "Entrar", href: "/login" }]} hasAuth={false} />
+      <Navbar
+        links={[{ label: t(locale, "ui.login"), href: "/login" }]}
+        hasAuth={false}
+      />
 
       {/* Main Content */}
       <main className="relative font-sans z-10 grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -79,10 +84,10 @@ export default function Register() {
 
             <div className="mb-8 text-center mt-2">
               <Title>
-                <GradientText>Crie sua Conta</GradientText>
+                <GradientText>{t(locale, "ui.register_title")}</GradientText>
               </Title>
               <p className="text-muted-foreground text-sm mt-1">
-                Entre para o futuro da educação em programação.
+                {t(locale, "ui.register_subtitle")}
               </p>
             </div>
 
@@ -98,19 +103,19 @@ export default function Register() {
               <div className="relative w-full flex items-center">
                 <div className="grow border-t border-border dark:border-white/10"></div>
                 <span className="shrink-0 mx-4 text-muted-foreground text-xs">
-                  OU CONTINUE COM
+                  {t(locale, "ui.register_continue_with")}
                 </span>
                 <div className="grow border-t border-border dark:border-white/10"></div>
               </div>
               <SocialLogin fullWidth />
 
               <p className="mt-4 text-center text-sm text-muted-foreground">
-                Já tem uma conta?{" "}
+                {t(locale, "ui.register_have_account")}{" "}
                 <Link
                   href="/login"
                   className="font-semibold text-primary hover:text-emerald-400 transition-colors"
                 >
-                  Entrar
+                  {t(locale, "ui.login")}
                 </Link>
               </p>
             </div>

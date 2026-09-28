@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { SpaceBackground } from "@/components/space-background";
 import { Alert } from "@/components/ui/alert";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
@@ -11,8 +12,10 @@ import { JoinClassModal } from "@/views/dashboard/components/join-class-modal";
 import { useClassesQuery } from "@/hooks/use-api-queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { CommunityDashboard } from "@/views/dashboard/components/community-dashboard";
+import { t } from "@/i18n";
 
 export default function Dashboard() {
+  const { locale } = useRouter();
   const { isCommunity } = useAuth();
   const classesQuery = useClassesQuery(!isCommunity);
   const classes = classesQuery.data ?? [];
@@ -26,10 +29,13 @@ export default function Dashboard() {
   useEffect(() => {
     if (classesQuery.error) {
       setError(
-        getApiErrorMessage(classesQuery.error, "Erro ao carregar turmas."),
+        getApiErrorMessage(
+          classesQuery.error,
+          t(locale, "ui.dashboard_load_classes_error"),
+        ),
       );
     }
-  }, [classesQuery.error]);
+  }, [classesQuery.error, locale]);
 
   const handleClassCreated = (message: string, accessCode: string) => {
     setSuccess(message);
