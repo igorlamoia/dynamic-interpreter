@@ -40,7 +40,7 @@ export function GradingPanel({
         )}
         {saved && (
           <div className="text-xs text-emerald-400 mb-3 p-2 bg-emerald-500/10 rounded-lg">
-            {t(locale, "ui.grading_saved_success")}
+            ✅ {t(locale, "ui.grading_saved_success")}
           </div>
         )}
 
