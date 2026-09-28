@@ -19,6 +19,7 @@ import {
   buildDelimiterSnippet,
   buildFixedArraySnippet,
   buildIdentationSnippet,
+  buildLineEnding,
   buildOptionalTerminatorSnippet,
   buildRequiredTerminatorSnippet,
   typedVariableSnippet,
@@ -297,6 +298,7 @@ export function buildFlowStepProps(
   return {
     values: {
       snippet: context.preview.snippet,
+      lineEnding: buildLineEnding(context.draftCustomization),
       fields: FLOW_FIELDS.map((key) => ({
         key,
         value: getKeywordValue(context, key),

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -32,6 +33,7 @@ import {
 import { HeroButton } from "@/components/buttons/hero";
 import { LanguagePolicyField } from "@/components/language-policy-field";
 import { TestCaseFields } from "./test-case-fields";
+import { t } from "@/i18n";
 
 const testCaseSchema = z.object({
   label: z.string(),
@@ -64,6 +66,7 @@ export function CreateExerciseModal({
   onOpenChange: (v: boolean) => void;
   onCreated?: () => void;
 }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const createExercise = useCreateExerciseMutation();
   const languagesQuery = useLanguagesList(open);
@@ -101,7 +104,7 @@ export function CreateExerciseModal({
     ) {
       form.setError("lockedLanguageId", {
         type: "manual",
-        message: "Selecione uma linguagem para travar o exercício",
+        message: t(locale, "ui.exercises_select_locked_language"),
       });
       return;
     }
@@ -116,12 +119,18 @@ export function CreateExerciseModal({
           (tc) => tc.input.trim() || tc.expectedOutput.trim(),
         ),
       });
-      showToast({ type: "success", message: "Exercício criado!" });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercises_create_success"),
+      });
       form.reset();
       onOpenChange(false);
       onCreated?.();
     } catch {
-      showToast({ type: "error", message: "Erro ao criar exercício." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.dashboard_create_exercise_error"),
+      });
     }
   };
 
@@ -129,9 +138,9 @@ export function CreateExerciseModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Novo Exercício</DialogTitle>
+          <DialogTitle>{t(locale, "ui.exercises_create_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Defina o enunciado e casos de teste para validação automática.
+            {t(locale, "ui.exercises_create_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -145,11 +154,14 @@ export function CreateExerciseModal({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título</FormLabel>
+                  <FormLabel>{t(locale, "ui.dashboard_exercise_title_label")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Ex: Hello World em Java"
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_exercise_title_placeholder",
+                      )}
                       className="h-12"
                     />
                   </FormControl>
@@ -163,12 +175,17 @@ export function CreateExerciseModal({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição / Enunciado</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.dashboard_exercise_description_label")}
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       rows={5}
-                      placeholder="Descreva o exercício em detalhes..."
+                      placeholder={t(
+                        locale,
+                        "ui.dashboard_exercise_description_placeholder",
+                      )}
                       className="focus:border-primary/50"
                     />
                   </FormControl>
@@ -182,7 +199,7 @@ export function CreateExerciseModal({
               name="languagePolicy"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Linguagem permitida</FormLabel>
+                  <FormLabel>{t(locale, "ui.exercises_language_policy")}</FormLabel>
                   <FormControl>
                     <LanguagePolicyField
                       value={{
@@ -221,9 +238,15 @@ export function CreateExerciseModal({
               <AccordionItem value="test-cases">
                 <AccordionTrigger>
                   <div className="flex w-full items-center justify-between pr-2">
-                    <span>Casos de Teste</span>
+                    <span>{t(locale, "ui.exercises_test_cases")}</span>
                     <span className="text-xs text-muted-foreground">
-                      {fields.length} casos
+                      {t(
+                        locale,
+                        fields.length === 1
+                          ? "ui.exercises_case_count_singular"
+                          : "ui.exercises_case_count_plural",
+                        { count: fields.length },
+                      )}
                     </span>
                   </div>
                 </AccordionTrigger>
@@ -240,7 +263,7 @@ export function CreateExerciseModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
@@ -248,7 +271,9 @@ export function CreateExerciseModal({
             disabled={createExercise.isPending}
             className="bg-linear-to-r from-primary to-[#10b981] text-slate-800 hover:opacity-90"
           >
-            {createExercise.isPending ? "Criando..." : "Criar Exercício"}
+            {createExercise.isPending
+              ? t(locale, "ui.dashboard_creating")
+              : t(locale, "ui.dashboard_create_exercise_submit")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

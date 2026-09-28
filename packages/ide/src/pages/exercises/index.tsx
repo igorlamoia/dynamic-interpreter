@@ -1,4 +1,5 @@
 import { useEffect, useState, useDeferredValue } from "react";
+import { useRouter } from "next/router";
 import { SpaceBackground } from "@/components/space-background";
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
@@ -25,10 +26,12 @@ import {
   useDeleteExerciseMutation,
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 const PAGE_SIZE = 12;
 
 export default function ExercisesPage() {
+  const { locale } = useRouter();
   const { isTeacher, userId } = useAuth();
   const { showToast } = useToast();
 
@@ -59,9 +62,12 @@ export default function ExercisesPage() {
 
   useEffect(() => {
     if (exercisesQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar exercícios." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercises_load_error"),
+      });
     }
-  }, [exercisesQuery.error, showToast]);
+  }, [exercisesQuery.error, locale, showToast]);
 
   useEffect(() => {
     if (!exercisesQuery.isPending && exercises.length > 0) {
@@ -73,10 +79,16 @@ export default function ExercisesPage() {
     if (!deleteTarget || !userId) return;
     try {
       await deleteExercise.mutateAsync(deleteTarget.id);
-      showToast({ type: "success", message: "Exercício excluído." });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercises_delete_success"),
+      });
       setDeleteTarget(null);
     } catch {
-      showToast({ type: "error", message: "Erro ao excluir exercício." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercises_delete_error"),
+      });
     }
   };
 
@@ -103,10 +115,10 @@ export default function ExercisesPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
               <div>
                 <Title>
-                  <GradientText>Meus Exercícios</GradientText>
+                  <GradientText>{t(locale, "ui.exercises_title")}</GradientText>
                 </Title>
                 <Subtitle className="mt-1">
-                  Crie e gerencie exercícios para usar nas suas listas
+                  {t(locale, "ui.exercises_subtitle")}
                 </Subtitle>
               </div>
               {isTeacher && (
@@ -115,7 +127,7 @@ export default function ExercisesPage() {
                   className="gap-2 px-5 py-2.5 shrink-0 group"
                 >
                   <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
-                  Novo Exercício
+                  {t(locale, "ui.exercises_new")}
                 </HeroButton>
               )}
             </div>
@@ -134,7 +146,7 @@ export default function ExercisesPage() {
                     type="text"
                     value={search}
                     onChange={(e) => handleSearchChange(e.target.value)}
-                    placeholder="Buscar exercícios..."
+                    placeholder={t(locale, "ui.exercises_search_placeholder")}
                     className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-card/80 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors dark:bg-white/5"
                   />
                 </div>
@@ -143,12 +155,12 @@ export default function ExercisesPage() {
 
             {/* Content */}
             {exercisesQuery.isPending ? (
-              <LoadingSpinner label="Carregando exercícios..." />
+              <LoadingSpinner label={t(locale, "ui.exercises_loading")} />
             ) : filtered.length === 0 && hasSearch ? (
               <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-3">
                 <Search className="w-8 h-8 text-slate-600" />
                 <p className="text-sm font-medium">
-                  Nenhum resultado para &ldquo;{search}&rdquo;
+                  {t(locale, "ui.exercises_no_search_results", { search })}
                 </p>
               </div>
             ) : exercises.length === 0 ? (

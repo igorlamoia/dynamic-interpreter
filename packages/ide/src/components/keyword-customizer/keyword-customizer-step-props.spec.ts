@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
 import {
+  buildFlowStepProps,
   buildIdentityStepProps,
   buildIOStepProps,
   buildReviewStepProps,
@@ -93,12 +94,12 @@ describe("buildStructureStepProps", () => {
     expect(props.values.delimiterSnippet).toContain("funcao main()inicio");
     expect(props.values.identationSnippet).toContain("funcao main():");
     expect(props.values.optionalTerminatorSnippet).toBe('escreva("ok")');
-    expect(props.values.requiredTerminatorSnippet).toBe('escreva("ok");');
+    expect(props.values.requiredTerminatorSnippet).toBe('escreva("ok") ;');
     expect(props.values.fixedArraySnippet).toBe(
-      'texto animes[2] = ["Naruto", "AOT"];',
+      'texto animes[2] = ["Naruto", "AOT"] ;',
     );
     expect(props.values.dynamicArraySnippet).toBe(
-      'texto animes[] = ["Naruto", "AOT"];',
+      'texto animes[] = ["Naruto", "AOT"] ;',
     );
   });
 
@@ -133,6 +134,20 @@ describe("buildTypeStepProps", () => {
         }),
       ]),
     );
+  });
+});
+
+describe("buildFlowStepProps", () => {
+  it("passes the configured required line ending to flow examples", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes.semicolon = "required";
+    draft.statementTerminatorLexeme = "fim";
+
+    const props = buildFlowStepProps(
+      buildContext({ draftCustomization: draft }),
+    );
+
+    expect(props.values.lineEnding).toBe(" fim");
   });
 });
 

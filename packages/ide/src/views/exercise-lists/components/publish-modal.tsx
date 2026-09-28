@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/contexts/ToastContext";
@@ -22,19 +23,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { HeroButton } from "@/components/buttons/hero";
 import type { ClassOption } from "./types";
+import { t } from "@/i18n";
 
 function defaultDeadline() {
   const d = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
   return d.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm for datetime-local
 }
 
-const publishSchema = z.object({
-  classId: z.string().min(1, "Selecione uma turma"),
-  totalGrade: z.string().min(1, "Nota total é obrigatória"),
-  minRequired: z.string().min(1, "Mínimo obrigatório"),
-  deadline: z.string().min(1, "Prazo é obrigatório"),
-});
-type PublishForm = z.infer<typeof publishSchema>;
+function getPublishSchema(locale: string | undefined) {
+  return z.object({
+    classId: z.string().min(1, t(locale, "ui.exercise_lists_select_class")),
+    totalGrade: z
+      .string()
+      .min(1, t(locale, "ui.exercise_lists_total_grade_required")),
+    minRequired: z
+      .string()
+      .min(1, t(locale, "ui.exercise_lists_min_required_required")),
+    deadline: z
+      .string()
+      .min(1, t(locale, "ui.exercise_lists_deadline_required")),
+  });
+}
+type PublishForm = z.infer<ReturnType<typeof getPublishSchema>>;
 
 export function PublishModal({
   open,
@@ -49,10 +59,11 @@ export function PublishModal({
   classes: ClassOption[];
   onPublished?: () => void;
 }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const publishList = usePublishExerciseListMutation();
   const form = useForm<PublishForm>({
-    resolver: zodResolver(publishSchema),
+    resolver: zodResolver(getPublishSchema(locale)),
     defaultValues: {
       classId: "",
       totalGrade: "10",
@@ -70,7 +81,10 @@ export function PublishModal({
         minRequired: Number(values.minRequired),
         deadline: new Date(values.deadline).toISOString(),
       });
-      showToast({ type: "success", message: "Lista publicada com sucesso!" });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercise_lists_publish_success"),
+      });
       form.reset();
       onOpenChange(false);
       onPublished?.();
@@ -80,7 +94,9 @@ export function PublishModal({
       console.error("[publish] erro:", err);
       showToast({
         type: "error",
-        message: detail ? `Erro: ${detail}` : "Erro ao publicar lista.",
+        message: detail
+          ? t(locale, "ui.error_with_detail", { detail })
+          : t(locale, "ui.exercise_lists_publish_error"),
       });
     }
   };
@@ -89,9 +105,9 @@ export function PublishModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Publicar Lista</DialogTitle>
+          <DialogTitle>{t(locale, "ui.exercise_lists_publish_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Configure prazo e requisitos antes de publicar para a turma.
+            {t(locale, "ui.exercise_lists_publish_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -105,7 +121,7 @@ export function PublishModal({
               name="classId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Turma</FormLabel>
+                  <FormLabel>{t(locale, "ui.exercise_lists_class_label")}</FormLabel>
                   <FormControl>
                     <select
                       {...field}
@@ -115,7 +131,7 @@ export function PublishModal({
                         value=""
                         className="bg-background text-foreground"
                       >
-                        Selecione...
+                        {t(locale, "ui.select_placeholder")}
                       </option>
                       {classes.map((c) => (
                         <option
@@ -138,7 +154,7 @@ export function PublishModal({
                 name="totalGrade"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nota total</FormLabel>
+                    <FormLabel>{t(locale, "ui.exercise_lists_total_grade")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -157,7 +173,9 @@ export function PublishModal({
                 name="minRequired"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mínimo obrigatório</FormLabel>
+                    <FormLabel>
+                      {t(locale, "ui.exercise_lists_min_required")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -176,7 +194,7 @@ export function PublishModal({
               name="deadline"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Prazo de entrega</FormLabel>
+                  <FormLabel>{t(locale, "ui.exercise_lists_deadline")}</FormLabel>
                   <FormControl>
                     <Input type="datetime-local" {...field} className="h-11" />
                   </FormControl>
@@ -192,14 +210,16 @@ export function PublishModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
             form="publish-form"
             disabled={publishList.isPending}
           >
-            {publishList.isPending ? "Publicando..." : "Publicar"}
+            {publishList.isPending
+              ? t(locale, "ui.exercise_lists_publishing")
+              : t(locale, "ui.exercise_lists_publish")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

@@ -17,7 +17,6 @@ import {
   createLoginSchema,
   type LoginFormValues,
 } from "@/components/auth/login-form";
-import { SocialLogin } from "@/components/auth/social-login";
 import { useLoginMutation } from "@/hooks/use-api-queries";
 import { t } from "@/i18n";
 

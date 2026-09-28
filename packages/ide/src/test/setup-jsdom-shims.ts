@@ -1,3 +1,28 @@
+import { vi } from "vitest";
+
+vi.mock("next/router", () => ({
+  useRouter: () => ({
+    locale: "pt-BR",
+    defaultLocale: "pt-BR",
+    locales: ["pt-BR", "pt-PT", "es", "en"],
+    pathname: "/",
+    route: "/",
+    query: {},
+    asPath: "/",
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    reload: vi.fn(),
+    events: {
+      on: vi.fn(),
+      off: vi.fn(),
+      emit: vi.fn(),
+    },
+    isReady: true,
+  }),
+}));
+
 /**
  * APIs de layout/rolagem que o navegador tem e o jsdom não implementa.
  * Componentes que rolam áreas (ex.: o wizard do keyword-customizer chama

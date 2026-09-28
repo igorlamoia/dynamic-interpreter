@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect, type ReactNode } from "react";
 import { Pointer } from "@/components/ui/pointer";
 import { AppQueryClientProvider } from "@/lib/query-client";
+import { t } from "@/i18n";
 
 type NextPageWithAuth = NextPage & {
   requireAuth?: boolean;
@@ -62,7 +63,7 @@ function AuthGuard({
   if (requireAuth && (!isHydrated || isProfileLoading || !isAuthenticated)) {
     return (
       <div className="min-h-screen flex items-center justify-center text-slate-500 dark:text-slate-400">
-        Carregando...
+        {t(router.locale, "ui.loading")}
       </div>
     );
   }

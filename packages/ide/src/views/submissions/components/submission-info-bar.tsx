@@ -1,3 +1,6 @@
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
+
 export function SubmissionInfoBar({
   submission,
   formatDate,
@@ -5,6 +8,8 @@ export function SubmissionInfoBar({
   submission: any;
   formatDate: (d: string) => string;
 }) {
+  const { locale } = useRouter();
+
   return (
     <div className="bg-card/80 dark:bg-[#182f34]/40 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl p-6 mb-6">
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -19,12 +24,16 @@ export function SubmissionInfoBar({
               👤{" "}
               {submission?.student?.name ||
                 submission?.student?.email ||
-                "Aluno"}
+                t(locale, "ui.submissions_student")}
             </span>
             <span>
               📅 {submission ? formatDate(submission.submittedAt) : ""}
             </span>
-            <span>⚖️ Peso: {submission?.exercise?.gradeWeight}</span>
+            <span>
+              {t(locale, "ui.submissions_weight", {
+                weight: submission?.exercise?.gradeWeight ?? "",
+              })}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -38,10 +47,10 @@ export function SubmissionInfoBar({
             }`}
           >
             {submission?.status === "GRADED"
-              ? "✅ Corrigido"
+              ? t(locale, "ui.submission_status_corrected")
               : submission?.status === "SUBMITTED"
-                ? "📩 Enviado"
-                : "⏳ Pendente"}
+                ? t(locale, "ui.submission_status_sent")
+                : t(locale, "ui.submission_status_pending_icon")}
           </span>
         </div>
       </div>

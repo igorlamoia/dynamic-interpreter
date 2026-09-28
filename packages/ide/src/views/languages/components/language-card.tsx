@@ -7,8 +7,10 @@ import {
   Star,
   Trash2,
 } from "lucide-react";
+import { useRouter } from "next/router";
 import type { LanguageSummary } from "@/lib/languages-api";
 import { getLanguageDNAChips } from "../language-dna";
+import { t } from "@/i18n";
 
 const DEFAULT_LANGUAGE_IMAGE = "/images/language-default.png";
 
@@ -41,6 +43,8 @@ export function LanguageCard({
   onViewDna,
   onTogglePublication,
 }: LanguageCardProps) {
+  const { locale } = useRouter();
+
   return (
     <article
       data-testid="language-card"
@@ -65,7 +69,7 @@ export function LanguageCard({
                 className="size-4 shrink-0 text-yellow-500"
                 fill="currentColor"
                 role="img"
-                aria-label="Linguagem ativa"
+                aria-label={t(locale, "ui.active_language")}
               />
             )}
             <h3 className="truncate font-semibold text-foreground">
@@ -74,7 +78,7 @@ export function LanguageCard({
             {language.isPublic && (
               <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700 dark:border-emerald-300/20 dark:bg-emerald-300/8 dark:text-emerald-200">
                 <Globe2 className="size-2.5" />
-                Pública
+                {t(locale, "ui.languages_public")}
               </span>
             )}
           </div>
@@ -84,13 +88,18 @@ export function LanguageCard({
             </p>
           )}
           {language.clonedFromId !== null && (
-            <span className="text-[11px] text-muted-foreground">(clone)</span>
+            <span className="text-[11px] text-muted-foreground">
+              {t(locale, "ui.languages_clone_badge")}
+            </span>
           )}
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1.5" aria-label="Resumo do DNA">
-        {getLanguageDNAChips(language.dna).map((item) => (
+      <div
+        className="flex flex-wrap gap-1.5"
+        aria-label={t(locale, "ui.languages_dna_summary")}
+      >
+        {getLanguageDNAChips(language.dna, locale).map((item) => (
           <span
             key={item}
             className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2.5 py-1 text-[11px] font-medium text-cyan-700 dark:border-cyan-300/15 dark:bg-cyan-300/6 dark:text-cyan-100/90"
@@ -103,22 +112,30 @@ export function LanguageCard({
       <div className="mt-auto flex items-center gap-1 border-t border-border pt-2 dark:border-white/5">
         <button
           type="button"
-          aria-label={`Ver DNA de ${language.name}`}
-          title="Ver DNA"
+          aria-label={t(locale, "ui.languages_view_dna_named", {
+            name: language.name,
+          })}
+          title={t(locale, "ui.languages_view_dna")}
           onClick={() => onViewDna(language.id, language.name)}
           className="mr-auto inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold text-cyan-700 hover:bg-cyan-300/10 dark:text-cyan-200 dark:hover:text-cyan-100"
         >
           <Dna className="size-4" />
-          Ver DNA
+          {t(locale, "ui.languages_view_dna")}
         </button>
         {canPublish && (
           <button
             type="button"
-            aria-label={`${language.isPublic ? "Despublicar" : "Publicar"} ${language.name}`}
+            aria-label={t(
+              locale,
+              language.isPublic
+                ? "ui.languages_unpublish_named"
+                : "ui.languages_publish_named",
+              { name: language.name },
+            )}
             title={
               language.isPublic
-                ? "Remover da comunidade"
-                : "Publicar na comunidade"
+                ? t(locale, "ui.languages_remove_from_community")
+                : t(locale, "ui.languages_publish_to_community")
             }
             onClick={() =>
               onTogglePublication(
@@ -138,8 +155,10 @@ export function LanguageCard({
         )}
         <button
           type="button"
-          aria-label={`Editar ${language.name}`}
-          title="Editar"
+          aria-label={t(locale, "ui.languages_edit_named", {
+            name: language.name,
+          })}
+          title={t(locale, "ui.edit")}
           onClick={() => onEdit(language.id)}
           className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-white/10 dark:hover:text-white"
         >
@@ -147,8 +166,10 @@ export function LanguageCard({
         </button>
         <button
           type="button"
-          aria-label={`Tornar ${language.name} ativa`}
-          title="Tornar ativa"
+          aria-label={t(locale, "ui.languages_make_active_named", {
+            name: language.name,
+          })}
+          title={t(locale, "ui.languages_make_active")}
           disabled={isActive || activeUnknown}
           onClick={() => onSetActive(language.id, language.name)}
           className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground disabled:opacity-40 dark:hover:bg-white/10 dark:hover:text-white"
@@ -157,8 +178,10 @@ export function LanguageCard({
         </button>
         <button
           type="button"
-          aria-label={`Duplicar ${language.name}`}
-          title="Duplicar"
+          aria-label={t(locale, "ui.languages_duplicate_named", {
+            name: language.name,
+          })}
+          title={t(locale, "ui.languages_duplicate")}
           onClick={() => onClone(language.id, language.name)}
           className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-white/10 dark:hover:text-white"
         >
@@ -166,8 +189,10 @@ export function LanguageCard({
         </button>
         <button
           type="button"
-          aria-label={`Excluir ${language.name}`}
-          title="Excluir"
+          aria-label={t(locale, "ui.languages_delete_named", {
+            name: language.name,
+          })}
+          title={t(locale, "ui.delete")}
           onClick={() => onDelete(language.id, language.name)}
           className="rounded-lg p-2 text-muted-foreground hover:bg-red-500/10 hover:text-red-500 dark:hover:text-red-400"
         >
