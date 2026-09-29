@@ -282,7 +282,7 @@ const ui = {
     "Defina os detalhes e casos de teste para o exercício",
   dashboard_exercise_title_label: "Título",
   dashboard_exercise_title_placeholder: "Ex: Hello World em Java--",
-  dashboard_exercise_description_label: "Descrição / Instruções",
+  dashboard_exercise_description_label: "Descrição / Enunciado",
   dashboard_exercise_description_placeholder:
     "Descreva o exercício em detalhes...",
   dashboard_exercise_weight_label: "Peso da Nota",
@@ -398,7 +398,7 @@ const ui = {
   grading_min_score: "Minimo: 0",
   grading_max_score: "Maximo: 10",
   grading_feedback: "Feedback para o aluno",
-  grading_feedback_placeholder: "Escreva seu feedback sobre o codigo do aluno...",
+  grading_feedback_placeholder: "Escreva seu feedback sobre o código do aluno...",
   grading_update_score: "Atualizar nota",
   grading_assign_score: "Atribuir Nota",
   submissions_title: "Submissões",
@@ -541,7 +541,7 @@ const ui = {
   exercise_lists_min_required_required: "Minimo obrigatorio",
   exercise_lists_deadline_required: "Prazo e obrigatorio",
   exercise_lists_publishing: "Publicando...",
-  exercise_lists_add_exercise_success: "Exercicio adicionando!",
+  exercise_lists_add_exercise_success: "Exercício adicionado!",
   exercise_lists_add_exercise_error: "Erro ao adicionar exercicio.",
   exercise_lists_add_exercise_title: "Adicionar exercicio",
   exercise_lists_add_exercise_description:
