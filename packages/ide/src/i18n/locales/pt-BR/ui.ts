@@ -239,7 +239,7 @@ const ui = {
   class_status_not_started: "Nao iniciada",
   class_minimum_exercise_singular: "Minimo: {count} exercicio",
   class_minimum_exercise_plural: "Minimo: {count} exercicios",
-  class_completed_progress: "{completed} de {total} concluidos",
+  class_completed_progress: "{completed} de {total} concluídos",
   class_open_list: "Abrir Lista",
   dashboard_test_cases_help:
     "Defina pares de entrada/saída esperada para validação automática do código do aluno.",
@@ -399,7 +399,7 @@ const ui = {
   grading_max_score: "Maximo: 10",
   grading_feedback: "Feedback para o aluno",
   grading_feedback_placeholder: "Escreva seu feedback sobre o código do aluno...",
-  grading_update_score: "Atualizar nota",
+  grading_update_score: "Atualizar Nota",
   grading_assign_score: "Atribuir Nota",
   submissions_title: "Submissões",
   submissions_empty: "Nenhuma submissão ainda.",
@@ -435,7 +435,7 @@ const ui = {
   exercises_search_placeholder: "Buscar exercicios...",
   exercises_loading: "Carregando exercicios...",
   exercises_no_search_results: "Nenhum resultado para \"{search}\"",
-  exercises_test_cases: "Casos de teste",
+  exercises_test_cases: "Casos de Teste",
   exercises_empty_title: "Nenhum exercicio encontrado",
   exercises_empty_description:
     "Crie seu primeiro exercicio para utilizar nas listas das suas turmas.",
