@@ -67,10 +67,14 @@ export function GradingPanel({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
+            <label
+              htmlFor="grading-feedback"
+              className="block text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1.5"
+            >
               {t(locale, "ui.grading_feedback")}
             </label>
             <textarea
+              id="grading-feedback"
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               rows={5}
