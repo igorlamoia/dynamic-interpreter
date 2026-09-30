@@ -47,7 +47,7 @@ export function SubmissionInfoBar({
             }`}
           >
             {submission?.status === "GRADED"
-              ? t(locale, "ui.submission_status_corrected")
+              ? `✅ ${t(locale, "ui.submission_status_corrected")}`
               : submission?.status === "SUBMITTED"
                 ? `📩 ${t(locale, "ui.submission_status_sent")}`
                 : t(locale, "ui.submission_status_pending_icon")}

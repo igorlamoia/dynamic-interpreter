@@ -225,7 +225,7 @@ const ui = {
   class_status_not_started: "Nao iniciada",
   class_minimum_exercise_singular: "Minimo: {count} exercicio",
   class_minimum_exercise_plural: "Minimo: {count} exercicios",
-  class_completed_progress: "{completed} de {total} concluidos",
+  class_completed_progress: "{completed} de {total} concluídos",
   class_open_list: "Abrir lista",
   dashboard_test_cases_help:
     "Defina pares de entrada/saída esperada para validação automática do código do aluno.",
@@ -272,7 +272,7 @@ const ui = {
   dashboard_exercise_description_placeholder:
     "Descreva o exercício em detalhe...",
   dashboard_exercise_weight_label: "Peso da nota",
-  dashboard_test_cases_title: "Casos de teste (opcional)",
+  dashboard_test_cases_title: "Casos de Teste (opcional)",
   dashboard_test_cases_expand: "Expandir para configurar",
   dashboard_create_exercise_submit: "Criar exercício",
   dashboard_creator_fallback: "criador",
@@ -349,8 +349,8 @@ const ui = {
   grading_feedback: "Feedback para o aluno",
   grading_feedback_placeholder:
     "Escreva o seu feedback sobre o código do aluno...",
-  grading_update_score: "Actualizar nota",
-  grading_assign_score: "Atribuir nota",
+  grading_update_score: "Actualizar Nota",
+  grading_assign_score: "Atribuir Nota",
   submissions_title: "Submissões",
   submissions_empty: "Ainda não há submissões.",
   submissions_student: "Aluno",
@@ -385,7 +385,7 @@ const ui = {
   exercises_search_placeholder: "Pesquisar exercicios...",
   exercises_loading: "A carregar exercicios...",
   exercises_no_search_results: "Nenhum resultado para \"{search}\"",
-  exercises_test_cases: "Casos de teste",
+  exercises_test_cases: "Casos de Teste",
   exercises_empty_title: "Nenhum exercício encontrado",
   exercises_empty_description:
     "Crie o seu primeiro exercício para usar nas listas das suas turmas.",
