@@ -453,7 +453,7 @@ const ui = {
   exercises_delete_description_after: "? Esta acao nao pode ser desfeita.",
   exercises_deleting: "Excluindo...",
   exercises_select_locked_language: "Selecione uma linguagem para travar o exercício",
-  exercises_create_success: "Exercicio criado!",
+  exercises_create_success: "Exercício criado!",
   exercises_create_title: "Novo exercicio",
   exercises_create_description:
     "Defina o enunciado e casos de teste para validacao automatica.",
