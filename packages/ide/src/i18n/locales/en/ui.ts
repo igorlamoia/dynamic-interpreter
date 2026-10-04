@@ -613,6 +613,9 @@ const ui = {
   tutorial_next: "Next",
   tutorial_finish: "Finish",
   tutorial_skip: "Skip",
+  tutorial_ide_create_language_title: "Create a language",
+  tutorial_ide_create_language_body:
+    "Use this button to open the language creator and build your own syntax before returning to the IDE.",
   tutorial_ide_shell_title: "IDE workspace",
   tutorial_ide_shell_body:
     "This is the programming workspace. You can edit files, select a language, run code, inspect output, and debug from here.",

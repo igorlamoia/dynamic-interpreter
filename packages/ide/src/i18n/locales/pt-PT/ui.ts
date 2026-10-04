@@ -606,6 +606,9 @@ const ui = {
   tutorial_next: "Seguinte",
   tutorial_finish: "Concluir",
   tutorial_skip: "Saltar",
+  tutorial_ide_create_language_title: "Criar linguagem",
+  tutorial_ide_create_language_body:
+    "Use este botao para abrir o criador de linguagens e montar a sua propria sintaxe antes de voltar para a IDE.",
   tutorial_ide_shell_title: "Ambiente da IDE",
   tutorial_ide_shell_body:
     "Este e o espaco de programacao. Aqui pode editar ficheiros, escolher a linguagem, executar codigo, ver saidas e depurar.",
