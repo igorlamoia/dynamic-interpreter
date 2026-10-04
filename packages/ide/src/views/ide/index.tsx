@@ -3,7 +3,8 @@
 import { ShowTokens } from "../tokens/show-tokens";
 import { useLexerAnalyse } from "../../hooks/useLexerAnalyse";
 import { ListIntermediateCode } from "../tokens/list-intermediate-code";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useMemo, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Menu } from "./components/menu";
 import {
   SidebarPanel,
@@ -59,11 +60,38 @@ export function IDEView() {
     </IDEProvider>
   );
 }
-export function IDE() {
+export function IDE({
+  className,
+  heightClassName = "h-[70vh]",
+  showAnalysisPanels = true,
+}: {
+  className?: string;
+  heightClassName?: string;
+  showAnalysisPanels?: boolean;
+} = {}) {
   const { locale } = useRouter();
   const { showToast } = useToast();
-  const { buildLexerConfig, isReady: areKeywordsReady } = useKeywords();
+  const {
+    buildLexerConfig,
+    customization: keywordCustomization,
+    isReady: areKeywordsReady,
+  } = useKeywords();
   const languageChoices = useLanguageChoices();
+  const sampleActiveLanguage = useMemo(() => {
+    const activeLanguage = languageChoices.activeLanguage;
+    const customization =
+      keywordCustomization ?? activeLanguage?.customization;
+
+    if (!customization) return activeLanguage;
+
+    return {
+      key: activeLanguage?.key ?? "current",
+      name: activeLanguage?.name ?? "Java--",
+      description: activeLanguage?.description ?? "",
+      imageUrl: activeLanguage?.imageUrl ?? "",
+      customization,
+    };
+  }, [keywordCustomization, languageChoices.activeLanguage]);
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
   const { handleRun, analyseData, showScrollArrow, setShowScrollArrow } =
@@ -245,6 +273,7 @@ export function IDE() {
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLanguageSampleOpen, setIsLanguageSampleOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
   const toggleFullscreen = () => setIsFullscreen((current) => !current);
   useKeyboardShortcuts(
@@ -255,127 +284,139 @@ export function IDE() {
     setIsQuickSearchOpen,
   );
 
-  return (
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isFullscreen]);
+
+  const ideContent = (
     <>
-      <RuntimeErrorProvider>
+      <div
+        data-tour="ide-shell"
+        data-testid="ide-shell"
+        className={cn(
+          "relative max-w-full min-w-0 rounded-2xl",
+          className,
+          isFullscreen &&
+            "fixed inset-0 z-[100] h-[100dvh] w-[100dvw] overflow-hidden rounded-none bg-background p-2 sm:p-4",
+        )}
+      >
         <div
-          data-tour="ide-shell"
-          data-testid="ide-shell"
           className={cn(
-            "relative rounded-2xl",
-            isFullscreen &&
-              "fixed inset-0 z-50 flex flex-col rounded-none bg-background p-2 sm:p-4",
+            "min-w-0 rounded-2xl border border-black/10 bg-gray-100/70 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.8)] dark:border-white/10 dark:bg-black/20",
+            isFullscreen && "flex h-full min-h-0 w-full flex-1 flex-col rounded-xl",
           )}
         >
+          <Menu
+            handleRun={handleRun}
+            isRunDisabled={!areKeywordsReady}
+            isFullscreen={isFullscreen}
+            onHelp={() => setIsLanguageSampleOpen(true)}
+            runAll={runAll}
+            toggleFullscreen={toggleFullscreen}
+            toggleTerminal={toggleTerminal}
+          />
           <div
             className={cn(
-              "rounded-2xl border border-black/10 dark:border-white/10 bg-gray-100/70 dark:bg-black/20 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.8)]",
-              isFullscreen && "flex min-h-0 flex-1 flex-col rounded-xl",
+              "flex min-w-0 overflow-hidden rounded-b-2xl",
+              isFullscreen ? "min-h-0 flex-1" : heightClassName,
             )}
           >
-            <Menu
-              handleRun={handleRun}
-              isRunDisabled={!areKeywordsReady}
-              isFullscreen={isFullscreen}
-              onHelp={() => setIsLanguageSampleOpen(true)}
-              runAll={runAll}
-              toggleFullscreen={toggleFullscreen}
-              toggleTerminal={toggleTerminal}
-            />
-            <div
-              className={cn(
-                "flex overflow-hidden rounded-b-2xl",
-                isFullscreen ? "min-h-0 flex-1" : "h-[70vh]",
-              )}
-            >
-              <AnimatePresence>
-                <div
-                  className={`flex flex-1 flex-col sm:flex-row h-full w-full`}
-                >
-                  <SideMenu
-                    isSidebarOpen={isSidebarOpen}
-                    setIsSidebarOpen={setIsSidebarOpen}
+            <AnimatePresence>
+              <div className="flex h-full w-full min-w-0 flex-1 flex-col sm:flex-row">
+                <SideMenu
+                  isSidebarOpen={isSidebarOpen}
+                  setIsSidebarOpen={setIsSidebarOpen}
+                  activeView={activeView}
+                  setActiveView={setActiveView}
+                />
+                {isSidebarOpen && (
+                  <SidebarPanel
                     activeView={activeView}
-                    setActiveView={setActiveView}
-                  />
-                  {isSidebarOpen && (
-                    <SidebarPanel
-                      activeView={activeView}
-                      activeFile={activeFile}
-                      debugPanelProps={{
-                        breakpoints: selectedDebugLines,
-                        boundBreakpoints: debugSession.boundBreakpoints,
-                        locale,
-                        unboundBreakpoints: debugSession.unboundBreakpoints,
-                        snapshot: debugSession.snapshot,
-                        error: debugSession.error,
-                        isStale: debugSession.isStale,
-                        onStart: startDebug,
-                        onContinue: () => {
-                          void debugSession.continueExecution();
-                        },
-                        onStepInto: () => {
-                          void debugSession.stepInto();
-                        },
-                        onStepOver: () => {
-                          void debugSession.stepOver();
-                        },
-                        onStepOut: () => {
-                          void debugSession.stepOut();
-                        },
-                        onRestart: restartDebug,
-                        onStop: stopDebug,
-                      }}
-                      languageChoices={languageChoices}
-                      setActiveFile={setActiveFile}
-                      setOpenTabs={setOpenTabs}
-                    />
-                  )}
-                  <MainSection
                     activeFile={activeFile}
+                    debugPanelProps={{
+                      breakpoints: selectedDebugLines,
+                      boundBreakpoints: debugSession.boundBreakpoints,
+                      locale,
+                      unboundBreakpoints: debugSession.unboundBreakpoints,
+                      snapshot: debugSession.snapshot,
+                      error: debugSession.error,
+                      isStale: debugSession.isStale,
+                      onStart: startDebug,
+                      onContinue: () => {
+                        void debugSession.continueExecution();
+                      },
+                      onStepInto: () => {
+                        void debugSession.stepInto();
+                      },
+                      onStepOver: () => {
+                        void debugSession.stepOver();
+                      },
+                      onStepOut: () => {
+                        void debugSession.stepOut();
+                      },
+                      onRestart: restartDebug,
+                      onStop: stopDebug,
+                    }}
+                    languageChoices={languageChoices}
                     setActiveFile={setActiveFile}
-                    openTabs={openTabs}
                     setOpenTabs={setOpenTabs}
-                    isTerminalOpen={isTerminalOpen}
-                    toggleTerminal={toggleTerminal}
-                    intermediateCode={intermediateCode}
-                    debugSession={debugSession}
-                    locale={locale}
                   />
-                </div>
-              </AnimatePresence>
-            </div>
+                )}
+                <MainSection
+                  activeFile={activeFile}
+                  setActiveFile={setActiveFile}
+                  openTabs={openTabs}
+                  setOpenTabs={setOpenTabs}
+                  isTerminalOpen={isTerminalOpen}
+                  toggleTerminal={toggleTerminal}
+                  intermediateCode={intermediateCode}
+                  debugSession={debugSession}
+                  locale={locale}
+                />
+              </div>
+            </AnimatePresence>
           </div>
-          <BorderBeam
-            duration={6}
-            size={400}
-            className="from-transparent via-sky-900 to-transparent"
-          />
-          <BorderBeam
-            duration={6}
-            delay={3}
-            size={400}
-            borderWidth={2}
-            className="from-transparent via-slate-600 to-transparent"
-          />
         </div>
-        <ScrollArrow show={showScrollArrow} onClick={scrollToResults} />
-        <QuickFileSearch
-          isOpen={isQuickSearchOpen}
-          onClose={() => setIsQuickSearchOpen(false)}
-          onSelectFile={(filePath) => {
-            setActiveFile(filePath);
-            if (!openTabs.includes(filePath)) {
-              setOpenTabs([...openTabs, filePath]);
-            }
-          }}
+        <BorderBeam
+          duration={6}
+          size={400}
+          className="from-transparent via-sky-900 to-transparent"
         />
-        <LanguageSampleDialog
-          activeLanguage={languageChoices.activeLanguage}
-          locale={locale}
-          open={isLanguageSampleOpen}
-          onOpenChange={setIsLanguageSampleOpen}
+        <BorderBeam
+          duration={6}
+          delay={3}
+          size={400}
+          borderWidth={2}
+          className="from-transparent via-slate-600 to-transparent"
         />
+      </div>
+      <ScrollArrow show={showScrollArrow} onClick={scrollToResults} />
+      <QuickFileSearch
+        isOpen={isQuickSearchOpen}
+        onClose={() => setIsQuickSearchOpen(false)}
+        onSelectFile={(filePath) => {
+          setActiveFile(filePath);
+          if (!openTabs.includes(filePath)) {
+            setOpenTabs([...openTabs, filePath]);
+          }
+        }}
+      />
+      <LanguageSampleDialog
+        activeLanguage={sampleActiveLanguage}
+        locale={locale}
+        open={isLanguageSampleOpen}
+        onOpenChange={setIsLanguageSampleOpen}
+      />
+      {showAnalysisPanels && (
         <div className="flex flex-col gap-4">
           <ShowTokens analyseData={analyseData} />
           <div className="flex flex-col gap-2">
@@ -384,7 +425,15 @@ export function IDE() {
             />
           </div>
         </div>
-      </RuntimeErrorProvider>
+      )}
     </>
+  );
+
+  return (
+    <RuntimeErrorProvider>
+      {isFullscreen && isMounted
+        ? createPortal(ideContent, document.body)
+        : ideContent}
+    </RuntimeErrorProvider>
   );
 }

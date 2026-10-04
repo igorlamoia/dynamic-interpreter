@@ -25,11 +25,11 @@
 - [x] ajustar ===
 - [x] ajustar scan com string, hoje só funciona com int
 - [ ] Ajustar somatório dentro de for, hj i -= 1 não funciona, tal como i+= 1 ou -=, i-- não está funcionadno
-- [ ] Ao criar uma lista com linguagem travada ou livre, ela sempre nasce livre
+- [x] Ao criar uma lista com linguagem travada ou livre, ela sempre nasce livre
 - [ ] Para loops infinitos previnir bloqueio do browser, colocar um alerta, algo do tipo
 - [ ] os lexemas de scan por exemplo funcionam, sem precisar usar sua customização
 - [x] No debug, o imprime (print), quebra linha automaticamente, não deveria, até porque que executando normal isso não acontece
-- [ ] nome conflitando com exemplo por nome ser reservado
+- [x] nome conflitando com exemplo por nome ser reservado
 - [ ] ter multiplas formas de cadastrar turma, lista, exercícios
 
 Particles:

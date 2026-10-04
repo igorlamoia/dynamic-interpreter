@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/contexts/ToastContext";
-import { useCreateExerciseListMutation } from "@/hooks/use-api-queries";
+import {
+  useCreateExerciseListMutation,
+  useUpdateExerciseListMutation,
+} from "@/hooks/use-api-queries";
 import { useLanguagesList } from "@/hooks/useLanguages";
 import {
   Dialog,
@@ -26,6 +29,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { HeroButton } from "@/components/buttons/hero";
 import { LanguagePolicyField } from "@/components/language-policy-field";
 import { t } from "@/i18n";
+import type { ExerciseList } from "@/types/api";
 
 const createListSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
@@ -39,14 +43,18 @@ export function CreateListModal({
   open,
   onOpenChange,
   onCreated,
+  redirectTo,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  onCreated?: () => void;
+  onCreated?: (list: ExerciseList) => void;
+  redirectTo?: string | ((list: ExerciseList) => string);
 }) {
-  const { locale } = useRouter();
+  const router = useRouter();
+  const { locale } = router;
   const { showToast } = useToast();
   const createList = useCreateExerciseListMutation();
+  const updateList = useUpdateExerciseListMutation();
   const languagesQuery = useLanguagesList(open);
   const form = useForm<CreateListForm>({
     resolver: zodResolver(createListSchema),
@@ -70,20 +78,36 @@ export function CreateListModal({
       return;
     }
     try {
-      await createList.mutateAsync({
+      let createdList = await createList.mutateAsync({
         title: values.title,
         description: values.description,
         languagePolicy: values.languagePolicy,
         lockedLanguageId:
           values.languagePolicy === "LOCKED" ? values.lockedLanguageId : null,
-      });
+      }) as ExerciseList;
+      if (
+        createdList.languagePolicy !== values.languagePolicy ||
+        createdList.lockedLanguageId !== values.lockedLanguageId
+      ) {
+        createdList = await updateList.mutateAsync({
+          listId: createdList.id,
+          languagePolicy: values.languagePolicy,
+          lockedLanguageId:
+            values.languagePolicy === "LOCKED" ? values.lockedLanguageId : null,
+        });
+      }
       showToast({
         type: "success",
         message: t(locale, "ui.exercise_lists_create_success"),
       });
       form.reset();
       onOpenChange(false);
-      onCreated?.();
+      onCreated?.(createdList);
+      if (redirectTo) {
+        const nextUrl =
+          typeof redirectTo === "function" ? redirectTo(createdList) : redirectTo;
+        await router.push(nextUrl);
+      }
     } catch {
       showToast({
         type: "error",
@@ -203,9 +227,9 @@ export function CreateListModal({
           <HeroButton
             type="submit"
             form="create-list-form"
-            disabled={createList.isPending}
+            disabled={createList.isPending || updateList.isPending}
           >
-            {createList.isPending
+            {createList.isPending || updateList.isPending
               ? t(locale, "ui.dashboard_creating")
               : t(locale, "ui.exercise_lists_create_submit")}
           </HeroButton>

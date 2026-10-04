@@ -7,13 +7,16 @@ import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useToast } from "@/contexts/ToastContext";
 import { SubmissionInfoBar } from "@/views/submissions/components/submission-info-bar";
 import { GradingPanel } from "@/views/submissions/components/grading-panel";
-import { SubmittedCodePanel } from "@/views/submissions/components/submitted-code-panel";
 import {
+  useExerciseQuery,
   useGradeSubmissionMutation,
   useSubmissionQuery,
-  useValidateSubmissionMutation,
 } from "@/hooks/use-api-queries";
 import { t } from "@/i18n";
+import {
+  SubmissionExerciseInfoPanel,
+  SubmissionIdePanel,
+} from "@/views/submissions/components/submission-ide-panel";
 
 export default function GradeSubmission() {
   const router = useRouter();
@@ -25,12 +28,15 @@ export default function GradeSubmission() {
   const [feedback, setFeedback] = useState("");
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
-  const [compileResult, setCompileResult] = useState<any>(null);
   const submissionId = typeof id === "string" ? id : undefined;
   const submissionQuery = useSubmissionQuery(submissionId, Boolean(userId));
   const gradeSubmission = useGradeSubmissionMutation();
-  const validateSubmission = useValidateSubmissionMutation();
   const submission = submissionQuery.data;
+  const exerciseQuery = useExerciseQuery(
+    submission?.exerciseId,
+    Boolean(userId && submission?.exerciseId),
+  );
+  const exercise = exerciseQuery.data;
 
   useEffect(() => {
     if (!submission) return;
@@ -65,32 +71,6 @@ export default function GradeSubmission() {
       );
       setError(message);
       showToast({ type: "error", message });
-    }
-  };
-
-  const handleRecompile = async () => {
-    if (!submission?.codeSnapshot) return;
-    setCompileResult(null);
-    try {
-      const data = await validateSubmission.mutateAsync({
-        payload: {
-          exerciseId: submission.exerciseId,
-          sourceCode: submission.codeSnapshot,
-        },
-        params: { dryRun: "true" },
-        headers: { "x-user-id": String(userId) },
-      });
-      setCompileResult(data);
-    } catch {
-      setCompileResult({
-        valid: false,
-        errors: [t(locale, "ui.connection_error")],
-        warnings: [],
-      });
-      showToast({
-        type: "error",
-        message: t(locale, "ui.submission_recompile_error"),
-      });
     }
   };
 
@@ -157,16 +137,17 @@ export default function GradeSubmission() {
         </div>
       </header>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-6 py-8">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 py-8">
         <SubmissionInfoBar submission={submission} formatDate={formatDate} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <SubmittedCodePanel
-            codeSnapshot={submission?.codeSnapshot}
-            exerciseDescription={submission?.exercise?.description}
-            compileResult={compileResult}
-            compiling={validateSubmission.isPending}
-            onRecompile={handleRecompile}
+          <SubmissionExerciseInfoPanel
+            exerciseDescription={
+              exercise?.description ??
+              submission?.exercise?.description ??
+              undefined
+            }
+            testCases={exercise?.testCases ?? []}
           />
 
           <GradingPanel
@@ -179,6 +160,15 @@ export default function GradeSubmission() {
             error={error}
             onSubmit={handleGrade}
             submissionStatus={submission?.status}
+          />
+        </div>
+
+        <div className="mt-6">
+          <SubmissionIdePanel
+            submissionId={submission?.id}
+            codeSnapshot={submission?.codeSnapshot}
+            languageSnapshot={submission?.languageSnapshot}
+            submissionTestCaseResults={submission?.testCaseResults ?? []}
           />
         </div>
       </main>

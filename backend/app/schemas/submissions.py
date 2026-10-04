@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Any
 
+from pydantic import Field
+
 from app.models.submission import SubmissionStatus
 from app.schemas.base import CamelModel
 
@@ -11,6 +13,7 @@ class SubmissionCreate(CamelModel):
     class_id: int
     code_snapshot: str
     language_snapshot: dict[str, Any]
+    test_case_results: list[dict[str, Any]] = Field(default_factory=list)
     status: SubmissionStatus = SubmissionStatus.SUBMITTED
 
 
@@ -40,6 +43,7 @@ class SubmissionResponse(CamelModel):
     student_id: int
     code_snapshot: str
     language_snapshot: dict[str, Any]
+    test_case_results: list[dict[str, Any]]
     status: SubmissionStatus
     score: float | None = None
     teacher_feedback: str | None = None

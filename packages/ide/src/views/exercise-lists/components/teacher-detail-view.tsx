@@ -59,9 +59,11 @@ export function deadlineInfo(deadline: string) {
 export function TeacherDetailView({
   list,
   classes,
+  classId,
 }: {
   list: ExerciseList;
   classes: ClassOption[];
+  classId?: string;
 }) {
   const { locale } = useRouter();
   const { showToast } = useToast();
@@ -210,6 +212,8 @@ export function TeacherDetailView({
         onOpenChange={setShowPublish}
         listId={String(list.id)}
         classes={classes}
+        defaultClassId={classId}
+        redirectTo={classId ? `/classes/${classId}?tab=lists` : undefined}
       />
       <AddExerciseModal
         open={showAddExercise}

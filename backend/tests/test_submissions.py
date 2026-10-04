@@ -42,6 +42,15 @@ class TestCreateSubmission:
                 "class_id": cls.id,
                 "code_snapshot": "public void main() {}",
                 "language_snapshot": {},
+                "test_case_results": [
+                    {
+                        "label": "Caso 1",
+                        "input": "1",
+                        "expectedOutput": "1",
+                        "actualOutput": "1",
+                        "passed": True,
+                    }
+                ],
                 "status": "SUBMITTED",
             },
             headers={"Authorization": f"Bearer {student_token}"},
@@ -52,6 +61,8 @@ class TestCreateSubmission:
         data = response.json()
         assert data["studentId"] == student.id
         assert data["codeSnapshot"] == "public void main() {}"
+        assert data["testCaseResults"][0]["label"] == "Caso 1"
+        assert data["testCaseResults"][0]["passed"] is True
 
     async def test_submit_requires_auth(self, async_client: AsyncClient):
         response = await async_client.post(

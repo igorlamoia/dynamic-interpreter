@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Check, ChevronDown } from "lucide-react";
 import { useToast } from "@/contexts/ToastContext";
 import { usePublishExerciseListMutation } from "@/hooks/use-api-queries";
+import { queryKeys } from "@/lib/query-keys";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +24,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { HeroButton } from "@/components/buttons/hero";
 import type { ClassOption } from "./types";
 import { t } from "@/i18n";
@@ -46,26 +55,88 @@ function getPublishSchema(locale: string | undefined) {
 }
 type PublishForm = z.infer<ReturnType<typeof getPublishSchema>>;
 
+function ClassSelector({
+  value,
+  classes,
+  placeholder,
+  onChange,
+}: {
+  value: string;
+  classes: ClassOption[];
+  placeholder: string;
+  onChange: (value: string) => void;
+}) {
+  const selectedClass = classes.find((c) => String(c.id) === value);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className="flex h-11 w-full items-center justify-between gap-3 rounded-xl border border-input bg-background/80 px-3 text-left text-sm text-foreground shadow-sm transition-colors hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/25 dark:border-white/10 dark:bg-black/30 dark:text-slate-100"
+        >
+          <span
+            className={
+              selectedClass
+                ? "truncate font-medium"
+                : "truncate text-muted-foreground"
+            }
+          >
+            {selectedClass?.name ?? placeholder}
+          </span>
+          <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="start"
+        className="w-[var(--radix-dropdown-menu-trigger-width)]"
+      >
+        {classes.map((classOption) => {
+          const optionValue = String(classOption.id);
+          const selected = optionValue === value;
+
+          return (
+            <DropdownMenuItem
+              key={classOption.id}
+              onSelect={() => onChange(optionValue)}
+              className="justify-between"
+            >
+              <span className="truncate">{classOption.name}</span>
+              {selected && <Check className="h-4 w-4 text-primary" />}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 export function PublishModal({
   open,
   onOpenChange,
   listId,
   classes,
   onPublished,
+  defaultClassId,
+  redirectTo,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   listId: string;
   classes: ClassOption[];
   onPublished?: () => void;
+  defaultClassId?: string;
+  redirectTo?: string;
 }) {
-  const { locale } = useRouter();
+  const router = useRouter();
+  const { locale } = router;
   const { showToast } = useToast();
+  const queryClient = useQueryClient();
   const publishList = usePublishExerciseListMutation();
   const form = useForm<PublishForm>({
     resolver: zodResolver(getPublishSchema(locale)),
     defaultValues: {
-      classId: "",
+      classId: defaultClassId ?? "",
       totalGrade: "10",
       minRequired: "1",
       deadline: defaultDeadline(),
@@ -88,6 +159,15 @@ export function PublishModal({
       form.reset();
       onOpenChange(false);
       onPublished?.();
+      if (redirectTo) {
+        await queryClient.invalidateQueries({
+          queryKey: queryKeys.classes.exerciseLists(values.classId),
+        });
+        await queryClient.refetchQueries({
+          queryKey: queryKeys.classes.exerciseLists(values.classId),
+        });
+        await router.push(redirectTo);
+      }
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: { detail?: string } } };
       const detail = axiosError?.response?.data?.detail;
@@ -103,9 +183,11 @@ export function PublishModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md backdrop-blur-3xl">
+      <DialogContent className="max-w-lg backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>{t(locale, "ui.exercise_lists_publish_title")}</DialogTitle>
+          <DialogTitle>
+            {t(locale, "ui.exercise_lists_publish_title")}
+          </DialogTitle>
           <DialogDescription className="text-muted-foreground">
             {t(locale, "ui.exercise_lists_publish_description")}
           </DialogDescription>
@@ -114,36 +196,22 @@ export function PublishModal({
           <form
             id="publish-form"
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 p-1"
+            className="space-y-4 p-6"
           >
             <FormField
               control={form.control}
               name="classId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t(locale, "ui.exercise_lists_class_label")}</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      className="w-full h-11 bg-background/80 border border-input rounded-md px-3 text-sm text-foreground focus:outline-none focus:border-primary/50 dark:bg-black/30 dark:border-white/10 dark:text-slate-100"
-                    >
-                      <option
-                        value=""
-                        className="bg-background text-foreground"
-                      >
-                        {t(locale, "ui.select_placeholder")}
-                      </option>
-                      {classes.map((c) => (
-                        <option
-                          key={c.id}
-                          value={c.id}
-                          className="bg-background text-foreground"
-                        >
-                          {c.name}
-                        </option>
-                      ))}
-                    </select>
-                  </FormControl>
+                  <FormLabel>
+                    {t(locale, "ui.exercise_lists_class_label")}
+                  </FormLabel>
+                  <ClassSelector
+                    value={field.value}
+                    classes={classes}
+                    placeholder={t(locale, "ui.select_placeholder")}
+                    onChange={field.onChange}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -154,7 +222,9 @@ export function PublishModal({
                 name="totalGrade"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t(locale, "ui.exercise_lists_total_grade")}</FormLabel>
+                    <FormLabel>
+                      {t(locale, "ui.exercise_lists_total_grade")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -194,7 +264,9 @@ export function PublishModal({
               name="deadline"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t(locale, "ui.exercise_lists_deadline")}</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.exercise_lists_deadline")}
+                  </FormLabel>
                   <FormControl>
                     <Input type="datetime-local" {...field} className="h-11" />
                   </FormControl>

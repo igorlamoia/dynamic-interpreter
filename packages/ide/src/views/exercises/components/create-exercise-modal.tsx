@@ -64,7 +64,7 @@ export function CreateExerciseModal({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  onCreated?: () => void;
+  onCreated?: () => void | Promise<void>;
 }) {
   const { locale } = useRouter();
   const { showToast } = useToast();
@@ -125,7 +125,7 @@ export function CreateExerciseModal({
       });
       form.reset();
       onOpenChange(false);
-      onCreated?.();
+      await onCreated?.();
     } catch {
       showToast({
         type: "error",

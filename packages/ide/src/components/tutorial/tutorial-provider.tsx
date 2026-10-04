@@ -13,6 +13,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -35,6 +36,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     null,
   );
   const [stepIndex, setStepIndex] = useState(0);
+  const completionRef = useRef(false);
 
   const activeTutorial = useMemo(
     () =>
@@ -51,28 +53,99 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   const startTutorial = useCallback((tutorialId: TutorialId) => {
     setStepIndex(0);
+    completionRef.current = false;
     setActiveTutorialId(tutorialId);
+  }, []);
+
+  const completeTutorial = useCallback(() => {
+    if (!activeTutorialId || completionRef.current) return;
+    completionRef.current = true;
+    markTutorialCompleted(activeTutorialId);
+    stopTutorial();
+  }, [activeTutorialId, stopTutorial]);
+
+  const goToNextStep = useCallback(() => {
+    const stepCount = activeTutorial?.steps.length ?? 0;
+
+    setStepIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+
+      if (nextIndex >= stepCount) {
+        completeTutorial();
+        return currentIndex;
+      }
+
+      return nextIndex;
+    });
+  }, [activeTutorial, completeTutorial]);
+
+  const goToPreviousStep = useCallback(() => {
+    setStepIndex((currentIndex) => Math.max(currentIndex - 1, 0));
   }, []);
 
   const handleCallback = useCallback(
     (data: EventData) => {
       const { action, index, status, type } = data;
+      const stepCount = activeTutorial?.steps.length ?? 0;
 
       if (
         activeTutorialId &&
         (status === STATUS.FINISHED || status === STATUS.SKIPPED)
       ) {
-        markTutorialCompleted(activeTutorialId);
-        stopTutorial();
+        completeTutorial();
         return;
       }
 
-      if (type === EVENTS.TARGET_NOT_FOUND || type === EVENTS.STEP_AFTER) {
+      if (type === EVENTS.TARGET_NOT_FOUND) {
+        if (stepCount === 0) {
+          stopTutorial();
+          return;
+        }
         const nextIndex = index + (action === ACTIONS.PREV ? -1 : 1);
-        setStepIndex(Math.max(nextIndex, 0));
+        if (activeTutorialId && nextIndex >= stepCount) {
+          completeTutorial();
+          return;
+        }
+        setStepIndex(Math.min(Math.max(nextIndex, 0), stepCount - 1));
       }
     },
-    [activeTutorialId, stopTutorial],
+    [activeTutorial, activeTutorialId, completeTutorial, stopTutorial],
+  );
+
+  const currentStep =
+    activeTutorial && stepIndex >= 0 && stepIndex < activeTutorial.steps.length
+      ? activeTutorial.steps[stepIndex]
+      : null;
+
+  useEffect(() => {
+    if (!activeTutorialId) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+
+      event.preventDefault();
+      completeTutorial();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeTutorialId, completeTutorial]);
+  const tooltipComponent = useMemo(
+    () =>
+      function ControlledTutorialTooltip(props: TooltipRenderProps) {
+        return (
+          <TutorialTooltip
+            {...props}
+            onBack={goToPreviousStep}
+            onNext={goToNextStep}
+            onSkip={completeTutorial}
+          />
+        );
+      },
+    [completeTutorial, goToNextStep, goToPreviousStep],
   );
 
   return (
@@ -80,11 +153,11 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       value={{ activeTutorialId, startTutorial, stopTutorial }}
     >
       {children}
-      {activeTutorial && (
+      {activeTutorial && currentStep && (
         <>
-          <TutorialBlurBackdrop step={activeTutorial.steps[stepIndex]} />
+          <TutorialBlurBackdrop step={currentStep} />
           <Joyride
-            onEvent={handleCallback}
+            callback={handleCallback}
             continuous
             run
             scrollToFirstStep
@@ -133,7 +206,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
                 padding: "12px 0",
               },
             }}
-            tooltipComponent={TutorialTooltip}
+            tooltipComponent={tooltipComponent}
           />
         </>
       )}
@@ -219,7 +292,14 @@ function TutorialTooltip({
   skipProps,
   step,
   tooltipProps,
-}: TooltipRenderProps) {
+  onBack,
+  onNext,
+  onSkip,
+}: TooltipRenderProps & {
+  onBack: () => void;
+  onNext: () => void;
+  onSkip: () => void;
+}) {
   const progress = size > 0 ? ((index + 1) / size) * 100 : 0;
 
   return (
@@ -241,6 +321,7 @@ function TutorialTooltip({
           </div>
           <button
             {...closeProps}
+            onClick={onSkip}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-cyan-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-cyan-900/60 dark:hover:text-white"
           >
             <span aria-hidden="true">x</span>
@@ -261,6 +342,7 @@ function TutorialTooltip({
       <div className="flex items-center justify-between gap-3 border-t border-slate-200 bg-slate-50/80 px-4 py-3 dark:border-slate-800 dark:bg-slate-900/80">
         <button
           {...skipProps}
+          onClick={onSkip}
           className="text-sm font-medium text-slate-500 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
         >
           {skipProps.title}
@@ -269,6 +351,7 @@ function TutorialTooltip({
           {index > 0 ? (
             <button
               {...backProps}
+              onClick={onBack}
               className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
             >
               {backProps.title}
@@ -277,6 +360,7 @@ function TutorialTooltip({
           {continuous ? (
             <button
               {...primaryProps}
+              onClick={onNext}
               className="rounded-md bg-cyan-500 px-3 py-1.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 dark:bg-cyan-300 dark:hover:bg-cyan-200"
             >
               {isLastStep ? primaryProps.title : primaryProps.title}
