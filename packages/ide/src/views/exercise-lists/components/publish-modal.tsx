@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useQueryClient } from "@tanstack/react-query";
@@ -55,24 +56,41 @@ function getPublishSchema(locale: string | undefined) {
 }
 type PublishForm = z.infer<ReturnType<typeof getPublishSchema>>;
 
-function ClassSelector({
-  value,
-  classes,
-  placeholder,
-  onChange,
-}: {
-  value: string;
-  classes: ClassOption[];
-  placeholder: string;
-  onChange: (value: string) => void;
-}) {
+const ClassSelector = React.forwardRef<
+  HTMLButtonElement,
+  {
+    id?: string;
+    value: string;
+    classes: ClassOption[];
+    placeholder: string;
+    onChange: (value: string) => void;
+    "aria-describedby"?: string;
+    "aria-invalid"?: boolean;
+  }
+>(function ClassSelector(
+  {
+    id,
+    value,
+    classes,
+    placeholder,
+    onChange,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
+  },
+  ref,
+) {
   const selectedClass = classes.find((c) => String(c.id) === value);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
+          id={id}
+          ref={ref}
           type="button"
+          role="combobox"
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           className="flex h-11 w-full items-center justify-between gap-3 rounded-xl border border-input bg-background/80 px-3 text-left text-sm text-foreground shadow-sm transition-colors hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/25 dark:border-white/10 dark:bg-black/30 dark:text-slate-100"
         >
           <span
@@ -109,7 +127,7 @@ function ClassSelector({
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+});
 
 export function PublishModal({
   open,
@@ -206,12 +224,14 @@ export function PublishModal({
                   <FormLabel>
                     {t(locale, "ui.exercise_lists_class_label")}
                   </FormLabel>
-                  <ClassSelector
-                    value={field.value}
-                    classes={classes}
-                    placeholder={t(locale, "ui.select_placeholder")}
-                    onChange={field.onChange}
-                  />
+                  <FormControl>
+                    <ClassSelector
+                      value={field.value}
+                      classes={classes}
+                      placeholder={t(locale, "ui.select_placeholder")}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
