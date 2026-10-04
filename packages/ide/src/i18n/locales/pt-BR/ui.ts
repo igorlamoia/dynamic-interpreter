@@ -98,13 +98,12 @@ const ui = {
     "Nao pode mover uma pasta para dentro dela mesma.",
   explorer_folder_exists: "Ja existe uma pasta com esse nome.",
   explorer_delete_file_title: "Excluir arquivo",
-  explorer_delete_file_description:
-    "Tem certeza que deseja excluir \"{path}\"?",
+  explorer_delete_file_description: 'Tem certeza que deseja excluir "{path}"?',
   explorer_delete_folder_title: "Excluir pasta",
   explorer_delete_folder_description:
-    "Tem certeza que deseja excluir a pasta \"{path}\"?",
+    'Tem certeza que deseja excluir a pasta "{path}"?',
   explorer_delete_folder_with_files_description:
-    "Tem certeza que deseja excluir a pasta \"{path}\" e {count} arquivo(s) dentro?",
+    'Tem certeza que deseja excluir a pasta "{path}" e {count} arquivo(s) dentro?',
   explorer_delete_confirm: "Excluir",
   explorer_delete_cancel: "Cancelar",
   explorer_file_exists: "Esse arquivo ja existe.",
@@ -199,6 +198,8 @@ const ui = {
   dashboard_join_class_card_description:
     "Insira o código fornecido pelo seu professor para participar.",
   dashboard_access_code_label: "CÓDIGO:",
+  dashboard_copy_access_code: "Copiar codigo de acesso da turma",
+  dashboard_access_code_copied: "Copiado!",
   dashboard_exercise_list_singular: "lista",
   dashboard_exercise_list_plural: "listas",
   dashboard_teacher_fallback: "Professor",
@@ -333,8 +334,7 @@ const ui = {
     '"{value}" já está sendo usada para "{original}".',
   validation_fill_delimiters:
     "Preencha os delimitadores de abertura e fechamento.",
-  validation_invalid_delimiter_format:
-    "Use delimitadores sem espaços.",
+  validation_invalid_delimiter_format: "Use delimitadores sem espaços.",
   validation_delimiters_must_differ:
     "Os delimitadores de abertura e fechamento devem ser diferentes.",
   validation_delimiters_reserved:
@@ -364,20 +364,19 @@ const ui = {
   validation_timeout: "Tempo limite excedido (5s)",
   validation_method_not_allowed: "Metodo nao permitido",
   validation_unauthorized: "Nao autorizado",
-  validation_code_exercise_required:
-    "Codigo e exercicio sao obrigatorios",
+  validation_code_exercise_required: "Codigo e exercicio sao obrigatorios",
   validation_submission_context_required:
     "exerciseListId e classId sao obrigatorios para submissao",
   validation_warning_line: "Aviso (linha {line}): {message}",
-  validation_compile_error_line:
-    "Erro de compilacao (linha {line}): {message}",
+  validation_compile_error_line: "Erro de compilacao (linha {line}): {message}",
   validation_compile_error: "Erro de compilacao: {message}",
   validation_lexical_error_line: "Erro lexico (linha {line}): {message}",
   validation_lexical_error: "Erro lexico: {message}",
   validation_runtime_error: "[Erro] {error}",
   validation_case_label: "Caso {number}",
   validation_save_submission_error: "Erro ao salvar a submissao: {message}",
-  intermediate_code_empty: "Nenhuma instrucao de codigo intermediario disponivel.",
+  intermediate_code_empty:
+    "Nenhuma instrucao de codigo intermediario disponivel.",
   intermediate_code_result: "Resultado",
   intermediate_code_operand1: "Op1",
   intermediate_code_operand2: "Op2",
@@ -398,7 +397,8 @@ const ui = {
   grading_min_score: "Minimo: 0",
   grading_max_score: "Maximo: 10",
   grading_feedback: "Feedback para o aluno",
-  grading_feedback_placeholder: "Escreva seu feedback sobre o código do aluno...",
+  grading_feedback_placeholder:
+    "Escreva seu feedback sobre o código do aluno...",
   grading_update_score: "Atualizar Nota",
   grading_assign_score: "Atribuir Nota",
   submissions_title: "Submissões",
@@ -434,7 +434,7 @@ const ui = {
   exercises_delete_error: "Erro ao excluir exercicio.",
   exercises_search_placeholder: "Buscar exercicios...",
   exercises_loading: "Carregando exercicios...",
-  exercises_no_search_results: "Nenhum resultado para \"{search}\"",
+  exercises_no_search_results: 'Nenhum resultado para "{search}"',
   exercises_test_cases: "Casos de Teste",
   exercises_empty_title: "Nenhum exercicio encontrado",
   exercises_empty_description:
@@ -452,7 +452,8 @@ const ui = {
   exercises_delete_description_before: "Tem certeza que deseja excluir",
   exercises_delete_description_after: "? Esta acao nao pode ser desfeita.",
   exercises_deleting: "Excluindo...",
-  exercises_select_locked_language: "Selecione uma linguagem para travar o exercício",
+  exercises_select_locked_language:
+    "Selecione uma linguagem para travar o exercício",
   exercises_create_success: "Exercício criado!",
   exercises_create_title: "Novo exercicio",
   exercises_create_description:
@@ -467,6 +468,8 @@ const ui = {
     "Atualize o enunciado e substitua os casos de teste.",
   exercises_add_case: "Adicionar caso",
   exercises_remove_last: "Remover ultimo",
+  exercises_add_input: "Adicionar entrada",
+  exercises_remove_input: "Remover entrada",
   exercises_saving: "Salvando...",
   exercises_save_changes: "Salvar alteracoes",
   exercise_lists_exercise_singular: "{count} exercicio",
@@ -547,7 +550,8 @@ const ui = {
   exercise_lists_add_exercise_description:
     "Selecione um exercicio para adicionar a esta lista.",
   exercise_lists_no_created_exercises: "Voce nao possui exercicios criados.",
-  exercise_lists_all_exercises_added: "Todos os seus exercicios ja estao nesta lista.",
+  exercise_lists_all_exercises_added:
+    "Todos os seus exercicios ja estao nesta lista.",
   languages_my_languages: "Minhas linguagens",
   languages_subtitle: "Crie e mantenha suas proprias linguagens",
   languages_new_language: "Nova linguagem",
@@ -570,19 +574,19 @@ const ui = {
   languages_duplicate: "Duplicar",
   languages_delete_named: "Excluir {name}",
   languages_load_error: "Nao foi possivel carregar suas linguagens.",
-  languages_set_active_success: "\"{name}\" agora e sua linguagem ativa.",
+  languages_set_active_success: '"{name}" agora e sua linguagem ativa.',
   languages_set_active_error: "Nao foi possivel ativar a linguagem.",
-  languages_clone_success: "\"{name}\" duplicada como \"{cloneName}\".",
+  languages_clone_success: '"{name}" duplicada como "{cloneName}".',
   languages_clone_error: "Nao foi possivel duplicar.",
-  languages_delete_confirm: "Excluir a linguagem \"{name}\"?",
-  languages_delete_success: "\"{name}\" excluída.",
+  languages_delete_confirm: 'Excluir a linguagem "{name}"?',
+  languages_delete_success: '"{name}" excluída.',
   languages_delete_locked_error:
     "Esta linguagem está travada em algum exercício e não pode ser excluída.",
   languages_delete_error: "Nao foi possivel excluir.",
-  languages_publish_success: "\"{name}\" agora está no acervo da comunidade.",
-  languages_unpublish_success:
-    "\"{name}\" foi removida do acervo da comunidade.",
-  languages_publication_error: "Nao foi possivel alterar a publicacao da linguagem.",
+  languages_publish_success: '"{name}" agora está no acervo da comunidade.',
+  languages_unpublish_success: '"{name}" foi removida do acervo da comunidade.',
+  languages_publication_error:
+    "Nao foi possivel alterar a publicacao da linguagem.",
   languages_default_config: "Configuracao padrao",
   languages_compiler_default: "Padrao do compilador",
   languages_boolean_true: "Verdadeiro",
@@ -611,7 +615,7 @@ const ui = {
   community_filter_terminator: "Terminador",
   community_filter_optional: "Opcional",
   community_filter_required: "Obrigatorio",
-  community_import_success: "\"{name}\" foi adicionada as suas linguagens.",
+  community_import_success: '"{name}" foi adicionada as suas linguagens.',
   community_import_error: "Nao foi possivel importar a linguagem.",
   community_badge: "Acervo colaborativo",
   community_title_prefix: "Atlas de",
@@ -652,6 +656,9 @@ const ui = {
   tutorial_next: "Proximo",
   tutorial_finish: "Concluir",
   tutorial_skip: "Pular",
+  tutorial_ide_create_language_title: "Criar linguagem",
+  tutorial_ide_create_language_body:
+    "Use este botao para abrir o criador de linguagens e montar sua propria sintaxe antes de voltar para a IDE.",
   tutorial_ide_shell_title: "Ambiente da IDE",
   tutorial_ide_shell_body:
     "Este e o espaco de programacao. Aqui voce edita arquivos, escolhe a linguagem, executa codigo, ve saidas e depura.",

@@ -26,5 +26,6 @@ RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 # Expose port
 EXPOSE 8000
 
-# Run migrations, seed, and start the app
-ENTRYPOINT ["./entrypoint.sh"]
+# Run migrations, seed, and start the app. Invoke sh explicitly so Windows
+# checkouts or working-directory changes cannot break shebang resolution.
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]

@@ -37,7 +37,12 @@ export function getTutorialDefinition(
       id: "ide-basics",
       titleKey: "ui.tutorial_ide_launcher",
       steps: [
-        step(locale, "ide_shell", '[data-tour="ide-shell"]', "center"),
+        step(
+          locale,
+          "ide_create_language",
+          '[data-tour="ide-create-language"]',
+          "right",
+        ),
         step(locale, "ide_explorer", '[data-tour="ide-explorer"]', "right"),
         step(locale, "ide_language", '[data-tour="ide-language"]', "right"),
         step(locale, "ide_editor", '[data-tour="ide-editor"]', "left"),

@@ -74,7 +74,11 @@ export default function ExerciseListDetailPage() {
 
             {list &&
               (isTeacher ? (
-                <TeacherDetailView list={list} classes={classes} />
+                <TeacherDetailView
+                  list={list}
+                  classes={classes}
+                  classId={classId}
+                />
               ) : (
                 <StudentDetailView list={list} classId={classId ?? ""} />
               ))}

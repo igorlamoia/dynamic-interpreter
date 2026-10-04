@@ -1,5 +1,10 @@
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
+import { ORIGINAL_KEYWORDS } from "@/contexts/keyword";
 import type { LanguageSampleIntl } from "@/i18n/types/language-sample";
+import {
+  DEFAULT_BOOLEAN_LITERAL_MAP,
+  DEFAULT_OPERATOR_WORD_MAP,
+} from "@/lib/keyword-map";
 
 export const DEFAULT_LANGUAGE_SAMPLE_INTL: LanguageSampleIntl = {
   namePrompt: "What is your name?",
@@ -47,6 +52,53 @@ function getLessEqualOperator(
   return customization.operatorWordMap.less_equal?.trim() || "<=";
 }
 
+function getReservedSampleWords(
+  customization: StoredKeywordCustomization,
+): Set<string> {
+  return new Set(
+    [
+      ...ORIGINAL_KEYWORDS,
+      ...customization.mappings.map((mapping) => mapping.custom.trim()),
+      ...Object.values(DEFAULT_BOOLEAN_LITERAL_MAP),
+      ...Object.values(customization.booleanLiteralMap),
+      ...Object.values(DEFAULT_OPERATOR_WORD_MAP),
+      ...Object.values(customization.operatorWordMap),
+      customization.blockDelimiters.open.trim(),
+      customization.blockDelimiters.close.trim(),
+      customization.statementTerminatorLexeme.trim(),
+    ].filter((word): word is string => Boolean(word)),
+  );
+}
+
+function normalizeIdentifier(value: string, fallback: string): string {
+  const normalized = value
+    .trim()
+    .replace(/[^A-Za-z0-9_]/g, "_")
+    .replace(/^[^A-Za-z_]+/, "");
+
+  return normalized || fallback;
+}
+
+function resolveSampleIdentifier(
+  preferred: string,
+  fallback: string,
+  suffix: string,
+  reservedWords: Set<string>,
+  usedIdentifiers: Set<string>,
+): string {
+  const base = normalizeIdentifier(preferred, fallback);
+  let candidate = base;
+  let index = 2;
+
+  while (reservedWords.has(candidate) || usedIdentifiers.has(candidate)) {
+    candidate = `${base}${index === 2 ? suffix : `${suffix}${index}`}`;
+    index += 1;
+  }
+
+  usedIdentifiers.add(candidate);
+  return candidate;
+}
+
 function indent(lines: string[]): string[] {
   return lines.map((line) => (line.length > 0 ? `  ${line}` : line));
 }
@@ -77,9 +129,29 @@ export function buildHelloWorldSample(
   const whileKeyword = getKeyword(customization, "while");
   const lessEqual = getLessEqualOperator(customization);
   const isUntyped = customization.modes.typing === "untyped";
-  const nameIdentifier = intl.nameIdentifier;
-  const counterIdentifier = intl.counterIdentifier;
-  const countToThreeFunction = intl.countToThreeFunction;
+  const reservedWords = getReservedSampleWords(customization);
+  const usedIdentifiers = new Set<string>();
+  const nameIdentifier = resolveSampleIdentifier(
+    intl.nameIdentifier,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.nameIdentifier,
+    "Value",
+    reservedWords,
+    usedIdentifiers,
+  );
+  const counterIdentifier = resolveSampleIdentifier(
+    intl.counterIdentifier,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.counterIdentifier,
+    "Value",
+    reservedWords,
+    usedIdentifiers,
+  );
+  const countToThreeFunction = resolveSampleIdentifier(
+    intl.countToThreeFunction,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.countToThreeFunction,
+    "Function",
+    reservedWords,
+    usedIdentifiers,
+  );
 
   const mainHeader = isUntyped
     ? `${getKeyword(customization, "function")} main()`

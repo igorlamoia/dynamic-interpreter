@@ -32,6 +32,8 @@ vi.mock("@/contexts/ToastContext", () => ({
 vi.mock("lucide-react", () => ({
   Languages: () => <span>languages</span>,
   Lock: () => <span>lock</span>,
+  Globe2: () => <span>globe</span>,
+  LockKeyhole: () => <span>lock-keyhole</span>,
   Unlock: () => <span>unlock</span>,
   LoaderCircle: () => <span>loader</span>,
 }));

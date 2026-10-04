@@ -124,4 +124,32 @@ function countToThree():
     expect(sample).toContain("int contador = 1;");
     expect(sample).toContain("while (contador <= 3) {");
   });
+
+  it("renames localized identifiers that collide with current reserved words", () => {
+    const sample = buildHelloWorldSample(
+      createCustomization({
+        mappings: ORIGINAL_KEYWORDS.map((original) => ({
+          original,
+          custom:
+            {
+              print: "nome",
+              scan: "contador",
+              while: "contarAteTres",
+            }[original] ?? original,
+          tokenId: CUSTOMIZABLE_KEYWORDS[original],
+        })),
+      }),
+      ptBrLanguageSample,
+    );
+
+    expect(sample).toContain("string nomeValue = \"\";");
+    expect(sample).toContain("int contadorValue = 1;");
+    expect(sample).toContain("void contarAteTresFunction() {");
+    expect(sample).toContain("nome(\"Qual o seu nome?\");");
+    expect(sample).toContain("contador(string, nomeValue);");
+    expect(sample).toContain("contarAteTres (contadorValue <= 3) {");
+    expect(sample).not.toContain("string nome = \"\";");
+    expect(sample).not.toContain("int contador = 1;");
+    expect(sample).not.toContain("void contarAteTres() {");
+  });
 });

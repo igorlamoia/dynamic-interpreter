@@ -185,6 +185,8 @@ const ui = {
   dashboard_join_class_card_description:
     "Introduza o código fornecido pelo seu professor para participar.",
   dashboard_access_code_label: "CÓDIGO:",
+  dashboard_copy_access_code: "Copiar codigo de acesso da turma",
+  dashboard_access_code_copied: "Copiado!",
   dashboard_exercise_list_singular: "lista",
   dashboard_exercise_list_plural: "listas",
   dashboard_teacher_fallback: "Professor",
@@ -418,6 +420,8 @@ const ui = {
     "Actualize o enunciado e substitua os casos de teste.",
   exercises_add_case: "Adicionar caso",
   exercises_remove_last: "Remover último",
+  exercises_add_input: "Adicionar entrada",
+  exercises_remove_input: "Remover entrada",
   exercises_saving: "A guardar...",
   exercises_save_changes: "Guardar alterações",
   exercise_lists_exercise_singular: "{count} exercício",
@@ -606,6 +610,9 @@ const ui = {
   tutorial_next: "Seguinte",
   tutorial_finish: "Concluir",
   tutorial_skip: "Saltar",
+  tutorial_ide_create_language_title: "Criar linguagem",
+  tutorial_ide_create_language_body:
+    "Use este botao para abrir o criador de linguagens e montar a sua propria sintaxe antes de voltar para a IDE.",
   tutorial_ide_shell_title: "Ambiente da IDE",
   tutorial_ide_shell_body:
     "Este e o espaco de programacao. Aqui pode editar ficheiros, escolher a linguagem, executar codigo, ver saidas e depurar.",

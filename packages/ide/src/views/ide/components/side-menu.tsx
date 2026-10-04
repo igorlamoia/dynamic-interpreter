@@ -1,14 +1,7 @@
 import IconButton from "@/components/buttons/icon-button";
-import {
-  BugPlay,
-  FileCode2,
-  Languages,
-  Search,
-  Sparkles,
-} from "lucide-react";
+import { BugPlay, FileCode2, Languages, Search } from "lucide-react";
 import { useRouter } from "next/router";
 import type { SidebarView } from "./side-explorer/sidebar-panel";
-import { markLanguageCreatorReturn } from "@/lib/language-creator-navigation";
 import { t } from "@/i18n";
 
 interface SideMenuProps {
@@ -67,25 +60,6 @@ export function SideMenu({
       >
         <BugPlay className="h-4 w-4" />
       </IconButton>
-      <ConfigButton />
     </div>
-  );
-}
-
-function ConfigButton() {
-  const router = useRouter();
-  const { locale } = router;
-
-  return (
-    <IconButton
-      data-tour="ide-custom-language"
-      tooltip={t(locale, "ui.custom_language")}
-      onClick={() => {
-        markLanguageCreatorReturn();
-        void router.push("/language-creator");
-      }}
-    >
-      <Sparkles className="h-4 w-4" />
-    </IconButton>
   );
 }

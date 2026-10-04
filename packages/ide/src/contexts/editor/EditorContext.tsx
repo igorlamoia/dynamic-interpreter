@@ -63,6 +63,7 @@ export function EditorProvider({
   const monacoRef = useRef<typeof monacoEditor | null>(null);
   const editorInstanceRef =
     useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
+  const editorContainerRef = useRef<HTMLDivElement | null>(null);
 
   const {
     selectedDebugLines,
@@ -108,11 +109,26 @@ export function EditorProvider({
 
   const initializeEditor = (container: HTMLDivElement) => {
     if (!monacoRef.current || !container) return;
+    let editorValue = sourceCode;
+
+    if (
+      editorInstanceRef.current &&
+      editorContainerRef.current &&
+      editorContainerRef.current !== container
+    ) {
+      const code = editorInstanceRef.current.getValue();
+      editorValue = code;
+      setSourceCode(code);
+      localStorage.setItem(getStorageKey(currentFilePathRef.current), code);
+      editorInstanceRef.current.dispose();
+      editorInstanceRef.current = null;
+    }
 
     // Initialize the editor only if it's not already initialized
     if (!editorInstanceRef.current) {
+      editorContainerRef.current = container;
       editorInstanceRef.current = monacoRef.current.editor.create(container, {
-        value: sourceCode,
+        value: editorValue,
         ...config.editorOptions,
         theme: config.theme,
         language: config.language,
@@ -143,6 +159,9 @@ export function EditorProvider({
         if (!lineNumber) return;
         toggleDebugLine(lineNumber);
       });
+    } else {
+      editorContainerRef.current = container;
+      editorInstanceRef.current.layout();
     }
   };
 

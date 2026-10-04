@@ -40,6 +40,9 @@ class Submission(Base):
     language_snapshot: Mapped[dict[str, Any]] = mapped_column(
         JSONType, nullable=False, default=dict, server_default="{}"
     )
+    test_case_results: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSONType, nullable=False, default=list, server_default="[]"
+    )
     status: Mapped[SubmissionStatus] = mapped_column(Enum(SubmissionStatus), default=SubmissionStatus.PENDING, nullable=False)
     score: Mapped[float | None] = mapped_column(Float, nullable=True)
     teacher_feedback: Mapped[str | None] = mapped_column(String, nullable=True)
