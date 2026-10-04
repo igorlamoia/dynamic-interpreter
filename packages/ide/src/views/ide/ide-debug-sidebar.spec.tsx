@@ -480,12 +480,14 @@ describe("IDE debug sidebar wiring", () => {
       );
     });
 
-    const shell = container.querySelector('[data-testid="ide-shell"]');
+    const shell = () =>
+      document.querySelector('[data-testid="ide-shell"]') ??
+      container.querySelector('[data-testid="ide-shell"]');
     const toggle = container.querySelector(
       'button[aria-label="Toggle fullscreen"]',
     );
 
-    expect(shell?.className).not.toContain("fixed");
+    expect(shell()?.className).not.toContain("fixed");
     expect(toggle?.getAttribute("data-fullscreen")).toBe("false");
 
     act(() => {
@@ -494,8 +496,12 @@ describe("IDE debug sidebar wiring", () => {
       );
     });
 
-    expect(shell?.className).toContain("fixed");
-    expect(toggle?.getAttribute("data-fullscreen")).toBe("true");
+    const fullscreenToggle = document.querySelector(
+      'button[aria-label="Toggle fullscreen"]',
+    );
+
+    expect(shell()?.className).toContain("fixed");
+    expect(fullscreenToggle?.getAttribute("data-fullscreen")).toBe("true");
 
     act(() => {
       root.unmount();
