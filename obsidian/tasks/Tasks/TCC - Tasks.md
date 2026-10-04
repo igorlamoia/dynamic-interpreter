@@ -29,6 +29,8 @@
 - [ ] Para loops infinitos previnir bloqueio do browser, colocar um alerta, algo do tipo
 - [ ] os lexemas de scan por exemplo funcionam, sem precisar usar sua customização
 - [x] No debug, o imprime (print), quebra linha automaticamente, não deveria, até porque que executando normal isso não acontece
+- [ ] nome conflitando com exemplo por nome ser reservado
+- [ ] ter multiplas formas de cadastrar turma, lista, exercícios
 
 Particles:
 https://particles.js.org/samples/index.html#amongUs

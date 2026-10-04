@@ -39,6 +39,8 @@ const ui = {
   dashboard_join_class_card_description:
     "Enter the code provided by your teacher to participate.",
   dashboard_access_code_label: "CODE:",
+  dashboard_copy_access_code: "Copy class access code",
+  dashboard_access_code_copied: "Copied!",
   dashboard_exercise_list_singular: "list",
   dashboard_exercise_list_plural: "lists",
   dashboard_teacher_fallback: "Teacher",
@@ -428,6 +430,8 @@ const ui = {
     "Update the statement and replace the test cases.",
   exercises_add_case: "Add Case",
   exercises_remove_last: "Remove Last",
+  exercises_add_input: "Add input",
+  exercises_remove_input: "Remove input",
   exercises_saving: "Saving...",
   exercises_save_changes: "Save Changes",
   exercise_lists_exercise_singular: "{count} exercise",

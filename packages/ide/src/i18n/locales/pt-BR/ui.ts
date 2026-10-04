@@ -199,6 +199,8 @@ const ui = {
   dashboard_join_class_card_description:
     "Insira o código fornecido pelo seu professor para participar.",
   dashboard_access_code_label: "CÓDIGO:",
+  dashboard_copy_access_code: "Copiar codigo de acesso da turma",
+  dashboard_access_code_copied: "Copiado!",
   dashboard_exercise_list_singular: "lista",
   dashboard_exercise_list_plural: "listas",
   dashboard_teacher_fallback: "Professor",
@@ -467,6 +469,8 @@ const ui = {
     "Atualize o enunciado e substitua os casos de teste.",
   exercises_add_case: "Adicionar caso",
   exercises_remove_last: "Remover ultimo",
+  exercises_add_input: "Adicionar entrada",
+  exercises_remove_input: "Remover entrada",
   exercises_saving: "Salvando...",
   exercises_save_changes: "Salvar alteracoes",
   exercise_lists_exercise_singular: "{count} exercicio",
