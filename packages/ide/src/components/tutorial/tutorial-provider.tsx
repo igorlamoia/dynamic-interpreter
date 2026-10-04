@@ -157,8 +157,8 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
         <>
           <TutorialBlurBackdrop step={currentStep} />
           <Joyride
-            callback={handleCallback}
             continuous
+            onEvent={handleCallback}
             run
             scrollToFirstStep
             stepIndex={stepIndex}
