@@ -245,6 +245,48 @@ describe("useLanguageChoices", () => {
     act(() => root.unmount());
   });
 
+  it("expoe imediatamente a linguagem selecionada pelo backend", async () => {
+    const previousCustomization = { mappings: [{ original: "print" }] };
+    const selectedCustomization = { mappings: [{ original: "scan" }] };
+    useAuthMock.mockReturnValue({ isAuthenticated: true });
+    listQueryMock.mockReturnValue({ data: [] });
+    activeQueryMock.mockReturnValue({
+      data: {
+        id: 3,
+        name: "Anterior",
+        description: "Antiga",
+        imageUrl: "/old.png",
+        customization: previousCustomization,
+      },
+    });
+    getDetailMock.mockResolvedValue({
+      id: 5,
+      name: "Selecionada",
+      description: "Atual",
+      imageUrl: "/new.png",
+      customization: selectedCustomization,
+    });
+
+    const { captured, root } = mount();
+
+    expect(captured.current?.activeKey).toBe("3");
+
+    await act(async () => {
+      await captured.current?.selectLanguage("5");
+    });
+
+    expect(captured.current?.activeLanguage).toEqual({
+      key: "5",
+      name: "Selecionada",
+      description: "Atual",
+      imageUrl: "/new.png",
+      customization: selectedCustomization,
+    });
+    expect(setCustomizationMock).toHaveBeenCalledWith(selectedCustomization);
+
+    act(() => root.unmount());
+  });
+
   it("ativa uma linguagem padrao sem chamar backend ou localStorage salvo", async () => {
     useAuthMock.mockReturnValue({ isAuthenticated: true });
     listQueryMock.mockReturnValue({ data: [] });
