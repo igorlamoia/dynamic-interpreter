@@ -121,18 +121,27 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     if (!activeTutorialId) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        completeTutorial();
+        return;
+      }
+
+      if (event.key !== "Enter" || event.isComposing) return;
 
       event.preventDefault();
-      completeTutorial();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      goToNextStep();
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { capture: true });
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown, { capture: true });
     };
-  }, [activeTutorialId, completeTutorial]);
+  }, [activeTutorialId, completeTutorial, goToNextStep]);
   const tooltipComponent = useMemo(
     () =>
       function ControlledTutorialTooltip(props: TooltipRenderProps) {
@@ -182,7 +191,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
               showProgress: false,
               skipBeacon: true,
               textColor: "hsl(var(--foreground))",
-              zIndex: 10000,
+              zIndex: 2147483647,
             }}
             styles={{
               tooltip: {
@@ -225,6 +234,9 @@ function TutorialBlurBackdrop({ step }: { step?: Step }) {
     }
 
     let frame = 0;
+    const timeouts: number[] = [];
+    let targetElement: Element | null = null;
+    let dialogElement: Element | null = null;
 
     const updateRect = () => {
       const target = document.querySelector(targetSelector);
@@ -234,6 +246,8 @@ function TutorialBlurBackdrop({ step }: { step?: Step }) {
         return;
       }
 
+      targetElement = target;
+      dialogElement = target.closest('[role="dialog"]');
       setRect(target.getBoundingClientRect());
     };
 
@@ -242,12 +256,36 @@ function TutorialBlurBackdrop({ step }: { step?: Step }) {
       frame = requestAnimationFrame(updateRect);
     };
 
+    const scheduleSettledUpdates = () => {
+      scheduleUpdate();
+
+      for (const delay of [50, 150, 300]) {
+        timeouts.push(window.setTimeout(scheduleUpdate, delay));
+      }
+    };
+
+    const handleTransitionEnd = () => scheduleUpdate();
+
+    const attachAnimationListeners = () => {
+      targetElement?.addEventListener("transitionend", handleTransitionEnd);
+      targetElement?.addEventListener("animationend", handleTransitionEnd);
+      dialogElement?.addEventListener("transitionend", handleTransitionEnd);
+      dialogElement?.addEventListener("animationend", handleTransitionEnd);
+    };
+
     scheduleUpdate();
+    timeouts.push(window.setTimeout(attachAnimationListeners, 0));
+    scheduleSettledUpdates();
     window.addEventListener("resize", scheduleUpdate);
     window.addEventListener("scroll", scheduleUpdate, true);
 
     return () => {
       cancelAnimationFrame(frame);
+      for (const timeout of timeouts) window.clearTimeout(timeout);
+      targetElement?.removeEventListener("transitionend", handleTransitionEnd);
+      targetElement?.removeEventListener("animationend", handleTransitionEnd);
+      dialogElement?.removeEventListener("transitionend", handleTransitionEnd);
+      dialogElement?.removeEventListener("animationend", handleTransitionEnd);
       window.removeEventListener("resize", scheduleUpdate);
       window.removeEventListener("scroll", scheduleUpdate, true);
     };
@@ -260,7 +298,8 @@ function TutorialBlurBackdrop({ step }: { step?: Step }) {
   const left = Math.max(rect.left - padding, 0);
   const right = Math.min(rect.right + padding, window.innerWidth);
   const bottom = Math.min(rect.bottom + padding, window.innerHeight);
-  const panelClass = "pointer-events-none fixed z-[9999] backdrop-blur-[3px]";
+  const panelClass =
+    "pointer-events-none fixed z-[2147483646] backdrop-blur-[3px]";
 
   return (
     <>
@@ -301,11 +340,26 @@ function TutorialTooltip({
   onSkip: () => void;
 }) {
   const progress = size > 0 ? ((index + 1) / size) * 100 : 0;
+  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!continuous) return;
+
+    const frame = requestAnimationFrame(() => {
+      nextButtonRef.current?.focus();
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [continuous, index]);
 
   return (
     <div
       {...tooltipProps}
-      className="w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-cyan-300/50 bg-white text-slate-950 shadow-2xl shadow-black/30 dark:border-cyan-300/60 dark:bg-slate-950 dark:text-slate-50"
+      style={{
+        zIndex: 2147483647,
+        pointerEvents: "auto",
+      }}
+      className="pointer-events-auto w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-cyan-300/50 bg-white text-slate-950 shadow-2xl shadow-black/30 dark:border-cyan-300/60 dark:bg-slate-950 dark:text-slate-50"
     >
       <div className="border-b border-cyan-950/10 bg-cyan-50/70 px-4 pb-3 pt-4 dark:border-cyan-300/20 dark:bg-cyan-950/35">
         <div className="flex items-start justify-between gap-4">
@@ -321,6 +375,7 @@ function TutorialTooltip({
           </div>
           <button
             {...closeProps}
+            type="button"
             onClick={onSkip}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-cyan-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-cyan-900/60 dark:hover:text-white"
           >
@@ -342,6 +397,7 @@ function TutorialTooltip({
       <div className="flex items-center justify-between gap-3 border-t border-slate-200 bg-slate-50/80 px-4 py-3 dark:border-slate-800 dark:bg-slate-900/80">
         <button
           {...skipProps}
+          type="button"
           onClick={onSkip}
           className="text-sm font-medium text-slate-500 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
         >
@@ -351,6 +407,7 @@ function TutorialTooltip({
           {index > 0 ? (
             <button
               {...backProps}
+              type="button"
               onClick={onBack}
               className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
             >
@@ -360,6 +417,9 @@ function TutorialTooltip({
           {continuous ? (
             <button
               {...primaryProps}
+              ref={nextButtonRef}
+              type="button"
+              autoFocus
               onClick={onNext}
               className="rounded-md bg-cyan-500 px-3 py-1.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 dark:bg-cyan-300 dark:hover:bg-cyan-200"
             >

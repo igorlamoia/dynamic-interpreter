@@ -12,6 +12,8 @@ import { Subtitle } from "@/components/text/subtitle";
 import { Plus, Search } from "lucide-react";
 import type { Exercise } from "@/types/api";
 import { Pagination } from "@/components/ui/pagination";
+import { useTutorial } from "@/components/tutorial/tutorial-provider";
+import { Footer } from "@/components/footer";
 import { CreateExerciseModal } from "@/views/exercises/components/create-exercise-modal";
 import { EditExerciseModal } from "@/views/exercises/components/edit-exercise-modal";
 import { ExerciseCard } from "@/views/exercises/components/exercise-card";
@@ -34,11 +36,14 @@ export default function ExercisesPage() {
   const { locale } = useRouter();
   const { isTeacher, userId } = useAuth();
   const { showToast } = useToast();
+  const { activeTutorialId } = useTutorial();
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const deferredSearch = useDeferredValue(search.trim());
   const [showCreate, setShowCreate] = useState(false);
+  const [defaultCreateTestCasesOpen, setDefaultCreateTestCasesOpen] =
+    useState(false);
   const [viewExercise, setViewExercise] = useState<Exercise | null>(null);
   const [editTarget, setEditTarget] = useState<Exercise | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null);
@@ -123,7 +128,11 @@ export default function ExercisesPage() {
               </div>
               {isTeacher && (
                 <HeroButton
-                  onClick={() => setShowCreate(true)}
+                  data-tour="exercise-new"
+                  onClick={() => {
+                    setDefaultCreateTestCasesOpen(false);
+                    setShowCreate(true);
+                  }}
                   className="gap-2 px-5 py-2.5 shrink-0 group"
                 >
                   <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
@@ -193,7 +202,15 @@ export default function ExercisesPage() {
       </div>
 
       {/* Modals */}
-      <CreateExerciseModal open={showCreate} onOpenChange={setShowCreate} />
+      <CreateExerciseModal
+        open={showCreate}
+        onOpenChange={(open) => {
+          setShowCreate(open);
+          if (!open) setDefaultCreateTestCasesOpen(false);
+        }}
+        defaultTestCasesOpen={defaultCreateTestCasesOpen}
+        tutorialActive={activeTutorialId === "exercise-creator"}
+      />
 
       <EditExerciseModal
         open={!!editTarget}
@@ -219,6 +236,14 @@ export default function ExercisesPage() {
         exerciseTitle={deleteTarget?.title ?? ""}
         onConfirm={handleDelete}
         isDeleting={deleteExercise.isPending}
+      />
+      <Footer
+        onBeforeStartTutorial={(tutorialId) => {
+          if (tutorialId !== "exercise-creator") return;
+
+          setDefaultCreateTestCasesOpen(true);
+          setShowCreate(true);
+        }}
       />
     </div>
   );

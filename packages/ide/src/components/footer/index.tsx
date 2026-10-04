@@ -55,7 +55,11 @@ const DATA = {
   },
 };
 
-export function Footer() {
+export function Footer({
+  onBeforeStartTutorial,
+}: {
+  onBeforeStartTutorial?: (tutorialId: TutorialId) => void;
+}) {
   const router = useRouter();
   const { isAuthenticated, isTeacher } = useAuth();
   const { startTutorial } = useTutorial();
@@ -108,7 +112,10 @@ export function Footer() {
                       <button
                         type="button"
                         aria-label={t(router.locale, currentTutorial.titleKey)}
-                        onClick={() => startTutorial(currentTutorial.id)}
+                        onClick={() => {
+                          onBeforeStartTutorial?.(currentTutorial.id);
+                          startTutorial(currentTutorial.id);
+                        }}
                         className={cn(
                           buttonVariants({ variant: "ghost", size: "icon" }),
                           "size-12 rounded-full cursor-pointer",
@@ -138,6 +145,9 @@ function getCurrentTutorialId(
 ): TutorialId | null {
   if (pathname === "/") return "ide-basics";
   if (pathname.startsWith("/language-creator")) return "language-creator";
+  if (pathname === "/exercises" && isAuthenticated && isTeacher) {
+    return "exercise-creator";
+  }
   if (pathname === "/dashboard" && isAuthenticated) {
     return isTeacher ? "teacher-dashboard" : "student-dashboard";
   }

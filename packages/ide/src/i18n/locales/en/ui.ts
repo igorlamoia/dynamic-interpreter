@@ -220,6 +220,14 @@ const ui = {
   select_active_language: "Select active language",
   language_selection: "Language selection",
   create_language: "Create language",
+  language_policy_open_title: "Open",
+  language_policy_open_description: "Students use their own language",
+  language_policy_locked_title: "Locked",
+  language_policy_locked_description:
+    "Everyone solves with the selected language",
+  language_policy_selected: "Selected",
+  language_policy_select_language: "Select language",
+  language_policy_no_languages: "No languages available",
   language_dna_typed: "typed",
   language_dna_untyped: "untyped",
   language_dna_delimited_blocks: "delimited blocks",
@@ -611,6 +619,7 @@ const ui = {
   community_import: "Import",
   tutorial_ide_launcher: "IDE tutorial",
   tutorial_language_launcher: "Language tutorial",
+  tutorial_exercise_launcher: "Exercise tutorial",
   tutorial_teacher_launcher: "Teacher tutorial",
   tutorial_student_launcher: "Student tutorial",
   tutorial_back: "Back",
@@ -659,9 +668,21 @@ const ui = {
   tutorial_language_footer_title: "Navigate and save",
   tutorial_language_footer_body:
     "Move between steps, review the language, then save it locally or to your account when ready.",
-  tutorial_teacher_dashboard_title: "Teacher dashboard",
-  tutorial_teacher_dashboard_body:
-    "This area is your command center for classes, exercises, lists, student progress, and grading.",
+  tutorial_exercise_language_policy_title: "Language rule",
+  tutorial_exercise_language_policy_body:
+    "Leave the exercise open when students may solve it with their own active language, or lock it to one saved language so every student uses the same syntax.",
+  tutorial_exercise_test_cases_title: "Test cases",
+  tutorial_exercise_test_cases_body:
+    "Each case runs the student's program with one stdin script and compares stdout with the expected output.",
+  tutorial_exercise_stdin_title: "Stdin lines",
+  tutorial_exercise_stdin_body:
+    "Write each input exactly as the program should receive it. Example: for a program that reads name and age, add Ana on line 1 and 20 on line 2.",
+  tutorial_exercise_add_stdin_title: "Add stdin input",
+  tutorial_exercise_add_stdin_body:
+    "Use this button when the case needs another read value. Pressing Enter inside an input line also creates the next stdin line.",
+  tutorial_exercise_expected_output_title: "Expected stdout",
+  tutorial_exercise_expected_output_body:
+    "Write the exact output the correct solution should print for this case, including line breaks when the answer spans multiple lines.",
   tutorial_teacher_sidebar_title: "Teacher navigation",
   tutorial_teacher_sidebar_body:
     "Use the sidebar to move between classes, exercises, exercise lists, languages, and the community catalog.",
@@ -671,9 +692,6 @@ const ui = {
   tutorial_teacher_classes_title: "Class cards",
   tutorial_teacher_classes_body:
     "Open a class to manage members, published lists, progress, and classroom resources.",
-  tutorial_student_dashboard_title: "Student dashboard",
-  tutorial_student_dashboard_body:
-    "This area shows your classes, assigned lists, and learning progress.",
   tutorial_student_sidebar_title: "Student navigation",
   tutorial_student_sidebar_body:
     "Use the sidebar to access your classes, personal languages, and community languages.",

@@ -50,6 +50,14 @@ const ui = {
   select_active_language: "Seleccionar lenguaje activo",
   language_selection: "Seleccion de lenguaje",
   create_language: "Crear lenguaje",
+  language_policy_open_title: "Abierto",
+  language_policy_open_description: "El alumno usa su propio lenguaje",
+  language_policy_locked_title: "Bloqueado",
+  language_policy_locked_description:
+    "Todos resuelven con el lenguaje seleccionado",
+  language_policy_selected: "Seleccionado",
+  language_policy_select_language: "Seleccionar lenguaje",
+  language_policy_no_languages: "No hay lenguajes disponibles",
   language_dna_typed: "tipado",
   language_dna_untyped: "no tipado",
   language_dna_delimited_blocks: "bloques con delimitadores",
@@ -620,6 +628,7 @@ const ui = {
   community_import: "Importar",
   tutorial_ide_launcher: "Tutorial de la IDE",
   tutorial_language_launcher: "Tutorial del lenguaje",
+  tutorial_exercise_launcher: "Tutorial del ejercicio",
   tutorial_teacher_launcher: "Tutorial del profesor",
   tutorial_student_launcher: "Tutorial del alumno",
   tutorial_back: "AtrÃ¡s",
@@ -668,9 +677,21 @@ const ui = {
   tutorial_language_footer_title: "Navegar y guardar",
   tutorial_language_footer_body:
     "Avanza entre pasos, revisa el lenguaje y guÃ¡rdalo localmente o en tu cuenta cuando estÃ© listo.",
-  tutorial_teacher_dashboard_title: "Panel del profesor",
-  tutorial_teacher_dashboard_body:
-    "Esta Ã¡rea centraliza clases, ejercicios, listas, progreso de alumnos y correcciÃ³n.",
+  tutorial_exercise_language_policy_title: "Regla de lenguaje",
+  tutorial_exercise_language_policy_body:
+    "Deja el ejercicio abierto cuando los alumnos puedan resolverlo con su propio lenguaje activo, o bloquealo en un lenguaje guardado para que todos usen la misma sintaxis.",
+  tutorial_exercise_test_cases_title: "Casos de prueba",
+  tutorial_exercise_test_cases_body:
+    "Cada caso ejecuta el programa del alumno con un guion de stdin y compara stdout con la salida esperada.",
+  tutorial_exercise_stdin_title: "Lineas de stdin",
+  tutorial_exercise_stdin_body:
+    "Escribe cada entrada exactamente como el programa debe recibirla. Ejemplo: para un programa que lee nombre y edad, agrega Ana en la linea 1 y 20 en la linea 2.",
+  tutorial_exercise_add_stdin_title: "Anadir entrada stdin",
+  tutorial_exercise_add_stdin_body:
+    "Usa este boton cuando el caso necesita otro valor de lectura. Presionar Enter dentro de una linea de entrada tambien crea la siguiente linea de stdin.",
+  tutorial_exercise_expected_output_title: "Stdout esperado",
+  tutorial_exercise_expected_output_body:
+    "Escribe la salida exacta que la solucion correcta debe imprimir para este caso, incluyendo saltos de linea cuando la respuesta tenga varias lineas.",
   tutorial_teacher_sidebar_title: "NavegaciÃ³n del profesor",
   tutorial_teacher_sidebar_body:
     "Usa la barra lateral para alternar entre clases, ejercicios, listas, lenguajes y comunidad.",
@@ -680,9 +701,6 @@ const ui = {
   tutorial_teacher_classes_title: "Tarjetas de clases",
   tutorial_teacher_classes_body:
     "Abre una clase para gestionar miembros, listas publicadas, progreso y recursos del aula.",
-  tutorial_student_dashboard_title: "Panel del alumno",
-  tutorial_student_dashboard_body:
-    "Esta Ã¡rea muestra tus clases, listas publicadas y progreso de aprendizaje.",
   tutorial_student_sidebar_title: "NavegaciÃ³n del alumno",
   tutorial_student_sidebar_body:
     "Usa la barra lateral para acceder a clases, lenguajes personales y lenguajes de la comunidad.",

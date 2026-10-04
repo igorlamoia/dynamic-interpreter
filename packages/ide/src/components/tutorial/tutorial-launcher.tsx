@@ -9,11 +9,13 @@ export function TutorialLauncher({
   labelKey,
   locale,
   className,
+  onBeforeStart,
 }: {
   tutorialId: TutorialId;
   labelKey: string;
   locale?: string;
   className?: string;
+  onBeforeStart?: () => void;
 }) {
   const { startTutorial } = useTutorial();
 
@@ -23,7 +25,10 @@ export function TutorialLauncher({
       variant="outline"
       size="sm"
       className={className}
-      onClick={() => startTutorial(tutorialId)}
+      onClick={() => {
+        onBeforeStart?.();
+        startTutorial(tutorialId);
+      }}
     >
       <HelpCircle aria-hidden="true" />
       {t(locale, labelKey)}
