@@ -259,6 +259,7 @@ export function IDE() {
     <>
       <RuntimeErrorProvider>
         <div
+          data-tour="ide-shell"
           data-testid="ide-shell"
           className={cn(
             "relative rounded-2xl",

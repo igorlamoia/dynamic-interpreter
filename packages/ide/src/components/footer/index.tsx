@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { FileCodeIcon, MonitorIcon } from "lucide-react";
+import { FileCodeIcon, HelpCircle, MonitorIcon } from "lucide-react";
+import { useRouter } from "next/router";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -12,6 +13,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Dock, DockIcon } from "@/components/ui/dock";
+import { useTutorial } from "@/components/tutorial/tutorial-provider";
+import { useAuth } from "@/contexts/AuthContext";
+import { getTutorialDefinition, type TutorialId } from "@/lib/tutorials";
+import { t } from "@/i18n";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -51,6 +56,18 @@ const DATA = {
 };
 
 export function Footer() {
+  const router = useRouter();
+  const { isAuthenticated, isTeacher } = useAuth();
+  const { startTutorial } = useTutorial();
+  const currentTutorialId = getCurrentTutorialId(
+    router.pathname,
+    isAuthenticated,
+    isTeacher,
+  );
+  const currentTutorial = currentTutorialId
+    ? getTutorialDefinition(currentTutorialId, router.locale)
+    : null;
+
   return (
     <>
       <footer className="pointer-events-none fixed bottom-3 left-0 right-0 z-100 isolate flex justify-center">
@@ -82,10 +99,48 @@ export function Footer() {
                 </Tooltip>
               </DockIcon>
             ))}
-            <Separator orientation="vertical" className="h-full" />
+            {currentTutorial && (
+              <>
+                <Separator orientation="vertical" className="h-full" />
+                <DockIcon>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        aria-label={t(router.locale, currentTutorial.titleKey)}
+                        onClick={() => startTutorial(currentTutorial.id)}
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "icon" }),
+                          "size-12 rounded-full cursor-pointer",
+                        )}
+                      >
+                        <HelpCircle className="size-5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{t(router.locale, currentTutorial.titleKey)}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </DockIcon>
+              </>
+            )}
           </Dock>
         </TooltipProvider>
       </footer>
     </>
   );
+}
+
+function getCurrentTutorialId(
+  pathname: string,
+  isAuthenticated: boolean,
+  isTeacher: boolean,
+): TutorialId | null {
+  if (pathname === "/") return "ide-basics";
+  if (pathname.startsWith("/language-creator")) return "language-creator";
+  if (pathname === "/dashboard" && isAuthenticated) {
+    return isTeacher ? "teacher-dashboard" : "student-dashboard";
+  }
+
+  return null;
 }

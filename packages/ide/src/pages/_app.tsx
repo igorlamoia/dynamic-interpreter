@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import { Pointer } from "@/components/ui/pointer";
 import { AppQueryClientProvider } from "@/lib/query-client";
 import { t } from "@/i18n";
+import { TutorialProvider } from "@/components/tutorial/tutorial-provider";
 
 type NextPageWithAuth = NextPage & {
   requireAuth?: boolean;
@@ -29,11 +30,13 @@ export default function App({ Component, pageProps }: AppPropsWithAuth) {
         <AuthLayout>
           <AlertProvider>
             <ToastProvider>
-              <div className="bg-background text-foreground transition-colors duration-300">
-                <AuthGuard requireAuth={Component.requireAuth}>
-                  <Component {...pageProps} />
-                </AuthGuard>
-              </div>
+              <TutorialProvider>
+                <div className="bg-background text-foreground transition-colors duration-300">
+                  <AuthGuard requireAuth={Component.requireAuth}>
+                    <Component {...pageProps} />
+                  </AuthGuard>
+                </div>
+              </TutorialProvider>
             </ToastProvider>
           </AlertProvider>
         </AuthLayout>

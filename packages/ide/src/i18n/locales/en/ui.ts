@@ -605,6 +605,74 @@ const ui = {
   community_import_named: "Import {name}",
   community_importing: "Importing",
   community_import: "Import",
+  tutorial_ide_launcher: "IDE tutorial",
+  tutorial_language_launcher: "Language tutorial",
+  tutorial_teacher_launcher: "Teacher tutorial",
+  tutorial_student_launcher: "Student tutorial",
+  tutorial_back: "Back",
+  tutorial_next: "Next",
+  tutorial_finish: "Finish",
+  tutorial_skip: "Skip",
+  tutorial_ide_shell_title: "IDE workspace",
+  tutorial_ide_shell_body:
+    "This is the programming workspace. You can edit files, select a language, run code, inspect output, and debug from here.",
+  tutorial_ide_explorer_title: "Files",
+  tutorial_ide_explorer_body:
+    "Use the explorer to open, create, rename, and organize source files for your program.",
+  tutorial_ide_language_title: "Active language",
+  tutorial_ide_language_body:
+    "Choose the language used to analyze and execute the code. Saved custom languages appear here too.",
+  tutorial_ide_editor_title: "Editor",
+  tutorial_ide_editor_body:
+    "Write your code in the editor. Breakpoints can be added from the gutter when you want to debug.",
+  tutorial_ide_help_title: "Language sample",
+  tutorial_ide_help_body:
+    "Open help to see example code generated for the active language and use it as a starting point.",
+  tutorial_ide_lexer_title: "Lexical analysis",
+  tutorial_ide_lexer_body:
+    "Run only the lexer when you want to inspect tokens before executing the full program.",
+  tutorial_ide_run_title: "Execute code",
+  tutorial_ide_run_body:
+    "Run the full program. The terminal opens with output, input prompts, and runtime messages.",
+  tutorial_ide_terminal_title: "Terminal",
+  tutorial_ide_terminal_body:
+    "The terminal shows execution output and accepts input when the program asks for it.",
+  tutorial_ide_debug_title: "Debug",
+  tutorial_ide_debug_body:
+    "Open the debug panel to start a session, continue, step through code, and inspect variables.",
+  tutorial_language_stepper_title: "Creation steps",
+  tutorial_language_stepper_body:
+    "The wizard breaks language creation into identity, I/O, types, structure, operators, flow, and review.",
+  tutorial_language_form_title: "Current step",
+  tutorial_language_form_body:
+    "Configure the active part of the language here. Each choice updates the generated vocabulary and rules.",
+  tutorial_language_preview_title: "Live preview",
+  tutorial_language_preview_body:
+    "The preview shows how your language changes as you edit lexemes and grammar options.",
+  tutorial_language_footer_title: "Navigate and save",
+  tutorial_language_footer_body:
+    "Move between steps, review the language, then save it locally or to your account when ready.",
+  tutorial_teacher_dashboard_title: "Teacher dashboard",
+  tutorial_teacher_dashboard_body:
+    "This area is your command center for classes, exercises, lists, student progress, and grading.",
+  tutorial_teacher_sidebar_title: "Teacher navigation",
+  tutorial_teacher_sidebar_body:
+    "Use the sidebar to move between classes, exercises, exercise lists, languages, and the community catalog.",
+  tutorial_teacher_create_class_title: "Create a class",
+  tutorial_teacher_create_class_body:
+    "Start by creating a class. Students join it using the access code generated for the class.",
+  tutorial_teacher_classes_title: "Class cards",
+  tutorial_teacher_classes_body:
+    "Open a class to manage members, published lists, progress, and classroom resources.",
+  tutorial_student_dashboard_title: "Student dashboard",
+  tutorial_student_dashboard_body:
+    "This area shows your classes, assigned lists, and learning progress.",
+  tutorial_student_sidebar_title: "Student navigation",
+  tutorial_student_sidebar_body:
+    "Use the sidebar to access your classes, personal languages, and community languages.",
+  tutorial_student_classes_title: "Classes and joining",
+  tutorial_student_classes_body:
+    "Open a class to see lists, or join a new class with the code provided by your teacher.",
   loading: "Loading...",
   grading_save_error: "Error saving grade",
   test_card_1_title: "Card 1",

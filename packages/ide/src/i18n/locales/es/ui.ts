@@ -614,6 +614,74 @@ const ui = {
   community_import_named: "Importar {name}",
   community_importing: "Importando",
   community_import: "Importar",
+  tutorial_ide_launcher: "Tutorial de la IDE",
+  tutorial_language_launcher: "Tutorial del lenguaje",
+  tutorial_teacher_launcher: "Tutorial del profesor",
+  tutorial_student_launcher: "Tutorial del alumno",
+  tutorial_back: "AtrÃ¡s",
+  tutorial_next: "Siguiente",
+  tutorial_finish: "Finalizar",
+  tutorial_skip: "Saltar",
+  tutorial_ide_shell_title: "Entorno de la IDE",
+  tutorial_ide_shell_body:
+    "Este es el espacio de programaciÃ³n. AquÃ­ puedes editar archivos, elegir el lenguaje, ejecutar cÃ³digo, ver salidas y depurar.",
+  tutorial_ide_explorer_title: "Archivos",
+  tutorial_ide_explorer_body:
+    "Usa el explorador para abrir, crear, renombrar y organizar los archivos fuente del programa.",
+  tutorial_ide_language_title: "Lenguaje activo",
+  tutorial_ide_language_body:
+    "Elige el lenguaje usado para analizar y ejecutar el cÃ³digo. Los lenguajes personalizados guardados tambiÃ©n aparecen aquÃ­.",
+  tutorial_ide_editor_title: "Editor",
+  tutorial_ide_editor_body:
+    "Escribe tu cÃ³digo en el editor. Para depurar, agrega puntos de interrupciÃ³n desde el margen de las lÃ­neas.",
+  tutorial_ide_help_title: "Ejemplo del lenguaje",
+  tutorial_ide_help_body:
+    "Abre la ayuda para ver un ejemplo generado para el lenguaje activo y usarlo como punto de partida.",
+  tutorial_ide_lexer_title: "AnÃ¡lisis lÃ©xico",
+  tutorial_ide_lexer_body:
+    "Ejecuta solo el lexer cuando quieras inspeccionar los tokens antes de correr el programa completo.",
+  tutorial_ide_run_title: "Ejecutar cÃ³digo",
+  tutorial_ide_run_body:
+    "Ejecuta el programa completo. La terminal se abre con salida, entradas solicitadas y mensajes de ejecuciÃ³n.",
+  tutorial_ide_terminal_title: "Terminal",
+  tutorial_ide_terminal_body:
+    "La terminal muestra la salida de la ejecuciÃ³n y acepta entrada cuando el programa la solicita.",
+  tutorial_ide_debug_title: "DepuraciÃ³n",
+  tutorial_ide_debug_body:
+    "Abre el panel de depuraciÃ³n para iniciar una sesiÃ³n, continuar, avanzar paso a paso e inspeccionar variables.",
+  tutorial_language_stepper_title: "Pasos de creaciÃ³n",
+  tutorial_language_stepper_body:
+    "El asistente divide la creaciÃ³n en identidad, entrada/salida, tipos, estructura, operadores, flujo y revisiÃ³n.",
+  tutorial_language_form_title: "Paso actual",
+  tutorial_language_form_body:
+    "Configura aquÃ­ la parte activa del lenguaje. Cada elecciÃ³n actualiza el vocabulario y las reglas generadas.",
+  tutorial_language_preview_title: "Vista previa en vivo",
+  tutorial_language_preview_body:
+    "La vista previa muestra cÃ³mo cambia el lenguaje mientras editas lexemas y opciones de gramÃ¡tica.",
+  tutorial_language_footer_title: "Navegar y guardar",
+  tutorial_language_footer_body:
+    "Avanza entre pasos, revisa el lenguaje y guÃ¡rdalo localmente o en tu cuenta cuando estÃ© listo.",
+  tutorial_teacher_dashboard_title: "Panel del profesor",
+  tutorial_teacher_dashboard_body:
+    "Esta Ã¡rea centraliza clases, ejercicios, listas, progreso de alumnos y correcciÃ³n.",
+  tutorial_teacher_sidebar_title: "NavegaciÃ³n del profesor",
+  tutorial_teacher_sidebar_body:
+    "Usa la barra lateral para alternar entre clases, ejercicios, listas, lenguajes y comunidad.",
+  tutorial_teacher_create_class_title: "Crear clase",
+  tutorial_teacher_create_class_body:
+    "Comienza creando una clase. Los alumnos entran usando el cÃ³digo de acceso generado para ella.",
+  tutorial_teacher_classes_title: "Tarjetas de clases",
+  tutorial_teacher_classes_body:
+    "Abre una clase para gestionar miembros, listas publicadas, progreso y recursos del aula.",
+  tutorial_student_dashboard_title: "Panel del alumno",
+  tutorial_student_dashboard_body:
+    "Esta Ã¡rea muestra tus clases, listas publicadas y progreso de aprendizaje.",
+  tutorial_student_sidebar_title: "NavegaciÃ³n del alumno",
+  tutorial_student_sidebar_body:
+    "Usa la barra lateral para acceder a clases, lenguajes personales y lenguajes de la comunidad.",
+  tutorial_student_classes_title: "Clases e ingreso",
+  tutorial_student_classes_body:
+    "Abre una clase para ver listas, o entra en una nueva clase con el cÃ³digo enviado por el profesor.",
   loading: "Cargando...",
   grading_save_error: "Error al guardar la nota",
   test_card_1_title: "Tarjeta 1",

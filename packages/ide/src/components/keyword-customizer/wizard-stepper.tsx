@@ -63,6 +63,7 @@ export function WizardStepper({
 
   return (
     <aside
+      data-tour="language-stepper"
       data-wizard-stepper
       className={`max-lg:sticky max-lg:top-0 max-lg:z-40 max-lg:-mx-5 max-lg:border-b max-lg:border-slate-800/80 max-lg:bg-[#070d18]/95 max-lg:px-5 max-lg:py-3 max-lg:shadow-[0_18px_50px_-34px_rgba(2,6,23,0.95)] max-lg:backdrop-blur-xl lg:backdrop-blur-[2px] flex flex-col gap-3 lg:fixed lg:w-[230px] xl:w-[340px] left-5 transition-[top,height] duration-300 ease-out ${
         isScrolled

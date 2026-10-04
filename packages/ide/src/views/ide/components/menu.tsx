@@ -39,6 +39,7 @@ export function Menu({
         </span>
         <div className="hidden items-center gap-3 md:flex">
           <button
+            data-tour="ide-create-language"
             className="hover:text-foreground"
             onClick={() => {
               markLanguageCreatorReturn();
@@ -47,10 +48,18 @@ export function Menu({
           >
             {t(locale, "ui.create_language")}
           </button>
-          <button className="hover:text-foreground" onClick={toggleTerminal}>
+          <button
+            data-tour="ide-terminal-toggle"
+            className="hover:text-foreground"
+            onClick={toggleTerminal}
+          >
             {t(locale, "ui.terminal")}
           </button>
-          <button className="hover:text-foreground" onClick={onHelp}>
+          <button
+            data-tour="ide-help"
+            className="hover:text-foreground"
+            onClick={onHelp}
+          >
             {t(locale, "ui.help")}
           </button>
         </div>
@@ -65,6 +74,7 @@ export function Menu({
           {isFullscreen ? <Minimize2 /> : <Maximize2 />}
         </IconButton>
         <IconButton
+          data-tour="ide-run-lexer"
           aria-label={t(locale, "ui.run_lexer")}
           disabled={isRunDisabled}
           onClick={handleRun}
@@ -74,6 +84,7 @@ export function Menu({
           <StepForward />
         </IconButton>
         <RainbowButton
+          data-tour="ide-run-all"
           variant="outline"
           disabled={isRunDisabled}
           onClick={runAll}
