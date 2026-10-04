@@ -65,7 +65,10 @@ export function MainSection({
         />
       )}
       <div className="relative flex-1 overflow-x-auto">
-        <div className={openTabs.length === 0 ? "hidden" : "h-full w-full"}>
+        <div
+          data-tour="ide-editor"
+          className={openTabs.length === 0 ? "hidden" : "h-full w-full"}
+        >
           <Editor
             bottomPadding={
               isTerminalOpen ? IDE_TERMINAL_RESERVED_BOTTOM_PX : 0

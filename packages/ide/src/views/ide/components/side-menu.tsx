@@ -37,6 +37,7 @@ export function SideMenu({
   return (
     <div className="flex  flex-1 sm:flex-col h-full px-4 py-2 sm:w-12 items-center gap-4 border-b sm:border-r border-black/10 dark:border-white/10 sm:py-4">
       <IconButton
+        data-tour="ide-explorer"
         selected={isSidebarOpen && activeView === "explorer"}
         onClick={() => handleViewClick("explorer")}
         tooltip={t(locale, "ui.file_explorer")}
@@ -51,6 +52,7 @@ export function SideMenu({
         <Search className="h-4 w-4" />
       </IconButton>
       <IconButton
+        data-tour="ide-language"
         selected={isSidebarOpen && activeView === "language"}
         onClick={() => handleViewClick("language")}
         tooltip={t(locale, "ui.languages")}
@@ -58,6 +60,7 @@ export function SideMenu({
         <Languages className="h-4 w-4" />
       </IconButton>
       <IconButton
+        data-tour="ide-debug"
         selected={isSidebarOpen && activeView === "debug"}
         onClick={() => handleViewClick("debug")}
         tooltip="Debug"
@@ -75,6 +78,7 @@ function ConfigButton() {
 
   return (
     <IconButton
+      data-tour="ide-custom-language"
       tooltip={t(locale, "ui.custom_language")}
       onClick={() => {
         markLanguageCreatorReturn();

@@ -5,6 +5,7 @@ import { Alert } from "@/components/ui/alert";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { ClassesGrid } from "@/views/dashboard/components/classes-grid";
 import { CreateClassModal } from "@/views/dashboard/components/create-class-modal";
 import { DashboardHeader } from "@/views/dashboard/components/dashboard-header";
@@ -53,7 +54,10 @@ export default function Dashboard() {
       <div className="flex flex-1 overflow-hidden relative z-10">
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-y-auto w-full">
-          <main className="max-w-7xl mx-auto px-6 py-12 w-full">
+          <main
+            data-tour="dashboard-main"
+            className="max-w-7xl mx-auto px-6 py-12 w-full"
+          >
             {isCommunity ? (
               <CommunityDashboard />
             ) : (
@@ -111,6 +115,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

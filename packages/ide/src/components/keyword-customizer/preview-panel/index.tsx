@@ -223,6 +223,7 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
 
   return (
     <aside
+      data-tour="language-preview"
       data-preview-panel
       className={`max-lg:h-[calc(100dvh-1rem)] lg:fixed lg:right-0 self-start pl-2 overflow-hidden lg:w-90 transition-[top,height] duration-300 ease-out ${
         isScrolled

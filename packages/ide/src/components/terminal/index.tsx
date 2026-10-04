@@ -101,6 +101,7 @@ export default function TerminalView({
       <AnimatePresence>
         {isTerminalOpen && (
           <motion.div
+            data-tour="ide-terminal"
             data-testid="terminal-panel"
             initial={{ y: "50%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

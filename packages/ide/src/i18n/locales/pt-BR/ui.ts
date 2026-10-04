@@ -644,6 +644,74 @@ const ui = {
   community_import_named: "Importar {name}",
   community_importing: "Importando",
   community_import: "Importar",
+  tutorial_ide_launcher: "Tutorial da IDE",
+  tutorial_language_launcher: "Tutorial da linguagem",
+  tutorial_teacher_launcher: "Tutorial do professor",
+  tutorial_student_launcher: "Tutorial do aluno",
+  tutorial_back: "Voltar",
+  tutorial_next: "Proximo",
+  tutorial_finish: "Concluir",
+  tutorial_skip: "Pular",
+  tutorial_ide_shell_title: "Ambiente da IDE",
+  tutorial_ide_shell_body:
+    "Este e o espaco de programacao. Aqui voce edita arquivos, escolhe a linguagem, executa codigo, ve saidas e depura.",
+  tutorial_ide_explorer_title: "Arquivos",
+  tutorial_ide_explorer_body:
+    "Use o explorador para abrir, criar, renomear e organizar os arquivos fonte do programa.",
+  tutorial_ide_language_title: "Linguagem ativa",
+  tutorial_ide_language_body:
+    "Escolha a linguagem usada para analisar e executar o codigo. Linguagens personalizadas salvas tambem aparecem aqui.",
+  tutorial_ide_editor_title: "Editor",
+  tutorial_ide_editor_body:
+    "Escreva seu codigo no editor. Para depurar, adicione pontos de parada pela margem das linhas.",
+  tutorial_ide_help_title: "Exemplo da linguagem",
+  tutorial_ide_help_body:
+    "Abra a ajuda para ver um exemplo gerado para a linguagem ativa e usa-lo como ponto de partida.",
+  tutorial_ide_lexer_title: "Analise lexica",
+  tutorial_ide_lexer_body:
+    "Execute apenas o lexer quando quiser inspecionar os tokens antes de rodar o programa completo.",
+  tutorial_ide_run_title: "Executar codigo",
+  tutorial_ide_run_body:
+    "Execute o programa completo. O terminal abre com saida, entradas solicitadas e mensagens de execucao.",
+  tutorial_ide_terminal_title: "Terminal",
+  tutorial_ide_terminal_body:
+    "O terminal mostra a saida da execucao e aceita entrada quando o programa solicitar.",
+  tutorial_ide_debug_title: "Depuracao",
+  tutorial_ide_debug_body:
+    "Abra o painel de depuracao para iniciar uma sessao, continuar, avancar passo a passo e inspecionar variaveis.",
+  tutorial_language_stepper_title: "Etapas de criacao",
+  tutorial_language_stepper_body:
+    "O wizard divide a criacao em identidade, entrada/saida, tipos, estrutura, operadores, fluxo e revisao.",
+  tutorial_language_form_title: "Etapa atual",
+  tutorial_language_form_body:
+    "Configure aqui a parte ativa da linguagem. Cada escolha atualiza o vocabulario e as regras geradas.",
+  tutorial_language_preview_title: "Previa ao vivo",
+  tutorial_language_preview_body:
+    "A previa mostra como a linguagem muda enquanto voce edita lexemas e opcoes de gramatica.",
+  tutorial_language_footer_title: "Navegar e salvar",
+  tutorial_language_footer_body:
+    "Avance entre etapas, revise a linguagem e salve localmente ou na sua conta quando estiver pronta.",
+  tutorial_teacher_dashboard_title: "Painel do professor",
+  tutorial_teacher_dashboard_body:
+    "Esta area centraliza turmas, exercicios, listas, progresso dos alunos e correcao.",
+  tutorial_teacher_sidebar_title: "Navegacao do professor",
+  tutorial_teacher_sidebar_body:
+    "Use a barra lateral para alternar entre turmas, exercicios, listas, linguagens e comunidade.",
+  tutorial_teacher_create_class_title: "Criar turma",
+  tutorial_teacher_create_class_body:
+    "Comece criando uma turma. Os alunos entram usando o codigo de acesso gerado para ela.",
+  tutorial_teacher_classes_title: "Cards das turmas",
+  tutorial_teacher_classes_body:
+    "Abra uma turma para gerenciar membros, listas publicadas, progresso e recursos da sala.",
+  tutorial_student_dashboard_title: "Painel do aluno",
+  tutorial_student_dashboard_body:
+    "Esta area mostra suas turmas, listas publicadas e progresso de aprendizagem.",
+  tutorial_student_sidebar_title: "Navegacao do aluno",
+  tutorial_student_sidebar_body:
+    "Use a barra lateral para acessar turmas, linguagens pessoais e linguagens da comunidade.",
+  tutorial_student_classes_title: "Turmas e entrada",
+  tutorial_student_classes_body:
+    "Abra uma turma para ver listas, ou entre em uma nova turma com o codigo enviado pelo professor.",
   loading: "Carregando...",
   grading_save_error: "Erro ao salvar nota",
   test_card_1_title: "Cartao 1",

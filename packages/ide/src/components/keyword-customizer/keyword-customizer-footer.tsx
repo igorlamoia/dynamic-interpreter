@@ -30,7 +30,7 @@ export function KeywordCustomizerFooter({
   const wt = useWizardTranslation();
 
   return (
-    <div className="mt-auto p-5 backdrop-blur-sm ">
+    <div data-tour="language-footer" className="mt-auto p-5 backdrop-blur-sm ">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
         <div className="flex items-center gap-2">
           <HeroButton

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import type { HTMLAttributes } from "react";
 
 type DefaultProps = {
   className?: string;
@@ -46,11 +47,17 @@ function Description({ children, className }: DefaultProps) {
 function Header({
   className,
   children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return <div className={cn("space-y-2", className)}>{children}</div>;
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      data-tour="language-current-step"
+      className={cn("space-y-2", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
 }
 
 export const Step = {
