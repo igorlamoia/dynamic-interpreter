@@ -40,13 +40,35 @@ vi.mock("lucide-react", () => ({
   Trash2: () => <span>trash</span>,
 }));
 
-function setNativeValue(element: HTMLInputElement | HTMLTextAreaElement, value: string) {
+function setNativeValue(
+  element: HTMLInputElement | HTMLTextAreaElement,
+  value: string,
+) {
   const proto =
     element instanceof HTMLTextAreaElement
       ? window.HTMLTextAreaElement.prototype
       : window.HTMLInputElement.prototype;
   Object.getOwnPropertyDescriptor(proto, "value")?.set?.call(element, value);
   element.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+function clickLockedPolicy() {
+  const lockedRadio = document.body.querySelector<HTMLInputElement>(
+    'input[aria-label="Travada"]',
+  );
+  act(() => {
+    lockedRadio?.click();
+  });
+}
+
+function clickLanguageCard(languageName: string) {
+  const languageButton = Array.from(
+    document.body.querySelectorAll<HTMLButtonElement>("button"),
+  ).find((button) => button.textContent?.includes(languageName));
+
+  act(() => {
+    languageButton?.click();
+  });
 }
 
 describe("CreateExerciseModal", () => {
@@ -91,12 +113,7 @@ describe("CreateExerciseModal", () => {
       setNativeValue(textarea as HTMLTextAreaElement, "Calcule o fatorial.");
     });
 
-    const lockedRadio = document.body.querySelector<HTMLInputElement>(
-      'input[aria-label="Travado"]',
-    );
-    act(() => {
-      lockedRadio?.click();
-    });
+    clickLockedPolicy();
 
     // O select aparece, mas o professor nao escolhe nada.
     expect(
@@ -130,23 +147,8 @@ describe("CreateExerciseModal", () => {
       setNativeValue(textarea as HTMLTextAreaElement, "Calcule o fatorial.");
     });
 
-    const lockedRadio = document.body.querySelector<HTMLInputElement>(
-      'input[aria-label="Travado"]',
-    );
-    act(() => {
-      lockedRadio?.click();
-    });
-
-    const select = document.body.querySelector<HTMLSelectElement>(
-      'select[aria-label="Linguagem"]',
-    );
-    act(() => {
-      Object.getOwnPropertyDescriptor(
-        window.HTMLSelectElement.prototype,
-        "value",
-      )?.set?.call(select, "3");
-      select?.dispatchEvent(new Event("change", { bubbles: true }));
-    });
+    clickLockedPolicy();
+    clickLanguageCard("Portugolzinho");
 
     const form = document.body.querySelector<HTMLFormElement>(
       "#create-exercise-page-form",
@@ -168,12 +170,7 @@ describe("CreateExerciseModal", () => {
   });
 
   it("mostra a imagem da linguagem ao escolher uma linguagem travada", () => {
-    const lockedRadio = document.body.querySelector<HTMLInputElement>(
-      'input[aria-label="Travado"]',
-    );
-    act(() => {
-      lockedRadio?.click();
-    });
+    clickLockedPolicy();
 
     const image = document.body.querySelector<HTMLImageElement>(
       'img[src="https://cdn.example/portugolzinho.png"]',
