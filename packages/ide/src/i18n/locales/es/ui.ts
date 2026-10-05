@@ -106,13 +106,12 @@ const ui = {
     "No se puede mover una carpeta dentro de si misma.",
   explorer_folder_exists: "Ya existe una carpeta con ese nombre.",
   explorer_delete_file_title: "Eliminar archivo",
-  explorer_delete_file_description:
-    "Seguro que quieres eliminar \"{path}\"?",
+  explorer_delete_file_description: 'Seguro que quieres eliminar "{path}"?',
   explorer_delete_folder_title: "Eliminar carpeta",
   explorer_delete_folder_description:
-    "Seguro que quieres eliminar la carpeta \"{path}\"?",
+    'Seguro que quieres eliminar la carpeta "{path}"?',
   explorer_delete_folder_with_files_description:
-    "Seguro que quieres eliminar la carpeta \"{path}\" y {count} archivo(s) dentro?",
+    'Seguro que quieres eliminar la carpeta "{path}" y {count} archivo(s) dentro?',
   explorer_delete_confirm: "Eliminar",
   explorer_delete_cancel: "Cancelar",
   explorer_file_exists: "Este archivo ya existe.",
@@ -157,7 +156,8 @@ const ui = {
   debug_call_stack: "Pila de llamadas",
   debug_no_stack_frames: "Sin marcos de pila",
   hero_title: "Intérprete Dinámico",
-  hero_description: "Crea tu propio lenguaje de programación",
+  hero_create: "Crear tu propio",
+  hero_description: "lenguaje de programación",
   lexer_title: "Analizador Léxico",
   lexer_description:
     "El analizador léxico es el primer paso en el proceso de compilación, responsable de convertir el código fuente en una secuencia de tokens. Identifica palabras clave, identificadores, literales y otros elementos del código, facilitando el análisis sintáctico posterior.",
@@ -182,8 +182,7 @@ const ui = {
   login_forgot_password: "¿Olvidaste tu contraseña?",
   login_submit: "Entrar al panel",
   login_error_invalid_email: "Correo electrónico inválido",
-  login_error_password_min:
-    "La contraseña debe tener al menos 4 caracteres",
+  login_error_password_min: "La contraseña debe tener al menos 4 caracteres",
   login_error_missing_token: "La respuesta de inicio no incluyó un token",
   login_error_failed: "No se pudo iniciar sesión",
   register_title: "Crea tu cuenta",
@@ -239,8 +238,7 @@ const ui = {
   class_no_lists_title: "No hay listas publicadas",
   class_no_lists_teacher:
     "Publica una lista de ejercicios para esta clase en 'Mis listas'.",
-  class_no_lists_student:
-    "Tu profesor aun no publico listas para esta clase.",
+  class_no_lists_student: "Tu profesor aun no publico listas para esta clase.",
   class_exercise_count_singular: "{count} ejercicio",
   class_exercise_count_plural: "{count} ejercicios",
   class_minimum_count: "Minimo: {count}",
@@ -409,7 +407,7 @@ const ui = {
   exercises_delete_error: "Error al eliminar ejercicio.",
   exercises_search_placeholder: "Buscar ejercicios...",
   exercises_loading: "Cargando ejercicios...",
-  exercises_no_search_results: "Ningun resultado para \"{search}\"",
+  exercises_no_search_results: 'Ningun resultado para "{search}"',
   exercises_test_cases: "Casos de prueba",
   exercises_empty_title: "No se encontraron ejercicios",
   exercises_empty_description:
@@ -550,19 +548,19 @@ const ui = {
   languages_duplicate: "Duplicar",
   languages_delete_named: "Eliminar {name}",
   languages_load_error: "No fue posible cargar tus lenguajes.",
-  languages_set_active_success: "\"{name}\" ahora es tu lenguaje activo.",
+  languages_set_active_success: '"{name}" ahora es tu lenguaje activo.',
   languages_set_active_error: "No fue posible activar el lenguaje.",
-  languages_clone_success: "\"{name}\" duplicado como \"{cloneName}\".",
+  languages_clone_success: '"{name}" duplicado como "{cloneName}".',
   languages_clone_error: "No fue posible duplicar.",
-  languages_delete_confirm: "¿Eliminar el lenguaje \"{name}\"?",
-  languages_delete_success: "\"{name}\" eliminado.",
+  languages_delete_confirm: '¿Eliminar el lenguaje "{name}"?',
+  languages_delete_success: '"{name}" eliminado.',
   languages_delete_locked_error:
     "Este lenguaje está bloqueado en algún ejercicio y no puede eliminarse.",
   languages_delete_error: "No fue posible eliminar.",
   languages_publish_success:
-    "\"{name}\" ahora está en el acervo de la comunidad.",
+    '"{name}" ahora está en el acervo de la comunidad.',
   languages_unpublish_success:
-    "\"{name}\" se eliminó del acervo de la comunidad.",
+    '"{name}" se eliminó del acervo de la comunidad.',
   languages_publication_error:
     "No fue posible cambiar la publicación del lenguaje.",
   languages_default_config: "Configuración predeterminada",
@@ -593,7 +591,7 @@ const ui = {
   community_filter_terminator: "Terminador",
   community_filter_optional: "Opcional",
   community_filter_required: "Obligatorio",
-  community_import_success: "\"{name}\" se añadió a tus lenguajes.",
+  community_import_success: '"{name}" se añadió a tus lenguajes.',
   community_import_error: "No fue posible importar el lenguaje.",
   community_badge: "Acervo colaborativo",
   community_title_prefix: "Atlas de",

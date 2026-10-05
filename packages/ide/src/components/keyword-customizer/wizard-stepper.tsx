@@ -65,7 +65,7 @@ export function WizardStepper({
     <aside
       data-tour="language-stepper"
       data-wizard-stepper
-      className={`max-lg:sticky max-lg:top-0 max-lg:z-40 max-lg:-mx-5 max-lg:border-b max-lg:border-slate-800/80 max-lg:bg-[#070d18]/95 max-lg:px-5 max-lg:py-3 max-lg:shadow-[0_18px_50px_-34px_rgba(2,6,23,0.95)] max-lg:backdrop-blur-xl lg:backdrop-blur-[2px] flex flex-col gap-3 lg:fixed lg:w-[230px] xl:w-[340px] left-5 transition-[top,height] duration-300 ease-out ${
+      className={`max-lg:sticky max-lg:top-0 max-lg:z-40 max-lg:-mx-5 max-lg:border-b max-lg:border-slate-200/80 max-lg:bg-white/95 max-lg:px-5 max-lg:py-3 max-lg:shadow-[0_18px_50px_-34px_rgba(15,23,42,0.45)] max-lg:backdrop-blur-xl dark:max-lg:border-slate-800/80 dark:max-lg:bg-[#070d18]/95 dark:max-lg:shadow-[0_18px_50px_-34px_rgba(2,6,23,0.95)] lg:backdrop-blur-[2px] flex flex-col gap-3 lg:fixed lg:w-[230px] xl:w-[340px] left-5 transition-[top,height] duration-300 ease-out ${
         isScrolled
           ? "lg:top-8 lg:h-screen"
           : "lg:top-22 lg:h-[calc(100vh-4rem)]"
@@ -118,8 +118,8 @@ export function WizardStepper({
                 className={[
                   "flex items-center gap-2 border-l-4 px-3 py-2.5 transition-all max-lg:h-10 max-lg:w-10 max-lg:min-w-10 max-lg:flex-none max-lg:justify-center max-lg:rounded-full max-lg:border max-lg:px-0 max-lg:py-0",
                   isActive
-                    ? "border-l-cyan-500 bg-primary/20 dark:bg-slate-900/40 text-cyan-400 max-lg:border-cyan-400 max-lg:bg-cyan-400/10 max-lg:shadow-[0_0_24px_-10px_rgba(34,211,238,0.95)] dark:text-cyan-300"
-                    : "border-l-transparent text-slate-400 hover:text-slate-600 max-lg:border-slate-800 max-lg:bg-slate-950/60 dark:text-slate-500 dark:hover:text-slate-400",
+                    ? "border-l-cyan-500 bg-primary/20 text-cyan-600 dark:bg-slate-900/40 max-lg:border-cyan-400 max-lg:bg-cyan-50 max-lg:shadow-[0_0_24px_-12px_rgba(8,145,178,0.6)] dark:text-cyan-300 dark:max-lg:bg-cyan-400/10 dark:max-lg:shadow-[0_0_24px_-10px_rgba(34,211,238,0.95)]"
+                    : "border-l-transparent text-slate-500 hover:text-slate-700 max-lg:border-slate-200 max-lg:bg-white/80 dark:text-slate-500 dark:hover:text-slate-400 dark:max-lg:border-slate-800 dark:max-lg:bg-slate-950/60",
                 ].join(" ")}
                 style={
                   {

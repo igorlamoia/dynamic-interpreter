@@ -104,8 +104,7 @@ const ui = {
   dashboard_join: "Join",
   dashboard_class_name_required: "Class name is required",
   dashboard_description_required: "Description is required",
-  dashboard_create_class_success:
-    "Class created! Access code: {accessCode}",
+  dashboard_create_class_success: "Class created! Access code: {accessCode}",
   dashboard_create_class_error: "Error creating class",
   dashboard_create_class_title: "Create New Class",
   dashboard_create_class_description: "Fill in your class details",
@@ -253,8 +252,7 @@ const ui = {
   preview_category_fluxo_subtitle:
     "Early exits, execution control, decisions, and alternate paths.",
   preview_category_lacos_title: "LOOPS",
-  preview_category_lacos_subtitle:
-    "Repetition controlled by program logic.",
+  preview_category_lacos_subtitle: "Repetition controlled by program logic.",
   terminal_close: "Close terminal",
   terminal_clear: "Clear terminal",
   terminal_executing: "executing...",
@@ -272,17 +270,15 @@ const ui = {
   explorer_new_folder_name: "new-folder",
   explorer_file_exists_in_folder:
     "A file with this name already exists in this folder.",
-  explorer_cannot_move_folder_into_itself:
-    "Cannot move a folder into itself.",
+  explorer_cannot_move_folder_into_itself: "Cannot move a folder into itself.",
   explorer_folder_exists: "A folder with this name already exists.",
   explorer_delete_file_title: "Delete file",
-  explorer_delete_file_description:
-    "Are you sure you want to delete \"{path}\"?",
+  explorer_delete_file_description: 'Are you sure you want to delete "{path}"?',
   explorer_delete_folder_title: "Delete folder",
   explorer_delete_folder_description:
-    "Are you sure you want to delete the folder \"{path}\"?",
+    'Are you sure you want to delete the folder "{path}"?',
   explorer_delete_folder_with_files_description:
-    "Are you sure you want to delete the folder \"{path}\" and {count} file(s) inside?",
+    'Are you sure you want to delete the folder "{path}" and {count} file(s) inside?',
   explorer_delete_confirm: "Delete",
   explorer_delete_cancel: "Cancel",
   explorer_file_exists: "This file already exists.",
@@ -319,7 +315,8 @@ const ui = {
   debug_call_stack: "Call Stack",
   debug_no_stack_frames: "No stack frames",
   hero_title: "Dynamic Interpreter",
-  hero_description: "Create your own programming language",
+  hero_create: "Create your own",
+  hero_description: "programming language",
   lexer_title: "Lexical Analyzer",
   lexer_description:
     "The lexical analyzer is the first step in the compilation process, responsible for converting source code into a sequence of tokens. It identifies keywords, identifiers, literals, and other elements of the code, facilitating subsequent syntactic analysis.",
@@ -340,8 +337,7 @@ const ui = {
   validation_submission_context_required:
     "exerciseListId and classId are required for submission",
   validation_warning_line: "Warning (line {line}): {message}",
-  validation_compile_error_line:
-    "Compilation error (line {line}): {message}",
+  validation_compile_error_line: "Compilation error (line {line}): {message}",
   validation_compile_error: "Compilation error: {message}",
   validation_lexical_error_line: "Lexical error (line {line}): {message}",
   validation_lexical_error: "Lexical error: {message}",
@@ -369,7 +365,8 @@ const ui = {
   grading_min_score: "Minimum: 0",
   grading_max_score: "Maximum: 10",
   grading_feedback: "Feedback for the Student",
-  grading_feedback_placeholder: "Write your feedback about the student's code...",
+  grading_feedback_placeholder:
+    "Write your feedback about the student's code...",
   grading_update_score: "Update Grade",
   grading_assign_score: "Assign Grade",
   submissions_title: "Submissions",
@@ -405,7 +402,7 @@ const ui = {
   exercises_delete_error: "Error deleting exercise.",
   exercises_search_placeholder: "Search exercises...",
   exercises_loading: "Loading exercises...",
-  exercises_no_search_results: "No results for \"{search}\"",
+  exercises_no_search_results: 'No results for "{search}"',
   exercises_test_cases: "Test Cases",
   exercises_empty_title: "No exercises found",
   exercises_empty_description:
@@ -476,7 +473,8 @@ const ui = {
     "Create a list to organize your exercises and publish to classes.",
   exercise_lists_title_placeholder: "E.g. Sorting Algorithms",
   exercise_lists_description_optional: "Description (optional)",
-  exercise_lists_description_placeholder: "Describe the purpose of this list...",
+  exercise_lists_description_placeholder:
+    "Describe the purpose of this list...",
   exercise_lists_create_submit: "Create List",
   exercise_lists_language_update_success: "List language updated.",
   exercise_lists_language_update_error: "Error updating the language.",
@@ -520,7 +518,8 @@ const ui = {
   exercise_lists_add_exercise_description:
     "Select an exercise to add to this list.",
   exercise_lists_no_created_exercises: "You have no created exercises.",
-  exercise_lists_all_exercises_added: "All your exercises are already in this list.",
+  exercise_lists_all_exercises_added:
+    "All your exercises are already in this list.",
   languages_my_languages: "My Languages",
   languages_subtitle: "Create and maintain your own languages",
   languages_new_language: "New Language",
@@ -543,18 +542,18 @@ const ui = {
   languages_duplicate: "Duplicate",
   languages_delete_named: "Delete {name}",
   languages_load_error: "Could not load your languages.",
-  languages_set_active_success: "\"{name}\" is now your active language.",
+  languages_set_active_success: '"{name}" is now your active language.',
   languages_set_active_error: "Could not activate the language.",
-  languages_clone_success: "\"{name}\" duplicated as \"{cloneName}\".",
+  languages_clone_success: '"{name}" duplicated as "{cloneName}".',
   languages_clone_error: "Could not duplicate.",
-  languages_delete_confirm: "Delete the language \"{name}\"?",
-  languages_delete_success: "\"{name}\" deleted.",
+  languages_delete_confirm: 'Delete the language "{name}"?',
+  languages_delete_success: '"{name}" deleted.',
   languages_delete_locked_error:
     "This language is locked in an exercise and cannot be deleted.",
   languages_delete_error: "Could not delete.",
-  languages_publish_success: "\"{name}\" is now in the community collection.",
+  languages_publish_success: '"{name}" is now in the community collection.',
   languages_unpublish_success:
-    "\"{name}\" was removed from the community collection.",
+    '"{name}" was removed from the community collection.',
   languages_publication_error: "Could not change language publication.",
   languages_default_config: "Default configuration",
   languages_compiler_default: "Compiler default",
@@ -584,7 +583,7 @@ const ui = {
   community_filter_terminator: "Terminator",
   community_filter_optional: "Optional",
   community_filter_required: "Required",
-  community_import_success: "\"{name}\" was added to your languages.",
+  community_import_success: '"{name}" was added to your languages.',
   community_import_error: "Could not import the language.",
   community_badge: "Collaborative collection",
   community_title_prefix: "Language",
@@ -612,8 +611,7 @@ const ui = {
   community_filter_by: "Filter by {label}",
   community_by: "by",
   community_owner_fallback: "Community",
-  community_default_description:
-    "A custom language shared with the community.",
+  community_default_description: "A custom language shared with the community.",
   community_import_named: "Import {name}",
   community_importing: "Importing",
   community_import: "Import",

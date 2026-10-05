@@ -41,8 +41,8 @@ export function getTutorialDefinition(
         step(
           locale,
           "ide_create_language",
-          '[data-tour="ide-create-language"]',
-          "right",
+          '[data-tour="home-create-language"]',
+          "bottom",
         ),
         step(locale, "ide_explorer", '[data-tour="ide-explorer"]', "right"),
         step(locale, "ide_language", '[data-tour="ide-language"]', "right"),

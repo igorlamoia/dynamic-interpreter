@@ -156,7 +156,8 @@ const ui = {
   debug_call_stack: "Pilha de chamadas",
   debug_no_stack_frames: "Sem quadros de pilha",
   hero_title: "Interpretador dinâmico",
-  hero_description: "Crie sua própria linguagem de programação",
+  hero_create: "Crie sua própria",
+  hero_description: "linguagem de programação",
   lexer_title: "Analisador Léxico",
   lexer_description:
     "O analisador léxico é a primeira etapa do processo de compilação, responsável por converter o código-fonte em uma sequência de tokens. Ele identifica palavras-chave, identificadores, literais e outros elementos do código, facilitando a análise sintática subsequente.",
