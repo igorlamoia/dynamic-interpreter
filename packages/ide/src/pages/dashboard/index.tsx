@@ -54,10 +54,7 @@ export default function Dashboard() {
       <div className="flex flex-1 overflow-hidden relative z-10">
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-y-auto w-full">
-          <main
-            data-tour="dashboard-main"
-            className="max-w-7xl mx-auto px-6 py-12 w-full"
-          >
+          <main className="max-w-7xl mx-auto px-6 py-12 w-full">
             {isCommunity ? (
               <CommunityDashboard />
             ) : (

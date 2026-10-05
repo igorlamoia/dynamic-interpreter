@@ -1,6 +1,8 @@
-import { Globe2, LockKeyhole } from "lucide-react";
+import { useRouter } from "next/router";
+import { Globe2, LockKeyhole, Plus } from "lucide-react";
 import type { LanguagePolicy } from "@/types/api";
 import { cn } from "@/lib/utils";
+import { t } from "@/i18n";
 
 const DEFAULT_LANGUAGE_IMAGE = "/images/language-default.png";
 
@@ -18,20 +20,20 @@ type LanguagePolicyFieldProps = {
 
 const policyOptions: Array<{
   policy: LanguagePolicy;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   icon: typeof Globe2;
 }> = [
   {
     policy: "OPEN",
-    title: "Aberto",
-    description: "O aluno usa sua propria linguagem",
+    titleKey: "ui.language_policy_open_title",
+    descriptionKey: "ui.language_policy_open_description",
     icon: Globe2,
   },
   {
     policy: "LOCKED",
-    title: "Travado",
-    description: "Todos resolvem com a linguagem escolhida",
+    titleKey: "ui.language_policy_locked_title",
+    descriptionKey: "ui.language_policy_locked_description",
     icon: LockKeyhole,
   },
 ];
@@ -42,6 +44,9 @@ export function LanguagePolicyField({
   languages,
   disabled = false,
 }: LanguagePolicyFieldProps) {
+  const router = useRouter();
+  const { locale } = router;
+
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -64,7 +69,7 @@ export function LanguagePolicyField({
             >
               <input
                 type="radio"
-                aria-label={option.policy === "OPEN" ? "Aberto" : "Travado"}
+                aria-label={t(locale, option.titleKey)}
                 checked={selected}
                 disabled={disabled}
                 onChange={() =>
@@ -91,10 +96,10 @@ export function LanguagePolicyField({
               </span>
               <span className="min-w-0 space-y-1">
                 <span className="block text-sm font-semibold text-foreground">
-                  {option.title}
+                  {t(locale, option.titleKey)}
                 </span>
                 <span className="block text-xs leading-5 text-muted-foreground">
-                  {option.description}
+                  {t(locale, option.descriptionKey)}
                 </span>
               </span>
             </label>
@@ -105,7 +110,7 @@ export function LanguagePolicyField({
       {value.policy === "LOCKED" && (
         <div className="space-y-3 rounded-md border border-primary/20 bg-primary/5 p-3 dark:border-primary/20 dark:bg-primary/10">
           <select
-            aria-label="Linguagem"
+            aria-label={t(locale, "ui.language")}
             className="sr-only"
             value={value.lockedLanguageId ?? ""}
             disabled={disabled}
@@ -118,7 +123,7 @@ export function LanguagePolicyField({
               })
             }
           >
-            <option value="">- selecione -</option>
+            <option value="">{t(locale, "ui.select_placeholder")}</option>
             {languages.map((lang) => (
               <option key={lang.id} value={lang.id}>
                 {lang.name}
@@ -162,7 +167,9 @@ export function LanguagePolicyField({
                         {language.name}
                       </span>
                       <span className="mt-0.5 block text-xs text-muted-foreground">
-                        {selected ? "Selecionada" : "Selecionar linguagem"}
+                        {selected
+                          ? t(locale, "ui.language_policy_selected")
+                          : t(locale, "ui.language_policy_select_language")}
                       </span>
                     </span>
                     <span
@@ -179,9 +186,23 @@ export function LanguagePolicyField({
             </div>
           ) : (
             <div className="rounded-md border border-dashed border-border bg-background/50 px-3 py-4 text-center text-sm text-muted-foreground dark:border-white/10 dark:bg-black/20">
-              Nenhuma linguagem disponivel
+              {t(locale, "ui.language_policy_no_languages")}
             </div>
           )}
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => void router.push("/language-creator")}
+            className={cn(
+              "inline-flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background/80 px-3 py-2 text-sm font-medium text-foreground transition",
+              "hover:border-primary/50 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/40",
+              "dark:border-white/10 dark:bg-black/25 dark:hover:bg-primary/10",
+              disabled && "cursor-not-allowed opacity-60",
+            )}
+          >
+            <Plus className="h-4 w-4" />
+            {t(locale, "ui.create_language")}
+          </button>
         </div>
       )}
     </div>

@@ -61,10 +61,14 @@ export function CreateExerciseModal({
   open,
   onOpenChange,
   onCreated,
+  defaultTestCasesOpen = false,
+  tutorialActive = false,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   onCreated?: () => void | Promise<void>;
+  defaultTestCasesOpen?: boolean;
+  tutorialActive?: boolean;
 }) {
   const { locale } = useRouter();
   const { showToast } = useToast();
@@ -136,7 +140,18 @@ export function CreateExerciseModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl backdrop-blur-3xl">
+      <DialogContent
+        className="max-w-3xl backdrop-blur-3xl"
+        onInteractOutside={(event) => {
+          if (tutorialActive) event.preventDefault();
+        }}
+        onPointerDownOutside={(event) => {
+          if (tutorialActive) event.preventDefault();
+        }}
+        onFocusOutside={(event) => {
+          if (tutorialActive) event.preventDefault();
+        }}
+      >
         <DialogHeader>
           <DialogTitle>{t(locale, "ui.exercises_create_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
@@ -198,7 +213,7 @@ export function CreateExerciseModal({
               control={form.control}
               name="languagePolicy"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-tour="exercise-language-policy">
                   <FormLabel>{t(locale, "ui.exercises_language_policy")}</FormLabel>
                   <FormControl>
                     <LanguagePolicyField
@@ -234,7 +249,13 @@ export function CreateExerciseModal({
               )}
             />
 
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue={defaultTestCasesOpen ? "test-cases" : undefined}
+              className="w-full"
+              data-tour="exercise-test-cases"
+            >
               <AccordionItem value="test-cases">
                 <AccordionTrigger>
                   <div className="flex w-full items-center justify-between pr-2">

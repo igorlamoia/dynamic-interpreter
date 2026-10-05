@@ -3,7 +3,6 @@ import { Maximize2, Minimize2, StepForward } from "lucide-react";
 import { useRouter } from "next/router";
 import { t } from "@/i18n";
 import { RainbowButton } from "@/components/ui/rainbow-button";
-import { markLanguageCreatorReturn } from "@/lib/language-creator-navigation";
 
 interface MenuProps {
   handleRun: () => void;
@@ -38,16 +37,6 @@ export function Menu({
           {t(locale, "ui.studio")}
         </span>
         <div className="hidden items-center gap-3 md:flex">
-          <button
-            data-tour="ide-create-language"
-            className="hover:text-foreground"
-            onClick={() => {
-              markLanguageCreatorReturn();
-              void router.push("/language-creator");
-            }}
-          >
-            {t(locale, "ui.create_language")}
-          </button>
           <button
             data-tour="ide-terminal-toggle"
             className="hover:text-foreground"

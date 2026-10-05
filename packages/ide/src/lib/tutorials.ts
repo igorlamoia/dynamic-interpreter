@@ -4,6 +4,7 @@ import { t } from "@/i18n";
 export type TutorialId =
   | "ide-basics"
   | "language-creator"
+  | "exercise-creator"
   | "teacher-dashboard"
   | "student-dashboard";
 
@@ -40,8 +41,8 @@ export function getTutorialDefinition(
         step(
           locale,
           "ide_create_language",
-          '[data-tour="ide-create-language"]',
-          "right",
+          '[data-tour="home-create-language"]',
+          "bottom",
         ),
         step(locale, "ide_explorer", '[data-tour="ide-explorer"]', "right"),
         step(locale, "ide_language", '[data-tour="ide-language"]', "right"),
@@ -83,16 +84,46 @@ export function getTutorialDefinition(
         step(locale, "language_footer", '[data-tour="language-footer"]', "top"),
       ],
     },
+    "exercise-creator": {
+      id: "exercise-creator",
+      titleKey: "ui.tutorial_exercise_launcher",
+      steps: [
+        step(
+          locale,
+          "exercise_language_policy",
+          '[data-tour="exercise-language-policy"]',
+          "bottom",
+        ),
+        step(
+          locale,
+          "exercise_test_cases",
+          '[data-tour="exercise-test-cases"]',
+          "top",
+        ),
+        step(
+          locale,
+          "exercise_stdin",
+          '[data-tour="exercise-test-case-stdin"]',
+          "left",
+        ),
+        step(
+          locale,
+          "exercise_add_stdin",
+          '[data-tour="exercise-add-stdin"]',
+          "left",
+        ),
+        step(
+          locale,
+          "exercise_expected_output",
+          '[data-tour="exercise-test-case-output"]',
+          "left",
+        ),
+      ],
+    },
     "teacher-dashboard": {
       id: "teacher-dashboard",
       titleKey: "ui.tutorial_teacher_launcher",
       steps: [
-        step(
-          locale,
-          "teacher_dashboard",
-          '[data-tour="dashboard-main"]',
-          "center",
-        ),
         step(locale, "teacher_sidebar", '[data-tour="app-sidebar"]', "right"),
         step(
           locale,
@@ -107,12 +138,6 @@ export function getTutorialDefinition(
       id: "student-dashboard",
       titleKey: "ui.tutorial_student_launcher",
       steps: [
-        step(
-          locale,
-          "student_dashboard",
-          '[data-tour="dashboard-main"]',
-          "center",
-        ),
         step(locale, "student_sidebar", '[data-tour="app-sidebar"]', "right"),
         step(locale, "student_classes", '[data-tour="classes-grid"]', "top"),
       ],

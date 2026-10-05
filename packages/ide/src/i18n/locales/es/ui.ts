@@ -50,6 +50,14 @@ const ui = {
   select_active_language: "Seleccionar lenguaje activo",
   language_selection: "Seleccion de lenguaje",
   create_language: "Crear lenguaje",
+  language_policy_open_title: "Abierto",
+  language_policy_open_description: "El alumno usa su propio lenguaje",
+  language_policy_locked_title: "Bloqueado",
+  language_policy_locked_description:
+    "Todos resuelven con el lenguaje seleccionado",
+  language_policy_selected: "Seleccionado",
+  language_policy_select_language: "Seleccionar lenguaje",
+  language_policy_no_languages: "No hay lenguajes disponibles",
   language_dna_typed: "tipado",
   language_dna_untyped: "no tipado",
   language_dna_delimited_blocks: "bloques con delimitadores",
@@ -98,13 +106,12 @@ const ui = {
     "No se puede mover una carpeta dentro de si misma.",
   explorer_folder_exists: "Ya existe una carpeta con ese nombre.",
   explorer_delete_file_title: "Eliminar archivo",
-  explorer_delete_file_description:
-    "Seguro que quieres eliminar \"{path}\"?",
+  explorer_delete_file_description: 'Seguro que quieres eliminar "{path}"?',
   explorer_delete_folder_title: "Eliminar carpeta",
   explorer_delete_folder_description:
-    "Seguro que quieres eliminar la carpeta \"{path}\"?",
+    'Seguro que quieres eliminar la carpeta "{path}"?',
   explorer_delete_folder_with_files_description:
-    "Seguro que quieres eliminar la carpeta \"{path}\" y {count} archivo(s) dentro?",
+    'Seguro que quieres eliminar la carpeta "{path}" y {count} archivo(s) dentro?',
   explorer_delete_confirm: "Eliminar",
   explorer_delete_cancel: "Cancelar",
   explorer_file_exists: "Este archivo ya existe.",
@@ -149,7 +156,8 @@ const ui = {
   debug_call_stack: "Pila de llamadas",
   debug_no_stack_frames: "Sin marcos de pila",
   hero_title: "Intérprete Dinámico",
-  hero_description: "Crea tu propio lenguaje de programación",
+  hero_create: "Crear tu propio",
+  hero_description: "lenguaje de programación",
   lexer_title: "Analizador Léxico",
   lexer_description:
     "El analizador léxico es el primer paso en el proceso de compilación, responsable de convertir el código fuente en una secuencia de tokens. Identifica palabras clave, identificadores, literales y otros elementos del código, facilitando el análisis sintáctico posterior.",
@@ -174,8 +182,7 @@ const ui = {
   login_forgot_password: "¿Olvidaste tu contraseña?",
   login_submit: "Entrar al panel",
   login_error_invalid_email: "Correo electrónico inválido",
-  login_error_password_min:
-    "La contraseña debe tener al menos 4 caracteres",
+  login_error_password_min: "La contraseña debe tener al menos 4 caracteres",
   login_error_missing_token: "La respuesta de inicio no incluyó un token",
   login_error_failed: "No se pudo iniciar sesión",
   register_title: "Crea tu cuenta",
@@ -231,8 +238,7 @@ const ui = {
   class_no_lists_title: "No hay listas publicadas",
   class_no_lists_teacher:
     "Publica una lista de ejercicios para esta clase en 'Mis listas'.",
-  class_no_lists_student:
-    "Tu profesor aun no publico listas para esta clase.",
+  class_no_lists_student: "Tu profesor aun no publico listas para esta clase.",
   class_exercise_count_singular: "{count} ejercicio",
   class_exercise_count_plural: "{count} ejercicios",
   class_minimum_count: "Minimo: {count}",
@@ -401,7 +407,7 @@ const ui = {
   exercises_delete_error: "Error al eliminar ejercicio.",
   exercises_search_placeholder: "Buscar ejercicios...",
   exercises_loading: "Cargando ejercicios...",
-  exercises_no_search_results: "Ningun resultado para \"{search}\"",
+  exercises_no_search_results: 'Ningun resultado para "{search}"',
   exercises_test_cases: "Casos de prueba",
   exercises_empty_title: "No se encontraron ejercicios",
   exercises_empty_description:
@@ -542,19 +548,19 @@ const ui = {
   languages_duplicate: "Duplicar",
   languages_delete_named: "Eliminar {name}",
   languages_load_error: "No fue posible cargar tus lenguajes.",
-  languages_set_active_success: "\"{name}\" ahora es tu lenguaje activo.",
+  languages_set_active_success: '"{name}" ahora es tu lenguaje activo.',
   languages_set_active_error: "No fue posible activar el lenguaje.",
-  languages_clone_success: "\"{name}\" duplicado como \"{cloneName}\".",
+  languages_clone_success: '"{name}" duplicado como "{cloneName}".',
   languages_clone_error: "No fue posible duplicar.",
-  languages_delete_confirm: "¿Eliminar el lenguaje \"{name}\"?",
-  languages_delete_success: "\"{name}\" eliminado.",
+  languages_delete_confirm: '¿Eliminar el lenguaje "{name}"?',
+  languages_delete_success: '"{name}" eliminado.',
   languages_delete_locked_error:
     "Este lenguaje está bloqueado en algún ejercicio y no puede eliminarse.",
   languages_delete_error: "No fue posible eliminar.",
   languages_publish_success:
-    "\"{name}\" ahora está en el acervo de la comunidad.",
+    '"{name}" ahora está en el acervo de la comunidad.',
   languages_unpublish_success:
-    "\"{name}\" se eliminó del acervo de la comunidad.",
+    '"{name}" se eliminó del acervo de la comunidad.',
   languages_publication_error:
     "No fue posible cambiar la publicación del lenguaje.",
   languages_default_config: "Configuración predeterminada",
@@ -585,7 +591,7 @@ const ui = {
   community_filter_terminator: "Terminador",
   community_filter_optional: "Opcional",
   community_filter_required: "Obligatorio",
-  community_import_success: "\"{name}\" se añadió a tus lenguajes.",
+  community_import_success: '"{name}" se añadió a tus lenguajes.',
   community_import_error: "No fue posible importar el lenguaje.",
   community_badge: "Acervo colaborativo",
   community_title_prefix: "Atlas de",
@@ -620,6 +626,7 @@ const ui = {
   community_import: "Importar",
   tutorial_ide_launcher: "Tutorial de la IDE",
   tutorial_language_launcher: "Tutorial del lenguaje",
+  tutorial_exercise_launcher: "Tutorial del ejercicio",
   tutorial_teacher_launcher: "Tutorial del profesor",
   tutorial_student_launcher: "Tutorial del alumno",
   tutorial_back: "AtrÃ¡s",
@@ -668,9 +675,21 @@ const ui = {
   tutorial_language_footer_title: "Navegar y guardar",
   tutorial_language_footer_body:
     "Avanza entre pasos, revisa el lenguaje y guÃ¡rdalo localmente o en tu cuenta cuando estÃ© listo.",
-  tutorial_teacher_dashboard_title: "Panel del profesor",
-  tutorial_teacher_dashboard_body:
-    "Esta Ã¡rea centraliza clases, ejercicios, listas, progreso de alumnos y correcciÃ³n.",
+  tutorial_exercise_language_policy_title: "Regla de lenguaje",
+  tutorial_exercise_language_policy_body:
+    "Deja el ejercicio abierto cuando los alumnos puedan resolverlo con su propio lenguaje activo, o bloquealo en un lenguaje guardado para que todos usen la misma sintaxis.",
+  tutorial_exercise_test_cases_title: "Casos de prueba",
+  tutorial_exercise_test_cases_body:
+    "Cada caso ejecuta el programa del alumno con un guion de stdin y compara stdout con la salida esperada.",
+  tutorial_exercise_stdin_title: "Lineas de stdin",
+  tutorial_exercise_stdin_body:
+    "Escribe cada entrada exactamente como el programa debe recibirla. Ejemplo: para un programa que lee nombre y edad, agrega Ana en la linea 1 y 20 en la linea 2.",
+  tutorial_exercise_add_stdin_title: "Anadir entrada stdin",
+  tutorial_exercise_add_stdin_body:
+    "Usa este boton cuando el caso necesita otro valor de lectura. Presionar Enter dentro de una linea de entrada tambien crea la siguiente linea de stdin.",
+  tutorial_exercise_expected_output_title: "Stdout esperado",
+  tutorial_exercise_expected_output_body:
+    "Escribe la salida exacta que la solucion correcta debe imprimir para este caso, incluyendo saltos de linea cuando la respuesta tenga varias lineas.",
   tutorial_teacher_sidebar_title: "NavegaciÃ³n del profesor",
   tutorial_teacher_sidebar_body:
     "Usa la barra lateral para alternar entre clases, ejercicios, listas, lenguajes y comunidad.",
@@ -680,9 +699,6 @@ const ui = {
   tutorial_teacher_classes_title: "Tarjetas de clases",
   tutorial_teacher_classes_body:
     "Abre una clase para gestionar miembros, listas publicadas, progreso y recursos del aula.",
-  tutorial_student_dashboard_title: "Panel del alumno",
-  tutorial_student_dashboard_body:
-    "Esta Ã¡rea muestra tus clases, listas publicadas y progreso de aprendizaje.",
   tutorial_student_sidebar_title: "NavegaciÃ³n del alumno",
   tutorial_student_sidebar_body:
     "Usa la barra lateral para acceder a clases, lenguajes personales y lenguajes de la comunidad.",

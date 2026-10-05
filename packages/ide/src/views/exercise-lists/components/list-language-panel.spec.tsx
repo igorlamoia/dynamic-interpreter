@@ -36,6 +36,7 @@ vi.mock("lucide-react", () => ({
   LockKeyhole: () => <span>lock-keyhole</span>,
   Unlock: () => <span>unlock</span>,
   LoaderCircle: () => <span>loader</span>,
+  Plus: () => <span>plus</span>,
 }));
 
 const LANG = { id: 3, name: "Portugolzinho" };
@@ -74,6 +75,22 @@ function click(element: Element | null | undefined) {
   act(() => {
     element?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
+}
+
+function clickLockedPolicy(container: Element) {
+  const lockedRadio = container.querySelector<HTMLInputElement>(
+    'input[aria-label="Travada"]',
+  );
+  act(() => {
+    lockedRadio?.click();
+  });
+}
+
+function clickLanguageCard(container: Element, languageName: string) {
+  const languageButton = Array.from(
+    container.querySelectorAll<HTMLButtonElement>("button"),
+  ).find((button) => button.textContent?.includes(languageName));
+  click(languageButton);
 }
 
 describe("ListLanguagePanel", () => {
@@ -128,30 +145,20 @@ describe("ListLanguagePanel", () => {
     expect(container.textContent).toContain("2 turmas");
   });
 
-  it("salva a linguagem escolhida via PATCH", () => {
+  it("salva a linguagem escolhida via PATCH", async () => {
     const { container } = render(buildList());
 
     click(container.querySelector('button[aria-label="Alterar linguagem"]'));
 
-    const lockedRadio = container.querySelector<HTMLInputElement>(
-      'input[aria-label="Travado"]',
-    );
-    act(() => {
-      lockedRadio?.click();
-    });
+    clickLockedPolicy(container);
+    clickLanguageCard(container, "Portugolzinho");
 
-    const select = container.querySelector<HTMLSelectElement>(
-      'select[aria-label="Linguagem"]',
-    );
-    act(() => {
-      Object.getOwnPropertyDescriptor(
-        window.HTMLSelectElement.prototype,
-        "value",
-      )?.set?.call(select, "3");
-      select?.dispatchEvent(new Event("change", { bubbles: true }));
+    await act(async () => {
+      container
+        .querySelector('button[aria-label="Salvar linguagem"]')
+        ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      await Promise.resolve();
     });
-
-    click(container.querySelector('button[aria-label="Salvar linguagem"]'));
 
     expect(mutateAsyncMock).toHaveBeenCalledWith({
       listId: 7,
@@ -164,12 +171,7 @@ describe("ListLanguagePanel", () => {
     const { container } = render(buildList());
 
     click(container.querySelector('button[aria-label="Alterar linguagem"]'));
-    const lockedRadio = container.querySelector<HTMLInputElement>(
-      'input[aria-label="Travado"]',
-    );
-    act(() => {
-      lockedRadio?.click();
-    });
+    clickLockedPolicy(container);
     click(container.querySelector('button[aria-label="Salvar linguagem"]'));
 
     expect(mutateAsyncMock).not.toHaveBeenCalled();

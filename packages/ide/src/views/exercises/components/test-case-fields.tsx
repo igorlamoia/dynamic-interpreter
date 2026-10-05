@@ -54,6 +54,7 @@ export function TestCaseFields({
       {fields.map((field, idx) => (
         <div
           key={field.id}
+          data-tour={idx === 0 ? "exercise-test-case" : undefined}
           className="p-3 bg-muted/60 dark:bg-black/20 rounded-lg border border-border dark:border-white/5 space-y-2"
         >
           <div className="flex items-center gap-2 mb-1">
@@ -80,7 +81,11 @@ export function TestCaseFields({
               control={control}
               name={`testCases.${idx}.input`}
               render={({ field: caseField }) => (
-                <FormItem>
+                <FormItem
+                  data-tour={
+                    idx === 0 ? "exercise-test-case-stdin" : undefined
+                  }
+                >
                   <FormLabel className="text-xs normal-case tracking-normal text-muted-foreground">
                     {t(locale, "ui.dashboard_test_case_input_label")}
                   </FormLabel>
@@ -141,6 +146,7 @@ export function TestCaseFields({
                     <HeroButton
                       type="button"
                       variant="outline"
+                      data-tour={idx === 0 ? "exercise-add-stdin" : undefined}
                       onClick={() =>
                         caseField.onChange(`${caseField.value ?? ""}\n`)
                       }
@@ -157,7 +163,11 @@ export function TestCaseFields({
               control={control}
               name={`testCases.${idx}.expectedOutput`}
               render={({ field: caseField }) => (
-                <FormItem>
+                <FormItem
+                  data-tour={
+                    idx === 0 ? "exercise-test-case-output" : undefined
+                  }
+                >
                   <FormLabel className="text-xs normal-case tracking-normal text-muted-foreground">
                     {t(locale, "ui.dashboard_test_case_output_label")}
                   </FormLabel>

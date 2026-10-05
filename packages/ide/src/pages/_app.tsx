@@ -23,10 +23,13 @@ type AppPropsWithAuth = AppProps & {
 };
 
 export default function App({ Component, pageProps }: AppPropsWithAuth) {
+  const router = useRouter();
+  const showCustomPointer = router.pathname.startsWith("/language-creator");
+
   return (
     <AppQueryClientProvider>
       <ThemeProvider>
-        <Pointer />
+        {showCustomPointer && <Pointer />}
         <AuthLayout>
           <AlertProvider>
             <ToastProvider>
