@@ -42,8 +42,15 @@ function getStatementTerminator(
   return customization.statementTerminatorLexeme.trim() || ";";
 }
 
+function isWordLikeTerminator(terminator: string): boolean {
+  return /^[\p{L}_][\p{L}\p{N}_]*$/u.test(terminator);
+}
+
 function endStatement(statement: string, terminator: string): string {
-  return `${statement}${terminator}`;
+  if (!terminator) return statement;
+
+  const separator = isWordLikeTerminator(terminator) ? " " : "";
+  return `${statement}${separator}${terminator}`;
 }
 
 function getLessEqualOperator(

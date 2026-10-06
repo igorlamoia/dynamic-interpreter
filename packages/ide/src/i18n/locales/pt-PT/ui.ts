@@ -1,4 +1,57 @@
 const ui = {
+  about_meta_title: "Sobre o projeto | Interpretador Dinâmico",
+  about_meta_description:
+    "Conheça o TCC de Victor Vilela e Igor Lamoia: uma plataforma web com IDE e interpretador dinâmico para apoio ao ensino introdutório de programação.",
+  about_badge: "Trabalho de Conclusão de Curso",
+  about_title: "Interpretador Dinâmico com IDE Web",
+  about_intro:
+    "Este projeto é uma plataforma de apoio ao ensino introdutório de programação. Ele integra uma IDE web a um núcleo configurável de tradução, análise e execução, permitindo que alunos programem no navegador e que professores organizem linguagens, turmas, atividades e submissões.",
+  about_authors_label: "Autores",
+  about_authors_value: "Victor Vilela e Igor Lamoia",
+  about_area_label: "Área",
+  about_area_value: "Ensino de programação",
+  about_highlight_ide_title: "IDE no navegador",
+  about_highlight_ide_description:
+    "Permite editar, executar, inspecionar e depurar programas diretamente pela interface web.",
+  about_highlight_languages_title: "Linguagens configuráveis",
+  about_highlight_languages_description:
+    "Aplica o vocabulário e as variantes selecionadas pelo utilizador a cada análise do código.",
+  about_highlight_flows_title: "Fluxos educacionais",
+  about_highlight_flows_description:
+    "Apoia turmas, atividades, submissões e acompanhamento por professores e alunos.",
+  about_highlight_checks_title: "Verificações técnicas",
+  about_highlight_checks_description:
+    "Inclui testes automatizados e verificações delimitadas de responsividade, navegação por teclado e acessibilidade.",
+  about_tcc_badge: "Sobre o TCC",
+  about_tcc_title: "Um artefacto para experimentar linguagens didáticas",
+  about_tcc_paragraph_1:
+    "O qualificativo dinâmico refere-se à aplicação, em cada análise, do vocabulário e das variantes de linguagem escolhidas pelo utilizador entre as possibilidades implementadas. Assim, a mesma base de execução pode apoiar diferentes formas de apresentar conceitos iniciais de programação.",
+  about_tcc_paragraph_2:
+    "O desenvolvimento combina revisão bibliográfica, especificação de requisitos, modelação da arquitetura, implementação incremental e testes automatizados. A interface concentra-se na experiência do utilizador, no assistente de personalização e nos fluxos educacionais usados por professores e estudantes.",
+  about_tcc_paragraph_3:
+    "Os resultados apresentados descrevem o artefacto e as verificações realizadas. Eles não demonstram, por si só, redução de carga cognitiva, melhoria de aprendizagem ou conformidade integral de acessibilidade. A aplicação de um protocolo com estudantes e a correção das limitações identificadas são encaminhamentos futuros.",
+  about_gallery_badge: "Capturas da plataforma",
+  about_gallery_title: "Da análise do código à gestão das atividades",
+  about_gallery_ide_alt: "Tela principal da IDE web",
+  about_gallery_ide_title: "Ambiente integrado",
+  about_gallery_ide_description:
+    "Editor, execução e painéis de apoio aparecem numa mesma experiência de trabalho.",
+  about_gallery_tokens_alt: "Painel de tokens da análise",
+  about_gallery_tokens_title: "Inspeção de análise",
+  about_gallery_tokens_description:
+    "A plataforma expõe informações intermediárias para apoiar a compreensão do programa.",
+  about_gallery_language_alt: "Assistente de criação de linguagem personalizada",
+  about_gallery_language_title: "Assistente de personalização",
+  about_gallery_language_description:
+    "Professores e utilizadores podem configurar vocabulário e variantes de linguagem.",
+  about_gallery_teacher_alt: "Painel do professor",
+  about_gallery_teacher_title: "Painel do professor",
+  about_gallery_teacher_description:
+    "A administração de turmas e atividades fica integrada ao ambiente de programação.",
+  about_gallery_exercise_alt: "Tela de resolução de exercício",
+  about_gallery_exercise_title: "Resolução de atividades",
+  about_gallery_exercise_description:
+    "Alunos resolvem exercícios e enviam submissões dentro da própria IDE.",
   run_all: "Executar",
   run_lexer: "Executar analise lexica",
   studio: "Estudio",

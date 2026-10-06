@@ -100,13 +100,24 @@ function countToThree():
     const sample = buildHelloWorldSample(customization);
 
     expect(sample).toContain("inteiro main() inicio");
-    expect(sample).toContain("texto name = \"\"fim");
-    expect(sample).toContain("leia(texto, name)fim");
+    expect(sample).toContain("texto name = \"\" fim");
+    expect(sample).toContain("leia(texto, name) fim");
     expect(sample).toContain(
       "enquanto (count menor_ou_igual 3) inicio",
     );
-    expect(sample).toContain("retornefim");
+    expect(sample).toContain("retorne fim");
     expect(sample.endsWith("fecha")).toBe(true);
+  });
+
+  it("keeps symbolic terminators attached to statements", () => {
+    const sample = buildHelloWorldSample(
+      createCustomization({
+        statementTerminatorLexeme: "@@",
+      }),
+    );
+
+    expect(sample).toContain('string name = ""@@');
+    expect(sample).toContain("return 0@@");
   });
 
   it("uses localized prompt text and identifiers", () => {

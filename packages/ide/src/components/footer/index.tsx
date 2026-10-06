@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { FileCodeIcon, HelpCircle, MonitorIcon } from "lucide-react";
+import { FileCodeIcon, HelpCircle, Info, MonitorIcon } from "lucide-react";
 import { useRouter } from "next/router";
 
 import { cn } from "@/lib/utils";
@@ -80,6 +80,27 @@ export function Footer({
             direction="middle"
             className="pointer-events-auto bg-white/90 dark:bg-neutral-900/30 border-neutral-200 dark:border-neutral-700 backdrop-blur-sm"
           >
+            <DockIcon>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/about"
+                    aria-label={t(router.locale, "footer.about")}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full cursor-pointer",
+                      router.pathname === "/about" &&
+                        "bg-black/5 text-slate-950 dark:bg-white/10 dark:text-white",
+                    )}
+                  >
+                    <Info className="size-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t(router.locale, "footer.about")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </DockIcon>
             {Object.entries(DATA.contact.social).map(([name, social]) => (
               <DockIcon key={name}>
                 <Tooltip>

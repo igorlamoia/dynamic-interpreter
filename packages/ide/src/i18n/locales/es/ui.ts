@@ -1,4 +1,57 @@
 const ui = {
+  about_meta_title: "Sobre el proyecto | Intérprete Dinámico",
+  about_meta_description:
+    "Conoce el TCC de Victor Vilela e Igor Lamoia: una plataforma web con IDE e intérprete dinámico para apoyar la enseñanza introductoria de programación.",
+  about_badge: "Trabajo de Conclusión de Curso",
+  about_title: "Intérprete Dinámico con IDE Web",
+  about_intro:
+    "Este proyecto es una plataforma de apoyo a la enseñanza introductoria de programación. Integra una IDE web con un núcleo configurable de traducción, análisis y ejecución, permitiendo que los estudiantes programen en el navegador y que los docentes organicen lenguajes, clases, actividades y entregas.",
+  about_authors_label: "Autores",
+  about_authors_value: "Victor Vilela e Igor Lamoia",
+  about_area_label: "Área",
+  about_area_value: "Enseñanza de programación",
+  about_highlight_ide_title: "IDE en el navegador",
+  about_highlight_ide_description:
+    "Permite editar, ejecutar, inspeccionar y depurar programas directamente desde la interfaz web.",
+  about_highlight_languages_title: "Lenguajes configurables",
+  about_highlight_languages_description:
+    "Aplica el vocabulario y las variantes seleccionadas por el usuario en cada análisis del código.",
+  about_highlight_flows_title: "Flujos educativos",
+  about_highlight_flows_description:
+    "Apoya clases, actividades, entregas y seguimiento por parte de docentes y estudiantes.",
+  about_highlight_checks_title: "Verificaciones técnicas",
+  about_highlight_checks_description:
+    "Incluye pruebas automatizadas y verificaciones delimitadas de responsividad, navegación por teclado y accesibilidad.",
+  about_tcc_badge: "Sobre el TCC",
+  about_tcc_title: "Un artefacto para experimentar con lenguajes didácticos",
+  about_tcc_paragraph_1:
+    "El calificativo dinámico se refiere a la aplicación, en cada análisis, del vocabulario y de las variantes de lenguaje elegidas por el usuario entre las posibilidades implementadas. Así, la misma base de ejecución puede apoyar distintas formas de presentar conceptos iniciales de programación.",
+  about_tcc_paragraph_2:
+    "El desarrollo combina revisión bibliográfica, especificación de requisitos, modelado de la arquitectura, implementación incremental y pruebas automatizadas. La interfaz se concentra en la experiencia del usuario, el asistente de personalización y los flujos educativos usados por docentes y estudiantes.",
+  about_tcc_paragraph_3:
+    "Los resultados presentados describen el artefacto y las verificaciones realizadas. Por sí solos, no demuestran reducción de carga cognitiva, mejora del aprendizaje ni conformidad integral de accesibilidad. La aplicación de un protocolo con estudiantes y la corrección de las limitaciones identificadas son trabajos futuros.",
+  about_gallery_badge: "Capturas de la plataforma",
+  about_gallery_title: "Del análisis del código a la gestión de actividades",
+  about_gallery_ide_alt: "Pantalla principal de la IDE web",
+  about_gallery_ide_title: "Ambiente integrado",
+  about_gallery_ide_description:
+    "Editor, ejecución y paneles de apoyo aparecen en una misma experiencia de trabajo.",
+  about_gallery_tokens_alt: "Panel de tokens del análisis",
+  about_gallery_tokens_title: "Inspección del análisis",
+  about_gallery_tokens_description:
+    "La plataforma expone información intermedia para apoyar la comprensión del programa.",
+  about_gallery_language_alt: "Asistente de creación de lenguaje personalizado",
+  about_gallery_language_title: "Asistente de personalización",
+  about_gallery_language_description:
+    "Docentes y usuarios pueden configurar vocabulario y variantes de lenguaje.",
+  about_gallery_teacher_alt: "Panel del docente",
+  about_gallery_teacher_title: "Panel del docente",
+  about_gallery_teacher_description:
+    "La administración de clases y actividades queda integrada al ambiente de programación.",
+  about_gallery_exercise_alt: "Pantalla de resolución de ejercicio",
+  about_gallery_exercise_title: "Resolución de actividades",
+  about_gallery_exercise_description:
+    "Los estudiantes resuelven ejercicios y envían entregas dentro de la propia IDE.",
   studio: "Estudio",
   edit: "Editar",
   terminal: "Terminal",

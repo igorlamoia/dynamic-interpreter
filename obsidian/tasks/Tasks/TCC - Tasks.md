@@ -31,6 +31,8 @@
 - [x] No debug, o imprime (print), quebra linha automaticamente, não deveria, até porque que executando normal isso não acontece
 - [x] nome conflitando com exemplo por nome ser reservado
 - [ ] ter multiplas formas de cadastrar turma, lista, exercícios
+- [ ] Ajustar as linguagens dentro do exercício para não se perder em qual é a atual da ide
+	- [ ] Dentro do exercício tem q ter a opção para ver a opção original já submetida e substituir a IDE por ela
 
 Particles:
 https://particles.js.org/samples/index.html#amongUs
