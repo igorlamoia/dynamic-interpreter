@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
@@ -124,35 +123,32 @@ export function Footer({
                 </Tooltip>
               </DockIcon>
             ))}
-            {currentTutorial && (
-              <>
-                <Separator orientation="vertical" className="h-full" />
-                <DockIcon>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        type="button"
-                        aria-label={t(router.locale, currentTutorial.titleKey)}
-                        onClick={() => {
-                          onBeforeStartTutorial?.(currentTutorial.id);
-                          startTutorial(currentTutorial.id);
-                        }}
-                        className={cn(
-                          buttonVariants({ variant: "ghost", size: "icon" }),
-                          "size-12 rounded-full cursor-pointer",
-                        )}
-                      >
-                        <HelpCircle className="size-5" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{t(router.locale, currentTutorial.titleKey)}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </DockIcon>
-              </>
-            )}
           </Dock>
+          {currentTutorial && (
+            <div className="pointer-events-auto absolute bottom-0 right-4">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label={t(router.locale, currentTutorial.titleKey)}
+                    onClick={() => {
+                      onBeforeStartTutorial?.(currentTutorial.id);
+                      startTutorial(currentTutorial.id);
+                    }}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full cursor-pointer border border-neutral-200 bg-white/90 text-slate-700 shadow-lg backdrop-blur-sm transition duration-200 ease-out hover:scale-110 hover:bg-white hover:text-slate-950 hover:shadow-xl active:scale-95 dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-slate-200 dark:hover:bg-neutral-900 dark:hover:text-white",
+                    )}
+                  >
+                    <HelpCircle className="size-5" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p>{t(router.locale, currentTutorial.titleKey)}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          )}
         </TooltipProvider>
       </footer>
     </>

@@ -127,7 +127,7 @@ export default function AboutPage() {
                 width={1200}
                 height={720}
                 priority
-                className="h-auto w-full object-cover"
+                className="h-auto w-full object-cover transition duration-300 ease-out hover:scale-105"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function AboutPage() {
               {gallery.map((item) => (
                 <article
                   key={item.src}
-                  className="overflow-hidden rounded-lg border border-white/10 bg-white/5"
+                  className="group overflow-hidden rounded-lg border border-white/10 bg-white/5"
                 >
                   <div className="relative aspect-[16/10]">
                     <Image
@@ -196,7 +196,7 @@ export default function AboutPage() {
                       alt={t(locale, item.altKey)}
                       fill
                       sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      className="object-cover"
+                      className="object-cover transition duration-300 ease-out group-hover:scale-105"
                     />
                   </div>
                   <div className="p-5">
