@@ -3,6 +3,8 @@ import { Token } from "../../token";
 import { TokenIterator, ValueType } from "../../token/TokenIterator";
 import { exprStmt } from "./exprStmt";
 import { assertTypedAssignableIdentifier } from "./typedIdentifier";
+import { TArithmetics } from "../../interpreter/constants";
+import { emitUpdate, isUpdateOperator } from "./updateOperator";
 
 export type AssignmentTarget =
   | {
@@ -25,36 +27,16 @@ export type AssignmentTarget =
  * @derivation `<atrib> -> 'IDENT' '=' <expr> | 'IDENT' '+=' <expr> | 'IDENT' '-=' <expr> | 'IDENT' '\*=' <expr> | 'IDENT' '/=' <expr> | 'IDENT' '%=' <expr>`
  */
 export function attributeStmt(iterator: TokenIterator): void {
-  const { plus } = TOKENS.ARITHMETICS;
-
-  // Prefix increment statement: ++identifier
-  if (iterator.peek().type === plus && iterator.peek().lexeme === "++") {
-    const operatorToken = iterator.consume(plus, "++");
+  if (isUpdateOperator(iterator.peek())) {
+    const operatorToken = iterator.consume(iterator.peek().type);
     const identifier = iterator.consume(TOKENS.LITERALS.identifier);
-    assertTypedAssignableIdentifier(iterator, identifier);
-    const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emitFromToken(
-      "+",
-      incremented,
-      identifier.lexeme,
-      "1",
-      operatorToken,
-    );
-    iterator.registerTemp(incremented, iterator.resolveSymbol(identifier.lexeme));
-    iterator.emitter.emitFromToken(
-      "=",
-      identifier.lexeme,
-      incremented,
-      null,
-      identifier,
-    );
+    emitUpdate(iterator, identifier, operatorToken);
     return;
   }
 
   const target = parseAssignmentTarget(iterator);
 
-  // Postfix increment statement: identifier++
-  if (iterator.peek().type === plus && iterator.peek().lexeme === "++") {
+  if (isUpdateOperator(iterator.peek())) {
     if (target.kind !== "scalar") {
       iterator.throwError(
         "grammar.invalid_assignment_operator",
@@ -63,23 +45,8 @@ export function attributeStmt(iterator: TokenIterator): void {
         { lexeme: target.name, line: target.token.line, column: target.token.column },
       );
     }
-    const operatorToken = iterator.consume(plus, "++");
-    const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emitFromToken(
-      "+",
-      incremented,
-      target.name,
-      "1",
-      operatorToken,
-    );
-    iterator.registerTemp(incremented, iterator.resolveSymbol(target.name));
-    iterator.emitter.emitFromToken(
-      "=",
-      target.name,
-      incremented,
-      null,
-      target.token,
-    );
+    const operatorToken = iterator.consume(iterator.peek().type);
+    emitUpdate(iterator, target.token, operatorToken);
     return;
   }
 
@@ -119,6 +86,31 @@ export function emitAssignmentChain(
   }
 
   const value = exprStmt(iterator);
+
+  if (firstAssignmentType !== equal) {
+    const target = targets[0];
+    const targetDescriptor = iterator.resolveSymbolDescriptor(target.name);
+    if (iterator.getTypingMode() === "typed" && targetDescriptor.kind === "scalar" && targetDescriptor.type === "unknown") {
+      const targetToken = target.token ?? value.token;
+      iterator.throwError(
+        "grammar.unexpected_statement",
+        targetToken.line,
+        targetToken.column,
+        { lexeme: target.name },
+      );
+    }
+
+    const targetType = iterator.resolveSymbol(target.name);
+    const temp = iterator.emitter.newTemp();
+    const op = assignmentTypeToArithmeticOperator(firstAssignmentType);
+    iterator.emitter.emitFromToken(op, temp, target.name, value.place, target.token);
+    const resultType = iterator.mergeArithmeticTypes(targetType, value.type);
+    iterator.registerTemp(temp, resultType);
+    iterator.warnIfLossyIntConversion(targetType, resultType, value.token);
+    iterator.emitter.emitFromToken("=", target.name, temp, null, target.token);
+    return;
+  }
+
   let currentValue = value;
 
   for (let i = targets.length - 1; i >= 0; i--) {
@@ -234,6 +226,33 @@ export function emitAssignment(
   }
 
   const value = exprStmt(iterator);
+  if (firstAssignmentType !== TOKENS.ASSIGNMENTS.equal) {
+    const current = iterator.emitter.newTemp();
+    iterator.emitter.emitFromToken(
+      "ARRAY_GET" as never,
+      current,
+      target.name,
+      target.indexes,
+      target.token,
+    );
+    iterator.registerTemp(current, target.type);
+
+    const result = iterator.emitter.newTemp();
+    const op = assignmentTypeToArithmeticOperator(firstAssignmentType);
+    iterator.emitter.emitFromToken(op, result, current, value.place, target.token);
+    const resultType = iterator.mergeArithmeticTypes(target.type, value.type);
+    iterator.registerTemp(result, resultType);
+    emitAssignmentFromValue(
+      iterator,
+      target,
+      result,
+      resultType,
+      value.token,
+      target.token,
+    );
+    return;
+  }
+
   emitAssignmentFromValue(
     iterator,
     target,
@@ -242,6 +261,23 @@ export function emitAssignment(
     value.token,
     target.token,
   );
+}
+
+function assignmentTypeToArithmeticOperator(assignmentType: number): TArithmetics {
+  switch (assignmentType) {
+    case TOKENS.ASSIGNMENTS.plus_equal:
+      return "+";
+    case TOKENS.ASSIGNMENTS.minus_equal:
+      return "-";
+    case TOKENS.ASSIGNMENTS.star_equal:
+      return "*";
+    case TOKENS.ASSIGNMENTS.slash_equal:
+      return "/";
+    case TOKENS.ASSIGNMENTS.modulo_equal:
+      return "%";
+    default:
+      throw new Error(`Unsupported compound assignment token: ${assignmentType}`);
+  }
 }
 
 export function emitAssignmentFromValue(

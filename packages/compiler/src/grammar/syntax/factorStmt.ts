@@ -3,6 +3,7 @@ import { TOKENS } from "../../token/constants";
 import { exprStmt } from "./exprStmt";
 import { functionCallExpr } from "./functionCallExpr";
 import { assertTypedAssignableIdentifier } from "./typedIdentifier";
+import { isUpdateOperator, updateOperatorToArithmetic } from "./updateOperator";
 
 /**
  * Parses a factor: literals, identifiers, function calls, or parenthesized expressions.
@@ -27,15 +28,11 @@ export function factorStmt(iterator: TokenIterator): ExprResult {
       return parseArrayAccess(iterator, identifier);
     }
 
-    // Postfix increment: identifier++
-    if (
-      iterator.peek().type === TOKENS.ARITHMETICS.plus &&
-      iterator.peek().lexeme === "++"
-    ) {
-      const operatorToken = iterator.consume(TOKENS.ARITHMETICS.plus, "++");
+    if (isUpdateOperator(iterator.peek())) {
+      const operatorToken = iterator.consume(iterator.peek().type);
       assertTypedAssignableIdentifier(iterator, identifier);
       const previous = iterator.emitter.newTemp();
-      const incremented = iterator.emitter.newTemp();
+      const updated = iterator.emitter.newTemp();
       iterator.emitter.emitFromToken(
         "=",
         previous,
@@ -44,8 +41,8 @@ export function factorStmt(iterator: TokenIterator): ExprResult {
         identifier,
       );
       iterator.emitter.emitFromToken(
-        "+",
-        incremented,
+        updateOperatorToArithmetic(operatorToken),
+        updated,
         identifier.lexeme,
         "1",
         operatorToken,
@@ -53,13 +50,13 @@ export function factorStmt(iterator: TokenIterator): ExprResult {
       iterator.emitter.emitFromToken(
         "=",
         identifier.lexeme,
-        incremented,
+        updated,
         null,
         identifier,
       );
       const type = iterator.resolveSymbol(identifier.lexeme);
       iterator.registerTemp(previous, type);
-      iterator.registerTemp(incremented, type);
+      iterator.registerTemp(updated, type);
       return iterator.createExprResult(previous, type, identifier);
     }
 

@@ -1,5 +1,23 @@
 import { formatDate } from "@/utils/format";
+import { RotateCcw } from "lucide-react";
 import Link from "next/link";
+
+type HeaderSubmission = {
+  codeSnapshot?: string | null;
+  score?: number | null;
+};
+
+type HeaderExercise = {
+  title: string;
+  class?: {
+    name?: string | null;
+  } | null;
+};
+
+type HeaderList = {
+  id: string | number;
+  title: string;
+};
 
 export function Header({
   handleSubmit,
@@ -13,19 +31,23 @@ export function Header({
   deadlineStr,
   isOverdue,
   validateSubmission,
+  onRestoreLastSubmission,
 }: {
   handleSubmit: () => void;
   submitted: boolean;
   isAlreadySubmitted: boolean;
-  lastSubmission: any;
-  exercise: any;
-  list: any;
+  lastSubmission?: HeaderSubmission | null;
+  exercise: HeaderExercise;
+  list?: HeaderList | null;
   classId: string | undefined;
   error: string;
   deadlineStr: string | undefined;
   isOverdue: boolean;
-  validateSubmission: any;
+  validateSubmission: { isPending: boolean };
+  onRestoreLastSubmission?: () => void;
 }) {
+  const canRestoreLastSubmission = Boolean(lastSubmission?.codeSnapshot);
+
   return (
     <header className="relative z-10 flex justify-between items-center px-6 py-3 bg-background/90 backdrop-blur-md border-b border-border dark:border-white/5">
       <div className="flex items-center gap-4">
@@ -76,6 +98,17 @@ export function Header({
               </span>
             )}
           </div>
+        )}
+        {canRestoreLastSubmission && (
+          <button
+            type="button"
+            onClick={onRestoreLastSubmission}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background/70 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted/80 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
+            title="Substituir o código atual pela última submissão"
+          >
+            <RotateCcw className="size-4" />
+            Última submissão
+          </button>
         )}
         {isOverdue ? (
           <div className="px-4 py-2 rounded-xl text-xs font-semibold text-muted-foreground bg-muted/70 dark:bg-white/5 border border-border dark:border-white/10 cursor-not-allowed">

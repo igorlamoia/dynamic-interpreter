@@ -1,7 +1,9 @@
 import { useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { EditorContext, EditorProvider } from "@/contexts/editor/EditorContext";
 import { KeywordProvider, useKeywords } from "@/contexts/keyword/KeywordContext";
+import type { ExternalLanguageOverlay } from "@/contexts/keyword/types";
 import { TerminalProvider } from "@/contexts/TerminalContext";
+import { useToast } from "@/contexts/ToastContext";
 import { IDE } from "@/views/ide";
 import { submissionSnapshotToCustomization } from "@/lib/submission-language-snapshot";
 import type {
@@ -12,6 +14,7 @@ import type { TestCase } from "@/types/api";
 import { TestCaseResults } from "@/components/test-case-results";
 import { t } from "@/i18n";
 import { useRouter } from "next/router";
+import { RotateCcw } from "lucide-react";
 
 function SubmissionLanguageBridge({
   languageSnapshot,
@@ -60,6 +63,37 @@ function SubmissionCodeBridge({
   }, [codeSnapshot, updateSourceCode]);
 
   return <>{children}</>;
+}
+
+function RestoreSubmittedCodeButton({
+  codeSnapshot,
+}: {
+  codeSnapshot: string | undefined;
+}) {
+  const { updateSourceCode } = useContext(EditorContext);
+  const { showToast } = useToast();
+
+  if (codeSnapshot === undefined) return null;
+
+  return (
+    <div className="flex justify-end">
+      <button
+        type="button"
+        onClick={() => {
+          updateSourceCode(codeSnapshot);
+          showToast({
+            type: "success",
+            message: "Código restaurado da submissão do estudante.",
+          });
+        }}
+        className="inline-flex items-center gap-2 rounded-xl border border-border bg-background/80 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted/80 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
+        title="Substituir o código atual pelo código enviado pelo estudante"
+      >
+        <RotateCcw className="size-4" />
+        Restaurar código enviado
+      </button>
+    </div>
+  );
 }
 
 export function SubmissionExerciseInfoPanel({
@@ -150,6 +184,16 @@ export function SubmissionIdePanel({
     ? `submission-${submissionId}-grading`
     : "submission-grading";
   const passed = submissionTestCaseResults.filter((item) => item.passed).length;
+  const initialLanguageOverlay = useMemo<ExternalLanguageOverlay>(
+    () => ({
+      id: -1,
+      name: "Submission snapshot",
+      description: "",
+      imageUrl: "",
+      customization: submissionSnapshotToCustomization(languageSnapshot),
+    }),
+    [languageSnapshot],
+  );
 
   return (
     <div className="relative z-10 space-y-4">
@@ -168,10 +212,11 @@ export function SubmissionIdePanel({
         storageScope={storageScope}
         initialCode={codeSnapshot}
       >
-        <KeywordProvider>
+        <KeywordProvider initialExternalLanguageOverlay={initialLanguageOverlay}>
           <TerminalProvider>
             <SubmissionCodeBridge codeSnapshot={codeSnapshot}>
               <SubmissionLanguageBridge languageSnapshot={languageSnapshot}>
+                <RestoreSubmittedCodeButton codeSnapshot={codeSnapshot} />
                 <IDE
                   className="w-full"
                   showAnalysisPanels={false}

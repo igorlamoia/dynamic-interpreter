@@ -1301,7 +1301,7 @@ const grammarGraphNodes = [
   { id: "starEqual", label: "'*='", kind: "terminal", group: "tokens" },
   { id: "slashEqual", label: "'/='", kind: "terminal", group: "tokens" },
   { id: "moduloEqual", label: "'%='", kind: "terminal", group: "tokens" },
-  { id: "incrementOp", label: "'++'", kind: "terminal", group: "tokens" },
+  { id: "incrementOp", label: "'++' | '--'", kind: "terminal", group: "tokens" },
   { id: "logicalOr", label: "'||'", kind: "terminal", group: "tokens" },
   { id: "logicalAnd", label: "'&&'", kind: "terminal", group: "tokens" },
   { id: "logicalNot", label: "'!'", kind: "terminal", group: "tokens" },

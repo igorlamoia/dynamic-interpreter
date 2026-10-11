@@ -191,6 +191,57 @@ describe("keyword context lexer config", () => {
     });
   });
 
+  it("uses an initial external language overlay before hydration", () => {
+    const lockedCustomization = getDefaultCustomizationState();
+    lockedCustomization.mappings = lockedCustomization.mappings.map((mapping) =>
+      mapping.original === "print"
+        ? { ...mapping, custom: "mostre" }
+        : mapping,
+    );
+
+    localStorage.setItem(
+      "keyword-customization",
+      JSON.stringify(getDefaultCustomizationState()),
+    );
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        React.createElement(
+          KeywordProvider,
+          {
+            initialExternalLanguageOverlay: {
+              id: 16,
+              name: "Lista Travada",
+              description: "Definida pela lista",
+              imageUrl: "/locked.png",
+              customization: lockedCustomization,
+            },
+          },
+          React.createElement(CaptureKeywords),
+        ),
+      );
+    });
+
+    expect(capturedKeywords?.externalLanguageOverlay).toMatchObject({
+      id: 16,
+      name: "Lista Travada",
+    });
+    expect(
+      capturedKeywords?.customization.mappings.find(
+        (mapping) => mapping.original === "print",
+      )?.custom,
+    ).toBe("mostre");
+    expect(capturedKeywords?.isReady).toBe(true);
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
   it("normalizes stored flat grammar fields into nested customization modes", () => {
     localStorage.setItem(
       "keyword-customization",

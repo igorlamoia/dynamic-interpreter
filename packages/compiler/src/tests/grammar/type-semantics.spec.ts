@@ -56,6 +56,38 @@ describe("Type semantics warnings", () => {
     expect(result.output).toBe("yesright2lazy");
   });
 
+  it("executes increment, decrement, and compound assignment operators", async () => {
+    const result = await executeProgram(`
+      int main() {
+        int i = 3;
+        i++;
+        i--;
+        ++i;
+        --i;
+        i += 5;
+        i -= 2;
+        print(i);
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("6");
+  });
+
+  it("uses postfix decrement expression value before updating", async () => {
+    const result = await executeProgram(`
+      int main() {
+        int i = 3;
+        int before = i--;
+        print(before);
+        print(i);
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("32");
+  });
+
   it("warns at compile time and fails at runtime for string-to-int assignment", async () => {
     const source = `
       int main() {

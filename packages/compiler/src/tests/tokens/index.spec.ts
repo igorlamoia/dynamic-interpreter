@@ -30,6 +30,23 @@ it("should distinguish value equality from strict equality", () => {
   expect(makeRelation("===", 1, 1)).toBe(true);
 });
 
+it("should tokenize update and compound assignment operators", () => {
+  const tokens = new Lexer("i++ i-- i += 2 i -= 1").scanTokens();
+
+  expect(tokens.map(({ type, lexeme }) => ({ type, lexeme }))).toEqual([
+    { type: TOKENS.LITERALS.identifier, lexeme: "i" },
+    { type: TOKENS.ARITHMETICS.plus, lexeme: "++" },
+    { type: TOKENS.LITERALS.identifier, lexeme: "i" },
+    { type: TOKENS.ARITHMETICS.minus, lexeme: "--" },
+    { type: TOKENS.LITERALS.identifier, lexeme: "i" },
+    { type: TOKENS.ASSIGNMENTS.plus_equal, lexeme: "+=" },
+    { type: TOKENS.LITERALS.integer_literal, lexeme: "2" },
+    { type: TOKENS.LITERALS.identifier, lexeme: "i" },
+    { type: TOKENS.ASSIGNMENTS.minus_equal, lexeme: "-=" },
+    { type: TOKENS.LITERALS.integer_literal, lexeme: "1" },
+  ]);
+});
+
 it("should include switch/case/default and colon tokens", () => {
   expect(TOKENS.BY_DESCRIPTION["switch"]).toBeDefined();
   expect(TOKENS.BY_DESCRIPTION["case"]).toBeDefined();

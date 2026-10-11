@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SpaceBackground } from "@/components/space-background";
 import { EditorProvider } from "@/contexts/editor/EditorContext";
 import { KeywordProvider } from "@/contexts/keyword/KeywordContext";
+import type { ExternalLanguageOverlay } from "@/contexts/keyword/types";
 import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
 import { TerminalProvider } from "@/contexts/TerminalContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -45,6 +46,16 @@ export default function ExerciseWorkspace({
   const exerciseSubmissions = submissionsQuery.data as any[] | undefined;
   const list = listQuery.data;
   const lastSubmission = exerciseSubmissions?.[0] ?? exercise?.submissions?.[0];
+  const initialLanguageOverlay: ExternalLanguageOverlay | null =
+    exercise?.effectiveLanguage?.customization
+      ? {
+          id: exercise.effectiveLanguage.id,
+          name: exercise.effectiveLanguage.name,
+          description: exercise.effectiveLanguage.description ?? "",
+          imageUrl: exercise.effectiveLanguage.imageUrl ?? "",
+          customization: exercise.effectiveLanguage.customization,
+        }
+      : null;
 
   useEffect(() => {
     if (exerciseQuery.error || listQuery.error) {
@@ -87,7 +98,7 @@ export default function ExerciseWorkspace({
         storageScope={`exercise-${exerciseId}`}
         initialCode={lastSubmission?.codeSnapshot}
       >
-        <KeywordProvider>
+        <KeywordProvider initialExternalLanguageOverlay={initialLanguageOverlay}>
           <RuntimeErrorProvider>
             <TerminalProvider>
               <WorkspaceContent
