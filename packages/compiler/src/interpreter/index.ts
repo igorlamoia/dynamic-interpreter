@@ -1011,12 +1011,7 @@ export class Interpreter {
         return Number(value);
       }
       // Tentar obter variável
-      try {
-        return this.getVariable(value);
-      } catch {
-        // Se não for variável, retornar como string
-        return value;
-      }
+      return this.getVariable(value);
     }
     return value;
   }

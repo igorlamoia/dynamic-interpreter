@@ -209,15 +209,15 @@ describe("buildCompleteLanguageSample", () => {
     const customization = createCustomization();
 
     expect(buildLanguageCategorySample("entrada", customization)).toContain(
-      'print("Eren e Mikasa");',
+      'print("Eren and Mikasa");',
     );
     expect(buildLanguageCategorySample("tipos", customization)).toContain(
       [
-        "void vingarEldianos() {",
-        '  string heroi = "Eren Yeager";',
-        "  float distanciaAtaque = 12756.28;",
-        "  bool estrondoAtivado = true;",
-        "  int numeroTitans = 580000;",
+        "void claimFreedom() {",
+        '  string hero = "Eren Yeager";',
+        "  float attackDistance = 12756.28;",
+        "  bool rumblingEnabled = true;",
+        "  int titanCount = 580000;",
         "}",
       ].join("\n"),
     );
@@ -227,39 +227,60 @@ describe("buildCompleteLanguageSample", () => {
     expect(buildLanguageCategorySample("estrutura", customization)).toContain(
       [
         "void main() {",
-        '  print("Tu te tornas eternamente responsável por aquilo que cativas.");',
-        '  print("Nada do que acontece é esquecido, mesmo que você não se lembre.");',
-        '  print("As pessoas só vão entender umas as outras quando sentirem a mesma dor");',
+        '  print("You become responsible forever for what you have tamed.");',
+        '  print("Nothing that happens is forgotten, even if you do not remember.");',
+        '  print("People understand each other when they feel the same pain");',
         "}",
       ].join("\n"),
     );
-    expect(buildLanguageCategorySample("fluxo", customization)).toContain(
-      "Maes Hughes always dies",
-    );
+    const flowSample = buildLanguageCategorySample("fluxo", customization);
+    expect(flowSample).toContain('if (balance >= 100) {');
+    expect(flowSample).toContain('status = "vip";');
+    expect(flowSample).toContain('case "standard":');
+    expect(flowSample).toContain("for (day = 1; day <= 7; day = day + 1)");
+    expect(flowSample).toContain("total = total + sales[day];");
+    expect(flowSample).toContain("while (queue > 0)");
+    expect(flowSample).toContain("while (index < totalOrders)");
+    expect(flowSample).toContain("if (canceledOrder)");
+    expect(flowSample).toContain("continue;");
+    expect(flowSample).toContain("if (stock == 0)");
+    expect(flowSample).toContain("break;");
+    expect(flowSample).toContain("return shipped;");
+    expect(flowSample).not.toContain("Maes Hughes always dies");
+    expect(flowSample).not.toContain("return 0;");
     const operatorSample = buildLanguageCategorySample(
       "operadores",
       customization,
     );
+    expect(operatorSample).not.toContain("int balance = 150;");
+    expect(operatorSample).not.toContain("int points = 80;");
+    expect(operatorSample).not.toContain("int purchases = 5;");
+    expect(operatorSample).toContain("bool activeRegistration = true;");
+    expect(operatorSample).toContain("bool blockedCustomer = false;");
     expect(operatorSample).toContain(
-      "bool narutoQuerConversar, erenQuerDestruirTudo, mikasaAmaEren = true;",
+      "bool enoughBalance = balance >= 100;",
     );
-    expect(operatorSample).toContain("bool erenQuerOuvir = false;");
-    expect(operatorSample).not.toContain("int pacienciaDoEren");
-    expect(operatorSample).not.toContain("int pacienciaDaMikasa");
+    expect(operatorSample).toContain("bool hasPoints = points > 50;");
     expect(operatorSample).toContain(
-      "if (narutoQuerConversar && erenQuerOuvir) {",
-    );
-    expect(operatorSample).toContain(
-      'print("Naruto venceu com o poder da amizade!");',
-    );
-    expect(operatorSample).toContain(
-      "if (pacienciaDaMikasa < 5 || !mikasaAmaEren) {",
+      "bool firstPurchase = purchases == 0;",
     );
     expect(operatorSample).toContain(
-      'print("Mikasa pegou a espada. Acabou o diálogo!");',
+      "bool vipCustomer = enoughBalance && activeRegistration;",
+    );
+    expect(operatorSample).toContain(
+      "bool hasBenefit = vipCustomer || hasPoints;",
+    );
+    expect(operatorSample).toContain("bool canBuy = !blockedCustomer;");
+    expect(operatorSample).toContain("int discount = 5 + 10;");
+    expect(operatorSample).toContain(
+      "int remainingBalance = balance - discount;",
+    );
+    expect(operatorSample).toContain("int extraPoints = purchases * 2;");
+    expect(operatorSample).toContain("int halfBalance = balance / 2;");
+    expect(operatorSample).toContain(
+      "bool discountReleased = hasBenefit && canBuy;",
     );
   });
-
   it("omits terminators from the structure category when line endings are optional", () => {
     const sample = buildLanguageCategorySample(
       "estrutura",
@@ -276,16 +297,16 @@ describe("buildCompleteLanguageSample", () => {
 
     expect(sample).toContain("void main()");
     expect(sample).toContain(
-      'print("Tu te tornas eternamente responsável por aquilo que cativas.")',
+      'print("You become responsible forever for what you have tamed.")',
     );
     expect(sample).toContain(
-      'print("Nada do que acontece é esquecido, mesmo que você não se lembre.")',
+      'print("Nothing that happens is forgotten, even if you do not remember.")',
     );
     expect(sample).toContain(
-      'print("As pessoas só vão entender umas as outras quando sentirem a mesma dor")',
+      'print("People understand each other when they feel the same pain")',
     );
     expect(sample).not.toContain(
-      'print("Tu te tornas eternamente responsável por aquilo que cativas.");',
+      'print("You become responsible forever for what you have tamed.");',
     );
   });
 });

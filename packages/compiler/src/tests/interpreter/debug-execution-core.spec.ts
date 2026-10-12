@@ -32,4 +32,21 @@ int main() {
       code: "interpreter.max_instruction_steps_exceeded",
     } satisfies Partial<RuntimeError>);
   });
+
+  it("does not treat missing variable names as truthy strings at runtime", async () => {
+    await expect(
+      executeProgram(
+        `
+function main() {
+  if (ready) {
+    print("start");
+  }
+}
+`,
+        { grammar: { typingMode: "untyped" } },
+      ),
+    ).rejects.toMatchObject({
+      code: "interpreter.variable_not_found",
+    } satisfies Partial<RuntimeError>);
+  });
 });

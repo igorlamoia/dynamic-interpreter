@@ -2,7 +2,10 @@ import { ExprResult, TokenIterator } from "../../token/TokenIterator";
 import { TOKENS } from "../../token/constants";
 import { exprStmt } from "./exprStmt";
 import { functionCallExpr } from "./functionCallExpr";
-import { assertTypedAssignableIdentifier } from "./typedIdentifier";
+import {
+  assertTypedAssignableIdentifier,
+  assertTypedReadableIdentifier,
+} from "./typedIdentifier";
 import { isUpdateOperator, updateOperatorToArithmetic } from "./updateOperator";
 
 /**
@@ -61,6 +64,7 @@ export function factorStmt(iterator: TokenIterator): ExprResult {
     }
 
     // Caso contrário, é apenas uma variável
+    assertTypedReadableIdentifier(iterator, identifier);
     return iterator.createExprResult(
       identifier.lexeme,
       iterator.resolveSymbol(identifier.lexeme),

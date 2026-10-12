@@ -13,6 +13,87 @@ export const DEFAULT_LANGUAGE_SAMPLE_INTL: LanguageSampleIntl = {
   nameIdentifier: "name",
   counterIdentifier: "count",
   countToThreeFunction: "countToThree",
+  identifiers: {
+    score: "score",
+    height: "height",
+    ready: "ready",
+    index: "i",
+    missionFunction: "missionLog",
+    revengeFunction: "claimFreedom",
+    hero: "hero",
+    attackDistance: "attackDistance",
+    rumblingEnabled: "rumblingEnabled",
+    titanCount: "titanCount",
+    status: "status",
+    discount: "discount",
+    day: "day",
+    total: "total",
+    sales: "sales",
+    queue: "queue",
+    served: "served",
+    orderIndex: "index",
+    totalOrders: "totalOrders",
+    canceledOrder: "canceledOrder",
+    stock: "stock",
+    shipped: "shipped",
+    balance: "balance",
+    points: "points",
+    purchases: "purchases",
+    activeRegistration: "activeRegistration",
+    blockedCustomer: "blockedCustomer",
+    enoughBalance: "enoughBalance",
+    hasPoints: "hasPoints",
+    firstPurchase: "firstPurchase",
+    vipCustomer: "vipCustomer",
+    hasBenefit: "hasBenefit",
+    canBuy: "canBuy",
+    remainingBalance: "remainingBalance",
+    extraPoints: "extraPoints",
+    halfBalance: "halfBalance",
+    discountReleased: "discountReleased",
+    value: "value",
+  },
+  stringLiterals: {
+    heroName: "Eren Yeager",
+    antiHeroName: "Eren Yeager",
+    secondaryHeroName: "Mikasa Ackerman",
+    rivalName: "Zeke Yeager",
+    vipStatus: "vip",
+    standardStatus: "standard",
+    hello: "hello",
+    sampleInputName: "Naruto",
+    sampleOutputName: "Naturo",
+  },
+  printMessages: {
+    welcomePrefix: "Welcome, ",
+    antiHero: "Eren is the anti-hero",
+    respect: "Press f to pay respect?",
+    secondaryHero: "Mikasa is a hero",
+    planned: "Lelouch vi Britannia has a plan",
+    switchHero: "Roy Mustang is a hero",
+    switchDefault: "Maes Hughes always dies",
+    missionComplete: "mission complete",
+    entryFirst: "Eren and Mikasa",
+    entrySecond: "Lelouch vi Britannia",
+    structureFirst: "You become responsible forever for what you have tamed.",
+    structureSecond: "Nothing that happens is forgotten, even if you do not remember.",
+    structureThird: "People understand each other when they feel the same pain",
+    helloWorld: "hello world",
+    ok: "ok",
+  },
+  comments: {
+    relationalOperators: "Relational operators",
+    logicalOperators: "Logical operators",
+    arithmeticOperators: "Arithmetic operators",
+    finalCheck: "Final check",
+  },
+  reviewSections: {
+    io: "Input and output",
+    types: "Types",
+    structure: "Structure",
+    operators: "Operators",
+    flow: "Flow",
+  },
 };
 
 type KeywordName =
@@ -258,6 +339,9 @@ function buildLanguageExampleModel(
   const isUntyped = customization.modes.typing === "untyped";
   const reservedWords = getReservedSampleWords(customization);
   const usedIdentifiers = new Set<string>();
+  const sampleIds = intl.identifiers;
+  const sampleStrings = intl.stringLiterals;
+  const samplePrints = intl.printMessages;
   const nameIdentifier = resolveSampleIdentifier(
     intl.nameIdentifier,
     DEFAULT_LANGUAGE_SAMPLE_INTL.nameIdentifier,
@@ -266,71 +350,71 @@ function buildLanguageExampleModel(
     usedIdentifiers,
   );
   const scoreIdentifier = resolveSampleIdentifier(
-    "score",
-    "score",
+    sampleIds.score,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.score,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const heightIdentifier = resolveSampleIdentifier(
-    "height",
-    "height",
+    sampleIds.height,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.height,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const readyIdentifier = resolveSampleIdentifier(
-    "ready",
-    "ready",
+    sampleIds.ready,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.ready,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const indexIdentifier = resolveSampleIdentifier(
-    "i",
-    "i",
+    sampleIds.index,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.index,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const missionFunction = resolveSampleIdentifier(
-    "missionLog",
-    "missionLog",
+    sampleIds.missionFunction,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.missionFunction,
     "Function",
     reservedWords,
     usedIdentifiers,
   );
   const revengeFunction = resolveSampleIdentifier(
-    "vingarEldianos",
-    "vingarEldianos",
+    sampleIds.revengeFunction,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.revengeFunction,
     "Function",
     reservedWords,
     usedIdentifiers,
   );
   const heroIdentifier = resolveSampleIdentifier(
-    "heroi",
-    "heroi",
+    sampleIds.hero,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.hero,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const attackDistanceIdentifier = resolveSampleIdentifier(
-    "distanciaAtaque",
-    "distanciaAtaque",
+    sampleIds.attackDistance,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.attackDistance,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const rumblingEnabledIdentifier = resolveSampleIdentifier(
-    "estrondoAtivado",
-    "estrondoAtivado",
+    sampleIds.rumblingEnabled,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.rumblingEnabled,
     "Value",
     reservedWords,
     usedIdentifiers,
   );
   const titanCountIdentifier = resolveSampleIdentifier(
-    "numeroTitans",
-    "numeroTitans",
+    sampleIds.titanCount,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.titanCount,
     "Value",
     reservedWords,
     usedIdentifiers,
@@ -350,6 +434,42 @@ function buildLanguageExampleModel(
     endStatement(`${keyword(type)} ${name} = ${value}`, terminator);
   const printLine = (message: string) =>
     endStatement(`${keyword("print")}("${message}")`, terminator);
+  const sampleIdentifier = (key: keyof LanguageSampleIntl["identifiers"]) =>
+    resolveSampleIdentifier(
+      sampleIds[key],
+      DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers[key],
+      "Value",
+      reservedWords,
+      usedIdentifiers,
+    );
+  const statusIdentifier = sampleIdentifier("status");
+  const discountIdentifier = sampleIdentifier("discount");
+  const dayIdentifier = sampleIdentifier("day");
+  const totalIdentifier = sampleIdentifier("total");
+  const salesIdentifier = sampleIdentifier("sales");
+  const queueIdentifier = sampleIdentifier("queue");
+  const servedIdentifier = sampleIdentifier("served");
+  const orderIndexIdentifier = sampleIdentifier("orderIndex");
+  const totalOrdersIdentifier = sampleIdentifier("totalOrders");
+  const canceledOrderIdentifier = sampleIdentifier("canceledOrder");
+  const stockIdentifier = sampleIdentifier("stock");
+  const shippedIdentifier = sampleIdentifier("shipped");
+  const balanceIdentifier = sampleIdentifier("balance");
+  const pointsIdentifier = sampleIdentifier("points");
+  const purchasesIdentifier = sampleIdentifier("purchases");
+  const activeRegistrationIdentifier = sampleIdentifier("activeRegistration");
+  const blockedCustomerIdentifier = sampleIdentifier("blockedCustomer");
+  const enoughBalanceIdentifier = sampleIdentifier("enoughBalance");
+  const hasPointsIdentifier = sampleIdentifier("hasPoints");
+  const firstPurchaseIdentifier = sampleIdentifier("firstPurchase");
+  const vipCustomerIdentifier = sampleIdentifier("vipCustomer");
+  const hasBenefitIdentifier = sampleIdentifier("hasBenefit");
+  const canBuyIdentifier = sampleIdentifier("canBuy");
+  const remainingBalanceIdentifier = sampleIdentifier("remainingBalance");
+  const extraPointsIdentifier = sampleIdentifier("extraPoints");
+  const halfBalanceIdentifier = sampleIdentifier("halfBalance");
+  const discountReleasedIdentifier = sampleIdentifier("discountReleased");
+  const valueIdentifier = sampleIdentifier("value");
 
   const nameDeclaration = isUntyped
     ? declare("variable", nameIdentifier, '""')
@@ -371,20 +491,20 @@ function buildLanguageExampleModel(
       );
   const firstCondition = `${nameIdentifier} ${operator(
     "equal_equal",
-  )} "Eren Yeager"`;
+  )} "${sampleStrings.antiHeroName}"`;
   const elseIfCondition = `${nameIdentifier} ${operator(
     "equal_equal",
-  )} "Mikasa Ackerman"`;
+  )} "${sampleStrings.secondaryHeroName}"`;
   const ifElseLines = buildIfElseBlock(
     customization,
     firstCondition,
     [
-      printLine("Eren is the anti-hero"),
-      printLine("Press f to pay respect?"),
+      printLine(samplePrints.antiHero),
+      printLine(samplePrints.respect),
     ],
     elseIfCondition,
-    [printLine("Mikasa is a hero")],
-    [printLine("Lelouch vi Britannia has a plan")],
+    [printLine(samplePrints.secondaryHero)],
+    [printLine(samplePrints.planned)],
   );
   const forInitializer = isUntyped
     ? `${indexIdentifier} = 0`
@@ -423,7 +543,7 @@ function buildLanguageExampleModel(
           "greater",
         )} 2 ${operator("logical_or")} ${nameIdentifier} ${operator(
           "not_equal",
-        )} "Zeke Yeager" ${operator("logical_or")} ${not(bool("false"))})`,
+        )} "${sampleStrings.rivalName}" ${operator("logical_or")} ${not(bool("false"))})`,
         [endStatement(keyword("break"), terminator)],
       ),
     ],
@@ -432,19 +552,106 @@ function buildLanguageExampleModel(
     customization,
     scoreIdentifier,
     [
-      printLine("Roy Mustang is a hero"),
+      printLine(samplePrints.switchHero),
       endStatement(keyword("break"), terminator),
     ],
     [
-      printLine("Maes Hughes always dies"),
-      printLine("Press f to pay respect?"),
+      printLine(samplePrints.switchDefault),
+      printLine(samplePrints.respect),
     ],
   );
+  const flowExampleStatement = (statement: string) =>
+    endStatement(statement, terminator);
+  const flowSwitchLines =
+    customization.modes.block === "indentation"
+      ? [
+          `${keyword("switch")} (${statusIdentifier}):`,
+          `  ${keyword("case")} "${sampleStrings.vipStatus}":`,
+          `    ${flowExampleStatement(`${discountIdentifier} = 15`)}`,
+          `  ${keyword("case")} "${sampleStrings.standardStatus}":`,
+          `    ${flowExampleStatement(`${discountIdentifier} = 5`)}`,
+          `  ${keyword("default")}:`,
+          `    ${flowExampleStatement(`${discountIdentifier} = 0`)}`,
+        ]
+      : [
+          `${keyword("switch")} (${statusIdentifier}) ${blockOpen}`,
+          `  ${keyword("case")} "${sampleStrings.vipStatus}":`,
+          `    ${flowExampleStatement(`${discountIdentifier} = 15`)}`,
+          `  ${keyword("case")} "${sampleStrings.standardStatus}":`,
+          `    ${flowExampleStatement(`${discountIdentifier} = 5`)}`,
+          `  ${keyword("default")}:`,
+          `    ${flowExampleStatement(`${discountIdentifier} = 0`)}`,
+          blockClose,
+        ];
+  const flowConditionalLines = [
+    ...buildBlock(
+      customization,
+      `${keyword("if")} (${balanceIdentifier} ${operator("greater_equal")} 100)`,
+      [
+        flowExampleStatement(
+          `${statusIdentifier} = "${sampleStrings.vipStatus}"`,
+        ),
+      ],
+    ),
+    ...buildBlock(customization, `${keyword("else")}`, [
+      flowExampleStatement(
+        `${statusIdentifier} = "${sampleStrings.standardStatus}"`,
+      ),
+    ]),
+    "",
+    ...flowSwitchLines,
+  ];
+  const flowLoopLines = [
+    ...buildBlock(
+      customization,
+      `${keyword("for")} (${dayIdentifier} = 1; ${dayIdentifier} ${operator(
+        "less_equal",
+      )} 7; ${dayIdentifier} = ${dayIdentifier} + 1)`,
+      [
+        flowExampleStatement(
+          `${totalIdentifier} = ${totalIdentifier} + ${salesIdentifier}[${dayIdentifier}]`,
+        ),
+      ],
+    ),
+    "",
+    ...buildBlock(
+      customization,
+      `${keyword("while")} (${queueIdentifier} ${operator("greater")} 0)`,
+      [
+        flowExampleStatement(`${servedIdentifier} = ${servedIdentifier} + 1`),
+        flowExampleStatement(`${queueIdentifier} = ${queueIdentifier} - 1`),
+      ],
+    ),
+  ];
+  const flowControlLines = [
+    ...buildBlock(
+      customization,
+      `${keyword("while")} (${orderIndexIdentifier} ${operator("less")} ${totalOrdersIdentifier})`,
+      [
+        flowExampleStatement(
+          `${orderIndexIdentifier} = ${orderIndexIdentifier} + 1`,
+        ),
+        ...buildBlock(
+          customization,
+          `${keyword("if")} (${canceledOrderIdentifier})`,
+          [flowExampleStatement(keyword("continue"))],
+        ),
+        ...buildBlock(
+          customization,
+          `${keyword("if")} (${stockIdentifier} ${operator("equal_equal")} 0)`,
+          [flowExampleStatement(keyword("break"))],
+        ),
+        flowExampleStatement(`${shippedIdentifier} = ${shippedIdentifier} + 1`),
+      ],
+    ),
+    "",
+    flowExampleStatement(`${keyword("return")} ${shippedIdentifier}`),
+  ];
   const missionHeader = isUntyped
     ? `${keyword("function")} ${missionFunction}()`
     : `${keyword("void")} ${missionFunction}()`;
   const missionLines = buildBlock(customization, missionHeader, [
-    printLine("mission complete"),
+    printLine(samplePrints.missionComplete),
     ...(isUntyped ? [] : [endStatement(keyword("return"), terminator)]),
   ]);
   const revengeHeader = isUntyped
@@ -452,8 +659,8 @@ function buildLanguageExampleModel(
     : `${keyword("void")} ${revengeFunction}()`;
   const typeCategoryLines = buildBlock(customization, revengeHeader, [
     isUntyped
-      ? declare("variable", heroIdentifier, '"Eren Yeager"')
-      : declare("string", heroIdentifier, '"Eren Yeager"'),
+      ? declare("variable", heroIdentifier, `"${sampleStrings.heroName}"`)
+      : declare("string", heroIdentifier, `"${sampleStrings.heroName}"`),
     isUntyped
       ? declare("variable", attackDistanceIdentifier, "12756.28")
       : declare("float", attackDistanceIdentifier, "12756.28"),
@@ -464,66 +671,72 @@ function buildLanguageExampleModel(
       ? declare("variable", titanCountIdentifier, "580000")
       : declare("int", titanCountIdentifier, "580000"),
   ]);
-  const declareSameBoolValues = (
-    names: string[],
-    value: "true" | "false",
-  ) => {
-    const declarationKeyword = isUntyped ? keyword("variable") : keyword("bool");
-
-    return endStatement(
-      `${declarationKeyword} ${names.join(", ")} = ${bool(value)}`,
+  const operatorDeclaration = (
+    type: "int" | "bool",
+    name: string,
+    value: string,
+  ) =>
+    endStatement(
+      `${isUntyped ? keyword("variable") : keyword(type)} ${name} = ${value}`,
       terminator,
     );
-  };
-  const operatorExampleDeclarations = [
-    declareSameBoolValues(
-      ["narutoQuerConversar", "erenQuerDestruirTudo", "mikasaAmaEren"],
-      "true",
+  const currentRulesOperatorExampleLines = [
+    operatorDeclaration("bool", activeRegistrationIdentifier, bool("true")),
+    operatorDeclaration("bool", blockedCustomerIdentifier, bool("false")),
+    "",
+    `// ${intl.comments.relationalOperators}`,
+    operatorDeclaration(
+      "bool",
+      enoughBalanceIdentifier,
+      `${balanceIdentifier} ${operator("greater_equal")} 100`,
     ),
-    declareSameBoolValues(["erenQuerOuvir"], "false"),
-  ];
-  const operatorExampleBlocks = [
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (narutoQuerConversar ${operator(
-        "logical_and",
-      )} erenQuerOuvir)`,
-      [printLine("Naruto venceu com o poder da amizade!")],
+    operatorDeclaration(
+      "bool",
+      hasPointsIdentifier,
+      `${pointsIdentifier} ${operator("greater")} 50`,
     ),
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (narutoQuerConversar ${operator(
-        "logical_and",
-      )} ${not("erenQuerOuvir")})`,
-      [printLine("Naruto: Você já ouviu falar da minha infância?")],
+    operatorDeclaration(
+      "bool",
+      firstPurchaseIdentifier,
+      `${purchasesIdentifier} ${operator("equal_equal")} 0`,
     ),
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (pacienciaDoEren ${operator(
-        "greater",
-      )} 5 ${operator("logical_and")} narutoQuerConversar)`,
-      [printLine("Eren começou a reconsiderar suas escolhas.")],
+    "",
+    `// ${intl.comments.logicalOperators}`,
+    operatorDeclaration(
+      "bool",
+      vipCustomerIdentifier,
+      `${enoughBalanceIdentifier} ${operator("logical_and")} ${activeRegistrationIdentifier}`,
     ),
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (pacienciaDoEren ${operator(
-        "less_equal",
-      )} 5 ${operator("logical_and")} erenQuerDestruirTudo)`,
-      [printLine("Eren: TATAKAE! TATAKAE!")],
+    operatorDeclaration(
+      "bool",
+      hasBenefitIdentifier,
+      `${vipCustomerIdentifier} ${operator("logical_or")} ${hasPointsIdentifier}`,
     ),
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (mikasaAmaEren ${operator(
-        "logical_and",
-      )} pacienciaDaMikasa ${operator("greater")} 5)`,
-      [printLine("Mikasa: Eren, por favor, pare!")],
+    operatorDeclaration("bool", canBuyIdentifier, not(blockedCustomerIdentifier)),
+    "",
+    `// ${intl.comments.arithmeticOperators}`,
+    operatorDeclaration("int", discountIdentifier, "5 + 10"),
+    operatorDeclaration(
+      "int",
+      remainingBalanceIdentifier,
+      `${balanceIdentifier} - ${discountIdentifier}`,
     ),
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (pacienciaDaMikasa ${operator(
-        "less",
-      )} 5 ${operator("logical_or")} ${not("mikasaAmaEren")})`,
-      [printLine("Mikasa pegou a espada. Acabou o diálogo!")],
+    operatorDeclaration(
+      "int",
+      extraPointsIdentifier,
+      `${purchasesIdentifier} * 2`,
+    ),
+    operatorDeclaration(
+      "int",
+      halfBalanceIdentifier,
+      `${balanceIdentifier} / 2`,
+    ),
+    "",
+    `// ${intl.comments.finalCheck}`,
+    operatorDeclaration(
+      "bool",
+      discountReleasedIdentifier,
+      `${hasBenefitIdentifier} ${operator("logical_and")} ${canBuyIdentifier}`,
     ),
   ];
   const mainHeader = isUntyped
@@ -534,8 +747,15 @@ function buildLanguageExampleModel(
     scoreDeclaration,
     heightDeclaration,
     readyDeclaration,
-    ...(isUntyped ? [endStatement(`${keyword("variable")} ${indexIdentifier} = 0`, terminator)] : []),
-    printLine("What is your name?"),
+    ...(isUntyped
+      ? [
+          endStatement(
+            `${keyword("variable")} ${indexIdentifier} = 0`,
+            terminator,
+          ),
+        ]
+      : []),
+    printLine(intl.namePrompt),
     scanLine,
     ...ifElseLines,
     ...forLines,
@@ -548,9 +768,9 @@ function buildLanguageExampleModel(
   categoryExamples.set(
     "entrada",
     [
-      printLine("Eren e Mikasa"),
+      printLine(samplePrints.entryFirst),
       scanLine,
-      printLine("Lelouch vi Britannia"),
+      printLine(samplePrints.entrySecond),
     ].join("\n"),
   );
   categoryExamples.set("tipos", typeCategoryLines.join("\n"));
@@ -560,25 +780,19 @@ function buildLanguageExampleModel(
       customization,
       isUntyped ? `${keyword("function")} main()` : `${keyword("void")} main()`,
       [
-        printLine(
-          "Tu te tornas eternamente responsável por aquilo que cativas.",
-        ),
-        printLine(
-          "Nada do que acontece é esquecido, mesmo que você não se lembre.",
-        ),
-        printLine(
-          "As pessoas só vão entender umas as outras quando sentirem a mesma dor",
-        ),
+        printLine(samplePrints.structureFirst),
+        printLine(samplePrints.structureSecond),
+        printLine(samplePrints.structureThird),
       ],
     ).join("\n"),
   );
   categoryExamples.set(
     "operadores",
-    [...operatorExampleDeclarations, ...operatorExampleBlocks].join("\n"),
+    currentRulesOperatorExampleLines.join("\n"),
   );
   categoryExamples.set(
     "fluxo",
-    [...ifElseLines, ...switchLines, endStatement(`${keyword("return")} 0`, terminator)].join(
+    [...flowConditionalLines, "", ...flowLoopLines, "", ...flowControlLines].join(
       "\n",
     ),
   );
@@ -595,9 +809,14 @@ function buildLanguageExampleModel(
     examples,
     "tipos",
     keyword("variable"),
-    declare("variable", "value", '"hello"'),
+    declare("variable", valueIdentifier, `"${sampleStrings.hello}"`),
   );
-  setExample(examples, "tipos", keyword("function"), `${keyword("function")} main()`);
+  setExample(
+    examples,
+    "tipos",
+    keyword("function"),
+    `${keyword("function")} main()`,
+  );
   setExample(examples, "lacos", keyword("for"), forLines.join("\n"));
   setExample(examples, "lacos", keyword("while"), whileLines.join("\n"));
   setExample(examples, "fluxo", keyword("if"), ifElseLines.join("\n"));
@@ -605,7 +824,12 @@ function buildLanguageExampleModel(
   setExample(examples, "fluxo", keyword("switch"), switchLines.join("\n"));
   setExample(examples, "fluxo", keyword("case"), `${keyword("case")} 1:`);
   setExample(examples, "fluxo", keyword("default"), `${keyword("default")}:`);
-  setExample(examples, "fluxo", keyword("break"), endStatement(keyword("break"), terminator));
+  setExample(
+    examples,
+    "fluxo",
+    keyword("break"),
+    endStatement(keyword("break"), terminator),
+  );
   setExample(
     examples,
     "fluxo",
@@ -618,13 +842,18 @@ function buildLanguageExampleModel(
     keyword("return"),
     endStatement(`${keyword("return")} 0`, terminator),
   );
-  setExample(examples, "estrutura", blockOpen, `${keyword("if")} (${bool("true")}) ${blockOpen}`);
+  setExample(
+    examples,
+    "estrutura",
+    blockOpen,
+    `${keyword("if")} (${bool("true")}) ${blockOpen}`,
+  );
   setExample(examples, "estrutura", blockClose, blockClose);
   setExample(
     examples,
     "estrutura",
     visibleTerminator,
-    endStatement(`${keyword("print")}("ok")`, visibleTerminator),
+    endStatement(`${keyword("print")}("${samplePrints.ok}")`, visibleTerminator),
   );
 
   const operatorExamples: Record<OperatorName, string> = {
@@ -635,8 +864,8 @@ function buildLanguageExampleModel(
     less_equal: `${scoreIdentifier} ${operator("less_equal")} 3`,
     greater: `${scoreIdentifier} ${operator("greater")} 0`,
     greater_equal: `${scoreIdentifier} ${operator("greater_equal")} 1`,
-    equal_equal: `${nameIdentifier} ${operator("equal_equal")} "Eren Yeager"`,
-    not_equal: `${nameIdentifier} ${operator("not_equal")} "Zeke Yeager"`,
+    equal_equal: `${nameIdentifier} ${operator("equal_equal")} "${sampleStrings.antiHeroName}"`,
+    not_equal: `${nameIdentifier} ${operator("not_equal")} "${sampleStrings.rivalName}"`,
   };
   for (const key of Object.keys(operatorExamples) as OperatorName[]) {
     setExample(examples, "operadores", operator(key), operatorExamples[key]);

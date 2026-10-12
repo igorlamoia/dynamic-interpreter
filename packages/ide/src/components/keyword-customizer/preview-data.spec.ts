@@ -196,6 +196,43 @@ describe("buildWizardPreview", () => {
     expect(preview.snippetOutput).toEqual(["Bem-vindo, Naturo"]);
   });
 
+  it("uses the current rules operator sample on the rules step", () => {
+    const preview = buildWizardPreview(
+      applyWizardPreset(getDefaultCustomizationState(), "free"),
+      {
+        activeStepId: "rules",
+        presetId: "free",
+      },
+    );
+
+    expect(preview.snippet).not.toContain("int saldo = 150;");
+    expect(preview.snippet).toContain(
+      "bool saldoSuficiente = saldo >= 100;",
+    );
+    expect(preview.snippet).toContain(
+      "bool descontoLiberado = temBeneficio && podeComprar;",
+    );
+  });
+
+  it("combines all flow examples on the flow step", () => {
+    const preview = buildWizardPreview(
+      applyWizardPreset(getDefaultCustomizationState(), "free"),
+      {
+        activeStepId: "flow",
+        presetId: "free",
+      },
+    );
+
+    expect(preview.snippet).toContain('if (saldo >= 100) {');
+    expect(preview.snippet).toContain('case "padrao":');
+    expect(preview.snippet).toContain(
+      "for (dia = 1; dia <= 7; dia = dia + 1)",
+    );
+    expect(preview.snippet).toContain("while (indice < totalPedidos)");
+    expect(preview.snippet).toContain("return enviados;");
+    expect(preview.snippet).not.toContain("Maes Hughes always dies");
+  });
+
   it("omits terminators from the IO ninja example when line endings are optional", () => {
     const draft = getDefaultCustomizationState();
     draft.modes.semicolon = "optional-eol";
@@ -213,7 +250,7 @@ describe("buildWizardPreview", () => {
     );
   });
 
-  it("uses a richer full-program example on the review step", () => {
+  it("combines every step preview on the review step", () => {
     const draft = applyWizardPreset(getDefaultCustomizationState(), "free");
 
     const preview = buildWizardPreview(draft, {
@@ -221,16 +258,24 @@ describe("buildWizardPreview", () => {
       presetId: "free",
     });
 
-    expect(preview.baselineSnippet).toContain("int score = 1");
-    expect(preview.baselineSnippet).toContain('print("Eren is the anti-hero")');
-    expect(preview.baselineSnippet).toContain("scan(string, name)");
-    expect(preview.baselineSnippet).toContain("switch (score)");
-    expect(preview.baselineSnippet).toContain("return 0");
-    expect(preview.snippet).toContain("case 1");
-    expect(preview.snippet).toContain('print("Roy Mustang is a hero")');
-    expect(preview.snippet).toContain('print("Maes Hughes always dies")');
-    expect(preview.snippet).toContain("continue");
-    expect(preview.snippet).toContain("break");
+    expect(preview.baselineSnippet).not.toContain("// Identidade");
+    expect(preview.baselineSnippet).toContain("// Entrada e saida");
+    expect(preview.baselineSnippet).toContain("// Tipos");
+    expect(preview.baselineSnippet).toContain("// Estrutura");
+    expect(preview.baselineSnippet).toContain("// Operadores");
+    expect(preview.baselineSnippet).toContain("// Fluxo");
+    expect(preview.snippet).toContain("scan(nome);");
+    expect(preview.snippet).toContain('string heroi = "Eren Yeager";');
+    expect(preview.snippet).toContain("void main() {");
+    expect(preview.snippet).toContain(
+      "bool descontoLiberado = temBeneficio && podeComprar;",
+    );
+    expect(preview.snippet).toContain('case "padrao":');
+    expect(preview.snippet).not.toContain(
+      "for (dia = 1; dia <= 7; dia = dia + 1)",
+    );
+    expect(preview.snippet).toContain("return enviados;");
+    expect(preview.snippet).not.toContain("Maes Hughes always dies");
   });
 
   it("uses the generic variable keyword in review previews for untyped languages", () => {
@@ -242,9 +287,10 @@ describe("buildWizardPreview", () => {
       presetId: "python-like",
     });
 
-    expect(preview.baselineSnippet).toContain("int score = 1");
-    expect(preview.snippet).toContain('variable name = "";');
-    expect(preview.snippet).toContain("variable score = 1");
-    expect(preview.snippet).toContain("variable ready = true");
+    expect(preview.baselineSnippet).toContain("// Tipos");
+    expect(preview.snippet).toContain('variable heroi = "Eren Yeager";');
+    expect(preview.snippet).toContain("variable cadastroAtivo = true;");
+    expect(preview.snippet).toContain("function main() {");
+    expect(preview.snippet).not.toContain("int score = 1");
   });
 });

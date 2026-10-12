@@ -212,6 +212,34 @@ describe("Type semantics warnings", () => {
     expect(result.output).toBe("truetruetruetruetruetrue");
   });
 
+  it("does not execute if blocks for declared but uninitialized bool variables", async () => {
+    const result = await executeProgram(`
+      int main() {
+        bool ready;
+        if (ready) {
+          print("start");
+          print("done");
+        }
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("");
+  });
+
+  it("rejects reads from undeclared identifiers in typed mode", () => {
+    expect(() =>
+      compileToIr(`
+        int main() {
+          if (ready) {
+            print("start");
+          }
+          return 0;
+        }
+      `),
+    ).toThrow();
+  });
+
   it("reports a warning when assigning a float literal to an int", () => {
     const result = compileProgram(`
       int main() {

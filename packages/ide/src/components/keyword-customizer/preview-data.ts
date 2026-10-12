@@ -1,7 +1,8 @@
 import { Lexer } from "@ts-compilator-for-java/compiler/src/lexer";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
-import { t } from "@/i18n";
+import { getLanguageSampleIntl, t } from "@/i18n";
+import type { LanguageSampleIntl } from "@/i18n/types/language-sample";
 import { buildEffectiveKeywordMap } from "@/lib/keyword-map";
 import {
   DEFAULT_BOOLEAN_LITERAL_MAP,
@@ -15,7 +16,6 @@ import {
   type WizardStepId,
 } from "./wizard-model";
 import {
-  buildCompleteLanguageSample,
   buildLanguageCategorySample,
   type LexemeExampleCategory,
 } from "@/views/ide/components/side-explorer/language-sample";
@@ -37,9 +37,6 @@ type PreviewLexemeChange = {
   original: string;
   custom: string;
 };
-
-const NINJA_EXAMPLE_INPUT = ["Naruto"];
-const NINJA_EXAMPLE_OUTPUT = ["Bem-vindo, Naturo"];
 
 export type WizardPreview = {
   name: string;
@@ -80,11 +77,49 @@ function endStatement(
   return `${statement}${separator}${terminator}`;
 }
 
-function buildNinjaExampleSnippet(draft: StoredKeywordCustomization): string {
+function buildNinjaExampleSnippet(
+  draft: StoredKeywordCustomization,
+  intl: LanguageSampleIntl,
+): string {
   return [
     endStatement(draft, `${getKeyword(draft, "scan")}(nome)`),
-    endStatement(draft, `${getKeyword(draft, "print")}("Bem-vindo, ", nome)`),
+    endStatement(
+      draft,
+      `${getKeyword(draft, "print")}("${intl.printMessages.welcomePrefix}", nome)`,
+    ),
   ].join("\n");
+}
+
+function buildReviewPreviewSource(
+  draft: StoredKeywordCustomization,
+  intl: LanguageSampleIntl,
+): string {
+  const section = (title: string, snippet: string) =>
+    [`// ${title}`, snippet].join("\n");
+  const flowPreview = buildLanguageCategorySample("fluxo", draft, intl)
+    .split("\n\n")
+    .filter(
+      (block) =>
+        !block.trimStart().startsWith(`${getKeyword(draft, "for")} (`),
+    )
+    .join("\n\n");
+
+  return [
+    section(intl.reviewSections.io, buildNinjaExampleSnippet(draft, intl)),
+    section(
+      intl.reviewSections.types,
+      buildLanguageCategorySample("tipos", draft, intl),
+    ),
+    section(
+      intl.reviewSections.structure,
+      buildLanguageCategorySample("estrutura", draft, intl),
+    ),
+    section(
+      intl.reviewSections.operators,
+      buildLanguageCategorySample("operadores", draft, intl),
+    ),
+    section(intl.reviewSections.flow, flowPreview),
+  ].join("\n\n");
 }
 
 function getPreviewCategoryForStep(
@@ -112,18 +147,19 @@ function getPreviewCategoryForStep(
 function buildPreviewSource(
   draft: StoredKeywordCustomization,
   activeStepId: WizardStepId,
+  intl: LanguageSampleIntl,
 ): string {
   if (usesNinjaExample(activeStepId)) {
-    return buildNinjaExampleSnippet(draft);
+    return buildNinjaExampleSnippet(draft, intl);
   }
 
   const category = getPreviewCategoryForStep(activeStepId);
 
   if (category === "review") {
-    return buildCompleteLanguageSample(draft);
+    return buildReviewPreviewSource(draft, intl);
   }
 
-  return buildLanguageCategorySample(category, draft);
+  return buildLanguageCategorySample(category, draft, intl);
 }
 
 function tokenizePreview(
@@ -229,16 +265,24 @@ export function buildWizardPreview(
   draft: StoredKeywordCustomization,
   options: BuildPreviewOptions,
 ): WizardPreview {
+  const languageSampleIntl = getLanguageSampleIntl(options.locale);
   const baselineSnippet = buildPreviewSource(
     applyWizardPreset(getDefaultCustomizationState(), "free"),
     options.activeStepId,
+    languageSampleIntl,
   );
-  const snippet = buildPreviewSource(draft, options.activeStepId);
+  const snippet = buildPreviewSource(
+    draft,
+    options.activeStepId,
+    languageSampleIntl,
+  );
   const snippetInput = usesNinjaExample(options.activeStepId)
-    ? NINJA_EXAMPLE_INPUT
+    ? [languageSampleIntl.stringLiterals.sampleInputName]
     : undefined;
   const snippetOutput = usesNinjaExample(options.activeStepId)
-    ? NINJA_EXAMPLE_OUTPUT
+    ? [
+        `${languageSampleIntl.printMessages.welcomePrefix}${languageSampleIntl.stringLiterals.sampleOutputName}`,
+      ]
     : undefined;
 
   return {
