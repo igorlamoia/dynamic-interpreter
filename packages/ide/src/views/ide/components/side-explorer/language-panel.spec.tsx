@@ -6,7 +6,8 @@ import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CUSTOMIZABLE_KEYWORDS, ORIGINAL_KEYWORDS } from "@/contexts/keyword";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
-import { buildHelloWorldSample } from "./language-sample";
+import { buildCompleteLanguageSample } from "./language-sample";
+import { getCategoryLexemeExample } from "./category-lexemes";
 
 (
   globalThis as typeof globalThis & {
@@ -58,7 +59,9 @@ vi.mock("next/router", () => ({
 
 import { CategoryLexemesList } from "./language-panel";
 
-function createCustomization(): StoredKeywordCustomization {
+function createCustomization(
+  overrides: Partial<StoredKeywordCustomization> = {},
+): StoredKeywordCustomization {
   return {
     mappings: ORIGINAL_KEYWORDS.map((original) => ({
       original,
@@ -76,6 +79,7 @@ function createCustomization(): StoredKeywordCustomization {
       array: "fixed",
     },
     languageDocumentation: {},
+    ...overrides,
   };
 }
 
@@ -155,14 +159,20 @@ describe("CategoryLexemesList", () => {
     };
     useEditorMock.mockReturnValue(editor);
     const { container, root, customization } = renderPanel();
-    const expectedCode = buildHelloWorldSample(customization);
+    const expectedCode = buildCompleteLanguageSample(customization);
 
     clickButtonByLabel(container, "View language sample");
 
     expect(container.querySelector('[role="dialog"]')).not.toBeNull();
     expect(container.textContent).toContain("Active language sample");
     expect(container.textContent).toContain('print("What is your name?")');
-    expect(container.textContent).toContain('print("hello world, ", name, "!")');
+    expect(container.textContent).toContain('print("Eren is the anti-hero");');
+    expect(container.textContent).toContain(
+      'print("Mikasa is a hero");',
+    );
+    expect(container.textContent).toContain(
+      'print("Lelouch vi Britannia has a plan");',
+    );
 
     clickButtonByText(container, "Replace selected file");
 
@@ -176,5 +186,37 @@ describe("CategoryLexemesList", () => {
     act(() => {
       root.unmount();
     });
+  });
+
+  it("shows placeholder examples for customized lexemes", () => {
+    const customization = createCustomization();
+    customization.mappings = customization.mappings.map((mapping) =>
+      mapping.original === "print" ? { ...mapping, custom: "xove" } : mapping,
+    );
+
+    const { container, root } = renderPanel(customization);
+    const printButton = Array.from(container.querySelectorAll("button")).find(
+      (candidate) => candidate.textContent === "xove",
+    );
+
+    expect(printButton).toBeDefined();
+    expect(printButton?.getAttribute("title")).toBe('xove("hello world");');
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("separates word-like statement terminators in lexeme examples", () => {
+    const customization = createCustomization({
+      statementTerminatorLexeme: "uai",
+    });
+
+    expect(getCategoryLexemeExample("tipos", "int", customization)).toBe(
+      "int score = 1 uai",
+    );
+    expect(
+      getCategoryLexemeExample("estrutura", "uai", customization),
+    ).toBe('print("ok") uai');
   });
 });

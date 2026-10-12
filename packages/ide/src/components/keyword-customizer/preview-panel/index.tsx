@@ -154,8 +154,7 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
   }>();
   const groupedLexemes = segregateLexemeChangesByCategory(preview);
   const cardItems = groupedLexemes.map((category) => {
-    const { key, title, icon, subtitle, items, changedCount, percentage } =
-      category;
+    const { key, icon, items, changedCount, percentage } = category;
     const translatedTitle = getPreviewCategoryTitle(locale, key);
     const translatedSubtitle = getPreviewCategorySubtitle(locale, key);
 
@@ -232,7 +231,13 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
       }`}
     >
       <div className="relative flex h-full flex-col gap-6 overflow-hidden rounded-lg py-4 pr-4">
-        <ExampleSnippet title={wt("preview.code")} code={preview.snippet} />
+        <ExampleSnippet
+          title={wt("preview.code")}
+          code={preview.snippet}
+          input={preview.snippetInput}
+          output={preview.snippetOutput}
+          terminalLayout="row"
+        />
 
         <CardSnapStack
           items={cardItems}

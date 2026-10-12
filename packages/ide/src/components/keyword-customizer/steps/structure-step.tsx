@@ -67,9 +67,7 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
       <Step.Header>
         <Step.Index>{wt("structure.index")}</Step.Index>
         <Step.Title>{wt("structure.title")}</Step.Title>
-        <Step.Description>
-          {wt("structure.description")}
-        </Step.Description>
+        <Step.Description>{wt("structure.description")}</Step.Description>
       </Step.Header>
 
       <div className="grid gap-3 md:grid-cols-2">
@@ -82,7 +80,11 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           selected={values.blockMode === "delimited"}
           onClick={() => actions.syncBlockMode("delimited")}
         >
-          <ExampleSnippet showHeader={false} code={values.delimiterSnippet} />
+          <ExampleSnippet
+            showHeader={false}
+            showLineNumbers={false}
+            code={values.delimiterSnippet}
+          />
         </OptionCard>
         <OptionCard
           title={wt("structure.indentationTitle")}
@@ -93,7 +95,11 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           icon={<TextQuote className="h-5 w-5" />}
           iconColor="violet"
         >
-          <ExampleSnippet showHeader={false} code={values.identationSnippet} />
+          <ExampleSnippet
+            showHeader={false}
+            showLineNumbers={false}
+            code={values.identationSnippet}
+          />
         </OptionCard>
       </div>
 
@@ -136,11 +142,6 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           {errors.delimiter}
         </p>
       )}
-      <ExampleSnippet
-        title={wt("structure.structuralExample")}
-        code={values.snippet ?? 'if (condicao) {\n  print("ok")\n}'}
-      />
-
       <div className="grid gap-3 sm:grid-cols-2">
         <OptionCard
           title={wt("structure.optionalTerminatorTitle")}
@@ -151,10 +152,14 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           icon={<TextQuote className="h-5 w-5" />}
           iconColor="slate"
         >
-          <ExampleSnippet
-            showHeader={false}
-            code={values.optionalTerminatorSnippet}
-          />
+          <div className="mt-auto">
+            <ExampleSnippet
+              showHeader={false}
+              code={values.optionalTerminatorSnippet}
+              showLineNumbers={false}
+              wrapLongLines
+            />
+          </div>
         </OptionCard>
 
         <OptionCard
@@ -166,10 +171,14 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           icon={<LockKeyhole className="h-5 w-5" />}
           iconColor="amber"
         >
-          <ExampleSnippet
-            showHeader={false}
-            code={values.requiredTerminatorSnippet}
-          />
+          <div className="mt-auto">
+            <ExampleSnippet
+              showHeader={false}
+              code={values.requiredTerminatorSnippet}
+              showLineNumbers={false}
+              wrapLongLines
+            />
+          </div>
         </OptionCard>
       </div>
 
@@ -203,7 +212,12 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           icon={<Braces className="h-5 w-5" />}
           iconColor="cyan"
         >
-          <ExampleSnippet showHeader={false} code={values.fixedArraySnippet} />
+          <ExampleSnippet
+            showHeader={false}
+            code={values.fixedArraySnippet}
+            showLineNumbers={false}
+            wrapLongLines
+          />
         </OptionCard>
         <OptionCard
           title={wt("structure.dynamicArrayTitle")}
@@ -217,6 +231,8 @@ export function StructureStep({ values, errors, actions }: StructureStepProps) {
           <ExampleSnippet
             showHeader={false}
             code={values.dynamicArraySnippet}
+            showLineNumbers={false}
+            wrapLongLines
           />
         </OptionCard>
       </div>

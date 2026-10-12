@@ -91,15 +91,22 @@ describe("buildStructureStepProps", () => {
 
     const props = buildStructureStepProps(context);
 
-    expect(props.values.delimiterSnippet).toContain("funcao main()inicio");
-    expect(props.values.identationSnippet).toContain("funcao main():");
+    expect(props.values.delimiterSnippet).toContain("vazio main() inicio");
+    expect(props.values.delimiterSnippet).toContain(
+      'escreva("Tu te tornas eternamente responsável por aquilo que cativas.");',
+    );
+    expect(props.values.identationSnippet).toContain("vazio main():");
+    expect(props.values.identationSnippet).toContain(
+      'escreva("Tu te tornas eternamente responsável por aquilo que cativas.");',
+    );
+    expect(props.values.identationSnippet).not.toContain("inicio");
     expect(props.values.optionalTerminatorSnippet).toBe('escreva("ok")');
-    expect(props.values.requiredTerminatorSnippet).toBe('escreva("ok") ;');
+    expect(props.values.requiredTerminatorSnippet).toBe('escreva("ok");');
     expect(props.values.fixedArraySnippet).toBe(
-      'texto animes[2] = ["Naruto", "AOT"] ;',
+      'texto animes[2] = ["Naruto", "AOT"];',
     );
     expect(props.values.dynamicArraySnippet).toBe(
-      'texto animes[] = ["Naruto", "AOT"] ;',
+      'texto animes[] = ["Naruto", "AOT"];',
     );
   });
 
@@ -122,6 +129,8 @@ describe("buildTypeStepProps", () => {
   it("fills keyword reference table descriptions with defaults", () => {
     const props = buildTypeStepProps(buildContext());
 
+    expect(props.values.typedSnippet).toBe("live-preview");
+    expect(props.values.untypedSnippet).toBe("live-preview");
     expect(props.values.variableKeywords).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

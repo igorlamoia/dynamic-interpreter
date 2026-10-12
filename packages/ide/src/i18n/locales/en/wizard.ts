@@ -95,8 +95,7 @@ const wizard = {
   "io.liveExample": "Live example",
   "types.index": "Step 3",
   "types.title": "Typing model",
-  "types.description":
-    "Choose first whether the language is typed or untyped.",
+  "types.description": "Choose first whether the language is typed or untyped.",
   "types.untypedTitle": "Untyped",
   "types.untypedSubtitle": "Magic",
   "types.untypedDescription":
@@ -120,7 +119,6 @@ const wizard = {
     "Organizes blocks by indentation, without delimiters.",
   "structure.openDelimiter": "Opening delimiter",
   "structure.closeDelimiter": "Closing delimiter",
-  "structure.structuralExample": "Structure example",
   "structure.optionalTerminatorTitle": "No semicolon",
   "structure.optionalTerminatorSubtitle": "Line",
   "structure.optionalTerminatorDescription":

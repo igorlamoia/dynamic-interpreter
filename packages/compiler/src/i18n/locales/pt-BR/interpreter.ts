@@ -33,6 +33,8 @@ const interpreter = {
     "Nao e possivel atribuir um valor {sourceType} a variavel {targetType} '{variableName}'.",
   incompatible_return:
     "Nao e possivel retornar um valor {sourceType} de uma funcao declarada como {targetType}.",
+  max_instruction_steps_exceeded:
+    "Execucao interrompida apos {maxInstructionSteps} instrucoes. O programa pode conter um loop infinito.",
 };
 
 export default interpreter;

@@ -129,7 +129,6 @@ const wizard = {
     "Organiza blocos pela indentação, sem delimitadores.",
   "structure.openDelimiter": "Delimitador de abertura",
   "structure.closeDelimiter": "Delimitador de fechamento",
-  "structure.structuralExample": "Exemplo estrutural",
   "structure.optionalTerminatorTitle": "Sem ponto e vírgula",
   "structure.optionalTerminatorSubtitle": "Linha",
   "structure.optionalTerminatorDescription":
@@ -150,8 +149,7 @@ const wizard = {
 
   "rules.index": "Etapa 5",
   "rules.title": "Operadores",
-  "rules.description":
-    "Ajuste os operadores já suportados pelo domínio atual.",
+  "rules.description": "Ajuste os operadores já suportados pelo domínio atual.",
   "rules.booleanLiterals": "Literais booleanos",
   "rules.operatorAliases": "Aliases de operadores",
   "rules.literalLabel": "Literal {value}",
@@ -169,7 +167,8 @@ const wizard = {
 
   "review.index": "Etapa 7",
   "review.title": "Revisão",
-  "review.description": "Confira o resumo final antes de aplicar a configuração.",
+  "review.description":
+    "Confira o resumo final antes de aplicar a configuração.",
   "review.languageName": "Nome da linguagem",
   "review.basedOn": "Baseado em {preset}",
   "review.rulesSummary": "Resumo das regras",

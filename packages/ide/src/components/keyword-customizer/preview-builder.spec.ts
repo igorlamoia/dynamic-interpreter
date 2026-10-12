@@ -80,6 +80,17 @@ describe("preview-builder structure option snippets", () => {
     expect(buildRequiredTerminatorSnippet(draft)).toBe('mostrar("ok") fim');
   });
 
+  it("keeps semicolon terminators attached to statements", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes.semicolon = "required";
+    draft.statementTerminatorLexeme = ";";
+
+    expect(buildRequiredTerminatorSnippet(draft)).toBe('escreva("ok");');
+    expect(buildFixedArraySnippet(draft)).toBe(
+      'texto animes[2] = ["Naruto", "AOT"];',
+    );
+  });
+
   it("builds typed array option examples with exact fixed sizes", () => {
     const draft = getDefaultCustomizationState();
     draft.mappings = draft.mappings.map((mapping) => {

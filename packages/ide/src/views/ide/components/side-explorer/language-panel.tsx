@@ -26,7 +26,10 @@ import {
 } from "@/hooks/useLanguageChoices";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { PREVIEW_CATEGORIES } from "@/components/keyword-customizer/preview-panel/categories-list";
-import { getCategoryLexemes } from "./category-lexemes";
+import {
+  getCategoryLexemeExample,
+  getCategoryLexemes,
+} from "./category-lexemes";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { getLanguageSampleIntl, t } from "@/i18n";
@@ -38,7 +41,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { buildHelloWorldSample } from "./language-sample";
+import { buildCompleteLanguageSample } from "./language-sample";
 import { JAVAMM_LANGUAGE_ID } from "@/utils/compiler/editor/editor-language";
 
 export type LanguageCustomization = StoredKeywordCustomization;
@@ -288,17 +291,34 @@ export function CategoryLexemesList({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {lexemes.map((lexeme) => (
-                    <button
-                      key={`${category.key}-${lexeme}`}
-                      type="button"
-                      onClick={() => handleLexemeClick(lexeme)}
-                      title={lexeme}
-                      className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium transition hover:border-primary hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5"
-                    >
-                      {lexeme}
-                    </button>
-                  ))}
+                  {lexemes.map((lexeme) => {
+                    const example = getCategoryLexemeExample(
+                      category.key,
+                      lexeme,
+                      customization,
+                    );
+                    return (
+                      <TooltipProvider key={`${category.key}-${lexeme}`}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              onClick={() => handleLexemeClick(lexeme)}
+                              title={example ?? lexeme}
+                              className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-medium transition hover:border-primary hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5"
+                            >
+                              {lexeme}
+                            </button>
+                          </TooltipTrigger>
+                          {example ? (
+                            <TooltipContent>
+                              <code>{example}</code>
+                            </TooltipContent>
+                          ) : null}
+                        </Tooltip>
+                      </TooltipProvider>
+                    );
+                  })}
                 </div>
               </section>
             );
@@ -329,7 +349,7 @@ export function LanguageSampleDialog({
   const editor = useEditor();
   const sampleCode = useMemo(() => {
     if (!activeLanguage?.customization) return "";
-    return buildHelloWorldSample(
+    return buildCompleteLanguageSample(
       activeLanguage.customization,
       getLanguageSampleIntl(locale),
     );

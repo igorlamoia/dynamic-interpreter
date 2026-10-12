@@ -25,8 +25,9 @@ describe("buildWizardPreview", () => {
     expect(preview.basedOnLabel).toBe("Didática em Português");
     expect(preview.dna).toContain("blocos com delimitadores");
     expect(preview.snippet).toContain("escreva(");
+    expect(preview.snippet).toContain("vazio main()");
     expect(preview.tokenPreview.map((token) => token.lexeme)).toContain(
-      "escreva",
+      "vazio",
     );
   });
 
@@ -159,6 +160,59 @@ describe("buildWizardPreview", () => {
     expect(preview.languageImageUrl).toBe("https://img.example/cafe.jpg");
   });
 
+  it("uses the ninja prompt as the identity step example", () => {
+    const draft = getDefaultCustomizationState();
+    draft.mappings = draft.mappings.map((item) =>
+      item.original === "scan" ? { ...item, custom: "teste" } : item,
+    );
+
+    const preview = buildWizardPreview(draft, {
+      activeStepId: "identity",
+      presetId: "free",
+    });
+
+    expect(preview.snippet).toBe(
+      ["teste(nome);", 'escreva("Bem-vindo, ", nome);'].join("\n"),
+    );
+    expect(preview.snippetInput).toEqual(["Naruto"]);
+    expect(preview.snippetOutput).toEqual(["Bem-vindo, Naturo"]);
+  });
+
+  it("uses the ninja prompt as the IO step example", () => {
+    const draft = getDefaultCustomizationState();
+    draft.mappings = draft.mappings.map((item) =>
+      item.original === "scan" ? { ...item, custom: "teste" } : item,
+    );
+
+    const preview = buildWizardPreview(draft, {
+      activeStepId: "IO",
+      presetId: "free",
+    });
+
+    expect(preview.snippet).toBe(
+      ["teste(nome);", 'escreva("Bem-vindo, ", nome);'].join("\n"),
+    );
+    expect(preview.snippetInput).toEqual(["Naruto"]);
+    expect(preview.snippetOutput).toEqual(["Bem-vindo, Naturo"]);
+  });
+
+  it("omits terminators from the IO ninja example when line endings are optional", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes.semicolon = "optional-eol";
+    draft.mappings = draft.mappings.map((item) =>
+      item.original === "scan" ? { ...item, custom: "teste" } : item,
+    );
+
+    const preview = buildWizardPreview(draft, {
+      activeStepId: "IO",
+      presetId: "python-like",
+    });
+
+    expect(preview.snippet).toBe(
+      ["teste(nome)", 'escreva("Bem-vindo, ", nome)'].join("\n"),
+    );
+  });
+
   it("uses a richer full-program example on the review step", () => {
     const draft = applyWizardPreset(getDefaultCustomizationState(), "free");
 
@@ -167,12 +221,14 @@ describe("buildWizardPreview", () => {
       presetId: "free",
     });
 
-    expect(preview.baselineSnippet).toContain("int idade = 25");
-    expect(preview.baselineSnippet).toContain('print("Olá Mundo!")');
-    expect(preview.baselineSnippet).toContain("scan(nome)");
-    expect(preview.baselineSnippet).toContain("switch (nivel)");
-    expect(preview.baselineSnippet).toContain("return idade");
+    expect(preview.baselineSnippet).toContain("int score = 1");
+    expect(preview.baselineSnippet).toContain('print("Eren is the anti-hero")');
+    expect(preview.baselineSnippet).toContain("scan(string, name)");
+    expect(preview.baselineSnippet).toContain("switch (score)");
+    expect(preview.baselineSnippet).toContain("return 0");
     expect(preview.snippet).toContain("case 1");
+    expect(preview.snippet).toContain('print("Roy Mustang is a hero")');
+    expect(preview.snippet).toContain('print("Maes Hughes always dies")');
     expect(preview.snippet).toContain("continue");
     expect(preview.snippet).toContain("break");
   });
@@ -186,9 +242,9 @@ describe("buildWizardPreview", () => {
       presetId: "python-like",
     });
 
-    expect(preview.baselineSnippet).toContain("int idade = 25");
-    expect(preview.snippet).toContain('variable nome = "Kiki"');
-    expect(preview.snippet).toContain("variable idade = 25");
-    expect(preview.snippet).toContain("variable estudante = true");
+    expect(preview.baselineSnippet).toContain("int score = 1");
+    expect(preview.snippet).toContain('variable name = "";');
+    expect(preview.snippet).toContain("variable score = 1");
+    expect(preview.snippet).toContain("variable ready = true");
   });
 });

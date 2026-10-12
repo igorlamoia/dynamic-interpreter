@@ -192,6 +192,26 @@ describe("Type semantics warnings", () => {
     );
   });
 
+  it("accepts multiple bool declarations with trailing or per-variable initializers", async () => {
+    const result = await executeProgram(`
+      int main() {
+        bool narutoQuerConversar, erenQuerDestruirTudo, mikasaAmaEren = true;
+        print(narutoQuerConversar);
+        print(erenQuerDestruirTudo);
+        print(mikasaAmaEren);
+
+        bool narutoQuerConversar2 = true, erenQuerDestruirTudo2 = true, mikasaAmaEren2 = true;
+        print(narutoQuerConversar2);
+        print(erenQuerDestruirTudo2);
+        print(mikasaAmaEren2);
+        return 0;
+      }
+    `);
+
+    expect(result.warnings).toHaveLength(0);
+    expect(result.output).toBe("truetruetruetruetruetrue");
+  });
+
   it("reports a warning when assigning a float literal to an int", () => {
     const result = compileProgram(`
       int main() {
@@ -736,6 +756,19 @@ describe("Type semantics runtime", () => {
     `);
 
     expect(result.output).toBe("true");
+  });
+
+  it("applies a trailing declaration initializer before bool conditions", async () => {
+    const result = await executeProgram(`
+      void main() {
+        bool narutoQuerConversar, erenQuerDestruirTudo, mikasaAmaEren = true;
+        if (erenQuerDestruirTudo && narutoQuerConversar) {
+          print("mensagem");
+        }
+      }
+    `);
+
+    expect(result.output).toBe("mensagem");
   });
 
   it("propagates array writes through parameter references", async () => {

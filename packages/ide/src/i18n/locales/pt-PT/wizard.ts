@@ -3,7 +3,8 @@ const wizard = {
   "header.editTitle": "A editar {name}",
   "header.createDescription":
     "Torne a experiência de programar tão única quanto você.",
-  "header.editDescription": "As suas alterações substituem a linguagem guardada.",
+  "header.editDescription":
+    "As suas alterações substituem a linguagem guardada.",
   "footer.back": "Voltar",
   "footer.continue": "Continuar",
   "footer.saveLocal": "Guardar e aplicar",
@@ -123,7 +124,6 @@ const wizard = {
     "Organiza blocos pela indentação, sem delimitadores.",
   "structure.openDelimiter": "Delimitador de abertura",
   "structure.closeDelimiter": "Delimitador de fecho",
-  "structure.structuralExample": "Exemplo estrutural",
   "structure.optionalTerminatorTitle": "Sem ponto e vírgula",
   "structure.optionalTerminatorSubtitle": "Linha",
   "structure.optionalTerminatorDescription":
@@ -159,7 +159,8 @@ const wizard = {
   "flow.flowExample": "Exemplo de fluxo",
   "review.index": "Etapa 7",
   "review.title": "Revisão",
-  "review.description": "Confira o resumo final antes de aplicar a configuração.",
+  "review.description":
+    "Confira o resumo final antes de aplicar a configuração.",
   "review.languageName": "Nome da linguagem",
   "review.basedOn": "Baseado em {preset}",
   "review.rulesSummary": "Resumo das regras",
