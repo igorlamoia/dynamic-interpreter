@@ -51,6 +51,7 @@ describe("Menu", () => {
           handleRun={vi.fn()}
           isFullscreen={false}
           onHelp={onHelp}
+          onRules={vi.fn()}
           runAll={vi.fn()}
           toggleFullscreen={vi.fn()}
           toggleTerminal={vi.fn()}
@@ -67,6 +68,41 @@ describe("Menu", () => {
     });
 
     expect(onHelp).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("calls onRules from the Compiler rules button", () => {
+    const onRules = vi.fn();
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <Menu
+          handleRun={vi.fn()}
+          isFullscreen={false}
+          onHelp={vi.fn()}
+          onRules={onRules}
+          runAll={vi.fn()}
+          toggleFullscreen={vi.fn()}
+          toggleTerminal={vi.fn()}
+        />,
+      );
+    });
+
+    act(() => {
+      Array.from(container.querySelectorAll("button"))
+        .find((button) => button.textContent === "Compiler rules")
+        ?.dispatchEvent(
+          new MouseEvent("click", { bubbles: true, cancelable: true }),
+        );
+    });
+
+    expect(onRules).toHaveBeenCalledTimes(1);
 
     act(() => {
       root.unmount();

@@ -6,6 +6,7 @@ import {
   buildCompleteLanguageSample,
   buildHelloWorldSample,
   buildLanguageCategorySample,
+  buildReviewLanguageSample,
 } from "./language-sample";
 
 function createCustomization(
@@ -308,5 +309,63 @@ describe("buildCompleteLanguageSample", () => {
     expect(sample).not.toContain(
       'print("You become responsible forever for what you have tamed.");',
     );
+  });
+});
+
+describe("buildReviewLanguageSample", () => {
+  it("builds a compact runnable review sample with broad lexeme coverage", () => {
+    const sample = buildReviewLanguageSample(createCustomization());
+
+    expect(sample).toContain('string name = "";');
+    expect(sample).toContain("int score = 0;");
+    expect(sample).toContain("float height = 1.8;");
+    expect(sample).toContain("bool ready = true;");
+    expect(sample).toContain('print("What is your name?");');
+    expect(sample).toContain("scan(string, name);");
+    expect(sample).toContain('if (name != "hello" && ready');
+    expect(sample).toContain("score >= 0");
+    expect(sample).toContain("height > 1.0");
+    expect(sample).toContain("else {");
+    expect(sample).toContain("score = score - 1;");
+    expect(sample).toContain("for (i = 0; i < 3; i = i + 1)");
+    expect(sample).toContain("if (i == 1)");
+    expect(sample).toContain("continue;");
+    expect(sample).toContain("total = total * 1;");
+    expect(sample).toContain("while (index <=");
+    expect(sample).toContain("canceledOrder || !ready");
+    expect(sample).toContain("if (stock <= 0)");
+    expect(sample).toContain("break;");
+    expect(sample).toContain("switch (shipped)");
+    expect(sample).toContain("case 1:");
+    expect(sample).toContain("default:");
+    expect(sample).toContain("total = total / 1;");
+    expect(sample).toContain("void missionLog() {");
+    expect(sample).toContain('print("ok");');
+    expect(sample).toContain("return 0;");
+    expect(sample).not.toContain("Eren");
+    expect(sample).not.toContain("Mikasa");
+  });
+
+  it("uses untyped and indentation forms when the language requires them", () => {
+    const sample = buildReviewLanguageSample(
+      createCustomization({
+        statementTerminatorLexeme: "",
+        blockDelimiters: { open: "", close: "" },
+        modes: {
+          semicolon: "optional-eol",
+          block: "indentation",
+          typing: "untyped",
+          array: "dynamic",
+        },
+      }),
+    );
+
+    expect(sample).toContain("function main():");
+    expect(sample).toContain('variable name = ""');
+    expect(sample).toContain("scan(name)");
+    expect(sample).toContain("switch (shipped):");
+    expect(sample).toContain("function missionLog():");
+    expect(sample).not.toContain("int main()");
+    expect(sample).not.toContain("void missionLog()");
   });
 });

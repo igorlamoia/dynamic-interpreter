@@ -42,6 +42,7 @@ import {
 } from "./defaultFiles";
 import { useLanguageChoices } from "@/hooks/useLanguageChoices";
 import { LanguageSampleDialog } from "./components/side-explorer/language-panel";
+import { CompilerRulesDialog } from "./components/compiler-rules-dialog";
 
 export function IDEProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -273,6 +274,7 @@ export function IDE({
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLanguageSampleOpen, setIsLanguageSampleOpen] = useState(false);
+  const [isCompilerRulesOpen, setIsCompilerRulesOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
   const toggleFullscreen = () => setIsFullscreen((current) => !current);
@@ -320,6 +322,7 @@ export function IDE({
             isRunDisabled={!areKeywordsReady}
             isFullscreen={isFullscreen}
             onHelp={() => setIsLanguageSampleOpen(true)}
+            onRules={() => setIsCompilerRulesOpen(true)}
             runAll={runAll}
             toggleFullscreen={toggleFullscreen}
             toggleTerminal={toggleTerminal}
@@ -415,6 +418,10 @@ export function IDE({
         locale={locale}
         open={isLanguageSampleOpen}
         onOpenChange={setIsLanguageSampleOpen}
+      />
+      <CompilerRulesDialog
+        open={isCompilerRulesOpen}
+        onOpenChange={setIsCompilerRulesOpen}
       />
       {showAnalysisPanels && (
         <div className="flex flex-col gap-4">

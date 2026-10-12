@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CUSTOMIZABLE_KEYWORDS, ORIGINAL_KEYWORDS } from "@/contexts/keyword";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
-import { buildCompleteLanguageSample } from "./language-sample";
+import { buildReviewLanguageSample } from "./language-sample";
 import { getCategoryLexemeExample } from "./category-lexemes";
 
 (
@@ -159,20 +159,19 @@ describe("CategoryLexemesList", () => {
     };
     useEditorMock.mockReturnValue(editor);
     const { container, root, customization } = renderPanel();
-    const expectedCode = buildCompleteLanguageSample(customization);
+    const expectedCode = buildReviewLanguageSample(customization);
 
     clickButtonByLabel(container, "View language sample");
 
     expect(container.querySelector('[role="dialog"]')).not.toBeNull();
     expect(container.textContent).toContain("Active language sample");
     expect(container.textContent).toContain('print("What is your name?")');
-    expect(container.textContent).toContain('print("Eren is the anti-hero");');
-    expect(container.textContent).toContain(
-      'print("Mikasa is a hero");',
-    );
-    expect(container.textContent).toContain(
-      'print("Lelouch vi Britannia has a plan");',
-    );
+    expect(container.textContent).toContain('if (name != "hello"');
+    expect(container.textContent).toContain("for (i = 0; i < 3;");
+    expect(container.textContent).toContain("switch (shipped)");
+    expect(container.textContent).toContain('print("ok");');
+    expect(container.textContent).not.toContain("Eren");
+    expect(container.textContent).not.toContain("Mikasa");
 
     clickButtonByText(container, "Replace selected file");
 

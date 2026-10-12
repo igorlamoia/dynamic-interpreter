@@ -9,6 +9,7 @@ interface MenuProps {
   isFullscreen: boolean;
   isRunDisabled?: boolean;
   onHelp: () => void;
+  onRules: () => void;
   runAll: () => void;
   toggleFullscreen: () => void;
   toggleTerminal: () => void;
@@ -19,6 +20,7 @@ export function Menu({
   isFullscreen,
   isRunDisabled = false,
   onHelp,
+  onRules,
   runAll,
   toggleFullscreen,
   toggleTerminal,
@@ -50,6 +52,13 @@ export function Menu({
             onClick={onHelp}
           >
             {t(locale, "ui.help")}
+          </button>
+          <button
+            data-tour="ide-rules"
+            className="hover:text-foreground"
+            onClick={onRules}
+          >
+            Compiler rules
           </button>
         </div>
       </div>

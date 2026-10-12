@@ -41,7 +41,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { buildCompleteLanguageSample } from "./language-sample";
+import { buildReviewLanguageSample } from "./language-sample";
 import { JAVAMM_LANGUAGE_ID } from "@/utils/compiler/editor/editor-language";
 
 export type LanguageCustomization = StoredKeywordCustomization;
@@ -349,7 +349,7 @@ export function LanguageSampleDialog({
   const editor = useEditor();
   const sampleCode = useMemo(() => {
     if (!activeLanguage?.customization) return "";
-    return buildCompleteLanguageSample(
+    return buildReviewLanguageSample(
       activeLanguage.customization,
       getLanguageSampleIntl(locale),
     );
