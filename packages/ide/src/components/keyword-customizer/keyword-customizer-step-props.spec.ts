@@ -93,11 +93,11 @@ describe("buildStructureStepProps", () => {
 
     expect(props.values.delimiterSnippet).toContain("vazio main() inicio");
     expect(props.values.delimiterSnippet).toContain(
-      'escreva("Tu te tornas eternamente responsável por aquilo que cativas.");',
+      'escreva("You become responsible forever for what you have tamed.");',
     );
     expect(props.values.identationSnippet).toContain("vazio main():");
     expect(props.values.identationSnippet).toContain(
-      'escreva("Tu te tornas eternamente responsável por aquilo que cativas.");',
+      'escreva("You become responsible forever for what you have tamed.");',
     );
     expect(props.values.identationSnippet).not.toContain("inicio");
     expect(props.values.optionalTerminatorSnippet).toBe('escreva("ok")');
