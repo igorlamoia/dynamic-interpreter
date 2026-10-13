@@ -262,4 +262,14 @@ describe("CategoryLexemesList", () => {
       root.unmount();
     });
   });
+
+  it("falls back to default boolean literals when the map is empty", () => {
+    const customization = createCustomization({
+      booleanLiteralMap: {},
+    });
+
+    expect(getCategoryLexemes("operadores", customization)).toEqual(
+      expect.arrayContaining(["true", "false"]),
+    );
+  });
 });

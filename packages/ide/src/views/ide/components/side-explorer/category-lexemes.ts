@@ -14,6 +14,17 @@ const OPERATOR_SYMBOLS = Object.fromEntries(
   OPERATOR_WORD_FIELDS.map((field) => [field.key, field.symbol]),
 ) as Record<keyof typeof DEFAULT_OPERATOR_WORD_MAP, string>;
 
+function getBooleanLiteralLexeme(
+  customization: LanguageCustomization,
+  key: "true" | "false",
+): string {
+  return (
+    customization.booleanLiteralMap[key]?.trim() ||
+    DEFAULT_BOOLEAN_LITERAL_MAP[key] ||
+    key
+  );
+}
+
 function getKeywordValue(
   customization: LanguageCustomization,
   original: string,
@@ -99,10 +110,8 @@ export function getCategoryLexemes(
           OPERATOR_SYMBOLS.equal_equal,
         customization.operatorWordMap.not_equal?.trim() ||
           OPERATOR_SYMBOLS.not_equal,
-        customization.booleanLiteralMap.true?.trim() ||
-          DEFAULT_BOOLEAN_LITERAL_MAP.true,
-        customization.booleanLiteralMap.false?.trim() ||
-          DEFAULT_BOOLEAN_LITERAL_MAP.false,
+        getBooleanLiteralLexeme(customization, "true"),
+        getBooleanLiteralLexeme(customization, "false"),
       ];
     default:
       return [];
