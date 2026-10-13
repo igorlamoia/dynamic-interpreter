@@ -41,24 +41,24 @@ export function Menu({
         <div className="hidden items-center gap-3 md:flex">
           <button
             data-tour="ide-terminal-toggle"
-            className="hover:text-foreground"
+            className="cursor-pointer hover:text-foreground"
             onClick={toggleTerminal}
           >
             {t(locale, "ui.terminal")}
           </button>
           <button
             data-tour="ide-help"
-            className="hover:text-foreground"
+            className="cursor-pointer hover:text-foreground"
             onClick={onHelp}
           >
             {t(locale, "ui.help")}
           </button>
           <button
             data-tour="ide-rules"
-            className="hover:text-foreground"
+            className="cursor-pointer hover:text-foreground"
             onClick={onRules}
           >
-            Compiler rules
+            {t(locale, "ui.compiler_rules")}
           </button>
         </div>
       </div>

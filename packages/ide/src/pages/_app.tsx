@@ -29,7 +29,6 @@ export default function App({ Component, pageProps }: AppPropsWithAuth) {
   return (
     <AppQueryClientProvider>
       <ThemeProvider>
-        {showCustomPointer && <Pointer />}
         <AuthLayout>
           <AlertProvider>
             <ToastProvider>
@@ -43,6 +42,7 @@ export default function App({ Component, pageProps }: AppPropsWithAuth) {
             </ToastProvider>
           </AlertProvider>
         </AuthLayout>
+        {showCustomPointer && <Pointer />}
       </ThemeProvider>
     </AppQueryClientProvider>
   );

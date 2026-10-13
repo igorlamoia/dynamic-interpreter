@@ -58,6 +58,7 @@ const ui = {
   edit: "Editar",
   terminal: "Terminal",
   help: "Ajuda",
+  compiler_rules: "Regras do compilador",
   explorer: "Explorador",
   search: "Pesquisar",
   languages: "Linguagens",

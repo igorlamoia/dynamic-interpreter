@@ -31,7 +31,13 @@ vi.mock("motion/react", async () => {
         initial?: unknown;
         animate?: unknown;
         exit?: unknown;
-      }) => <div {...props}>{children}</div>,
+      }) => {
+        void initial;
+        void animate;
+        void exit;
+
+        return <div {...props}>{children}</div>;
+      },
     },
     useMotionValue: (initial: number) => ({
       get: () => initial,
@@ -79,9 +85,9 @@ describe("Pointer", () => {
       );
     });
 
-    expect(
-      appContainer.querySelector(".text-cyan-300"),
-    ).toBeInstanceOf(HTMLDivElement);
+    expect(document.body.querySelector(".text-cyan-300")).toBeInstanceOf(
+      HTMLDivElement,
+    );
 
     act(() => {
       root.unmount();

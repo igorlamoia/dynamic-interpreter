@@ -225,6 +225,7 @@ const ui = {
   edit: "Edit",
   terminal: "Terminal",
   help: "Help",
+  compiler_rules: "Compiler rules",
   explorer: "Explorer",
   search: "Search",
   languages: "Languages",

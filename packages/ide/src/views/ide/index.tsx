@@ -420,6 +420,7 @@ export function IDE({
         onOpenChange={setIsLanguageSampleOpen}
       />
       <CompilerRulesDialog
+        locale={locale}
         open={isCompilerRulesOpen}
         onOpenChange={setIsCompilerRulesOpen}
       />

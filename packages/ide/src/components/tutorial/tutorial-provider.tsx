@@ -29,6 +29,8 @@ type TutorialContextValue = {
 };
 
 const TutorialContext = createContext<TutorialContextValue | null>(null);
+const TUTORIAL_BACKDROP_Z_INDEX = 2147483645;
+const TUTORIAL_CONTENT_Z_INDEX = 2147483646;
 
 export function TutorialProvider({ children }: { children: ReactNode }) {
   const { locale } = useRouter();
@@ -191,7 +193,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
               showProgress: false,
               skipBeacon: true,
               textColor: "hsl(var(--foreground))",
-              zIndex: 2147483647,
+              zIndex: TUTORIAL_CONTENT_Z_INDEX,
             }}
             styles={{
               tooltip: {
@@ -299,22 +301,38 @@ function TutorialBlurBackdrop({ step }: { step?: Step }) {
   const right = Math.min(rect.right + padding, window.innerWidth);
   const bottom = Math.min(rect.bottom + padding, window.innerHeight);
   const panelClass =
-    "pointer-events-none fixed z-[2147483646] backdrop-blur-[3px]";
+    "pointer-events-none fixed backdrop-blur-[3px]";
 
   return (
     <>
-      <div className={panelClass} style={{ inset: `0 0 auto 0`, height: top }} />
       <div
         className={panelClass}
-        style={{ inset: `${top}px ${window.innerWidth - left}px ${window.innerHeight - bottom}px 0` }}
+        style={{
+          inset: `0 0 auto 0`,
+          height: top,
+          zIndex: TUTORIAL_BACKDROP_Z_INDEX,
+        }}
       />
       <div
         className={panelClass}
-        style={{ inset: `${top}px 0 ${window.innerHeight - bottom}px ${right}px` }}
+        style={{
+          inset: `${top}px ${window.innerWidth - left}px ${window.innerHeight - bottom}px 0`,
+          zIndex: TUTORIAL_BACKDROP_Z_INDEX,
+        }}
       />
       <div
         className={panelClass}
-        style={{ inset: `${bottom}px 0 0 0` }}
+        style={{
+          inset: `${top}px 0 ${window.innerHeight - bottom}px ${right}px`,
+          zIndex: TUTORIAL_BACKDROP_Z_INDEX,
+        }}
+      />
+      <div
+        className={panelClass}
+        style={{
+          inset: `${bottom}px 0 0 0`,
+          zIndex: TUTORIAL_BACKDROP_Z_INDEX,
+        }}
       />
     </>
   );
@@ -356,7 +374,7 @@ function TutorialTooltip({
     <div
       {...tooltipProps}
       style={{
-        zIndex: 2147483647,
+        zIndex: TUTORIAL_CONTENT_Z_INDEX,
         pointerEvents: "auto",
       }}
       className="pointer-events-auto w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-cyan-300/50 bg-white text-slate-950 shadow-2xl shadow-black/30 dark:border-cyan-300/60 dark:bg-slate-950 dark:text-slate-50"

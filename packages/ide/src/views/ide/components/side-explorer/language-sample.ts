@@ -921,163 +921,167 @@ export function buildReviewLanguageSample(
       usedIdentifiers,
     );
 
-  const nameIdentifier = sampleIdentifier(
-    intl.nameIdentifier,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.nameIdentifier,
-  );
-  const scoreIdentifier = sampleIdentifier(
-    intl.identifiers.score,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.score,
-  );
-  const heightIdentifier = sampleIdentifier(
-    intl.identifiers.height,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.height,
-  );
-  const readyIdentifier = sampleIdentifier(
-    intl.identifiers.ready,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.ready,
-  );
   const indexIdentifier = sampleIdentifier(
     intl.identifiers.index,
     DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.index,
+  );
+  const valueIdentifier = sampleIdentifier(
+    intl.identifiers.value,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.value,
   );
   const totalIdentifier = sampleIdentifier(
     intl.identifiers.total,
     DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.total,
   );
-  const stockIdentifier = sampleIdentifier(
-    intl.identifiers.stock,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.stock,
+  const discountIdentifier = sampleIdentifier(
+    intl.identifiers.discount,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.discount,
   );
-  const shippedIdentifier = sampleIdentifier(
-    intl.identifiers.shipped,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.shipped,
+  const salesIdentifier = sampleIdentifier(
+    intl.identifiers.sales,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.sales,
+  );
+  const statusIdentifier = sampleIdentifier(
+    intl.identifiers.status,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.status,
   );
   const orderIndexIdentifier = sampleIdentifier(
     intl.identifiers.orderIndex,
     DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.orderIndex,
   );
-  const totalOrdersIdentifier = sampleIdentifier(
-    intl.identifiers.totalOrders,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.totalOrders,
+  const activeRegistrationIdentifier = sampleIdentifier(
+    intl.identifiers.activeRegistration,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.activeRegistration,
   );
-  const canceledOrderIdentifier = sampleIdentifier(
-    intl.identifiers.canceledOrder,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.canceledOrder,
+  const canBuyIdentifier = sampleIdentifier(
+    intl.identifiers.canBuy,
+    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.canBuy,
   );
-  const reviewFunction = sampleIdentifier(
-    intl.identifiers.missionFunction,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.missionFunction,
+  const taxFunction = sampleIdentifier(
+    "calculateTax",
+    "calculateTax",
     "Function",
   );
+  const arraySize = customization.modes.array === "dynamic" ? "[]" : "[3]";
 
   const scanLine = isUntyped
-    ? statement(`${keyword("scan")}(${nameIdentifier})`)
-    : statement(`${keyword("scan")}(${keyword("string")}, ${nameIdentifier})`);
+    ? statement(`${keyword("scan")}(${valueIdentifier})`)
+    : statement(`${keyword("scan")}(${keyword("float")}, ${valueIdentifier})`);
+  const taxParameters = `${valueIdentifier}, ${discountIdentifier}`;
+  const typedTaxParameters = `${keyword(
+    "float",
+  )} ${valueIdentifier}, ${keyword("float")} ${discountIdentifier}`;
   const mainHeader = isUntyped
     ? `${keyword("function")} main()`
     : `${keyword("int")} main()`;
   const reviewHeader = isUntyped
-    ? `${keyword("function")} ${reviewFunction}()`
-    : `${keyword("void")} ${reviewFunction}()`;
+    ? `${keyword("function")} ${taxFunction}(${taxParameters})`
+    : `${keyword("float")} ${taxFunction}(${typedTaxParameters})`;
+  const itemPricesDeclaration = isUntyped
+    ? statement(`${salesIdentifier}${arraySize} = [50.0, 0.0, 100.0]`)
+    : statement(
+        `${keyword(
+          "float",
+        )} ${salesIdentifier}${arraySize} = [50.0, 0.0, 100.0]`,
+      );
+  const forInitializer = isUntyped
+    ? `${indexIdentifier} = 0`
+    : `${keyword("int")} ${indexIdentifier} = 0`;
   const flowSwitchLines =
     customization.modes.block === "indentation"
       ? [
-          `${keyword("switch")} (${shippedIdentifier}):`,
-          `  ${keyword("case")} 1:`,
-          `    ${statement(`${totalIdentifier} = ${totalIdentifier} / 1`)}`,
+          `${keyword("switch")} (${statusIdentifier}):`,
+          `  ${keyword("case")} "${intl.stringLiterals.vipStatus}":`,
+          `    ${printLine("VIP customer")}`,
           `    ${statement(keyword("break"))}`,
           `  ${keyword("default")}:`,
-          `    ${statement(`${totalIdentifier} = ${totalIdentifier} + 0`)}`,
+          `    ${printLine("standard customer")}`,
         ]
       : [
-          `${keyword("switch")} (${shippedIdentifier}) ${
+          `${keyword("switch")} (${statusIdentifier}) ${
             customization.blockDelimiters.open.trim() || "{"
           }`,
-          `  ${keyword("case")} 1:`,
-          `    ${statement(`${totalIdentifier} = ${totalIdentifier} / 1`)}`,
+          `  ${keyword("case")} "${intl.stringLiterals.vipStatus}":`,
+          `    ${printLine("VIP customer")}`,
           `    ${statement(keyword("break"))}`,
           `  ${keyword("default")}:`,
-          `    ${statement(`${totalIdentifier} = ${totalIdentifier} + 0`)}`,
+          `    ${printLine("standard customer")}`,
           customization.blockDelimiters.close.trim() || "}",
         ];
 
   const mainLines = buildBlock(customization, mainHeader, [
-    declare("string", nameIdentifier, '""'),
-    declare("int", scoreIdentifier, "0"),
-    declare("float", heightIdentifier, "1.8"),
-    declare("bool", readyIdentifier, bool("true")),
-    declare("int", indexIdentifier, "0"),
-    declare("int", totalIdentifier, "0"),
-    declare("int", stockIdentifier, "2"),
-    declare("int", shippedIdentifier, "0"),
+    declare("float", valueIdentifier, "0.0"),
+    declare("float", totalIdentifier, "250.0"),
+    declare("float", discountIdentifier, "0.0"),
+    declare("string", statusIdentifier, `"${intl.stringLiterals.vipStatus}"`),
+    declare("bool", activeRegistrationIdentifier, bool("true")),
+    declare("bool", canBuyIdentifier, bool("false")),
+    itemPricesDeclaration,
     declare("int", orderIndexIdentifier, "0"),
-    declare("int", totalOrdersIdentifier, "3"),
-    declare("bool", canceledOrderIdentifier, bool("false")),
-    printLine(intl.namePrompt),
+    printLine("Item price:"),
     scanLine,
     ...buildBlock(
       customization,
-      `${keyword("if")} (${nameIdentifier} ${operator("not_equal")} "${
-        intl.stringLiterals.hello
-      }" ${operator("logical_and")} ${readyIdentifier} ${operator(
+      `${keyword("if")} (${activeRegistrationIdentifier} ${operator(
         "logical_and",
-      )} ${scoreIdentifier} ${operator(
+      )} ${totalIdentifier} ${operator(
         "greater_equal",
-      )} 0 ${operator("logical_and")} ${heightIdentifier} ${operator(
-        "greater",
-      )} 1.0)`,
-      [statement(`${scoreIdentifier} = ${scoreIdentifier} + 1`)],
+      )} 200.0)`,
+      [statement(`${discountIdentifier} = ${totalIdentifier} * 0.10`)],
     ),
     ...buildBlock(customization, `${keyword("else")}`, [
-      statement(`${scoreIdentifier} = ${scoreIdentifier} - 1`),
+      statement(`${discountIdentifier} = 0.0`),
     ]),
+    statement(
+      `${totalIdentifier} = ${totalIdentifier} + ${taxFunction}(${totalIdentifier}, 0.15) - ${discountIdentifier}`,
+    ),
     ...buildBlock(
       customization,
-      `${keyword("for")} (${indexIdentifier} = 0; ${indexIdentifier} ${operator(
-        "less",
-      )} 3; ${indexIdentifier} = ${indexIdentifier} + 1)`,
+      `${keyword("for")} (${forInitializer}; ${indexIdentifier} ${operator(
+        "less_equal",
+      )} 2; ${indexIdentifier} = ${indexIdentifier} + 1)`,
       [
         ...buildBlock(
           customization,
-          `${keyword("if")} (${indexIdentifier} ${operator("equal_equal")} 1)`,
+          `${keyword("if")} (${salesIdentifier}[${indexIdentifier}] ${operator(
+            "less_equal",
+          )} 0.0)`,
           [statement(keyword("continue"))],
         ),
-        statement(`${totalIdentifier} = ${totalIdentifier} + ${indexIdentifier}`),
-        statement(`${totalIdentifier} = ${totalIdentifier} * 1`),
+        statement(
+          `${totalIdentifier} = ${totalIdentifier} + ${salesIdentifier}[${indexIdentifier}]`,
+        ),
       ],
     ),
     ...buildBlock(
       customization,
       `${keyword("while")} (${orderIndexIdentifier} ${operator(
-        "less_equal",
-      )} ${totalOrdersIdentifier})`,
+        "less",
+      )} 3 ${operator("logical_and")} ${not(
+        canBuyIdentifier,
+      )} ${operator("logical_and")} ${totalIdentifier} ${operator("greater")} 0.0)`,
       [
         statement(`${orderIndexIdentifier} = ${orderIndexIdentifier} + 1`),
         ...buildBlock(
           customization,
-          `${keyword("if")} (${canceledOrderIdentifier} ${operator(
+          `${keyword("if")} (${orderIndexIdentifier} ${operator(
+            "equal_equal",
+          )} 2 ${operator(
             "logical_or",
-          )} ${not(readyIdentifier)})`,
-          [statement(keyword("continue"))],
+          )} ${statusIdentifier} ${operator("not_equal")} "${intl.stringLiterals.vipStatus}")`,
+          [
+            statement(`${canBuyIdentifier} = ${bool("true")}`),
+            statement(keyword("break")),
+          ],
         ),
-        ...buildBlock(
-          customization,
-          `${keyword("if")} (${stockIdentifier} ${operator("less_equal")} 0)`,
-          [statement(keyword("break"))],
-        ),
-        statement(`${shippedIdentifier} = ${shippedIdentifier} + 1`),
-        statement(`${stockIdentifier} = ${stockIdentifier} - 1`),
       ],
     ),
     ...flowSwitchLines,
-    statement(`${reviewFunction}()`),
     statement(`${keyword("return")} 0`),
   ]);
 
   const reviewLines = buildBlock(customization, reviewHeader, [
-    printLine(intl.printMessages.ok),
-    ...(isUntyped ? [] : [statement(keyword("return"))]),
+    statement(`${keyword("return")} ${valueIdentifier} * ${discountIdentifier}`),
   ]);
 
   return [...mainLines, "", ...reviewLines].join("\n");

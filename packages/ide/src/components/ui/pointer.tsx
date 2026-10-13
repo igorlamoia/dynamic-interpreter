@@ -5,6 +5,7 @@ import {
   motion,
   useMotionValue,
 } from "motion/react";
+import { createPortal } from "react-dom";
 
 import { cn } from "@/lib/utils";
 
@@ -379,6 +380,16 @@ function PointerShape({
   return baseArrow;
 }
 
+function getPointerHotspotTransform(
+  variant: Exclude<PointerVariant, "auto">,
+): string {
+  if (variant === "default" || variant === "pointer") {
+    return "translate(-18%, -18%)";
+  }
+
+  return "translate(-50%, -50%)";
+}
+
 /**
  * A custom pointer component that displays an animated cursor.
  * Add this as a child to any component to enable a custom pointer when hovering.
@@ -400,6 +411,23 @@ export function Pointer({
   const [resolvedVariant, setResolvedVariant] = useState<
     Exclude<PointerVariant, "auto">
   >(variant === "auto" ? "default" : variant);
+  const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const container = document.createElement("div");
+    container.setAttribute("data-custom-pointer-root", "");
+    document.body.appendChild(container);
+    setPortalContainer(container);
+
+    return () => {
+      container.remove();
+      setPortalContainer(null);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -464,18 +492,22 @@ export function Pointer({
     };
   }, [variant, x, y]);
 
-  return (
+  if (!portalContainer) return null;
+
+  return createPortal(
     <>
       <AnimatePresence>
         {isActive && (
           <motion.div
             className={cn(
-              "pointer-events-none fixed z-50000 transform-[translate(-50%,-50%)] text-cyan-300",
+              "pointer-events-none fixed text-cyan-300",
               className,
             )}
             style={{
               top: y,
               left: x,
+              zIndex: 2147483647,
+              transform: getPointerHotspotTransform(resolvedVariant),
               ...style,
             }}
             initial={{
@@ -499,6 +531,7 @@ export function Pointer({
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </>,
+    portalContainer,
   );
 }
