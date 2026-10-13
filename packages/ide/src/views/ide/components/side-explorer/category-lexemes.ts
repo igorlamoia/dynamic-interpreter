@@ -35,6 +35,13 @@ export function getCategoryLexemes(
         getKeywordValue(customization, "scan"),
       ];
     case "tipos":
+      if (customization.modes.typing === "untyped") {
+        return [
+          getKeywordValue(customization, "variable"),
+          getKeywordValue(customization, "function"),
+        ];
+      }
+
       return [
         getKeywordValue(customization, "int"),
         getKeywordValue(customization, "float"),
@@ -62,10 +69,16 @@ export function getCategoryLexemes(
       ];
     case "estrutura":
       return [
-        customization.blockDelimiters.open?.trim() || "{",
-        customization.blockDelimiters.close?.trim() || "}",
-        customization.statementTerminatorLexeme?.trim() || ";",
-      ];
+        customization.modes.block === "delimited"
+          ? customization.blockDelimiters.open?.trim()
+          : "",
+        customization.modes.block === "delimited"
+          ? customization.blockDelimiters.close?.trim()
+          : "",
+        customization.modes.semicolon === "required"
+          ? customization.statementTerminatorLexeme?.trim()
+          : "",
+      ].filter((lexeme): lexeme is string => Boolean(lexeme));
     case "operadores":
       return [
         customization.operatorWordMap.logical_and?.trim() ||

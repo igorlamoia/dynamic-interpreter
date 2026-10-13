@@ -7,7 +7,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CUSTOMIZABLE_KEYWORDS, ORIGINAL_KEYWORDS } from "@/contexts/keyword";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { buildReviewLanguageSample } from "./language-sample";
-import { getCategoryLexemeExample } from "./category-lexemes";
+import {
+  getCategoryLexemeExample,
+  getCategoryLexemes,
+} from "./category-lexemes";
 
 (
   globalThis as typeof globalThis & {
@@ -165,11 +168,13 @@ describe("CategoryLexemesList", () => {
 
     expect(container.querySelector('[role="dialog"]')).not.toBeNull();
     expect(container.textContent).toContain("Active language sample");
-    expect(container.textContent).toContain('print("What is your name?")');
-    expect(container.textContent).toContain('if (name != "hello"');
-    expect(container.textContent).toContain("for (i = 0; i < 3;");
-    expect(container.textContent).toContain("switch (shipped)");
-    expect(container.textContent).toContain('print("ok");');
+    expect(container.textContent).toContain('print("Item price:")');
+    expect(container.textContent).toContain("scan(float, value)");
+    expect(container.textContent).toContain("for (int i = 0; i <= 2;");
+    expect(container.textContent).toContain("switch (status)");
+    expect(container.textContent).toContain(
+      "float calculateTax(float value, float discount)",
+    );
     expect(container.textContent).not.toContain("Eren");
     expect(container.textContent).not.toContain("Mikasa");
 
@@ -217,5 +222,44 @@ describe("CategoryLexemesList", () => {
     expect(
       getCategoryLexemeExample("estrutura", "uai", customization),
     ).toBe('print("ok") uai');
+  });
+
+  it("hides lexemes that are disabled by the current language modes", () => {
+    const customization = createCustomization({
+      statementTerminatorLexeme: "",
+      blockDelimiters: { open: "", close: "" },
+      modes: {
+        semicolon: "optional-eol",
+        block: "indentation",
+        typing: "untyped",
+        array: "dynamic",
+      },
+    });
+
+    expect(getCategoryLexemes("tipos", customization)).toEqual([
+      "variable",
+      "function",
+    ]);
+    expect(getCategoryLexemes("estrutura", customization)).toEqual([]);
+
+    const { container, root } = renderPanel(customization);
+    const lexemeButtons = Array.from(container.querySelectorAll("button")).map(
+      (button) => button.textContent,
+    );
+
+    expect(lexemeButtons).toContain("variable");
+    expect(lexemeButtons).toContain("function");
+    expect(lexemeButtons).not.toContain("int");
+    expect(lexemeButtons).not.toContain("float");
+    expect(lexemeButtons).not.toContain("bool");
+    expect(lexemeButtons).not.toContain("string");
+    expect(lexemeButtons).not.toContain("void");
+    expect(lexemeButtons).not.toContain(";");
+    expect(lexemeButtons).not.toContain("{");
+    expect(lexemeButtons).not.toContain("}");
+
+    act(() => {
+      root.unmount();
+    });
   });
 });

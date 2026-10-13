@@ -270,6 +270,8 @@ export function CategoryLexemesList({
 
             const lexemes = getCategoryLexemes(category.key, customization);
 
+            if (!lexemes.length) return null;
+
             return (
               <section
                 key={category.key}
