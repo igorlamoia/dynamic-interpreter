@@ -19,6 +19,7 @@ const FLOW_FIELDS = [
 export type FlowStepProps = {
   values: {
     snippet?: string;
+    lineEnding?: string;
     fields: Array<{
       key: (typeof FLOW_FIELDS)[number];
       value: string;
@@ -111,26 +112,27 @@ export function FlowStep({ values, actions }: FlowStepProps) {
     values.fields.map((field) => [field.key, field.value] as const),
   );
   const keywordFor = (key: FlowFieldKey) => keywordMap.get(key) || key;
+  const finish = (statement: string) => `${statement}${values.lineEnding ?? ""}`;
 
-  const conditionalSnippet = `${keywordFor("if")} (nota > 7) {\n  print("aprovado")\n} ${keywordFor(
+  const conditionalSnippet = `${keywordFor("if")} (saldo >= 100) {\n  ${finish('status = "vip"')}\n} ${keywordFor(
     "else",
-  )} {\n  print("recuperacao")\n}\n\n${keywordFor(
+  )} {\n  ${finish('status = "padrao"')}\n}\n\n${keywordFor(
     "switch",
-  )} (nivel) {\n  ${keywordFor("case")} 1:\n    print("iniciante")\n  ${keywordFor(
+  )} (status) {\n  ${keywordFor("case")} "vip":\n    ${finish("desconto = 15")}\n  ${keywordFor(
     "case",
-  )} 2:\n    print("intermediario")\n  ${keywordFor(
+  )} "padrao":\n    ${finish("desconto = 5")}\n  ${keywordFor(
     "default",
-  )}:\n    print("avancado")\n}`;
-  const loopSnippet = `${keywordFor("for")} (i = 0; i < 3; i = i + 1) {\n  print(i)\n}\n\n${keywordFor(
+  )}:\n    ${finish("desconto = 0")}\n}`;
+  const loopSnippet = `${keywordFor("for")} (dia = 1; dia <= 7; dia = dia + 1) {\n  ${finish("total = total + vendas[dia]")}\n}\n\n${keywordFor(
     "while",
-  )} (tentativas < 3) {\n  tentativas = tentativas + 1\n}`;
-  const flowSnippet = `${keywordFor("while")} (contador < 5) {\n  contador = contador + 1\n  ${keywordFor(
+  )} (fila > 0) {\n  ${finish("atendidos = atendidos + 1")}\n  ${finish("fila = fila - 1")}\n}`;
+  const flowSnippet = `${keywordFor("while")} (indice < totalPedidos) {\n  ${finish("indice = indice + 1")}\n  ${keywordFor(
     "if",
-  )} (contador == 2) {\n    ${keywordFor("continue")}\n  }\n  ${keywordFor(
+  )} (pedidoCancelado) {\n    ${finish(keywordFor("continue"))}\n  }\n  ${keywordFor(
     "if",
-  )} (contador == 4) {\n    ${keywordFor("break")}\n  }\n}\n\n${keywordFor(
-    "return",
-  )} contador`;
+  )} (estoque == 0) {\n    ${finish(keywordFor("break"))}\n  }\n  ${finish("enviados = enviados + 1")}\n}\n\n${finish(
+    keywordFor("return") + " enviados",
+  )}`;
 
   return (
     <section className="space-y-6">

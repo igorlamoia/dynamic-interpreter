@@ -15,8 +15,10 @@ import {
   DebugSnapshot,
   DebugStatus,
   DebugStopReason,
+  DEFAULT_MAX_INSTRUCTION_STEPS,
   DebugVariableSnapshot,
   Instruction,
+  InterpreterExecutionOptions,
   LOGICALS,
   RELATIONALS,
   RuntimeArrayValue,
@@ -50,6 +52,8 @@ export class Interpreter {
   private debugInputQueue: string[] = [];
   private instructionPointer: number;
   private program: Instruction[];
+  private executedInstructionSteps = 0;
+  private maxInstructionSteps: number;
 
   private stdout: (msg: string) => void;
   private stdin: () => Promise<string>;
@@ -62,6 +66,7 @@ export class Interpreter {
       stdin: () => Promise<string>;
     },
     locale?: string,
+    options: InterpreterExecutionOptions = {},
   ) {
     this.stdout = io.stdout;
     this.stdin = io.stdin;
@@ -71,6 +76,8 @@ export class Interpreter {
     this.callStack = [];
     this.instructionPointer = 0;
     this.locale = locale;
+    this.maxInstructionSteps =
+      options.maxInstructionSteps ?? DEFAULT_MAX_INSTRUCTION_STEPS;
   }
 
   private getFallbackInstruction(): Instruction {
@@ -156,6 +163,18 @@ export class Interpreter {
     this.variables.clear();
     this.callStack = [];
     this.instructionPointer = 0;
+    this.executedInstructionSteps = 0;
+  }
+
+  private countInstructionStep(instruction: Instruction): void {
+    this.executedInstructionSteps++;
+    if (this.executedInstructionSteps <= this.maxInstructionSteps) return;
+
+    this.throwRuntimeError(
+      "interpreter.max_instruction_steps_exceeded",
+      { maxInstructionSteps: this.maxInstructionSteps },
+      instruction,
+    );
   }
 
   private indexLabels(): void {
@@ -192,6 +211,7 @@ export class Interpreter {
     const { op, result, operand1, operand2 } = currentInstruction;
 
     try {
+      this.countInstructionStep(currentInstruction);
       if (op === "CALL" && result === "STOP") return "stopped";
       if (op === "LABEL") {
         this.instructionPointer++;
@@ -991,12 +1011,7 @@ export class Interpreter {
         return Number(value);
       }
       // Tentar obter variável
-      try {
-        return this.getVariable(value);
-      } catch {
-        // Se não for variável, retornar como string
-        return value;
-      }
+      return this.getVariable(value);
     }
     return value;
   }

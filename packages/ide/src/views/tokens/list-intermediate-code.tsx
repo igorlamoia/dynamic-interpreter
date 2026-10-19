@@ -34,6 +34,7 @@ const Mixed = ({
 }: {
   instructions: TIntermediateCodeData["instructions"];
 }) => {
+  const { locale } = useRouter();
   const { runtimeErrorInstructionPointer } = useRuntimeError();
 
   useEffect(() => {
@@ -104,7 +105,7 @@ const Mixed = ({
         </div>
       ) : (
         <p className="text-muted-foreground">
-          No intermediate code instructions available.
+          {t(locale, "ui.intermediate_code_empty")}
         </p>
       )}
     </div>
@@ -118,6 +119,7 @@ function IntermediateCard({
   instruction: TIntermediateCodeData["instructions"][number];
   index: number;
 }) {
+  const { locale } = useRouter();
   const formatOperand = (value: unknown): string => {
     if (value === null || value === undefined) return "N/A";
     if (typeof value === "string") return value;
@@ -138,15 +140,21 @@ function IntermediateCard({
         {index + 1}. ⚡ {instruction.op}
       </h3>
       <p>
-        <span className="text-pink-600 dark:text-pink-400">Result:</span>{" "}
+        <span className="text-pink-600 dark:text-pink-400">
+          {t(locale, "ui.intermediate_code_result")}:
+        </span>{" "}
         {instruction.result ?? "N/A"}
       </p>
       <p>
-        <span className="text-green-600 dark:text-green-400">Op1:</span>{" "}
+        <span className="text-green-600 dark:text-green-400">
+          {t(locale, "ui.intermediate_code_operand1")}:
+        </span>{" "}
         {formatOperand(instruction.operand1)}
       </p>
       <p>
-        <span className="text-yellow-600 dark:text-yellow-400">Op2:</span>{" "}
+        <span className="text-yellow-600 dark:text-yellow-400">
+          {t(locale, "ui.intermediate_code_operand2")}:
+        </span>{" "}
         {formatOperand(instruction.operand2)}
       </p>
       {/* 🔍 Mostrar detalhes ao passar o mouse */}

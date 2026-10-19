@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useToast } from "@/contexts/ToastContext";
 import { GradientText } from "@/components/text/gradient";
 import { Title } from "@/components/text/title";
@@ -10,6 +11,7 @@ import {
   useClassExerciseListsQuery,
   useClassesQuery,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 type ClassOption = { id: number; name: string };
 
@@ -37,19 +39,22 @@ function listProgress(completed: number, total: number) {
   return Math.round((completed / total) * 100);
 }
 
-function studentListStatus(entry: ClassExerciseListEntry) {
+function studentListStatus(
+  locale: string | undefined,
+  entry: ClassExerciseListEntry,
+) {
   if (entry.completedCount >= entry.minRequired)
     return {
-      text: "Concluída",
+      text: t(locale, "ui.class_status_completed"),
       cls: "bg-emerald-500/15 text-emerald-700 border-emerald-500/25 dark:text-emerald-300",
     };
   if (entry.completedCount > 0)
     return {
-      text: "Em andamento",
+      text: t(locale, "ui.class_status_in_progress"),
       cls: "bg-blue-500/15 text-blue-700 border-blue-500/25 dark:text-blue-300",
     };
   return {
-    text: "Não iniciada",
+    text: t(locale, "ui.class_status_not_started"),
     cls: "bg-slate-500/15 text-slate-700 border-slate-500/25 dark:text-slate-400",
   };
 }
@@ -61,7 +66,8 @@ export function StudentListCard({
   entry: ClassExerciseListEntry;
   classId: number | "";
 }) {
-  const status = studentListStatus(entry);
+  const { locale } = useRouter();
+  const status = studentListStatus(locale, entry);
   const progress = listProgress(entry.completedCount, entry.totalCount);
 
   return (
@@ -79,8 +85,13 @@ export function StudentListCard({
 
       <div className="flex flex-wrap gap-2 mb-4">
         <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/70 dark:bg-white/5 border border-border dark:border-white/8 px-2.5 py-1 rounded-full">
-          Mínimo: {entry.minRequired} exercício
-          {entry.minRequired !== 1 ? "s" : ""}
+          {t(
+            locale,
+            entry.minRequired === 1
+              ? "ui.class_minimum_exercise_singular"
+              : "ui.class_minimum_exercise_plural",
+            { count: entry.minRequired },
+          )}
         </span>
       </div>
 
@@ -88,7 +99,10 @@ export function StudentListCard({
       <div className="mb-4">
         <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
           <span>
-            {entry.completedCount} de {entry.totalCount} concluídos
+            {t(locale, "ui.class_completed_progress", {
+              completed: entry.completedCount,
+              total: entry.totalCount,
+            })}
           </span>
           <span className="font-medium">{progress}%</span>
         </div>
@@ -104,7 +118,7 @@ export function StudentListCard({
         href={`/exercise-lists/${entry.exerciseListId}?classId=${classId}`}
         className="inline-flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(13,204,242,0.2)] transition-all"
       >
-        Abrir Lista
+        {t(locale, "ui.class_open_list")}
         <ChevronRight className="w-4 h-4" />
       </Link>
     </div>
@@ -112,6 +126,7 @@ export function StudentListCard({
 }
 
 export function StudentView() {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const [selectedClassId, setSelectedClassId] = useState<number | "">("");
   const classesQuery = useClassesQuery();
@@ -130,25 +145,31 @@ export function StudentView() {
 
   useEffect(() => {
     if (classesQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar turmas." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.class_load_members_error"),
+      });
     }
-  }, [classesQuery.error, showToast]);
+  }, [classesQuery.error, locale, showToast]);
 
   useEffect(() => {
     if (listsQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar listas." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.class_load_lists_error"),
+      });
     }
-  }, [listsQuery.error, showToast]);
+  }, [listsQuery.error, locale, showToast]);
 
   return (
     <>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <Title>
-            <GradientText>Listas da Turma</GradientText>
+            <GradientText>{t(locale, "ui.exercise_lists_class_lists")}</GradientText>
           </Title>
           <Subtitle className="mt-1">
-            Exercícios publicados pelo seu professor
+            {t(locale, "ui.exercise_lists_student_subtitle")}
           </Subtitle>
         </div>
 
@@ -169,12 +190,12 @@ export function StudentView() {
       </div>
 
       {classesQuery.isPending || listsQuery.isPending ? (
-        <LoadingSpinner label="Carregando listas..." />
+        <LoadingSpinner label={t(locale, "ui.class_loading_lists")} />
       ) : entries.length === 0 ? (
         <EmptyState
           icon={<ListChecks className="w-10 h-10 text-slate-600" />}
-          title="Nenhuma lista publicada"
-          description="Seu professor ainda não publicou listas de exercícios para esta turma."
+          title={t(locale, "ui.class_no_lists_title")}
+          description={t(locale, "ui.class_no_lists_student")}
         />
       ) : (
         <div className="flex flex-col gap-4 max-w-3xl">

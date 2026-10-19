@@ -9,10 +9,12 @@ export const OPERATORS_TOKENS_MAP: TTokenMap = {
       lexer.matchAndAdvance("=") ? ASSIGNMENTS.plus_equal : ARITHMETICS.plus
     );
   },
-  "-": (lexer) =>
+  "-": (lexer) => {
+    if (lexer.matchAndAdvance("-")) return lexer.addToken(ARITHMETICS.minus);
     lexer.addToken(
       lexer.matchAndAdvance("=") ? ASSIGNMENTS.minus_equal : ARITHMETICS.minus
-    ),
+    );
+  },
   "*": (lexer) =>
     lexer.addToken(
       lexer.matchAndAdvance("=") ? ASSIGNMENTS.star_equal : ARITHMETICS.star

@@ -41,11 +41,9 @@ describe("TypeStep", () => {
       root.render(
         <TypeStep
           values={{
-            snippet: "inteiro idade",
             typedSnippet: "inteiro idade",
             untypedSnippet: "variable idade",
             typingMode: "typed",
-            printKeyword: "mostrar",
             typingBeamKeywords: {
               variable: "variable",
               string: "texto",

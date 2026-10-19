@@ -3,7 +3,7 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { FlowStep } from "./flow-step";
 
 (
@@ -17,6 +17,20 @@ vi.mock("../example-snippet", () => ({
 }));
 
 describe("FlowStep", () => {
+  beforeEach(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
   afterEach(() => {
     document.body.innerHTML = "";
   });
@@ -33,6 +47,7 @@ describe("FlowStep", () => {
         <FlowStep
           values={{
             snippet: "enquanto (ativo) {\n  retornar valor\n}",
+            lineEnding: " uai",
             fields: [
               {
                 key: "if",
@@ -63,7 +78,7 @@ describe("FlowStep", () => {
     const { container, root, syncKeyword, syncKeywordDescription } =
       renderFlowStep();
 
-    expect(container.textContent).toContain("Palavras de fluxo");
+    expect(container.textContent).toContain("Fluxo");
     expect(container.textContent).toContain("Padrão");
     expect(container.textContent).toContain("Nome customizado");
     expect(container.textContent).toContain("Definição semântica");
@@ -105,6 +120,25 @@ describe("FlowStep", () => {
       "while",
       "Repete uma rotina.",
     );
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("renders sensible flow examples with the configured line ending", () => {
+    const { container, root } = renderFlowStep();
+
+    expect(container.textContent).toContain('status = "vip" uai');
+    expect(container.textContent).toContain(
+      "total = total + vendas[dia] uai",
+    );
+    expect(container.textContent).toContain("continue uai");
+    expect(container.textContent).toContain("break uai");
+    expect(container.textContent).toContain("return enviados uai");
+    expect(container.textContent).toContain("pedidoCancelado");
+    expect(container.textContent).toContain("estoque == 0");
+    expect(container.textContent).not.toContain("contador == 2");
 
     act(() => {
       root.unmount();

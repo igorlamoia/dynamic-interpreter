@@ -154,8 +154,7 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
   }>();
   const groupedLexemes = segregateLexemeChangesByCategory(preview);
   const cardItems = groupedLexemes.map((category) => {
-    const { key, title, icon, subtitle, items, changedCount, percentage } =
-      category;
+    const { key, icon, items, changedCount, percentage } = category;
     const translatedTitle = getPreviewCategoryTitle(locale, key);
     const translatedSubtitle = getPreviewCategorySubtitle(locale, key);
 
@@ -223,6 +222,7 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
 
   return (
     <aside
+      data-tour="language-preview"
       data-preview-panel
       className={`max-lg:h-[calc(100dvh-1rem)] lg:fixed lg:right-0 self-start pl-2 overflow-hidden lg:w-90 transition-[top,height] duration-300 ease-out ${
         isScrolled
@@ -231,7 +231,13 @@ export function PreviewPanel({ preview, activeStepId }: PreviewPanelProps) {
       }`}
     >
       <div className="relative flex h-full flex-col gap-6 overflow-hidden rounded-lg py-4 pr-4">
-        <ExampleSnippet title={wt("preview.code")} code={preview.snippet} />
+        <ExampleSnippet
+          title={wt("preview.code")}
+          code={preview.snippet}
+          input={preview.snippetInput}
+          output={preview.snippetOutput}
+          terminalLayout="row"
+        />
 
         <CardSnapStack
           items={cardItems}

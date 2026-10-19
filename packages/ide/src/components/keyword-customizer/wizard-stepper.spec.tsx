@@ -69,11 +69,17 @@ describe("WizardStepper", () => {
     const languageCard = container.querySelector("[data-wizard-language-card]");
 
     expect(stepper?.className).toContain("max-lg:sticky");
+    expect(stepper?.className).toContain("max-lg:bg-white/95");
+    expect(stepper?.className).toContain("dark:max-lg:bg-[#070d18]/95");
     expect(stepList?.className).toContain("max-lg:flex-row");
     expect(stepList?.className).toContain("max-lg:overflow-x-auto");
     expect(stepButtons[0].className).toContain("max-lg:rounded-full");
     expect(stepButtons[0].className).toContain("max-lg:h-10");
     expect(stepButtons[0].className).toContain("max-lg:w-10");
+    expect(stepButtons[0].className).toContain("max-lg:bg-white/80");
+    expect(stepButtons[0].className).toContain("dark:max-lg:bg-slate-950/60");
+    expect(stepButtons[1].className).toContain("max-lg:bg-cyan-50");
+    expect(stepButtons[1].className).toContain("dark:max-lg:bg-cyan-400/10");
     expect(stepLabels[0].className).toContain("max-lg:sr-only");
     expect(activeTitle?.textContent).toBe("Tipos");
     expect(languageCard?.className).toContain("max-lg:hidden");

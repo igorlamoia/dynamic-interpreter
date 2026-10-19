@@ -14,6 +14,7 @@ import type {
   ExerciseList,
   PaginatedResponse,
 } from "@/types/api";
+import type { SubmissionDetail } from "@/types/submissions";
 import type { ClassOption } from "@/views/exercise-lists/components/types";
 
 type CreateClassInput = {
@@ -283,7 +284,9 @@ export function useSubmissionQuery(
   return useQuery({
     queryKey: queryKeys.submissions.detail(submissionId),
     queryFn: async () => {
-      const { data } = await api.get(`/submissions/${submissionId}`);
+      const { data } = await api.get<SubmissionDetail>(
+        `/submissions/${submissionId}`,
+      );
       return data;
     },
     enabled: enabled && Boolean(submissionId),

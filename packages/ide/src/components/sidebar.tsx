@@ -101,7 +101,10 @@ export function Sidebar() {
       : studentMenu;
 
   return (
-    <aside className="w-64 h-full shrink-0 flex flex-col border-r border-border bg-card/90 relative z-40 dark:bg-transparent backdrop-blur-[3px] dark:border-[#ffffff0a]">
+    <aside
+      data-tour="app-sidebar"
+      className="w-64 h-full shrink-0 flex flex-col border-r border-border bg-card/90 relative z-40 dark:bg-transparent backdrop-blur-[3px] dark:border-[#ffffff0a]"
+    >
       <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto pt-6">
         {menuItems.map((item) => {
           const isActive = item.activeMatchers.some((matcher) =>

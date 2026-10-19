@@ -28,3 +28,6 @@ EXPOSE 8000
 
 # Run migrations, seed, and start the app
 ENTRYPOINT ["./entrypoint.sh"]
+
+# WINDOWS:
+# ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]

@@ -39,7 +39,10 @@ function KeywordCustomizerShell() {
           <main className="grid items-start lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[340px_minmax(0,1fr)] lg:pr-90">
             <div aria-hidden="true" className="hidden lg:block" />
 
-            <div className="border-slate-200/70 dark:border-slate-800/80 lg:border-x border-t-0">
+            <div
+              data-tour="language-form"
+              className="border-slate-200/70 dark:border-slate-800/80 lg:border-x border-t-0"
+            >
               <div className="min-h-0 flex-1 lg:p-5">
                 <KeywordCustomizerHeader
                   steps={visibleSteps}

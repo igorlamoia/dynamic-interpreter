@@ -30,7 +30,10 @@ export function ClassesGrid({
 
   if (!isTeacher) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        data-tour="classes-grid"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {classes.map((cls) => (
           <StudentClassCard key={cls.id} cls={cls} onJoinClick={onJoinClass} />
         ))}
@@ -41,7 +44,10 @@ export function ClassesGrid({
 
   if (classes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 rounded-3xl border border-border bg-card/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:border-white/5 dark:bg-white/2 dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+      <div
+        data-tour="classes-grid"
+        className="flex flex-col items-center justify-center py-24 rounded-3xl border border-border bg-card/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:border-white/5 dark:bg-white/2 dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+      >
         <div className="w-24 h-24 mb-6 rounded-full bg-linear-to-br from-primary/10 to-[#10b981]/10 flex items-center justify-center border border-border dark:border-white/10 dark:shadow-[inner_0_0_20px_rgba(13,204,242,0.1)]">
           <span className="text-5xl opacity-80 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
             📚
@@ -58,7 +64,10 @@ export function ClassesGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      data-tour="classes-grid"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
       {classes.map((cls) => (
         <TeacherClassCard key={cls.id} cls={cls} />
       ))}

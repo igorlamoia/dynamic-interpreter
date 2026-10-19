@@ -305,9 +305,6 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
               onChange={(event) => actions.setName(event.target.value)}
               placeholder={wt("identity.namePlaceholder")}
             />
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              {wt("identity.nameHelp")}
-            </p>
           </div>
           <div className="space-y-1">
             <label
@@ -323,9 +320,6 @@ export function IdentityStep({ values, actions }: IdentityStepProps) {
               onChange={(event) => actions.setDescription(event.target.value)}
               placeholder={wt("identity.descriptionPlaceholder")}
             />
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              {wt("identity.descriptionHelp")}
-            </p>
           </div>
         </div>
 

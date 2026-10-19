@@ -126,7 +126,7 @@ export function Navbar({ links, hasAuth = true }: NavbarProps) {
           </div>
         </div>
       </header>
-      <div className="fixed left-4 bottom-4 z-1000">
+      <div className="fixed left-4 bottom-4 z-10000">
         <ToggleTheme />
       </div>
     </>

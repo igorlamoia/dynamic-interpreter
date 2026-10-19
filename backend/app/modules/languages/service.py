@@ -16,6 +16,22 @@ from app.models.user import User, UserRole
 from app.schemas.languages import LanguageCreate, LanguageUpdate
 
 
+async def _language_name_exists(
+    session: AsyncSession,
+    owner_id: int,
+    name: str,
+    exclude_language_id: int | None = None,
+) -> bool:
+    stmt = select(Language.id).where(Language.owner_id == owner_id, Language.name == name)
+    if exclude_language_id is not None:
+        stmt = stmt.where(Language.id != exclude_language_id)
+    return (await session.execute(stmt.limit(1))).scalar_one_or_none() is not None
+
+
+def _raise_language_name_conflict(detail: str) -> None:
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=detail)
+
+
 async def user_can_read_language(
     language: Language, user_id: int, session: AsyncSession
 ) -> bool:
@@ -220,6 +236,11 @@ async def get_language(language_id: int, user_id: int, session: AsyncSession) ->
 async def create_language(
     data: LanguageCreate, user_id: int, session: AsyncSession
 ) -> Language:
+    if await _language_name_exists(session, user_id, data.name):
+        _raise_language_name_conflict(
+            "A language with this name already exists for this user"
+        )
+
     owner = await session.get(User, user_id)
     language = Language(
         owner_id=user_id,
@@ -236,9 +257,8 @@ async def create_language(
         await session.flush()
     except IntegrityError:
         await session.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="A language with this name already exists for this user",
+        _raise_language_name_conflict(
+            "A language with this name already exists for this user"
         )
     return language
 
@@ -249,15 +269,17 @@ async def update_language(
     language = await session.get(Language, language_id)
     if language is None or language.owner_id != user_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Language not found")
+    if data.name is not None and await _language_name_exists(
+        session, user_id, data.name, exclude_language_id=language_id
+    ):
+        _raise_language_name_conflict("Name conflict")
     for field, value in data.model_dump(exclude_unset=True).items():
         setattr(language, field, value)
     try:
         await session.flush()
     except IntegrityError:
         await session.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="Name conflict"
-        )
+        _raise_language_name_conflict("Name conflict")
     await session.refresh(language)
     return language
 

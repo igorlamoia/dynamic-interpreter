@@ -58,6 +58,7 @@ async def create_submission(data: SubmissionCreate, student_id: str, session: As
         student_id=int(student_id),
         code_snapshot=data.code_snapshot,
         language_snapshot=language_snapshot,
+        test_case_results=data.test_case_results,
         status=data.status,
     )
     session.add(submission)

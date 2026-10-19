@@ -35,6 +35,8 @@ const interpreter = {
     "No se puede asignar un valor {sourceType} a la variable {targetType} '{variableName}'.",
   incompatible_return:
     "No se puede devolver un valor {sourceType} desde una funcion declarada como {targetType}.",
+  max_instruction_steps_exceeded:
+    "Ejecucion detenida despues de {maxInstructionSteps} instrucciones. El programa puede contener un bucle infinito.",
 };
 
 export default interpreter;

@@ -1,6 +1,19 @@
 import Link from "next/link";
-import { BookOpen, Calendar, ChevronRight } from "lucide-react";
+import { BookOpen, Calendar, ChevronRight, Plus } from "lucide-react";
+import { HeroButton } from "@/components/buttons/hero";
 import { resolveLocale, t } from "@/i18n";
+
+type ClassExerciseListEntry = {
+  exerciseListId: number | string;
+  deadline?: string;
+  completedCount: number;
+  totalCount: number;
+  minRequired: number;
+  exerciseList: {
+    title: string;
+    description?: string | null;
+  };
+};
 
 function formatDeadline(deadline: string | undefined, locale?: string) {
   if (!deadline) return null;
@@ -40,12 +53,14 @@ export function ListsTab({
   isTeacher,
   classId,
   locale,
+  onCreateList,
 }: {
-  exerciseLists: any[];
+  exerciseLists: ClassExerciseListEntry[];
   loadingLists: boolean;
   isTeacher: boolean;
   classId: string | string[] | undefined;
   locale?: string;
+  onCreateList?: () => void;
 }) {
   if (loadingLists) {
     return (
@@ -72,75 +87,91 @@ export function ListsTab({
             ? t(locale, "ui.class_no_lists_teacher")
             : t(locale, "ui.class_no_lists_student")}
         </p>
+        {isTeacher && onCreateList && (
+          <HeroButton onClick={onCreateList} className="mt-6 gap-2 px-5 py-2.5">
+            <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
+            {t(locale, "ui.exercise_lists_new_list")}
+          </HeroButton>
+        )}
       </div>
     );
   }
 
   if (isTeacher) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {exerciseLists.map((entry: any) => (
-          <div
-            key={entry.exerciseListId}
-            className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3"
-          >
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
-            <h3 className="font-bold text-foreground leading-snug line-clamp-2">
-              {entry.exerciseList.title}
-            </h3>
-            {entry.exerciseList.description && (
-              <p className="text-xs text-muted-foreground line-clamp-2">
-                {entry.exerciseList.description}
-              </p>
-            )}
-            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-primary/60" />
-                {t(
-                  locale,
-                  entry.totalCount === 1
-                    ? "ui.class_exercise_count_singular"
-                    : "ui.class_exercise_count_plural",
-                  { count: entry.totalCount },
-                )}
-              </span>
-              <span className="flex items-center gap-1.5 text-muted-foreground">
-                {t(locale, "ui.class_minimum_count", {
-                  count: entry.minRequired,
-                })}
-              </span>
-            </div>
-            {(() => {
-              const dl = formatDeadline(entry.deadline, locale);
-              if (!dl) return null;
-              return (
-                <div
-                  className={`flex items-center gap-1.5 text-xs ${dl.color}`}
-                >
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>{dl.formatted}</span>
-                  <span className="text-[10px] opacity-75">({dl.label})</span>
-                </div>
-              );
-            })()}
-            <div className="mt-auto pt-3 border-t border-border dark:border-white/5">
-              <Link
-                href={`/exercise-lists/${entry.exerciseListId}`}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
-              >
-                {t(locale, "ui.class_manage")}
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+      <div className="space-y-5">
+        {onCreateList && (
+          <div className="flex justify-end">
+            <HeroButton onClick={onCreateList} className="gap-2 px-5 py-2.5">
+              <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
+              {t(locale, "ui.exercise_lists_new_list")}
+            </HeroButton>
           </div>
-        ))}
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {exerciseLists.map((entry) => (
+            <div
+              key={entry.exerciseListId}
+              className="overflow-hidden group relative bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl p-5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(13,204,242,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col gap-3"
+            >
+              <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary to-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
+              <h3 className="font-bold text-foreground leading-snug line-clamp-2">
+                {entry.exerciseList.title}
+              </h3>
+              {entry.exerciseList.description && (
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {entry.exerciseList.description}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-primary/60" />
+                  {t(
+                    locale,
+                    entry.totalCount === 1
+                      ? "ui.class_exercise_count_singular"
+                      : "ui.class_exercise_count_plural",
+                    { count: entry.totalCount },
+                  )}
+                </span>
+                <span className="flex items-center gap-1.5 text-muted-foreground">
+                  {t(locale, "ui.class_minimum_count", {
+                    count: entry.minRequired,
+                  })}
+                </span>
+              </div>
+              {(() => {
+                const dl = formatDeadline(entry.deadline, locale);
+                if (!dl) return null;
+                return (
+                  <div
+                    className={`flex items-center gap-1.5 text-xs ${dl.color}`}
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>{dl.formatted}</span>
+                    <span className="text-[10px] opacity-75">({dl.label})</span>
+                  </div>
+                );
+              })()}
+              <div className="mt-auto pt-3 border-t border-border dark:border-white/5">
+                <Link
+                  href={`/exercise-lists/${entry.exerciseListId}`}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
+                >
+                  {t(locale, "ui.class_manage")}
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-4 max-w-3xl">
-      {exerciseLists.map((entry: any) => {
+      {exerciseLists.map((entry) => {
         const progress =
           entry.totalCount > 0
             ? Math.round((entry.completedCount / entry.totalCount) * 100)

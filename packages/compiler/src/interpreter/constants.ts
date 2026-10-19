@@ -94,3 +94,9 @@ export interface RuntimeSlot {
   type: string;
   value: unknown;
 }
+
+export interface InterpreterExecutionOptions {
+  maxInstructionSteps?: number;
+}
+
+export const DEFAULT_MAX_INSTRUCTION_STEPS = 100000;

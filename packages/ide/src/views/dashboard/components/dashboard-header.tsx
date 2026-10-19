@@ -51,7 +51,11 @@ export function DashboardHeader({
         </Subtitle>
       </div>
       <div className="flex gap-3">
-        <HeroButton onClick={onCreateClass} className="group gap-2 px-6 py-3">
+        <HeroButton
+          data-tour="teacher-create-class"
+          onClick={onCreateClass}
+          className="group gap-2 px-6 py-3"
+        >
           <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
           {t(locale, "ui.dashboard_new_class")}
         </HeroButton>

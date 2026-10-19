@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { FileCodeIcon, MonitorIcon } from "lucide-react";
+import { FileCodeIcon, HelpCircle, Info, MonitorIcon } from "lucide-react";
+import { useRouter } from "next/router";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
@@ -12,6 +12,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Dock, DockIcon } from "@/components/ui/dock";
+import { useTutorial } from "@/components/tutorial/tutorial-provider";
+import { useAuth } from "@/contexts/AuthContext";
+import { getTutorialDefinition, type TutorialId } from "@/lib/tutorials";
+import { t } from "@/i18n";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -50,7 +54,23 @@ const DATA = {
   },
 };
 
-export function Footer() {
+export function Footer({
+  onBeforeStartTutorial,
+}: {
+  onBeforeStartTutorial?: (tutorialId: TutorialId) => void;
+}) {
+  const router = useRouter();
+  const { isAuthenticated, isTeacher } = useAuth();
+  const { startTutorial } = useTutorial();
+  const currentTutorialId = getCurrentTutorialId(
+    router.pathname,
+    isAuthenticated,
+    isTeacher,
+  );
+  const currentTutorial = currentTutorialId
+    ? getTutorialDefinition(currentTutorialId, router.locale)
+    : null;
+
   return (
     <>
       <footer className="pointer-events-none fixed bottom-3 left-0 right-0 z-100 isolate flex justify-center">
@@ -59,6 +79,27 @@ export function Footer() {
             direction="middle"
             className="pointer-events-auto bg-white/90 dark:bg-neutral-900/30 border-neutral-200 dark:border-neutral-700 backdrop-blur-sm"
           >
+            <DockIcon>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/about"
+                    aria-label={t(router.locale, "footer.about")}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full cursor-pointer",
+                      router.pathname === "/about" &&
+                        "bg-black/5 text-slate-950 dark:bg-white/10 dark:text-white",
+                    )}
+                  >
+                    <Info className="size-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t(router.locale, "footer.about")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </DockIcon>
             {Object.entries(DATA.contact.social).map(([name, social]) => (
               <DockIcon key={name}>
                 <Tooltip>
@@ -82,10 +123,51 @@ export function Footer() {
                 </Tooltip>
               </DockIcon>
             ))}
-            <Separator orientation="vertical" className="h-full" />
           </Dock>
+          {currentTutorial && (
+            <div className="pointer-events-auto absolute bottom-0 right-4">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label={t(router.locale, currentTutorial.titleKey)}
+                    onClick={() => {
+                      onBeforeStartTutorial?.(currentTutorial.id);
+                      startTutorial(currentTutorial.id);
+                    }}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full cursor-pointer border border-neutral-200 bg-white/90 text-slate-700 shadow-lg backdrop-blur-sm transition duration-200 ease-out hover:scale-110 hover:bg-white hover:text-slate-950 hover:shadow-xl active:scale-95 dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-slate-200 dark:hover:bg-neutral-900 dark:hover:text-white",
+                    )}
+                  >
+                    <HelpCircle className="size-5" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p>{t(router.locale, currentTutorial.titleKey)}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          )}
         </TooltipProvider>
       </footer>
     </>
   );
+}
+
+function getCurrentTutorialId(
+  pathname: string,
+  isAuthenticated: boolean,
+  isTeacher: boolean,
+): TutorialId | null {
+  if (pathname === "/") return "ide-basics";
+  if (pathname.startsWith("/language-creator")) return "language-creator";
+  if (pathname === "/exercises" && isAuthenticated && isTeacher) {
+    return "exercise-creator";
+  }
+  if (pathname === "/dashboard" && isAuthenticated) {
+    return isTeacher ? "teacher-dashboard" : "student-dashboard";
+  }
+
+  return null;
 }

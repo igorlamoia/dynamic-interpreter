@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useToast } from "@/contexts/ToastContext";
 import { HeroButton } from "@/components/buttons/hero";
 import { GradientText } from "@/components/text/gradient";
@@ -11,6 +12,7 @@ import type { ClassOption } from "./types";
 import { LoadingSpinner, EmptyState } from "./shared";
 import { CreateListModal } from "./create-list-modal";
 import { useExerciseListsQuery } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export function TeacherListCard({
   list,
@@ -19,6 +21,7 @@ export function TeacherListCard({
   list: ExerciseList;
   classMap: Record<string, string>;
 }) {
+  const { locale } = useRouter();
   const classNames = list.classes
     .map((c) => classMap[c.classId] ?? String(c.classId).slice(0, 6))
     .filter(Boolean)
@@ -38,7 +41,13 @@ export function TeacherListCard({
       <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <BookOpen className="w-3.5 h-3.5 text-primary/60" />
-          {list.items.length} exercício{list.items.length !== 1 ? "s" : ""}
+          {t(
+            locale,
+            list.items.length === 1
+              ? "ui.exercise_lists_exercise_singular"
+              : "ui.exercise_lists_exercise_plural",
+            { count: list.items.length },
+          )}
         </span>
         {classNames.length > 0 && (
           <span className="flex items-center gap-1.5">
@@ -54,7 +63,7 @@ export function TeacherListCard({
           href={`/exercise-lists/${list.id}`}
           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
         >
-          Gerenciar
+          {t(locale, "ui.exercise_lists_manage")}
           <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -67,6 +76,7 @@ import { Pagination } from "@/components/ui/pagination";
 const PAGE_SIZE = 9;
 
 export function TeacherView({ classes }: { classes: ClassOption[] }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const [page, setPage] = useState(1);
   const [showCreate, setShowCreate] = useState(false);
@@ -89,9 +99,12 @@ export function TeacherView({ classes }: { classes: ClassOption[] }) {
 
   useEffect(() => {
     if (listsQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar listas." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercise_lists_load_error"),
+      });
     }
-  }, [listsQuery.error, showToast]);
+  }, [listsQuery.error, locale, showToast]);
 
   const filtered = lists;
 
@@ -100,10 +113,10 @@ export function TeacherView({ classes }: { classes: ClassOption[] }) {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <Title>
-            <GradientText>Minhas Listas</GradientText>
+            <GradientText>{t(locale, "ui.exercise_lists_my_lists")}</GradientText>
           </Title>
           <Subtitle className="mt-1">
-            Organize exercícios em listas e publique para suas turmas
+            {t(locale, "ui.exercise_lists_teacher_subtitle")}
           </Subtitle>
         </div>
         <HeroButton
@@ -111,17 +124,17 @@ export function TeacherView({ classes }: { classes: ClassOption[] }) {
           className="gap-2 px-5 py-2.5 shrink-0"
         >
           <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
-          Nova Lista
+          {t(locale, "ui.exercise_lists_new_list")}
         </HeroButton>
       </div>
 
       {listsQuery.isPending ? (
-        <LoadingSpinner label="Carregando listas..." />
+        <LoadingSpinner label={t(locale, "ui.exercise_lists_loading")} />
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={<ListChecks className="w-10 h-10 text-slate-600" />}
-          title="Nenhuma lista encontrada"
-          description="Crie sua primeira lista de exercícios para começar."
+          title={t(locale, "ui.exercise_lists_empty_teacher_title")}
+          description={t(locale, "ui.exercise_lists_empty_teacher_description")}
         />
       ) : (
         <>

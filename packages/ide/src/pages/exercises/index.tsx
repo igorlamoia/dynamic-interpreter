@@ -1,4 +1,5 @@
 import { useEffect, useState, useDeferredValue } from "react";
+import { useRouter } from "next/router";
 import { SpaceBackground } from "@/components/space-background";
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
@@ -11,6 +12,8 @@ import { Subtitle } from "@/components/text/subtitle";
 import { Plus, Search } from "lucide-react";
 import type { Exercise } from "@/types/api";
 import { Pagination } from "@/components/ui/pagination";
+import { useTutorial } from "@/components/tutorial/tutorial-provider";
+import { Footer } from "@/components/footer";
 import { CreateExerciseModal } from "@/views/exercises/components/create-exercise-modal";
 import { EditExerciseModal } from "@/views/exercises/components/edit-exercise-modal";
 import { ExerciseCard } from "@/views/exercises/components/exercise-card";
@@ -25,17 +28,22 @@ import {
   useDeleteExerciseMutation,
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 const PAGE_SIZE = 12;
 
 export default function ExercisesPage() {
+  const { locale } = useRouter();
   const { isTeacher, userId } = useAuth();
   const { showToast } = useToast();
+  const { activeTutorialId } = useTutorial();
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const deferredSearch = useDeferredValue(search.trim());
   const [showCreate, setShowCreate] = useState(false);
+  const [defaultCreateTestCasesOpen, setDefaultCreateTestCasesOpen] =
+    useState(false);
   const [viewExercise, setViewExercise] = useState<Exercise | null>(null);
   const [editTarget, setEditTarget] = useState<Exercise | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null);
@@ -59,9 +67,12 @@ export default function ExercisesPage() {
 
   useEffect(() => {
     if (exercisesQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar exercícios." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercises_load_error"),
+      });
     }
-  }, [exercisesQuery.error, showToast]);
+  }, [exercisesQuery.error, locale, showToast]);
 
   useEffect(() => {
     if (!exercisesQuery.isPending && exercises.length > 0) {
@@ -73,10 +84,16 @@ export default function ExercisesPage() {
     if (!deleteTarget || !userId) return;
     try {
       await deleteExercise.mutateAsync(deleteTarget.id);
-      showToast({ type: "success", message: "Exercício excluído." });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercises_delete_success"),
+      });
       setDeleteTarget(null);
     } catch {
-      showToast({ type: "error", message: "Erro ao excluir exercício." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercises_delete_error"),
+      });
     }
   };
 
@@ -103,19 +120,23 @@ export default function ExercisesPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
               <div>
                 <Title>
-                  <GradientText>Meus Exercícios</GradientText>
+                  <GradientText>{t(locale, "ui.exercises_title")}</GradientText>
                 </Title>
                 <Subtitle className="mt-1">
-                  Crie e gerencie exercícios para usar nas suas listas
+                  {t(locale, "ui.exercises_subtitle")}
                 </Subtitle>
               </div>
               {isTeacher && (
                 <HeroButton
-                  onClick={() => setShowCreate(true)}
+                  data-tour="exercise-new"
+                  onClick={() => {
+                    setDefaultCreateTestCasesOpen(false);
+                    setShowCreate(true);
+                  }}
                   className="gap-2 px-5 py-2.5 shrink-0 group"
                 >
                   <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
-                  Novo Exercício
+                  {t(locale, "ui.exercises_new")}
                 </HeroButton>
               )}
             </div>
@@ -134,7 +155,7 @@ export default function ExercisesPage() {
                     type="text"
                     value={search}
                     onChange={(e) => handleSearchChange(e.target.value)}
-                    placeholder="Buscar exercícios..."
+                    placeholder={t(locale, "ui.exercises_search_placeholder")}
                     className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-card/80 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors dark:bg-white/5"
                   />
                 </div>
@@ -143,12 +164,12 @@ export default function ExercisesPage() {
 
             {/* Content */}
             {exercisesQuery.isPending ? (
-              <LoadingSpinner label="Carregando exercícios..." />
+              <LoadingSpinner label={t(locale, "ui.exercises_loading")} />
             ) : filtered.length === 0 && hasSearch ? (
               <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-3">
                 <Search className="w-8 h-8 text-slate-600" />
                 <p className="text-sm font-medium">
-                  Nenhum resultado para &ldquo;{search}&rdquo;
+                  {t(locale, "ui.exercises_no_search_results", { search })}
                 </p>
               </div>
             ) : exercises.length === 0 ? (
@@ -181,7 +202,15 @@ export default function ExercisesPage() {
       </div>
 
       {/* Modals */}
-      <CreateExerciseModal open={showCreate} onOpenChange={setShowCreate} />
+      <CreateExerciseModal
+        open={showCreate}
+        onOpenChange={(open) => {
+          setShowCreate(open);
+          if (!open) setDefaultCreateTestCasesOpen(false);
+        }}
+        defaultTestCasesOpen={defaultCreateTestCasesOpen}
+        tutorialActive={activeTutorialId === "exercise-creator"}
+      />
 
       <EditExerciseModal
         open={!!editTarget}
@@ -207,6 +236,14 @@ export default function ExercisesPage() {
         exerciseTitle={deleteTarget?.title ?? ""}
         onConfirm={handleDelete}
         isDeleting={deleteExercise.isPending}
+      />
+      <Footer
+        onBeforeStartTutorial={(tutorialId) => {
+          if (tutorialId !== "exercise-creator") return;
+
+          setDefaultCreateTestCasesOpen(true);
+          setShowCreate(true);
+        }}
       />
     </div>
   );

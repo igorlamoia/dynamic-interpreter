@@ -1,17 +1,55 @@
-import { ClipboardList, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, ClipboardList, Copy, Users } from "lucide-react";
 import { HeroLink } from "@/components/buttons/hero";
 import { useAuth } from "@/contexts/AuthContext";
 import type { ClassSummary } from "@/types/api";
 import { t } from "@/i18n";
 import { useRouter } from "next/router";
 
+async function copyTextToClipboard(text: string) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.className = "fixed left-[-9999px] top-0";
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  try {
+    document.execCommand("copy");
+  } finally {
+    document.body.removeChild(textarea);
+  }
+}
+
 export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
   const { isTeacher } = useAuth();
   const { locale } = useRouter();
+  const [copied, setCopied] = useState(false);
   const exerciseListLabel =
     cls._count.exerciseLists === 1
       ? t(locale, "ui.dashboard_exercise_list_singular")
       : t(locale, "ui.dashboard_exercise_list_plural");
+
+  useEffect(() => {
+    if (!copied) return;
+
+    const timeout = window.setTimeout(() => setCopied(false), 1600);
+    return () => window.clearTimeout(timeout);
+  }, [copied]);
+
+  const copyAccessCode = async () => {
+    try {
+      await copyTextToClipboard(cls.accessCode);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <div className="overflow-hidden group shadow-[0_1px_10px_rgba(0,0,0,0.08)] dark:shadow-none relative bg-card/80 dark:bg-white/3 backdrop-blur-2xl border border-border dark:border-white/10 rounded-3xl p-7 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(13,204,242,0.15)] hover:-translate-y-1 flex flex-col h-full">
@@ -36,14 +74,38 @@ export function TeacherClassCard({ cls }: { cls: ClassSummary }) {
       </p>
 
       {isTeacher && (
-        <div className="mb-3 p-2 bg-muted/70 dark:bg-gray-400/20 rounded-2xl border border-border dark:border-white/5 backdrop-blur-md flex items-center justify-between group/code cursor-copy">
-          <span className="text-xs text-muted-foreground font-semibold tracking-wider">
-            {t(locale, "ui.dashboard_access_code_label")}
+        <button
+          type="button"
+          aria-label={t(locale, "ui.dashboard_copy_access_code")}
+          onClick={copyAccessCode}
+          className="group/code relative mb-3 flex w-full cursor-copy items-center justify-between rounded-2xl border border-border bg-muted/70 p-2 text-left backdrop-blur-md transition hover:border-primary/40 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/40 dark:border-white/5 dark:bg-gray-400/20 dark:hover:bg-primary/10"
+        >
+          <span
+            role="status"
+            className={`pointer-events-none absolute -top-9 right-2 rounded-md border border-primary/30 bg-background px-2.5 py-1 text-xs font-semibold text-primary shadow-lg transition-all duration-200 dark:bg-slate-950 ${
+              copied
+                ? "translate-y-0 opacity-100"
+                : "translate-y-1 opacity-0"
+            }`}
+          >
+            {t(locale, "ui.dashboard_access_code_copied")}
           </span>
-          <span className="text-base font-mono font-bold text-primary tracking-widest drop-shadow-[0_0_8px_rgba(13,204,242,0.4)] group-hover/code:text-accent-foreground transition-colors">
-            {cls.accessCode}
+          <span>
+            <span className="block text-xs font-semibold tracking-wider text-muted-foreground">
+              {t(locale, "ui.dashboard_access_code_label")}
+            </span>
+            <span className="block text-base font-mono font-bold tracking-widest text-primary drop-shadow-[0_0_8px_rgba(13,204,242,0.4)] transition-colors group-hover/code:text-accent-foreground">
+              {cls.accessCode}
+            </span>
           </span>
-        </div>
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-background/70 text-muted-foreground transition group-hover/code:border-primary/40 group-hover/code:text-primary dark:border-white/10 dark:bg-black/20">
+            {copied ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+          </span>
+        </button>
       )}
 
       <div className="flex items-center justify-between text-sm text-muted-foreground font-medium mb-6 px-1">

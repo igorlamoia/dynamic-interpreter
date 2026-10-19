@@ -1,204 +1,264 @@
-# Java-- Compiler & IDE
+# Interpretador Dinâmico com IDE Web
 
-Monorepo containing a TypeScript-based compiler/interpreter for **Java--** (a simplified subset of Java), a web IDE built with Next.js + Monaco Editor, and a FastAPI backend that powers the LMS features (classes, exercises, submissions).
+Monorepo de uma plataforma web para apoio ao ensino introdutório de programação. O projeto integra uma **IDE web** a um núcleo configurável de tradução, análise e execução, permitindo que estudantes programem no navegador e que professores administrem linguagens, turmas, atividades e submissões.
 
 <p align="center">
-  <a href="#architecture">Architecture</a> &nbsp;|&nbsp;
-  <a href="#installation">Installation</a> &nbsp;|&nbsp;
-  <a href="#database">Database</a> &nbsp;|&nbsp;
-  <a href="#instructions">Instructions</a> &nbsp;|&nbsp;
-  <a href="#contributing">Contributing</a>
+  <a href="#visão-geral">Visão Geral</a> &nbsp;|&nbsp;
+  <a href="#galeria">Galeria</a> &nbsp;|&nbsp;
+  <a href="#arquitetura">Arquitetura</a> &nbsp;|&nbsp;
+  <a href="#instalação">Instalação</a> &nbsp;|&nbsp;
+  <a href="#testes">Testes</a> &nbsp;|&nbsp;
+  <a href="#banco-de-dados">Banco de Dados</a>
 </p>
 
-![image](./packages/ide/public/readme/v1.5IDE.png)
-![image](./packages/ide/public/readme/tokens.png)
+![Tela principal da IDE](./packages/ide/public/readme/v1.5IDE.png)
 
-## Architecture
+## Visão Geral
 
-The project is split into three independent packages:
+O projeto reúne três partes principais:
 
-| Package | Stack | Purpose |
-|---------|-------|---------|
-| [`packages/compiler`](./packages/compiler) | TypeScript, Vitest | Lexer, parser, IR generator, and interpreter for Java-- |
-| [`packages/ide`](./packages/ide) | Next.js 16, React 19, Monaco, Tailwind v4 | Web IDE with editor, terminal, token analysis, and LMS UI |
-| [`backend`](./backend) | FastAPI, SQLAlchemy (async), Alembic, PostgreSQL | REST API for auth, classes, exercises, submissions |
+- **Núcleo dinâmico de tradução e execução**: aplica, a cada análise, o vocabulário e as variantes de linguagem selecionados pelo usuário.
+- **IDE web educacional**: oferece editor Monaco, terminal, inspeção de resultados de análise, execução de código, depuração e gerenciamento de linguagens.
+- **API da plataforma**: fornece autenticação, turmas, listas de exercícios, submissões e correção por casos de teste.
 
-### Compiler pipeline
+A proposta é apoiar o ensino de programação com uma experiência única para alunos e professores: escrever e executar código no navegador, personalizar linguagens didáticas, publicar atividades, acompanhar submissões e visualizar informações produzidas pela análise do programa. Os resultados atuais descrevem o artefato implementado e as verificações automatizadas realizadas; avaliações com estudantes e correções de limitações identificadas ficam como encaminhamentos futuros.
 
+O desenvolvimento combina especificação de requisitos, modelagem da arquitetura, implementação incremental e testes automatizados. A interface concentra os fluxos de uso da plataforma: edição e execução de código, inspeção de análise, depuração, personalização de linguagem e administração de atividades de turmas.
+
+## Galeria
+
+### IDE e Execução
+
+![Editor principal da IDE com código](./packages/ide/public/readme/v1.5IDE.png)
+
+### Análise de Tokens
+
+![Painel de tokens gerados pelo analisador léxico](./packages/ide/public/readme/tokens.png)
+
+### Tutorial
+
+![Painel de tutorial da IDE](./packages/ide/public/readme/tutorial-panel.png)
+
+### Linguagens Personalizadas
+
+![Minhas linguagens](./packages/ide/public/readme/my-languages.png)
+
+![Criação de linguagem personalizada](./packages/ide/public/readme/creating-language.png)
+
+### Área do Professor
+
+![Painel do professor](./packages/ide/public/readme/professor-panel.png)
+
+![Listagem de exercícios](./packages/ide/public/readme/exercises.png)
+
+### Área do Aluno
+
+![Resolução de exercício](./packages/ide/public/readme/doing-exercise.png)
+
+## Arquitetura
+
+O repositório é organizado como um monorepo:
+
+| Pacote | Tecnologias | Responsabilidade |
+| --- | --- | --- |
+| [`packages/compiler`](./packages/compiler) | TypeScript, Vitest | Núcleo de análise, tradução intermediária e execução configurável |
+| [`packages/ide`](./packages/ide) | Next.js, React, Monaco Editor, Tailwind | IDE web, assistente de personalização e fluxos educacionais |
+| [`backend`](./backend) | FastAPI, SQLAlchemy async, Alembic, PostgreSQL | API REST de autenticação, turmas, exercícios e submissões |
+| [`packages/e2e`](./packages/e2e) | Playwright | Testes ponta a ponta do fluxo completo |
+
+### Fluxo do Núcleo de Execução
+
+```text
+código -> vocabulário selecionado -> análise -> representação intermediária -> execução -> saída
 ```
-input-code.java → Lexer → Token[] → TokenIterator → Parser (+ IR Emitter) → Instruction[] → Interpreter → Output
-```
 
-- **Lexer**: character-by-character scanning via a factory of specialized scanners (comments, identifiers, numbers, strings, operators).
-- **Parser**: recursive-descent — one file per grammar production under `packages/compiler/src/grammar/syntax/`.
-- **IR**: three-address code with temporary variables (`__temp0`, `__temp1`, ...) and labels for control flow.
-- **Interpreter**: executes the IR using a symbol table, label table, and instruction pointer. I/O is abstracted via injectable `stdout`/`stdin` callbacks.
+- **Vocabulário configurável**: seleciona palavras-chave e variantes de linguagem disponíveis para a análise atual.
+- **Análise**: percorre o código, produz tokens e reconhece a estrutura do programa.
+- **Representação intermediária**: descreve o comportamento do programa em instruções executáveis.
+- **Execução**: interpreta as instruções, controla entrada e saída e apresenta o resultado na IDE.
 
-## Installation
+## Instalação
 
-### Compiler
+### Ambiente Local Completo com Docker
 
-```bash
-cd packages/compiler
-npm install && npm run start   # runs against src/resource/input-code.java
-npm run test                   # Vitest
-```
-
-### IDE
-
-```bash
-cd packages/ide
-npm install && npm run dev     # http://localhost:3001
-```
-
-The IDE consumes the compiler as a local workspace dependency (`@ts-compilator-for-java/compiler`).
-
-### Backend (FastAPI)
-
-```bash
-cd backend
-uv sync
-uv run alembic upgrade head    # apply DB migrations
-uv run uvicorn app.main:app --reload
-```
-
-Or run the full stack with Docker. For local development, use the isolated
-composition below. The Make targets ignore the root `.env`, and the Compose
-file always connects the backend to its own PostgreSQL container:
+Para desenvolvimento local, use o compose isolado:
 
 ```bash
 make local-up
 ```
 
-The local services are available at:
+Serviços disponíveis:
 
 - IDE: <http://localhost:3001>
-- Backend API: <http://localhost:8000>
-- API docs: <http://localhost:8000/docs>
-- PostgreSQL: `localhost:5434` (`tscompilator_local` database)
+- API do backend: <http://localhost:8000>
+- Documentação da API: <http://localhost:8000/docs>
+- PostgreSQL: `localhost:5434`
+- Banco local: `tscompilator_local`
 
-Useful commands:
+Comandos úteis:
 
 ```bash
-make local-status       # container and health status
-make local-logs         # follow logs from the complete stack
-make local-down         # stop containers, preserving local data
-make local-reset        # stop and delete only the local database volume
+make local-status
+make local-logs
+make local-down
+make local-reset
 ```
 
-`make local-reset` is intentionally destructive, but it is scoped to the
-`ts-compilator-local-postgres-data` Docker volume. On startup, the backend
-waits for PostgreSQL, applies Alembic migrations, seeds local sample data, and
-then becomes healthy. Ports can be overridden with `LOCAL_FRONTEND_PORT`,
-`LOCAL_BACKEND_PORT`, `LOCAL_DB_PORT`, and `LOCAL_API_URL`.
+O comando `make local-reset` apaga o volume local `ts-compilator-local-postgres-data`. Use apenas quando quiser recriar o banco de desenvolvimento.
 
-The idempotent seed also publishes five ready-to-import official languages in
-the community catalog: Didática em Português, Pythonica, Minimalista,
-Ruby-like, and Minerês. Re-running the seed updates these SYSTEM-owned presets
-without duplicating them or changing copies imported by users.
+Na inicialização, o backend aguarda o PostgreSQL, aplica as migrations do Alembic, executa a carga inicial local e publica linguagens oficiais no catálogo da comunidade.
 
-The existing `docker-compose.yml` remains available for externally configured
-deployments and must not be used as the default local environment.
+### Núcleo de Execução
 
-### End-to-end tests (Playwright)
+```bash
+cd packages/compiler
+npm install
+npm run start
+```
 
-The `packages/e2e` workspace is the regression gate. Its 19 tests cover the
-core flows end to end against the real Docker stack:
+Para rodar os testes:
 
-| Spec | What it protects |
-|------|------------------|
-| `auth.e2e.ts` | Login, registration, wrong-password error, protected routes |
-| `ide-compiler.e2e.ts` | Lexer → intermediate code → interpreter, through the in-browser IDE |
-| `lms-flow.e2e.ts` | Student joins a class, submits, gets graded by the test cases, and the result survives a reload |
-| `custom-language.e2e.ts` | Importing a community language and running code written with its keywords |
-| `smoke.e2e.ts`, `fixtures.e2e.ts` | The stack is up; the test data helpers work |
+```bash
+npm run test
+```
 
-Run them against the local stack:
+O arquivo de entrada padrão fica em [`packages/compiler/src/resource/input-code.java`](./packages/compiler/src/resource/input-code.java).
+
+### IDE
+
+```bash
+cd packages/ide
+npm install
+npm run dev
+```
+
+A IDE ficará disponível em <http://localhost:3001>.
+
+A IDE consome o núcleo de execução como dependência local do monorepo: `@ts-compilator-for-java/compiler`.
+
+### API
+
+```bash
+cd backend
+uv sync
+uv run alembic upgrade head
+uv run uvicorn app.main:app --reload
+```
+
+Também é possível subir somente o backend e o banco via Docker:
+
+```powershell
+docker compose -f ../docker-compose.local.yml up -d --build --wait backend
+```
+
+Contas de demonstração criadas pela carga inicial local:
+
+| Perfil | E-mail | Senha |
+| --- | --- | --- |
+| Professor | `professor@gmail.com` | `professor` |
+| Aluno | `aluno@gmail.com` | `aluno` |
+
+## Testes
+
+### Testes Ponta a Ponta
+
+O pacote [`packages/e2e`](./packages/e2e) cobre os principais fluxos do sistema com Playwright.
+
+| Arquivo | O que protege |
+| --- | --- |
+| `auth.e2e.ts` | Login, cadastro, erro de senha e rotas protegidas |
+| `ide-compiler.e2e.ts` | Análise, tradução intermediária e execução pela IDE |
+| `lms-flow.e2e.ts` | Entrada em turma, submissão, correção e persistência |
+| `custom-language.e2e.ts` | Importação de linguagem da comunidade e execução com palavras-chave customizadas |
+| `smoke.e2e.ts`, `fixtures.e2e.ts` | Estrutura online e auxiliares de dados de teste |
+
+Instalação inicial:
 
 ```bash
 npm install
-npm run install-browsers -w @ts-compilator-for-java/e2e   # once
-make e2e                                                  # builds and starts the stack, then runs the suite
+npm run install-browsers -w @ts-compilator-for-java/e2e
 ```
 
-`install-browsers` uses `playwright install --with-deps`, which needs
-passwordless `sudo` for system packages. If that fails on your machine,
-`npx playwright install chromium` (without `--with-deps`) is enough.
-
-Useful variants:
+Execução da suíte:
 
 ```bash
-npm run test -w @ts-compilator-for-java/e2e -- specs/lms-flow.e2e.ts   # a single spec
-make e2e-ui                                                             # Playwright UI mode
-npm run report -w @ts-compilator-for-java/e2e                           # last HTML report
+make e2e
 ```
 
-The frontend runs from a built image, so after changing anything in
-`packages/ide` run `make local-up` again before the suite, or the tests will
-exercise the old bundle.
+Variações úteis:
 
-Test data is created per run through the backend API, with unique names and
-`@example.com` e-mails, so consecutive runs never collide. The seed is only
-read from: the `professor@gmail.com` account and the five official languages.
+```bash
+npm run test -w @ts-compilator-for-java/e2e -- specs/lms-flow.e2e.ts
+make e2e-ui
+npm run report -w @ts-compilator-for-java/e2e
+```
 
-### Continuous integration
+Depois de alterar arquivos em `packages/ide`, suba a estrutura local novamente com `make local-up` para garantir que os testes usem o pacote gerado mais recente.
 
-`.github/workflows/deploy.yml` runs on every pull request and on every push
-to `main`:
+### Testes do Backend
 
-- **unit**: compiler and IDE Vitest suites, backend pytest
-- **e2e**: starts the stack with `make local-up` and runs the Playwright suite;
-  on failure it uploads the report, traces and the stack logs
-- **deploy**: the SSH deploy to the VPS, which runs only on pushes to `main`
-  and only if both jobs above pass
+```bash
+cd backend
+uv run pytest
+```
 
-### Pre-push hook
+### Testes do Núcleo de Execução e da IDE
 
-A fast local gate runs the compiler and IDE unit tests (about 20 seconds)
-before every push. Enable it once per clone:
+```bash
+npm run test -w @ts-compilator-for-java/compiler
+npm run test -w @ts-compilator-for-java/ide
+```
+
+## Integração Contínua
+
+O workflow [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) roda em pull requests e em pushes para `main`:
+
+- **unit**: suítes Vitest do núcleo de execução e da IDE, além dos testes Python do backend.
+- **e2e**: sobe a estrutura local e executa a suíte Playwright.
+- **deploy**: publica no VPS apenas em pushes para `main`, depois que os jobs anteriores passam.
+
+## Hook de Pré-Push
+
+O repositório inclui um hook local rápido para rodar testes unitários antes do push:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-The E2E suite and the backend tests are deliberately not in the hook, since
-they take minutes. They run in CI, and locally with `make e2e`.
+A suíte E2E e os testes do backend ficam fora do hook porque demoram mais. Eles rodam na CI e podem ser executados localmente quando necessário.
 
-### Server-side API address
+## Configuração de API no Next.js
 
-The Next.js API routes (for example `/api/submissions/validate`) run inside
-the frontend container and call the backend from there. They read
-`INTERNAL_API_URL`, which both compose files set to the backend's Docker
-service name. `NEXT_PUBLIC_API_URL` can't be used for this: Next.js inlines it
-at build time, and it usually points at `localhost` or the public URL, which
-from inside the container is the wrong address.
+Rotas de API do Next.js, como `/api/submissions/validate`, executam dentro do container do frontend e chamam o backend a partir dele. Por isso elas usam `INTERNAL_API_URL`, configurada nos arquivos compose para apontar ao serviço Docker do backend.
 
-## Database
+`NEXT_PUBLIC_API_URL` é usada pelo navegador. Ela não substitui `INTERNAL_API_URL`, porque o Next.js injeta variáveis públicas no build e, dentro do container, `localhost` aponta para o próprio frontend.
 
-PostgreSQL schema for the LMS layer (organizations, classes, exercises, submissions). Migrations are managed by Alembic — see [`backend/migrations/`](./backend/migrations).
+## Banco de Dados
+
+O backend usa PostgreSQL para a camada educacional da plataforma. As migrations são gerenciadas pelo Alembic em [`backend/migrations`](./backend/migrations).
 
 ```mermaid
 erDiagram
-    organizations ||--o{ users : "has"
-    organizations ||--o{ classes : "has"
+    organizations ||--o{ users : "possui"
+    organizations ||--o{ classes : "possui"
 
-    users ||--o{ exercises : "creates (teacher)"
-    users ||--o{ exercise_lists : "creates (teacher)"
-    users ||--o{ classes : "teaches"
-    users ||--o{ class_members : "enrolled (student)"
-    users ||--o{ submissions : "submits (student)"
+    users ||--o{ exercises : "cria"
+    users ||--o{ exercise_lists : "cria"
+    users ||--o{ classes : "ensina"
+    users ||--o{ class_members : "participa"
+    users ||--o{ submissions : "envia"
 
-    exercises ||--o{ test_cases : "contains"
-    exercises ||--o{ exercise_list_items : "part of"
-    exercises ||--o{ submissions : "receives"
+    exercises ||--o{ test_cases : "contem"
+    exercises ||--o{ exercise_list_items : "faz parte"
+    exercises ||--o{ submissions : "recebe"
 
-    exercise_lists ||--o{ exercise_list_items : "groups"
-    exercise_lists ||--o{ class_exercise_lists : "published in"
-    exercise_lists ||--o{ submissions : "scope of"
+    exercise_lists ||--o{ exercise_list_items : "agrupa"
+    exercise_lists ||--o{ class_exercise_lists : "publicada em"
+    exercise_lists ||--o{ submissions : "contextualiza"
 
-    classes ||--o{ class_members : "has members"
-    classes ||--o{ class_exercise_lists : "receives lists"
-    classes ||--o{ submissions : "context of"
+    classes ||--o{ class_members : "tem membros"
+    classes ||--o{ class_exercise_lists : "recebe listas"
+    classes ||--o{ submissions : "contextualiza"
 
     organizations {
         serial id PK
@@ -293,48 +353,38 @@ erDiagram
     }
 ```
 
-Reference files:
-- Raw SQL dump: [`tcc/victor/db.sql`](./tcc/victor/db.sql)
-- DBML (dbdiagram.io): [`tcc/victor/dbdocs.txt`](./tcc/victor/dbdocs.txt)
-- Extended diagram with legends: [`tcc/victor/db-diagram.md`](./tcc/victor/db-diagram.md)
+## Estrutura do Repositório
 
-## Instructions
-
-Each package has its own README with implementation details:
-
-- [Compiler README](./packages/compiler/README.md)
-- [IDE README](./packages/ide/README.md)
-- [Backend README](./backend/README.md)
-
-To test the compiler with custom code, edit `packages/compiler/src/resource/input-code.java` and run `npm run start`.
-
-The compiler entry point is `packages/compiler/src/index.ts`.
-
-[Original specification (PDF)](./packages/compiler/public/java--descriptionWork.pdf)
-
-## Repository Layout
-
-```
+```text
 .
-├── backend/            # FastAPI + SQLAlchemy + Alembic
+├── backend/                  # API FastAPI, SQLAlchemy e Alembic
+├── docs/                     # Documentação complementar
 ├── packages/
-│   ├── compiler/       # Lexer, parser, IR, interpreter
-│   └── ide/            # Next.js IDE
-├── tcc/                # Undergraduate thesis (LaTeX)
-│   ├── igor/
-│   └── victor/         # Includes db.sql, dbdocs.txt, db-diagram.md
-├── docs/
-├── qualificacao/       # Qualification documents
-├── CLAUDE.md           # Project guidance for Claude Code
-├── DESIGN.md           # Design decisions
-└── docker-compose.yml
+│   ├── compiler/             # Núcleo de análise, tradução e execução
+│   ├── docs/                 # Documentação dos pacotes
+│   ├── e2e/                  # Testes Playwright
+│   └── ide/                  # IDE Next.js
+├── .github/                  # Workflows de CI/CD
+├── .githooks/                # Hooks locais do Git
+├── docker-compose.local.yml  # Estrutura local isolada
+├── docker-compose.yml        # Compose para ambientes configurados externamente
+├── Makefile                  # Atalhos de desenvolvimento
+└── README.MD
 ```
 
-## Contributing
+## Documentação Complementar
 
-Contributions are welcome — especially new test cases and language feature suggestions. Open an issue or PR.
+- [README do núcleo de execução](./packages/compiler/README.md)
+- [README da IDE](./packages/ide/README.md)
+- [README da API](./backend/README.md)
+- [Especificação original da linguagem base](./packages/compiler/public/java--descriptionWork.pdf)
+- [Decisões de design](./DESIGN.md)
 
-## Authors
+## Contribuição
+
+Contribuições são bem-vindas, especialmente novos casos de teste, melhorias na IDE e sugestões de recursos para a linguagem. Abra uma issue ou envie um pull request com uma descrição clara do problema e da solução proposta.
+
+## Autores
 
 - Igor Lamoia
 - Victor Souza

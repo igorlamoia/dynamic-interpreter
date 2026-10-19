@@ -2,6 +2,8 @@ import { Loader2 } from "lucide-react";
 import type { LanguageSummary } from "@/lib/languages-api";
 import { Pagination } from "@/components/ui/pagination";
 import { LanguageCard, type LanguageCardProps } from "./language-card";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 type LanguagesGridProps = Omit<LanguageCardProps, "language" | "isActive"> & {
   languages: LanguageSummary[];
@@ -27,6 +29,8 @@ export function LanguagesGrid({
   onPageChange,
   ...actions
 }: LanguagesGridProps) {
+  const { locale } = useRouter();
+
   if (loading) {
     return (
       <div className="flex justify-center py-16">
@@ -38,13 +42,15 @@ export function LanguagesGrid({
   if (languages.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border py-16 text-center dark:border-white/10">
-        <p className="text-muted-foreground">Nenhuma linguagem salva ainda.</p>
+        <p className="text-muted-foreground">
+          {t(locale, "ui.languages_empty")}
+        </p>
         <button
           type="button"
           onClick={onCreate}
           className="mt-4 rounded-xl bg-blue-500 px-6 py-2 text-sm font-semibold text-white hover:bg-blue-400"
         >
-          Criar a primeira
+          {t(locale, "ui.languages_create_first")}
         </button>
       </div>
     );

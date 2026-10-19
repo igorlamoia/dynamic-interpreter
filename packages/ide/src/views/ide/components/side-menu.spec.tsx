@@ -53,9 +53,10 @@ describe("SideMenu", () => {
     document.body.innerHTML = "";
   });
 
-  it("routes settings clicks to /language-creator", () => {
-    const router = { push: vi.fn() };
-    useRouterMock.mockReturnValue(router);
+  it("opens the language sidebar from the language slot", () => {
+    useRouterMock.mockReturnValue({ locale: "pt-BR", push: vi.fn() });
+    const setActiveView = vi.fn();
+    const setIsSidebarOpen = vi.fn();
 
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -65,26 +66,26 @@ describe("SideMenu", () => {
       root.render(
         <SideMenu
           isSidebarOpen
-          setIsSidebarOpen={vi.fn()}
+          setIsSidebarOpen={setIsSidebarOpen}
           activeView="explorer"
-          setActiveView={vi.fn()}
+          setActiveView={setActiveView}
         />,
       );
     });
 
-    const settingsButton = container.querySelector(
-      'button[aria-label="Linguagem personalizada"]',
+    const languageButton = container.querySelector(
+      'button[aria-label="Linguagens"]',
     );
-    expect(settingsButton).toBeTruthy();
+    expect(languageButton).toBeTruthy();
 
     act(() => {
-      settingsButton?.dispatchEvent(
+      languageButton?.dispatchEvent(
         new MouseEvent("click", { bubbles: true, cancelable: true }),
       );
     });
 
-    expect(sessionStorage.getItem("language-creator:return")).toBe("1");
-    expect(router.push).toHaveBeenCalledWith("/language-creator");
+    expect(setActiveView).toHaveBeenCalledWith("language");
+    expect(setIsSidebarOpen).toHaveBeenCalledWith(true);
 
     act(() => {
       root.unmount();
@@ -92,7 +93,7 @@ describe("SideMenu", () => {
   });
 
   it("opens the debug sidebar from the former source-control slot", () => {
-    useRouterMock.mockReturnValue({ push: vi.fn() });
+    useRouterMock.mockReturnValue({ locale: "pt-BR", push: vi.fn() });
     const setActiveView = vi.fn();
     const setIsSidebarOpen = vi.fn();
 

@@ -154,9 +154,8 @@ test("professor monta a lista, adiciona exercicio e publica; o aluno passa a ver
   // 4. Publicar para a turma.
   await page.getByRole("button", { name: "Publicar" }).click();
   const modalDePublicacao = page.getByRole("dialog");
-  await modalDePublicacao
-    .getByLabel("Turma")
-    .selectOption({ label: turma.name });
+  await modalDePublicacao.getByRole("combobox", { name: "Turma" }).click();
+  await page.getByRole("menuitem", { name: turma.name }).click();
   await modalDePublicacao.getByRole("button", { name: "Publicar" }).click();
 
   await expect(page.locator("#toast-success")).toContainText(

@@ -122,7 +122,6 @@ const wizard = {
     "Organiza bloques por indentación, sin delimitadores.",
   "structure.openDelimiter": "Delimitador de apertura",
   "structure.closeDelimiter": "Delimitador de cierre",
-  "structure.structuralExample": "Ejemplo estructural",
   "structure.optionalTerminatorTitle": "Sin punto y coma",
   "structure.optionalTerminatorSubtitle": "Línea",
   "structure.optionalTerminatorDescription":
@@ -142,7 +141,8 @@ const wizard = {
     "Permite estructuras más flexibles sin informar el tamaño previamente.",
   "rules.index": "Paso 5",
   "rules.title": "Operadores",
-  "rules.description": "Ajusta los operadores soportados por el dominio actual.",
+  "rules.description":
+    "Ajusta los operadores soportados por el dominio actual.",
   "rules.booleanLiterals": "Literales booleanos",
   "rules.operatorAliases": "Aliases de operadores",
   "rules.literalLabel": "Literal {value}",
@@ -158,7 +158,8 @@ const wizard = {
   "flow.flowExample": "Ejemplo de flujo",
   "review.index": "Paso 7",
   "review.title": "Revisión",
-  "review.description": "Revisa el resumen final antes de aplicar la configuración.",
+  "review.description":
+    "Revisa el resumen final antes de aplicar la configuración.",
   "review.languageName": "Nombre del lenguaje",
   "review.basedOn": "Basado en {preset}",
   "review.rulesSummary": "Resumen de reglas",

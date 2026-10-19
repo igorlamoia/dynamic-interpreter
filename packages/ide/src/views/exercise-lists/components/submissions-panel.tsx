@@ -1,24 +1,27 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 import { Pagination } from "@/components/ui/pagination";
 import type { SubmissionRecord } from "./types";
+import { t } from "@/i18n";
 
 function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
+  const { locale } = useRouter();
   const statusMap: Record<string, { label: string; cls: string }> = {
     PENDING: {
-      label: "Pendente",
+      label: t(locale, "ui.submission_status_pending"),
       cls: "bg-slate-500/15 text-slate-700 border-slate-500/25 dark:text-slate-400",
     },
     SUBMITTED: {
-      label: "Submetido",
+      label: t(locale, "ui.submission_status_submitted"),
       cls: "bg-blue-500/15 text-blue-700 border-blue-500/25 dark:text-blue-300",
     },
     GRADED: {
-      label: "Avaliado",
+      label: t(locale, "ui.submission_status_graded"),
       cls: "bg-emerald-500/15 text-emerald-700 border-emerald-500/25 dark:text-emerald-300",
     },
     LATE: {
-      label: "Atrasado",
+      label: t(locale, "ui.submission_status_late"),
       cls: "bg-red-500/15 text-red-700 border-red-500/25 dark:text-red-300",
     },
   };
@@ -36,7 +39,7 @@ function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
           String(submission.exerciseId).slice(0, 8)}
       </td>
       <td className="px-6 py-3.5 text-muted-foreground text-xs">
-        {new Date(submission.submittedAt).toLocaleString("pt-BR", {
+        {new Date(submission.submittedAt).toLocaleString(locale, {
           day: "2-digit",
           month: "2-digit",
           hour: "2-digit",
@@ -58,7 +61,7 @@ function SubmissionRow({ submission }: { submission: SubmissionRecord }) {
           href={`/submissions/${submission.id}`}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 hover:border-primary/40 transition-colors"
         >
-          <span>Corrigir</span>
+          <span>{t(locale, "ui.submissions_grade")}</span>
           <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </td>
@@ -87,6 +90,7 @@ export function SubmissionsPanel({
   pageSize?: number;
   onPageChange?: (page: number) => void;
 }) {
+  const { locale } = useRouter();
   const count = totalItems ?? submissions.length;
 
   return (
@@ -96,7 +100,9 @@ export function SubmissionsPanel({
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-accent/70 dark:hover:bg-white/3 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <h2 className="font-semibold text-foreground">Submissões</h2>
+          <h2 className="font-semibold text-foreground">
+            {t(locale, "ui.submissions_title")}
+          </h2>
           {count > 0 && (
             <span className="text-xs text-muted-foreground">({count})</span>
           )}
@@ -114,19 +120,31 @@ export function SubmissionsPanel({
             </div>
           ) : submissions.length === 0 ? (
             <p className="text-center text-muted-foreground text-sm py-8">
-              Nenhuma submissão ainda.
+              {t(locale, "ui.submissions_empty")}
             </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-xs text-muted-foreground uppercase tracking-wide border-b border-border dark:border-white/5">
-                    <th className="px-6 py-3 text-left">Aluno</th>
-                    <th className="px-6 py-3 text-left">Exercício</th>
-                    <th className="px-6 py-3 text-left">Enviado</th>
-                    <th className="px-6 py-3 text-left">Status</th>
-                    <th className="px-6 py-3 text-left">Nota</th>
-                    <th className="px-6 py-3 text-right">Ação</th>
+                    <th className="px-6 py-3 text-left">
+                      {t(locale, "ui.submissions_student")}
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      {t(locale, "ui.submissions_exercise")}
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      {t(locale, "ui.submissions_submitted_at")}
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      {t(locale, "ui.submissions_status")}
+                    </th>
+                    <th className="px-6 py-3 text-left">
+                      {t(locale, "ui.submissions_score")}
+                    </th>
+                    <th className="px-6 py-3 text-right">
+                      {t(locale, "ui.submissions_action")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

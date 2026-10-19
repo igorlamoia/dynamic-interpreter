@@ -1,4 +1,3 @@
-import { ExampleSnippet } from "../example-snippet";
 import { DocumentedField } from "../documented-field";
 import { HyperText } from "@/components/ui/hyper-text";
 import { Terminal } from "lucide-react";
@@ -9,7 +8,6 @@ export type IOKeyword = "print" | "scan";
 
 export type IOStepProps = {
   values: {
-    snippet?: string;
     printKeyword: string;
     printDescription: string;
     scanKeyword: string;
@@ -31,8 +29,8 @@ export function IOStep({ values, actions }: IOStepProps) {
         <Step.Index>{wt("io.index")}</Step.Index>
         <Step.Title>{wt("io.title")}</Step.Title>
         <Step.Description>
-          {wt("io.description.before")}{" "}
-          <strong>Hello World</strong>, {wt("io.description.after")}{" "}
+          {wt("io.description.before")} <strong>Hello World</strong>,{" "}
+          {wt("io.description.after")}{" "}
           <HyperText
             key={localizedHelloWorld}
             as="span"
@@ -74,13 +72,6 @@ export function IOStep({ values, actions }: IOStepProps) {
           }}
         />
       </div>
-
-      <ExampleSnippet
-        title={wt("io.liveExample")}
-        code={values.snippet ?? `${values.printKeyword}("Ola mundo")`}
-        input={["Kiki"]}
-        output={["Ola mundo", "Me chamo: Kiki"]}
-      />
     </section>
   );
 }

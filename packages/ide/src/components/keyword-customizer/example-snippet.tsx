@@ -16,6 +16,9 @@ type ExampleSnippetProps = {
   output?: string[];
   input?: string[];
   showHeader?: boolean;
+  terminalLayout?: "row" | "column";
+  showLineNumbers?: boolean;
+  wrapLongLines?: boolean;
 };
 
 export function ExampleSnippet({
@@ -24,6 +27,9 @@ export function ExampleSnippet({
   output,
   input,
   showHeader = true,
+  terminalLayout = "row",
+  showLineNumbers = true,
+  wrapLongLines = false,
 }: ExampleSnippetProps) {
   const { darkMode } = useTheme();
   const { draftCustomization } = useKeywordCustomizer();
@@ -32,6 +38,7 @@ export function ExampleSnippet({
   const lines = useMemo(() => code.split("\n"), [code]);
   const hasOutput = Boolean(output?.length);
   const hasInput = Boolean(input?.length);
+  const isTerminalColumn = terminalLayout === "column";
 
   useEffect(() => {
     let isCancelled = false;
@@ -108,15 +115,30 @@ export function ExampleSnippet({
         )}
 
         <div className="grid min-h-12 dark:bg-[#090e1a] dark:text-slate-100">
-          <PerfectScrollbar className=" max-h-50 grid grid-cols-[2.5rem_minmax(0,1fr)]">
-            <div className="border-r dark:border-white/5 bg-primary/5 px-2 py-4 text-right font-mono text-[11px] leading-6 text-slate-500">
-              {lines.map((_, index) => (
-                <div key={index}>{String(index + 1).padStart(2, "0")}</div>
-              ))}
-            </div>
+          <PerfectScrollbar
+            className={
+              showLineNumbers
+                ? "max-h-50 grid grid-cols-[2.5rem_minmax(0,1fr)]"
+                : "max-h-50 grid grid-cols-1"
+            }
+          >
+            {showLineNumbers && (
+              <div className="border-r dark:border-white/5 bg-primary/5 px-2 py-4 text-right font-mono text-[11px] leading-6 text-slate-500">
+                {lines.map((_, index) => (
+                  <div key={index}>{String(index + 1).padStart(2, "0")}</div>
+                ))}
+              </div>
+            )}
 
             <div className="min-w-0">
-              <pre className="w-max min-w-full p-4 font-mono text-xs leading-6 text-cyan-100">
+              <pre
+                className={[
+                  "min-w-full p-4 font-mono text-xs leading-6 text-cyan-100",
+                  wrapLongLines
+                    ? "whitespace-pre-wrap break-words"
+                    : "w-max whitespace-pre",
+                ].join(" ")}
+              >
                 {highlightedCode ? (
                   <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
                 ) : (
@@ -138,9 +160,11 @@ export function ExampleSnippet({
               <span className="ml-auto text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                 {wt("example.terminal")}
               </span>
-              <div className="flex">
+              <div
+                className={isTerminalColumn ? "flex flex-col gap-3" : "flex"}
+              >
                 {hasInput && (
-                  <div className="flex flex-col flex-1">
+                  <div className="flex flex-col flex-1 -mt-5">
                     <div className="items-center justify-between">
                       <span className="text-[10px] uppercase tracking-[0.22em] text-slate-600">
                         {wt("example.input")}
@@ -155,7 +179,13 @@ export function ExampleSnippet({
                   </div>
                 )}
                 {hasOutput && (
-                  <div className="border-l flex flex-col flex-1 ml-2 pl-2 dark:border-white/8">
+                  <div
+                    className={
+                      isTerminalColumn
+                        ? "border-t flex flex-col flex-1 pt-3 dark:border-white/8 -mt-5"
+                        : "border-l flex flex-col flex-1 ml-2 pl-2 dark:border-white/8 -mt-5"
+                    }
+                  >
                     <div className=" items-center justify-between">
                       <span className="text-[10px] uppercase tracking-[0.22em] text-slate-600">
                         {wt("example.output")}

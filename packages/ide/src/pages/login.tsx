@@ -10,14 +10,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navbar } from "@/components/navbar";
 import { useAuth } from "@/contexts/AuthContext";
-import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useToast } from "@/contexts/ToastContext";
 import {
   LoginForm,
   createLoginSchema,
   type LoginFormValues,
 } from "@/components/auth/login-form";
-import { SocialLogin } from "@/components/auth/social-login";
 import { useLoginMutation } from "@/hooks/use-api-queries";
 import { t } from "@/i18n";
 
@@ -53,11 +51,8 @@ export default function Login() {
       login({ token: data.accessToken, user: data.user });
 
       await router.push("/dashboard");
-    } catch (error) {
-      const message = getApiErrorMessage(
-        error,
-        t(router.locale, "ui.login_error_failed"),
-      );
+    } catch {
+      const message = t(router.locale, "ui.login_error_failed");
       setServerError(message);
       showToast({ type: "error", message });
     }

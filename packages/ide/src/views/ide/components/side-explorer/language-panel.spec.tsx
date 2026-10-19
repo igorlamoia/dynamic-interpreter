@@ -6,7 +6,11 @@ import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CUSTOMIZABLE_KEYWORDS, ORIGINAL_KEYWORDS } from "@/contexts/keyword";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
-import { buildHelloWorldSample } from "./language-sample";
+import { buildReviewLanguageSample } from "./language-sample";
+import {
+  getCategoryLexemeExample,
+  getCategoryLexemes,
+} from "./category-lexemes";
 
 (
   globalThis as typeof globalThis & {
@@ -58,7 +62,9 @@ vi.mock("next/router", () => ({
 
 import { CategoryLexemesList } from "./language-panel";
 
-function createCustomization(): StoredKeywordCustomization {
+function createCustomization(
+  overrides: Partial<StoredKeywordCustomization> = {},
+): StoredKeywordCustomization {
   return {
     mappings: ORIGINAL_KEYWORDS.map((original) => ({
       original,
@@ -76,6 +82,7 @@ function createCustomization(): StoredKeywordCustomization {
       array: "fixed",
     },
     languageDocumentation: {},
+    ...overrides,
   };
 }
 
@@ -155,14 +162,21 @@ describe("CategoryLexemesList", () => {
     };
     useEditorMock.mockReturnValue(editor);
     const { container, root, customization } = renderPanel();
-    const expectedCode = buildHelloWorldSample(customization);
+    const expectedCode = buildReviewLanguageSample(customization);
 
     clickButtonByLabel(container, "View language sample");
 
     expect(container.querySelector('[role="dialog"]')).not.toBeNull();
     expect(container.textContent).toContain("Active language sample");
-    expect(container.textContent).toContain('print("What is your name?")');
-    expect(container.textContent).toContain('print("hello world, ", name, "!")');
+    expect(container.textContent).toContain('print("Item price:")');
+    expect(container.textContent).toContain("scan(float, value)");
+    expect(container.textContent).toContain("for (int i = 0; i <= 2;");
+    expect(container.textContent).toContain("switch (status)");
+    expect(container.textContent).toContain(
+      "float calculateTax(float value, float discount)",
+    );
+    expect(container.textContent).not.toContain("Eren");
+    expect(container.textContent).not.toContain("Mikasa");
 
     clickButtonByText(container, "Replace selected file");
 
@@ -176,5 +190,86 @@ describe("CategoryLexemesList", () => {
     act(() => {
       root.unmount();
     });
+  });
+
+  it("shows placeholder examples for customized lexemes", () => {
+    const customization = createCustomization();
+    customization.mappings = customization.mappings.map((mapping) =>
+      mapping.original === "print" ? { ...mapping, custom: "xove" } : mapping,
+    );
+
+    const { container, root } = renderPanel(customization);
+    const printButton = Array.from(container.querySelectorAll("button")).find(
+      (candidate) => candidate.textContent === "xove",
+    );
+
+    expect(printButton).toBeDefined();
+    expect(printButton?.getAttribute("title")).toBe('xove("hello world");');
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("separates word-like statement terminators in lexeme examples", () => {
+    const customization = createCustomization({
+      statementTerminatorLexeme: "uai",
+    });
+
+    expect(getCategoryLexemeExample("tipos", "int", customization)).toBe(
+      "int score = 1 uai",
+    );
+    expect(
+      getCategoryLexemeExample("estrutura", "uai", customization),
+    ).toBe('print("ok") uai');
+  });
+
+  it("hides lexemes that are disabled by the current language modes", () => {
+    const customization = createCustomization({
+      statementTerminatorLexeme: "",
+      blockDelimiters: { open: "", close: "" },
+      modes: {
+        semicolon: "optional-eol",
+        block: "indentation",
+        typing: "untyped",
+        array: "dynamic",
+      },
+    });
+
+    expect(getCategoryLexemes("tipos", customization)).toEqual([
+      "variable",
+      "function",
+    ]);
+    expect(getCategoryLexemes("estrutura", customization)).toEqual([]);
+
+    const { container, root } = renderPanel(customization);
+    const lexemeButtons = Array.from(container.querySelectorAll("button")).map(
+      (button) => button.textContent,
+    );
+
+    expect(lexemeButtons).toContain("variable");
+    expect(lexemeButtons).toContain("function");
+    expect(lexemeButtons).not.toContain("int");
+    expect(lexemeButtons).not.toContain("float");
+    expect(lexemeButtons).not.toContain("bool");
+    expect(lexemeButtons).not.toContain("string");
+    expect(lexemeButtons).not.toContain("void");
+    expect(lexemeButtons).not.toContain(";");
+    expect(lexemeButtons).not.toContain("{");
+    expect(lexemeButtons).not.toContain("}");
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("falls back to default boolean literals when the map is empty", () => {
+    const customization = createCustomization({
+      booleanLiteralMap: {},
+    });
+
+    expect(getCategoryLexemes("operadores", customization)).toEqual(
+      expect.arrayContaining(["true", "false"]),
+    );
   });
 });

@@ -1,15 +1,7 @@
 import IconButton from "@/components/buttons/icon-button";
-import {
-  BugPlay,
-  FileCode2,
-  Languages,
-  Search,
-  Settings,
-  Sparkles,
-} from "lucide-react";
+import { BugPlay, FileCode2, Languages, Search } from "lucide-react";
 import { useRouter } from "next/router";
 import type { SidebarView } from "./side-explorer/sidebar-panel";
-import { markLanguageCreatorReturn } from "@/lib/language-creator-navigation";
 import { t } from "@/i18n";
 
 interface SideMenuProps {
@@ -38,6 +30,7 @@ export function SideMenu({
   return (
     <div className="flex  flex-1 sm:flex-col h-full px-4 py-2 sm:w-12 items-center gap-4 border-b sm:border-r border-black/10 dark:border-white/10 sm:py-4">
       <IconButton
+        data-tour="ide-explorer"
         selected={isSidebarOpen && activeView === "explorer"}
         onClick={() => handleViewClick("explorer")}
         tooltip={t(locale, "ui.file_explorer")}
@@ -52,6 +45,7 @@ export function SideMenu({
         <Search className="h-4 w-4" />
       </IconButton>
       <IconButton
+        data-tour="ide-language"
         selected={isSidebarOpen && activeView === "language"}
         onClick={() => handleViewClick("language")}
         tooltip={t(locale, "ui.languages")}
@@ -59,30 +53,13 @@ export function SideMenu({
         <Languages className="h-4 w-4" />
       </IconButton>
       <IconButton
+        data-tour="ide-debug"
         selected={isSidebarOpen && activeView === "debug"}
         onClick={() => handleViewClick("debug")}
         tooltip="Debug"
       >
         <BugPlay className="h-4 w-4" />
       </IconButton>
-      <ConfigButton />
     </div>
-  );
-}
-
-function ConfigButton() {
-  const router = useRouter();
-  const { locale } = router;
-
-  return (
-    <IconButton
-      tooltip={t(locale, "ui.custom_language")}
-      onClick={() => {
-        markLanguageCreatorReturn();
-        void router.push("/language-creator");
-      }}
-    >
-      <Sparkles className="h-4 w-4" />
-    </IconButton>
   );
 }

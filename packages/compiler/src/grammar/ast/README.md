@@ -253,6 +253,8 @@ array element.
 <increment> ->
     '++' IDENT
   | IDENT '++'
+  | '--' IDENT
+  | IDENT '--'
 ```
 
 Plain `=` also supports right-associative scalar chains such as
@@ -311,6 +313,7 @@ Plain `=` also supports right-associative scalar chains such as
   | <arrayAccess>
   | <functionCallExpr>
   | IDENT '++'
+  | IDENT '--'
   | '(' <expr> ')'
 ```
 

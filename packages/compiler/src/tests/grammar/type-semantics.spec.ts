@@ -56,6 +56,38 @@ describe("Type semantics warnings", () => {
     expect(result.output).toBe("yesright2lazy");
   });
 
+  it("executes increment, decrement, and compound assignment operators", async () => {
+    const result = await executeProgram(`
+      int main() {
+        int i = 3;
+        i++;
+        i--;
+        ++i;
+        --i;
+        i += 5;
+        i -= 2;
+        print(i);
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("6");
+  });
+
+  it("uses postfix decrement expression value before updating", async () => {
+    const result = await executeProgram(`
+      int main() {
+        int i = 3;
+        int before = i--;
+        print(before);
+        print(i);
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("32");
+  });
+
   it("warns at compile time and fails at runtime for string-to-int assignment", async () => {
     const source = `
       int main() {
@@ -158,6 +190,54 @@ describe("Type semantics warnings", () => {
         }),
       ]),
     );
+  });
+
+  it("accepts multiple bool declarations with trailing or per-variable initializers", async () => {
+    const result = await executeProgram(`
+      int main() {
+        bool narutoQuerConversar, erenQuerDestruirTudo, mikasaAmaEren = true;
+        print(narutoQuerConversar);
+        print(erenQuerDestruirTudo);
+        print(mikasaAmaEren);
+
+        bool narutoQuerConversar2 = true, erenQuerDestruirTudo2 = true, mikasaAmaEren2 = true;
+        print(narutoQuerConversar2);
+        print(erenQuerDestruirTudo2);
+        print(mikasaAmaEren2);
+        return 0;
+      }
+    `);
+
+    expect(result.warnings).toHaveLength(0);
+    expect(result.output).toBe("truetruetruetruetruetrue");
+  });
+
+  it("does not execute if blocks for declared but uninitialized bool variables", async () => {
+    const result = await executeProgram(`
+      int main() {
+        bool ready;
+        if (ready) {
+          print("start");
+          print("done");
+        }
+        return 0;
+      }
+    `);
+
+    expect(result.output).toBe("");
+  });
+
+  it("rejects reads from undeclared identifiers in typed mode", () => {
+    expect(() =>
+      compileToIr(`
+        int main() {
+          if (ready) {
+            print("start");
+          }
+          return 0;
+        }
+      `),
+    ).toThrow();
   });
 
   it("reports a warning when assigning a float literal to an int", () => {
@@ -704,6 +784,19 @@ describe("Type semantics runtime", () => {
     `);
 
     expect(result.output).toBe("true");
+  });
+
+  it("applies a trailing declaration initializer before bool conditions", async () => {
+    const result = await executeProgram(`
+      void main() {
+        bool narutoQuerConversar, erenQuerDestruirTudo, mikasaAmaEren = true;
+        if (erenQuerDestruirTudo && narutoQuerConversar) {
+          print("mensagem");
+        }
+      }
+    `);
+
+    expect(result.output).toBe("mensagem");
   });
 
   it("propagates array writes through parameter references", async () => {

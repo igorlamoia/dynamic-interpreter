@@ -3,13 +3,13 @@ import { Maximize2, Minimize2, StepForward } from "lucide-react";
 import { useRouter } from "next/router";
 import { t } from "@/i18n";
 import { RainbowButton } from "@/components/ui/rainbow-button";
-import { markLanguageCreatorReturn } from "@/lib/language-creator-navigation";
 
 interface MenuProps {
   handleRun: () => void;
   isFullscreen: boolean;
   isRunDisabled?: boolean;
   onHelp: () => void;
+  onRules: () => void;
   runAll: () => void;
   toggleFullscreen: () => void;
   toggleTerminal: () => void;
@@ -20,6 +20,7 @@ export function Menu({
   isFullscreen,
   isRunDisabled = false,
   onHelp,
+  onRules,
   runAll,
   toggleFullscreen,
   toggleTerminal,
@@ -39,19 +40,25 @@ export function Menu({
         </span>
         <div className="hidden items-center gap-3 md:flex">
           <button
-            className="hover:text-foreground"
-            onClick={() => {
-              markLanguageCreatorReturn();
-              void router.push("/language-creator");
-            }}
+            data-tour="ide-terminal-toggle"
+            className="cursor-pointer hover:text-foreground"
+            onClick={toggleTerminal}
           >
-            {t(locale, "ui.create_language")}
-          </button>
-          <button className="hover:text-foreground" onClick={toggleTerminal}>
             {t(locale, "ui.terminal")}
           </button>
-          <button className="hover:text-foreground" onClick={onHelp}>
+          <button
+            data-tour="ide-help"
+            className="cursor-pointer hover:text-foreground"
+            onClick={onHelp}
+          >
             {t(locale, "ui.help")}
+          </button>
+          <button
+            data-tour="ide-rules"
+            className="cursor-pointer hover:text-foreground"
+            onClick={onRules}
+          >
+            {t(locale, "ui.compiler_rules")}
           </button>
         </div>
       </div>
@@ -65,6 +72,7 @@ export function Menu({
           {isFullscreen ? <Minimize2 /> : <Maximize2 />}
         </IconButton>
         <IconButton
+          data-tour="ide-run-lexer"
           aria-label={t(locale, "ui.run_lexer")}
           disabled={isRunDisabled}
           onClick={handleRun}
@@ -74,6 +82,7 @@ export function Menu({
           <StepForward />
         </IconButton>
         <RainbowButton
+          data-tour="ide-run-all"
           variant="outline"
           disabled={isRunDisabled}
           onClick={runAll}

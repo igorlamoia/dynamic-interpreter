@@ -1,20 +1,24 @@
 import { Lexer } from "@ts-compilator-for-java/compiler/src/lexer";
 import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
-import { t } from "@/i18n";
+import { getLanguageSampleIntl, t } from "@/i18n";
+import type { LanguageSampleIntl } from "@/i18n/types/language-sample";
 import { buildEffectiveKeywordMap } from "@/lib/keyword-map";
 import {
   DEFAULT_BOOLEAN_LITERAL_MAP,
   DEFAULT_OPERATOR_WORD_MAP,
 } from "@/lib/keyword-map";
 import { buildLexerConfigFromCustomization } from "@/lib/keyword-customization";
-import { buildPreviewSource } from "./preview-builder";
 import {
   applyWizardPreset,
   getWizardPresetLabel,
   type WizardPresetId,
   type WizardStepId,
 } from "./wizard-model";
+import {
+  buildLanguageCategorySample,
+  type LexemeExampleCategory,
+} from "@/views/ide/components/side-explorer/language-sample";
 
 export type BuildPreviewOptions = {
   activeStepId: WizardStepId;
@@ -41,9 +45,122 @@ export type WizardPreview = {
   dna: string[];
   baselineSnippet: string;
   snippet: string;
+  snippetInput?: string[];
+  snippetOutput?: string[];
   tokenPreview: PreviewToken[];
   chosenLexemes: PreviewLexemeChange[];
 };
+
+function usesNinjaExample(stepId: WizardStepId): boolean {
+  return stepId === "identity" || stepId === "IO";
+}
+
+function getKeyword(
+  draft: StoredKeywordCustomization,
+  original: string,
+): string {
+  return (
+    draft.mappings.find((item) => item.original === original)?.custom ??
+    original
+  );
+}
+
+function endStatement(
+  draft: StoredKeywordCustomization,
+  statement: string,
+): string {
+  if (draft.modes.semicolon !== "required") return statement;
+
+  const terminator = draft.statementTerminatorLexeme.trim() || ";";
+  const separator = terminator === ";" ? "" : " ";
+
+  return `${statement}${separator}${terminator}`;
+}
+
+function buildNinjaExampleSnippet(
+  draft: StoredKeywordCustomization,
+  intl: LanguageSampleIntl,
+): string {
+  return [
+    endStatement(draft, `${getKeyword(draft, "scan")}(nome)`),
+    endStatement(
+      draft,
+      `${getKeyword(draft, "print")}("${intl.printMessages.welcomePrefix}", nome)`,
+    ),
+  ].join("\n");
+}
+
+function buildReviewPreviewSource(
+  draft: StoredKeywordCustomization,
+  intl: LanguageSampleIntl,
+): string {
+  const section = (title: string, snippet: string) =>
+    [`// ${title}`, snippet].join("\n");
+  const flowPreview = buildLanguageCategorySample("fluxo", draft, intl)
+    .split("\n\n")
+    .filter(
+      (block) =>
+        !block.trimStart().startsWith(`${getKeyword(draft, "for")} (`),
+    )
+    .join("\n\n");
+
+  return [
+    section(intl.reviewSections.io, buildNinjaExampleSnippet(draft, intl)),
+    section(
+      intl.reviewSections.types,
+      buildLanguageCategorySample("tipos", draft, intl),
+    ),
+    section(
+      intl.reviewSections.structure,
+      buildLanguageCategorySample("estrutura", draft, intl),
+    ),
+    section(
+      intl.reviewSections.operators,
+      buildLanguageCategorySample("operadores", draft, intl),
+    ),
+    section(intl.reviewSections.flow, flowPreview),
+  ].join("\n\n");
+}
+
+function getPreviewCategoryForStep(
+  stepId: WizardStepId,
+): LexemeExampleCategory | "review" {
+  switch (stepId) {
+    case "IO":
+      return "entrada";
+    case "types":
+      return "tipos";
+    case "structure":
+      return "estrutura";
+    case "rules":
+      return "operadores";
+    case "flow":
+      return "fluxo";
+    case "review":
+      return "review";
+    case "identity":
+    default:
+      return "entrada";
+  }
+}
+
+function buildPreviewSource(
+  draft: StoredKeywordCustomization,
+  activeStepId: WizardStepId,
+  intl: LanguageSampleIntl,
+): string {
+  if (usesNinjaExample(activeStepId)) {
+    return buildNinjaExampleSnippet(draft, intl);
+  }
+
+  const category = getPreviewCategoryForStep(activeStepId);
+
+  if (category === "review") {
+    return buildReviewPreviewSource(draft, intl);
+  }
+
+  return buildLanguageCategorySample(category, draft, intl);
+}
 
 function tokenizePreview(
   draft: StoredKeywordCustomization,
@@ -148,11 +265,25 @@ export function buildWizardPreview(
   draft: StoredKeywordCustomization,
   options: BuildPreviewOptions,
 ): WizardPreview {
+  const languageSampleIntl = getLanguageSampleIntl(options.locale);
   const baselineSnippet = buildPreviewSource(
     applyWizardPreset(getDefaultCustomizationState(), "free"),
     options.activeStepId,
+    languageSampleIntl,
   );
-  const snippet = buildPreviewSource(draft, options.activeStepId);
+  const snippet = buildPreviewSource(
+    draft,
+    options.activeStepId,
+    languageSampleIntl,
+  );
+  const snippetInput = usesNinjaExample(options.activeStepId)
+    ? [languageSampleIntl.stringLiterals.sampleInputName]
+    : undefined;
+  const snippetOutput = usesNinjaExample(options.activeStepId)
+    ? [
+        `${languageSampleIntl.printMessages.welcomePrefix}${languageSampleIntl.stringLiterals.sampleOutputName}`,
+      ]
+    : undefined;
 
   return {
     name:
@@ -179,6 +310,8 @@ export function buildWizardPreview(
     ],
     baselineSnippet,
     snippet,
+    snippetInput,
+    snippetOutput,
     tokenPreview: tokenizePreview(draft, snippet),
     chosenLexemes: collectPreviewLexemeChanges(draft),
   };

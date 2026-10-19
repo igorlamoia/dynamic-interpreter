@@ -31,6 +31,8 @@ const interpreter = {
   array_read_out_of_bounds: "Array read out of bounds at index '{index}'",
   array_write_out_of_bounds: "Array write out of bounds at index '{index}'",
   array_missing_value: "Dynamic array read found no value at index '{index}'",
+  max_instruction_steps_exceeded:
+    "Execution stopped after {maxInstructionSteps} instructions. The program may contain an infinite loop.",
 };
 
 export default interpreter;

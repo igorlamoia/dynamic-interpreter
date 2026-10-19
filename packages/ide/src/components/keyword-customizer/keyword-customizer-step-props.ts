@@ -16,15 +16,13 @@ import type { IOStepProps } from "./steps/io-step";
 import type { TypeStepProps } from "./steps/type-step";
 import {
   buildDynamicArraySnippet,
-  buildDelimiterSnippet,
   buildFixedArraySnippet,
-  buildIdentationSnippet,
+  buildLineEnding,
   buildOptionalTerminatorSnippet,
   buildRequiredTerminatorSnippet,
-  typedVariableSnippet,
-  untypedVariableSnippet,
 } from "./preview-builder";
 import { t } from "@/i18n";
+import { buildLanguageCategorySample } from "@/views/ide/components/side-explorer/language-sample";
 
 function getKeywordValue(
   context: KeywordCustomizerContextValue,
@@ -95,11 +93,9 @@ export function buildTypeStepProps(
 
   return {
     values: {
-      snippet: context.preview.snippet,
-      typedSnippet: typedVariableSnippet(context.draftCustomization),
-      untypedSnippet: untypedVariableSnippet(context.draftCustomization),
+      typedSnippet: context.preview.snippet,
+      untypedSnippet: context.preview.snippet,
       typingMode: context.draftCustomization.modes.typing,
-      printKeyword: getKeywordValue(context, "print"),
       typingBeamKeywords: {
         variable: getKeywordValue(context, "variable"),
         string: getKeywordValue(context, "string"),
@@ -131,7 +127,6 @@ export function buildIOStepProps(
 ): IOStepProps {
   return {
     values: {
-      snippet: context.preview.snippet,
       printKeyword: getKeywordValue(context, "print"),
       printDescription: getKeywordDescription(context, "print"),
       scanKeyword: getKeywordValue(context, "scan"),
@@ -153,6 +148,20 @@ export function buildStructureStepProps(
   context: KeywordCustomizerContextValue,
 ): StructureStepProps {
   const { draftCustomization } = context;
+  const delimitedDraft = {
+    ...draftCustomization,
+    modes: {
+      ...draftCustomization.modes,
+      block: "delimited" as const,
+    },
+  };
+  const indentationDraft = {
+    ...draftCustomization,
+    modes: {
+      ...draftCustomization.modes,
+      block: "indentation" as const,
+    },
+  };
 
   return {
     values: {
@@ -163,8 +172,11 @@ export function buildStructureStepProps(
       requiredTerminatorSnippet: buildRequiredTerminatorSnippet(
         context.draftCustomization,
       ),
-      delimiterSnippet: buildDelimiterSnippet(context.draftCustomization),
-      identationSnippet: buildIdentationSnippet(context.draftCustomization),
+      delimiterSnippet: buildLanguageCategorySample("estrutura", delimitedDraft),
+      identationSnippet: buildLanguageCategorySample(
+        "estrutura",
+        indentationDraft,
+      ),
       fixedArraySnippet: buildFixedArraySnippet(context.draftCustomization),
       dynamicArraySnippet: buildDynamicArraySnippet(context.draftCustomization),
       semicolonMode: draftCustomization.modes.semicolon,
@@ -297,6 +309,7 @@ export function buildFlowStepProps(
   return {
     values: {
       snippet: context.preview.snippet,
+      lineEnding: buildLineEnding(context.draftCustomization),
       fields: FLOW_FIELDS.map((key) => ({
         key,
         value: getKeywordValue(context, key),

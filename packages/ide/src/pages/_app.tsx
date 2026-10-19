@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import { useEffect, type ReactNode } from "react";
 import { Pointer } from "@/components/ui/pointer";
 import { AppQueryClientProvider } from "@/lib/query-client";
+import { t } from "@/i18n";
+import { TutorialProvider } from "@/components/tutorial/tutorial-provider";
 
 type NextPageWithAuth = NextPage & {
   requireAuth?: boolean;
@@ -21,21 +23,26 @@ type AppPropsWithAuth = AppProps & {
 };
 
 export default function App({ Component, pageProps }: AppPropsWithAuth) {
+  const router = useRouter();
+  const showCustomPointer = router.pathname.startsWith("/language-creator");
+
   return (
     <AppQueryClientProvider>
       <ThemeProvider>
-        <Pointer />
         <AuthLayout>
           <AlertProvider>
             <ToastProvider>
-              <div className="bg-background text-foreground transition-colors duration-300">
-                <AuthGuard requireAuth={Component.requireAuth}>
-                  <Component {...pageProps} />
-                </AuthGuard>
-              </div>
+              <TutorialProvider>
+                <div className="bg-background text-foreground transition-colors duration-300">
+                  <AuthGuard requireAuth={Component.requireAuth}>
+                    <Component {...pageProps} />
+                  </AuthGuard>
+                </div>
+              </TutorialProvider>
             </ToastProvider>
           </AlertProvider>
         </AuthLayout>
+        {showCustomPointer && <Pointer />}
       </ThemeProvider>
     </AppQueryClientProvider>
   );
@@ -62,7 +69,7 @@ function AuthGuard({
   if (requireAuth && (!isHydrated || isProfileLoading || !isAuthenticated)) {
     return (
       <div className="min-h-screen flex items-center justify-center text-slate-500 dark:text-slate-400">
-        Carregando...
+        {t(router.locale, "ui.loading")}
       </div>
     );
   }

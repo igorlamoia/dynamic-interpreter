@@ -1,11 +1,14 @@
 import type { TValidationResult } from "@/types/submissions";
 import { TestCaseResults } from "@/components/test-case-results";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 export function CompileResultPanel({
   compileResult,
 }: {
   compileResult: TValidationResult | null | undefined;
 }) {
+  const { locale } = useRouter();
   if (!compileResult) return null;
   const testCaseResults = compileResult.testCaseResults ?? [];
 
@@ -21,8 +24,14 @@ export function CompileResultPanel({
         className={`text-sm font-bold mb-3 ${compileResult.valid ? "text-emerald-400" : "text-red-400"}`}
       >
         {compileResult.valid
-          ? "✅ Compilação bem-sucedida"
-          : `❌ Compilação falhou (${compileResult.errors?.length} erro${compileResult.errors?.length > 1 ? "s" : ""})`}
+          ? t(locale, "ui.compile_success")
+          : t(
+              locale,
+              (compileResult.errors?.length ?? 0) === 1
+                ? "ui.compile_failed_singular"
+                : "ui.compile_failed_plural",
+              { count: compileResult.errors?.length ?? 0 },
+            )}
       </h4>
       {compileResult.errors?.length > 0 && (
         <div className="space-y-1.5 mb-3">

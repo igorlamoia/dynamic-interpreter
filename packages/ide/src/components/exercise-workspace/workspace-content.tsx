@@ -6,6 +6,7 @@ import { useValidateSubmissionMutation } from "@/hooks/use-api-queries";
 import { getAuthToken } from "@/lib/auth-cookies";
 import { ExerciseList } from "@/types/api";
 import { TTestCaseResult } from "@/types/submissions";
+import type { StoredKeywordCustomization } from "@/contexts/keyword/types";
 import { IDE } from "@/views/ide";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -14,6 +15,33 @@ import { ListNavigatorSidebar } from "./list-navigator-sidebar";
 import { SubmitPanel } from "./submit-panel";
 import { Header } from "./header";
 
+type ExerciseSubmission = {
+  codeSnapshot?: string | null;
+  score?: number | null;
+  status?: string;
+  submittedAt: string;
+  teacherFeedback?: string | null;
+};
+
+type WorkspaceExercise = {
+  id: string | number;
+  title: string;
+  description: string;
+  gradeWeight?: number | null;
+  class?: {
+    name?: string | null;
+  } | null;
+  submissions?: ExerciseSubmission[];
+  effectiveLanguage?: {
+    id: number;
+    name: string;
+    description: string | null;
+    imageUrl: string | null;
+    customization: StoredKeywordCustomization;
+  } | null;
+  effectiveLanguageSource?: "exercise" | "list" | null;
+};
+
 export function WorkspaceContent({
   exercise,
   userId,
@@ -21,7 +49,7 @@ export function WorkspaceContent({
   classId,
   onSubmitSuccess,
 }: {
-  exercise: any;
+  exercise: WorkspaceExercise;
   userId: number;
   list?: ExerciseList;
   classId?: string;
@@ -29,7 +57,7 @@ export function WorkspaceContent({
 }) {
   const { showToast } = useToast();
   const { locale } = useRouter();
-  const { getEditorCode } = useContext(EditorContext);
+  const { getEditorCode, updateSourceCode } = useContext(EditorContext);
   const {
     buildLexerConfig,
     applyExternalCustomization,
@@ -52,11 +80,7 @@ export function WorkspaceContent({
     }
     return undefined;
   }, [
-    effectiveLanguage?.customization,
-    effectiveLanguage?.description,
-    effectiveLanguage?.id,
-    effectiveLanguage?.imageUrl,
-    effectiveLanguage?.name,
+    effectiveLanguage,
     applyExternalCustomization,
     restoreActiveCustomization,
   ]);
@@ -76,6 +100,16 @@ export function WorkspaceContent({
   const isAlreadySubmitted =
     lastSubmission?.status === "SUBMITTED" ||
     lastSubmission?.status === "GRADED";
+
+  const handleRestoreLastSubmission = () => {
+    if (!lastSubmission?.codeSnapshot) return;
+
+    updateSourceCode(lastSubmission.codeSnapshot);
+    showToast({
+      type: "success",
+      message: "Código restaurado da última submissão.",
+    });
+  };
 
   const handleSubmit = async () => {
     setError("");
@@ -159,8 +193,9 @@ export function WorkspaceContent({
         deadlineStr={deadlineStr}
         isOverdue={isOverdue}
         validateSubmission={validateSubmission}
+        onRestoreLastSubmission={handleRestoreLastSubmission}
       />
-      {exercise?.effectiveLanguage && (
+      {effectiveLanguage && (
         <div className="relative z-10">
           <LockedLanguageBanner
             language={effectiveLanguage}

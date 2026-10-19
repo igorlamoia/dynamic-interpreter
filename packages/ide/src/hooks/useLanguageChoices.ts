@@ -7,6 +7,7 @@ import {
   useSetActiveLanguage,
 } from "@/hooks/useLanguages";
 import { languagesApi } from "@/lib/languages-api";
+import type { Language } from "@/lib/languages-api";
 import {
   ACTIVE_KEYWORD_CUSTOMIZATION_STORAGE_KEY,
   ACTIVE_SAVED_KEYWORD_LANGUAGE_STORAGE_KEY,
@@ -39,6 +40,16 @@ export type ActiveLanguageDetail = {
   customization: StoredKeywordCustomization;
 };
 
+function toActiveLanguageDetail(language: Language): ActiveLanguageDetail {
+  return {
+    key: String(language.id),
+    name: language.name,
+    description: language.description ?? "",
+    imageUrl: language.imageUrl ?? "",
+    customization: language.customization,
+  };
+}
+
 function getBrowserLocalStorage(): Storage | null {
   if (typeof window === "undefined") return null;
   return window.localStorage ?? null;
@@ -67,6 +78,8 @@ export function useLanguageChoices() {
   const [localActive, setLocalActive] = useState<ActiveLanguageDetail | null>(
     null,
   );
+  const [selectedBackendActive, setSelectedBackendActive] =
+    useState<ActiveLanguageDetail | null>(null);
   const [activeDefaultKey, setActiveDefaultKey] = useState<string | null>(null);
 
   const defaultChoices = useMemo<LanguageChoice[]>(
@@ -115,6 +128,10 @@ export function useLanguageChoices() {
         : null,
     );
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    setSelectedBackendActive(null);
+  }, [activeQuery.data]);
 
   const choices = useMemo<LanguageChoice[]>(() => {
     if (externalLanguageOverlay) {
@@ -169,6 +186,8 @@ export function useLanguageChoices() {
 
     if (!isAuthenticated) return localActive;
 
+    if (selectedBackendActive) return selectedBackendActive;
+
     const language = activeQuery.data;
     if (!language) {
       const fallbackLanguage = getDefaultLanguage(PORTUGOL_LANGUAGE_KEY);
@@ -181,19 +200,14 @@ export function useLanguageChoices() {
       };
     }
 
-    return {
-      key: String(language.id),
-      name: language.name,
-      description: language.description ?? "",
-      imageUrl: language.imageUrl ?? "",
-      customization: language.customization,
-    };
+    return toActiveLanguageDetail(language);
   }, [
     activeDefaultKey,
     activeQuery.data,
     externalLanguageOverlay,
     isAuthenticated,
     localActive,
+    selectedBackendActive,
   ]);
 
   const activeKey = activeLanguage?.key ?? "";
@@ -214,6 +228,7 @@ export function useLanguageChoices() {
           );
         }
         setActiveDefaultKey(key);
+        setSelectedBackendActive(null);
         setLocalActive(null);
         setCustomization(language.customization);
         return;
@@ -227,6 +242,7 @@ export function useLanguageChoices() {
         const language = await languagesApi.get(languageId);
         await setActiveMut.mutateAsync(languageId);
         setActiveDefaultKey(null);
+        setSelectedBackendActive(toActiveLanguageDetail(language));
         setCustomization(language.customization);
         return;
       }
@@ -236,6 +252,7 @@ export function useLanguageChoices() {
 
       setActiveSavedKeywordLanguage(key);
       setActiveDefaultKey(null);
+      setSelectedBackendActive(null);
       setCustomization(language.customization);
       setLocalActive({
         key: language.slug,

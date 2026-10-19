@@ -5,6 +5,20 @@ export function assertTypedAssignableIdentifier(
   iterator: TokenIterator,
   token: Token,
 ): void {
+  assertTypedDeclaredIdentifier(iterator, token);
+}
+
+export function assertTypedReadableIdentifier(
+  iterator: TokenIterator,
+  token: Token,
+): void {
+  assertTypedDeclaredIdentifier(iterator, token);
+}
+
+function assertTypedDeclaredIdentifier(
+  iterator: TokenIterator,
+  token: Token,
+): void {
   if (iterator.getTypingMode() !== "typed") {
     return;
   }

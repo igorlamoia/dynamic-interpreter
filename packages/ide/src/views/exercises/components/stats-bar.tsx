@@ -1,17 +1,20 @@
 import type { Exercise } from "@/types/api";
+import { t } from "@/i18n";
+import { useRouter } from "next/router";
 
 export function StatsBar({ exercises }: { exercises: Exercise[] }) {
+  const { locale } = useRouter();
   const totalTests = exercises.reduce((s, e) => s + e.testCases.length, 0);
 
   const stats = [
     {
-      label: "Total de Exercícios",
+      label: t(locale, "ui.exercises_total_exercises"),
       value: exercises.length,
       color: "text-primary",
       bgColor: "bg-primary/10 border-primary/20",
     },
     {
-      label: "Casos de Teste",
+      label: t(locale, "ui.exercises_test_cases"),
       value: totalTests,
       color: "text-emerald-400",
       bgColor: "bg-emerald-500/10 border-emerald-500/20",

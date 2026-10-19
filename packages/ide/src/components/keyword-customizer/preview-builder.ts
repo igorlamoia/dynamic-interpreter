@@ -11,16 +11,20 @@ function getKeyword(
   );
 }
 
-function buildLineEnding(draft: StoredKeywordCustomization): string {
+export function buildLineEnding(draft: StoredKeywordCustomization): string {
   if (draft.modes.semicolon !== "required") {
     return "";
   }
 
-  return draft.statementTerminatorLexeme.trim() || ";";
+  return formatLineEnding(draft.statementTerminatorLexeme.trim() || ";");
 }
 
 function buildRequiredLineEnding(draft: StoredKeywordCustomization): string {
-  return draft.statementTerminatorLexeme.trim() || ";";
+  return formatLineEnding(draft.statementTerminatorLexeme.trim() || ";");
+}
+
+function formatLineEnding(terminator: string): string {
+  return terminator === ";" ? terminator : ` ${terminator}`;
 }
 
 function buildOperatorWord(
@@ -228,7 +232,6 @@ export function buildIdentationSnippet(
   const otherwise = getKeyword(draft, "else");
   const print = getKeyword(draft, "print");
   const boolTrue = draft.booleanLiteralMap.true?.trim() || "true";
-  const lineEnding = buildLineEnding(draft);
   const functionKeyword = getKeyword(draft, "function");
 
   const baseCodeSnippet = `${functionKeyword} main()`;
@@ -249,7 +252,7 @@ export function buildDelimiterSnippet(
   const close = draft.blockDelimiters.close.trim() || "}";
 
   return `${baseCodeSnippet}${open}\n\t${print}("Olá Mundo!")${lineEnding}
-  ${scan}(nome)${lineEnding}\n\t${print}("Me chamo:", nome)\n${close}`;
+  ${scan}(nome)${lineEnding}\n\t${print}("Me chamo:", nome)${lineEnding}\n${close}`;
 }
 
 export function buildBlockSnippet(draft: StoredKeywordCustomization): string {

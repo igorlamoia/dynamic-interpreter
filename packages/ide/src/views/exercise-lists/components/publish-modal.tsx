@@ -1,8 +1,13 @@
+import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Check, ChevronDown } from "lucide-react";
 import { useToast } from "@/contexts/ToastContext";
 import { usePublishExerciseListMutation } from "@/hooks/use-api-queries";
+import { queryKeys } from "@/lib/query-keys";
 import {
   Dialog,
   DialogContent,
@@ -20,21 +25,109 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { HeroButton } from "@/components/buttons/hero";
 import type { ClassOption } from "./types";
+import { t } from "@/i18n";
 
 function defaultDeadline() {
   const d = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
   return d.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm for datetime-local
 }
 
-const publishSchema = z.object({
-  classId: z.string().min(1, "Selecione uma turma"),
-  totalGrade: z.string().min(1, "Nota total é obrigatória"),
-  minRequired: z.string().min(1, "Mínimo obrigatório"),
-  deadline: z.string().min(1, "Prazo é obrigatório"),
+function getPublishSchema(locale: string | undefined) {
+  return z.object({
+    classId: z.string().min(1, t(locale, "ui.exercise_lists_select_class")),
+    totalGrade: z
+      .string()
+      .min(1, t(locale, "ui.exercise_lists_total_grade_required")),
+    minRequired: z
+      .string()
+      .min(1, t(locale, "ui.exercise_lists_min_required_required")),
+    deadline: z
+      .string()
+      .min(1, t(locale, "ui.exercise_lists_deadline_required")),
+  });
+}
+type PublishForm = z.infer<ReturnType<typeof getPublishSchema>>;
+
+const ClassSelector = React.forwardRef<
+  HTMLButtonElement,
+  {
+    id?: string;
+    value: string;
+    classes: ClassOption[];
+    placeholder: string;
+    onChange: (value: string) => void;
+    "aria-describedby"?: string;
+    "aria-invalid"?: boolean;
+  }
+>(function ClassSelector(
+  {
+    id,
+    value,
+    classes,
+    placeholder,
+    onChange,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
+  },
+  ref,
+) {
+  const selectedClass = classes.find((c) => String(c.id) === value);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          id={id}
+          ref={ref}
+          type="button"
+          role="combobox"
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
+          className="flex h-11 w-full items-center justify-between gap-3 rounded-xl border border-input bg-background/80 px-3 text-left text-sm text-foreground shadow-sm transition-colors hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/25 dark:border-white/10 dark:bg-black/30 dark:text-slate-100"
+        >
+          <span
+            className={
+              selectedClass
+                ? "truncate font-medium"
+                : "truncate text-muted-foreground"
+            }
+          >
+            {selectedClass?.name ?? placeholder}
+          </span>
+          <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="start"
+        className="w-[var(--radix-dropdown-menu-trigger-width)]"
+      >
+        {classes.map((classOption) => {
+          const optionValue = String(classOption.id);
+          const selected = optionValue === value;
+
+          return (
+            <DropdownMenuItem
+              key={classOption.id}
+              onSelect={() => onChange(optionValue)}
+              className="justify-between"
+            >
+              <span className="truncate">{classOption.name}</span>
+              {selected && <Check className="h-4 w-4 text-primary" />}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 });
-type PublishForm = z.infer<typeof publishSchema>;
 
 export function PublishModal({
   open,
@@ -42,19 +135,26 @@ export function PublishModal({
   listId,
   classes,
   onPublished,
+  defaultClassId,
+  redirectTo,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   listId: string;
   classes: ClassOption[];
   onPublished?: () => void;
+  defaultClassId?: string;
+  redirectTo?: string;
 }) {
+  const router = useRouter();
+  const { locale } = router;
   const { showToast } = useToast();
+  const queryClient = useQueryClient();
   const publishList = usePublishExerciseListMutation();
   const form = useForm<PublishForm>({
-    resolver: zodResolver(publishSchema),
+    resolver: zodResolver(getPublishSchema(locale)),
     defaultValues: {
-      classId: "",
+      classId: defaultClassId ?? "",
       totalGrade: "10",
       minRequired: "1",
       deadline: defaultDeadline(),
@@ -70,63 +170,67 @@ export function PublishModal({
         minRequired: Number(values.minRequired),
         deadline: new Date(values.deadline).toISOString(),
       });
-      showToast({ type: "success", message: "Lista publicada com sucesso!" });
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercise_lists_publish_success"),
+      });
       form.reset();
       onOpenChange(false);
       onPublished?.();
+      if (redirectTo) {
+        await queryClient.invalidateQueries({
+          queryKey: queryKeys.classes.exerciseLists(values.classId),
+        });
+        await queryClient.refetchQueries({
+          queryKey: queryKeys.classes.exerciseLists(values.classId),
+        });
+        await router.push(redirectTo);
+      }
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: { detail?: string } } };
       const detail = axiosError?.response?.data?.detail;
       console.error("[publish] erro:", err);
       showToast({
         type: "error",
-        message: detail ? `Erro: ${detail}` : "Erro ao publicar lista.",
+        message: detail
+          ? t(locale, "ui.error_with_detail", { detail })
+          : t(locale, "ui.exercise_lists_publish_error"),
       });
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md backdrop-blur-3xl">
+      <DialogContent className="max-w-lg backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Publicar Lista</DialogTitle>
+          <DialogTitle>
+            {t(locale, "ui.exercise_lists_publish_title")}
+          </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Configure prazo e requisitos antes de publicar para a turma.
+            {t(locale, "ui.exercise_lists_publish_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
             id="publish-form"
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 p-1"
+            className="space-y-4 p-6"
           >
             <FormField
               control={form.control}
               name="classId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Turma</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.exercise_lists_class_label")}
+                  </FormLabel>
                   <FormControl>
-                    <select
-                      {...field}
-                      className="w-full h-11 bg-background/80 border border-input rounded-md px-3 text-sm text-foreground focus:outline-none focus:border-primary/50 dark:bg-black/30 dark:border-white/10 dark:text-slate-100"
-                    >
-                      <option
-                        value=""
-                        className="bg-background text-foreground"
-                      >
-                        Selecione...
-                      </option>
-                      {classes.map((c) => (
-                        <option
-                          key={c.id}
-                          value={c.id}
-                          className="bg-background text-foreground"
-                        >
-                          {c.name}
-                        </option>
-                      ))}
-                    </select>
+                    <ClassSelector
+                      value={field.value}
+                      classes={classes}
+                      placeholder={t(locale, "ui.select_placeholder")}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +242,9 @@ export function PublishModal({
                 name="totalGrade"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nota total</FormLabel>
+                    <FormLabel>
+                      {t(locale, "ui.exercise_lists_total_grade")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -157,7 +263,9 @@ export function PublishModal({
                 name="minRequired"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mínimo obrigatório</FormLabel>
+                    <FormLabel>
+                      {t(locale, "ui.exercise_lists_min_required")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -176,7 +284,9 @@ export function PublishModal({
               name="deadline"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Prazo de entrega</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.exercise_lists_deadline")}
+                  </FormLabel>
                   <FormControl>
                     <Input type="datetime-local" {...field} className="h-11" />
                   </FormControl>
@@ -192,14 +302,16 @@ export function PublishModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
             form="publish-form"
             disabled={publishList.isPending}
           >
-            {publishList.isPending ? "Publicando..." : "Publicar"}
+            {publishList.isPending
+              ? t(locale, "ui.exercise_lists_publishing")
+              : t(locale, "ui.exercise_lists_publish")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

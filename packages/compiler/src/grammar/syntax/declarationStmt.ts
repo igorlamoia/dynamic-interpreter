@@ -1,4 +1,4 @@
-import { TokenIterator } from "../../token/TokenIterator";
+import { TokenIterator, ValueType } from "../../token/TokenIterator";
 import { Token } from "../../token";
 import { TOKENS } from "../../token/constants";
 import { typeStmt } from "./typeStmt";
@@ -36,6 +36,7 @@ function declarationStmtCore(
       ? (iterator.consume(TOKENS.RESERVEDS.variable), "dynamic")
       : typeStmt(iterator); // "int", "float", "string"
   const emitter = iterator.emitter;
+  const pendingInitializerTargets: AssignmentTarget[] = [];
 
   while (true) {
     const identToken = iterator.consume(TOKENS.LITERALS.identifier);
@@ -62,6 +63,16 @@ function declarationStmtCore(
       emitter.emitFromToken("DECLARE", varName, type, null, identToken);
     }
 
+    const target: AssignmentTarget | null =
+      arrayDeclaration.dimensions === 0
+        ? {
+            kind: "scalar",
+            name: varName,
+            type,
+            token: identToken,
+          }
+        : null;
+
     if (iterator.match(TOKENS.ASSIGNMENTS.equal)) {
       iterator.consume(TOKENS.ASSIGNMENTS.equal);
       if (
@@ -78,7 +89,19 @@ function declarationStmtCore(
         });
       } else {
         emitAssignmentChain(iterator, varName, identToken);
+        if (target) {
+          emitAssignmentsFromInitializer(
+            iterator,
+            pendingInitializerTargets,
+            varName,
+            type,
+            identToken,
+          );
+        }
       }
+      pendingInitializerTargets.length = 0;
+    } else if (target) {
+      pendingInitializerTargets.push(target);
     }
 
     if (!iterator.match(TOKENS.SYMBOLS.comma)) break;
@@ -87,6 +110,25 @@ function declarationStmtCore(
 
   if (consumeTerminator) {
     consumeStmtTerminator(iterator);
+  }
+}
+
+function emitAssignmentsFromInitializer(
+  iterator: TokenIterator,
+  targets: AssignmentTarget[],
+  initializerVariable: string,
+  initializerType: ValueType,
+  initializerToken: Token,
+): void {
+  for (const target of targets) {
+    emitAssignmentFromValue(
+      iterator,
+      target,
+      initializerVariable,
+      initializerType,
+      initializerToken,
+      target.token,
+    );
   }
 }
 

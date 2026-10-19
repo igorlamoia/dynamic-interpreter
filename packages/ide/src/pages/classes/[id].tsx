@@ -8,12 +8,20 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import { MembersTab } from "@/views/classes/components/members-tab";
 import { ListsTab } from "@/views/classes/components/lists-tab";
+import { CreateListModal } from "@/views/exercise-lists/components/create-list-modal";
 import {
   useClassExerciseListsQuery,
   useClassMembersQuery,
   useExercisesQuery,
 } from "@/hooks/use-api-queries";
 import { t } from "@/i18n";
+
+type ClassMemberProgress = {
+  progress?: {
+    total?: number;
+    percentage?: number;
+  };
+};
 
 export default function ClassDetail() {
   const router = useRouter();
@@ -22,6 +30,7 @@ export default function ClassDetail() {
   const { id } = router.query;
   const locale = router.locale;
   const [activeTab, setActiveTab] = useState<"members" | "lists">("members");
+  const [showCreateList, setShowCreateList] = useState(false);
   const classId = typeof id === "string" ? id : undefined;
   const exercisesQuery = useExercisesQuery(
     classId ? { classId } : undefined,
@@ -35,6 +44,11 @@ export default function ClassDetail() {
   const exercises = exercisesQuery.data ?? [];
   const membersData = membersQuery.data;
   const exerciseLists = exerciseListsQuery.data ?? [];
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    setActiveTab(router.query.tab === "lists" ? "lists" : "members");
+  }, [router.isReady, router.query.tab]);
 
   useEffect(() => {
     if (exercisesQuery.error) {
@@ -78,7 +92,9 @@ export default function ClassDetail() {
   let classAveragePct = 0;
   if (members.length > 0 && members[0]?.progress?.total > 0) {
     let totalPct = 0;
-    members.forEach((m: any) => (totalPct += m.progress.percentage));
+    members.forEach((m: ClassMemberProgress) => {
+      totalPct += m.progress?.percentage ?? 0;
+    });
     classAveragePct = totalPct / members.length;
   }
 
@@ -160,6 +176,9 @@ export default function ClassDetail() {
                   isTeacher={isTeacher}
                   classId={id}
                   locale={locale}
+                  onCreateList={
+                    isTeacher ? () => setShowCreateList(true) : undefined
+                  }
                 />
               ) : (
                 <MembersTab
@@ -174,6 +193,16 @@ export default function ClassDetail() {
           </main>
         </div>
       </div>
+      {classId && (
+        <CreateListModal
+          open={showCreateList}
+          onOpenChange={setShowCreateList}
+          onCreated={() => {
+            void exerciseListsQuery.refetch();
+          }}
+          redirectTo={(list) => `/exercise-lists/${list.id}?classId=${classId}`}
+        />
+      )}
     </div>
   );
 }

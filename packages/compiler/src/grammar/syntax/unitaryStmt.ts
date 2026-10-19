@@ -2,7 +2,7 @@ import { ExprResult, TokenIterator } from "../../token/TokenIterator";
 import { TOKENS } from "../../token/constants";
 import { factorStmt } from "./factorStmt";
 import { TUnaryArithmetics } from "../../interpreter/constants";
-import { assertTypedAssignableIdentifier } from "./typedIdentifier";
+import { emitUpdate, isUpdateOperator } from "./updateOperator";
 
 /**
  * Parses a unary expression or factor.
@@ -14,33 +14,16 @@ export function unitaryStmt(iterator: TokenIterator): ExprResult {
   const token = iterator.peek();
   const { minus, plus } = TOKENS.ARITHMETICS;
 
-  // Prefix increment: ++identifier
-  if (token.type === plus && token.lexeme === "++") {
-    const operatorToken = iterator.consume(plus, "++");
+  if (isUpdateOperator(token)) {
+    const operatorToken = iterator.consume(token.type);
     const identifier = iterator.consume(TOKENS.LITERALS.identifier);
-    assertTypedAssignableIdentifier(iterator, identifier);
-    const incremented = iterator.emitter.newTemp();
-    iterator.emitter.emitFromToken(
-      "+",
-      incremented,
-      identifier.lexeme,
-      "1",
-      operatorToken,
-    );
-    iterator.emitter.emitFromToken(
-      "=",
-      identifier.lexeme,
-      incremented,
-      null,
-      identifier,
-    );
     const type = iterator.resolveSymbol(identifier.lexeme);
-    iterator.registerTemp(incremented, type);
-    return iterator.createExprResult(incremented, type, identifier);
+    const updated = emitUpdate(iterator, identifier, operatorToken);
+    return iterator.createExprResult(updated, type, identifier);
   }
 
   if (token.type === plus || token.type === minus) {
-    if (token.lexeme === "++") {
+    if (token.lexeme === "++" || token.lexeme === "--") {
       iterator.throwError(
         "grammar.invalid_unary_increment",
         token.line,

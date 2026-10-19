@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/contexts/ToastContext";
-import { useCreateExerciseListMutation } from "@/hooks/use-api-queries";
+import {
+  useCreateExerciseListMutation,
+  useUpdateExerciseListMutation,
+} from "@/hooks/use-api-queries";
 import { useLanguagesList } from "@/hooks/useLanguages";
 import {
   Dialog,
@@ -24,6 +28,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { HeroButton } from "@/components/buttons/hero";
 import { LanguagePolicyField } from "@/components/language-policy-field";
+import { t } from "@/i18n";
+import type { ExerciseList } from "@/types/api";
 
 const createListSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
@@ -37,13 +43,18 @@ export function CreateListModal({
   open,
   onOpenChange,
   onCreated,
+  redirectTo,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  onCreated?: () => void;
+  onCreated?: (list: ExerciseList) => void;
+  redirectTo?: string | ((list: ExerciseList) => string);
 }) {
+  const router = useRouter();
+  const { locale } = router;
   const { showToast } = useToast();
   const createList = useCreateExerciseListMutation();
+  const updateList = useUpdateExerciseListMutation();
   const languagesQuery = useLanguagesList(open);
   const form = useForm<CreateListForm>({
     resolver: zodResolver(createListSchema),
@@ -62,24 +73,46 @@ export function CreateListModal({
     ) {
       form.setError("lockedLanguageId", {
         type: "manual",
-        message: "Escolha uma linguagem",
+        message: t(locale, "ui.exercise_lists_choose_language"),
       });
       return;
     }
     try {
-      await createList.mutateAsync({
+      let createdList = await createList.mutateAsync({
         title: values.title,
         description: values.description,
         languagePolicy: values.languagePolicy,
         lockedLanguageId:
           values.languagePolicy === "LOCKED" ? values.lockedLanguageId : null,
+      }) as ExerciseList;
+      if (
+        createdList.languagePolicy !== values.languagePolicy ||
+        createdList.lockedLanguageId !== values.lockedLanguageId
+      ) {
+        createdList = await updateList.mutateAsync({
+          listId: createdList.id,
+          languagePolicy: values.languagePolicy,
+          lockedLanguageId:
+            values.languagePolicy === "LOCKED" ? values.lockedLanguageId : null,
+        });
+      }
+      showToast({
+        type: "success",
+        message: t(locale, "ui.exercise_lists_create_success"),
       });
-      showToast({ type: "success", message: "Lista criada com sucesso!" });
       form.reset();
       onOpenChange(false);
-      onCreated?.();
+      onCreated?.(createdList);
+      if (redirectTo) {
+        const nextUrl =
+          typeof redirectTo === "function" ? redirectTo(createdList) : redirectTo;
+        await router.push(nextUrl);
+      }
     } catch {
-      showToast({ type: "error", message: "Erro ao criar lista." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercise_lists_create_error"),
+      });
     }
   };
 
@@ -87,10 +120,9 @@ export function CreateListModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="backdrop-blur-3xl">
         <DialogHeader>
-          <DialogTitle>Nova Lista de Exercícios</DialogTitle>
+          <DialogTitle>{t(locale, "ui.exercise_lists_create_title")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Crie uma lista para organizar seus exercícios e publicar para
-            turmas.
+            {t(locale, "ui.exercise_lists_create_description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -104,11 +136,14 @@ export function CreateListModal({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título</FormLabel>
+                  <FormLabel>{t(locale, "ui.dashboard_exercise_title_label")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Ex: Algoritmos de Ordenação"
+                      placeholder={t(
+                        locale,
+                        "ui.exercise_lists_title_placeholder",
+                      )}
                       className="h-11"
                     />
                   </FormControl>
@@ -121,12 +156,17 @@ export function CreateListModal({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição (opcional)</FormLabel>
+                  <FormLabel>
+                    {t(locale, "ui.exercise_lists_description_optional")}
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       rows={3}
-                      placeholder="Descreva o objetivo desta lista..."
+                      placeholder={t(
+                        locale,
+                        "ui.exercise_lists_description_placeholder",
+                      )}
                       className="focus:border-primary/50"
                     />
                   </FormControl>
@@ -140,7 +180,7 @@ export function CreateListModal({
               name="languagePolicy"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Linguagem permitida</FormLabel>
+                  <FormLabel>{t(locale, "ui.exercises_language_policy")}</FormLabel>
                   <FormControl>
                     <LanguagePolicyField
                       value={{
@@ -182,14 +222,16 @@ export function CreateListModal({
             onClick={() => onOpenChange(false)}
             className="border-border bg-card/80 text-foreground hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
           >
-            Cancelar
+            {t(locale, "ui.dashboard_cancel")}
           </HeroButton>
           <HeroButton
             type="submit"
             form="create-list-form"
-            disabled={createList.isPending}
+            disabled={createList.isPending || updateList.isPending}
           >
-            {createList.isPending ? "Criando..." : "Criar Lista"}
+            {createList.isPending || updateList.isPending
+              ? t(locale, "ui.dashboard_creating")
+              : t(locale, "ui.exercise_lists_create_submit")}
           </HeroButton>
         </DialogFooter>
       </DialogContent>

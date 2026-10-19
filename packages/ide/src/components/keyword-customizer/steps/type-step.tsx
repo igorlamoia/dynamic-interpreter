@@ -21,11 +21,9 @@ export type TypeStepKeyword =
 
 export type TypeStepProps = {
   values: {
-    snippet?: string;
     typedSnippet: string;
     untypedSnippet: string;
     typingMode: StoredKeywordCustomization["modes"]["typing"];
-    printKeyword: string;
     typingBeamKeywords: {
       variable: string;
       string: string;
@@ -147,10 +145,6 @@ export function TypeStep({ values, actions }: TypeStepProps) {
         onDescriptionChange={(field, value) =>
           actions.syncKeywordDescription(field, value)
         }
-      />
-      <ExampleSnippet
-        title={wt("types.liveExample")}
-        code={values.snippet ?? `${values.printKeyword}("Ola mundo")`}
       />
     </section>
   );

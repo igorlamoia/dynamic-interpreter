@@ -5,9 +5,9 @@ import { blockStmt } from "./blockStmt";
 import {
   attributeStmt,
   emitAssignment,
-  emitAssignmentChain,
   parseAssignmentTarget,
 } from "./attributeStmt";
+import { isUpdateOperator } from "./updateOperator";
 import { whileStmt } from "./whileStmt";
 import { ifStmt } from "./ifStmt";
 import {
@@ -58,6 +58,7 @@ export function stmt(iterator: TokenIterator): void {
     [RESERVEDS.break]: breakStmt,
     [RESERVEDS.continue]: continueStmt,
     [TOKENS.ARITHMETICS.plus]: prefixIncrementStmtVariant,
+    [TOKENS.ARITHMETICS.minus]: prefixIncrementStmtVariant,
   };
 
   // In indentation mode, a colon also starts a block
@@ -107,7 +108,7 @@ export function stmt(iterator: TokenIterator): void {
 
 function prefixIncrementStmtVariant(iterator: TokenIterator): void {
   const token = iterator.peek();
-  if (token.lexeme !== "++") {
+  if (!isUpdateOperator(token)) {
     iterator.throwError(
       "grammar.unexpected_statement",
       token.line,
@@ -123,7 +124,6 @@ function prefixIncrementStmtVariant(iterator: TokenIterator): void {
 function attrbuteStmtVariant(iterator: TokenIterator): void {
   // Consumir o identificador
   const identifier = iterator.consume(TOKENS.LITERALS.identifier);
-  const { plus } = TOKENS.ARITHMETICS;
   const typingMode = iterator.getTypingMode();
   const arrayMode = iterator.getArrayMode();
 
@@ -140,13 +140,13 @@ function attrbuteStmtVariant(iterator: TokenIterator): void {
     // É uma chamada de função
     functionCallExpr(iterator, identifier);
     consumeStmtTerminator(iterator);
-  } else if (iterator.peek().type === plus && iterator.peek().lexeme === "++") {
+  } else if (isUpdateOperator(iterator.peek())) {
     // É um incremento pós-fixado
-    const operatorToken = iterator.consume(plus, "++");
+    const operatorToken = iterator.consume(iterator.peek().type);
     assertTypedAssignableIdentifier(iterator, identifier);
     const incremented = iterator.emitter.newTemp();
     iterator.emitter.emitFromToken(
-      "+",
+      operatorToken.lexeme === "--" ? "-" : "+",
       incremented,
       identifier.lexeme,
       "1",
@@ -163,8 +163,21 @@ function attrbuteStmtVariant(iterator: TokenIterator): void {
     consumeStmtTerminator(iterator);
   } else {
     const target = parseAssignmentTarget(iterator, identifier);
-    iterator.consume(TOKENS.ASSIGNMENTS.equal, "=");
-    emitAssignment(iterator, target);
+    if (!Object.values(TOKENS.ASSIGNMENTS).includes(iterator.peek().type)) {
+      iterator.throwError(
+        "grammar.invalid_assignment_operator",
+        target.token.line,
+        target.token.column,
+        {
+          lexeme: target.name,
+          line: target.token.line,
+          column: target.token.column,
+        },
+      );
+    }
+    const assignmentType = iterator.peek().type;
+    iterator.consume(assignmentType);
+    emitAssignment(iterator, target, assignmentType);
     consumeStmtTerminator(iterator);
   }
 }

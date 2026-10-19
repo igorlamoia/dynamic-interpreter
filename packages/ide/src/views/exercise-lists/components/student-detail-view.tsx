@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useToast } from "@/contexts/ToastContext";
 import { BookOpen, CheckCircle2, ChevronRight, Circle } from "lucide-react";
 import type { ExerciseList } from "@/types/api";
 import type { ClassExerciseListEntry } from "./types";
 import { useClassExerciseListsQuery } from "@/hooks/use-api-queries";
+import { t } from "@/i18n";
 
 export function StudentDetailView({
   list,
@@ -13,6 +15,7 @@ export function StudentDetailView({
   list: ExerciseList;
   classId: string;
 }) {
+  const { locale } = useRouter();
   const { showToast } = useToast();
   const classListsQuery = useClassExerciseListsQuery(classId, Boolean(classId));
   const entries = (classListsQuery.data ?? []) as ClassExerciseListEntry[];
@@ -21,9 +24,12 @@ export function StudentDetailView({
 
   useEffect(() => {
     if (classListsQuery.error) {
-      showToast({ type: "error", message: "Erro ao carregar progresso." });
+      showToast({
+        type: "error",
+        message: t(locale, "ui.exercise_lists_progress_error"),
+      });
     }
-  }, [classListsQuery.error, showToast]);
+  }, [classListsQuery.error, locale, showToast]);
 
   const submittedIds = new Set<number>(
     classEntry?.exerciseList.items
@@ -55,7 +61,13 @@ export function StudentDetailView({
           {publication && (
             <div className="shrink-0 flex flex-col items-end gap-2">
               <span className="text-xs text-muted-foreground">
-                Mínimo: {minRequired} exercício{minRequired !== 1 ? "s" : ""}
+                {t(
+                  locale,
+                  minRequired === 1
+                    ? "ui.class_minimum_exercise_singular"
+                    : "ui.class_minimum_exercise_plural",
+                  { count: minRequired },
+                )}
               </span>
             </div>
           )}
@@ -66,7 +78,10 @@ export function StudentDetailView({
           <div className="mt-5 pt-5 border-t border-border dark:border-white/8">
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>
-                {completedCount} de {totalCount} exercícios concluídos
+                {t(locale, "ui.class_completed_progress", {
+                  completed: completedCount,
+                  total: totalCount,
+                })}
               </span>
               <span className="font-semibold text-foreground">{progress}%</span>
             </div>
@@ -79,7 +94,7 @@ export function StudentDetailView({
             {completedCount >= minRequired && minRequired > 0 && (
               <p className="mt-2 text-xs text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                Requisito mínimo atingido!
+                {t(locale, "ui.exercise_lists_minimum_reached")}
               </p>
             )}
           </div>
@@ -90,11 +105,13 @@ export function StudentDetailView({
       <div className="bg-card/80 dark:bg-white/3 backdrop-blur-xl border border-border dark:border-white/8 rounded-2xl overflow-hidden">
         <div className="flex items-center gap-2 px-6 py-4 border-b border-border dark:border-white/8">
           <BookOpen className="w-4 h-4 text-primary" />
-          <h2 className="font-semibold text-foreground">Exercícios</h2>
+          <h2 className="font-semibold text-foreground">
+            {t(locale, "ui.submissions_exercise")}
+          </h2>
         </div>
         {list.items.length === 0 ? (
           <p className="text-center text-muted-foreground text-sm py-12">
-            Nenhum exercício nesta lista.
+            {t(locale, "ui.exercise_lists_no_exercises_in_list")}
           </p>
         ) : (
           <ul>
@@ -125,7 +142,9 @@ export function StudentDetailView({
                       href={`/exercises/${item.exerciseId}?listId=${list.id}&classId=${classId}`}
                       className="shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
                     >
-                      {done ? "Ver solução" : "Resolver"}
+                      {done
+                        ? t(locale, "ui.exercise_lists_view_solution")
+                        : t(locale, "ui.exercise_lists_solve")}
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </li>

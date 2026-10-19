@@ -32,15 +32,15 @@ export function KeywordReferenceRow<TKey extends string>({
   onDescriptionChange,
 }: KeywordReferenceRowProps<TKey>) {
   const editLabel = item.editLabel ?? item.id;
-  const { matches } = useBreakpoint("md");
+  const { matches } = useBreakpoint("xl");
   const wt = useWizardTranslation();
   return (
-    <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 px-4 py-5 md:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)] md:items-center">
+    <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 px-4 py-5 xl:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)] xl:items-center">
       <div className="flex w-16 flex-col items-center justify-center gap-2 sm:w-20">
         <span
           aria-hidden="true"
           className={cn(
-            "flex h-9 min-w-9 items-center justify-center rounded-md border dark:border-white/8 dark:bg-black px-2 font-mono text-base font-bold leading-none",
+            "flex h-9 min-w-9 items-center justify-center rounded-xl border dark:border-white/8 dark:bg-black px-2 font-mono text-base font-bold leading-none",
             item.reference.className ?? "text-slate-300",
           )}
         >
@@ -52,7 +52,7 @@ export function KeywordReferenceRow<TKey extends string>({
       </div>
 
       <label className="flex flex-col gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 md:sr-only">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 xl:sr-only">
           {wt("reference.customName")}
         </span>
         <Input
@@ -65,8 +65,8 @@ export function KeywordReferenceRow<TKey extends string>({
         />
       </label>
 
-      <label className="col-span-2 flex flex-col gap-2 md:col-span-1">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 md:sr-only">
+      <label className="col-span-2 flex flex-col gap-2 xl:col-span-1">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 xl:sr-only">
           {wt("reference.semanticDefinition")}
         </span>
         <PerfectScrollbar>
@@ -79,7 +79,7 @@ export function KeywordReferenceRow<TKey extends string>({
               label: editLabel,
             })}
             rows={matches ? 1 : 2}
-            className="min-h-11 resize-y  bg-transparent py-2.5 text-sm font-medium leading-6 md:resize-none"
+            className="min-h-11 resize-y  bg-transparent py-2.5 text-sm font-medium leading-6 xl:resize-none"
           />
         </PerfectScrollbar>
       </label>
@@ -111,11 +111,11 @@ export function KeywordReferenceTable<TKey extends string>({
         </h4>
       )}
 
-      <div className="overflow-hidden rounded-lg bg-white/90 border  border-black/7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.95)] dark:border-white/6 dark:bg-[#0D1424]">
-        <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] gap-4 border-b border-black/10 dark:border-white/7 px-4 py-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-600 dark:text-slate-500 md:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)]">
+      <div className="overflow-hidden rounded-md bg-white/90 border  border-black/7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.95)] dark:border-white/6 dark:bg-[#0D1424]">
+        <div className="grid grid-cols-[6rem_minmax(9rem,1fr)] xl:grid-cols-[7rem_minmax(12rem,0.8fr)_minmax(16rem,1.2fr)] gap-4 border-b border-black/10 dark:border-white/7 px-4 py-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-600 dark:text-slate-500">
           <span>{resolvedReferenceHeader}</span>
           <span>{wt("reference.customName")}</span>
-          <span className="hidden md:block">
+          <span className="hidden xl:block">
             {wt("reference.semanticDefinition")}
           </span>
         </div>

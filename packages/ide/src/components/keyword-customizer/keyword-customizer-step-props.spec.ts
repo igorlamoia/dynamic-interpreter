@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getDefaultCustomizationState } from "@/contexts/keyword/KeywordContext";
 import {
+  buildFlowStepProps,
   buildIdentityStepProps,
   buildIOStepProps,
   buildReviewStepProps,
@@ -90,8 +91,15 @@ describe("buildStructureStepProps", () => {
 
     const props = buildStructureStepProps(context);
 
-    expect(props.values.delimiterSnippet).toContain("funcao main()inicio");
-    expect(props.values.identationSnippet).toContain("funcao main():");
+    expect(props.values.delimiterSnippet).toContain("vazio main() inicio");
+    expect(props.values.delimiterSnippet).toContain(
+      'escreva("You become responsible forever for what you have tamed.");',
+    );
+    expect(props.values.identationSnippet).toContain("vazio main():");
+    expect(props.values.identationSnippet).toContain(
+      'escreva("You become responsible forever for what you have tamed.");',
+    );
+    expect(props.values.identationSnippet).not.toContain("inicio");
     expect(props.values.optionalTerminatorSnippet).toBe('escreva("ok")');
     expect(props.values.requiredTerminatorSnippet).toBe('escreva("ok");');
     expect(props.values.fixedArraySnippet).toBe(
@@ -121,6 +129,8 @@ describe("buildTypeStepProps", () => {
   it("fills keyword reference table descriptions with defaults", () => {
     const props = buildTypeStepProps(buildContext());
 
+    expect(props.values.typedSnippet).toBe("live-preview");
+    expect(props.values.untypedSnippet).toBe("live-preview");
     expect(props.values.variableKeywords).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -133,6 +143,20 @@ describe("buildTypeStepProps", () => {
         }),
       ]),
     );
+  });
+});
+
+describe("buildFlowStepProps", () => {
+  it("passes the configured required line ending to flow examples", () => {
+    const draft = getDefaultCustomizationState();
+    draft.modes.semicolon = "required";
+    draft.statementTerminatorLexeme = "fim";
+
+    const props = buildFlowStepProps(
+      buildContext({ draftCustomization: draft }),
+    );
+
+    expect(props.values.lineEnding).toBe(" fim");
   });
 });
 

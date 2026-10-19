@@ -4,6 +4,7 @@ import { Lexer } from "../../lexer";
 import { Instruction } from "../../interpreter/constants";
 import { GrammarConfig, TokenIterator } from "../../token/TokenIterator";
 import { Interpreter } from "../../interpreter";
+import type { InterpreterExecutionOptions } from "../../interpreter/constants";
 
 type CompileToIrOptions = {
   locale?: string;
@@ -61,7 +62,10 @@ export function createStdin(values: string[]): () => Promise<string> {
 
 export async function executeProgram(
   source: string,
-  options?: CompileToIrOptions & { stdin?: () => Promise<string> },
+  options?: CompileToIrOptions & {
+    stdin?: () => Promise<string>;
+    interpreter?: InterpreterExecutionOptions;
+  },
 ) {
   const output: string[] = [];
   const { instructions, warnings, infos, error } = compileProgram(
@@ -75,6 +79,7 @@ export async function executeProgram(
       stdin: options?.stdin ?? (async () => ""),
     },
     options?.locale ?? "en",
+    options?.interpreter,
   );
 
   await interpreter.execute();

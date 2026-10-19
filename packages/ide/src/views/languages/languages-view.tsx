@@ -15,9 +15,11 @@ import { LanguagesGrid } from "./components/languages-grid";
 import { LanguagesHeader } from "./components/languages-header";
 import { LanguageDnaDialog } from "./components/language-dna-dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { t } from "@/i18n";
 
 export function LanguagesView() {
   const router = useRouter();
+  const { locale } = router;
   const { showToast } = useToast();
   const { isCommunity } = useAuth();
   const [page, setPage] = useState(1);
@@ -44,11 +46,11 @@ export function LanguagesView() {
       setLoadError(
         getApiErrorMessage(
           listQuery.error,
-          "Não foi possível carregar suas linguagens.",
+          t(locale, "ui.languages_load_error"),
         ),
       );
     }
-  }, [listQuery.isError, listQuery.error]);
+  }, [listQuery.isError, listQuery.error, locale]);
 
   const languages = Array.isArray(listQuery.data)
     ? listQuery.data
@@ -79,33 +81,40 @@ export function LanguagesView() {
   const handleSetActive = async (id: number, name: string) => {
     try {
       await setActiveMut.mutateAsync(id);
-      success(`"${name}" agora é sua linguagem ativa.`);
+      success(t(locale, "ui.languages_set_active_success", { name }));
     } catch {
-      failure("Não foi possível ativar a linguagem.");
+      failure(t(locale, "ui.languages_set_active_error"));
     }
   };
 
   const handleClone = async (id: number, name: string) => {
     try {
       const clone = await cloneMut.mutateAsync(id);
-      success(`"${name}" duplicada como "${clone.name}".`);
+      success(
+        t(locale, "ui.languages_clone_success", {
+          name,
+          cloneName: clone.name,
+        }),
+      );
     } catch {
-      failure("Não foi possível duplicar.");
+      failure(t(locale, "ui.languages_clone_error"));
     }
   };
 
   const handleDelete = async (id: number, name: string) => {
-    if (!window.confirm(`Excluir a linguagem "${name}"?`)) return;
+    if (!window.confirm(t(locale, "ui.languages_delete_confirm", { name }))) {
+      return;
+    }
     try {
       await deleteMut.mutateAsync(id);
-      success(`"${name}" excluída.`);
+      success(t(locale, "ui.languages_delete_success", { name }));
     } catch (error: any) {
       // 409 significa que algum exercício trava nesta linguagem — vale dizer
       // isso ao usuário em vez de um erro genérico.
       failure(
         error?.response?.status === 409
-          ? "Esta linguagem está travada em algum exercício e não pode ser excluída."
-          : "Não foi possível excluir.",
+          ? t(locale, "ui.languages_delete_locked_error")
+          : t(locale, "ui.languages_delete_error"),
       );
     }
   };
@@ -119,11 +128,11 @@ export function LanguagesView() {
       await publicationMut.mutateAsync({ id, isPublic });
       success(
         isPublic
-          ? `"${name}" agora está no acervo da comunidade.`
-          : `"${name}" foi removida do acervo da comunidade.`,
+          ? t(locale, "ui.languages_publish_success", { name })
+          : t(locale, "ui.languages_unpublish_success", { name }),
       );
     } catch {
-      failure("Não foi possível alterar a publicação da linguagem.");
+      failure(t(locale, "ui.languages_publication_error"));
     }
   };
 
