@@ -1,3 +1,28 @@
+# Verificação de 19/10/2026
+
+Base examinada: `04adff24211dfc224167027d8b32a09cc165c06a`, branch
+`escrita-tcc`, depois da incorporação de `main` de 19/10/2026. O código da
+aplicação foi inspecionado e testado, sem modificações.
+
+- Back-end: **188 casos aprovados em 17 arquivos**, sem falhas.
+- Compilador: **243 casos aprovados em 22 arquivos**, sem falhas.
+- [Registro estruturado](testes-2026-10-19.json), com casos por arquivo.
+- Dicionário de dados gerado de novo: 11 tabelas, 82 atributos e 21 chaves
+  estrangeiras. O atributo novo é `submissions.test_case_results`.
+
+| Assunto | Evidência no repositório |
+| --- | --- |
+| `++` e `--` | `packages/compiler/src/grammar/syntax/updateOperator.ts`, `attributeStmt.ts`, `factorStmt.ts`, `unitaryStmt.ts` |
+| Inicializador em declaração múltipla | `packages/compiler/src/grammar/syntax/declarationStmt.ts` |
+| Leitura de variável não declarada | `grammar/syntax/typedIdentifier.ts` e `interpreter/index.ts` |
+| Limite de passos | `interpreter/index.ts`, `interpreter/constants.ts` |
+| Delimitadores sem exigência de identificador | `lexer/config.ts` (`DELIMITER_REGEX`) |
+| Resultado por caso de teste | `backend/app/models/submission.py`, `backend/migrations/versions/0a1b2c3d4e5f_submission_test_case_results.py` |
+
+Teste manual feito nesta revisão: com `<:` e `:>` como delimitadores, a
+configuração é aceita, mas o léxico produz `<`, `:` e `:`, `>` em vez de
+um único token de bloco.
+
 # Verificação do back-end e do compilador — 19/09/2026
 
 Base examinada: `e0a012bb833fa829e6e694bc2f5b99fdff4863a0`, branch

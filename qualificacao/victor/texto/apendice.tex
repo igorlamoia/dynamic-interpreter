@@ -79,7 +79,7 @@ Este apêndice reúne a relação dos recursos expostos pela API da plataforma. 
 
 \chapter[APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS]{\parbox{0.9\textwidth}{\centering APÊNDICE C \textendash{} CASOS DE TESTE AUTOMATIZADOS}} \label{ap:testes}
 
-Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{224 casos} distribuídos em 21 arquivos de teste, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. Os casos estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}), no diretório \texttt{packages/compiler/src/tests}. Na execução de verificação realizada em 19 de setembro de 2026, o comando \texttt{npx vitest run}, a partir do pacote \texttt{compiler}, aprovou os 224 casos, sem falhas. O resultado foi registrado junto à execução do serviço Python \cite{silva2026verificacaobackend}. A distribuição dos testes desse serviço é apresentada na Tabela~\ref{tab:testes-backend}. O total deste apêndice refere-se somente ao compilador e documenta o estado da suíte, sem atribuir a esta execução evidências sobre o que foi demonstrado na apresentação de qualificação.
+Este apêndice resume a suíte de testes automatizados do núcleo do compilador, construída com o \textit{framework} Vitest. A suíte reúne \textbf{243 casos} distribuídos em 22 arquivos de teste, organizados de modo a refletir as camadas internas do projeto, conforme a Tabela~\ref{tab:testes-resumo}. Os casos estão disponíveis no repositório do projeto (\url{https://github.com/igorlamoia/ts-compilator-for-java}), no diretório \texttt{packages/compiler/src/tests}. Na execução de verificação realizada em 19 de outubro de 2026, o comando \texttt{npx vitest run}, a partir do pacote \texttt{compiler}, aprovou os 243 casos, sem falhas. O resultado foi registrado junto à execução do serviço Python \cite{silva2026verificacaooutubro}. Em 19 de setembro de 2026 a suíte tinha 224 casos em 21 arquivos \cite{silva2026verificacaobackend}. A distribuição dos testes do serviço Python é apresentada na Tabela~\ref{tab:testes-backend}. O total deste apêndice refere-se somente ao compilador e documenta o estado da suíte, sem atribuir a esta execução evidências sobre o que foi demonstrado na apresentação de qualificação.
 
 \begin{table}[H]
     \centering
@@ -89,15 +89,17 @@ Este apêndice resume a suíte de testes automatizados do núcleo do compilador,
         \hline
         \textbf{Camada} & \textbf{Arquivos} & \textbf{Casos} & \textbf{Escopo} \\
         \hline
-        Tokens & 1 & 12 & Estabilidade dos identificadores numéricos e dos agrupamentos por categoria. \\
+        Tokens & 1 & 13 & Estabilidade dos identificadores numéricos e dos agrupamentos por categoria. \\
         \hline
-        Análise léxica & 9 & 57 & \textit{Scanners} em isolamento: comentários, literais numéricos e de cadeia, terminador configurável, delimitadores de bloco, operadores em forma de palavra e geração de \textit{tokens} de indentação. \\
+        Análise léxica & 9 & 65 & \textit{Scanners} em isolamento: comentários, literais numéricos e de cadeia, terminador configurável, delimitadores de bloco, operadores em forma de palavra, geração de \textit{tokens} de indentação e literais numéricos no fim do código-fonte. \\
         \hline
-        Análise sintática e semântica & 9 & 142 & Aceitação ou rejeição de programas sob distintos modos de tipagem e de bloco, variantes do \texttt{switch}, ternário, igualdade estrita e verificação de tipos. \\
+        Análise sintática e semântica & 9 & 148 & Aceitação ou rejeição de programas sob distintos modos de tipagem e de bloco, variantes do \texttt{switch}, ternário, igualdade estrita, incremento e decremento, declarações múltiplas e verificação de tipos. \\
         \hline
-        Interpretação & 2 & 13 & Execução do código de três endereços e sessões de depuração. \\
+        Interpretação & 2 & 15 & Execução do código de três endereços, sessões de depuração, variáveis não declaradas e limite de passos. \\
         \hline
-        \textbf{Total} & \textbf{21} & \textbf{224} & \\
+        Regras da linguagem & 1 & 2 & Estrutura do resumo exportado por \texttt{language-rules.ts}. \\
+        \hline
+        \textbf{Total} & \textbf{22} & \textbf{243} & \\
         \hline
     \end{tabular}
     \legend{Fonte: elaborado pelo autor.}

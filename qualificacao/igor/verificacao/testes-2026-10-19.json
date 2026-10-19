@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-19",
+  "code_commit": "04adff24211dfc224167027d8b32a09cc165c06a",
+  "scope": "Execução local dos testes unitários e de integração da IDE. O pacote E2E não foi executado nesta revisão, porque depende dos serviços em execução; o último registro dele é o de 19/09/2026.",
+  "environment": {
+    "node": "25.2.1",
+    "vitest": "4.0.18"
+  },
+  "ide": {
+    "command": "npm run test -w @ts-compilator-for-java/ide",
+    "passed_tests": 312,
+    "failed_tests": 0,
+    "passed_files": 60,
+    "failed_files": 0,
+    "excluded_spec_files": 8
+  },
+  "e2e": {
+    "executed": false
+  }
+}

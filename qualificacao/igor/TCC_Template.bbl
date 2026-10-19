@@ -143,8 +143,16 @@ ISBN 978-0990582939.}
 {PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens
   de Programa{\c{c}}{\~a}o: Compiladores}. Porto Alegre: Sagra Luzzatto, 2001.}
 
+\bibitem[Queiroz 2026]{queiroz2026verificacaooutubro}
+\abntrefinfo{Queiroz}{QUEIROZ}{2026a}
+{QUEIROZ, I.~L. \textbf{Registro de verificação local dos testes da IDE: 19
+  de outubro de 2026}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/igor/verificacao/testes-2026-10-19.json}.
+  Acesso em: 19 out. 2026.}
+
 \bibitem[Queiroz 2026]{queiroz2026verificacaotestes}
-\abntrefinfo{Queiroz}{QUEIROZ}{2026}
+\abntrefinfo{Queiroz}{QUEIROZ}{2026b}
 {QUEIROZ, I.~L. \textbf{Registro de verificação local dos testes da IDE e do
   pacote E2E: 19 de setembro de 2026}. 2026.
 Dispon{\'\i}vel em:

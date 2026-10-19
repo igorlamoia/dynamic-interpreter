@@ -347,8 +347,16 @@ Dispon{\'\i}vel em:
   \url{https://gestaoaracati.ifce.edu.br/attachments/download/2699/tcc.pdf}.
   Acesso em: 09 set. 2026.}
 
+\bibitem[Silva 2026]{silva2026verificacaooutubro}
+\abntrefinfo{Silva}{SILVA}{2026a}
+{SILVA, V. d. S. V.~d. \textbf{Registro de verificação local dos testes do
+  back-end e do compilador: 19 de outubro de 2026}. 2026.
+Dispon{\'\i}vel em:
+  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/victor/verificacao/testes-2026-10-19.json}.
+  Acesso em: 19 out. 2026.}
+
 \bibitem[Silva 2026]{silva2026verificacaobackend}
-\abntrefinfo{Silva}{SILVA}{2026}
+\abntrefinfo{Silva}{SILVA}{2026b}
 {SILVA, V. d. S. V.~d. \textbf{Registro de verificação local dos testes do
   back-end e do compilador: 19 de setembro de 2026}. 2026.
 Dispon{\'\i}vel em:

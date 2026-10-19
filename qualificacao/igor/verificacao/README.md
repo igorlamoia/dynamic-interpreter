@@ -1,3 +1,26 @@
+# Verificação de 19/10/2026
+
+Base examinada: `04adff24211dfc224167027d8b32a09cc165c06a`, branch
+`escrita-tcc`, depois da incorporação de `main` de 19/10/2026. O código da
+aplicação foi inspecionado e testado, sem modificações.
+
+- IDE: **312 testes aprovados em 60 arquivos** com `npm test`, sem falhas;
+  continuam as oito exclusões de `vitest.integration.config.ts`.
+- E2E: **não executado** nesta revisão (depende dos serviços em execução).
+  O último registro é o de 19/09/2026.
+- [Registro estruturado](testes-2026-10-19.json).
+- Cobertura de tradução, contada como arquivos `.tsx` de `components`,
+  `views` e `pages` que importam `@/i18n` ou `useWizardTranslation`:
+  56/180 em `b7cc112` (22/09) e 98/187 em `04adff2` (19/10).
+
+| Assunto | Evidência no repositório |
+| --- | --- |
+| Tutoriais | `packages/ide/src/lib/tutorials.ts`, `lib/tutorial-progress.ts`, `components/tutorial/tutorial-provider.tsx`, `components/footer/index.tsx` |
+| Ajuda e regras do compilador | `views/ide/components/menu.tsx`, `views/ide/components/compiler-rules-dialog.tsx`, `i18n/locales/*/compiler-rules.ts` |
+| Página Sobre | `pages/about.tsx` |
+| Correção na IDE | `views/submissions/components/submission-ide-panel.tsx`, `lib/submission-language-snapshot.ts`, `pages/submissions/[id].tsx` |
+| Delimitadores | `contexts/keyword/keyword-validator.ts` (`DELIMITER_REGEX`) |
+
 # Verificação técnica de 12/09/2026
 
 Base do código: commit `d15acc103d39ea3031f1bec2f4d6323eaee75155`, branch `escrita-tcc`. As alterações desta revisão atingem os documentos, imagens e scripts de verificação do Igor. Não houve mudança no código da aplicação.
