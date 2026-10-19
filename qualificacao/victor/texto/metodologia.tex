@@ -33,7 +33,7 @@ O servidor Next.js reutiliza as mesmas classes na rota \texttt{POST /api/submiss
 \subsection{Modelagem do Banco de Dados}
 \label{subsec:modelagem-banco}
 
-A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes de \texttt{backend/app/models}. A Figura~\ref{fig:esquema-banco} apresenta as onze tabelas de domínio e suas referências. O Apêndice~\ref{ap:dicionario-dados} completa a figura com os 82 atributos, seus tipos, nulabilidade, chaves, restrições e índices extraídos dos metadados SQLAlchemy. Essa documentação descreve a versão do código-fonte examinada em 19 de outubro de 2026; não constitui uma inspeção de um banco de produção.
+A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes de \texttt{backend/app/models}. A Figura~\ref{fig:esquema-banco} apresenta as onze tabelas de domínio em notação de pé de galinha: cada tabela lista suas colunas de chave, e cada linha liga uma chave estrangeira à tabela referenciada, com a cardinalidade marcada nas extremidades. O Apêndice~\ref{ap:dicionario-dados} completa a figura com os 82 atributos, seus tipos, nulabilidade, chaves, restrições e índices extraídos dos metadados SQLAlchemy. Essa documentação descreve a versão do código-fonte examinada em 19 de outubro de 2026; não constitui uma inspeção de um banco de produção.
 
 \begin{figure}[p]
     \centering
