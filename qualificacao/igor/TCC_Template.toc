@@ -5,92 +5,92 @@
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{12}{chapter.10}%
-\contentsline {section}{\numberline {1.1}Justificativa}{13}{section.11}%
-\contentsline {section}{\numberline {1.2}Objetivos}{14}{section.12}%
-\contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{14}{subsection.13}%
-\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{14}{subsection.14}%
-\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{15}{section.15}%
+\contentsline {chapter}{\chapternumberline {1}INTRODUÇÃO}{13}{chapter.10}%
+\contentsline {section}{\numberline {1.1}Justificativa}{14}{section.11}%
+\contentsline {section}{\numberline {1.2}Objetivos}{15}{section.12}%
+\contentsline {subsection}{\numberline {{1.2}.1}Objetivo Geral}{15}{subsection.13}%
+\contentsline {subsection}{\numberline {{1.2}.2}Objetivos Específicos}{15}{subsection.14}%
+\contentsline {section}{\numberline {1.3}Estrutura do Trabalho}{16}{section.15}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS}{16}{chapter.16}%
-\contentsline {section}{\numberline {2.1}Compiladores}{16}{section.17}%
-\contentsline {subsection}{\numberline {{2.1}.1}Compiladores e seus Fundamentos}{16}{subsection.18}%
-\contentsline {subsection}{\numberline {{2.1}.2}O Modelo de Análise e Síntese (Fases da Compilação)}{17}{subsection.20}%
-\contentsline {subsection}{\numberline {{2.1}.3}A Análise Léxica e o Reconhecimento de \textit {Tokens}}{19}{subsection.21}%
-\contentsline {subsection}{\numberline {{2.1}.4}Estratégias de Análise Sintática: \textit {Top-Down} e \textit {Bottom-Up}}{20}{subsection.23}%
-\contentsline {subsection}{\numberline {{2.1}.5}Análise Semântica e Verificação de Tipos}{22}{subsection.24}%
-\contentsline {subsection}{\numberline {{2.1}.6}Geração de Código Intermediário}{23}{subsection.25}%
-\contentsline {subsection}{\numberline {{2.1}.7}Otimização de Código e Eficiência Computacional}{25}{subsection.29}%
-\contentsline {subsection}{\numberline {{2.1}.8}Geração de Código Objeto e Mapeamento de Arquitetura}{26}{subsection.30}%
-\contentsline {subsection}{\numberline {{2.1}.9}Execução de Código de Máquina}{27}{subsection.31}%
-\contentsline {section}{\numberline {2.2}Engenharia de Software}{28}{section.32}%
-\contentsline {subsection}{\numberline {{2.2}.1}Desenvolvimento Iterativo e Incremental e \textit {Extreme Programming}}{28}{subsection.33}%
-\contentsline {subsection}{\numberline {{2.2}.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{29}{subsection.34}%
-\contentsline {subsubsection}{\numberline {{2.2}.2.1}Testes de ponta a ponta no front-end}{30}{subsubsection.35}%
-\contentsline {subsection}{\numberline {{2.2}.3}Arquitetura Limpa e Separação de Responsabilidades}{31}{subsection.36}%
-\contentsline {subsection}{\numberline {{2.2}.4}Qualidade de Código e \textit {Clean Code}}{32}{subsection.37}%
-\contentsline {subsection}{\numberline {{2.2}.5}O \textit {Framework} Next.js e sua Arquitetura}{33}{subsection.38}%
-\contentsline {subsection}{\numberline {{2.2}.6}\textit {Design} de Experiência do Usuário (UX) e Interface do Usuário (UI)}{33}{subsection.39}%
-\contentsline {section}{\numberline {2.3}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{34}{section.40}%
-\contentsline {section}{\numberline {2.4}Trabalhos Relacionados}{35}{section.41}%
-\contentsline {subsection}{\numberline {{2.4}.1}Ambientes Voltados à Iniciação em Programação}{35}{subsection.42}%
-\contentsline {subsection}{\numberline {{2.4}.2}Projetos Didáticos de Construção de Compiladores}{37}{subsection.43}%
-\contentsline {subsection}{\numberline {{2.4}.3}Análise Crítica e o Diferencial da Solução Proposta}{39}{subsection.44}%
+\contentsline {chapter}{\chapternumberline {2}REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS}{17}{chapter.16}%
+\contentsline {section}{\numberline {2.1}Compiladores}{17}{section.17}%
+\contentsline {subsection}{\numberline {{2.1}.1}Compiladores e seus Fundamentos}{17}{subsection.18}%
+\contentsline {subsection}{\numberline {{2.1}.2}O Modelo de Análise e Síntese (Fases da Compilação)}{18}{subsection.20}%
+\contentsline {subsection}{\numberline {{2.1}.3}A Análise Léxica e o Reconhecimento de \textit {Tokens}}{20}{subsection.21}%
+\contentsline {subsection}{\numberline {{2.1}.4}Estratégias de Análise Sintática: \textit {Top-Down} e \textit {Bottom-Up}}{21}{subsection.23}%
+\contentsline {subsection}{\numberline {{2.1}.5}Análise Semântica e Verificação de Tipos}{23}{subsection.24}%
+\contentsline {subsection}{\numberline {{2.1}.6}Geração de Código Intermediário}{24}{subsection.25}%
+\contentsline {subsection}{\numberline {{2.1}.7}Otimização de Código e Eficiência Computacional}{26}{subsection.29}%
+\contentsline {subsection}{\numberline {{2.1}.8}Geração de Código Objeto e Mapeamento de Arquitetura}{27}{subsection.30}%
+\contentsline {subsection}{\numberline {{2.1}.9}Execução de Código de Máquina}{28}{subsection.31}%
+\contentsline {section}{\numberline {2.2}Engenharia de Software}{29}{section.32}%
+\contentsline {subsection}{\numberline {{2.2}.1}Desenvolvimento Iterativo e Incremental e \textit {Extreme Programming}}{29}{subsection.33}%
+\contentsline {subsection}{\numberline {{2.2}.2}Testes Automatizados e \textit {Test-Driven Development} (TDD)}{30}{subsection.34}%
+\contentsline {subsubsection}{\numberline {{2.2}.2.1}Testes de ponta a ponta no front-end}{31}{subsubsection.35}%
+\contentsline {subsection}{\numberline {{2.2}.3}Arquitetura Limpa e Separação de Responsabilidades}{32}{subsection.36}%
+\contentsline {subsection}{\numberline {{2.2}.4}Qualidade de Código e \textit {Clean Code}}{33}{subsection.37}%
+\contentsline {subsection}{\numberline {{2.2}.5}O \textit {Framework} Next.js e sua Arquitetura}{34}{subsection.38}%
+\contentsline {subsection}{\numberline {{2.2}.6}\textit {Design} de Experiência do Usuário (UX) e Interface do Usuário (UI)}{34}{subsection.39}%
+\contentsline {section}{\numberline {2.3}Softwares Educativos e Tecnologias de Apoio à Aprendizagem}{35}{section.40}%
+\contentsline {section}{\numberline {2.4}Trabalhos Relacionados}{36}{section.41}%
+\contentsline {subsection}{\numberline {{2.4}.1}Ambientes Voltados à Iniciação em Programação}{36}{subsection.42}%
+\contentsline {subsection}{\numberline {{2.4}.2}Projetos Didáticos de Construção de Compiladores}{38}{subsection.43}%
+\contentsline {subsection}{\numberline {{2.4}.3}Análise Crítica e o Diferencial da Solução Proposta}{40}{subsection.44}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{41}{chapter.46}%
+\contentsline {chapter}{\chapternumberline {3}PROPOSTA}{42}{chapter.46}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{49}{chapter.53}%
-\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{51}{section.54}%
-\contentsline {section}{\numberline {4.2}Interpretador}{54}{section.56}%
-\contentsline {section}{\numberline {4.3}Customização Dinâmica de \textit {Tokens} e Sintaxe}{54}{section.57}%
-\contentsline {subsection}{\numberline {{4.3}.1}Linguagens predefinidas e identidade da configuração}{58}{subsection.175}%
-\contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{61}{section.194}%
-\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{62}{section.195}%
-\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{65}{section.227}%
-\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{66}{section.228}%
-\contentsline {subsection}{\numberline {{4.7}.1}Autoria de exercícios e acompanhamento de turmas}{67}{subsection.229}%
-\contentsline {subsection}{\numberline {{4.7}.2}Resolução de exercícios e linguagem obrigatória}{67}{subsection.230}%
-\contentsline {subsection}{\numberline {{4.7}.3}Correção de submissões pelo professor}{68}{subsection.231}%
-\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{69}{section.232}%
-\contentsline {subsection}{\numberline {{4.8}.1}Verificação técnica do assistente}{69}{subsection.233}%
-\contentsline {subsection}{\numberline {{4.8}.2}Internacionalização da interface}{71}{subsection.236}%
-\contentsline {section}{\numberline {4.9}Recursos de Orientação ao Usuário}{73}{section.237}%
-\contentsline {subsection}{\numberline {{4.9}.1}Tutoriais guiados}{73}{subsection.238}%
-\contentsline {subsection}{\numberline {{4.9}.2}Exemplo da linguagem e regras do compilador}{73}{subsection.239}%
-\contentsline {subsection}{\numberline {{4.9}.3}Página Sobre}{74}{subsection.240}%
-\contentsline {section}{\numberline {4.10}Apresentação das Telas da Plataforma}{74}{section.241}%
-\contentsline {section}{\numberline {4.11}Estratégia de Testes Automatizados}{90}{section.259}%
-\contentsline {subsection}{\numberline {{4.11}.1}Testes de ponta a ponta da interface}{92}{subsection.281}%
-\contentsline {subsection}{\numberline {{4.11}.2}Integração contínua e diagnóstico de falhas}{93}{subsection.283}%
-\contentsline {subsection}{\numberline {{4.11}.3}Resultado da execução local}{94}{subsection.284}%
-\contentsline {section}{\numberline {4.12}Proposta de Protocolo de Avaliação}{95}{section.285}%
-\contentsline {subsection}{\numberline {{4.12}.1}Quem responde e o que é possível concluir}{95}{subsection.286}%
-\contentsline {subsection}{\numberline {{4.12}.2}Composição do instrumento}{96}{subsection.287}%
-\contentsline {subsection}{\numberline {{4.12}.3}Itens sobre a interface e a personalização}{96}{subsection.289}%
-\contentsline {subsection}{\numberline {{4.12}.4}Escalas usadas e cálculo dos escores}{98}{subsection.290}%
-\contentsline {subsection}{\numberline {{4.12}.5}Participantes, procedimento e questões éticas}{99}{subsection.291}%
-\contentsline {subsection}{\numberline {{4.12}.6}Limites de interpretação e continuidade}{99}{subsection.292}%
-\contentsline {subsection}{\numberline {{4.12}.7}Continuidade da verificação técnica}{100}{subsection.293}%
+\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{50}{chapter.53}%
+\contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{52}{section.54}%
+\contentsline {section}{\numberline {4.2}Interpretador}{55}{section.56}%
+\contentsline {section}{\numberline {4.3}Customização Dinâmica de \textit {Tokens} e Sintaxe}{55}{section.57}%
+\contentsline {subsection}{\numberline {{4.3}.1}Linguagens predefinidas e identidade da configuração}{59}{subsection.175}%
+\contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{62}{section.194}%
+\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{63}{section.195}%
+\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{66}{section.227}%
+\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{67}{section.228}%
+\contentsline {subsection}{\numberline {{4.7}.1}Autoria de exercícios e acompanhamento de turmas}{68}{subsection.229}%
+\contentsline {subsection}{\numberline {{4.7}.2}Resolução de exercícios e linguagem obrigatória}{68}{subsection.230}%
+\contentsline {subsection}{\numberline {{4.7}.3}Correção de submissões pelo professor}{69}{subsection.231}%
+\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{70}{section.232}%
+\contentsline {subsection}{\numberline {{4.8}.1}Verificação técnica do assistente}{70}{subsection.233}%
+\contentsline {subsection}{\numberline {{4.8}.2}Internacionalização da interface}{72}{subsection.236}%
+\contentsline {section}{\numberline {4.9}Recursos de Orientação ao Usuário}{74}{section.237}%
+\contentsline {subsection}{\numberline {{4.9}.1}Tutoriais guiados}{74}{subsection.238}%
+\contentsline {subsection}{\numberline {{4.9}.2}Exemplo da linguagem e regras do compilador}{77}{subsection.241}%
+\contentsline {subsection}{\numberline {{4.9}.3}Página Sobre}{77}{subsection.242}%
+\contentsline {section}{\numberline {4.10}Apresentação das Telas da Plataforma}{77}{section.243}%
+\contentsline {section}{\numberline {4.11}Estratégia de Testes Automatizados}{94}{section.261}%
+\contentsline {subsection}{\numberline {{4.11}.1}Testes de ponta a ponta da interface}{96}{subsection.283}%
+\contentsline {subsection}{\numberline {{4.11}.2}Integração contínua e diagnóstico de falhas}{97}{subsection.285}%
+\contentsline {subsection}{\numberline {{4.11}.3}Resultado da execução local}{98}{subsection.286}%
+\contentsline {section}{\numberline {4.12}Proposta de Protocolo de Avaliação}{99}{section.287}%
+\contentsline {subsection}{\numberline {{4.12}.1}Quem responde e o que é possível concluir}{99}{subsection.288}%
+\contentsline {subsection}{\numberline {{4.12}.2}Composição do instrumento}{100}{subsection.289}%
+\contentsline {subsection}{\numberline {{4.12}.3}Itens sobre a interface e a personalização}{100}{subsection.291}%
+\contentsline {subsection}{\numberline {{4.12}.4}Escalas usadas e cálculo dos escores}{102}{subsection.292}%
+\contentsline {subsection}{\numberline {{4.12}.5}Participantes, procedimento e questões éticas}{103}{subsection.293}%
+\contentsline {subsection}{\numberline {{4.12}.6}Limites de interpretação e continuidade}{103}{subsection.294}%
+\contentsline {subsection}{\numberline {{4.12}.7}Continuidade da verificação técnica}{104}{subsection.295}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{101}{chapter.294}%
-\contentsline {section}{\numberline {5.1}Composição do Painel}{101}{section.295}%
-\contentsline {section}{\numberline {5.2}Assistente de Personalização da Linguagem}{101}{section.296}%
-\contentsline {section}{\numberline {5.3}Uso do Ambiente Virtual de Aprendizagem}{101}{section.297}%
-\contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{101}{section.298}%
-\contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{101}{section.299}%
-\contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{101}{section.300}%
-\contentsline {section}{\numberline {5.7}Respostas Abertas}{101}{section.301}%
-\contentsline {section}{\numberline {5.8}Síntese e Confronto com os Objetivos}{101}{section.302}%
+\contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{105}{chapter.296}%
+\contentsline {section}{\numberline {5.1}Composição do Painel}{105}{section.297}%
+\contentsline {section}{\numberline {5.2}Assistente de Personalização da Linguagem}{105}{section.298}%
+\contentsline {section}{\numberline {5.3}Uso do Ambiente Virtual de Aprendizagem}{105}{section.299}%
+\contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{105}{section.300}%
+\contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{105}{section.301}%
+\contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{105}{section.302}%
+\contentsline {section}{\numberline {5.7}Respostas Abertas}{105}{section.303}%
+\contentsline {section}{\numberline {5.8}Síntese e Confronto com os Objetivos}{105}{section.304}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{102}{chapter.303}%
-\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{102}{section.304}%
-\contentsline {section}{\numberline {6.2}Limitações}{103}{section.305}%
-\contentsline {section}{\numberline {6.3}Encaminhamentos}{103}{section.306}%
+\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{106}{chapter.305}%
+\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{106}{section.306}%
+\contentsline {section}{\numberline {6.2}Limitações}{107}{section.307}%
+\contentsline {section}{\numberline {6.3}Encaminhamentos}{107}{section.308}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{105}{chapter*.308}%
+\contentsline {chapter}{REFERÊNCIAS}{109}{chapter*.310}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{108}{appendix.309}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{108}{section.310}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{108}{section.311}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{108}{subsection.312}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{109}{subsection.313}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{112}{appendix.311}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{112}{section.312}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{112}{section.313}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{112}{subsection.314}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{113}{subsection.315}%

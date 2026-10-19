@@ -53,6 +53,9 @@ e [`igor/verificacao/testes-2026-10-19.json`](igor/verificacao/testes-2026-10-19
 - Figuras: `victor/Figuras/validateBlockDelimiter.png` mostra a versão
   anterior da função (o texto avisa). As capturas das telas do professor
   (listas, publicação) são anteriores aos modais refeitos em 04/10, e não há
-  capturas dos tutoriais, da página Sobre nem da correção na IDE. O
+  capturas da página Sobre nem da correção na IDE. As capturas dos tutoriais
+  foram adicionadas ao texto de Igor (`igor/Figuras/Tutoriais/`), mas cobrem
+  só o roteiro de criação de linguagem; os roteiros da IDE, da criação de
+  exercícios e dos painéis do professor e do aluno seguem sem captura. O
   `README.MD` de `main` tem capturas novas em `packages/ide/public/readme/`.
 - O pacote E2E precisa ser executado de novo com os serviços ativos.

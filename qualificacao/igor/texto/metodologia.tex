@@ -375,6 +375,52 @@ Os tutoriais usam a biblioteca \textit{React Joyride} e estão declarados em \te
 
 O tutorial não abre sozinho. O rodapé mostra um botão de ajuda quando a rota corrente tem um roteiro associado, e o roteiro começa quando o usuário clica nele. A escolha depende também do perfil: em \texttt{/exercises} o roteiro só aparece para professores, e em \texttt{/dashboard} professor e aluno recebem roteiros diferentes. Durante o tutorial, a tecla \texttt{Enter} avança e \texttt{Esc} encerra. Se o elemento de um passo não estiver na tela, o passo é pulado.
 
+As Figuras~\ref{fig:tutorial-linguagem-1-2} e \ref{fig:tutorial-linguagem-3-4} mostram os quatro passos do roteiro do assistente de criação de linguagem. Em cada passo, o restante da tela fica escurecido e o elemento indicado aparece destacado, ao lado de um balão com o número do passo, uma barra de progresso, o título e o texto. O balão tem os botões ``Pular'' e ``Proximo''; ``Voltar'' aparece a partir do segundo passo, e no último passo ``Proximo'' dá lugar a ``Concluir''. O primeiro passo aponta para a lista das sete etapas do assistente (Figura~\ref{fig:tutorial-linguagem-1}), o segundo para o formulário da etapa corrente (Figura~\ref{fig:tutorial-linguagem-2}), o terceiro para a prévia do código (Figura~\ref{fig:tutorial-linguagem-3}) e o quarto para o rodapé com os botões de navegação do assistente (Figura~\ref{fig:tutorial-linguagem-4}). Os textos em português aparecem sem acentos, como em ``criacao'' e ``Proximo'', porque estão gravados assim no arquivo de idioma \texttt{pt-BR}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Tutoriais/criacao_linguagem_1.png}
+        \caption{Passo 1: etapas de criação.}
+        \label{fig:tutorial-linguagem-1}
+    \end{subfigure}
+
+    \vspace{0.8em}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Tutoriais/criacao_linguagem_2.png}
+        \caption{Passo 2: etapa atual.}
+        \label{fig:tutorial-linguagem-2}
+    \end{subfigure}
+    \caption{Passos 1 e 2 do tutorial do assistente de criação de linguagem.}
+    \label{fig:tutorial-linguagem-1-2}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Tutoriais/criacao_linguagem_3.png}
+        \caption{Passo 3: prévia ao vivo.}
+        \label{fig:tutorial-linguagem-3}
+    \end{subfigure}
+
+    \vspace{0.8em}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Tutoriais/criacao_linguagem_4.png}
+        \caption{Passo 4: navegar e salvar.}
+        \label{fig:tutorial-linguagem-4}
+    \end{subfigure}
+    \caption{Passos 3 e 4 do tutorial do assistente de criação de linguagem.}
+    \label{fig:tutorial-linguagem-3-4}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
 Ao terminar ou pular um roteiro, a conclusão é gravada no armazenamento local do navegador, em uma chave com o prefixo \texttt{di:tutorial:}. Na versão examinada, esse registro não é lido em nenhum outro ponto da interface, de modo que concluir um tutorial não muda o que o usuário vê depois.
 
 \subsection{Exemplo da linguagem e regras do compilador}
