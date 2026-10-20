@@ -41,16 +41,16 @@
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{50}{chapter.53}%
 \contentsline {section}{\numberline {4.1}Modelagem da Arquitetura da Plataforma}{52}{section.54}%
-\contentsline {section}{\numberline {4.2}Interpretador}{55}{section.56}%
+\contentsline {section}{\numberline {4.2}Interpretador}{53}{section.56}%
 \contentsline {section}{\numberline {4.3}Customização Dinâmica de \textit {Tokens} e Sintaxe}{55}{section.57}%
 \contentsline {subsection}{\numberline {{4.3}.1}Linguagens predefinidas e identidade da configuração}{59}{subsection.175}%
 \contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{62}{section.194}%
 \contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{63}{section.196}%
-\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{67}{section.229}%
-\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{69}{section.230}%
+\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{66}{section.229}%
+\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{68}{section.230}%
 \contentsline {subsection}{\numberline {{4.7}.1}Autoria de exercícios e acompanhamento de turmas}{69}{subsection.231}%
 \contentsline {subsection}{\numberline {{4.7}.2}Resolução de exercícios e linguagem obrigatória}{70}{subsection.232}%
-\contentsline {subsection}{\numberline {{4.7}.3}Correção de submissões pelo professor}{71}{subsection.234}%
+\contentsline {subsection}{\numberline {{4.7}.3}Correção de submissões pelo professor}{70}{subsection.234}%
 \contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{73}{section.236}%
 \contentsline {subsection}{\numberline {{4.8}.1}Verificação técnica do assistente}{73}{subsection.237}%
 \contentsline {subsection}{\numberline {{4.8}.2}Internacionalização da interface}{75}{subsection.240}%
