@@ -45,52 +45,52 @@
 \contentsline {section}{\numberline {4.3}Customização Dinâmica de \textit {Tokens} e Sintaxe}{55}{section.57}%
 \contentsline {subsection}{\numberline {{4.3}.1}Linguagens predefinidas e identidade da configuração}{59}{subsection.175}%
 \contentsline {section}{\numberline {4.4}Edição de Código e Sistema de Arquivos Virtual}{62}{section.194}%
-\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{63}{section.195}%
-\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{66}{section.227}%
-\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{67}{section.228}%
-\contentsline {subsection}{\numberline {{4.7}.1}Autoria de exercícios e acompanhamento de turmas}{68}{subsection.229}%
-\contentsline {subsection}{\numberline {{4.7}.2}Resolução de exercícios e linguagem obrigatória}{68}{subsection.230}%
-\contentsline {subsection}{\numberline {{4.7}.3}Correção de submissões pelo professor}{69}{subsection.231}%
-\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{70}{section.232}%
-\contentsline {subsection}{\numberline {{4.8}.1}Verificação técnica do assistente}{70}{subsection.233}%
-\contentsline {subsection}{\numberline {{4.8}.2}Internacionalização da interface}{72}{subsection.236}%
-\contentsline {section}{\numberline {4.9}Recursos de Orientação ao Usuário}{74}{section.237}%
-\contentsline {subsection}{\numberline {{4.9}.1}Tutoriais guiados}{74}{subsection.238}%
-\contentsline {subsection}{\numberline {{4.9}.2}Exemplo da linguagem e regras do compilador}{77}{subsection.241}%
-\contentsline {subsection}{\numberline {{4.9}.3}Página Sobre}{77}{subsection.242}%
-\contentsline {section}{\numberline {4.10}Apresentação das Telas da Plataforma}{77}{section.243}%
-\contentsline {section}{\numberline {4.11}Estratégia de Testes Automatizados}{94}{section.261}%
-\contentsline {subsection}{\numberline {{4.11}.1}Testes de ponta a ponta da interface}{96}{subsection.283}%
-\contentsline {subsection}{\numberline {{4.11}.2}Integração contínua e diagnóstico de falhas}{97}{subsection.285}%
-\contentsline {subsection}{\numberline {{4.11}.3}Resultado da execução local}{98}{subsection.286}%
-\contentsline {section}{\numberline {4.12}Proposta de Protocolo de Avaliação}{99}{section.287}%
-\contentsline {subsection}{\numberline {{4.12}.1}Quem responde e o que é possível concluir}{99}{subsection.288}%
-\contentsline {subsection}{\numberline {{4.12}.2}Composição do instrumento}{100}{subsection.289}%
-\contentsline {subsection}{\numberline {{4.12}.3}Itens sobre a interface e a personalização}{100}{subsection.291}%
-\contentsline {subsection}{\numberline {{4.12}.4}Escalas usadas e cálculo dos escores}{102}{subsection.292}%
-\contentsline {subsection}{\numberline {{4.12}.5}Participantes, procedimento e questões éticas}{103}{subsection.293}%
-\contentsline {subsection}{\numberline {{4.12}.6}Limites de interpretação e continuidade}{103}{subsection.294}%
-\contentsline {subsection}{\numberline {{4.12}.7}Continuidade da verificação técnica}{104}{subsection.295}%
+\contentsline {section}{\numberline {4.5}Execução das Análises Léxica e Sintática a partir da IDE}{63}{section.196}%
+\contentsline {section}{\numberline {4.6}Execução do Código Intermediário e \textit {Feedback} no Terminal}{67}{section.229}%
+\contentsline {section}{\numberline {4.7}Sistema de Correção e Avaliação Automatizada}{69}{section.230}%
+\contentsline {subsection}{\numberline {{4.7}.1}Autoria de exercícios e acompanhamento de turmas}{69}{subsection.231}%
+\contentsline {subsection}{\numberline {{4.7}.2}Resolução de exercícios e linguagem obrigatória}{70}{subsection.232}%
+\contentsline {subsection}{\numberline {{4.7}.3}Correção de submissões pelo professor}{71}{subsection.234}%
+\contentsline {section}{\numberline {4.8}Acessibilidade, Responsividade e Finalização de Fluxos}{73}{section.236}%
+\contentsline {subsection}{\numberline {{4.8}.1}Verificação técnica do assistente}{73}{subsection.237}%
+\contentsline {subsection}{\numberline {{4.8}.2}Internacionalização da interface}{75}{subsection.240}%
+\contentsline {section}{\numberline {4.9}Recursos de Orientação ao Usuário}{77}{section.241}%
+\contentsline {subsection}{\numberline {{4.9}.1}Tutoriais guiados}{77}{subsection.242}%
+\contentsline {subsection}{\numberline {{4.9}.2}Exemplo da linguagem e regras do compilador}{80}{subsection.245}%
+\contentsline {subsection}{\numberline {{4.9}.3}Página Sobre}{80}{subsection.247}%
+\contentsline {section}{\numberline {4.10}Apresentação das Telas da Plataforma}{80}{section.249}%
+\contentsline {section}{\numberline {4.11}Estratégia de Testes Automatizados}{98}{section.267}%
+\contentsline {subsection}{\numberline {{4.11}.1}Testes de ponta a ponta da interface}{100}{subsection.289}%
+\contentsline {subsection}{\numberline {{4.11}.2}Integração contínua e diagnóstico de falhas}{101}{subsection.291}%
+\contentsline {subsection}{\numberline {{4.11}.3}Resultado da execução local}{102}{subsection.292}%
+\contentsline {section}{\numberline {4.12}Proposta de Protocolo de Avaliação}{103}{section.293}%
+\contentsline {subsection}{\numberline {{4.12}.1}Quem responde e o que é possível concluir}{103}{subsection.294}%
+\contentsline {subsection}{\numberline {{4.12}.2}Composição do instrumento}{104}{subsection.295}%
+\contentsline {subsection}{\numberline {{4.12}.3}Itens sobre a interface e a personalização}{104}{subsection.297}%
+\contentsline {subsection}{\numberline {{4.12}.4}Escalas usadas e cálculo dos escores}{106}{subsection.298}%
+\contentsline {subsection}{\numberline {{4.12}.5}Participantes, procedimento e questões éticas}{107}{subsection.299}%
+\contentsline {subsection}{\numberline {{4.12}.6}Limites de interpretação e continuidade}{107}{subsection.300}%
+\contentsline {subsection}{\numberline {{4.12}.7}Continuidade da verificação técnica}{108}{subsection.301}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{105}{chapter.296}%
-\contentsline {section}{\numberline {5.1}Composição do Painel}{105}{section.297}%
-\contentsline {section}{\numberline {5.2}Assistente de Personalização da Linguagem}{105}{section.298}%
-\contentsline {section}{\numberline {5.3}Uso do Ambiente Virtual de Aprendizagem}{105}{section.299}%
-\contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{105}{section.300}%
-\contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{105}{section.301}%
-\contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{105}{section.302}%
-\contentsline {section}{\numberline {5.7}Respostas Abertas}{105}{section.303}%
-\contentsline {section}{\numberline {5.8}Síntese e Confronto com os Objetivos}{105}{section.304}%
+\contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{109}{chapter.302}%
+\contentsline {section}{\numberline {5.1}Composição do Painel}{109}{section.303}%
+\contentsline {section}{\numberline {5.2}Assistente de Personalização da Linguagem}{109}{section.304}%
+\contentsline {section}{\numberline {5.3}Uso do Ambiente Virtual de Aprendizagem}{109}{section.305}%
+\contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{109}{section.306}%
+\contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{109}{section.307}%
+\contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{109}{section.308}%
+\contentsline {section}{\numberline {5.7}Respostas Abertas}{109}{section.309}%
+\contentsline {section}{\numberline {5.8}Síntese e Confronto com os Objetivos}{109}{section.310}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{106}{chapter.305}%
-\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{106}{section.306}%
-\contentsline {section}{\numberline {6.2}Limitações}{107}{section.307}%
-\contentsline {section}{\numberline {6.3}Encaminhamentos}{107}{section.308}%
+\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{110}{chapter.311}%
+\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{110}{section.312}%
+\contentsline {section}{\numberline {6.2}Limitações}{111}{section.313}%
+\contentsline {section}{\numberline {6.3}Encaminhamentos}{111}{section.314}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{109}{chapter*.310}%
+\contentsline {chapter}{REFERÊNCIAS}{113}{chapter*.316}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{112}{appendix.311}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{112}{section.312}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{112}{section.313}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{112}{subsection.314}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{113}{subsection.315}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{116}{appendix.317}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{116}{section.318}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{116}{section.319}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{116}{subsection.320}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{117}{subsection.321}%

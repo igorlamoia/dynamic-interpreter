@@ -244,6 +244,16 @@ A persistência local dos arquivos do usuário foi modelada pelo \textit{hook} \
 
 O painel lateral da IDE, implementado em \texttt{SidebarPanel}, reúne as visões de arquivos, busca, linguagem e depuração em uma composição cuja largura pode ser ajustada por arraste. O componente mantém a largura durante sua montagem e aplica um limite mínimo conforme a largura da janela. O ajuste usa eventos de ponteiro; sua presença não demonstra uma operação equivalente por teclado. A revisão também adotou cores derivadas do tema em formulários, painéis e tabelas, cujos resultados de contraste no recorte testado são apresentados na Seção~\ref{sec:acessibilidade-responsividade}.
 
+A Figura~\ref{fig:ide-execucao} mostra a IDE na área de resolução de exercícios, com a linguagem Didática em Português ativa. No painel da IDE, à esquerda fica o explorador do sistema de arquivos virtual; ao centro, o editor com o arquivo \texttt{main.?}, em que \texttt{numero\_inteiro}, \texttt{leia}, \texttt{se} e \texttt{inicio} recebem o destaque de palavra reservada; abaixo, o terminal com uma execução do programa. As capturas desta seção e das seguintes foram feitas em 20 de outubro de 2026, na execução local da plataforma, com as contas de demonstração do \textit{seed} e uma lista criada para o registro, travada na linguagem predefinida Didática em Português.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{IDE/execucao_terminal.png}
+    \caption{IDE com a linguagem Didática em Português ativa e o terminal após uma execução.}
+    \label{fig:ide-execucao}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
 \section{Execução das Análises Léxica e Sintática a partir da IDE}
 \label{sec:execucao-analises}
 
@@ -293,6 +303,16 @@ A escolha por executar as análises léxica e sintática diretamente no cliente,
 
 Por fim, o \textit{hook} \texttt{use-api-queries} consolida, por meio do \textit{TanStack React Query}, todas as consultas relacionadas a turmas, exercícios, listas de exercícios e submissões, oferecendo cache automático, revalidação em segundo plano e tratamento padronizado de erros para toda a aplicação. Essas consultas, distintamente das análises locais discutidas anteriormente, envolvem comunicação remota com o serviço de persistência, mantendo claras as fronteiras entre a execução local do compilador e o consumo de recursos do Ambiente Virtual de Aprendizagem.
 
+A Figura~\ref{fig:ide-analise-lexica} mostra o início da sequência de \textit{tokens} produzida para o mesmo programa. Cada cartão traz a categoria do \textit{token}, seu código numérico, a linha, a coluna e o lexema lido. O lexema \texttt{numero\_inteiro} recebe o código 21, o mesmo de \texttt{int}, e \texttt{inicio} é classificado como abre chaves: o analisador reconhece as palavras configuradas e as associa aos \textit{tokens} canônicos da linguagem.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,height=0.36\textheight,keepaspectratio]{IDE/analise_lexica.png}
+    \caption{Sequência de \textit{tokens} gerada para um programa escrito em Didática em Português.}
+    \label{fig:ide-analise-lexica}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
 \section{Execução do Código Intermediário e \textit{Feedback} no Terminal}
 \label{sec:terminal-feedback}
 
@@ -303,6 +323,8 @@ A execução dos programas foi modelada de modo que as operações \texttt{print
 Na depuração, a função \texttt{appendOutputLines} acumula os fragmentos de saída mantendo o estado da linha aberta. Fragmentos sem quebra de linha são concatenados, enquanto as sequências de fim de linha são normalizadas. Assim, a chegada de um novo fragmento durante um passo de execução não cria, por si só, uma linha adicional no terminal.
 
 O núcleo compartilhado também passou a oferecer igualdade estrita (\texttt{===}) e expressão condicional ternária (\texttt{condicao ? valorA : valorB}). Incompatibilidades de atribuição e retorno podem gerar aviso na análise e erro durante a execução. A interface consome esses diagnósticos pelos mesmos canais de avisos e erros usados pelas demais construções. A igualdade estrita e os símbolos do ternário não integram os campos de operadores em forma de palavra do assistente atual.
+
+No exemplo da Figura~\ref{fig:ide-execucao}, o programa escreve ``Digite um numero:'', recebe 7 pelo terminal, imprime \texttt{IMPAR} e o terminal registra o início e o fim da execução.
 
 O sistema de \textit{feedback} de erros foi modelado em duas categorias complementares. Os erros estáticos detectados durante a compilação, como falhas léxicas, sintáticas e semânticas, são reportados pelo módulo \texttt{issue} do pacote \texttt{compiler}, que classifica cada ocorrência como \texttt{IssueError} (impede a tradução), \texttt{IssueWarning} (alerta não fatal) ou \texttt{IssueInfo} (informação contextual). Essas mensagens são interceptadas pela IDE e materializadas tanto no terminal, em formato textual, quanto no editor, por meio de marcadores de linha sublinhados, em conformidade com as práticas de relato de erros discutidas por \citeonline{aho1995}. Os erros dinâmicos, detectados pelo interpretador em tempo de execução (como divisões por zero, conversões impossíveis durante a leitura de entrada ou acessos a posições inválidas de \textit{arrays}), são encapsulados pela classe \texttt{RuntimeError} e gerenciados pelo \texttt{RuntimeErrorContext}, que coordena a exibição contextualizada no terminal e o destaque visual no editor.
 
@@ -332,12 +354,46 @@ O painel de submissão separa erros de tradução, avisos e resultados dos casos
 
 Quando o exercício ou a lista exige uma linguagem, a API resolve a precedência entre a restrição do exercício, a da lista e o modo livre. O \texttt{KeywordContext} aplica a configuração recebida como uma sobreposição temporária, com nome, descrição e imagem da linguagem obrigatória. O seletor passa a apresentar apenas essa opção e bloqueia a troca; o estado temporário não é gravado como a preferência pessoal no armazenamento local. Ao encerrar a sobreposição, a configuração anterior é restaurada. O aviso de linguagem obrigatória identifica se a restrição veio do exercício ou da lista.
 
+A Figura~\ref{fig:aluno-resultado} mostra a área de resolução depois de um envio. A faixa superior informa que a linguagem está travada pela lista e exibe o cartão da Didática em Português. O painel de submissão indica que um dos dois casos de teste passou; o caso que falhou está expandido, com a entrada 4, a saída esperada \texttt{PAR} e a saída obtida \texttt{IMPAR}. O erro vem do próprio programa enviado, que usa divisão (\texttt{n / 2}) onde deveria usar o resto (\texttt{n \% 2}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,height=0.42\textheight,keepaspectratio]{Aluno/resultado_submissao.png}
+    \caption{Área de resolução após o envio, com linguagem obrigatória e resultado dos casos de teste.}
+    \label{fig:aluno-resultado}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
 \subsection{Correção de submissões pelo professor}
 \label{subsec:correcao-professor}
 
 A página de uma submissão, \texttt{/submissions/[id]}, reúne o enunciado e os casos de teste do exercício, o painel de nota e comentário e, abaixo deles, uma IDE completa carregada com a tentativa do aluno. O componente \texttt{SubmissionIdePanel} abre o editor com o código salvo em \texttt{code\_snapshot} e aplica a configuração de \texttt{language\_snapshot} como sobreposição temporária no \texttt{KeywordContext}, o mesmo mecanismo usado pela linguagem obrigatória. O professor lê e executa o programa no vocabulário que o aluno usou, sem trocar a própria linguagem ativa, que é restaurada ao sair da página. O editor usa um escopo de armazenamento próprio para cada submissão, e um botão devolve o código ao estado enviado depois de alterações feitas durante a correção.
 
 Acima da IDE aparece o resultado de cada caso de teste registrado no envio: entrada, saída esperada, saída obtida e se o caso passou. Esses dados vêm do campo \texttt{test\_case\_results}, acrescentado à tabela de submissões em outubro. Antes dessa mudança, a rota de validação devolvia os resultados por caso ao aluno, mas eles não eram gravados, e o professor via apenas o estado e a nota da submissão. Os resultados mostrados são os da validação feita no envio; executar o código de novo na IDE da correção não os altera.
+
+A Figura~\ref{fig:correcao-professor} mostra a mesma submissão aberta pelo professor. Na parte superior ficam o enunciado, os casos de teste cadastrados, o painel de nota e comentário e o resultado registrado no envio, com a diferença entre a saída esperada e a obtida (Figura~\ref{fig:correcao-avaliacao}). Abaixo, a IDE abre com o código do aluno e com o destaque da linguagem usada no envio; acima dela fica o botão que restaura o código enviado (Figura~\ref{fig:correcao-ide}).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Correcao/avaliacao.png}
+        \caption{Enunciado, casos de teste, avaliação e resultado registrado.}
+        \label{fig:correcao-avaliacao}
+    \end{subfigure}
+
+    \vspace{0.8em}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Correcao/ide.png}
+        \caption{IDE carregada com o código e a linguagem do envio.}
+        \label{fig:correcao-ide}
+    \end{subfigure}
+    \caption{Correção de uma submissão pelo professor.}
+    \label{fig:correcao-professor}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
 \section{Acessibilidade, Responsividade e Finalização de Fluxos}
 \label{sec:acessibilidade-responsividade}
@@ -430,12 +486,46 @@ O menu da IDE ganhou dois botões ao lado do botão do terminal: Ajuda e Regras 
 
 Regras do compilador abre um diálogo com sete grupos de regras: formato do programa; blocos e finais de instrução; entrada, saída e atualizações; modo tipado; arranjos; literais de arranjo; e modo sem tipo. Os textos e os trechos de código vêm do arquivo \texttt{compiler-rules} de cada idioma e usam sempre as palavras canônicas, como \texttt{int}, \texttt{print} e \texttt{if}, qualquer que seja a linguagem ativa. Um estudante que configurou \texttt{escreva} no lugar de \texttt{print} lê a regra escrita com \texttt{print}. O pacote \texttt{compiler} tem um resumo próprio das regras, em \texttt{language-rules.ts}, que o diálogo não usa; o texto complementar registra essa duplicação.
 
+A Figura~\ref{fig:dialogos-ide} mostra os dois diálogos abertos na IDE de correção, com a Didática em Português aplicada. O exemplo da linguagem usa \texttt{numero\_inteiro}, \texttt{se}, \texttt{inicio} e \texttt{fim} (Figura~\ref{fig:dialogo-ajuda}). O diálogo de regras, aberto na mesma tela, apresenta os trechos com \texttt{int}, \texttt{print}, \texttt{if} e chaves (Figura~\ref{fig:dialogo-regras}).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{IDE/ajuda_exemplo.png}
+        \caption{Exemplo da linguagem ativa.}
+        \label{fig:dialogo-ajuda}
+    \end{subfigure}
+
+    \vspace{0.8em}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{IDE/regras_compilador.png}
+        \caption{Regras do compilador.}
+        \label{fig:dialogo-regras}
+    \end{subfigure}
+    \caption{Diálogos de ajuda da IDE com a linguagem Didática em Português ativa.}
+    \label{fig:dialogos-ide}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
 \subsection{Página Sobre}
 \label{subsec:pagina-sobre}
 
 A página \texttt{/about}, aberta pelo ícone de informação do rodapé, apresenta o projeto como trabalho de conclusão de curso. Ela traz os autores, a área, quatro destaques da plataforma e uma galeria com quatro capturas de tela: a IDE, o painel de \textit{tokens}, a criação de linguagem e o painel do professor. Como as demais telas novas, a página obtém seus textos dos arquivos de idioma.
 
 
+
+A Figura~\ref{fig:pagina-sobre} mostra a parte inicial da página, com o título do projeto, a descrição, os autores, a área e a primeira imagem da galeria.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,height=0.36\textheight,keepaspectratio]{Sobre/pagina_sobre.png}
+    \caption{Página Sobre.}
+    \label{fig:pagina-sobre}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
 \section{Apresentação das Telas da Plataforma}
 \label{sec:telas-plataforma}
@@ -534,7 +624,7 @@ O painel do professor segue a mesma metáfora de organização do painel do alun
 
 \noindent\textbf{Gestão de enunciados, listas e submissões (RF16 a RF20)}
 
-A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas que isolam cada operação em um fluxo independente. As Figuras~\ref{fig:professor-listas-preparo} e \ref{fig:professor-listas-publicacao} documentam as quatro etapas centrais desse processo: a primeira reúne a visualização das listas existentes e a configuração dos parâmetros gerais da lista (título, descrição e prazo); a segunda, a vinculação de exercícios à lista por meio do utilitário de busca e seleção e a publicação da lista para a turma escolhida.
+A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas que isolam cada operação em um fluxo independente. As Figuras~\ref{fig:professor-listas-preparo} e \ref{fig:professor-listas-publicacao} documentam as quatro etapas centrais desse processo: a primeira reúne a visualização das listas existentes e o detalhe de uma lista, com a linguagem obrigatória, os exercícios vinculados e as submissões recebidas; a segunda, a vinculação de exercícios à lista por meio do utilitário de busca e seleção e a publicação da lista para a turma escolhida.
 
 \begin{figure}[htbp]
     \centering
@@ -550,12 +640,12 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/config.png}
-        \caption{Configuração dos parâmetros gerais.}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/detalhe_lista.png}
+        \caption{Detalhe da lista, com a linguagem obrigatória, os exercícios e as submissões.}
         \label{fig:prof-lista-config}
     \end{subfigure}
 
-    \caption{Preparo de uma lista de exercícios pelo professor: listagem das listas existentes e configuração dos parâmetros gerais.}
+    \caption{Preparo de uma lista de exercícios pelo professor: listagem das listas existentes e detalhe de uma lista.}
     \label{fig:professor-listas-preparo}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
@@ -576,7 +666,7 @@ A criação e a manutenção de listas pelo professor ocorrem em telas dedicadas
 
     \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/publish.png}
+        \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/publicar_lista.png}
         \caption{Publicação da lista para a turma.}
         \label{fig:prof-lista-publish}
     \end{subfigure}

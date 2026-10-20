@@ -51,11 +51,18 @@ e [`igor/verificacao/testes-2026-10-19.json`](igor/verificacao/testes-2026-10-19
 ## Pendências
 
 - Figuras: `victor/Figuras/validateBlockDelimiter.png` mostra a versão
-  anterior da função (o texto avisa). As capturas das telas do professor
-  (listas, publicação) são anteriores aos modais refeitos em 04/10, e não há
-  capturas da página Sobre nem da correção na IDE. As capturas dos tutoriais
-  foram adicionadas ao texto de Igor (`igor/Figuras/Tutoriais/`), mas cobrem
-  só o roteiro de criação de linguagem; os roteiros da IDE, da criação de
-  exercícios e dos painéis do professor e do aluno seguem sem captura. O
-  `README.MD` de `main` tem capturas novas em `packages/ide/public/readme/`.
+  anterior da função (o texto avisa). Em 20/10 foram feitas capturas na stack
+  local reconstruída com o código atual (contas do seed e uma lista criada
+  para o registro, travada em Didática em Português) e incluídas no texto de
+  Igor: IDE com terminal, análise léxica, resultado da submissão do aluno,
+  correção pelo professor, diálogos de ajuda e de regras, página Sobre,
+  detalhe da lista e publicação. Seguem antigas a captura de vinculação de
+  exercícios (`Professor/Listas/add_exec.png`), porque o modal atual do
+  professor do seed lista exercícios deixados pelos testes E2E, e as telas de
+  painel, turmas e exercícios. Os tutoriais têm captura só do roteiro de
+  criação de linguagem.
+- Detalhes vistos nas capturas: a área de resolução mostra "Turma:" sem o
+  nome da turma e "Peso da Nota" com "-" para um exercício de peso 5; a
+  correção mostra "Peso:" vazio; o modal "Alterar" da linguagem da lista
+  mostra "Nenhuma linguagem disponível" para o professor do seed.
 - O pacote E2E precisa ser executado de novo com os serviços ativos.
