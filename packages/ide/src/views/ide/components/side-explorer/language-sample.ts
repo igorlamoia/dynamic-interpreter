@@ -891,200 +891,87 @@ export function buildReviewLanguageSample(
   customization: StoredKeywordCustomization,
   intl: LanguageSampleIntl = DEFAULT_LANGUAGE_SAMPLE_INTL,
 ): string {
-  const terminator = getStatementTerminator(customization);
   const isUntyped = customization.modes.typing === "untyped";
   const reservedWords = getReservedSampleWords(customization);
   const usedIdentifiers = new Set<string>();
   const keyword = (original: KeywordName) => getKeyword(customization, original);
   const operator = (key: OperatorName) => getOperator(customization, key);
-  const bool = (key: "true" | "false") => getBooleanLiteral(customization, key);
-  const not = (expression: string) =>
-    buildNotExpression(operator("logical_not"), expression);
-  const declare = (type: KeywordName, name: string, value: string) =>
-    endStatement(
-      `${isUntyped ? keyword("variable") : keyword(type)} ${name} = ${value}`,
-      terminator,
-    );
-  const statement = (value: string) => endStatement(value, terminator);
-  const printLine = (message: string) =>
-    statement(`${keyword("print")}("${message}")`);
-  const sampleIdentifier = (
-    preferred: string,
-    fallback: string,
-    suffix = "Value",
-  ) =>
-    resolveSampleIdentifier(
-      preferred,
-      fallback,
-      suffix,
-      reservedWords,
-      usedIdentifiers,
-    );
-
-  const indexIdentifier = sampleIdentifier(
-    intl.identifiers.index,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.index,
-  );
-  const valueIdentifier = sampleIdentifier(
-    intl.identifiers.value,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.value,
-  );
-  const totalIdentifier = sampleIdentifier(
-    intl.identifiers.total,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.total,
-  );
-  const discountIdentifier = sampleIdentifier(
-    intl.identifiers.discount,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.discount,
-  );
-  const salesIdentifier = sampleIdentifier(
-    intl.identifiers.sales,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.sales,
-  );
-  const statusIdentifier = sampleIdentifier(
-    intl.identifiers.status,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.status,
-  );
-  const orderIndexIdentifier = sampleIdentifier(
-    intl.identifiers.orderIndex,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.orderIndex,
-  );
-  const activeRegistrationIdentifier = sampleIdentifier(
-    intl.identifiers.activeRegistration,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.activeRegistration,
-  );
-  const canBuyIdentifier = sampleIdentifier(
-    intl.identifiers.canBuy,
-    DEFAULT_LANGUAGE_SAMPLE_INTL.identifiers.canBuy,
-  );
-  const taxFunction = sampleIdentifier(
-    "calculateTax",
-    "calculateTax",
-    "Function",
-  );
+  const statement = (value: string) =>
+    endStatement(value, getStatementTerminator(customization));
+  const identifier = (preferred: string) =>
+    resolveSampleIdentifier(preferred, preferred, "Value", reservedWords, usedIdentifiers);
+  const value = identifier(intl.identifiers.value);
+  const total = identifier(intl.identifiers.total);
+  const discount = identifier(intl.identifiers.discount);
+  const sales = identifier(intl.identifiers.sales);
+  const index = identifier(intl.identifiers.index);
+  const status = identifier(intl.identifiers.status);
+  const taxRate = identifier("taxRate");
+  const calculateTax = identifier("calculateTax");
+  const declare = (type: KeywordName, name: string, initial: string) =>
+    statement(`${keyword(isUntyped ? "variable" : type)} ${name} = ${initial}`);
+  const print = (message: string, expression?: string) =>
+    statement(`${keyword("print")}(${JSON.stringify(message)}${expression ? `, ${expression}` : ""})`);
+  const scan = (type: KeywordName, name: string) =>
+    statement(`${keyword("scan")}(${isUntyped ? name : `${keyword(type)}, ${name}`})`);
   const arraySize = customization.modes.array === "dynamic" ? "[]" : "[3]";
-
-  const scanLine = isUntyped
-    ? statement(`${keyword("scan")}(${valueIdentifier})`)
-    : statement(`${keyword("scan")}(${keyword("float")}, ${valueIdentifier})`);
-  const taxParameters = `${valueIdentifier}, ${discountIdentifier}`;
-  const typedTaxParameters = `${keyword(
-    "float",
-  )} ${valueIdentifier}, ${keyword("float")} ${discountIdentifier}`;
-  const mainHeader = isUntyped
-    ? `${keyword("function")} main()`
-    : `${keyword("int")} main()`;
-  const reviewHeader = isUntyped
-    ? `${keyword("function")} ${taxFunction}(${taxParameters})`
-    : `${keyword("float")} ${taxFunction}(${typedTaxParameters})`;
-  const itemPricesDeclaration = isUntyped
-    ? statement(`${salesIdentifier}${arraySize} = [50.0, 0.0, 100.0]`)
-    : statement(
-        `${keyword(
-          "float",
-        )} ${salesIdentifier}${arraySize} = [50.0, 0.0, 100.0]`,
-      );
-  const forInitializer = isUntyped
-    ? `${indexIdentifier} = 0`
-    : `${keyword("int")} ${indexIdentifier} = 0`;
-  const flowSwitchLines =
-    customization.modes.block === "indentation"
-      ? [
-          `${keyword("switch")} (${statusIdentifier}):`,
-          `  ${keyword("case")} "${intl.stringLiterals.vipStatus}":`,
-          `    ${printLine("VIP customer")}`,
-          `    ${statement(keyword("break"))}`,
-          `  ${keyword("default")}:`,
-          `    ${printLine("standard customer")}`,
-        ]
-      : [
-          `${keyword("switch")} (${statusIdentifier}) ${
-            customization.blockDelimiters.open.trim() || "{"
-          }`,
-          `  ${keyword("case")} "${intl.stringLiterals.vipStatus}":`,
-          `    ${printLine("VIP customer")}`,
-          `    ${statement(keyword("break"))}`,
-          `  ${keyword("default")}:`,
-          `    ${printLine("standard customer")}`,
-          customization.blockDelimiters.close.trim() || "}",
-        ];
-
-  const mainLines = buildBlock(customization, mainHeader, [
-    declare("float", valueIdentifier, "0.0"),
-    declare("float", totalIdentifier, "250.0"),
-    declare("float", discountIdentifier, "0.0"),
-    declare("string", statusIdentifier, `"${intl.stringLiterals.vipStatus}"`),
-    declare("bool", activeRegistrationIdentifier, bool("true")),
-    declare("bool", canBuyIdentifier, bool("false")),
-    itemPricesDeclaration,
-    declare("int", orderIndexIdentifier, "0"),
-    printLine("Item price:"),
-    scanLine,
-    ...buildBlock(
-      customization,
-      `${keyword("if")} (${activeRegistrationIdentifier} ${operator(
-        "logical_and",
-      )} ${totalIdentifier} ${operator(
-        "greater_equal",
-      )} 200.0)`,
-      [statement(`${discountIdentifier} = ${totalIdentifier} * 0.10`)],
-    ),
-    ...buildBlock(customization, `${keyword("else")}`, [
-      statement(`${discountIdentifier} = 0.0`),
+  const mainHeader = `${keyword(isUntyped ? "function" : "int")} main()`;
+  const taxHeader = isUntyped
+    ? `${keyword("function")} ${calculateTax}(${value}, ${taxRate})`
+    : `${keyword("float")} ${calculateTax}(${keyword("float")} ${value}, ${keyword("float")} ${taxRate})`;
+  const vip = JSON.stringify(intl.stringLiterals.vipStatus);
+  const switchBody = [
+    `${keyword("case")} ${vip}:`,
+    ...indent([
+      statement(`${discount} = ${total} * 0.10`),
+      statement(keyword("break")),
     ]),
-    statement(
-      `${totalIdentifier} = ${totalIdentifier} + ${taxFunction}(${totalIdentifier}, 0.15) - ${discountIdentifier}`,
-    ),
-    ...buildBlock(
-      customization,
-      `${keyword("for")} (${forInitializer}; ${indexIdentifier} ${operator(
-        "less_equal",
-      )} 2; ${indexIdentifier} = ${indexIdentifier} + 1)`,
-      [
-        ...buildBlock(
-          customization,
-          `${keyword("if")} (${salesIdentifier}[${indexIdentifier}] ${operator(
-            "less_equal",
-          )} 0.0)`,
-          [statement(keyword("continue"))],
-        ),
-        statement(
-          `${totalIdentifier} = ${totalIdentifier} + ${salesIdentifier}[${indexIdentifier}]`,
-        ),
-      ],
-    ),
-    ...buildBlock(
-      customization,
-      `${keyword("while")} (${orderIndexIdentifier} ${operator(
-        "less",
-      )} 3 ${operator("logical_and")} ${not(
-        canBuyIdentifier,
-      )} ${operator("logical_and")} ${totalIdentifier} ${operator("greater")} 0.0)`,
-      [
-        statement(`${orderIndexIdentifier} = ${orderIndexIdentifier} + 1`),
-        ...buildBlock(
-          customization,
-          `${keyword("if")} (${orderIndexIdentifier} ${operator(
-            "equal_equal",
-          )} 2 ${operator(
-            "logical_or",
-          )} ${statusIdentifier} ${operator("not_equal")} "${intl.stringLiterals.vipStatus}")`,
-          [
-            statement(`${canBuyIdentifier} = ${bool("true")}`),
-            statement(keyword("break")),
-          ],
-        ),
-      ],
-    ),
-    ...flowSwitchLines,
+    `${keyword("default")}:`,
+    ...indent([statement(`${discount} = 0.0`)]),
+  ];
+  const mainBody = [
+    declare("float", value, "0.0"),
+    declare("float", total, "0.0"),
+    declare("float", discount, "0.0"),
+    declare("string", status, '""'),
+    statement(`${isUntyped ? "" : `${keyword("float")} `}${sales}${arraySize} = [50.0, 0.0, 100.0]`),
+    ...(isUntyped ? [declare("int", index, "0")] : []),
+    print("Cart extras: 50 and 100; unavailable items are skipped."),
+    ...buildBlock(customization, `${keyword("while")} (${value} ${operator("less_equal")} 0.0)`, [
+      print("Item price (greater than zero):"),
+      scan("float", value),
+    ]),
+    statement(`${total} = ${value}`),
+    ...buildBlock(customization,
+      `${keyword("for")} (${isUntyped ? "" : `${keyword("int")} `}${index} = 0; ${index} ${operator("less_equal")} 2; ${index} = ${index} + 1)`, [
+        ...buildBlock(customization, `${keyword("if")} (${sales}[${index}] ${operator("less_equal")} 0.0)`, [
+          statement(keyword("continue")),
+        ]),
+        statement(`${total} = ${total} + ${sales}[${index}]`),
+      ]),
+    print(`Customer status (${intl.stringLiterals.vipStatus} / ${intl.stringLiterals.standardStatus}):`),
+    scan("string", status),
+    ...buildBlock(customization, `${keyword("if")} (${total} ${operator("greater_equal")} 200.0)`, [
+      ...buildBlock(customization, `${keyword("switch")} (${status})`, switchBody),
+    ]),
+    ...buildBlock(customization, keyword("else"), [
+      print("Spend at least 200 to qualify for the VIP discount."),
+    ]),
+    print("Subtotal: ", total),
+    print("Discount: ", discount),
+    statement(`${total} = ${total} - ${discount}`),
+    statement(`${total} = ${total} + ${calculateTax}(${total}, 0.15)`),
+    print("Total including 15% tax: ", total),
     statement(`${keyword("return")} 0`),
-  ]);
+  ];
 
-  const reviewLines = buildBlock(customization, reviewHeader, [
-    statement(`${keyword("return")} ${valueIdentifier} * ${discountIdentifier}`),
-  ]);
-
-  return [...mainLines, "", ...reviewLines].join("\n");
+  return [
+    ...buildBlock(customization, mainHeader, mainBody),
+    "",
+    ...buildBlock(customization, taxHeader, [
+      statement(`${keyword("return")} ${value} * ${taxRate}`),
+    ]),
+  ].join("\n");
 }
 
 export function getLanguageLexemeExample(
@@ -1109,6 +996,106 @@ export function buildLanguageCategorySample(
       categoryKey,
     ) ?? buildCompleteLanguageSample(customization, intl)
   );
+}
+
+export const LANGUAGE_EXAMPLE_IDS = [
+  "scaffolder",
+  "hello",
+  "loops",
+  "flow",
+  "function",
+  "checkout",
+] as const;
+
+export type LanguageExampleId = (typeof LANGUAGE_EXAMPLE_IDS)[number];
+
+export function buildLanguageExample(
+  example: LanguageExampleId,
+  customization: StoredKeywordCustomization,
+  intl: LanguageSampleIntl = DEFAULT_LANGUAGE_SAMPLE_INTL,
+): string {
+  if (example === "checkout") {
+    return buildReviewLanguageSample(customization, intl);
+  }
+
+  const keyword = (original: KeywordName) => getKeyword(customization, original);
+  const operator = (key: OperatorName) => getOperator(customization, key);
+  const statement = (value: string) =>
+    endStatement(value, getStatementTerminator(customization));
+  const isUntyped = customization.modes.typing === "untyped";
+  const reservedWords = getReservedSampleWords(customization);
+  const usedIdentifiers = new Set<string>();
+  const identifier = (preferred: string, fallback: string) =>
+    resolveSampleIdentifier(
+      preferred,
+      fallback,
+      "Value",
+      reservedWords,
+      usedIdentifiers,
+    );
+  const name = identifier(intl.nameIdentifier, "name");
+  const counter = identifier(intl.counterIdentifier, "count");
+  const greet = identifier("greet", "greet");
+  const declare = (type: KeywordName, variable: string, value: string) =>
+    statement(`${keyword(isUntyped ? "variable" : type)} ${variable} = ${value}`);
+  const print = (value: string) => statement(`${keyword("print")}(${value})`);
+  const mainHeader = `${keyword(isUntyped ? "function" : "int")} main()`;
+  if (example === "scaffolder") {
+    return buildBlock(customization, mainHeader, [
+      "",
+      statement(`${keyword("return")} 0`),
+    ]).join("\n");
+  }
+  let body: string[];
+  let functions: string[] = [];
+
+  switch (example) {
+    case "hello":
+      body = [
+        declare("string", name, '""'),
+        print(JSON.stringify(intl.namePrompt)),
+        statement(`${keyword("scan")}(${isUntyped ? name : `${keyword("string")}, ${name}`})`),
+        print(`${JSON.stringify(intl.helloWorldPrefix)}, ${name}, "!"`),
+      ];
+      break;
+    case "loops":
+      body = [
+        declare("int", counter, "0"),
+        ...buildBlock(customization,
+          `${keyword("for")} (${counter} = 1; ${counter} ${operator("less_equal")} 3; ${counter} = ${counter} + 1)`,
+          [print(counter)]),
+        statement(`${counter} = 1`),
+        ...buildBlock(customization, `${keyword("while")} (${counter} ${operator("less_equal")} 3)`, [
+          print(counter),
+          statement(`${counter} = ${counter} + 1`),
+        ]),
+      ];
+      break;
+    case "flow":
+      body = [
+        declare("int", counter, "1"),
+        ...buildIfElseBlock(customization,
+          `${counter} ${operator("equal_equal")} 1`, [print('"one"')],
+          `${counter} ${operator("equal_equal")} 2`, [print('"two"')],
+          [print('"other"')]),
+        ...buildSwitchBlock(customization, counter,
+          [print('"one"'), statement(keyword("break"))],
+          [print('"other"')]),
+      ];
+      break;
+    case "function":
+      body = [statement(`${greet}()`)];
+      functions = buildBlock(customization, `${keyword(isUntyped ? "function" : "void")} ${greet}()`, [
+        print(JSON.stringify(intl.printMessages.helloWorld)),
+        statement(keyword("return")),
+      ]);
+      break;
+  }
+
+  return [
+    ...buildBlock(customization, mainHeader, [...body, statement(`${keyword("return")} 0`)]),
+    ...(functions.length ? ["", ...functions] : []),
+  ].join("\n");
 }
 
 export function buildHelloWorldSample(

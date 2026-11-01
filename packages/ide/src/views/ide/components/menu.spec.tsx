@@ -39,7 +39,7 @@ describe("Menu", () => {
     document.body.innerHTML = "";
   });
 
-  it("calls onHelp from the Help button", () => {
+  it("opens examples from the Examples button", () => {
     const onHelp = vi.fn();
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -61,7 +61,7 @@ describe("Menu", () => {
 
     act(() => {
       Array.from(container.querySelectorAll("button"))
-        .find((button) => button.textContent === "Help")
+        .find((button) => button.textContent === "Examples")
         ?.dispatchEvent(
           new MouseEvent("click", { bubbles: true, cancelable: true }),
         );

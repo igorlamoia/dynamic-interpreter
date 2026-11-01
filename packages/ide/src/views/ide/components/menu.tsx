@@ -51,7 +51,7 @@ export function Menu({
             className="cursor-pointer hover:text-foreground"
             onClick={onHelp}
           >
-            {t(locale, "ui.help")}
+            {t(locale, "ui.examples")}
           </button>
           <button
             data-tour="ide-rules"

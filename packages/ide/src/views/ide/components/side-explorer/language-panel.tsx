@@ -41,7 +41,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { buildReviewLanguageSample } from "./language-sample";
+import {
+  buildLanguageExample,
+  LANGUAGE_EXAMPLE_IDS,
+  type LanguageExampleId,
+} from "./language-sample";
 import { JAVAMM_LANGUAGE_ID } from "@/utils/compiler/editor/editor-language";
 
 export type LanguageCustomization = StoredKeywordCustomization;
@@ -141,7 +145,7 @@ function LanguageSelection({
 }) {
   return (
     <div className="relative shrink-0 overflow-visible">
-      <div className="group mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
+      <div className="group isolate mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
         <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
           <Image
             src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
@@ -349,13 +353,16 @@ export function LanguageSampleDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const editor = useEditor();
+  const [selectedExample, setSelectedExample] =
+    useState<LanguageExampleId>("scaffolder");
   const sampleCode = useMemo(() => {
     if (!activeLanguage?.customization) return "";
-    return buildReviewLanguageSample(
+    return buildLanguageExample(
+      selectedExample,
       activeLanguage.customization,
       getLanguageSampleIntl(locale),
     );
-  }, [activeLanguage?.customization, locale]);
+  }, [activeLanguage?.customization, locale, selectedExample]);
 
   const handleOverrideSelectedFile = () => {
     if (!sampleCode || !editor.currentFilePath) return;
@@ -367,7 +374,7 @@ export function LanguageSampleDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-4xl">
         <DialogHeader className="items-start">
           <div className="flex items-center gap-2">
             <FileCode2 className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -379,11 +386,32 @@ export function LanguageSampleDialog({
             {t(locale, "ui.language_sample_preview_description")}
           </DialogDescription>
         </DialogHeader>
-        <LanguageSampleCodePreview
-          code={sampleCode}
-          monacoRef={editor.monacoRef}
-          theme={editor.config?.theme}
-        />
+        <div className="flex min-h-0 flex-col sm:flex-row">
+          <nav
+            aria-label={t(locale, "ui.examples")}
+            className="flex shrink-0 gap-2 overflow-x-auto px-5 py-4 sm:w-52 sm:flex-col sm:border-r sm:border-border"
+          >
+            {LANGUAGE_EXAMPLE_IDS.map((example) => (
+              <Button
+                key={example}
+                type="button"
+                variant={selectedExample === example ? "secondary" : "ghost"}
+                aria-pressed={selectedExample === example}
+                onClick={() => setSelectedExample(example)}
+                className="h-auto justify-start whitespace-normal text-left"
+              >
+                {t(locale, `ui.language_example_${example}`)}
+              </Button>
+            ))}
+          </nav>
+          <div className="min-w-0 flex-1">
+            <LanguageSampleCodePreview
+              code={sampleCode}
+              monacoRef={editor.monacoRef}
+              theme={editor.config?.theme}
+            />
+          </div>
+        </div>
         <DialogFooter className="gap-2 sm:justify-end">
           <Button
             type="button"
@@ -392,7 +420,11 @@ export function LanguageSampleDialog({
           >
             {t(locale, "ui.close")}
           </Button>
-          <Button type="button" onClick={handleOverrideSelectedFile}>
+          <Button
+            type="button"
+            disabled={!sampleCode || !editor.currentFilePath}
+            onClick={handleOverrideSelectedFile}
+          >
             {t(locale, "ui.language_sample_override_file")}
           </Button>
         </DialogFooter>
@@ -539,7 +571,7 @@ function LanguageOptionsMenu({
                           type="button"
                           onClick={() => void onSelect(choice.key)}
                           className={cn(
-                            "group relative overflow-hidden rounded-xl border px-3 py-2 text-left transition backdrop-blur-sm",
+                            "group isolate relative overflow-hidden rounded-xl border px-3 py-2 text-left transition backdrop-blur-sm",
                             isSelected
                               ? "dark:border-white/60 bg-white/12 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
                               : "dark:border-white/10 bg-white/5 text-white/90 hover:dark:border-white/20 hover:bg-white/10",

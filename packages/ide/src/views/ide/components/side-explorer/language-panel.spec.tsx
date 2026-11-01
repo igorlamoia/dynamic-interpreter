@@ -167,13 +167,26 @@ describe("CategoryLexemesList", () => {
     clickButtonByLabel(container, "View language sample");
 
     expect(container.querySelector('[role="dialog"]')).not.toBeNull();
-    expect(container.textContent).toContain("Active language sample");
-    expect(container.textContent).toContain('print("Item price:")');
+    expect(container.textContent).toContain("Active language examples");
+    expect(container.querySelector("pre")?.textContent).toBe("int main() {\n\n  return 0;\n}");
+    expect(container.querySelector("nav button")?.textContent).toBe("Scaffolder");
+    clickButtonByText(container, "Hello world (IO)");
+    expect(container.querySelector("pre")?.textContent).toContain('print("What is your name?")');
+    expect(editor.updateSourceCode).not.toHaveBeenCalled();
+    clickButtonByText(container, "Loops (for and while)");
+    expect(container.querySelector("pre")?.textContent).toContain("for (count = 1;");
+    expect(container.querySelector("pre")?.textContent).toContain("while (count <= 3)");
+    clickButtonByText(container, "Flow (switch, if, else)");
+    expect(container.querySelector("pre")?.textContent).toContain("switch (count)");
+    clickButtonByText(container, "Function");
+    expect(container.querySelector("pre")?.textContent).toContain("void greet()");
+    clickButtonByText(container, "Shopping checkout");
+    expect(container.textContent).toContain('print("Item price (greater than zero):")');
     expect(container.textContent).toContain("scan(float, value)");
     expect(container.textContent).toContain("for (int i = 0; i <= 2;");
     expect(container.textContent).toContain("switch (status)");
     expect(container.textContent).toContain(
-      "float calculateTax(float value, float discount)",
+      "float calculateTax(float value, float taxRate)",
     );
     expect(container.textContent).not.toContain("Eren");
     expect(container.textContent).not.toContain("Mikasa");

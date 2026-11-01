@@ -7,6 +7,8 @@ import {
   buildHelloWorldSample,
   buildLanguageCategorySample,
   buildReviewLanguageSample,
+  buildLanguageExample,
+  LANGUAGE_EXAMPLE_IDS,
 } from "./language-sample";
 
 function createCustomization(
@@ -32,6 +34,58 @@ function createCustomization(
     ...overrides,
   };
 }
+
+describe("buildLanguageExample", () => {
+  it("starts with a minimal scaffold", () => {
+    expect(LANGUAGE_EXAMPLE_IDS[0]).toBe("scaffolder");
+    expect(buildLanguageExample("scaffolder", createCustomization())).toBe(
+      "int main() {\n\n  return 0;\n}",
+    );
+  });
+
+  it("keeps IO separate from loops and functions", () => {
+    const sample = buildLanguageExample("hello", createCustomization());
+    expect(sample).toContain("scan(string, name);");
+    expect(sample).not.toContain("while");
+    expect(sample).not.toContain("countToThree");
+  });
+
+  it("adapts every example to untyped indentation syntax", () => {
+    const customization = createCustomization({
+      statementTerminatorLexeme: "",
+      blockDelimiters: { open: "", close: "" },
+      modes: {
+        semicolon: "optional-eol",
+        block: "indentation",
+        typing: "untyped",
+        array: "dynamic",
+      },
+    });
+    for (const example of LANGUAGE_EXAMPLE_IDS) {
+      const sample = buildLanguageExample(example, customization);
+      expect(sample).toContain("function main():");
+      expect(sample).not.toContain("{");
+      expect(sample).not.toMatch(/;$/m);
+    }
+    expect(buildLanguageExample("hello", customization)).toContain("scan(name)");
+    expect(buildLanguageExample("function", customization)).toContain("function greet():");
+  });
+
+  it("uses custom keywords, operators, delimiters and terminators", () => {
+    const customization = createCustomization({
+      operatorWordMap: { less_equal: "atMost" },
+      blockDelimiters: { open: "begin", close: "end" },
+      statementTerminatorLexeme: "done",
+    });
+    customization.mappings = customization.mappings.map((mapping) =>
+      mapping.original === "print" ? { ...mapping, custom: "show" } : mapping,
+    );
+    const sample = buildLanguageExample("loops", customization);
+    expect(sample).toContain("while (count atMost 3) begin");
+    expect(sample).toContain("show(count) done");
+    expect(sample).toContain("\nend");
+  });
+});
 
 describe("buildHelloWorldSample", () => {
   it("generates typed delimited code with required terminators", () => {
@@ -313,41 +367,30 @@ describe("buildCompleteLanguageSample", () => {
 });
 
 describe("buildReviewLanguageSample", () => {
-  it("builds a compact runnable review sample with broad lexeme coverage", () => {
+  it("uses the entered price before discounting and taxing the cart", () => {
     const sample = buildReviewLanguageSample(createCustomization());
 
-    expect(sample).toContain("float value = 0.0;");
-    expect(sample).toContain("float total = 250.0;");
-    expect(sample).toContain("float discount = 0.0;");
-    expect(sample).toContain('string status = "vip";');
-    expect(sample).toContain("bool activeRegistration = true;");
-    expect(sample).toContain("bool canBuy = false;");
-    expect(sample).toContain("float sales[3] = [50.0, 0.0, 100.0];");
-    expect(sample).toContain("int index = 0;");
-    expect(sample).toContain('print("Item price:");');
+    expect(sample).toContain("while (value <= 0.0)");
     expect(sample).toContain("scan(float, value);");
-    expect(sample).toContain("if (activeRegistration && total >= 200.0)");
-    expect(sample).toContain("else {");
-    expect(sample).toContain("discount = 0.0;");
-    expect(sample).toContain("total = total + calculateTax(total, 0.15) - discount;");
+    expect(sample).toContain("total = value;");
+    expect(sample).toContain("float sales[3] = [50.0, 0.0, 100.0];");
     expect(sample).toContain("for (int i = 0; i <= 2; i = i + 1)");
     expect(sample).toContain("if (sales[i] <= 0.0)");
     expect(sample).toContain("continue;");
     expect(sample).toContain("total = total + sales[i];");
-    expect(sample).toContain("while (index < 3 && !canBuy && total > 0.0)");
-    expect(sample).toContain('index == 2 || status != "vip"');
-    expect(sample).toContain("canBuy = true;");
-    expect(sample).toContain("break;");
+    expect(sample).toContain("scan(string, status);");
+    expect(sample).toContain("if (total >= 200.0)");
     expect(sample).toContain("switch (status)");
     expect(sample).toContain('case "vip":');
-    expect(sample).toContain("default:");
-    expect(sample).toContain("float calculateTax(float value, float discount) {");
-    expect(sample).toContain("return value * discount;");
-    expect(sample).toContain("return 0;");
-    expect(sample).not.toContain("#include");
-    expect(sample).not.toContain("*ptr");
-    expect(sample).not.toContain("Eren");
-    expect(sample).not.toContain("Mikasa");
+    expect(sample).toContain("discount = total * 0.10;");
+    expect(sample).toContain("float calculateTax(float value, float taxRate)");
+    expect(sample).toContain("return value * taxRate;");
+    const sumPosition = sample.indexOf("total = total + sales[i];");
+    const discountPosition = sample.indexOf("total = total - discount;");
+    const taxPosition = sample.indexOf("total = total + calculateTax(total, 0.15);");
+    expect(sumPosition).toBeLessThan(discountPosition);
+    expect(discountPosition).toBeLessThan(taxPosition);
+    expect(sample.indexOf('print("Total including 15% tax: ", total);')).toBeGreaterThan(taxPosition);
   });
 
   it("uses untyped and indentation forms when the language requires them", () => {
@@ -367,10 +410,11 @@ describe("buildReviewLanguageSample", () => {
     expect(sample).toContain("function main():");
     expect(sample).toContain("variable value = 0.0");
     expect(sample).toContain("scan(value)");
+    expect(sample).toContain("variable i = 0");
     expect(sample).toContain("for (i = 0; i <= 2; i = i + 1)");
     expect(sample).toContain("switch (status):");
-    expect(sample).toContain("function calculateTax(value, discount):");
+    expect(sample).toContain("function calculateTax(value, taxRate):");
     expect(sample).not.toContain("int main()");
-    expect(sample).not.toContain("float calculateTax(float value, float discount)");
+    expect(sample).not.toContain("float calculateTax");
   });
 });
