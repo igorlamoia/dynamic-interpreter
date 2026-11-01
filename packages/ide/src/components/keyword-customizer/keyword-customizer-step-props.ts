@@ -20,6 +20,8 @@ import {
   buildLineEnding,
   buildOptionalTerminatorSnippet,
   buildRequiredTerminatorSnippet,
+  typedVariableSnippet,
+  untypedVariableSnippet,
 } from "./preview-builder";
 import { t } from "@/i18n";
 import { buildLanguageCategorySample } from "@/views/ide/components/side-explorer/language-sample";
@@ -93,8 +95,8 @@ export function buildTypeStepProps(
 
   return {
     values: {
-      typedSnippet: context.preview.snippet,
-      untypedSnippet: context.preview.snippet,
+      typedSnippet: typedVariableSnippet(context.draftCustomization),
+      untypedSnippet: untypedVariableSnippet(context.draftCustomization),
       typingMode: context.draftCustomization.modes.typing,
       typingBeamKeywords: {
         variable: getKeywordValue(context, "variable"),

@@ -126,11 +126,23 @@ describe("buildStructureStepProps", () => {
 });
 
 describe("buildTypeStepProps", () => {
+  it("keeps separate typed and untyped examples regardless of the selected mode", () => {
+    const context = buildContext();
+    context.draftCustomization.modes.typing = "untyped";
+
+    const props = buildTypeStepProps(context);
+
+    expect(props.values.typedSnippet).toBe(
+      'texto nome = "Kiki";\ninteiro idade = 25;\nreal altura = 1.75;\nlogico estudante = true;',
+    );
+    expect(props.values.untypedSnippet).toBe(
+      'variavel nome = "Kiki";\nvariavel idade = 25;\nvariavel altura = 1.75;\nvariavel estudante = true;',
+    );
+  });
+
   it("fills keyword reference table descriptions with defaults", () => {
     const props = buildTypeStepProps(buildContext());
 
-    expect(props.values.typedSnippet).toBe("live-preview");
-    expect(props.values.untypedSnippet).toBe("live-preview");
     expect(props.values.variableKeywords).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
