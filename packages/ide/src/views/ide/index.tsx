@@ -42,7 +42,9 @@ import {
 } from "./defaultFiles";
 import { useLanguageChoices } from "@/hooks/useLanguageChoices";
 import { LanguageSampleDialog } from "./components/side-explorer/language-panel";
+import { buildLanguageExample } from "./components/side-explorer/language-sample";
 import { CompilerRulesDialog } from "./components/compiler-rules-dialog";
+import { INITIAL_CODE } from "@/utils/compiler/editor/initial-code";
 
 export function IDEProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -110,7 +112,6 @@ export function IDE({
     showLineIssues,
     sourceCode,
     initialCode,
-    storageScope,
     updateSourceCode,
   } = useContext(EditorContext);
   const lexerConfig = buildLexerConfig();
@@ -172,16 +173,52 @@ export function IDE({
     if (!fileSystem.isLoaded) return;
 
     const defaultFiles = createDefaultFiles(getIdeIntl(locale).files);
+    const activeCustomization =
+      languageChoices.activeLanguage?.customization ?? keywordCustomization;
 
     defaultFiles.forEach(({ path, initialCode: fileDefaultCode }) => {
+      if (path === "src/main.?" && !initialCode && !activeCustomization) {
+        return;
+      }
+
       if (!fileSystem.fileExists(path)) {
         let code = fileDefaultCode;
         if (path === "src/main.?") {
           code =
             initialCode ??
-            (storageScope ? "int main() {\n  \n}\n" : fileDefaultCode);
+            (activeCustomization
+              ? buildLanguageExample("scaffolder", activeCustomization)
+              : fileDefaultCode);
         }
         fileSystem.createOrUpdateFile(path, code);
+        if (path === "src/main.?" && !initialCode) {
+          localStorage.setItem(
+            getSourceCodeStorageKey?.(path) ?? `source-code-${path}`,
+            code,
+          );
+        }
+      } else if (
+        path === "src/main.?" &&
+        !initialCode &&
+        activeCustomization &&
+        [
+          "int main() {\n  return 0;\n}\n",
+          INITIAL_CODE,
+        ].includes(fileSystem.getFile(path)?.content ?? "")
+      ) {
+        const scaffold = buildLanguageExample(
+          "scaffolder",
+          activeCustomization,
+        );
+        fileSystem.createOrUpdateFile(
+          path,
+          scaffold,
+        );
+        localStorage.setItem(
+          getSourceCodeStorageKey?.(path) ?? `source-code-${path}`,
+          scaffold,
+        );
+        if (path === activeFile) updateSourceCode(scaffold);
       }
     });
 
@@ -191,7 +228,7 @@ export function IDE({
     )?.initialCode;
     loadFileContent(activeFile, activeDefaultCode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fileSystem.isLoaded]);
+  }, [fileSystem.isLoaded, keywordCustomization, languageChoices.activeLanguage]);
 
   // Keep educational template files translated when the interface locale changes.
   // The main program remains user-owned and is not overwritten.

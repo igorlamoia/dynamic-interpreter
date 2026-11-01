@@ -64,6 +64,12 @@ describe("IDE default files", () => {
     });
   });
 
+  it("starts the user program with a minimal executable scaffold", () => {
+    localeFiles.forEach((files) => {
+      expect(files.main).toBe("int main() {\n  return 0;\n}\n");
+    });
+  });
+
   it("keeps file content locale-specific", () => {
     expect(ptBrIde.files.token).not.toBe(enIde.files.token);
     expect(esIde.files.token).not.toBe(enIde.files.token);

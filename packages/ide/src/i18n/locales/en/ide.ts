@@ -2,12 +2,9 @@ import type { IdeIntl } from "../../types/ide";
 
 const ide: IdeIntl = {
   files: {
-    main: `// MAIN FILE
-//
-// This is the entry point of your program.
-//
-// Use this file to write and test programs
-// with the language you are building.
+    main: `int main() {
+  return 0;
+}
 `,
 
     token: `// TOKENS AND LEXEMES
