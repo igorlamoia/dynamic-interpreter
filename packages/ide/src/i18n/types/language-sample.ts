@@ -71,6 +71,13 @@ export interface LanguageSampleIntl {
     structureThird: string;
     helloWorld: string;
     ok: string;
+    cartExtras: string;
+    itemPricePrompt: string;
+    customerStatusPrompt: string;
+    vipDiscountRequirement: string;
+    subtotal: string;
+    discount: string;
+    totalWithTax: string;
   };
   comments: {
     relationalOperators: string;

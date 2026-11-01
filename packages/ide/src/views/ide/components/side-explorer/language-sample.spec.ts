@@ -69,6 +69,9 @@ describe("buildLanguageExample", () => {
     }
     expect(buildLanguageExample("hello", customization)).toContain("scan(name)");
     expect(buildLanguageExample("function", customization)).toContain("function greet():");
+    expect(buildLanguageExample("flow", createCustomization())).toContain(
+      'print("one\\n");',
+    );
   });
 
   it("uses custom keywords, operators, delimiters and terminators", () => {
@@ -227,13 +230,13 @@ describe("buildCompleteLanguageSample", () => {
     const sample = buildCompleteLanguageSample(createCustomization());
 
     expect(sample).toContain('if (name == "Eren Yeager")');
-    expect(sample).toContain('print("Eren is the anti-hero");');
+    expect(sample).toContain('print("Eren is the anti-hero\\n");');
     expect(sample).toContain('print("Press f to pay respect?");');
     expect(sample).toContain('else if (name == "Mikasa Ackerman")');
     expect(sample).toContain('print("Mikasa is a hero");');
     expect(sample).toContain('print("Lelouch vi Britannia has a plan");');
     expect(sample).toContain('print("Roy Mustang is a hero");');
-    expect(sample).toContain('print("Maes Hughes always dies");');
+    expect(sample).toContain('print("Maes Hughes always dies\\n");');
     expect(sample).toContain("i < 3");
     expect(sample).toContain("score <= 3");
     expect(sample).toContain("height >= 1.8");
@@ -264,7 +267,7 @@ describe("buildCompleteLanguageSample", () => {
     const customization = createCustomization();
 
     expect(buildLanguageCategorySample("entrada", customization)).toContain(
-      'print("Eren and Mikasa");',
+      'print("Eren and Mikasa\\n");',
     );
     expect(buildLanguageCategorySample("tipos", customization)).toContain(
       [
@@ -279,15 +282,10 @@ describe("buildCompleteLanguageSample", () => {
     expect(buildLanguageCategorySample("tipos", customization)).not.toContain(
       "\n\n",
     );
-    expect(buildLanguageCategorySample("estrutura", customization)).toContain(
-      [
-        "void main() {",
-        '  print("You become responsible forever for what you have tamed.");',
-        '  print("Nothing that happens is forgotten, even if you do not remember.");',
-        '  print("People understand each other when they feel the same pain");',
-        "}",
-      ].join("\n"),
-    );
+    const structureSample = buildLanguageCategorySample("estrutura", customization);
+    expect(structureSample).toContain("void main() {");
+    expect(structureSample).toContain("You become responsible forever for what you have tamed.");
+    expect(structureSample).toContain("Nothing that happens is forgotten, even if you do not remember.");
     const flowSample = buildLanguageCategorySample("fluxo", customization);
     expect(flowSample).toContain('if (balance >= 100) {');
     expect(flowSample).toContain('status = "vip";');
@@ -352,10 +350,10 @@ describe("buildCompleteLanguageSample", () => {
 
     expect(sample).toContain("void main()");
     expect(sample).toContain(
-      'print("You become responsible forever for what you have tamed.")',
+      'print("You become responsible forever for what you have tamed.\\n")',
     );
     expect(sample).toContain(
-      'print("Nothing that happens is forgotten, even if you do not remember.")',
+      'print("Nothing that happens is forgotten, even if you do not remember.\\n")',
     );
     expect(sample).toContain(
       'print("People understand each other when they feel the same pain")',
@@ -367,6 +365,20 @@ describe("buildCompleteLanguageSample", () => {
 });
 
 describe("buildReviewLanguageSample", () => {
+  it("translates checkout messages", () => {
+    const sample = buildReviewLanguageSample(
+      createCustomization(),
+      ptBrLanguageSample,
+    );
+
+    expect(sample).toContain("Itens adicionais do carrinho");
+    expect(sample).toContain("Preco do item (maior que zero):");
+    expect(sample).toContain("Status do cliente (vip / padrao):");
+    expect(sample).toContain('print("Desconto: ", desconto, "\\n");');
+    expect(sample).toContain("Total com 15% de imposto");
+    expect(sample).not.toContain("Customer status");
+  });
+
   it("uses the entered price before discounting and taxing the cart", () => {
     const sample = buildReviewLanguageSample(createCustomization());
 
@@ -383,6 +395,12 @@ describe("buildReviewLanguageSample", () => {
     expect(sample).toContain("switch (status)");
     expect(sample).toContain('case "vip":');
     expect(sample).toContain("discount = total * 0.10;");
+    expect(sample).toContain('print("Subtotal: ", total, "\\n");');
+    expect(sample).toContain('print("Discount: ", discount, "\\n");');
+    expect(sample).toContain(
+      'print("Cart extras: 50 and 100; unavailable items are skipped.", "\\n");',
+    );
+    expect(sample).not.toContain('print("Subtotal: \\\\n", total);');
     expect(sample).toContain("float calculateTax(float value, float taxRate)");
     expect(sample).toContain("return value * taxRate;");
     const sumPosition = sample.indexOf("total = total + sales[i];");
@@ -390,7 +408,9 @@ describe("buildReviewLanguageSample", () => {
     const taxPosition = sample.indexOf("total = total + calculateTax(total, 0.15);");
     expect(sumPosition).toBeLessThan(discountPosition);
     expect(discountPosition).toBeLessThan(taxPosition);
-    expect(sample.indexOf('print("Total including 15% tax: ", total);')).toBeGreaterThan(taxPosition);
+    expect(
+      sample.indexOf('print("Total including 15% tax: ", total, "\\n");'),
+    ).toBeGreaterThan(taxPosition);
   });
 
   it("uses untyped and indentation forms when the language requires them", () => {

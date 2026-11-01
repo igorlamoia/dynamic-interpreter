@@ -73,6 +73,13 @@ const languageSample: LanguageSampleIntl = {
     structureThird: "People understand each other when they feel the same pain",
     helloWorld: "hello world",
     ok: "ok",
+    cartExtras: "Cart extras: 50 and 100; unavailable items are skipped.",
+    itemPricePrompt: "Item price (greater than zero):",
+    customerStatusPrompt: "Customer status",
+    vipDiscountRequirement: "Spend at least 200 to qualify for the VIP discount.",
+    subtotal: "Subtotal: ",
+    discount: "Discount: ",
+    totalWithTax: "Total including 15% tax: ",
   },
   comments: {
     relationalOperators: "Relational operators",

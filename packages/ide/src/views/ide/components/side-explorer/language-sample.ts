@@ -80,6 +80,13 @@ export const DEFAULT_LANGUAGE_SAMPLE_INTL: LanguageSampleIntl = {
     structureThird: "People understand each other when they feel the same pain",
     helloWorld: "hello world",
     ok: "ok",
+    cartExtras: "Cart extras: 50 and 100; unavailable items are skipped.",
+    itemPricePrompt: "Item price (greater than zero):",
+    customerStatusPrompt: "Customer status",
+    vipDiscountRequirement: "Spend at least 200 to qualify for the VIP discount.",
+    subtotal: "Subtotal: ",
+    discount: "Discount: ",
+    totalWithTax: "Total including 15% tax: ",
   },
   comments: {
     relationalOperators: "Relational operators",
@@ -432,8 +439,11 @@ function buildLanguageExampleModel(
     customization.statementTerminatorLexeme.trim() || ";";
   const declare = (type: KeywordName, name: string, value: string) =>
     endStatement(`${keyword(type)} ${name} = ${value}`, terminator);
-  const printLine = (message: string) =>
-    endStatement(`${keyword("print")}("${message}")`, terminator);
+  const printLine = (message: string, appendLineBreak = false) =>
+    endStatement(
+      `${keyword("print")}("${message}${appendLineBreak ? "\\n" : ""}")`,
+      terminator,
+    );
   const sampleIdentifier = (key: keyof LanguageSampleIntl["identifiers"]) =>
     resolveSampleIdentifier(
       sampleIds[key],
@@ -499,7 +509,7 @@ function buildLanguageExampleModel(
     customization,
     firstCondition,
     [
-      printLine(samplePrints.antiHero),
+      printLine(samplePrints.antiHero, true),
       printLine(samplePrints.respect),
     ],
     elseIfCondition,
@@ -556,7 +566,7 @@ function buildLanguageExampleModel(
       endStatement(keyword("break"), terminator),
     ],
     [
-      printLine(samplePrints.switchDefault),
+      printLine(samplePrints.switchDefault, true),
       printLine(samplePrints.respect),
     ],
   );
@@ -768,7 +778,7 @@ function buildLanguageExampleModel(
   categoryExamples.set(
     "entrada",
     [
-      printLine(samplePrints.entryFirst),
+      printLine(samplePrints.entryFirst, true),
       scanLine,
       printLine(samplePrints.entrySecond),
     ].join("\n"),
@@ -780,8 +790,8 @@ function buildLanguageExampleModel(
       customization,
       isUntyped ? `${keyword("function")} main()` : `${keyword("void")} main()`,
       [
-        printLine(samplePrints.structureFirst),
-        printLine(samplePrints.structureSecond),
+        printLine(samplePrints.structureFirst, true),
+        printLine(samplePrints.structureSecond, true),
         printLine(samplePrints.structureThird),
       ],
     ).join("\n"),
@@ -910,8 +920,16 @@ export function buildReviewLanguageSample(
   const calculateTax = identifier("calculateTax");
   const declare = (type: KeywordName, name: string, initial: string) =>
     statement(`${keyword(isUntyped ? "variable" : type)} ${name} = ${initial}`);
-  const print = (message: string, expression?: string) =>
-    statement(`${keyword("print")}(${JSON.stringify(message)}${expression ? `, ${expression}` : ""})`);
+  const print = (
+    message: string,
+    expression?: string,
+    appendLineBreak = false,
+  ) =>
+    statement(
+      `${keyword("print")}(${JSON.stringify(message)}${
+        expression ? `, ${expression}` : ""
+      }${appendLineBreak ? `, ${JSON.stringify("\n")}` : ""})`,
+    );
   const scan = (type: KeywordName, name: string) =>
     statement(`${keyword("scan")}(${isUntyped ? name : `${keyword(type)}, ${name}`})`);
   const arraySize = customization.modes.array === "dynamic" ? "[]" : "[3]";
@@ -936,9 +954,9 @@ export function buildReviewLanguageSample(
     declare("string", status, '""'),
     statement(`${isUntyped ? "" : `${keyword("float")} `}${sales}${arraySize} = [50.0, 0.0, 100.0]`),
     ...(isUntyped ? [declare("int", index, "0")] : []),
-    print("Cart extras: 50 and 100; unavailable items are skipped."),
+    print(intl.printMessages.cartExtras, undefined, true),
     ...buildBlock(customization, `${keyword("while")} (${value} ${operator("less_equal")} 0.0)`, [
-      print("Item price (greater than zero):"),
+      print(intl.printMessages.itemPricePrompt),
       scan("float", value),
     ]),
     statement(`${total} = ${value}`),
@@ -949,19 +967,19 @@ export function buildReviewLanguageSample(
         ]),
         statement(`${total} = ${total} + ${sales}[${index}]`),
       ]),
-    print(`Customer status (${intl.stringLiterals.vipStatus} / ${intl.stringLiterals.standardStatus}):`),
+    print(`${intl.printMessages.customerStatusPrompt} (${intl.stringLiterals.vipStatus} / ${intl.stringLiterals.standardStatus}):`),
     scan("string", status),
     ...buildBlock(customization, `${keyword("if")} (${total} ${operator("greater_equal")} 200.0)`, [
       ...buildBlock(customization, `${keyword("switch")} (${status})`, switchBody),
     ]),
     ...buildBlock(customization, keyword("else"), [
-      print("Spend at least 200 to qualify for the VIP discount."),
+      print(intl.printMessages.vipDiscountRequirement, undefined, true),
     ]),
-    print("Subtotal: ", total),
-    print("Discount: ", discount),
+    print(intl.printMessages.subtotal, total, true),
+    print(intl.printMessages.discount, discount, true),
     statement(`${total} = ${total} - ${discount}`),
     statement(`${total} = ${total} + ${calculateTax}(${total}, 0.15)`),
-    print("Total including 15% tax: ", total),
+    print(intl.printMessages.totalWithTax, total, true),
     statement(`${keyword("return")} 0`),
   ];
 
@@ -1039,6 +1057,7 @@ export function buildLanguageExample(
   const declare = (type: KeywordName, variable: string, value: string) =>
     statement(`${keyword(isUntyped ? "variable" : type)} ${variable} = ${value}`);
   const print = (value: string) => statement(`${keyword("print")}(${value})`);
+  const lineBreak = String.raw`\n`;
   const mainHeader = `${keyword(isUntyped ? "function" : "int")} main()`;
   if (example === "scaffolder") {
     return buildBlock(customization, mainHeader, [
@@ -1075,12 +1094,12 @@ export function buildLanguageExample(
       body = [
         declare("int", counter, "1"),
         ...buildIfElseBlock(customization,
-          `${counter} ${operator("equal_equal")} 1`, [print('"one"')],
-          `${counter} ${operator("equal_equal")} 2`, [print('"two"')],
-          [print('"other"')]),
+          `${counter} ${operator("equal_equal")} 1`, [print(`"one${lineBreak}"`)],
+          `${counter} ${operator("equal_equal")} 2`, [print(`"two${lineBreak}"`)],
+          [print(`"other${lineBreak}"`)]),
         ...buildSwitchBlock(customization, counter,
-          [print('"one"'), statement(keyword("break"))],
-          [print('"other"')]),
+          [print(`"one${lineBreak}"`), statement(keyword("break"))],
+          [print(`"other${lineBreak}"`)]),
       ];
       break;
     case "function":
