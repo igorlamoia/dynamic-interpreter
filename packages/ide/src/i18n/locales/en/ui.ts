@@ -25,11 +25,11 @@ const ui = {
   about_tcc_badge: "About the capstone",
   about_tcc_title: "An artifact for experimenting with didactic languages",
   about_tcc_paragraph_1:
-    "The term dynamic refers to applying, in each analysis, the vocabulary and language variants chosen by the user from the implemented possibilities. This lets the same execution base support different ways of presenting introductory programming concepts.",
+    "Its main distinguishing feature is customizable programming language syntax, adapting commands, keywords, and structures to students' needs. This allows students to focus on developing logical and algorithmic thinking without the complexity of traditional syntax rules becoming an initial barrier.",
   about_tcc_paragraph_2:
-    "The development combines literature review, requirements specification, architecture modeling, incremental implementation, and automated testing. The interface focuses on the user experience, the customization assistant, and educational workflows used by teachers and students.",
+    "The platform also aims to offer real-time code execution and more educational error messages, providing an accessible and intuitive learning experience. The project is primarily intended for beginners, teachers, and educational institutions, with the aim of improving understanding of fundamental concepts, increasing engagement, and helping students stay in technology courses.",
   about_tcc_paragraph_3:
-    "The presented results describe the artifact and the checks performed. By themselves, they do not demonstrate reduced cognitive load, improved learning, or full accessibility compliance. Applying a protocol with students and addressing the identified limitations are future work.",
+    "Our value proposition: fewer failures and dropouts in programming — an IDE that adapts to the student. Our ultimate goal is not to create another IDE, but to reduce failure rates and keep talent in technology.",
   about_gallery_badge: "Platform screenshots",
   about_gallery_title: "From code analysis to activity management",
   about_gallery_ide_alt: "Main screen of the web IDE",

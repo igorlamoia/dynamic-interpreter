@@ -25,11 +25,11 @@ const ui = {
   about_tcc_badge: "Sobre o TCC",
   about_tcc_title: "Um artefato para experimentar linguagens didáticas",
   about_tcc_paragraph_1:
-    "O qualificativo dinâmico se refere à aplicação, em cada análise, do vocabulário e das variantes de linguagem escolhidas pelo usuário entre as possibilidades implementadas. Assim, a mesma base de execução pode apoiar diferentes formas de apresentar conceitos iniciais de programação.",
+    "Seu principal diferencial é permitir a personalização da sintaxe da linguagem de programação, adaptando comandos, palavras-chave e estruturas às necessidades dos alunos. Dessa forma, os estudantes podem concentrar seus esforços no desenvolvimento do raciocínio lógico e algorítmico, sem que a complexidade das regras sintáticas tradicionais se torne uma barreira inicial.",
   about_tcc_paragraph_2:
-    "O desenvolvimento combina revisão bibliográfica, especificação de requisitos, modelagem da arquitetura, implementação incremental e testes automatizados. A interface se concentra na experiência do usuário, no assistente de personalização e nos fluxos educacionais usados por professores e estudantes.",
+    "A plataforma também propõe execução de código em tempo real e mensagens de erro mais didáticas, proporcionando uma experiência de aprendizado acessível e intuitiva. O projeto é direcionado principalmente a estudantes iniciantes, professores e instituições de ensino, buscando melhorar a compreensão dos conceitos fundamentais, aumentar o engajamento e favorecer a permanência dos alunos nos cursos de tecnologia.",
   about_tcc_paragraph_3:
-    "Os resultados apresentados descrevem o artefato e as verificações realizadas. Eles não demonstram, por si só, redução de carga cognitiva, melhoria de aprendizagem ou conformidade integral de acessibilidade. A aplicação de um protocolo com estudantes e a correção das limitações identificadas são encaminhamentos futuros.",
+    "Nossa proposta de valor: menos reprovação e desistência em programação — uma IDE que se adapta ao aluno. Nosso objetivo final não é criar mais uma IDE, é reduzir a reprovação e manter talentos na tecnologia.",
   about_gallery_badge: "Capturas da plataforma",
   about_gallery_title: "Da análise do código à gestão das atividades",
   about_gallery_ide_alt: "Tela principal da IDE web",

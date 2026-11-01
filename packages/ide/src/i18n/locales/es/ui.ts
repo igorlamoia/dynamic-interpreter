@@ -25,11 +25,11 @@ const ui = {
   about_tcc_badge: "Sobre el TCC",
   about_tcc_title: "Un artefacto para experimentar con lenguajes didácticos",
   about_tcc_paragraph_1:
-    "El calificativo dinámico se refiere a la aplicación, en cada análisis, del vocabulario y de las variantes de lenguaje elegidas por el usuario entre las posibilidades implementadas. Así, la misma base de ejecución puede apoyar distintas formas de presentar conceptos iniciales de programación.",
+    "Su principal característica es permitir la personalización de la sintaxis del lenguaje de programación, adaptando comandos, palabras clave y estructuras a las necesidades de los alumnos. Así, los estudiantes pueden concentrar sus esfuerzos en desarrollar el razonamiento lógico y algorítmico, sin que la complejidad de las reglas sintácticas tradicionales se convierta en una barrera inicial.",
   about_tcc_paragraph_2:
-    "El desarrollo combina revisión bibliográfica, especificación de requisitos, modelado de la arquitectura, implementación incremental y pruebas automatizadas. La interfaz se concentra en la experiencia del usuario, el asistente de personalización y los flujos educativos usados por docentes y estudiantes.",
+    "La plataforma también propone la ejecución de código en tiempo real y mensajes de error más didácticos, ofreciendo una experiencia de aprendizaje accesible e intuitiva. El proyecto está dirigido principalmente a estudiantes principiantes, docentes e instituciones educativas, con el objetivo de mejorar la comprensión de los conceptos fundamentales, aumentar la participación y favorecer la permanencia de los alumnos en los cursos de tecnología.",
   about_tcc_paragraph_3:
-    "Los resultados presentados describen el artefacto y las verificaciones realizadas. Por sí solos, no demuestran reducción de carga cognitiva, mejora del aprendizaje ni conformidad integral de accesibilidad. La aplicación de un protocolo con estudiantes y la corrección de las limitaciones identificadas son trabajos futuros.",
+    "Nuestra propuesta de valor: menos suspensos y abandono en programación — un IDE que se adapta al alumno. Nuestro objetivo final no es crear otro IDE, sino reducir los suspensos y retener el talento en la tecnología.",
   about_gallery_badge: "Capturas de la plataforma",
   about_gallery_title: "Del análisis del código a la gestión de actividades",
   about_gallery_ide_alt: "Pantalla principal de la IDE web",
