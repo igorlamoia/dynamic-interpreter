@@ -1,0 +1,124 @@
+{
+  "projectId": "1b3c2cda-7016-4c31-8f92-ab76e5186e2e",
+  "pkg": "@ts-compilator-for-java/ide",
+  "globalName": "DynamicInterpreter",
+  "shape": "package",
+  "buildCmd": "node .design-sync/build.mjs",
+  "entry": ".design-sync/.cache/pkg/index.ts",
+  "srcDir": "../../../src/components/ui",
+  "tsconfig": "../../tsconfig.json",
+  "cssEntry": "ide.css",
+  "provider": {
+    "component": "ThemeProvider"
+  },
+  "docsDir": "../../docs",
+  "guidelinesGlob": [
+    "../../../../../DESIGN.md"
+  ],
+  "componentSrcMap": {
+    "AccordionContent": null,
+    "AccordionItem": null,
+    "AccordionTrigger": null,
+    "AlertDialogAction": null,
+    "AlertDialogCancel": null,
+    "AlertDialogContent": null,
+    "AlertDialogDescription": null,
+    "AlertDialogFooter": null,
+    "AlertDialogHeader": null,
+    "AlertDialogOverlay": null,
+    "AlertDialogPortal": null,
+    "AlertDialogTitle": null,
+    "AlertDialogTrigger": null,
+    "AnimatedListItem": null,
+    "AnimatedSpan": null,
+    "AvatarFallback": null,
+    "ContextMenuCheckboxItem": null,
+    "ContextMenuContent": null,
+    "ContextMenuGroup": null,
+    "ContextMenuItem": null,
+    "ContextMenuLabel": null,
+    "ContextMenuPortal": null,
+    "ContextMenuRadioGroup": null,
+    "ContextMenuRadioItem": null,
+    "ContextMenuSeparator": null,
+    "ContextMenuShortcut": null,
+    "ContextMenuSub": null,
+    "ContextMenuSubContent": null,
+    "ContextMenuSubTrigger": null,
+    "ContextMenuTrigger": null,
+    "DialogClose": null,
+    "DialogContent": null,
+    "DialogDescription": null,
+    "DialogFooter": null,
+    "DialogHeader": null,
+    "DialogOverlay": null,
+    "DialogPortal": null,
+    "DialogTitle": null,
+    "DialogTrigger": null,
+    "DockIcon": null,
+    "DropdownMenuContent": null,
+    "DropdownMenuItem": null,
+    "DropdownMenuPortal": null,
+    "DropdownMenuSeparator": null,
+    "DropdownMenuTrigger": null,
+    "FormControl": null,
+    "FormDescription": null,
+    "FormField": null,
+    "FormItem": null,
+    "FormLabel": null,
+    "FormMessage": null,
+    "InputActionButton": null,
+    "ScrollStackItem": null,
+    "TooltipContent": null,
+    "TooltipProvider": null,
+    "TooltipTrigger": null,
+    "ThemeProvider": null,
+    "TerminalTypingAnimation": null
+  },
+  "dtsPropsFor": {
+    "Button": "variant?: \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | \"link\";\n  size?: \"default\" | \"sm\" | \"lg\" | \"icon\";\n  /** Render the child element (e.g. an <a>) with button styling instead of a <button>. */\n  asChild?: boolean;\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;\n  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;\n  className?: string;\n  children?: React.ReactNode;",
+    "Input": "type?: string;\n  value?: string | number;\n  defaultValue?: string | number;\n  placeholder?: string;\n  disabled?: boolean;\n  name?: string;\n  id?: string;\n  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;\n  className?: string;\n  ref?: React.Ref<HTMLInputElement>;",
+    "Textarea": "value?: string;\n  defaultValue?: string;\n  placeholder?: string;\n  rows?: number;\n  disabled?: boolean;\n  name?: string;\n  id?: string;\n  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;\n  className?: string;\n  ref?: React.Ref<HTMLTextAreaElement>;",
+    "Pointer": "/** Cursor shape to force; omit to follow the hovered element's CSS cursor. */\n  variant?: \"auto\" | \"default\" | \"pointer\" | \"text\" | \"grab\" | \"grabbing\" | \"not-allowed\" | \"move\" | \"col-resize\";\n  className?: string;\n  style?: React.CSSProperties;\n  /** Optional custom cursor graphic; defaults to the built-in arrow. */\n  children?: React.ReactNode;",
+    "HyperText": "/** The text content to be animated */\n  children: string;\n  className?: string;\n  /** Duration of the animation in milliseconds */\n  duration?: number;\n  /** Delay before animation starts in milliseconds */\n  delay?: number;\n  /** Element to render as - defaults to div */\n  as?: \"div\" | \"span\" | \"p\" | \"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"li\" | \"a\" | \"button\";\n  /** Whether to start animation when element comes into view */\n  startOnView?: boolean;\n  /** Whether to trigger animation on hover */\n  animateOnHover?: boolean;\n  /** Custom character set for scramble effect. Defaults to uppercase alphabet */\n  characterSet?: readonly string[];",
+    "TypingAnimation": "/** Single string to type. Use `words` instead to cycle several. */\n  children?: string;\n  words?: string[];\n  className?: string;\n  duration?: number;\n  typeSpeed?: number;\n  deleteSpeed?: number;\n  delay?: number;\n  pauseDelay?: number;\n  loop?: boolean;\n  as?: React.ElementType;\n  startOnView?: boolean;\n  showCursor?: boolean;\n  blinkCursor?: boolean;\n  cursorStyle?: \"line\" | \"block\" | \"underscore\";"
+  },
+  "overrides": {
+    "Dialog": {
+      "cardMode": "single",
+      "viewport": "900x640"
+    },
+    "AlertDialog": {
+      "cardMode": "single",
+      "viewport": "900x520"
+    },
+    "DropdownMenu": {
+      "cardMode": "single",
+      "viewport": "900x520"
+    },
+    "ContextMenu": {
+      "cardMode": "single",
+      "viewport": "900x520"
+    },
+    "Tooltip": {
+      "cardMode": "single",
+      "viewport": "900x520"
+    },
+    "Pointer": {
+      "cardMode": "single"
+    },
+    "Pagination": {
+      "cardMode": "column"
+    },
+    "Separator": {
+      "cardMode": "column"
+    },
+    "Marquee": {
+      "cardMode": "column"
+    },
+    "NumberTicker": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}
