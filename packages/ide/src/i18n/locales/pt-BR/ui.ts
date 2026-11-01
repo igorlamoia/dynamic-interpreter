@@ -152,7 +152,7 @@ const ui = {
   terminal_input: "Entrada do terminal",
   terminal_welcome: "Bem-vindo ao Terminal Lamoia!",
   terminal_help:
-    "Comandos disponiveis: ping, clear, cls, help, exit, 'ctrl+j' para alternar o terminal",
+    "Comandos disponiveis: ping, clear, cls, help, exit. Executar codigo: roda a roda, roda pra mim, bora, roda, gg. 'ctrl+j' para alternar o terminal",
   terminal_exit: "Saindo do terminal...",
   terminal_unknown_command: "Comando nao reconhecido: {command}",
   terminal_start_execution: "Iniciando execucao do codigo...",

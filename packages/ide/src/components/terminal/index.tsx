@@ -27,6 +27,7 @@ export interface DebugTerminalSession {
 interface ITerminalViewProps {
   isTerminalOpen: boolean;
   toggleTerminal: () => void;
+  onRun?: () => void | Promise<void>;
   intermediateCode: Instruction[];
   debugSession?: DebugTerminalSession;
   locale?: string;
@@ -44,6 +45,7 @@ export function createLine(
 export default function TerminalView({
   isTerminalOpen,
   toggleTerminal,
+  onRun,
   intermediateCode,
   debugSession,
   locale,
@@ -130,6 +132,7 @@ export default function TerminalView({
               setLines={setLines}
               toggleTerminal={toggleTerminal}
               debugSession={debugSession}
+              onRun={onRun}
               locale={locale}
             />
           </motion.div>

@@ -21,21 +21,24 @@ export function HomeHero() {
         <div className="flex flex-col gap-1 md:items-center text-center md:text-start">
           <h1 className="text-4xl font-bold">{t(locale, "ui.hero_title")}</h1>
         </div>
-        <div className="flex gap-2 mt-1 items-end text-lg dark:text-gray-400 text-gray-500 text-center sm:text-start ">
+        <div className="flex gap-2 mt-1 flex-col sm:flex-row sm:items-end text-lg dark:text-gray-400 text-gray-500 text-center sm:text-start">
           <AnimatedShinyTextDemo onClick={openLanguageCreator}>
             {t(locale, "ui.hero_create")}
           </AnimatedShinyTextDemo>{" "}
-          {t(locale, "ui.hero_description")}
-          <code className="dark:text-gray-400">
-            main.
-            <TypingAnimation
-              words={["?", "java", "c", "js", "py"]}
-              typeSpeed={100}
-              deleteSpeed={100}
-              pauseDelay={2000}
-              loop
-            />
-          </code>
+          <div>
+            {t(locale, "ui.hero_description")}
+            <code className="dark:text-gray-400">
+              {" "}
+              main.
+              <TypingAnimation
+                words={["?", "java", "c", "js", "py"]}
+                typeSpeed={100}
+                deleteSpeed={100}
+                pauseDelay={2000}
+                loop
+              />
+            </code>
+          </div>
         </div>
       </div>
     </div>

@@ -33,6 +33,46 @@ import { RuntimeErrorProvider } from "@/contexts/RuntimeErrorContext";
   .IS_REACT_ACT_ENVIRONMENT = true;
 
 describe("Body", () => {
+  it.each(["roda a roda", "roda pra mim", "bora", "roda", "gg", "  RODA PRA MIM  "])(
+    "requests compilation and execution for %s on every submission",
+    async (command) => {
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      const root = createRoot(container);
+      const onRun = vi.fn();
+
+      await act(async () => {
+        root.render(
+          <RuntimeErrorProvider>
+            <Body
+              lines={[]}
+              currentInput={command}
+              inputRef={createRef<HTMLInputElement>()}
+              setCurrentInput={vi.fn()}
+              intermediateCode={[]}
+              setIsExecuting={vi.fn()}
+              setLines={vi.fn()}
+              toggleTerminal={vi.fn()}
+              onRun={onRun}
+            />
+          </RuntimeErrorProvider>,
+        );
+      });
+
+      for (let submission = 0; submission < 2; submission += 1) {
+        await act(async () => {
+          container.querySelector("input")?.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+          );
+        });
+      }
+
+      expect(onRun).toHaveBeenCalledTimes(2);
+      expect(executeMock).not.toHaveBeenCalled();
+      await act(async () => root.unmount());
+    },
+  );
+
   afterEach(() => {
     executeMock.mockClear();
     document.body.innerHTML = "";
@@ -108,6 +148,7 @@ describe("Body", () => {
     document.body.appendChild(container);
     const root = createRoot(container);
     const provideInput = vi.fn();
+    const onRun = vi.fn();
     const continueExecution = vi.fn(async () => null);
     const debugSession: DebugTerminalSession = {
       output: [],
@@ -126,7 +167,7 @@ describe("Body", () => {
 
     function Harness() {
       const [lines, setLines] = useState<TerminalLine[]>([]);
-      const [currentInput, setCurrentInput] = useState("42");
+      const [currentInput, setCurrentInput] = useState("roda");
 
       return (
         <RuntimeErrorProvider>
@@ -140,6 +181,7 @@ describe("Body", () => {
             setLines={setLines}
             toggleTerminal={vi.fn()}
             debugSession={debugSession}
+            onRun={onRun}
           />
         </RuntimeErrorProvider>
       );
@@ -158,9 +200,10 @@ describe("Body", () => {
       );
     });
 
-    expect(provideInput).toHaveBeenCalledWith("42");
+    expect(provideInput).toHaveBeenCalledWith("roda");
+    expect(onRun).not.toHaveBeenCalled();
     expect(continueExecution).toHaveBeenCalledTimes(1);
-    expect(container.textContent).toContain("$ 42");
+    expect(container.textContent).toContain("$ roda");
 
     await act(async () => {
       root.unmount();

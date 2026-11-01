@@ -21,6 +21,7 @@ interface BodyProps {
   setIsExecuting: React.Dispatch<React.SetStateAction<boolean>>;
   setLines: React.Dispatch<React.SetStateAction<TerminalLine[]>>;
   toggleTerminal: () => void;
+  onRun?: () => void | Promise<void>;
   debugSession?: DebugTerminalSession;
   locale?: string;
 }
@@ -51,6 +52,7 @@ export function Body(props: BodyProps) {
     setIsExecuting,
     setLines,
     toggleTerminal,
+    onRun,
     debugSession,
     locale,
   } = props;
@@ -89,6 +91,13 @@ export function Body(props: BodyProps) {
       addLine(`$ ${command}`, "input");
 
       switch (trimmed) {
+        case "roda a roda":
+        case "roda pra mim":
+        case "bora":
+        case "roda":
+        case "gg":
+          void onRun?.();
+          break;
         case "clear":
         case "cls":
           setLines([]);
@@ -118,7 +127,7 @@ export function Body(props: BodyProps) {
           break;
       }
     },
-    [addLine, debugSession, toggleTerminal],
+    [addLine, debugSession, locale, onRun, setLines, toggleTerminal],
   );
 
   // Executar interpretador quando receber código intermediário

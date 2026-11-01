@@ -19,6 +19,7 @@ interface MainSectionProps {
   setOpenTabs: (paths: string[] | ((prev: string[]) => string[])) => void;
   isTerminalOpen: boolean;
   toggleTerminal: () => void;
+  onRun?: () => void | Promise<void>;
   intermediateCode?: { instructions: Instruction[] };
   debugSession?: DebugTerminalSession;
   locale?: string;
@@ -31,6 +32,7 @@ export function MainSection({
   setOpenTabs,
   isTerminalOpen,
   toggleTerminal,
+  onRun,
   intermediateCode,
   debugSession,
   locale,
@@ -82,6 +84,7 @@ export function MainSection({
           isTerminalOpen={isTerminalOpen}
           locale={locale}
           toggleTerminal={toggleTerminal}
+          onRun={onRun}
         />
       </div>
     </div>

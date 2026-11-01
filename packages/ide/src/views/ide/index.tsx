@@ -381,6 +381,7 @@ export function IDE({
                   setOpenTabs={setOpenTabs}
                   isTerminalOpen={isTerminalOpen}
                   toggleTerminal={toggleTerminal}
+                  onRun={runAll}
                   intermediateCode={intermediateCode}
                   debugSession={debugSession}
                   locale={locale}
