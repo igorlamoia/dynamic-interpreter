@@ -97,8 +97,7 @@ export function IDE({
   }, [keywordCustomization, languageChoices.activeLanguage]);
   const { handleIntermediateCodeGeneration, intermediateCode } =
     useIntermediatorCode();
-  const { handleRun, analyseData, showScrollArrow, setShowScrollArrow } =
-    useLexerAnalyse();
+  const { handleRun, analyseData } = useLexerAnalyse();
   const { isTerminalOpen, setIsTerminalOpen } = useTerminalContext();
   const {
     clearCurrentDebugLine,
@@ -271,14 +270,6 @@ export function IDE({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeFile]);
 
-  const scrollToResults = () => {
-    window.scrollTo({
-      top: 700,
-      behavior: "smooth",
-    });
-    setShowScrollArrow(false);
-  };
-
   const runAll = async () => {
     if (!areKeywordsReady) return;
     const tokens = await handleRun();
@@ -358,7 +349,12 @@ export function IDE({
             handleRun={handleRun}
             isRunDisabled={!areKeywordsReady}
             isFullscreen={isFullscreen}
+            languageChoices={languageChoices}
             onHelp={() => setIsLanguageSampleOpen(true)}
+            onOpenLanguagePanel={() => {
+              setActiveView("language");
+              setIsSidebarOpen(true);
+            }}
             onRules={() => setIsCompilerRulesOpen(true)}
             runAll={runAll}
             toggleFullscreen={toggleFullscreen}
@@ -440,7 +436,7 @@ export function IDE({
           className="from-transparent via-slate-600 to-transparent"
         />
       </div>
-      <ScrollArrow show={showScrollArrow} onClick={scrollToResults} />
+      <ScrollArrow />
       <QuickFileSearch
         isOpen={isQuickSearchOpen}
         onClose={() => setIsQuickSearchOpen(false)}

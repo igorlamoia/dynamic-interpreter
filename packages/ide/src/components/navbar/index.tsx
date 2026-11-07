@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { Logo } from "../logo";
-import { HeroLink } from "../buttons/hero";
-import { ChevronDown, LayoutDashboard, LogIn, LogOut } from "lucide-react";
+import { ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
 import { useRouter } from "next/router";
-import { t } from "@/i18n";
 import { ToggleTheme } from "../toggle-theme";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback } from "../ui/avatar";
@@ -14,18 +12,28 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ElementType } from "react";
 import { LanguageSelector } from "./language-selector";
 
 interface NavbarProps {
-  links?: { label: string; href: string }[];
+  links?: {
+    label: string;
+    href: string;
+    icon?: ElementType;
+    removeAuthenticated?: boolean;
+  }[];
   hasAuth?: boolean;
 }
 
-const defaultLinks: { label: string; href: string }[] = [];
+const defaultLinks: {
+  label: string;
+  href: string;
+  icon?: ElementType;
+  removeAuthenticated?: boolean;
+}[] = [];
 
 export function Navbar({ links, hasAuth = true }: NavbarProps) {
-  const { locale, pathname, push } = useRouter();
+  const { pathname, push } = useRouter();
   const { isAuthenticated, isProfileLoading, logout, user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -56,73 +64,75 @@ export function Navbar({ links, hasAuth = true }: NavbarProps) {
           <ul className="ml-auto">
             {links && links.length > 0 && (
               <nav className="flex items-center gap-6 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
-                {links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`text-sm font-medium ${
-                      pathname === link.href
-                        ? "text-slate-900 dark:text-slate-100 font-semibold animate-pulse"
-                        : ""
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {links.map((link) =>
+                  (() => {
+                    if (isAuthenticated && link.removeAuthenticated)
+                      return null;
+                    const Icon = link.icon;
+                    return (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`text-sm font-medium flex gap-1 items-center ${
+                          pathname === link.href
+                            ? "text-slate-900 dark:text-slate-100 font-semibold animate-pulse"
+                            : ""
+                        }`}
+                      >
+                        {Icon && <Icon className="w-4 h-4" />}
+                        {link.label}
+                      </Link>
+                    );
+                  })(),
+                )}
               </nav>
             )}
           </ul>
           <div className="flex items-center gap-3">
             <LanguageSelector />
-            {hasAuth &&
-              (isAuthenticated ? (
-                <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      type="button"
-                      className="group inline-flex items-center gap-3 rounded-full border border-black/10 dark:border-white/20 bg-white/80 dark:bg-white/5 px-2 py-1.5 pr-3 shadow-sm hover:shadow-md hover:border-black/20 dark:hover:dark:border-white/30 transition-all"
-                    >
-                      <Avatar className="h-8 w-8 bg-linear-to-br from-primary to-[#34d399] text-white dark:text-white border-transparent">
-                        <AvatarFallback>{profileInitials}</AvatarFallback>
-                      </Avatar>
-                      <div className="hidden sm:flex flex-col items-start">
-                        <span className="max-w-42 truncate text-xs font-semibold text-slate-800 dark:text-slate-100">
-                          {isProfileLoading ? "Carregando..." : profileName}
-                        </span>
-                        <Badge
-                          variant="secondary"
-                          className="mt-0.5 text-[9px] px-2 py-0"
-                        >
-                          {profileRole}
-                        </Badge>
-                      </div>
-                      <ChevronDown
-                        className={`h-4 w-4 text-slate-500 dark:text-slate-300 transition-transform ${isMenuOpen ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onSelect={() => {
-                        setIsMenuOpen(false);
-                        push("/dashboard");
-                      }}
-                    >
-                      <LayoutDashboard className="w-4 h-4" />
-                      Dashboard
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onSelect={handleLogout}>
-                      <LogOut className="w-4 h-4" />
-                      Sair
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <HeroLink href="/login">
-                  <LogIn className="w-4 h-4" />
-                  {t(locale, "ui.login")}
-                </HeroLink>
-              ))}
+            {hasAuth && isAuthenticated && (
+              <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="group inline-flex items-center gap-3 rounded-full border border-black/10 dark:border-white/20 bg-white/80 dark:bg-white/5 px-2 py-1.5 pr-3 shadow-sm hover:shadow-md hover:border-black/20 dark:hover:dark:border-white/30 transition-all"
+                  >
+                    <Avatar className="h-8 w-8 bg-linear-to-br from-primary to-[#34d399] text-white dark:text-white border-transparent">
+                      <AvatarFallback>{profileInitials}</AvatarFallback>
+                    </Avatar>
+                    <div className="hidden sm:flex flex-col items-start">
+                      <span className="max-w-42 truncate text-xs font-semibold text-slate-800 dark:text-slate-100">
+                        {isProfileLoading ? "Carregando..." : profileName}
+                      </span>
+                      <Badge
+                        variant="secondary"
+                        className="mt-0.5 text-[9px] px-2 py-0"
+                      >
+                        {profileRole}
+                      </Badge>
+                    </div>
+                    <ChevronDown
+                      className={`h-4 w-4 text-slate-500 dark:text-slate-300 transition-transform ${isMenuOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      setIsMenuOpen(false);
+                      push("/dashboard");
+                    }}
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={handleLogout}>
+                    <LogOut className="w-4 h-4" />
+                    Sair
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </header>

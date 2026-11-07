@@ -5,12 +5,12 @@ import { CommunityLanguagesView } from "@/views/community/community-languages-vi
 
 export default function CommunityLanguagesPage() {
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground font-sans">
+    <div className="flex min-h-full flex-col bg-background font-sans text-foreground">
       <SpaceBackground />
       <Navbar />
-      <div className="relative z-10 flex flex-1 overflow-hidden">
+      <div className="relative z-10 flex flex-1">
         <Sidebar />
-        <div className="flex w-full flex-1 flex-col overflow-y-auto">
+        <div className="flex w-full flex-1 flex-col">
           <main className="mx-auto w-full max-w-7xl px-6 py-12">
             <CommunityLanguagesView />
           </main>
