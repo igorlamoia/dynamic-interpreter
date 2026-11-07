@@ -38,6 +38,7 @@ vi.mock("lucide-react", () => ({
   FileCode2: () => <span>files</span>,
   GitBranch: () => <span>git</span>,
   Languages: () => <span>languages</span>,
+  LucideCode2: () => <span>languages</span>,
   Search: () => <span>search</span>,
   Settings: () => <span>settings</span>,
   Sparkles: () => <span>sparkles</span>,
