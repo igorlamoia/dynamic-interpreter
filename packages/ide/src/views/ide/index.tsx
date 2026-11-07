@@ -312,6 +312,8 @@ export function IDE({
     setIsSidebarOpen,
     setActiveView,
     setIsQuickSearchOpen,
+    isFullscreen,
+    setIsFullscreen,
   );
 
   useEffect(() => {

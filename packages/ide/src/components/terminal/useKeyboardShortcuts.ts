@@ -7,6 +7,8 @@ export function useKeyboardShortcuts(
   setIsSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>,
   setActiveView?: React.Dispatch<React.SetStateAction<SidebarView>>,
   setIsQuickSearchOpen?: React.Dispatch<React.SetStateAction<boolean>>,
+  isFullscreen: boolean = false,
+  setIsFullscreen?: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   // Atalhos globais (ctrl+p, ctrl+', ctrl+j, Escape, ctrl+e, ctrl+shift+f)
   useEffect(() => {
@@ -31,8 +33,14 @@ export function useKeyboardShortcuts(
         event.preventDefault();
         event.stopPropagation();
         toggleTerminal();
-      } else if (event.key === "Escape" && isTerminalOpen) {
-        toggleTerminal();
+      } else if (event.key === "Escape") {
+        if (isFullscreen) {
+          event.preventDefault();
+          event.stopPropagation();
+          setIsFullscreen?.(false);
+          return;
+        }
+        if (isTerminalOpen) toggleTerminal();
       }
 
       // Atalho para abrir/fechar o sidebar (ctrl+e ou ctrl+b)
@@ -77,5 +85,7 @@ export function useKeyboardShortcuts(
     setIsSidebarOpen,
     setActiveView,
     setIsQuickSearchOpen,
+    isFullscreen,
+    setIsFullscreen,
   ]);
 }
