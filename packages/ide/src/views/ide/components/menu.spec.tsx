@@ -5,6 +5,7 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Menu } from "./menu";
+import type { LanguageChoicesState } from "@/hooks/useLanguageChoices";
 
 (
   globalThis as typeof globalThis & {
@@ -34,6 +35,14 @@ vi.mock("@/components/ui/rainbow-button", () => ({
   ),
 }));
 
+const languageChoices: LanguageChoicesState = {
+  choices: [],
+  activeKey: "",
+  activeLanguage: null,
+  isSelectionLocked: false,
+  selectLanguage: vi.fn(async () => undefined),
+};
+
 describe("Menu", () => {
   afterEach(() => {
     document.body.innerHTML = "";
@@ -50,7 +59,9 @@ describe("Menu", () => {
         <Menu
           handleRun={vi.fn()}
           isFullscreen={false}
+          languageChoices={languageChoices}
           onHelp={onHelp}
+          onOpenLanguagePanel={vi.fn()}
           onRules={vi.fn()}
           runAll={vi.fn()}
           toggleFullscreen={vi.fn()}
@@ -85,7 +96,9 @@ describe("Menu", () => {
         <Menu
           handleRun={vi.fn()}
           isFullscreen={false}
+          languageChoices={languageChoices}
           onHelp={vi.fn()}
+          onOpenLanguagePanel={vi.fn()}
           onRules={onRules}
           runAll={vi.fn()}
           toggleFullscreen={vi.fn()}
@@ -103,6 +116,49 @@ describe("Menu", () => {
     });
 
     expect(onRules).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      root.unmount();
+    });
+  });
+
+  it("opens the language panel from the active language selector", () => {
+    const onOpenLanguagePanel = vi.fn();
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    act(() => {
+      root.render(
+        <Menu
+          handleRun={vi.fn()}
+          isFullscreen={false}
+          languageChoices={languageChoices}
+          onHelp={vi.fn()}
+          onOpenLanguagePanel={onOpenLanguagePanel}
+          onRules={vi.fn()}
+          runAll={vi.fn()}
+          toggleFullscreen={vi.fn()}
+          toggleTerminal={vi.fn()}
+        />,
+      );
+    });
+
+    act(() => {
+      container
+        .querySelector<HTMLButtonElement>(
+          '[aria-label="Open language selection"]',
+        )
+        ?.dispatchEvent(
+          new MouseEvent("pointerdown", {
+            bubbles: true,
+            button: 0,
+            cancelable: true,
+          }),
+        );
+    });
+
+    expect(onOpenLanguagePanel).toHaveBeenCalledTimes(1);
 
     act(() => {
       root.unmount();

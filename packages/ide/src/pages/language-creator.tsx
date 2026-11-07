@@ -1,6 +1,5 @@
 import localFont from "next/font/local";
 import type { Language } from "@/lib/languages-api";
-import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { SpaceBackground } from "@/components/space-background";
 import { KeywordCustomizer } from "@/components/keyword-customizer";
@@ -43,7 +42,6 @@ export default function LanguageCreatorPage({
           </KeywordProvider>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

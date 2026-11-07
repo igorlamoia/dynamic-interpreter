@@ -1,7 +1,6 @@
 import { TIntermediateCodeData } from "@/types/compiler";
 import { useRuntimeError } from "@/contexts/RuntimeErrorContext";
 import { motion } from "motion/react";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { t } from "@/i18n";
 // import Instructions3D from "./matrix";
@@ -36,16 +35,6 @@ const Mixed = ({
 }) => {
   const { locale } = useRouter();
   const { runtimeErrorInstructionPointer } = useRuntimeError();
-
-  useEffect(() => {
-    if (runtimeErrorInstructionPointer === null) return;
-    const target = document.getElementById(
-      `instruction-${runtimeErrorInstructionPointer + 1}`,
-    );
-    if (!target) return;
-    target.scrollIntoView({ behavior: "smooth", block: "center" });
-    target.focus();
-  }, [runtimeErrorInstructionPointer]);
 
   const getContainerClassName = (index: number) => {
     if (runtimeErrorInstructionPointer === null)

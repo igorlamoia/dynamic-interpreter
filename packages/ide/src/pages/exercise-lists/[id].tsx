@@ -50,12 +50,12 @@ export default function ExerciseListDetailPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
+    <div className="flex min-h-full flex-col bg-background font-sans text-foreground">
       <SpaceBackground />
       <Navbar />
-      <div className="flex flex-1 overflow-hidden relative z-10 w-full">
+      <div className="relative z-10 flex w-full flex-1">
         <Sidebar />
-        <div className="flex-1 flex flex-col overflow-y-auto w-full">
+        <div className="flex w-full flex-1 flex-col">
           <main className="max-w-4xl mx-auto px-6 py-10 w-full">
             {/* breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-6">

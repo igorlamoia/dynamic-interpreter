@@ -395,7 +395,7 @@ function TutorialTooltip({
             {...closeProps}
             type="button"
             onClick={onSkip}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-500 transition hover:bg-cyan-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-cyan-900/60 dark:hover:text-white"
+            className="flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-slate-500 transition hover:bg-cyan-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-cyan-900/60 dark:hover:text-white"
           >
             <span aria-hidden="true">x</span>
           </button>
@@ -417,7 +417,7 @@ function TutorialTooltip({
           {...skipProps}
           type="button"
           onClick={onSkip}
-          className="text-sm font-medium text-slate-500 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
+          className="cursor-pointer text-sm font-medium text-slate-500 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
         >
           {skipProps.title}
         </button>
@@ -427,7 +427,7 @@ function TutorialTooltip({
               {...backProps}
               type="button"
               onClick={onBack}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
+              className="cursor-pointer rounded-md border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
             >
               {backProps.title}
             </button>
@@ -439,7 +439,7 @@ function TutorialTooltip({
               type="button"
               autoFocus
               onClick={onNext}
-              className="rounded-md bg-cyan-500 px-3 py-1.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 dark:bg-cyan-300 dark:hover:bg-cyan-200"
+              className="cursor-pointer rounded-md bg-cyan-500 px-3 py-1.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 dark:bg-cyan-300 dark:hover:bg-cyan-200"
             >
               {isLastStep ? primaryProps.title : primaryProps.title}
             </button>

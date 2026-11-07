@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/router";
 
-import { Footer } from "@/components/footer";
 import { t } from "@/i18n";
 import { Navbar } from "@/components/navbar";
 import { SpaceBackground } from "@/components/space-background";
@@ -214,7 +213,6 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

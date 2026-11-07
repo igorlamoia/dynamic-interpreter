@@ -5,7 +5,6 @@ import { Alert } from "@/components/ui/alert";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import { ClassesGrid } from "@/views/dashboard/components/classes-grid";
 import { CreateClassModal } from "@/views/dashboard/components/create-class-modal";
 import { DashboardHeader } from "@/views/dashboard/components/dashboard-header";
@@ -38,7 +37,7 @@ export default function Dashboard() {
     }
   }, [classesQuery.error, locale]);
 
-  const handleClassCreated = (message: string, accessCode: string) => {
+  const handleClassCreated = (message: string) => {
     setSuccess(message);
   };
 
@@ -48,13 +47,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
+    <div className="flex min-h-full flex-col bg-background font-sans text-foreground">
       <SpaceBackground />
       <Navbar />
-      <div className="flex flex-1 overflow-hidden relative z-10">
+      <div className="relative z-10 flex flex-1">
         <Sidebar />
-        <div className="flex-1 flex flex-col overflow-y-auto w-full">
-          <main className="max-w-7xl mx-auto px-6 py-12 w-full">
+        <div className="flex w-full flex-1 flex-col">
+          <main className="mx-auto w-full max-w-7xl px-6 py-12">
             {isCommunity ? (
               <CommunityDashboard />
             ) : (
@@ -112,7 +111,6 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

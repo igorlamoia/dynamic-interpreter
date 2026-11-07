@@ -1,5 +1,5 @@
 import IconButton from "@/components/buttons/icon-button";
-import { BugPlay, FileCode2, Languages, Search } from "lucide-react";
+import { BugPlay, FileCode2, LucideCode2, Search } from "lucide-react";
 import { useRouter } from "next/router";
 import type { SidebarView } from "./side-explorer/sidebar-panel";
 import { t } from "@/i18n";
@@ -50,7 +50,7 @@ export function SideMenu({
         onClick={() => handleViewClick("language")}
         tooltip={t(locale, "ui.languages")}
       >
-        <Languages className="h-4 w-4" />
+        <LucideCode2 className="h-4 w-4" />
       </IconButton>
       <IconButton
         data-tour="ide-debug"
