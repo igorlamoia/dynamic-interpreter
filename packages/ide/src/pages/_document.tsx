@@ -25,7 +25,13 @@ export default class IDEDocument extends Document<IDEDocumentProps> {
   render() {
     return (
       <Html lang={this.props.locale}>
-        <Head />
+        <Head>
+          <link
+            rel="icon"
+            type="image/png"
+            href="/images/logo-di.png"
+          />
+        </Head>
         <body className="antialiased">
           <Main />
           <NextScript />
