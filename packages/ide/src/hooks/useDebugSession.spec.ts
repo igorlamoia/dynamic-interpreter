@@ -74,6 +74,13 @@ int main() {
     expect(getResult().output).toEqual([]);
     expect(getResult().boundBreakpoints).toEqual([4]);
     expect(getResult().unboundBreakpoints).toEqual([]);
+    expect(getResult().artifact).toEqual(
+      expect.objectContaining({
+        sessionId: expect.stringMatching(/^debug-\d+$/),
+        instructions: expect.any(Array),
+      }),
+    );
+    expect(getResult().artifact?.instructions.length).toBeGreaterThan(0);
     expect(currentLines).toContain(4);
   });
 

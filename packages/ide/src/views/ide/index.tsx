@@ -465,7 +465,10 @@ export function IDE({
           <ShowTokens analyseData={analyseData} />
           <div className="flex flex-col gap-2">
             <ListIntermediateCode
-              instructions={intermediateCode.instructions}
+              instructions={
+                debugSession.artifact?.instructions ?? intermediateCode.instructions
+              }
+              nextInstructionIndex={debugSession.snapshot?.instructionPointer}
             />
           </div>
         </div>

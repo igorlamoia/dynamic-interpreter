@@ -40,6 +40,8 @@ export type UseDebugSessionResult = {
   isStale: boolean;
   boundBreakpoints: number[];
   unboundBreakpoints: number[];
+  /** The exact IR owned by the active (or most recently stopped) debug session. */
+  artifact: DebugCompiledArtifact | null;
   start: (sourceCode: string) => Promise<DebugSnapshot | null>;
   continueExecution: () => Promise<DebugSnapshot | null>;
   stepInto: () => Promise<DebugSnapshot | null>;
@@ -49,6 +51,11 @@ export type UseDebugSessionResult = {
   restart: (sourceCode?: string) => Promise<DebugSnapshot | null>;
   provideInput: (value: string) => void;
   markStale: (currentSourceCode?: string) => void;
+};
+
+export type DebugCompiledArtifact = {
+  sessionId: string;
+  instructions: Instruction[];
 };
 
 type CompiledDebugProgram = {
@@ -113,6 +120,7 @@ export function useDebugSession(
   const interpreterRef = useRef<Interpreter | null>(null);
   const sourceRef = useRef<string | null>(null);
   const outputRef = useRef<string[]>([]);
+  const sessionCounterRef = useRef(0);
 
   const [snapshot, setSnapshot] = useState<DebugSnapshot | null>(null);
   const [output, setOutput] = useState<string[]>([]);
@@ -120,6 +128,7 @@ export function useDebugSession(
   const [isStale, setIsStale] = useState(false);
   const [boundBreakpoints, setBoundBreakpoints] = useState<number[]>([]);
   const [unboundBreakpoints, setUnboundBreakpoints] = useState<number[]>([]);
+  const [artifact, setArtifact] = useState<DebugCompiledArtifact | null>(null);
 
   const publishSnapshot = useCallback(
     (nextSnapshot: DebugSnapshot | null) => {
@@ -149,6 +158,8 @@ export function useDebugSession(
         setError(null);
         setIsStale(false);
         sourceRef.current = sourceCode;
+        const sessionId = `debug-${++sessionCounterRef.current}`;
+        setArtifact({ sessionId, instructions: compiled.instructions });
         if (compiled.issues.length > 0) {
           options.onIssues?.(compiled.issues);
         }
@@ -176,6 +187,7 @@ export function useDebugSession(
           options.onCompileError?.(caught.details);
         }
         interpreterRef.current = null;
+        setArtifact(null);
         outputRef.current = [];
         setSnapshot(null);
         setOutput([]);
@@ -247,6 +259,7 @@ export function useDebugSession(
     isStale,
     boundBreakpoints,
     unboundBreakpoints,
+    artifact,
     start,
     continueExecution,
     stepInto,

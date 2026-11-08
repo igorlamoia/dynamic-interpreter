@@ -3,14 +3,19 @@ import { useRuntimeError } from "@/contexts/RuntimeErrorContext";
 import { motion } from "motion/react";
 import { useRouter } from "next/router";
 import { t } from "@/i18n";
+import { ExecutionGraphCanvas } from "@/features/executionGraph/ExecutionGraphCanvas";
+import { useState } from "react";
 // import Instructions3D from "./matrix";
 
 export function ListIntermediateCode({
   instructions,
+  nextInstructionIndex,
 }: {
   instructions: TIntermediateCodeData["instructions"];
+  nextInstructionIndex?: number | null;
 }) {
   const { locale } = useRouter();
+  const [view, setView] = useState<"list" | "graph">("list");
   if (!instructions) return null;
 
   return (
@@ -22,7 +27,11 @@ export function ListIntermediateCode({
         {t(locale, "ui.intermediate_code_description")}
       </p>
 
-      <Mixed instructions={instructions} />
+      <div className="mb-4 flex justify-center gap-2" role="tablist" aria-label="Intermediate code view">
+        <button className={`rounded-md px-3 py-1 text-sm ${view === "list" ? "bg-primary text-primary-foreground" : "bg-muted"}`} onClick={() => setView("list")} role="tab" aria-selected={view === "list"} type="button">Instructions</button>
+        <button className={`rounded-md px-3 py-1 text-sm ${view === "graph" ? "bg-primary text-primary-foreground" : "bg-muted"}`} onClick={() => setView("graph")} role="tab" aria-selected={view === "graph"} type="button">Flowchart</button>
+      </div>
+      {view === "list" ? <Mixed instructions={instructions} /> : <ExecutionGraphCanvas instructions={instructions} nextInstructionIndex={nextInstructionIndex} />}
       {/* <Instructions3D instructions={instructions} /> */}
     </div>
   );
