@@ -1,19 +1,19 @@
 \section{Protocolo de Avaliação da Solução}
 \label{sec:protocolo-avaliacao}
 
-Esta seção descreve o instrumento de avaliação da plataforma, chamado de PA-01, e os critérios para interpretar seus resultados. O instrumento é um só e é compartilhado com o texto do coautor: o mesmo formulário vai para o mesmo grupo de respondentes, e cada trabalho analisa os itens que interessam ao seu tema. Aqui interessam os itens sobre o núcleo de tradução descrito neste capítulo. O protocolo ainda não foi aplicado, e nenhum resultado de participantes aparece neste documento.
+Esta seção descreve os instrumentos de avaliação da plataforma e os critérios para interpretar seus resultados. O instrumento principal, chamado de PA-01, é compartilhado com o texto do coautor: o mesmo formulário foi enviado ao mesmo grupo de respondentes, e cada trabalho analisa os itens que interessam ao seu tema. Aqui interessam os itens sobre o núcleo de tradução descrito neste capítulo. O PA-01 recebeu oito respostas entre 1º e 9 de novembro de 2026. Um segundo formulário, mais curto, foi respondido por dezoito estudantes em 3 de novembro de 2026 e está descrito na Subseção~\ref{subsec:formulario-estudantes}. Os resultados dos dois estão no Capítulo~\ref{cap:resultados}.
 
 \subsection{Quem responde e o que é possível concluir}
 
-A avaliação será feita por um painel de especialistas, formado por professores e profissionais de computação. Não é um estudo com os alunos, que são o público-alvo da plataforma. Pede-se ao respondente que avalie se a ferramenta é adequada para um aluno em primeiro contato com programação, e não que relate a própria experiência de aprendizagem.
+O PA-01 foi respondido por um painel de especialistas, formado por professores e profissionais de computação. Não é um estudo com os alunos, que são o público-alvo da plataforma. Pediu-se ao respondente que avaliasse se a ferramenta é adequada para um aluno em primeiro contato com programação, e não que relatasse a própria experiência de aprendizagem.
 
-Essa escolha limita o que o trabalho pode afirmar. Com um painel de especialistas é possível dizer que profissionais da área acham plausível que a personalização da sintaxe reduza a barreira enfrentada pelo iniciante. Não é possível dizer que ela reduz. Verificar isso exige medir o desempenho de estudantes, o que está registrado na Subseção~\ref{subsec:limites-interpretacao} como etapa seguinte.
+Essa escolha limita o que o trabalho pode afirmar. Com um painel de especialistas é possível dizer que profissionais da área acham plausível que a personalização da sintaxe reduza a barreira enfrentada pelo iniciante. Não é possível dizer que ela reduz. Verificar isso exige medir o desempenho de estudantes, o que está registrado na Subseção~\ref{subsec:limites-interpretacao} como etapa seguinte. O formulário dos estudantes não muda esse limite, porque também colhe opinião e não mede desempenho.
 
 Para o tema deste trabalho, porém, o painel dá o que um aluno iniciante não teria como dar: uma avaliação técnica sobre se o subconjunto implementado da linguagem é suficiente, se a representação intermediária exibida corresponde à execução real e se as mensagens de erro continuam claras depois que o usuário troca o vocabulário da linguagem.
 
 \subsection{Composição do instrumento}
 
-O formulário é respondido pelo próprio participante, distribuído pela internet e criado por um programa, para que sua estrutura possa ser gerada de novo sempre que necessário. São dez páginas, oito delas com grades de itens em escala, como mostra a Tabela~\ref{tab:blocos-pa01}. Três blocos vêm de instrumentos já consolidados na literatura de avaliação de interfaces; os outros foram escritos para este projeto, porque nenhum instrumento pronto pergunta sobre o que se investiga aqui.
+O formulário foi respondido pelo próprio participante, distribuído pela internet e criado por um programa, para que sua estrutura pudesse ser gerada de novo sempre que necessário. Ele tem doze blocos, sete deles com grades de itens em escala, como mostra a Tabela~\ref{tab:blocos-pa01}. Três blocos vêm de instrumentos já consolidados na literatura de avaliação de interfaces; os outros foram escritos para este projeto, porque nenhum instrumento pronto pergunta sobre o que se investiga aqui. Nos blocos escritos para o projeto, as afirmações usam uma escala de cinco pontos, em que 5 é a maior concordância.
 
 \begin{table}[htbp]
 \centering
@@ -24,21 +24,23 @@ O formulário é respondido pelo próprio participante, distribuído pela intern
 \begin{tabular}{|p{5.2cm}|p{4.6cm}|c|}
 \hline
 \textbf{Bloco} & \textbf{Procedência} & \textbf{Itens} \\\hline
-Consentimento livre e esclarecido & Elaborado para o projeto & 1 \\\hline
+Termo de consentimento (texto de leitura, sem item de marcação) & Elaborado para o projeto & 0 \\\hline
 Perfil profissional & Elaborado para o projeto & 4 \\\hline
-Uso em sala (condicional) & Elaborado para o projeto & 8 \\\hline
+Uso em sala (condicional) & Elaborado para o projeto & 10 \\\hline
 Como a plataforma foi usada & Elaborado para o projeto & 4 \\\hline
 Avaliação dos recursos & Elaborado para o projeto & 10 \\\hline
 Facilidade de uso & SUS \cite{brooke1996} & 10 \\\hline
 Impressão geral & UEQ-S \cite{schrepp2017} & 8 \\\hline
 Potencial pedagógico & Elaborado para o projeto & 8 \\\hline
-Riscos e limitações & Elaborado para o projeto & 4 \\\hline
-Qualidade técnica & Elaborado para o projeto & 7 \\\hline
+Riscos e limitações & Elaborado para o projeto & 3 \\\hline
+Qualidade técnica & Elaborado para o projeto & 6 \\\hline
 Utilidade e intenção de uso & TAM \cite{davis1989} & 6 \\\hline
 Comentários abertos & Elaborado para o projeto & 5 \\\hline
 \end{tabular}
 \legend{Fonte: elaborado pelo autor.}
 \end{table}
+
+A versão aplicada difere em dois pontos da que foi descrita na revisão anterior deste texto. A afirmação sobre a suficiência do subconjunto da linguagem saiu do bloco de qualidade técnica, e a afirmação sobre alunos da mesma turma usarem sintaxes diferentes saiu do bloco de riscos. As duas foram para o bloco de uso em sala, que só aparece para quem declara lecionar ou já ter lecionado. Esse bloco ficou com nove afirmações em escala e uma pergunta sobre o momento da disciplina em que a plataforma seria mais útil. A consequência é que os dois itens deslocados foram respondidos por no máximo quatro pessoas, e não pelo painel inteiro.
 
 Os instrumentos já conhecidos foram usados porque têm valores de referência publicados. Com eles é possível comparar o escore obtido com o de outros produtos avaliados, em vez de apenas descrever a opinião dos respondentes. Antes do bloco de avaliação dos recursos, o formulário mostra o mesmo programa em duas versões: uma na configuração padrão, com \texttt{int}, \texttt{for}, \texttt{if} e delimitadores simbólicos, e outra personalizada, com \texttt{numero\_inteiro}, \texttt{para}, \texttt{se}, operadores escritos por extenso e os delimitadores \texttt{inicio} e \texttt{fim}. O par mostra, em um caso concreto, a equivalência entre vocabulários diferentes que o núcleo de tradução garante.
 
@@ -47,20 +49,19 @@ Os instrumentos já conhecidos foram usados porque têm valores de referência p
 O bloco de qualidade técnica é o que trata mais de perto do tema deste trabalho. Ele é dirigido a quem tem formação na área e traz a opção ``não sei''. As afirmações são:
 
 \begin{itemize}
-    \item o subconjunto da linguagem, com tipos, condicionais, repetição, arranjos, funções e entrada e saída, é suficiente para uma disciplina introdutória;
-    \item as mensagens de erro são claras e indicam o que corrigir;
-    \item a ferramenta respondeu de forma rápida e estável;
-    \item o assistente de criação de linguagem é compreensível para um professor sem formação em compiladores;
-    \item a validação prévia impede configurações inválidas;
+    \item as mensagens de erro são claras e indicam o que precisa ser corrigido;
+    \item a ferramenta respondeu de forma rápida e estável durante o uso;
+    \item o assistente de criação de linguagem é compreensível para quem não tem formação em compiladores;
+    \item a validação prévia impede adequadamente configurações de linguagem inválidas;
     \item o código intermediário exibido corresponde ao que o programa realmente executa.
 \end{itemize}
 
 
 Esse último item merece atenção. Ele coloca em avaliação externa uma propriedade que o texto sustenta pela forma como o sistema foi construído: a representação intermediária mostrada ao usuário é a mesma que o interpretador consome, e não uma ilustração feita à parte. Uma avaliação negativa nesse item indicaria diferença entre o que a interface exibe e o que a máquina executa, o que comprometeria a premissa central do trabalho.
 
-O bloco termina com uma questão de múltipla escolha sobre construções que faltam na linguagem, com alternativas para registros, orientação a objetos, tratamento de exceções, manipulação de cadeias mais completa, bibliotecas gráficas e divisão do programa em vários arquivos, além da alternativa que diz não ter faltado nada relevante para o ensino introdutório. Essa questão delimita, com base nas respostas, até onde vai o subconjunto implementado e ajuda a priorizar os trabalhos futuros no núcleo.
+O bloco termina com uma questão de múltipla escolha sobre construções que faltam na linguagem, com alternativas para registros, orientação a objetos, tratamento de exceções, manipulação de cadeias mais completa, bibliotecas gráficas e divisão do programa em vários arquivos, além da alternativa que diz não ter faltado nada relevante para o ensino introdutório. Essa questão delimita, com base nas respostas, até onde vai o subconjunto implementado e ajuda a priorizar os trabalhos futuros no núcleo. A afirmação de que o subconjunto, com tipos, condicionais, repetição, arranjos, funções e entrada e saída, é suficiente para uma disciplina introdutória ficou no bloco de uso em sala, com a opção ``não se aplica''.
 
-Do bloco de avaliação dos recursos interessam três itens, todos sobre a exibição das fases intermediárias da tradução: se a tabela de \textit{tokens} ajuda a entender como a plataforma lê o código, se o código intermediário ajuda a entender o que o programa faz e se a execução passo a passo ajuda a acompanhá-lo. Soma-se o item sobre as mensagens de erro ajudarem a identificar o que corrigir, que mede o resultado prático de adaptar essas mensagens ao vocabulário em uso. O bloco de potencial pedagógico repete os três primeiros sob outro ângulo, perguntando pelo valor didático deles para quem está aprendendo, e acrescenta que mostrar os erros no vocabulário escolhido pelo próprio aluno facilita a correção. Essa repetição é proposital: separa o que o especialista achou útil para si, usando a ferramenta, do que ele considera útil para um iniciante.
+Do bloco de avaliação dos recursos, que traz a opção ``não usei'', interessam três itens, todos sobre a exibição das fases intermediárias da tradução: se a tabela de \textit{tokens} ajuda a entender como a plataforma lê o código, se o código intermediário ajuda a entender o que o programa faz e se a execução passo a passo ajuda a acompanhá-lo. Soma-se o item sobre as mensagens de erro ajudarem a identificar o que corrigir, que mede o resultado prático de adaptar essas mensagens ao vocabulário em uso. O bloco de potencial pedagógico repete os três primeiros sob outro ângulo, perguntando pelo valor didático deles para quem está aprendendo, e acrescenta que mostrar os erros no vocabulário escolhido pelo próprio aluno facilita a correção. Essa repetição é proposital: separa o que o especialista achou útil para si, usando a ferramenta, do que ele considera útil para um iniciante.
 
 \subsection{Escalas usadas e cálculo dos escores}
 
@@ -69,24 +70,34 @@ A facilidade de uso usa a escala de \citeonline{brooke1996}, com dez afirmaçõe
 O bloco de riscos funciona ao contrário dos outros: nele, concordar significa apontar um problema. As afirmações são:
 
 \begin{itemize}
-    \item aprender em uma sintaxe personalizada pode dificultar a migração para uma linguagem de mercado;
-    \item alunos da mesma turma usando sintaxes diferentes dificultaria o trabalho do professor;
-    \item a liberdade de personalizar pode desviar a atenção do raciocínio algorítmico;
-    \item o tempo gasto configurando a linguagem não compensa o ganho de aprendizagem.
+    \item aprender em uma sintaxe personalizada pode dificultar a migração posterior para uma linguagem de mercado;
+    \item a liberdade de personalizar pode desviar a atenção do aluno do raciocínio algorítmico;
+    \item o tempo gasto configurando a linguagem não compensa o ganho obtido.
 \end{itemize}
- Os escores desse bloco serão relatados separadamente e não podem ser somados aos do bloco de potencial pedagógico, porque as duas medidas apontam em sentidos opostos e uma anularia a outra. O bloco foi incluído de propósito: se o instrumento trouxesse apenas afirmações favoráveis, a aprovação obtida diria muito pouco.
+ A afirmação sobre alunos da mesma turma usando sintaxes diferentes, deslocada para o bloco de uso em sala, tem o mesmo sentido e é lida junto com essas três. Os escores desses itens são relatados separadamente e não podem ser somados aos do bloco de potencial pedagógico, porque as duas medidas apontam em sentidos opostos e uma anularia a outra. O bloco foi incluído de propósito: se o instrumento trouxesse apenas afirmações favoráveis, a aprovação obtida diria muito pouco.
 
 \subsection{Participantes, procedimento e questões éticas}
 
-Os participantes são convidados diretamente e não são identificados. O formulário registra titulação, área de atuação, ferramentas de ensino que a pessoa já conhece e tempo de experiência com programação. Em uma avaliação feita por especialistas, esses dados fazem parte do resultado e serão apresentados junto com os escores. Um item pede que o respondente marque o que fez na plataforma e o que chegou a personalizar, o que permite separar a avaliação de quem usou a ferramenta da de quem não experimentou o recurso avaliado.
+Os participantes do PA-01 foram convidados diretamente e não são identificados. O formulário registra titulação, área de atuação, ferramentas de ensino que a pessoa já conhece e tempo de experiência com programação. Em uma avaliação feita por especialistas, esses dados fazem parte do resultado e são apresentados junto com os escores. Um item pede que o respondente marque o que fez na plataforma e o que chegou a personalizar, o que permite separar a avaliação de quem usou a ferramenta da de quem não experimentou o recurso avaliado.
 
-Sobre o número de participantes: de cinco a oito pessoas já revelam a maior parte dos problemas de usabilidade e são suficientes para analisar as respostas abertas. Para apresentar o escore SUS com intervalo de confiança são necessários vinte respondentes ou mais. Com menos que isso, o resultado será apresentado como indicativo, sem afirmar que existe diferença entre subgrupos.
+Sobre o número de participantes: de cinco a oito pessoas já revelam a maior parte dos problemas de usabilidade e são suficientes para analisar as respostas abertas. Para apresentar o escore SUS com intervalo de confiança são necessários vinte respondentes ou mais. Responderam oito pessoas. Por isso o escore é apresentado como indicativo, sem intervalo de confiança e sem afirmar que existe diferença entre subgrupos.
 
-O instrumento foi escrito como pesquisa de opinião pública com participantes não identificados, situação prevista no parágrafo único do artigo 1º da Resolução CNS n.º 510 de 2016 \cite{cns510}. O termo de consentimento segue a Resolução CNS n.º 466 de 2012 \cite{cns466}. Esse enquadramento não vale só porque os pesquisadores o declararam: ele depende de uma manifestação escrita do comitê de ética da instituição, que ainda não foi obtida. Esta especificação não é uma autorização nem uma aprovação ética, e nenhuma resposta pode ser coletada antes desse encaminhamento.
+Os dois formulários foram aplicados como pesquisa de opinião com participantes não identificados, situação prevista no parágrafo único do artigo 1º da Resolução CNS n.º 510 de 2016 \cite{cns510}. Esse enquadramento foi adotado pelos próprios pesquisadores. O PA-01 abre com um termo de consentimento, redigido conforme a Resolução CNS n.º 466 de 2012 \cite{cns466}. Antes da aplicação, a caixa de aceite que acompanhava esse termo foi retirada. O termo ficou na abertura do formulário só como texto de leitura, sem item de marcação, e por isso as respostas do PA-01 não trazem registro individual de consentimento. No formulário dos estudantes, o termo de assentimento é um item de resposta obrigatória, e as dezoito respostas trazem a opção ``Li e quero participar''. Não houve consulta ao comitê de ética da instituição nem manifestação dele. A sessão com estudantes envolveu menores de idade: nove tinham até 15 anos e nove tinham 16 ou 17. O formulário registra o assentimento de cada aluno, mas não a autorização de um responsável. Esses fatos, somados à falta de registro individual do consentimento no PA-01, entram como limitação do estudo no Capítulo~\ref{cap:consideracoes}, e qualquer continuação da pesquisa com estudantes deve passar antes pelo comitê.
+
+\subsection{Formulário da sessão com estudantes}
+\label{subsec:formulario-estudantes}
+
+O segundo instrumento não constava da versão anterior deste protocolo. Ele foi preparado para uma sessão de demonstração com uma turma do 1º ano do curso técnico em Informática do CEFET-MG, realizada em 3 de novembro de 2026. Os autores demonstraram a plataforma em sala, os alunos também a usaram e responderam ao formulário em seguida.
+
+O formulário é curto. Depois do termo de assentimento, pergunta a faixa de idade, o curso, o ano e a experiência anterior com programação. Seguem seis afirmações em escala de concordância de cinco pontos: se o aluno entendeu para que serve a plataforma, se um programa escrito com palavras em português é mais fácil de entender do que um escrito com palavras em inglês, se poder escolher as palavras da linguagem ajudaria quem está começando, se ver a separação do programa em \textit{tokens} ajuda a entender como o computador lê o código, se gostaria de usar a plataforma nas aulas e se a demonstração aumentou seu interesse em aprender programação. Uma questão mostra duas versões de um mesmo programa, que lê um número e escreve se ele é par ou ímpar. A versão A usa a sintaxe padrão, em inglês, e a versão B usa uma sintaxe personalizada em português. O aluno indica qual das duas acha mais fácil de entender, ou se as duas são igualmente fáceis ou igualmente difíceis. O formulário termina com um campo de comentário livre.
+
+Dois desses itens tocam o tema deste trabalho. O item sobre os \textit{tokens} leva ao público-alvo uma pergunta sobre a exibição de uma fase intermediária da tradução, que o PA-01 só alcança pela opinião de especialistas. A questão das duas versões depende de uma propriedade que o núcleo garante, a de que vocabulários diferentes podem descrever o mesmo programa. O que ela mede, porém, é qual das duas escritas o aluno declara entender com mais facilidade.
+
+Os limites desse instrumento são maiores que os do PA-01. A turma é uma só e foi escolhida por conveniência. A opinião foi colhida logo depois de uma demonstração feita pelos próprios autores, situação que favorece o efeito de novidade e a tendência a concordar. O formulário não mede desempenho. Ele serve como indício de aceitação e de preferência declarada.
 
 \subsection{Limites de interpretação e continuidade}
 \label{subsec:limites-interpretacao}
 
-Além do limite já citado sobre o público, três ressalvas afetam a leitura dos resultados. A primeira é sobre o instrumento: no formulário, os pares de adjetivos do UEQ-S estão sempre com o polo negativo à esquerda, enquanto o instrumento original inverte alguns pares para evitar que o respondente concorde por hábito. Se a comparação com os valores de referência for importante para o argumento, essa ordem deve ser conferida antes da coleta. A segunda é sobre a redação em português dos itens do SUS, que precisa ser comparada com uma tradução validada. A terceira é sobre a análise: escores altos dados por especialistas não comprovam aprendizagem nem redução de carga cognitiva.
+Além do limite já citado sobre o público, três ressalvas afetam a leitura dos resultados. A primeira é sobre o instrumento: no formulário aplicado, os pares de adjetivos do UEQ-S ficaram sempre com o polo negativo à esquerda, enquanto o instrumento original inverte alguns pares para evitar que o respondente concorde por hábito. Por isso a comparação com os valores de referência do UEQ-S fica comprometida. A segunda é sobre a redação em português dos itens do SUS, para a qual não há registro de comparação com uma tradução validada. A terceira é sobre a análise: escores altos dados por especialistas não comprovam aprendizagem nem redução de carga cognitiva.
 
-Investigar a hipótese pedagógica é a etapa seguinte e exige outro desenho de estudo: comparar, na mesma plataforma, o vocabulário padrão e o vocabulário personalizado em tarefas equivalentes de entrada e saída, seleção e repetição. A ordem das condições deve ser alternada entre os participantes, e os enunciados, os casos de teste e os critérios de classificação dos erros precisam ser definidos antes da coleta, separando erros de escrita de falhas de lógica. Com isso seria possível descrever os acertos, o tempo até a primeira execução correta e a frequência de erros em cada condição. Ainda assim, uma diferença nessas medidas não comprova, sozinha, que houve aprendizagem duradoura.
+Investigar a hipótese pedagógica é a etapa seguinte e exige outro desenho de estudo: comparar, na mesma plataforma, o vocabulário padrão e o vocabulário personalizado em tarefas equivalentes de entrada e saída, seleção e repetição. A ordem das condições deve ser alternada entre os participantes, e os enunciados, os casos de teste e os critérios de classificação dos erros precisam ser definidos antes da coleta, separando erros de escrita de falhas de lógica. Com isso seria possível descrever os acertos, o tempo até a primeira execução correta e a frequência de erros em cada condição. Ainda assim, uma diferença nessas medidas não comprova, sozinha, que houve aprendizagem duradoura. Por envolver estudantes, esse estudo deve ser submetido ao comitê de ética da instituição antes de qualquer coleta.

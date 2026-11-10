@@ -1,0 +1,1626 @@
+{
+ "pa01_especialistas": {
+  "n": 8,
+  "periodo": [
+   "2026-11-01",
+   "2026-11-09"
+  ],
+  "perfil": {
+   "titulacao": {
+    "Ensino médio": 3,
+    "Doutorado ou superior": 3,
+    "Graduação": 2
+   },
+   "atuacao": {
+    "Profissional de desenvolvimento de software": 5,
+    "Professor(a) do ensino superior": 3,
+    "Professor(a) do ensino técnico": 2
+   },
+   "ferramentas_conhecidas": {
+    "Portugol Studio ou Portugol Webstudio": 5,
+    "Scratch, Blockly ou similar": 4,
+    "Beecrowd, URI ou outro juiz online": 3,
+    "VisuAlg": 2,
+    "Thonny, Python Tutor ou outro visualizador de execução": 2,
+    "Nenhuma das anteriores": 1
+   },
+   "leciona": {
+    "Não": 4,
+    "Sim, leciono ou já lecionei": 4
+   },
+   "tempo_programacao": {
+    "De 2 a 5 anos": 3,
+    "Menos de 2 anos": 2,
+    "De 6 a 10 anos": 2,
+    "Mais de 10 anos": 1
+   },
+   "tempo_de_uso": {
+    "Menos de 15 minutos": 4,
+    "Mais de 1 hora": 2,
+    "De 30 a 60 minutos": 1,
+    "De 15 a 30 minutos": 1
+   },
+   "o_que_fez": {
+    "Criei ou editei uma linguagem no assistente": 5,
+    "Escrevi e executei um programa": 5,
+    "Vi o código intermediário": 4,
+    "Usei a execução passo a passo": 4,
+    "Resolvi e submeti um exercício": 3,
+    "Vi a tabela de tokens": 2,
+    "Entrei em uma turma ou criei uma turma": 2,
+    "Importei uma linguagem da comunidade": 1
+   },
+   "o_que_personalizou": {
+    "Palavras dos tipos (ex.: int → numero_inteiro)": 6,
+    "Modo de tipagem (com ou sem tipo)": 5,
+    "Entrada e saída (ex.: print → escreva)": 4,
+    "Operadores em palavra (ex.: && → e)": 3,
+    "Controle de fluxo (ex.: if → se)": 2,
+    "Literais booleanos": 2,
+    "Usei um preset pronto, sem alterar": 2,
+    "Delimitadores de bloco ou indentação": 2,
+    "Não personalizei nada": 2,
+    "Terminador de instrução (ponto e vírgula)": 1
+   }
+  },
+  "uso_em_sala_so_quem_leciona": [
+   {
+    "item": "Criar uma turma e receber alunos pelo código de acesso foi simples.",
+    "n": 3,
+    "media": 3.67,
+    "mediana": 3.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     3,
+     "Não se aplica",
+     5
+    ],
+    "sem_resposta": 4,
+    "outros": {
+     "Não se aplica": 1
+    }
+   },
+   {
+    "item": "Criar um exercício com casos de teste foi simples.",
+    "n": 4,
+    "media": 4.0,
+    "mediana": 4.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     3,
+     5,
+     5
+    ],
+    "sem_resposta": 4,
+    "outros": {}
+   },
+   {
+    "item": "Travar uma linguagem específica em um exercício é útil para planejar as aulas.",
+    "n": 4,
+    "media": 4.5,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     5,
+     5,
+     5
+    ],
+    "sem_resposta": 4,
+    "outros": {}
+   },
+   {
+    "item": "A correção automática pelos casos de teste é útil para acompanhar a turma.",
+    "n": 4,
+    "media": 4.5,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     5,
+     5,
+     5
+    ],
+    "sem_resposta": 4,
+    "outros": {}
+   },
+   {
+    "item": "Eu usaria esta plataforma em uma disciplina introdutória de programação.",
+    "n": 4,
+    "media": 3.0,
+    "mediana": 3.0,
+    "min": 2.0,
+    "max": 4.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     4,
+     2,
+     3
+    ],
+    "sem_resposta": 4,
+    "outros": {}
+   },
+   {
+    "item": "Eu conseguiria preparar uma aula com a plataforma sem apoio técnico externo.",
+    "n": 4,
+    "media": 4.0,
+    "mediana": 4.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     5,
+     4,
+     4
+    ],
+    "sem_resposta": 4,
+    "outros": {}
+   },
+   {
+    "item": "O esforço de preparar a linguagem antes da aula compensa o ganho em sala.",
+    "n": 3,
+    "media": 3.0,
+    "mediana": 3.0,
+    "min": 2.0,
+    "max": 4.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     4,
+     2,
+     "Não se aplica"
+    ],
+    "sem_resposta": 4,
+    "outros": {
+     "Não se aplica": 1
+    }
+   },
+   {
+    "item": "Alunos de uma mesma turma usando sintaxes diferentes dificultaria o trabalho do professor.",
+    "n": 3,
+    "media": 4.0,
+    "mediana": 4.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     4,
+     5,
+     "Não se aplica"
+    ],
+    "sem_resposta": 4,
+    "outros": {
+     "Não se aplica": 1
+    }
+   },
+   {
+    "item": "O subconjunto da linguagem (tipos, condicionais, repetição, arranjos, funções e E/S) é suficiente para uma disciplina introdutória.",
+    "n": 3,
+    "media": 4.33,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     null,
+     3,
+     null,
+     null,
+     null,
+     5,
+     5,
+     "Não se aplica"
+    ],
+    "sem_resposta": 4,
+    "outros": {
+     "Não se aplica": 1
+    }
+   }
+  ],
+  "momento_da_disciplina": {
+   "Em paralelo à linguagem oficial, como apoio": 2,
+   "Não vejo espaço para ela na disciplina": 1,
+   "Antes da linguagem oficial da disciplina, como preparação": 1
+  },
+  "recursos": [
+   {
+    "item": "Criar ou ajustar uma linguagem no assistente foi simples.",
+    "n": 7,
+    "media": 4.0,
+    "mediana": 4.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     4,
+     5,
+     3,
+     3,
+     "Não usei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 1
+    }
+   },
+   {
+    "item": "No assistente, ficou claro em que etapa eu estava.",
+    "n": 7,
+    "media": 4.43,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     5,
+     5,
+     3,
+     5,
+     "Não usei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 1
+    }
+   },
+   {
+    "item": "O exemplo de código do assistente ajudou a entender o efeito de cada alteração.",
+    "n": 7,
+    "media": 4.57,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     5,
+     5,
+     5,
+     4,
+     "Não usei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 1
+    }
+   },
+   {
+    "item": "Escrever programas com a linguagem configurada foi confortável.",
+    "n": 8,
+    "media": 4.12,
+    "mediana": 4.5,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     4,
+     3,
+     5,
+     5,
+     5,
+     5,
+     3,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "As mensagens de erro ajudaram a identificar o que corrigir.",
+    "n": 8,
+    "media": 4.25,
+    "mediana": 4.5,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     3,
+     5,
+     5,
+     4,
+     4
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "A tabela de tokens é útil para entender como a plataforma lê o código.",
+    "n": 6,
+    "media": 4.5,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     5,
+     5,
+     "Não usei",
+     4,
+     "Não usei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 2
+    }
+   },
+   {
+    "item": "O código intermediário é útil para entender o que o programa faz.",
+    "n": 7,
+    "media": 4.14,
+    "mediana": 4.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     5,
+     4,
+     4,
+     3,
+     "Não usei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 1
+    }
+   },
+   {
+    "item": "A execução passo a passo é útil para acompanhar o programa.",
+    "n": 7,
+    "media": 4.57,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     5,
+     5,
+     5,
+     4,
+     "Não usei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 1
+    }
+   },
+   {
+    "item": "Resolver e submeter exercícios foi simples.",
+    "n": 7,
+    "media": 4.29,
+    "mediana": 5.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     3,
+     5,
+     "Não usei",
+     5,
+     4,
+     3,
+     5
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 1
+    }
+   },
+   {
+    "item": "Importar uma linguagem da comunidade foi simples.",
+    "n": 5,
+    "media": 4.0,
+    "mediana": 4.0,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     4,
+     3,
+     5,
+     "Não usei",
+     "Não usei",
+     "Não usei",
+     3,
+     5
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não usei": 3
+    }
+   }
+  ],
+  "sus": {
+   "por_respondente": [
+    87.5,
+    50.0,
+    95.0,
+    77.5,
+    95.0,
+    62.5,
+    62.5,
+    75.0
+   ],
+   "n": 8,
+   "media": 75.6,
+   "mediana": 76.25,
+   "desvio_padrao": 16.5,
+   "min": 50.0,
+   "max": 95.0,
+   "itens": [
+    {
+     "item": "Acho que gostaria de usar esta plataforma com frequência.",
+     "n": 8,
+     "media": 3.5,
+     "mediana": 3.0,
+     "min": 2.0,
+     "max": 5.0,
+     "respostas": [
+      5,
+      3,
+      5,
+      3,
+      4,
+      3,
+      2,
+      3
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Considerei a plataforma mais complexa do que precisava ser.",
+     "n": 8,
+     "media": 1.88,
+     "mediana": 2.0,
+     "min": 1.0,
+     "max": 3.0,
+     "respostas": [
+      2,
+      3,
+      1,
+      1,
+      1,
+      2,
+      3,
+      2
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Achei a plataforma fácil de usar.",
+     "n": 8,
+     "media": 3.75,
+     "mediana": 4.0,
+     "min": 2.0,
+     "max": 5.0,
+     "respostas": [
+      4,
+      3,
+      5,
+      2,
+      4,
+      4,
+      4,
+      4
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Acho que precisaria da ajuda de uma pessoa com conhecimento técnico para usar esta plataforma.",
+     "n": 8,
+     "media": 1.88,
+     "mediana": 2.0,
+     "min": 1.0,
+     "max": 3.0,
+     "respostas": [
+      2,
+      3,
+      1,
+      2,
+      1,
+      3,
+      2,
+      1
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Considerei que as várias funções da plataforma estavam bem integradas.",
+     "n": 8,
+     "media": 4.25,
+     "mediana": 4.5,
+     "min": 3.0,
+     "max": 5.0,
+     "respostas": [
+      5,
+      3,
+      5,
+      5,
+      5,
+      3,
+      4,
+      4
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Achei que havia muita inconsistência nesta plataforma.",
+     "n": 8,
+     "media": 1.62,
+     "mediana": 1.5,
+     "min": 1.0,
+     "max": 3.0,
+     "respostas": [
+      1,
+      3,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Imagino que a maioria das pessoas aprenderia a usar esta plataforma rapidamente.",
+     "n": 8,
+     "media": 3.62,
+     "mediana": 3.5,
+     "min": 3.0,
+     "max": 5.0,
+     "respostas": [
+      4,
+      3,
+      4,
+      3,
+      5,
+      3,
+      3,
+      4
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Achei a plataforma muito complicada de usar.",
+     "n": 8,
+     "media": 1.75,
+     "mediana": 2.0,
+     "min": 1.0,
+     "max": 3.0,
+     "respostas": [
+      1,
+      3,
+      1,
+      2,
+      1,
+      2,
+      2,
+      2
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Senti-me confiante ao usar a plataforma.",
+     "n": 8,
+     "media": 3.88,
+     "mediana": 4.0,
+     "min": 3.0,
+     "max": 5.0,
+     "respostas": [
+      4,
+      3,
+      4,
+      5,
+      5,
+      3,
+      3,
+      4
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "Precisei aprender muitas coisas antes de conseguir usar esta plataforma.",
+     "n": 8,
+     "media": 1.62,
+     "mediana": 1.5,
+     "min": 1.0,
+     "max": 3.0,
+     "respostas": [
+      1,
+      3,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    }
+   ]
+  },
+  "ueq_s": {
+   "por_respondente": [
+    {
+     "pragmatica": 2.75,
+     "hedonica": 3.0,
+     "geral": 2.88
+    },
+    {
+     "pragmatica": 2.0,
+     "hedonica": 2.0,
+     "geral": 2.0
+    },
+    {
+     "pragmatica": 3.0,
+     "hedonica": 3.0,
+     "geral": 3.0
+    },
+    {
+     "pragmatica": 2.0,
+     "hedonica": 1.25,
+     "geral": 1.62
+    },
+    {
+     "pragmatica": 2.75,
+     "hedonica": 3.0,
+     "geral": 2.88
+    },
+    {
+     "pragmatica": 0.5,
+     "hedonica": 2.0,
+     "geral": 1.25
+    },
+    {
+     "pragmatica": -0.5,
+     "hedonica": 0.25,
+     "geral": -0.12
+    },
+    {
+     "pragmatica": 1.75,
+     "hedonica": 0.5,
+     "geral": 1.12
+    }
+   ],
+   "pragmatica_media": 1.78,
+   "hedonica_media": 1.88,
+   "geral_media": 1.83,
+   "itens_brutos_1a7": [
+    {
+     "item": "A plataforma atrapalhou ou apoiou o que você queria fazer?",
+     "n": 8,
+     "media": 6.0,
+     "mediana": 6.5,
+     "min": 2.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      7,
+      7,
+      6,
+      2,
+      6
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é complicada ou fácil de usar?",
+     "n": 8,
+     "media": 5.62,
+     "mediana": 6.0,
+     "min": 3.0,
+     "max": 7.0,
+     "respostas": [
+      6,
+      6,
+      7,
+      5,
+      7,
+      3,
+      5,
+      6
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é ineficiente ou eficiente?",
+     "n": 8,
+     "media": 5.88,
+     "mediana": 6.5,
+     "min": 2.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      7,
+      7,
+      6,
+      2,
+      5
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é confusa ou clara?",
+     "n": 8,
+     "media": 5.62,
+     "mediana": 6.0,
+     "min": 3.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      5,
+      6,
+      3,
+      5,
+      6
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é entediante ou empolgante?",
+     "n": 8,
+     "media": 6.12,
+     "mediana": 6.5,
+     "min": 4.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      7,
+      7,
+      6,
+      4,
+      5
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é desinteressante ou interessante?",
+     "n": 8,
+     "media": 6.25,
+     "mediana": 6.5,
+     "min": 5.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      7,
+      7,
+      6,
+      5,
+      5
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é convencional ou inventiva?",
+     "n": 8,
+     "media": 5.38,
+     "mediana": 6.0,
+     "min": 1.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      1,
+      7,
+      6,
+      5,
+      4
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    },
+    {
+     "item": "A plataforma é comum ou inovadora?",
+     "n": 8,
+     "media": 5.75,
+     "mediana": 6.0,
+     "min": 3.0,
+     "max": 7.0,
+     "respostas": [
+      7,
+      6,
+      7,
+      6,
+      7,
+      6,
+      3,
+      4
+     ],
+     "sem_resposta": 0,
+     "outros": {}
+    }
+   ]
+  },
+  "potencial_pedagogico": [
+   {
+    "item": "Permitir que o aluno defina as palavras-chave tende a reduzir a barreira sintática no primeiro contato.",
+    "n": 8,
+    "media": 3.88,
+    "mediana": 4.0,
+    "min": 1.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     4,
+     5,
+     4,
+     1,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Usar palavras em português no lugar de termos em inglês facilita a compreensão do que o código faz.",
+    "n": 8,
+    "media": 4.38,
+    "mediana": 5.0,
+    "min": 2.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4,
+     2,
+     5
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "A personalização tende a reduzir a frequência de erros de sintaxe cometidos por iniciantes.",
+    "n": 7,
+    "media": 4.14,
+    "mediana": 5.0,
+    "min": 1.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4,
+     1,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   },
+   {
+    "item": "Relatar os erros no vocabulário escolhido pelo próprio aluno facilita a correção do código.",
+    "n": 8,
+    "media": 4.25,
+    "mediana": 5.0,
+    "min": 2.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     2,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Expor a tabela de tokens tem valor didático para quem está aprendendo.",
+    "n": 7,
+    "media": 4.29,
+    "mediana": 5.0,
+    "min": 2.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4,
+     2,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   },
+   {
+    "item": "Expor o código intermediário tem valor didático para quem está aprendendo.",
+    "n": 7,
+    "media": 4.43,
+    "mediana": 5.0,
+    "min": 2.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     2,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   },
+   {
+    "item": "A execução passo a passo tem valor didático para quem está aprendendo.",
+    "n": 8,
+    "media": 4.75,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     4,
+     5
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "O conjunto de elementos configuráveis é adequado ao propósito da ferramenta.",
+    "n": 7,
+    "media": 4.57,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4,
+     4,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   }
+  ],
+  "riscos_concordar_e_apontar_problema": [
+   {
+    "item": "Aprender em uma sintaxe personalizada pode dificultar a migração posterior para uma linguagem de mercado.",
+    "n": 8,
+    "media": 3.0,
+    "mediana": 3.5,
+    "min": 1.0,
+    "max": 4.0,
+    "respostas": [
+     2,
+     4,
+     4,
+     3,
+     1,
+     4,
+     4,
+     2
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "A liberdade de personalizar pode desviar a atenção do aluno do raciocínio algorítmico.",
+    "n": 7,
+    "media": 2.57,
+    "mediana": 2.0,
+    "min": 1.0,
+    "max": 5.0,
+    "respostas": [
+     1,
+     4,
+     2,
+     1,
+     1,
+     4,
+     5,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   },
+   {
+    "item": "O tempo gasto configurando a linguagem não compensa o ganho obtido.",
+    "n": 7,
+    "media": 1.86,
+    "mediana": 2.0,
+    "min": 1.0,
+    "max": 4.0,
+    "respostas": [
+     2,
+     4,
+     1,
+     1,
+     1,
+     2,
+     2,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   }
+  ],
+  "qualidade_tecnica": [
+   {
+    "item": "As mensagens de erro são claras e indicam o que precisa ser corrigido.",
+    "n": 7,
+    "media": 4.71,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     4,
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 1
+    }
+   },
+   {
+    "item": "A ferramenta respondeu de forma rápida e estável durante o uso.",
+    "n": 8,
+    "media": 4.88,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "O assistente de criação de linguagem é compreensível para quem não tem formação em compiladores.",
+    "n": 8,
+    "media": 4.38,
+    "mediana": 4.5,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4,
+     4,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "A validação prévia impede adequadamente configurações de linguagem inválidas.",
+    "n": 6,
+    "media": 4.67,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     4,
+     5,
+     5,
+     5,
+     "Não sei",
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 2
+    }
+   },
+   {
+    "item": "O código intermediário exibido corresponde ao que o programa realmente executa.",
+    "n": 6,
+    "media": 4.83,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     "Não sei",
+     "Não sei"
+    ],
+    "sem_resposta": 0,
+    "outros": {
+     "Não sei": 2
+    }
+   }
+  ],
+  "construcoes_que_faltaram": {
+   "Não senti falta de nada relevante para o ensino introdutório": 5,
+   "Registros ou estruturas compostas": 2,
+   "Modularização em vários arquivos": 1,
+   "Orientação a objetos": 1,
+   "Manipulação de cadeias mais rica": 1
+  },
+  "utilidade_intencao_tam": [
+   {
+    "item": "Esta plataforma é útil para quem está começando a programar.",
+    "n": 8,
+    "media": 4.38,
+    "mediana": 5.0,
+    "min": 2.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     2,
+     4
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Esta plataforma ajudaria alunos iniciantes a aprender lógica de programação mais rápido.",
+    "n": 8,
+    "media": 3.88,
+    "mediana": 4.5,
+    "min": 1.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     3,
+     1,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Comparada às ferramentas que eu conheço, esta plataforma oferece algo que elas não oferecem.",
+    "n": 8,
+    "media": 4.62,
+    "mediana": 5.0,
+    "min": 4.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     4,
+     4
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Recomendaria esta plataforma a um colega da área.",
+    "n": 8,
+    "media": 4.25,
+    "mediana": 4.5,
+    "min": 3.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4,
+     3,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Vejo a plataforma como complemento, e não como substituto, à linguagem oficial da disciplina.",
+    "n": 8,
+    "media": 4.38,
+    "mediana": 5.0,
+    "min": 2.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     4,
+     5,
+     5,
+     5,
+     2,
+     5
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   },
+   {
+    "item": "Indicaria esta plataforma a alguém que está começando a programar.",
+    "n": 8,
+    "media": 3.88,
+    "mediana": 4.5,
+    "min": 1.0,
+    "max": 5.0,
+    "respostas": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     3,
+     1,
+     3
+    ],
+    "sem_resposta": 0,
+    "outros": {}
+   }
+  ],
+  "abertas": [
+   {
+    "pergunta": "O que funcionou melhor na plataforma?",
+    "respostas": [
+     {
+      "respondente": 3,
+      "texto": "A facilidade de utilização, a proposta de simplificar o aprendizado de lógica de programação e a possibilidade de visualizar e compreender o funcionamento dos comandos de maneira dinâmica. A plataforma torna o aprendizado mais intuitivo e acessível, principalmente para quem está tendo o primeiro contato com programação.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 4,
+      "texto": "Configuração da linguagem",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 5,
+      "texto": "Criação da linguagem",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 8,
+      "texto": "Criação de lista e acesso à lista criada.",
+      "autoriza_citacao": true
+     }
+    ]
+   },
+   {
+    "pergunta": "Em que ponto você teve dificuldade ou ficou perdido(a)?",
+    "respostas": [
+     {
+      "respondente": 3,
+      "texto": "Inicialmente, pode haver alguma dificuldade para compreender a sintaxe e a estrutura dos comandos, especialmente para quem já está habituado a outras linguagens de programação. Entretanto, acredito que essa adaptação seja natural durante o processo de aprendizado.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 4,
+      "texto": "Dificuldade em visualizar o botão de criar linguagem.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 7,
+      "texto": "Não houve.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 8,
+      "texto": "Não consegui explorar significativamente a plataforma.",
+      "autoriza_citacao": true
+     }
+    ]
+   },
+   {
+    "pergunta": "Alguma mensagem de erro foi confusa? Se lembrar, descreva.",
+    "respostas": [
+     {
+      "respondente": 3,
+      "texto": "Seria interessante apresentar mensagens de erro mais descritivas, indicando com clareza onde está o problema e, sempre que possível, sugerindo como corrigi-lo. Isso facilitaria bastante o aprendizado e ajudaria o usuário a desenvolver autonomia na resolução de problemas.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 7,
+      "texto": "Não.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 8,
+      "texto": "Não explorei esta parte.",
+      "autoriza_citacao": true
+     }
+    ]
+   },
+   {
+    "pergunta": "Se pudesse mudar uma única coisa na plataforma, qual seria?",
+    "respostas": [
+     {
+      "respondente": 3,
+      "texto": "Investiria na ampliação dos recursos interativos, com mais exemplos práticos, exercícios progressivos e desafios que permitissem ao usuário aplicar os conceitos aprendidos. Também seria interessante disponibilizar projetos práticos para acompanhar a evolução do aprendizado.",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 4,
+      "texto": "Botão de criar linguagem mais óbvio/chamativo",
+      "autoriza_citacao": true
+     },
+     {
+      "respondente": 8,
+      "texto": "Não explorei o suficiente para sugerir alterações.",
+      "autoriza_citacao": true
+     }
+    ]
+   }
+  ],
+  "autorizacao_citacao": {
+   "Sim, autorizo a citação sem identificação": 7,
+   "Não autorizo": 1
+  }
+ },
+ "demonstracao_alunos": {
+  "n": 18,
+  "data": "2026-11-03",
+  "horario": [
+   "14:13",
+   "14:43"
+  ],
+  "assentimento": {
+   "Li e quero participar": 18
+  },
+  "idade": {
+   "Até 15 anos": 9,
+   "16 ou 17 anos": 9
+  },
+  "curso": {
+   "Informática": 18
+  },
+  "ano": {
+   "1º ano": 18
+  },
+  "experiencia": {
+   "Já programei um pouco (em aulas, cursos ou tutoriais)": 9,
+   "Programo com frequência": 8,
+   "Nunca programei": 1
+  },
+  "itens": [
+   {
+    "item": "Entendi para que serve a plataforma.",
+    "n": 18,
+    "media": 4.33,
+    "mediana": 4.5,
+    "distribuicao_1a5": [
+     1,
+     0,
+     0,
+     8,
+     9
+    ],
+    "concordam_4ou5": 17,
+    "neutros_3": 0,
+    "discordam_1ou2": 1
+   },
+   {
+    "item": "Um programa escrito com palavras em português é mais fácil de entender do que um escrito com palavras em inglês.",
+    "n": 18,
+    "media": 4,
+    "mediana": 4.0,
+    "distribuicao_1a5": [
+     0,
+     1,
+     6,
+     3,
+     8
+    ],
+    "concordam_4ou5": 11,
+    "neutros_3": 6,
+    "discordam_1ou2": 1
+   },
+   {
+    "item": "Poder escolher as palavras da linguagem ajudaria quem está começando a programar.",
+    "n": 18,
+    "media": 4.17,
+    "mediana": 4.0,
+    "distribuicao_1a5": [
+     0,
+     1,
+     3,
+     6,
+     8
+    ],
+    "concordam_4ou5": 14,
+    "neutros_3": 3,
+    "discordam_1ou2": 1
+   },
+   {
+    "item": "Ver como a plataforma separa o programa em partes (os tokens) ajuda a entender como o computador lê o código.",
+    "n": 18,
+    "media": 4.17,
+    "mediana": 4.0,
+    "distribuicao_1a5": [
+     0,
+     2,
+     1,
+     7,
+     8
+    ],
+    "concordam_4ou5": 15,
+    "neutros_3": 1,
+    "discordam_1ou2": 2
+   },
+   {
+    "item": "Eu gostaria de usar essa plataforma nas aulas de programação.",
+    "n": 18,
+    "media": 4.17,
+    "mediana": 4.0,
+    "distribuicao_1a5": [
+     0,
+     0,
+     3,
+     9,
+     6
+    ],
+    "concordam_4ou5": 15,
+    "neutros_3": 3,
+    "discordam_1ou2": 0
+   },
+   {
+    "item": "A demonstração aumentou meu interesse em aprender programação.",
+    "n": 18,
+    "media": 4.17,
+    "mediana": 4.0,
+    "distribuicao_1a5": [
+     1,
+     1,
+     0,
+     8,
+     8
+    ],
+    "concordam_4ou5": 16,
+    "neutros_3": 0,
+    "discordam_1ou2": 2
+   }
+  ],
+  "comparacao_versoes": {
+   "legenda": "Versão A = sintaxe padrão em inglês; Versão B = personalizada em português",
+   "respostas": {
+    "Versão B": 11,
+    "As duas são igualmente fáceis": 4,
+    "Versão A": 2,
+    "As duas são igualmente difíceis": 1
+   }
+  },
+  "comparacao_por_experiencia": {
+   "Já programei um pouco (em aulas, cursos ou tutoriais)": {
+    "As duas são igualmente fáceis": 2,
+    "Versão B": 5,
+    "Versão A": 2
+   },
+   "Programo com frequência": {
+    "As duas são igualmente fáceis": 2,
+    "Versão B": 6
+   },
+   "Nunca programei": {
+    "As duas são igualmente difíceis": 1
+   }
+  },
+  "comentarios_n": 2
+ }
+}

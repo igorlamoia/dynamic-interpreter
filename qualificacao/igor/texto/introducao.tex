@@ -2,7 +2,7 @@
 
 O presente Trabalho de Conclusão de Curso foi desenvolvido em cooperação técnico-científica, em coautoria com o acadêmico Victor de Souza Vilela da Silva, do Curso de Engenharia de Computação do Centro Federal de Educação Tecnológica de Minas Gerais, Unidade Leopoldina. Esta pesquisa faz parte de um estudo complementar e interdependente intitulado \textit{Interpretador Dinâmico para Ensino de Programação: Implementação de análise léxica e sintática, geração e interpretação de código intermediário em ambiente web}, de autoria do referido coautor e submetido ao mesmo curso desta Instituição. A divisão das atividades comuns e dos eixos individuais de aprofundamento é descrita no Apêndice~\ref{ap:plano}.
 
-Embora este texto e o documento complementar acima identificado compartilhem a mesma base teórica geral e o mesmo objeto de estudo, isto é, uma plataforma educacional web formada por um interpretador dinâmico integrado a uma IDE com gramática configurável pelo usuário, as abordagens diferem em escopo e ênfase metodológica. Enquanto o documento complementar, de autoria de Victor de Souza Vilela da Silva, se concentra no núcleo de tradução, examinando as fases de análise léxica, análise sintática, geração de código intermediário e execução pelo interpretador, este texto trata do Ambiente de Desenvolvimento Integrado: sua arquitetura \textit{front-end}, a criação e implementação do assistente de personalização da linguagem, a experiência de uso da plataforma e a preparação de uma avaliação futura com estudantes. Para uma compreensão completa do sistema proposto, recomenda-se a leitura dos dois documentos.
+Embora este texto e o documento complementar acima identificado compartilhem a mesma base teórica geral e o mesmo objeto de estudo, isto é, uma plataforma educacional web formada por um interpretador dinâmico integrado a uma IDE com gramática configurável pelo usuário, as abordagens diferem em escopo e ênfase metodológica. Enquanto o documento complementar, de autoria de Victor de Souza Vilela da Silva, se concentra no núcleo de tradução, examinando as fases de análise léxica, análise sintática, geração de código intermediário e execução pelo interpretador, este texto trata do Ambiente de Desenvolvimento Integrado: sua arquitetura \textit{front-end}, a criação e implementação do assistente de personalização da linguagem, a experiência de uso da plataforma e a avaliação dela por especialistas e por uma turma de estudantes. Para uma compreensão completa do sistema proposto, recomenda-se a leitura dos dois documentos.
 
 O ensino introdutório de programação envolve dificuldades de compreensão e aplicação de conceitos, discutidas no mapeamento sistemático de \citeonline{souza2016}. Este trabalho enfoca uma dessas dificuldades: lidar simultaneamente com a construção do algoritmo e com as convenções de escrita da linguagem. Os experimentos de \citeonline{stefik2013} indicam que escolhas de sintaxe afetam o desempenho de iniciantes, motivando investigar outras formas de apresentação dos comandos. Esse resultado não demonstra, por si só, que a personalização proposta neste projeto reduza reprovação, evasão ou carga cognitiva.
 
@@ -10,9 +10,9 @@ Neste trabalho, \textbf{dinâmico} designa a configuração recebida pelo núcle
 
 A pergunta que orienta esta pesquisa nasce dessa observação: \textbf{em que medida uma plataforma de programação cuja sintaxe possa ser redefinida pelo próprio estudante contribui para reduzir a barreira sintática enfrentada no primeiro contato com a programação, deslocando o foco da forma para o conteúdo do raciocínio computacional?}
 
-Trabalha-se com a hipótese, ainda não submetida a verificação empírica, de que permitir ao estudante escolher quais palavras servirão como comandos, como os blocos serão delimitados, como os operadores serão escritos e se o terminador de instrução será obrigatório ou opcional possa reduzir a carga cognitiva exigida no aprendizado simultâneo da lógica e da forma. A expectativa é que o exercício de adaptar a linguagem ao próprio repertório converta a sintaxe, antes vivida como obstáculo, em objeto consciente de escolha pedagógica.
+Trabalha-se com a hipótese, até aqui examinada só por uma primeira coleta de opinião e sem medida de desempenho, de que permitir ao estudante escolher quais palavras servirão como comandos, como os blocos serão delimitados, como os operadores serão escritos e se o terminador de instrução será obrigatório ou opcional possa reduzir a carga cognitiva exigida no aprendizado simultâneo da lógica e da forma. Espera-se que, ao adaptar a linguagem ao próprio repertório, o estudante passe a tratar a sintaxe como algo que pode escolher.
 
-Cumpre delimitar, desde já, o alcance deste trabalho diante dessa pergunta. O que aqui se apresenta é a construção do artefato que torna a investigação possível e uma proposta de protocolo com que ela poderá ser conduzida. A aplicação desse protocolo junto a estudantes, que permitiria responder empiricamente à pergunta formulada, não integra o escopo deste documento e é registrada como encaminhamento futuro.
+Diante dessa pergunta, este trabalho apresenta a construção do artefato que torna a investigação possível, um protocolo de avaliação e a aplicação dele a um painel de oito especialistas, acompanhada de uma sessão de opinião com dezoito estudantes \cite{queiroz2026avaliacao}. Esses dados registram a opinião dos participantes sobre a plataforma e não medem aprendizagem. Um estudo que meça o desempenho de estudantes, que permitiria responder empiricamente à pergunta formulada, não integra o escopo deste documento e é registrado como encaminhamento.
 
 \section{Justificativa}
 
@@ -22,15 +22,13 @@ A contribuição deste trabalho é integrar esse assistente a uma IDE web com ed
 
 \section{Objetivos}
 
-A seguir são apresentados o objetivo geral que orienta a investigação e os objetivos específicos que viabilizam o seu alcance.
-
 \subsection{Objetivo Geral}
 
 Projetar, implementar e integrar uma IDE web ao núcleo de tradução e execução configurável, oferecendo ao estudante iniciante recursos para personalizar a linguagem e experimentar algoritmos no navegador.
 
 \subsection{Objetivos Específicos}
 
-Para que o objetivo geral seja efetivamente alcançado, as seguintes metas operacionais foram fixadas:
+Os objetivos específicos são:
 
 \begin{itemize}
     \item Especificar quais elementos da linguagem serão passíveis de redefinição pelo usuário, delimitando o conjunto configurável de palavras-chave, operadores, literais, delimitadores de bloco e terminador de instrução;
@@ -42,6 +40,6 @@ Para que o objetivo geral seja efetivamente alcançado, as seguintes metas opera
 
 \section{Estrutura do Trabalho}
 
-O restante deste trabalho está organizado da seguinte maneira. O Capítulo~\ref{cap:referencial} apresenta o referencial teórico que sustenta o projeto, reunindo os fundamentos de construção de compiladores, as práticas associadas ao desenvolvimento de aplicações web e as iniciativas educacionais relacionadas. O Capítulo~\ref{cap:proposta}, por sua vez, expõe a proposta do trabalho e o planejamento de suas duas fases. Por fim, o Capítulo~\ref{cap:metodologia} descreve a modelagem realizada e a implementação consolidada até o encerramento desta etapa, contemplando a arquitetura da plataforma, a personalização dinâmica da linguagem, a integração com o interpretador e a estratégia de testes adotada.
+O restante deste trabalho está organizado da seguinte maneira. O Capítulo~\ref{cap:referencial} apresenta o referencial teórico que sustenta o projeto, reunindo os fundamentos de construção de compiladores, as práticas associadas ao desenvolvimento de aplicações web e as iniciativas educacionais relacionadas. O Capítulo~\ref{cap:proposta}, por sua vez, expõe a proposta do trabalho e o planejamento de suas duas fases. O Capítulo~\ref{cap:metodologia} descreve a modelagem realizada e a implementação consolidada até o encerramento desta etapa, contemplando a arquitetura da plataforma, a personalização dinâmica da linguagem, a integração com o interpretador e a estratégia de testes adotada.
 
-O Capítulo~\ref{cap:consideracoes} retoma os objetivos, apresenta os resultados técnicos e as limitações e delimita os trabalhos futuros. A Seção~\ref{sec:protocolo-avaliacao} descreve o instrumento de avaliação, dirigido a um painel de especialistas e ainda não aplicado. O Capítulo~\ref{cap:resultados} está reservado à análise dos dados.
+A Seção~\ref{sec:protocolo-avaliacao} descreve os dois formulários de avaliação, um dirigido a um painel de especialistas e outro a uma turma de estudantes, e o Capítulo~\ref{cap:resultados} analisa as respostas. O Capítulo~\ref{cap:consideracoes} retoma os objetivos, resume os resultados técnicos e os da avaliação, apresenta as limitações e delimita os trabalhos futuros.

@@ -1,100 +1,296 @@
-Este capítulo é reservado à análise dos dados do instrumento descrito na Seção~\ref{sec:protocolo-avaliacao}. Até o fechamento desta revisão a coleta não tinha sido feita: o formulário está escrito e revisado, mas não foi distribuído, e o encaminhamento ao comitê de ética da instituição continua pendente. Por isso não há resultados de participantes aqui.
+Este capítulo analisa os dados dos dois formulários descritos na Seção~\ref{sec:protocolo-avaliacao}. O PA-01, dirigido ao painel de especialistas, recebeu oito respostas entre 1º e 9 de novembro de 2026. O formulário da sessão com estudantes recebeu dezoito respostas em 3 de novembro de 2026. Todos os números vêm do registro mantido no repositório do projeto \cite{silva2026avaliacao}, gerado por um \textit{script} a partir das planilhas de respostas.
 
-As seções abaixo definem desde já o que será relatado e com quais critérios. Se essa definição fosse feita depois de ver os dados, seria possível escolher o recorte mais favorável à solução; defini-la agora evita essa escolha. Os critérios de cálculo dos escores estão na Seção~\ref{sec:protocolo-avaliacao} e não são repetidos aqui.
+As seções, a ordem e os critérios de leitura foram definidos na revisão anterior deste texto, antes da coleta, e foram mantidos. Se essa definição fosse feita depois de ver os dados, seria possível escolher o recorte mais favorável à solução. Há um acréscimo em relação ao que estava definido: a Seção~\ref{sec:resultado-estudantes}, sobre a sessão com estudantes, que não constava do protocolo original. Os critérios de cálculo dos escores estão na Seção~\ref{sec:protocolo-avaliacao} e não são repetidos aqui.
 
-% =====================================================================
-% A PREENCHER APÓS A COLETA.
-% Cada seção diz o que relatar e com qual critério. Manter a ordem e os
-% critérios definidos aqui; se algo mudar depois de ver os dados, a
-% mudança precisa ser declarada no texto.
-% =====================================================================
+As convenções de leitura valem para todo o capítulo. Com oito respondentes, o texto usa contagens, médias e medianas, sem porcentagens. Nas afirmações em escala de 1 a 5, as respostas ``não usei'', ``não sei'' e ``não se aplica'' ficam fora da média e são contadas à parte. Nenhuma resposta foi excluída. Quando é preciso apontar um respondente, ele é indicado por R1 a R8, na ordem de chegada das respostas.
 
 \section{Composição do Painel}
 \label{sec:resultado-painel}
 
-% A PREENCHER: quantos responderam; distribuição por titulação, área de
-% atuação e tempo de experiência; quantos lecionam ou já lecionaram; quais
-% ferramentas de ensino o painel já conhecia.
-% Numa avaliação feita por especialistas, o perfil de quem avalia faz parte
-% do resultado: apresentar antes dos escores.
-% Registrar o que os respondentes disseram ter feito na plataforma e o que
-% personalizaram: sem isso não dá para saber se uma avaliação negativa veio
-% de quem usou a ferramenta ou de quem não experimentou o recurso avaliado.
+Os oito respondentes foram convidados diretamente e não são identificados. Três têm doutorado ou titulação superior, dois têm graduação e três têm ensino médio. Cinco atuam como profissionais de desenvolvimento de software e três são professores do ensino superior, dois dos quais também lecionam no ensino técnico. Quatro lecionam ou já lecionaram disciplina que envolva programação: os três professores e um dos profissionais de desenvolvimento. Dois trabalham com programação há menos de 2 anos, três de 2 a 5 anos, dois de 6 a 10 anos e um há mais de 10 anos.
+
+Sobre as ferramentas de ensino já conhecidas, cinco citaram o Portugol Studio ou o Portugol Webstudio, quatro citaram Scratch, Blockly ou similar, três citaram Beecrowd, URI ou outro juiz \textit{online}, dois citaram o VisuAlg, dois citaram Thonny, Python Tutor ou outro visualizador de execução, e um não conhecia nenhuma delas.
+
+O tempo de uso declarado foi curto para metade do painel: quatro usaram a plataforma por menos de 15 minutos, um de 15 a 30 minutos, um de 30 a 60 minutos e dois por mais de 1 hora. A Tabela~\ref{tab:resultado-atividades} mostra o que os respondentes disseram ter feito e o que personalizaram.
+
+\begin{table}[htbp]
+\centering
+\caption{Atividades declaradas pelos respondentes do painel e elementos da linguagem que personalizaram (respostas múltiplas, oito respondentes).}
+\label{tab:resultado-atividades}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{10.5cm}|c|}
+\hline
+\textbf{O que fez na plataforma} & \textbf{Respondentes} \\\hline
+Criou ou editou uma linguagem no assistente & 5 \\\hline
+Escreveu e executou um programa & 5 \\\hline
+Viu o código intermediário & 4 \\\hline
+Usou a execução passo a passo & 4 \\\hline
+Resolveu e submeteu um exercício & 3 \\\hline
+Viu a tabela de \textit{tokens} & 2 \\\hline
+Entrou em uma turma ou criou uma turma & 2 \\\hline
+Importou uma linguagem da comunidade & 1 \\\hline
+\textbf{O que personalizou na linguagem} & \textbf{Respondentes} \\\hline
+Palavras dos tipos & 6 \\\hline
+Modo de tipagem & 5 \\\hline
+Entrada e saída & 4 \\\hline
+Operadores em palavra & 3 \\\hline
+Controle de fluxo & 2 \\\hline
+Literais booleanos & 2 \\\hline
+Delimitadores de bloco ou indentação & 2 \\\hline
+Terminador de instrução & 1 \\\hline
+Usou uma linguagem predefinida, sem alterar & 2 \\\hline
+Não personalizou nada & 2 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Para este trabalho importa quem chegou às fases intermediárias da tradução. Quatro respondentes declararam ter visto o código intermediário (R1, R2, R4 e R5), quatro declararam ter usado a execução passo a passo (R1, R3, R4 e R5) e só dois declararam ter visto a tabela de \textit{tokens} (R4 e R5). A tabela de \textit{tokens} foi, portanto, a fase menos visitada. Do lado da personalização, as palavras dos tipos e o modo de tipagem foram os elementos mais alterados, e o terminador de instrução foi alterado por um respondente.
+
+Três características das respostas condicionam a leitura do restante do capítulo. A primeira é o pouco contato de parte do painel. R7 não marcou nenhuma atividade nem elemento personalizado e declarou menos de 15 minutos de uso. R8 marcou apenas os recursos de turma e de exercício e escreveu, nas questões abertas, que não conseguiu explorar a plataforma. Os dois lecionam. Isso não desqualifica a opinião deles, mas indica que parte das notas reflete uma primeira impressão.
+
+A segunda é o padrão de R2, que marcou o mesmo valor em todos os itens de cada bloco em escala: 3 no bloco de uso em sala, no bloco de recursos e no SUS, 6 nos oito pares do UEQ-S e 4 nos blocos de potencial pedagógico, de riscos, de qualidade técnica e de utilidade. As respostas de R2 foram mantidas, e o efeito delas é indicado onde pesa.
+
+A terceira é a relação entre o que foi avaliado e o que foi usado. Em vários itens o número de notas é maior que o número de pessoas que declararam ter usado o recurso. Um dos dois respondentes que marcaram não ter personalizado nada marcou também três elementos personalizados, e a resposta foi mantida como veio.
 
 \section{Avaliação do Núcleo de Tradução}
 \label{sec:resultado-nucleo}
 
-% A PREENCHER: escores do bloco de qualidade técnica, item a item, com
-% atenção ao item que diz se o código intermediário exibido corresponde ao
-% que o programa executa.
-% Relatar separadamente quantos marcaram "não sei" em cada item: num bloco
-% dirigido a quem tem formação na área, muitas respostas assim indicam que
-% o recurso não foi usado, e não que foi mal avaliado.
-% Reunir aqui também os itens sobre a exibição das fases intermediárias
-% (tabela de tokens, código intermediário e execução passo a passo) que
-% vieram do bloco de avaliação dos recursos.
+A Tabela~\ref{tab:resultado-nucleo} reúne os cinco itens em escala do bloco de qualidade técnica e os três itens do bloco de avaliação dos recursos que tratam da exibição das fases intermediárias. No primeiro bloco a resposta à parte é ``não sei''; no segundo, ``não usei''.
+
+\begin{table}[htbp]
+\centering
+\caption{Itens sobre o núcleo de tradução (escala de 1 a 5; ``não sei'' ou ``não usei'' contados à parte).}
+\label{tab:resultado-nucleo}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{7.8cm}|c|c|c|c|p{1.3cm}|}
+\hline
+\textbf{Afirmação} & \textbf{n} & \textbf{Média} & \textbf{Mediana} & \textbf{Mín.--máx.} & \textbf{À parte} \\\hline
+\multicolumn{6}{|l|}{\textbf{Qualidade técnica (``não sei'' à parte)}} \\\hline
+As mensagens de erro são claras e indicam o que precisa ser corrigido & 7 & 4,71 & 5 & 4--5 & \centering\arraybackslash 1 \\\hline
+A ferramenta respondeu de forma rápida e estável durante o uso & 8 & 4,88 & 5 & 4--5 & \centering\arraybackslash 0 \\\hline
+O assistente de criação de linguagem é compreensível para quem não tem formação em compiladores & 8 & 4,38 & 4,5 & 3--5 & \centering\arraybackslash 0 \\\hline
+A validação prévia impede adequadamente configurações de linguagem inválidas & 6 & 4,67 & 5 & 4--5 & \centering\arraybackslash 2 \\\hline
+O código intermediário exibido corresponde ao que o programa realmente executa & 6 & 4,83 & 5 & 4--5 & \centering\arraybackslash 2 \\\hline
+\multicolumn{6}{|l|}{\textbf{Avaliação dos recursos (``não usei'' à parte)}} \\\hline
+A tabela de \textit{tokens} é útil para entender como a plataforma lê o código & 6 & 4,50 & 5 & 3--5 & \centering\arraybackslash 2 \\\hline
+O código intermediário é útil para entender o que o programa faz & 7 & 4,14 & 4 & 3--5 & \centering\arraybackslash 1 \\\hline
+A execução passo a passo é útil para acompanhar o programa & 7 & 4,57 & 5 & 3--5 & \centering\arraybackslash 1 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Nenhum item do bloco de qualidade técnica recebeu nota abaixo de 3, e quatro dos cinco não receberam nota abaixo de 4. O item mais bem avaliado foi a resposta rápida e estável da ferramenta, com média 4,88: sete respondentes marcaram 5 e R2 marcou 4. Todos tinham condição de julgar esse item, porque ele trata do uso em geral, e não de um recurso específico. A validação prévia da configuração teve média 4,67 entre seis respondentes, e o assistente teve média 4,38, com uma nota 3, dada por R8, que não abriu o assistente.
+
+O item sobre o código intermediário exibido corresponder ao que o programa executa recebeu destaque no protocolo, porque uma avaliação negativa nele indicaria diferença entre o que a interface mostra e o que o interpretador executa. Não houve avaliação negativa. Seis respondentes deram nota, com média 4,83: cinco marcaram 5 e R2 marcou 4. Dois marcaram ``não sei'', R7 e R8, que não declararam ter visto o código intermediário. Num bloco dirigido a quem tem formação na área, essa resposta indica que o recurso não foi visto.
+
+O número de notas, porém, é maior que o de pessoas que declararam ter visto o recurso. Dos seis que avaliaram o item, quatro declararam ter visto o código intermediário (R1, R2, R4 e R5). R3 e R6 deram nota 5 sem ter marcado essa atividade. Assim, o julgamento sobre a correspondência entre o código exibido e a execução se apoia, de forma declarada, em quatro respondentes, um deles com o padrão de R2. Mesmo entre esses quatro, o formulário não permite saber se a pessoa comparou o código intermediário com a execução ou se avaliou a impressão geral do recurso. O item mede percepção; a correspondência em si decorre de como o sistema foi construído: a lista de instruções exibida na IDE é a mesma que o interpretador percorre, como descrito na Subseção~\ref{subsec:geracao-codigo-intermediario}, e é verificada pelos testes da Seção~\ref{sec:metodologia-testes}.
+
+Os três itens sobre as fases intermediárias ficaram acima de 4. A execução passo a passo teve média 4,57, com cinco notas 5. A tabela de \textit{tokens} teve média 4,50 entre seis respondentes, com dois ``não usei'', de R6 e R8. O código intermediário teve a menor média dos três, 4,14, com três notas 5, dois 4 e dois 3; as notas 3 vieram de R2 e de R7. Também aqui o número de notas supera o de usos declarados: a tabela de \textit{tokens} recebeu seis notas, mas só dois respondentes declararam tê-la visto.
+
+O bloco de potencial pedagógico faz a mesma pergunta sob outro ângulo, sobre o valor didático de cada fase para quem está aprendendo. A execução passo a passo teve média 4,75, o código intermediário 4,43 e a tabela de \textit{tokens} 4,29, os dois últimos entre sete respondentes, com um ``não sei'' de R8. As médias para o próprio uso e para o iniciante ficaram próximas, sem uma direção comum: o código intermediário subiu de 4,14 para 4,43, e a tabela de \textit{tokens} desceu de 4,50 para 4,29. A diferença mais clara está em R7, que deu nota 4 à tabela de \textit{tokens} e 3 ao código intermediário como recursos e nota 2 aos dois como valor didático para o iniciante. Esse respondente julgou as duas fases úteis para si e pouco úteis para um iniciante.
 
 \section{Suficiência do Subconjunto da Linguagem}
 \label{sec:resultado-subconjunto}
 
-% A PREENCHER: resultado do item sobre o subconjunto ser suficiente para
-% uma disciplina introdutória, cruzado com as construções marcadas como
-% faltantes. Se o painel convergir para a mesma construção ausente, isso
-% delimita até onde vai o que foi implementado e ajuda a priorizar os
-% trabalhos futuros no núcleo de tradução.
+A afirmação de que o subconjunto da linguagem, com tipos, condicionais, repetição, arranjos, funções e entrada e saída, é suficiente para uma disciplina introdutória ficou no bloco de uso em sala, como registrado na Seção~\ref{sec:protocolo-avaliacao}. Dos quatro que lecionam, três deram nota e um marcou ``não se aplica''. As notas foram 5, 5 e 3, com média 4,33. O 3 é de R2. Com três notas, o resultado é um indício.
+
+A pergunta sobre construções que fizeram falta foi feita a todo o painel e teve sete respondentes; R4 a deixou em branco. Cinco marcaram não ter sentido falta de nada relevante para o ensino introdutório. Registros ou estruturas compostas foram marcados por dois respondentes, e modularização em vários arquivos, orientação a objetos e manipulação de cadeias mais rica por um cada. Tratamento de exceções e bibliotecas gráficas não foram marcados. Um respondente, R7, marcou ao mesmo tempo que não sentiu falta de nada relevante e que sentiu falta de registros e de orientação a objetos, e a resposta foi mantida como veio. Se for lida só pelas construções marcadas, quatro respondentes não apontaram falta alguma.
+
+O painel não convergiu para uma construção ausente. A mais citada, registros ou estruturas compostas, teve duas marcações, e nenhuma outra passou de uma. Orientação a objetos e modularização em vários arquivos já constam das limitações do Capítulo~\ref{cap:consideracoes}. Registros e manipulação de cadeias mais rica não constavam e passam a constar. A linguagem tem o tipo \texttt{string} e literais de cadeia, mas o formulário não detalha que operações o respondente esperava. Para priorizar os trabalhos futuros no núcleo, o resultado indica registros como o candidato mais citado, sem que duas marcações bastem para tratá-lo como demanda do painel.
 
 \section{Mensagens de Erro com Vocabulário Personalizado}
 \label{sec:resultado-diagnosticos}
 
-% A PREENCHER: item sobre clareza das mensagens de erro no bloco de
-% qualidade técnica, o item correspondente no bloco de avaliação dos
-% recursos e o item pedagógico sobre mostrar erros no vocabulário do
-% próprio aluno.
-% Comparar com os relatos da questão aberta sobre mensagens confusas: cada
-% relato é um caso concreto em que a mensagem não se adaptou ao vocabulário
-% em uso, e deve ser rastreado até a fase que a emitiu.
+Três itens em escala tratam das mensagens de erro, um em cada bloco. No bloco de qualidade técnica, a afirmação de que as mensagens são claras e indicam o que precisa ser corrigido teve média 4,71 entre sete respondentes: cinco marcaram 5, R2 e R7 marcaram 4, e R8 marcou ``não sei''. No bloco de avaliação dos recursos, a afirmação de que as mensagens ajudaram a identificar o que corrigir teve média 4,25 entre os oito: quatro marcaram 5, dois marcaram 4 e dois marcaram 3, R2 e R4. No bloco de potencial pedagógico, a afirmação de que relatar os erros no vocabulário escolhido pelo próprio aluno facilita a correção teve média 4,25: cinco marcaram 5, R2 marcou 4, R8 marcou 3 e R7 marcou 2.
+
+As três médias ficaram acima de 4. A questão aberta sobre mensagens confusas traz outro dado. Três respondentes escreveram nela. R7 respondeu que nenhuma foi confusa e R8 que não explorou essa parte. R3 escreveu que ``seria interessante apresentar mensagens de erro mais descritivas, indicando com clareza onde está o problema e, sempre que possível, sugerindo como corrigi-lo''. R3 deu nota 5 aos três itens em escala sobre mensagens de erro. O mesmo respondente, portanto, considera as mensagens claras e úteis e pede que elas sejam mais descritivas e sugiram a correção.
+
+Os itens em escala perguntam se as mensagens indicam o que corrigir, e a resposta aberta pede algo que elas não fazem: propor a correção. As mensagens do núcleo registram um código, o texto, a linha e a coluna do problema, como descrito na Subseção~\ref{subsec:interpretacao}, e nenhuma delas sugere uma correção. O pedido de R3 descreve, portanto, um recurso que o núcleo não tem.
+
+O protocolo previa rastrear cada relato de mensagem confusa até a fase que a emitiu. O relato de R3 não cita uma mensagem específica, e por isso não pode ser rastreado. Nenhum respondente relatou uma mensagem que tenha deixado de acompanhar o vocabulário em uso. Para registrar como as mensagens se comportam nesse ponto, o autor compilou, na versão atual do núcleo, um programa com palavras personalizadas em que falta o ponto e vírgula antes de \texttt{enquanto}, a palavra escolhida para \texttt{while}. A mensagem emitida pela análise sintática foi: ``Token inesperado na linha 1, coluna 32. Esperado `final de instrução', mas recebeu `palavra reservada while' (lexema `enquanto')''. O lexema aparece no vocabulário do usuário, mas a classe do \textit{token} é nomeada pela palavra canônica. Essa mensagem vem do método \texttt{consume} de \texttt{TokenIterator}, que monta o rótulo a partir do identificador do \textit{token}, e não a partir da configuração em uso. A adaptação das mensagens ao vocabulário personalizado é, portanto, parcial. Essa verificação é do autor e não fez parte do instrumento.
 
 \section{Usabilidade e Experiência}
 \label{sec:resultado-usabilidade}
 
-% A PREENCHER: escore SUS geral, com intervalo de confiança só se houver
-% vinte respondentes ou mais; com menos, apresentar como indicativo e não
-% afirmar que há diferença entre subgrupos. Comparar com a média de
-% referência e com as faixas de interpretação.
-% UEQ-S: relatar as dimensões pragmática e hedônica separadas, na faixa de
-% -3 a +3, comparando com os valores de referência do instrumento.
+O escore SUS médio do painel foi 75,6, com mediana 76,25, desvio padrão 16,5, mínimo 50,0 e máximo 95,0. A média fica acima da referência de 68 pontos e acima de 70, valor a partir do qual \citeonline{bangor2009} tratam o resultado como aceitável. Cinco respondentes ficaram acima de 68 e três ficaram abaixo. Com oito respondentes, o resultado é indicativo: não se calcula intervalo de confiança e não se comparam subgrupos, conforme o critério fixado no protocolo. A ressalva sobre a redação em português dos itens, registrada na Subseção~\ref{subsec:limites-interpretacao}, também vale para essa comparação. A Tabela~\ref{tab:resultado-sus-ueqs} traz o escore de cada respondente.
+
+\begin{table}[htbp]
+\centering
+\caption{Escore SUS (0 a 100) e dimensões do UEQ-S ($-3$ a $+3$) por respondente.}
+\label{tab:resultado-sus-ueqs}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Respondente} & \textbf{SUS} & \textbf{UEQ-S pragmática} & \textbf{UEQ-S hedônica} & \textbf{UEQ-S geral} \\\hline
+R1 & 87,5 & 2,75 & 3,00 & 2,88 \\\hline
+R2 & 50,0 & 2,00 & 2,00 & 2,00 \\\hline
+R3 & 95,0 & 3,00 & 3,00 & 3,00 \\\hline
+R4 & 77,5 & 2,00 & 1,25 & 1,62 \\\hline
+R5 & 95,0 & 2,75 & 3,00 & 2,88 \\\hline
+R6 & 62,5 & 0,50 & 2,00 & 1,25 \\\hline
+R7 & 62,5 & $-0,50$ & 0,25 & $-0,12$ \\\hline
+R8 & 75,0 & 1,75 & 0,50 & 1,12 \\\hline
+\textbf{Média} & 75,6 & 1,78 & 1,88 & 1,83 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+O escore 50,0 é o de R2, que marcou 3 nos dez itens. Sem essa resposta a média seria 79,3. O valor é informado para que o leitor veja o peso desse padrão; a média relatada continua sendo a dos oito. Entre os itens positivos do SUS, o de menor concordância foi ``acho que gostaria de usar esta plataforma com frequência'', com média 3,50, e o de maior foi ``considerei que as várias funções da plataforma estavam bem integradas'', com 4,25. Os cinco itens negativos tiveram médias entre 1,62 e 1,88.
+
+No UEQ-S, a dimensão pragmática teve média 1,78, a hedônica 1,88 e o valor geral 1,83, na faixa de $-3$ a $+3$. Na média do painel as duas dimensões quase coincidem. R7 teve o único valor negativo, $-0,50$ na dimensão pragmática, com nota 2, em 7, nos pares atrapalhou ou apoiou e ineficiente ou eficiente. A comparação com os valores de referência do instrumento não é feita, porque os pares foram apresentados sempre com o polo negativo à esquerda, diferente do original, como registrado na Subseção~\ref{subsec:limites-interpretacao}.
+
+Para o núcleo de tradução, o dado de usabilidade mais direto é o item de qualidade técnica sobre a resposta rápida e estável, com média 4,88, e o par ineficiente ou eficiente do UEQ-S, com média bruta 5,88 em 7. A única nota baixa nesse par foi o 2 de R7.
 
 \section{Potencial Pedagógico e Intenção de Uso}
 \label{sec:resultado-pedagogico}
 
-% A PREENCHER: bloco de potencial pedagógico (oito itens em terceira
-% pessoa) e bloco vindo do TAM.
-% Discutir se a opinião do painel concorda com a premissa de que concentrar
-% a flexibilidade da linguagem na análise léxica traz ganho pedagógico.
+A Tabela~\ref{tab:resultado-pedagogico} reúne o bloco de potencial pedagógico e o bloco de utilidade e intenção de uso. Os dois foram respondidos pelos oito participantes. O que eles registram é a opinião de professores e profissionais sobre o que tende a acontecer com um iniciante, e não uma medida feita com iniciantes.
+
+\begin{table}[htbp]
+\centering
+\caption{Blocos de potencial pedagógico e de utilidade e intenção de uso (escala de 1 a 5; ``não sei'' contado à parte).}
+\label{tab:resultado-pedagogico}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{8.0cm}|c|c|c|c|c|}
+\hline
+\textbf{Afirmação} & \textbf{n} & \textbf{Média} & \textbf{Mediana} & \textbf{Mín.--máx.} & \textbf{Não sei} \\\hline
+\multicolumn{6}{|l|}{\textbf{Potencial pedagógico}} \\\hline
+Permitir que o aluno defina as palavras-chave tende a reduzir a barreira sintática no primeiro contato & 8 & 3,88 & 4 & 1--5 & 0 \\\hline
+Usar palavras em português no lugar de termos em inglês facilita a compreensão do que o código faz & 8 & 4,38 & 5 & 2--5 & 0 \\\hline
+A personalização tende a reduzir a frequência de erros de sintaxe cometidos por iniciantes & 7 & 4,14 & 5 & 1--5 & 1 \\\hline
+Relatar os erros no vocabulário escolhido pelo próprio aluno facilita a correção do código & 8 & 4,25 & 5 & 2--5 & 0 \\\hline
+Expor a tabela de \textit{tokens} tem valor didático para quem está aprendendo & 7 & 4,29 & 5 & 2--5 & 1 \\\hline
+Expor o código intermediário tem valor didático para quem está aprendendo & 7 & 4,43 & 5 & 2--5 & 1 \\\hline
+A execução passo a passo tem valor didático para quem está aprendendo & 8 & 4,75 & 5 & 4--5 & 0 \\\hline
+O conjunto de elementos configuráveis é adequado ao propósito da ferramenta & 7 & 4,57 & 5 & 4--5 & 1 \\\hline
+\multicolumn{6}{|l|}{\textbf{Utilidade e intenção de uso}} \\\hline
+Esta plataforma é útil para quem está começando a programar & 8 & 4,38 & 5 & 2--5 & 0 \\\hline
+Esta plataforma ajudaria alunos iniciantes a aprender lógica de programação mais rápido & 8 & 3,88 & 4,5 & 1--5 & 0 \\\hline
+Comparada às ferramentas que eu conheço, esta plataforma oferece algo que elas não oferecem & 8 & 4,62 & 5 & 4--5 & 0 \\\hline
+Recomendaria esta plataforma a um colega da área & 8 & 4,25 & 4,5 & 3--5 & 0 \\\hline
+Vejo a plataforma como complemento, e não como substituto, à linguagem oficial da disciplina & 8 & 4,38 & 5 & 2--5 & 0 \\\hline
+Indicaria esta plataforma a alguém que está começando a programar & 8 & 3,88 & 4,5 & 1--5 & 0 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+O protocolo pedia que se discutisse se a opinião do painel concorda com a premissa de concentrar a flexibilidade da linguagem na análise léxica. O formulário não pergunta sobre essa decisão de arquitetura, que fica invisível para quem usa a plataforma. Ele pergunta pelos efeitos que ela deveria produzir. A afirmação de que o conjunto de elementos configuráveis é adequado ao propósito da ferramenta teve média 4,57, com notas 4 e 5 entre os sete que responderam. Esse conjunto é exatamente o que a análise léxica consegue absorver: palavras, operadores em forma de palavra, literais e delimitadores, mais as variantes predefinidas descritas na Seção~\ref{sec:especificacao-linguagem}. Nenhuma resposta aberta pediu outros elementos configuráveis.
+
+Os efeitos esperados tiveram concordância menor. Na afirmação sobre a redução da barreira sintática, seis respondentes concordaram, um ficou no ponto neutro e um discordou totalmente; a média foi 3,88, a menor do bloco. Sobre o português facilitar a compreensão do código, sete concordaram e um discordou, com média 4,38. Sobre a redução dos erros de sintaxe, seis concordaram, um discordou totalmente e um marcou ``não sei'', com média 4,14 entre sete. A maioria do painel concorda com as três premissas, mas não por unanimidade: R7 discordou das três, com notas 1, 2 e 1.
+
+No bloco de utilidade, a afirmação mais aceita foi a de que a plataforma oferece algo que as ferramentas conhecidas pelo respondente não oferecem, com média 4,62 e notas 4 e 5. As duas de menor média, ambas com 3,88, são as que mais se aproximam de uma promessa de resultado: que a plataforma ajudaria iniciantes a aprender lógica mais rápido e que o respondente a indicaria a alguém que está começando. O painel vê a plataforma como complemento à linguagem oficial da disciplina, e não como substituto dela, com média 4,38. Entre os quatro que lecionam, a afirmação ``eu usaria esta plataforma em uma disciplina introdutória de programação'' teve média 3,00, com notas 2, 3, 3 e 4.
 
 \section{Riscos e Limitações Apontados pelo Painel}
 \label{sec:resultado-riscos}
 
-% A PREENCHER: bloco de riscos, relatado SEPARADAMENTE e avisando que ali
-% concordar significa apontar um problema, e não aprovar.
-% Não somar nem tirar média junto com o bloco de potencial pedagógico: as
-% escalas apontam em sentidos opostos.
-% Comparar cada risco com as decisões de projeto descritas neste capítulo,
-% dizendo quais já estão resolvidas pela implementação atual e quais
-% continuam em aberto.
+Nos itens desta seção, concordar significa apontar um problema, e não aprovar. Eles são relatados separadamente e não entram em nenhuma média junto com o bloco de potencial pedagógico. A Tabela~\ref{tab:resultado-riscos} traz as três afirmações do bloco de riscos e a afirmação de risco do bloco de uso em sala, respondida só por quem leciona.
+
+\begin{table}[htbp]
+\centering
+\caption{Itens de risco (escala de 1 a 5, em que concordar aponta um problema).}
+\label{tab:resultado-riscos}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{5.8cm}|c|c|c|c|c|c|}
+\hline
+\textbf{Afirmação} & \textbf{n} & \textbf{Média} & \textbf{Mediana} & \textbf{Discordam} & \textbf{Neutros} & \textbf{Concordam} \\\hline
+Aprender em uma sintaxe personalizada pode dificultar a migração posterior para uma linguagem de mercado & 8 & 3,00 & 3,5 & 3 & 1 & 4 \\\hline
+A liberdade de personalizar pode desviar a atenção do aluno do raciocínio algorítmico & 7 & 2,57 & 2 & 4 & 0 & 3 \\\hline
+O tempo gasto configurando a linguagem não compensa o ganho obtido & 7 & 1,86 & 2 & 6 & 0 & 1 \\\hline
+Alunos de uma mesma turma usando sintaxes diferentes dificultaria o trabalho do professor (só quem leciona) & 3 & 4,00 & 4 & 0 & 1 & 2 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+O risco de migração dividiu o painel: quatro concordaram que aprender em uma sintaxe personalizada pode dificultar a passagem para uma linguagem de mercado, um ficou no ponto neutro e três discordaram. Do lado do núcleo, cada palavra personalizada é convertida no mesmo \textit{token} que a palavra canônica, como mostra o Trecho de Código~\ref{lst:teste-aliases}. Por isso todo programa escrito em um vocabulário personalizado tem um equivalente exato no vocabulário padrão. A plataforma, porém, não converte o programa de um vocabulário para outro, e não há nenhum dado sobre a migração, de modo que o risco continua em aberto.
+
+O risco de a personalização desviar a atenção do raciocínio algorítmico teve média 2,57, abaixo do ponto médio da escala, mas três dos sete que responderam concordaram, um deles totalmente. O risco de o tempo de configuração não compensar foi o menos aceito: seis discordaram e só R2 concordou, com média 1,86. Esses dois riscos tratam do uso da personalização em sala, que o núcleo não controla. O que o núcleo oferece é que a linguagem pode vir pronta: as linguagens predefinidas e a configuração travada por exercício chegam ao núcleo como uma configuração a mais, aplicada a cada análise.
+
+A afirmação sobre alunos da mesma turma com sintaxes diferentes foi respondida por três professores, com notas 3, 4 e 5, e nenhum discordou. Essa é a objeção a que a implementação responde de forma mais direta. A rota de validação recebe o código junto com a configuração de linguagem do aluno e executa os casos de teste com ela, como descrito na Seção~\ref{sec:integracao-plataforma}, e a submissão guarda essa configuração no campo \texttt{language\_snapshot}. A correção automática, portanto, não depende de todos usarem a mesma sintaxe. Quando o exercício tem linguagem obrigatória, a interface ainda bloqueia a troca de linguagem. O que a implementação não resolve é a leitura humana: o professor que abre submissões em modo livre continua diante de várias sintaxes.
 
 \section{Respostas Abertas}
 \label{sec:resultado-abertas}
 
-% A PREENCHER: análise das cinco questões abertas.
-% Citar trechos apenas de quem autorizou a citação, sem identificação,
-% conforme o item de autorização do formulário.
+O formulário tem quatro questões abertas e um item de autorização de citação. Sete respondentes autorizaram a citação sem identificação e um não autorizou. Cinco escreveram em pelo menos uma das questões, todos entre os que autorizaram. As respostas são poucas e curtas, e são relatadas aqui uma a uma.
+
+Sobre o que funcionou melhor, houve quatro respostas. Duas apontam o assistente: ``configuração da linguagem'' e ``criação da linguagem''. Uma aponta os recursos de turma: ``criação de lista e acesso à lista criada''. A quarta, de R3, fala da ``facilidade de utilização'' e da ``possibilidade de visualizar e compreender o funcionamento dos comandos de maneira dinâmica''. Essa última é a única resposta aberta que se aproxima das fases intermediárias expostas pelo núcleo, embora não cite nenhuma delas pelo nome.
+
+Sobre os pontos de dificuldade, também houve quatro respostas. Uma trata da linguagem: segundo R3, ``pode haver alguma dificuldade para compreender a sintaxe e a estrutura dos comandos, especialmente para quem já está habituado a outras linguagens de programação''. É o risco de migração no sentido inverso, de quem já conhece uma linguagem de mercado e encontra outra sintaxe. As outras três tratam da interface ou do uso: a dificuldade de visualizar o botão de criar linguagem, um ``não houve'' e o relato de R8 de que não conseguiu explorar significativamente a plataforma.
+
+A questão sobre mensagens de erro foi discutida na Seção~\ref{sec:resultado-diagnosticos}. Sobre o que mudariam, houve três respostas: um botão de criar linguagem ``mais óbvio/chamativo'', a ampliação dos recursos interativos, ``com mais exemplos práticos, exercícios progressivos e desafios'', e a declaração de R8 de que não explorou o suficiente para sugerir alterações. Nenhuma das respostas abertas aponta erro de tradução ou de execução.
+
+\section{Sessão com Estudantes}
+\label{sec:resultado-estudantes}
+
+Esta seção não estava prevista no protocolo original. Ela relata o segundo formulário, descrito na Subseção~\ref{subsec:formulario-estudantes}, aplicado em 3 de novembro de 2026 a uma turma do 1º ano do curso técnico em Informática do CEFET-MG, depois de uma demonstração da plataforma feita pelos autores e de um período em que os alunos também a usaram. Houve dezoito respostas, todas com o termo de assentimento marcado. Nove alunos tinham até 15 anos e nove tinham 16 ou 17. Nove disseram já ter programado um pouco, oito disseram programar com frequência e um disse nunca ter programado.
+
+A Tabela~\ref{tab:resultado-estudantes} traz as seis afirmações. Todas tiveram média entre 4,00 e 4,33.
+
+\begin{table}[htbp]
+\centering
+\caption{Afirmações do formulário da sessão com estudantes (escala de 1 a 5; dezoito respostas).}
+\label{tab:resultado-estudantes}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{6.3cm}|c|c|c|c|c|}
+\hline
+\textbf{Afirmação} & \textbf{Média} & \textbf{Mediana} & \textbf{Concordam} & \textbf{Neutros} & \textbf{Discordam} \\\hline
+Entendi para que serve a plataforma & 4,33 & 4,5 & 17 & 0 & 1 \\\hline
+Um programa escrito com palavras em português é mais fácil de entender do que um escrito com palavras em inglês & 4,00 & 4 & 11 & 6 & 1 \\\hline
+Poder escolher as palavras da linguagem ajudaria quem está começando a programar & 4,17 & 4 & 14 & 3 & 1 \\\hline
+Ver como a plataforma separa o programa em partes (os \textit{tokens}) ajuda a entender como o computador lê o código & 4,17 & 4 & 15 & 1 & 2 \\\hline
+Eu gostaria de usar essa plataforma nas aulas de programação & 4,17 & 4 & 15 & 3 & 0 \\\hline
+A demonstração aumentou meu interesse em aprender programação & 4,17 & 4 & 16 & 0 & 2 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Para este trabalho, o item central é o dos \textit{tokens}, porque leva ao público-alvo uma pergunta sobre a exibição de uma fase da tradução. Quinze dos dezoito alunos concordaram que ver a separação do programa em \textit{tokens} ajuda a entender como o computador lê o código, um ficou no ponto neutro e dois discordaram. Os oito que programam com frequência concordaram todos. Entre os nove que já tinham programado um pouco, sete concordaram, um ficou no ponto neutro e um discordou. O aluno que nunca tinha programado também discordou. No painel, a mesma fase teve média 4,50 como recurso e 4,29 como valor didático, mas só dois especialistas declararam ter visto a tabela. Os estudantes a viram na demonstração, e a concordância deles é o dado mais direto que o trabalho tem sobre essa fase. Ainda assim, o item registra concordância com uma frase e não mede compreensão.
+
+O formulário também mostrou duas versões de um programa que lê um número e escreve se ele é par ou ímpar: a Versão A, na sintaxe padrão em inglês, e a Versão B, personalizada em português. A Tabela~\ref{tab:resultado-versoes} separa as respostas pela experiência declarada.
+
+\begin{table}[htbp]
+\centering
+\caption{Versão do programa considerada mais fácil de entender, por experiência declarada com programação.}
+\label{tab:resultado-versoes}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{4.3cm}|c|c|c|c|c|}
+\hline
+\textbf{Experiência} & \textbf{Versão B} & \textbf{Igualmente fáceis} & \textbf{Versão A} & \textbf{Igualmente difíceis} & \textbf{Total} \\\hline
+Programa com frequência & 6 & 2 & 0 & 0 & 8 \\\hline
+Já programou um pouco & 5 & 2 & 2 & 0 & 9 \\\hline
+Nunca programou & 0 & 0 & 0 & 1 & 1 \\\hline
+\textbf{Total} & 11 & 4 & 2 & 1 & 18 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Onze alunos acharam a Versão B mais fácil de entender, quatro acharam as duas igualmente fáceis, dois preferiram a Versão A e um achou as duas igualmente difíceis. A questão depende de uma propriedade que o núcleo garante: as duas versões são o mesmo programa. As palavras da Versão B são convertidas nos mesmos \textit{tokens} que as da Versão A, e a partir daí a análise sintática, o código intermediário e a execução não distinguem as duas. O formulário afirmava ao aluno que as versões fazem a mesma coisa, e o que ele mediu foi qual das duas escritas o aluno declara entender com mais facilidade. Não mediu se o aluno reconheceria a equivalência sozinho.
+
+A preferência pela versão em português apareceu nos dois grupos com experiência. Os dois alunos que preferiram a versão em inglês estão entre os que já tinham programado um pouco, e um deles é o que discordou do item dos \textit{tokens}. O único aluno que nunca tinha programado, justamente o perfil para o qual a plataforma foi pensada, achou as duas versões igualmente difíceis e discordou de três das seis afirmações, entre elas a de ter entendido para que serve a plataforma e a dos \textit{tokens}. Uma única resposta não sustenta conclusão, mas ela vai em sentido contrário ao das demais e fica registrada.
+
+O campo de comentário livre recebeu duas respostas: uma elogiou a plataforma e a outra pediu o acréscimo de outra linguagem. O formulário não tem item de autorização de citação, e por isso os comentários não são transcritos.
+
+Os limites dessa sessão estão na Subseção~\ref{subsec:formulario-estudantes}. Foi uma única turma, de conveniência, que respondeu logo depois de uma demonstração feita pelos próprios autores, e quase todos já programavam. Nenhuma medida de desempenho foi colhida. As respostas servem como indício de aceitação e de preferência declarada pela versão em português. Não mostram redução da barreira sintática nem aprendizagem. A sessão envolveu menores de idade e foi feita sem consulta ao comitê de ética, condição registrada na Seção~\ref{sec:protocolo-avaliacao} e retomada nas limitações do Capítulo~\ref{cap:consideracoes}.
 
 \section{Síntese e Confronto com os Objetivos}
 \label{sec:resultado-sintese}
 
-% A PREENCHER: retomar os objetivos específicos e dizer, para cada um, o
-% que a avaliação sustenta e o que continua sem verificação.
-% Manter a distinção da Subseção \ref{subsec:limites-interpretacao}: o que
-% foi coletado é a opinião de profissionais sobre a plausibilidade da
-% redução da barreira, e não a prova dessa redução.
+Esta seção retoma os objetivos específicos da introdução e diz, para cada um, o que a avaliação sustenta e o que continua sem verificação.
+
+O primeiro objetivo era especificar a gramática da linguagem e os elementos passíveis de redefinição. O painel considerou o conjunto de elementos configuráveis adequado ao propósito da ferramenta, com média 4,57 e nenhuma nota abaixo de 4. Dois dos três professores que responderam consideraram o subconjunto suficiente para uma disciplina introdutória, e o terceiro ficou no ponto neutro. As construções apontadas como ausentes não convergiram: registros tiveram duas marcações, e as demais, uma cada.
+
+O segundo e o terceiro objetivos eram projetar e implementar as análises léxica, sintática e semântica com suporte à configuração do vocabulário. O painel avaliou bem o resultado visível dessas fases: a resposta rápida e estável teve média 4,88, a validação prévia da configuração 4,67 e a clareza das mensagens de erro 4,71. Um respondente, que deu nota máxima às mensagens, pediu que elas sugerissem a correção, recurso que o núcleo não tem. A verificação do autor mostrou que a mensagem de \textit{token} inesperado nomeia a classe do \textit{token} pela palavra canônica, mesmo quando o usuário escreveu outra. A adaptação das mensagens ao vocabulário em uso é parcial, e esse ponto não foi captado pelo instrumento.
+
+O quarto objetivo era integrar o núcleo à interface. A afirmação de que o código intermediário exibido corresponde ao que o programa executa teve média 4,83 entre seis respondentes, sem nenhuma nota abaixo de 4, e dois marcaram ``não sei''. Só quatro dos seis que deram nota declararam ter visto o código intermediário. O resultado não contradiz a premissa de que a interface mostra o que a máquina executa, mas é uma percepção com base pequena. A sustentação dessa premissa continua sendo a construção do sistema e os testes da Seção~\ref{sec:metodologia-testes}.
+
+O quinto objetivo era disponibilizar o núcleo em ambiente \textit{web} e verificá-lo por testes automatizados. Cinco respondentes declararam ter escrito e executado programas na plataforma \textit{web}, e nenhum relatou erro de tradução ou de execução nas respostas abertas. A verificação por testes está descrita na Seção~\ref{sec:metodologia-testes} e não depende da avaliação.
+
+O sexto objetivo era definir o protocolo de avaliação. O protocolo foi definido e aplicado, com oito respondentes, e a ele se somou a sessão com dezoito estudantes. A aplicação mostrou limites do próprio instrumento: dois itens mudaram de bloco e passaram a ser respondidos por no máximo quatro pessoas, os pares do UEQ-S foram apresentados em ordem diferente da original, o termo de consentimento ficou sem item de marcação e vários recursos receberam mais notas do que usos declarados.
+
+Quanto à hipótese pedagógica, vale a distinção da Subseção~\ref{subsec:limites-interpretacao}. O que foi coletado é opinião. A maioria do painel considera plausível que a personalização reduza a barreira sintática, com média 3,88, e um respondente discorda das três premissas. Onze de dezoito estudantes acharam a versão em português mais fácil de entender, depois de uma demonstração e sem tarefa medida, e o único que nunca tinha programado achou as duas igualmente difíceis. Nenhum desses dados prova a redução da barreira nem aprendizagem. Do lado desfavorável, o painel se dividiu sobre o risco de migração para uma linguagem de mercado, três de sete respondentes concordam que a personalização pode desviar a atenção do raciocínio algorítmico e a intenção de adotar a plataforma em uma disciplina introdutória ficou em 3,00 entre os que lecionam. Esses pontos têm o mesmo peso dos resultados favoráveis e orientam os encaminhamentos do Capítulo~\ref{cap:consideracoes}.
