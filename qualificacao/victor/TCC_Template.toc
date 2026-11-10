@@ -66,7 +66,7 @@
 \contentsline {subsection}{\numberline {{4.7}.3}Itens sobre o núcleo de tradução}{79}{subsection.121}%
 \contentsline {subsection}{\numberline {{4.7}.4}Escalas usadas e cálculo dos escores}{80}{subsection.122}%
 \contentsline {subsection}{\numberline {{4.7}.5}Participantes, procedimento e questões éticas}{81}{subsection.123}%
-\contentsline {subsection}{\numberline {{4.7}.6}Formulário da sessão com estudantes}{82}{subsection.124}%
+\contentsline {subsection}{\numberline {{4.7}.6}Formulário da sessão com estudantes}{81}{subsection.124}%
 \contentsline {subsection}{\numberline {{4.7}.7}Limites de interpretação e continuidade}{82}{subsection.125}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {5}RESULTADOS DA AVALIAÇÃO}{84}{chapter.126}%

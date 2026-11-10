@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1794309307.27297 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1794309308.36017 0
+["bibtex TCC_Template"] 1794309869.77907 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1794309870.87016 0
   "./referencias.bib" 1794287788.54465 17557 c577f9bd076cf364cb1fdda677d9ca72 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1794309308.25636 93975 c4a899b8dd18d645066c1cc1684dc6b5 "pdflatex"
+  "TCC_Template.aux" 1794309870.76582 93975 ed08b25129558051e448e80a0526e03a "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1794309307.2852 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1794309308.36038 0
+["pdflatex"] 1794309869.79189 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1794309870.87037 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -279,24 +279,24 @@
   "Figuras/validateBooleanLiteralMap.png" 1793574928.77584 691463 91357b0118ec47d60a28ee23c17fe916 ""
   "Figuras/validateOperatorWordMap.png" 1793574928.77684 574760 0e589371d19c4fe55edfc41c0c182685 ""
   "Figuras/validateStatementTerminatorLexeme.png" 1793574928.77784 361468 cc046c10a12f4e3b9b1fe218dbf8516e ""
-  "TCC_Template.aux" 1794309308.25636 93975 c4a899b8dd18d645066c1cc1684dc6b5 "pdflatex"
-  "TCC_Template.bbl" 1794309307.28134 18362 86f5ef3ed1664b33c3c2e9a3227306a3 "bibtex TCC_Template"
-  "TCC_Template.lof" 1794309308.26436 1174 19ac8aa0125db1b2d1561fa7313bec4b "pdflatex"
-  "TCC_Template.lot" 1794309308.26436 2958 2718eb2b90214ee19434668d3309958d "pdflatex"
-  "TCC_Template.tex" 1794309296.99341 21239 6b0ea66dc02a441d8f00f352e8485947 ""
-  "TCC_Template.toc" 1794309308.26436 9993 37ee10cb47a8ba71d706bf1a9ae4d25d "pdflatex"
+  "TCC_Template.aux" 1794309870.76582 93975 ed08b25129558051e448e80a0526e03a "pdflatex"
+  "TCC_Template.bbl" 1794309869.7878 18362 86f5ef3ed1664b33c3c2e9a3227306a3 "bibtex TCC_Template"
+  "TCC_Template.lof" 1794309870.77482 1174 19ac8aa0125db1b2d1561fa7313bec4b "pdflatex"
+  "TCC_Template.lot" 1794309870.77482 2958 2718eb2b90214ee19434668d3309958d "pdflatex"
+  "TCC_Template.tex" 1794309863.69613 21144 6102232e1c92c6b10f4910835ec492fb ""
+  "TCC_Template.toc" 1794309870.77482 9993 1e1ea25f8cba0a665aaaec653210fa45 "pdflatex"
   "configcefetmglpd.cls" 1793574928.80884 32155 38db3c17483f77cb07fce742951daac2 ""
   "texto/apendice.tex" 1794309148.0248 9469 9576d1521f97e02d8939c539fad1a723 ""
-  "texto/consideracoes.tex" 1794309286.3136 12051 f293c11dec86a8ff4686cb7c60210615 ""
+  "texto/consideracoes.tex" 1794309863.69579 12030 d130042b532f15700d18b5ffff2e93c2 ""
   "texto/contratos-seguranca-backend.tex" 1793574928.8095 5577 1cf2633eedf928cc9dcd947270b18ad9 ""
   "texto/dicionario-dados.tex" 1793574932.44291 18701 791ec33d1d203b16919e01896b96722b ""
   "texto/fundamentos-backend.tex" 1793574928.8095 4570 eaa7e3c7fb5e950aaf3910ee5e184c83 ""
   "texto/introducao.tex" 1794309286.31332 8879 357dfedfdbb148a2241e825137c06f63 ""
   "texto/metodologia.tex" 1793574932.44291 58072 5c0181842b4d08d88d720d3aa18154c4 ""
   "texto/proposta.tex" 1794309122.26701 15961 8351e3464759692cd6292dc3af4cb2b2 ""
-  "texto/protocolo-avaliacao.tex" 1794309185.22492 16304 e8f1f7a15475158981815c34d1dfec92 ""
+  "texto/protocolo-avaliacao.tex" 1794309863.69536 16170 9d5b12bfa4cb27ebafb3a24eefbd1abd ""
   "texto/referencial.tex" 1793574932.44291 65073 94ed9d440a68caf7695538aa0b0e8cf5 ""
-  "texto/resultados-avaliacao.tex" 1794309296.99329 40194 8b5a7b95dbe33e8f3d9c18d2866e9c09 ""
+  "texto/resultados-avaliacao.tex" 1794309863.69558 40179 a964ad0fb33da1976a1a35abd6b34ece ""
   "texto/testes-backend.tex" 1793574928.80984 6886 b3f88fb73efcd8709e1d69a76c6753d9 ""
   (generated)
   "TCC_Template.aux"
