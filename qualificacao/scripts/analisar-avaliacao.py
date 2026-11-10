@@ -117,6 +117,15 @@ pa01 = {
             for k, r in enumerate(rows) if r[i]]}
         for i in range(71, 75)],
     "autorizacao_citacao": simples(rows, 75),
+    # Perfil e uso declarados por respondente (R1 a R8, na ordem da planilha),
+    # para que os cruzamentos citados no texto possam ser refeitos.
+    "por_respondente": [
+        {"r": f"R{k + 1}", "titulacao": NORMALIZA.get(str(r[2]).strip(), str(r[2]).strip()),
+         "atuacao": r[3], "leciona": r[5], "momento_da_disciplina": r[15],
+         "tempo_programacao": r[16], "tempo_de_uso": r[17],
+         "o_que_fez": list(multi([r], 18)), "o_que_personalizou": list(multi([r], 19)),
+         "construcoes_que_faltaram": list(multi([r], 64)), "sus": sus[k], "ueq_s": ueq[k]}
+        for k, r in enumerate(rows)],
 }
 
 # ---------------- Demonstração (alunos) ----------------
@@ -142,6 +151,10 @@ demo = {
         exp: dict(collections.Counter(str(r[12]).strip() for r in rows2 if str(r[5]).strip() == exp))
         for exp in simples(rows2, 5)},
     "comentarios": [str(r[13]).strip() for r in rows2 if r[13]],
+    "por_respondente": [
+        {"e": f"E{k + 1}", "idade": r[2], "experiencia": r[5],
+         "itens_1a5": [ESC[str(r[i]).strip()] for i in range(6, 12)], "comparacao": r[12]}
+        for k, r in enumerate(rows2)],
 }
 
 SAIDA.write_text(json.dumps({"pa01_especialistas": pa01, "demonstracao_alunos": demo}, ensure_ascii=False, indent=1))

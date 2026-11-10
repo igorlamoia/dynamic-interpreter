@@ -1473,7 +1473,215 @@
   "autorizacao_citacao": {
    "Sim, autorizo a citação sem identificação": 7,
    "Não autorizo": 1
-  }
+  },
+  "por_respondente": [
+   {
+    "r": "R1",
+    "leciona": "Não",
+    "momento_da_disciplina": null,
+    "tempo_de_uso": "Menos de 15 minutos",
+    "o_que_fez": [
+     "Criei ou editei uma linguagem no assistente",
+     "Importei uma linguagem da comunidade",
+     "Vi o código intermediário",
+     "Usei a execução passo a passo"
+    ],
+    "o_que_personalizou": [
+     "Palavras dos tipos (ex.: int → numero_inteiro)",
+     "Entrada e saída (ex.: print → escreva)",
+     "Modo de tipagem (com ou sem tipo)"
+    ],
+    "construcoes_que_faltaram": [
+     "Não senti falta de nada relevante para o ensino introdutório"
+    ],
+    "sus": 87.5,
+    "ueq_s": {
+     "pragmatica": 2.75,
+     "hedonica": 3.0,
+     "geral": 2.88
+    }
+   },
+   {
+    "r": "R2",
+    "leciona": "Sim, leciono ou já lecionei",
+    "momento_da_disciplina": "Em paralelo à linguagem oficial, como apoio",
+    "tempo_de_uso": "De 30 a 60 minutos",
+    "o_que_fez": [
+     "Criei ou editei uma linguagem no assistente",
+     "Escrevi e executei um programa",
+     "Vi o código intermediário"
+    ],
+    "o_que_personalizou": [
+     "Palavras dos tipos (ex.: int → numero_inteiro)",
+     "Controle de fluxo (ex.: if → se)",
+     "Entrada e saída (ex.: print → escreva)",
+     "Operadores em palavra (ex.: && → e)",
+     "Literais booleanos",
+     "Modo de tipagem (com ou sem tipo)",
+     "Usei um preset pronto, sem alterar"
+    ],
+    "construcoes_que_faltaram": [
+     "Não senti falta de nada relevante para o ensino introdutório"
+    ],
+    "sus": 50.0,
+    "ueq_s": {
+     "pragmatica": 2.0,
+     "hedonica": 2.0,
+     "geral": 2.0
+    }
+   },
+   {
+    "r": "R3",
+    "leciona": "Não",
+    "momento_da_disciplina": null,
+    "tempo_de_uso": "Mais de 1 hora",
+    "o_que_fez": [
+     "Escrevi e executei um programa",
+     "Usei a execução passo a passo",
+     "Resolvi e submeti um exercício"
+    ],
+    "o_que_personalizou": [
+     "Palavras dos tipos (ex.: int → numero_inteiro)",
+     "Operadores em palavra (ex.: && → e)",
+     "Delimitadores de bloco ou indentação",
+     "Modo de tipagem (com ou sem tipo)"
+    ],
+    "construcoes_que_faltaram": [
+     "Não senti falta de nada relevante para o ensino introdutório"
+    ],
+    "sus": 95.0,
+    "ueq_s": {
+     "pragmatica": 3.0,
+     "hedonica": 3.0,
+     "geral": 3.0
+    }
+   },
+   {
+    "r": "R4",
+    "leciona": "Não",
+    "momento_da_disciplina": null,
+    "tempo_de_uso": "De 15 a 30 minutos",
+    "o_que_fez": [
+     "Criei ou editei uma linguagem no assistente",
+     "Escrevi e executei um programa",
+     "Vi a tabela de tokens",
+     "Vi o código intermediário",
+     "Usei a execução passo a passo"
+    ],
+    "o_que_personalizou": [
+     "Palavras dos tipos (ex.: int → numero_inteiro)",
+     "Entrada e saída (ex.: print → escreva)",
+     "Modo de tipagem (com ou sem tipo)",
+     "Não personalizei nada"
+    ],
+    "construcoes_que_faltaram": [],
+    "sus": 77.5,
+    "ueq_s": {
+     "pragmatica": 2.0,
+     "hedonica": 1.25,
+     "geral": 1.62
+    }
+   },
+   {
+    "r": "R5",
+    "leciona": "Não",
+    "momento_da_disciplina": null,
+    "tempo_de_uso": "Mais de 1 hora",
+    "o_que_fez": [
+     "Criei ou editei uma linguagem no assistente",
+     "Escrevi e executei um programa",
+     "Vi a tabela de tokens",
+     "Vi o código intermediário",
+     "Usei a execução passo a passo",
+     "Resolvi e submeti um exercício",
+     "Entrei em uma turma ou criei uma turma"
+    ],
+    "o_que_personalizou": [
+     "Palavras dos tipos (ex.: int → numero_inteiro)",
+     "Controle de fluxo (ex.: if → se)",
+     "Entrada e saída (ex.: print → escreva)",
+     "Operadores em palavra (ex.: && → e)",
+     "Literais booleanos",
+     "Delimitadores de bloco ou indentação",
+     "Terminador de instrução (ponto e vírgula)",
+     "Modo de tipagem (com ou sem tipo)"
+    ],
+    "construcoes_que_faltaram": [
+     "Modularização em vários arquivos"
+    ],
+    "sus": 95.0,
+    "ueq_s": {
+     "pragmatica": 2.75,
+     "hedonica": 3.0,
+     "geral": 2.88
+    }
+   },
+   {
+    "r": "R6",
+    "leciona": "Sim, leciono ou já lecionei",
+    "momento_da_disciplina": "Em paralelo à linguagem oficial, como apoio",
+    "tempo_de_uso": "Menos de 15 minutos",
+    "o_que_fez": [
+     "Criei ou editei uma linguagem no assistente",
+     "Escrevi e executei um programa"
+    ],
+    "o_que_personalizou": [
+     "Palavras dos tipos (ex.: int → numero_inteiro)",
+     "Usei um preset pronto, sem alterar"
+    ],
+    "construcoes_que_faltaram": [
+     "Não senti falta de nada relevante para o ensino introdutório"
+    ],
+    "sus": 62.5,
+    "ueq_s": {
+     "pragmatica": 0.5,
+     "hedonica": 2.0,
+     "geral": 1.25
+    }
+   },
+   {
+    "r": "R7",
+    "leciona": "Sim, leciono ou já lecionei",
+    "momento_da_disciplina": "Não vejo espaço para ela na disciplina",
+    "tempo_de_uso": "Menos de 15 minutos",
+    "o_que_fez": [],
+    "o_que_personalizou": [],
+    "construcoes_que_faltaram": [
+     "Não senti falta de nada relevante para o ensino introdutório",
+     "Registros ou estruturas compostas",
+     "Orientação a objetos"
+    ],
+    "sus": 62.5,
+    "ueq_s": {
+     "pragmatica": -0.5,
+     "hedonica": 0.25,
+     "geral": -0.12
+    }
+   },
+   {
+    "r": "R8",
+    "leciona": "Sim, leciono ou já lecionei",
+    "momento_da_disciplina": "Antes da linguagem oficial da disciplina, como preparação",
+    "tempo_de_uso": "Menos de 15 minutos",
+    "o_que_fez": [
+     "Resolvi e submeti um exercício",
+     "Entrei em uma turma ou criei uma turma"
+    ],
+    "o_que_personalizou": [
+     "Não personalizei nada"
+    ],
+    "construcoes_que_faltaram": [
+     "Registros ou estruturas compostas",
+     "Manipulação de cadeias mais rica"
+    ],
+    "sus": 75.0,
+    "ueq_s": {
+     "pragmatica": 1.75,
+     "hedonica": 0.5,
+     "geral": 1.12
+    }
+   }
+  ]
  },
  "demonstracao_alunos": {
   "n": 18,
@@ -1621,6 +1829,242 @@
     "As duas são igualmente difíceis": 1
    }
   },
+  "por_respondente": [
+   {
+    "e": "E1",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     4,
+     3,
+     3,
+     5,
+     4,
+     4
+    ],
+    "comparacao": "As duas são igualmente fáceis"
+   },
+   {
+    "e": "E2",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     4,
+     4,
+     4,
+     5,
+     5,
+     5
+    ],
+    "comparacao": "As duas são igualmente fáceis"
+   },
+   {
+    "e": "E3",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     4,
+     5,
+     4,
+     4,
+     4,
+     5
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E4",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     4,
+     5,
+     5,
+     4,
+     5,
+     5
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E5",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     4,
+     3,
+     5,
+     5,
+     5,
+     5
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E6",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     5,
+     3,
+     4,
+     2,
+     4,
+     4
+    ],
+    "comparacao": "Versão A"
+   },
+   {
+    "e": "E7",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     5,
+     5,
+     5,
+     4,
+     4,
+     4
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E8",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     5,
+     3,
+     4,
+     5,
+     3,
+     4
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E9",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     4,
+     2,
+     3,
+     4,
+     4,
+     2
+    ],
+    "comparacao": "Versão A"
+   },
+   {
+    "e": "E10",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     5,
+     5,
+     5,
+     5,
+     4,
+     5
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E11",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     5,
+     4,
+     5,
+     5,
+     5,
+     4
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E12",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "comparacao": "As duas são igualmente fáceis"
+   },
+   {
+    "e": "E13",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     5,
+     3,
+     4,
+     4,
+     4,
+     4
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E14",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     5,
+     3,
+     5,
+     5,
+     5,
+     5
+    ],
+    "comparacao": "As duas são igualmente fáceis"
+   },
+   {
+    "e": "E15",
+    "experiencia": "Programo com frequência",
+    "itens_1a5": [
+     5,
+     5,
+     5,
+     4,
+     4,
+     4
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E16",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     4,
+     5,
+     2,
+     3,
+     3,
+     4
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E17",
+    "experiencia": "Já programei um pouco (em aulas, cursos ou tutoriais)",
+    "itens_1a5": [
+     4,
+     5,
+     4,
+     4,
+     4,
+     5
+    ],
+    "comparacao": "Versão B"
+   },
+   {
+    "e": "E18",
+    "experiencia": "Nunca programei",
+    "itens_1a5": [
+     1,
+     4,
+     3,
+     2,
+     3,
+     1
+    ],
+    "comparacao": "As duas são igualmente difíceis"
+   }
+  ],
   "comentarios_n": 2
  }
 }

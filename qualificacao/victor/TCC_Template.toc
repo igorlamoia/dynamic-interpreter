@@ -81,21 +81,21 @@
 \contentsline {section}{\numberline {5.9}Sessão com Estudantes}{94}{section.140}%
 \contentsline {section}{\numberline {5.10}Síntese e Confronto com os Objetivos}{96}{section.143}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{98}{chapter.144}%
-\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{98}{section.145}%
-\contentsline {section}{\numberline {6.2}Limitações}{100}{section.146}%
-\contentsline {section}{\numberline {6.3}Encaminhamentos}{101}{section.147}%
+\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{99}{chapter.144}%
+\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{99}{section.145}%
+\contentsline {section}{\numberline {6.2}Limitações}{101}{section.146}%
+\contentsline {section}{\numberline {6.3}Encaminhamentos}{102}{section.147}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{103}{chapter*.149}%
+\contentsline {chapter}{REFERÊNCIAS}{104}{chapter*.149}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{108}{appendix.150}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{108}{section.151}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{108}{section.152}%
-\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{108}{subsection.153}%
-\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{109}{subsection.154}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{109}{appendix.150}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{109}{section.151}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{109}{section.152}%
+\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{109}{subsection.153}%
+\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{110}{subsection.154}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {B}APÊNDICE B -- DOCUMENTAÇÃO DA API}{110}{appendix.155}%
+\contentsline {appendix}{\chapternumberline {B}APÊNDICE B -- DOCUMENTAÇÃO DA API}{111}{appendix.155}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {C}APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS}{111}{appendix.157}%
+\contentsline {appendix}{\chapternumberline {C}APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS}{112}{appendix.157}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {D}APÊNDICE D -- DICIONÁRIO DE DADOS}{112}{appendix.159}%
+\contentsline {appendix}{\chapternumberline {D}APÊNDICE D -- DICIONÁRIO DE DADOS}{113}{appendix.159}%
