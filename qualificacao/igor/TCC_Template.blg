@@ -24,7 +24,7 @@ Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 +---------------------------------------------------------+
 You've used 52 entries,
             6714 wiz_defined-function locations,
-            1431 strings with 16351 characters,
+            1431 strings with 16349 characters,
 and the built_in function-call counts, 68907 in all, are:
 = -- 8033
 > -- 1172

@@ -80,20 +80,21 @@
 \contentsline {section}{\numberline {5.4}Usabilidade e Experiência de Uso}{116}{section.310}%
 \contentsline {section}{\numberline {5.5}Potencial Pedagógico e Intenção de Uso}{117}{section.312}%
 \contentsline {section}{\numberline {5.6}Riscos e Objeções Levantados pelo Painel}{119}{section.314}%
-\contentsline {section}{\numberline {5.7}Respostas Abertas}{120}{section.316}%
+\contentsline {section}{\numberline {5.7}Respostas Abertas}{121}{section.316}%
 \contentsline {section}{\numberline {5.8}Sessão com Estudantes}{122}{section.317}%
-\contentsline {section}{\numberline {5.9}Síntese e Confronto com os Objetivos}{124}{section.320}%
+\contentsline {section}{\numberline {5.9}Relação com Trabalhos Anteriores}{124}{section.320}%
+\contentsline {section}{\numberline {5.10}Síntese e Confronto com os Objetivos}{125}{section.321}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{126}{chapter.321}%
-\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{126}{section.322}%
-\contentsline {section}{\numberline {6.2}O que a Avaliação Mostrou}{127}{section.323}%
-\contentsline {section}{\numberline {6.3}Limitações}{128}{section.324}%
-\contentsline {section}{\numberline {6.4}Encaminhamentos}{129}{section.325}%
+\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{128}{chapter.322}%
+\contentsline {section}{\numberline {6.1}Retomada dos Objetivos}{128}{section.323}%
+\contentsline {section}{\numberline {6.2}O que a Avaliação Mostrou}{129}{section.324}%
+\contentsline {section}{\numberline {6.3}Limitações}{130}{section.325}%
+\contentsline {section}{\numberline {6.4}Encaminhamentos}{131}{section.326}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{131}{chapter*.327}%
+\contentsline {chapter}{REFERÊNCIAS}{133}{chapter*.328}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{135}{appendix.328}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{135}{section.329}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{135}{section.330}%
-\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{135}{subsection.331}%
-\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{136}{subsection.332}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{137}{appendix.329}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{137}{section.330}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{137}{section.331}%
+\contentsline {subsection}{\numberline {{A.2}.1}Igor Lamoia Queiroz (este documento)}{137}{subsection.332}%
+\contentsline {subsection}{\numberline {{A.2}.2}Victor de Souza Vilela da Silva (documento complementar)}{138}{subsection.333}%

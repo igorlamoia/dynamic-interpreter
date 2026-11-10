@@ -6,3 +6,6 @@ dev.db
 .vscode/*.worktrees/
 .worktrees/
 *.log
+
+# Planilhas de respostas da avaliação: ficam só na máquina local, nunca no repositório.
+qualificacao/verificacao/avaliacao-2026-11/dados-brutos/
