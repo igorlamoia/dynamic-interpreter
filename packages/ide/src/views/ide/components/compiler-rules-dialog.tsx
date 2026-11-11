@@ -67,7 +67,6 @@ export function CompilerRulesDialog({
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="cursor-pointer"
           >
             {rulesIntl.close}
           </Button>

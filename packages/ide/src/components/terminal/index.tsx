@@ -62,7 +62,7 @@ export default function TerminalView({
   // Focar no input quando o terminal abrir
   useEffect(() => {
     if (isTerminalOpen && inputRef.current) {
-      inputRef.current.focus({ preventScroll: true });
+      inputRef.current.focus();
     }
   }, [isTerminalOpen]);
 
@@ -113,7 +113,7 @@ export default function TerminalView({
               "absolute left-0 right-0 bottom-0 z-50 backdrop-blur-sm",
               "shadow-[0_-20px_60px_-40px_rgba(255,255,255,0.9)] dark:shadow-[0_-20px_60px_-40px_rgba(0,0,0,0.9)]",
             )}
-            onClick={() => inputRef.current?.focus({ preventScroll: true })}
+            onClick={() => inputRef.current?.focus()}
           >
             <Header
               locale={locale}

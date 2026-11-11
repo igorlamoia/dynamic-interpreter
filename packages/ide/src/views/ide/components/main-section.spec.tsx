@@ -12,7 +12,6 @@ import { MainSection } from "./main-section";
 
 const mocks = vi.hoisted(() => ({
   editorProps: [] as Array<{ bottomPadding?: number }>,
-  loadFileContent: vi.fn(),
   saveCurrentFile: vi.fn(),
 }));
 
@@ -31,9 +30,7 @@ vi.mock("@/components/editor", () => ({
 }));
 
 vi.mock("@/components/home-screen", () => ({
-  HomeScreen: ({ onStart }: { onStart: () => void }) => (
-    <button data-testid="home-screen" type="button" onClick={onStart} />
-  ),
+  HomeScreen: () => <div data-testid="home-screen" />,
 }));
 
 vi.mock("./open-files-list", () => ({
@@ -71,10 +68,9 @@ function renderMainSection(isTerminalOpen: boolean) {
   return { root };
 }
 
-describe("MainSection", () => {
+describe("MainSection terminal editor spacing", () => {
   beforeEach(() => {
     mocks.editorProps = [];
-    mocks.loadFileContent.mockClear();
     mocks.saveCurrentFile.mockClear();
   });
 
@@ -96,53 +92,6 @@ describe("MainSection", () => {
     const { root } = renderMainSection(false);
 
     expect(mocks.editorProps.at(-1)).toEqual({ bottomPadding: 0 });
-
-    act(() => {
-      root.unmount();
-    });
-  });
-
-  it("opens or creates src/main.? from the home screen", () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-    const root = createRoot(container);
-    const setActiveFile = vi.fn();
-    const setOpenTabs = vi.fn();
-
-    act(() => {
-      root.render(
-        <EditorContext.Provider
-          value={
-            {
-              loadFileContent: mocks.loadFileContent,
-              saveCurrentFile: mocks.saveCurrentFile,
-            } as unknown as React.ContextType<typeof EditorContext>
-          }
-        >
-          <MainSection
-            activeFile=""
-            isTerminalOpen={false}
-            openTabs={[]}
-            setActiveFile={setActiveFile}
-            setOpenTabs={setOpenTabs}
-            toggleTerminal={vi.fn()}
-          />
-        </EditorContext.Provider>,
-      );
-    });
-
-    act(() => {
-      container
-        .querySelector<HTMLButtonElement>('[data-testid="home-screen"]')
-        ?.click();
-    });
-
-    expect(mocks.loadFileContent).toHaveBeenCalledWith("src/main.?");
-    expect(setActiveFile).toHaveBeenCalledWith("src/main.?");
-    const updateTabs = setOpenTabs.mock.calls[0]?.[0] as (
-      tabs: string[],
-    ) => string[];
-    expect(updateTabs([])).toEqual(["src/main.?"]);
 
     act(() => {
       root.unmount();

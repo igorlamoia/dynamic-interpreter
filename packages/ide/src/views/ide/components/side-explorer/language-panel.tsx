@@ -143,18 +143,9 @@ function LanguageSelection({
   selectLanguage: (key: string) => Promise<void>;
   locale?: string;
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <div className="relative shrink-0 overflow-visible">
-      <div className="group isolate relative mt-6 overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] transition hover:border-black/20 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20">
-        <button
-          type="button"
-          aria-label={t(locale, "ui.open_language_selection")}
-          disabled={isSelectionLocked}
-          onClick={() => setIsMenuOpen(true)}
-          className="absolute inset-0 z-10 cursor-pointer rounded-2xl disabled:cursor-not-allowed"
-        />
+      <div className="group isolate mt-6 relative overflow-visible rounded-2xl border border-black/10 bg-black/5 text-left shadow-[0_18px_40px_rgba(0,0,0,0.18)] dark:border-white/10 dark:bg-white/5">
         <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
           <Image
             src={getDefaultLanguageImage(activeLanguage?.imageUrl)}
@@ -176,10 +167,8 @@ function LanguageSelection({
               choices={choices}
               activeKey={activeKey}
               isLocked={isSelectionLocked}
-              locale={locale}
-              onOpenChange={setIsMenuOpen}
               onSelect={selectLanguage}
-              open={isMenuOpen}
+              locale={locale}
             />
           </div>
 
@@ -409,7 +398,7 @@ export function LanguageSampleDialog({
                 variant={selectedExample === example ? "secondary" : "ghost"}
                 aria-pressed={selectedExample === example}
                 onClick={() => setSelectedExample(example)}
-                className="h-auto cursor-pointer justify-start whitespace-normal text-left"
+                className="h-auto justify-start whitespace-normal text-left"
               >
                 {t(locale, `ui.language_example_${example}`)}
               </Button>
@@ -428,7 +417,6 @@ export function LanguageSampleDialog({
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="cursor-pointer"
           >
             {t(locale, "ui.close")}
           </Button>
@@ -436,7 +424,6 @@ export function LanguageSampleDialog({
             type="button"
             disabled={!sampleCode || !editor.currentFilePath}
             onClick={handleOverrideSelectedFile}
-            className="cursor-pointer"
           >
             {t(locale, "ui.language_sample_override_file")}
           </Button>
@@ -526,9 +513,7 @@ interface LanguageOptionsMenuProps {
   activeKey: string;
   isLocked: boolean;
   locale?: string;
-  onOpenChange: (open: boolean) => void;
   onSelect: (key: string) => Promise<void>;
-  open: boolean;
 }
 
 function LanguageOptionsMenu({
@@ -536,23 +521,21 @@ function LanguageOptionsMenu({
   activeKey,
   isLocked,
   locale,
-  onOpenChange,
   onSelect,
-  open,
 }: LanguageOptionsMenuProps) {
   const router = useRouter();
   return (
     <div className="relative z-20">
       <TooltipProvider>
         <Tooltip>
-          <DropdownMenu open={open} onOpenChange={onOpenChange}>
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <TooltipTrigger asChild>
                 <button
                   type="button"
                   aria-label={t(locale, "ui.open_language_selection")}
                   disabled={isLocked}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:border-white/20 hover:bg-black/35 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border dark:border-white/10 bg-black/25 text-white/90 backdrop-blur-sm transition hover:dark:border-white/20 hover:bg-black/35 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <ChevronDown className="h-4 w-4 transition-transform duration-200" />
                 </button>
@@ -577,11 +560,7 @@ function LanguageOptionsMenu({
                 </span>
               </div>
 
-              <PerfectScrollbar
-                axis="y"
-                className="max-h-56 pr-1"
-                style={{ maxHeight: "min(14rem, calc(100vh - 12rem))" }}
-              >
+              <PerfectScrollbar axis="y" className="max-h-56 pr-1">
                 <div className="flex flex-col gap-2">
                   {choices.map((choice) => {
                     const isSelected = choice.key === activeKey;

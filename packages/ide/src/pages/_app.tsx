@@ -13,11 +13,9 @@ import { Pointer } from "@/components/ui/pointer";
 import { AppQueryClientProvider } from "@/lib/query-client";
 import { t } from "@/i18n";
 import { TutorialProvider } from "@/components/tutorial/tutorial-provider";
-import { Footer } from "@/components/footer";
 
 type NextPageWithAuth = NextPage & {
   requireAuth?: boolean;
-  hasCustomFooter?: boolean;
 };
 
 type AppPropsWithAuth = AppProps & {
@@ -35,12 +33,9 @@ export default function App({ Component, pageProps }: AppPropsWithAuth) {
           <AlertProvider>
             <ToastProvider>
               <TutorialProvider>
-                <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
+                <div className="bg-background text-foreground transition-colors duration-300">
                   <AuthGuard requireAuth={Component.requireAuth}>
-                    <div className="w-full flex-1">
-                      <Component {...pageProps} />
-                    </div>
-                    {!Component.hasCustomFooter ? <Footer /> : null}
+                    <Component {...pageProps} />
                   </AuthGuard>
                 </div>
               </TutorialProvider>

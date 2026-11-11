@@ -7,7 +7,6 @@ import { EditorContext } from "@/contexts/editor/EditorContext";
 import { Instruction } from "@ts-compilator-for-java/compiler/interpreter/constants";
 import type { DebugTerminalSession } from "@/components/terminal";
 import { IDE_TERMINAL_RESERVED_BOTTOM_PX } from "@/components/terminal/constants";
-import { USER_PROGRAM_FILE_PATH } from "../defaultFiles";
 
 const TerminalView = dynamic(() => import("@/components/terminal"), {
   ssr: false,
@@ -57,17 +56,6 @@ export function MainSection({
       }
     }
   };
-
-  const openMainFile = () => {
-    editorContext.loadFileContent(USER_PROGRAM_FILE_PATH);
-    setActiveFile(USER_PROGRAM_FILE_PATH);
-    setOpenTabs((previousTabs) =>
-      previousTabs.includes(USER_PROGRAM_FILE_PATH)
-        ? previousTabs
-        : [...previousTabs, USER_PROGRAM_FILE_PATH],
-    );
-  };
-
   return (
     <div className="flex flex-col h-full w-full overflow-x-auto">
       {openTabs.length > 0 && (
@@ -89,7 +77,7 @@ export function MainSection({
             }
           />
         </div>
-        {openTabs.length === 0 && <HomeScreen onStart={openMainFile} />}
+        {openTabs.length === 0 && <HomeScreen />}
         <TerminalView
           debugSession={debugSession}
           intermediateCode={intermediateCode?.instructions || []}

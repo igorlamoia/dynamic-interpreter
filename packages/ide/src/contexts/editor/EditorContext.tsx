@@ -202,7 +202,7 @@ export function EditorProvider({
     editorInstanceRef.current?.setValue(newCode);
   };
 
-  const showLineIssues = (alerts: TLineAlert[]) => {
+  const showLineIssues = (alerts: TLineAlert[], triggerError = false) => {
     if (editorInstanceRef.current && monacoRef.current) {
       const model = editorInstanceRef.current.getModel();
       if (!model) return;
@@ -218,6 +218,14 @@ export function EditorProvider({
           severity: alert.severity,
           // tags: [1,2], // unnecessary and deprecated
         })),
+      );
+      // Center the editor view on the error line
+      editorInstanceRef.current.revealLineInCenter(alerts[0].startLineNumber);
+      if (!triggerError) return;
+      editorInstanceRef.current.trigger(
+        "keyboard",
+        "editor.action.marker.next",
+        {},
       );
     }
   };
