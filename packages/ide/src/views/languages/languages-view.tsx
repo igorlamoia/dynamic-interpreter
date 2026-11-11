@@ -108,13 +108,11 @@ export function LanguagesView() {
     try {
       await deleteMut.mutateAsync(id);
       success(t(locale, "ui.languages_delete_success", { name }));
-    } catch (error: unknown) {
+    } catch (error: any) {
       // 409 significa que algum exercício trava nesta linguagem — vale dizer
       // isso ao usuário em vez de um erro genérico.
-      const status = (error as { response?: { status?: number } }).response
-        ?.status;
       failure(
-        status === 409
+        error?.response?.status === 409
           ? t(locale, "ui.languages_delete_locked_error")
           : t(locale, "ui.languages_delete_error"),
       );
@@ -139,7 +137,7 @@ export function LanguagesView() {
   };
 
   return (
-    <div>
+    <>
       <LanguagesHeader onCreate={() => goToCreator()} />
       {loadError && (
         <Alert
@@ -179,6 +177,6 @@ export function LanguagesView() {
           if (!open) setDnaLanguage(null);
         }}
       />
-    </div>
+    </>
   );
 }

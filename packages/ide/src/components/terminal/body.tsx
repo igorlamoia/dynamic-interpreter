@@ -252,10 +252,19 @@ export function Body(props: BodyProps) {
     }
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // Auto-scroll ao adicionar novas linhas
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [lines]);
+
   const resolveInput = useRef<((value: string) => void) | null>(null);
 
   return (
     <PerfectScrollbar
+      ref={scrollRef}
       data-testid="terminal-output"
       className="overflow-x-hidden p-4 font-mono text-sm h-65 terminal-scroll"
     >

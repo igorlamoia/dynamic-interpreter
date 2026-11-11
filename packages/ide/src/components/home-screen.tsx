@@ -1,10 +1,7 @@
 import { FileCode2, FolderOpen, Book, Rocket } from "lucide-react";
 import { PerfectScrollbar } from "./ui/perfect-scrollbar";
-import { t } from "@/i18n";
-import { useRouter } from "next/router";
 
-export function HomeScreen({ onStart }: { onStart: () => void }) {
-  const { locale } = useRouter();
+export function HomeScreen() {
   return (
     <PerfectScrollbar className="flex h-full w-full items-center justify-center overflow-y-auto py-8">
       <div className="flex flex-col items-center gap-8 px-8 text-center max-h-full">
@@ -17,32 +14,18 @@ export function HomeScreen({ onStart }: { onStart: () => void }) {
           </div>
         </div>
 
-        {/* Getting Started */}
-        <button
-          type="button"
-          onClick={onStart}
-          className="group w-full max-w-3xl cursor-pointer rounded-lg border bg-white/5 p-6 text-left transition-all hover:scale-[1.01] hover:border-blue-500/50 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-white/10"
-        >
-          <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 transition-colors group-hover:bg-blue-500/20">
-              <Rocket className="h-5 w-5 text-blue-400" />
-            </div>
-            <div className="space-y-2 text-left">
-              <h3 className="text-sm font-semibold text-foreground">
-                {t(locale, "ui.home_start_title")}
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {t(locale, "ui.home_start_description")} {" "}
-                <code className="px-1.5 py-0.5 rounded bg-white/10 text-cyan-400">
-                  main()
-                </code>{" "}
-                {t(locale, "ui.home_start_entry_suffix")}
-              </p>
-            </div>
-          </div>
-        </button>
+        {/* Title */}
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold text-foreground">
+            TypeScript Compiler for Java--
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Compilador e IDE para a linguagem Java--
+          </p>
+        </div>
+
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 w-full max-w-3xl">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 w-full max-w-3xl mt-4">
           <button
             type="button"
             className="group flex flex-col items-center gap-3 rounded-lg border dark:border-white/10 bg-white/5 p-6 transition-all hover:bg-white/10 hover:border-cyan-500/50"
@@ -52,10 +35,10 @@ export function HomeScreen({ onStart }: { onStart: () => void }) {
             </div>
             <div className="space-y-1">
               <h3 className="text-sm font-medium text-foreground">
-                {t(locale, "ui.home_explore_files")}
+                Explorar Arquivos
               </h3>
               <p className="text-xs text-muted-foreground">
-                {t(locale, "ui.home_explore_files_description")}
+                Navegue pelos arquivos do projeto
               </p>
             </div>
           </button>
@@ -69,10 +52,10 @@ export function HomeScreen({ onStart }: { onStart: () => void }) {
             </div>
             <div className="space-y-1">
               <h3 className="text-sm font-medium text-foreground">
-                {t(locale, "ui.home_create_file_description")}
+                Novo Arquivo
               </h3>
               <p className="text-xs text-muted-foreground">
-                {t(locale, "ui.create_file")}
+                Crie um novo arquivo Java--
               </p>
             </div>
           </button>
@@ -86,13 +69,54 @@ export function HomeScreen({ onStart }: { onStart: () => void }) {
             </div>
             <div className="space-y-1">
               <h3 className="text-sm font-medium text-foreground">
-                {t(locale, "ui.home_documentation")}
+                Documentação
               </h3>
               <p className="text-xs text-muted-foreground">
-                {t(locale, "ui.home_documentation_description")}
+                Aprenda sobre a sintaxe
               </p>
             </div>
           </button>
+        </div>
+
+        {/* Getting Started */}
+        <div className="mt-8 rounded-lg border dark:border-white/10 bg-white/5 p-6 max-w-3xl">
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
+              <Rocket className="h-5 w-5 text-blue-400" />
+            </div>
+            <div className="space-y-2 text-left">
+              <h3 className="text-sm font-semibold text-foreground">Começar</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Abra um arquivo do explorador ao lado ou crie um novo arquivo
+                para começar a programar em Java--. Todo programa deve ter uma
+                função{" "}
+                <code className="px-1.5 py-0.5 rounded bg-white/10 text-cyan-400">
+                  main()
+                </code>{" "}
+                como ponto de entrada.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Keyboard Shortcuts Hint */}
+        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <kbd className="rounded border dark:border-white/10 bg-white/5 px-2 py-1 font-mono">
+              Ctrl
+            </kbd>
+            <span>+</span>
+            <kbd className="rounded border dark:border-white/10 bg-white/5 px-2 py-1 font-mono">
+              S
+            </kbd>
+            <span>Salvar</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <kbd className="rounded border dark:border-white/10 bg-white/5 px-2 py-1 font-mono">
+              F5
+            </kbd>
+            <span>Executar</span>
+          </div>
         </div>
       </div>
     </PerfectScrollbar>

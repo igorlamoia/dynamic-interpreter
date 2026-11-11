@@ -109,12 +109,12 @@ export default function ExercisesPage() {
   if (!userId) return null;
 
   return (
-    <div className="flex min-h-full flex-col bg-background font-sans text-foreground">
+    <div className="flex flex-col h-screen font-sans overflow-hidden bg-background text-foreground">
       <SpaceBackground />
       <Navbar />
-      <div className="relative z-10 flex w-full flex-1">
+      <div className="flex flex-1 overflow-hidden relative z-10 w-full">
         <Sidebar />
-        <div className="flex w-full flex-1 flex-col">
+        <div className="flex-1 flex flex-col overflow-y-auto w-full">
           <main className="max-w-7xl mx-auto px-6 py-12 w-full">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -250,4 +250,3 @@ export default function ExercisesPage() {
 }
 
 ExercisesPage.requireAuth = true;
-ExercisesPage.hasCustomFooter = true;
