@@ -1,0 +1,57 @@
+Este capítulo apresenta como a plataforma foi testada. A Seção~\ref{sec:planejamento-testes} descreve o planejamento: o que se decidiu testar, em quais níveis e com quais ferramentas. As seções seguintes relatam a realização dos testes. A Seção~\ref{sec:testes-unitarios} trata dos testes unitários e de integração da IDE, a Seção~\ref{subsec:e2e-plataforma} dos testes de ponta a ponta, a Seção~\ref{subsec:ci-plataforma} da integração contínua e a Seção~\ref{subsec:resultado-e2e} do resultado da execução local desses testes. A Seção~\ref{subsec:verificacao-interface} descreve a verificação técnica de acessibilidade e responsividade do assistente de personalização. A avaliação da plataforma pelo painel de especialistas não faz parte deste capítulo: seu protocolo está na Seção~\ref{sec:protocolo-avaliacao} e seus resultados, no Capítulo~\ref{cap:resultados}.
+
+As descrições de código deste capítulo referem-se ao repositório do projeto, apresentado no Apêndice~\ref{ap:repositorio}. As contagens de testes aprovados vêm dos registros de execução reunidos no Apêndice~\ref{ap:verificacao}.
+
+\section{Planejamento dos testes}
+\label{sec:planejamento-testes}
+
+O planejamento seguiu a pirâmide de testes apresentada na Subseção~\ref{subsec:testes-tdd}: muitos testes pequenos e rápidos na base, que verificam módulos isolados, e menos testes nos níveis superiores, que exercitam a aplicação inteira e são mais lentos e mais caros de manter \cite{vocke2018pyramid}. Cada nível ficou com um objeto, uma ferramenta e uma forma de execução:
+
+\begin{itemize}
+    \item Testes unitários: verificam funções e módulos da IDE e do compilador sem interface, como a configuração da linguagem, a validação das personalizações e a persistência no armazenamento local. Usam o \textit{framework} Vitest e ficam, em geral, em arquivos com sufixo \texttt{.spec.ts} ao lado dos módulos que verificam; alguns ficam em diretórios \texttt{\_\_tests\_\_}.
+    \item Testes de integração de componentes: verificam componentes React da IDE em conjunto com seus \textit{contexts} e \textit{hooks}, como os componentes do assistente, a depuração e as submissões. Também usam Vitest, com o \textit{jsdom} simulando o ambiente do navegador, e ficam em arquivos com sufixo \texttt{.spec.tsx} próximos aos componentes.
+    \item Testes de ponta a ponta (E2E, do inglês \textit{end-to-end}): verificam fluxos completos no navegador, com o front-end, o serviço FastAPI e o banco PostgreSQL em execução. Usam o Playwright Test com o Chromium e ficam no pacote \texttt{packages/e2e}.
+    \item Verificação técnica da interface: verifica, na primeira etapa do assistente de personalização, a navegação por teclado, a adaptação a larguras de computador e de celular e as regras de acessibilidade que uma ferramenta automática consegue avaliar. Usa o Playwright para conduzir o navegador e o axe-core para a análise.
+\end{itemize}
+
+Os testes unitários, de integração e E2E também foram planejados para rodar na integração contínua do GitHub Actions, que executa ainda os testes do back-end com pytest. A implantação automatizada só ocorre se esses testes forem aprovados. O critério de aprovação, em todos os níveis, é o resultado das asserções de cada caso; na integração contínua, um caso E2E que só passa depois de repetido também reprova a execução, como detalha a Seção~\ref{subsec:ci-plataforma}.
+
+O planejamento não incluiu uma meta de cobertura de código, e nenhum dos níveis mede essa cobertura. Os testes oferecem evidência do comportamento que cobrem e apoio à detecção de regressões. A presença de uma suíte, por si só, não comprova que o ciclo de escrever o teste antes da implementação tenha sido seguido em todos os incrementos.
+
+\section{Testes unitários e de integração}
+\label{sec:testes-unitarios}
+
+A revisão de 16 de setembro de 2026 registrou 139 aprovações em 28 arquivos selecionados pelo comando de testes da IDE, além de seis verificações executadas separadamente. Após os merges, a configuração passou a descobrir arquivos \texttt{.spec.ts} e \texttt{.spec.tsx} em toda a árvore de fontes, mantendo oito exclusões explícitas de testes do assistente ainda pendentes de atualização. Em 19 de setembro de 2026, a execução local do comando \texttt{npm test} do pacote aprovou 274 testes em 54 arquivos. Em 19 de outubro, o mesmo comando aprovou 312 testes em 60 arquivos, sem falhas, com as mesmas oito exclusões (Apêndice~\ref{ap:verificacao}). Entre os arquivos novos estão os testes do menu da IDE, do painel de linguagem, dos arquivos iniciais e do cartão de turma do professor. A ampliação documenta o conjunto executado, sem representar a execução dos arquivos excluídos ou uma medição de cobertura total. O pacote E2E não foi executado na revisão de outubro, porque depende dos serviços em execução; o resultado mais recente dele é o de 19 de setembro, descrito na Seção~\ref{subsec:resultado-e2e}.
+
+A preparação do ambiente de testes passou a incluir uma implementação de armazenamento em memória quando o armazenamento global não fornece as operações esperadas, além de substitutos para APIs de rolagem e consulta de mídia ausentes no ambiente simulado. A nova execução não exigiu o ajuste manual de armazenamento registrado na revisão anterior. Esses substitutos viabilizam os testes dos componentes, mas não reproduzem o cálculo de layout de um navegador real.
+
+Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-storage} apresenta um recorte de dois casos que verificam a persistência da customização, construção sobre a qual repousa a continuidade da linguagem escolhida pelo usuário entre recarregamentos da página. Os auxiliares e algumas asserções foram omitidos para abreviar a listagem; o arquivo original contém a verificação completa. O primeiro caso verifica a normalização do nome da linguagem em uma chave de armazenamento; o segundo, que a gravação permite recuperar a linguagem pelo identificador.
+
+\begin{lstlisting}[language=typescript, caption={Casos de teste da persistência da linguagem personalizada (\texttt{keyword-language-storage.spec.ts}).}, label={lst:teste-storage}, captionpos=b]
+describe("keyword-language-storage", () => {
+  beforeEach(() => { localStorage.clear(); });
+
+  it("slugifies the language name for localStorage keys", () => {
+    expect(slugifyLanguageName("  Minha Linguagem++  "))
+      .toBe("minha-linguagem");
+    expect(slugifyLanguageName("JAVA   MM")).toBe("java-mm");
+  });
+
+  it("persists the saved language in the registry, active key, "
+   + "and runtime customization", () => {
+    const savedLanguage = createSavedLanguage();
+
+    saveSavedKeywordLanguage(savedLanguage);
+
+    expect(loadSavedKeywordLanguage(savedLanguage.slug))
+      .toEqual(savedLanguage);
+  });
+});
+\end{lstlisting}
+
+
+\input{texto/testes-e2e}
+
+
+
+\input{texto/verificacao-interface}

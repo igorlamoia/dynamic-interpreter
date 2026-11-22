@@ -1,0 +1,48 @@
+\chapter[APÊNDICE C -- REPOSITÓRIO DO PROJETO]{{\centering APÊNDICE C \textendash{} REPOSITÓRIO DO PROJETO}}  \label{ap:repositorio}
+
+O código da plataforma, os testes e os registros de verificação citados neste trabalho estão no repositório público do projeto, mantido pelos dois autores no GitHub:
+
+\begin{center}
+\url{https://github.com/igorlamoia/dynamic-interpreter}
+\end{center}
+
+O repositório é organizado como um conjunto de pacotes. A Tabela~\ref{tab:ap-repositorio-caminhos} indica os caminhos citados no texto, e a Tabela~\ref{tab:ap-repositorio-revisoes}, as revisões do código que serviram de base às descrições e às execuções de testes. Uma revisão é identificada pelo seu código no histórico do Git; o texto usa os sete primeiros caracteres, e a tabela traz o código completo.
+
+\begin{table}[htbp]
+\centering
+\caption{Caminhos do repositório citados no texto.}
+\label{tab:ap-repositorio-caminhos}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{6.4cm}|p{7.6cm}|}
+\hline
+\textbf{Caminho} & \textbf{Conteúdo} \\\hline
+\path{packages/compiler} & Núcleo de tradução e execução, consumido pela IDE \\\hline
+\path{packages/ide} & Implementação da IDE em Next.js e seus testes unitários e de integração \\\hline
+\path{packages/e2e} & Suíte de testes de ponta a ponta com Playwright \\\hline
+\path{.github/workflows/deploy.yml} & Fluxo de integração contínua e implantação no GitHub Actions \\\hline
+\path{qualificacao/igor/verificacao/} & Registros de verificação da interface e de execução dos testes (Apêndice~\ref{ap:verificacao}) \\\hline
+\path{qualificacao/verificacao/avaliacao-2026-11/resumo.json} & Resumo agregado das respostas aos formulários de avaliação (Apêndice~\ref{ap:respostas}) \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Os dois caminhos da pasta \path{qualificacao} estão na ramificação \texttt{escrita-tcc}, usada na redação deste trabalho.
+
+\begin{table}[htbp]
+\centering
+\caption{Revisões do código citadas no texto.}
+\label{tab:ap-repositorio-revisoes}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|p{6.6cm}|p{5.2cm}|}
+\hline
+\textbf{Data} & \textbf{Revisão} & \textbf{Uso no texto} \\\hline
+16/09/2026 & \texttt{b4372bf60218e61437d32af26d5f04a4595e7e22} & Primeira conferência da descrição da implementação \\\hline
+19/09/2026 & \texttt{3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c} & Descrição da IDE, da suíte de ponta a ponta e do fluxo de integração contínua; execução dos testes de 19 de setembro \\\hline
+19/10/2026 & \texttt{04adff24211dfc224167027d8b32a09cc165c06a} & Tutoriais guiados, página Sobre, diálogo de regras do compilador e correção de submissões na IDE; execução dos testes de 19 de outubro \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Os arquivos de uma revisão podem ser consultados pelo endereço do repositório seguido de \path{/tree/} e do código da revisão. Por exemplo, a IDE na revisão de 19 de setembro está em \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/packages/ide}.

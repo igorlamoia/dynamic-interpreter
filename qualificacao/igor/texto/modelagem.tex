@@ -1,0 +1,115 @@
+
+Este capítulo reúne os modelos elaborados para a plataforma. A Seção~\ref{sec:casos-de-uso} apresenta o diagrama de casos de uso, a Seção~\ref{sec:arquitetura-plataforma} descreve a arquitetura em camadas e a Seção~\ref{sec:modelo-dados} apresenta o modelo do banco de dados.
+
+\section{Diagrama de Casos de Uso}
+\label{sec:casos-de-uso}
+
+Um diagrama de casos de uso mostra um conjunto de casos de uso, os atores e os relacionamentos entre eles. Na UML, esse diagrama é usado para organizar e modelar o comportamento de um sistema tal como ele é percebido de fora, isto é, o que o sistema oferece a quem o utiliza, sem descrever como cada funcionalidade é implementada \cite{booch2006uml}. Cada caso de uso representa uma tarefa que envolve interação com o sistema, e os atores podem ser pessoas ou outros sistemas \cite{sommerville2018}. Neste trabalho, o diagrama serviu para delimitar os fluxos da plataforma e para derivar os requisitos apresentados no Capítulo~\ref{cap:proposta}.
+
+A Figura~\ref{fig:casos-de-uso} apresenta o diagrama da plataforma, com todos os casos de uso e quatro atores. O Visitante usa a plataforma sem conta: pode cadastrar-se, autenticar-se, usar a IDE e criar linguagens personalizadas, mas a linguagem criada fica apenas no armazenamento local do navegador. O Usuário autenticado tem os mesmos recursos da IDE e acrescenta o gerenciamento do perfil, a gravação das linguagens no servidor e o compartilhamento e a importação de linguagens da comunidade. O Aluno e o Professor são especializações do Usuário autenticado: herdam os casos de uso dele e acrescentam, respectivamente, a participação em turmas, com consulta e submissão de exercícios, e a gestão pedagógica de turmas, exercícios e listas.
+
+Os atores correspondem aos papéis gravados no banco de dados (Seção~\ref{sec:modelo-dados}) da seguinte forma. O papel \texttt{STUDENT} corresponde ao Aluno. Os papéis \texttt{TEACHER} e \texttt{ADMIN} correspondem ao Professor, porque a interface oferece ao administrador os mesmos recursos pedagógicos do professor. O papel \texttt{COMMUNITY} corresponde ao Usuário autenticado que não participa de turmas. O papel \texttt{SYSTEM} é interno, não representa uma pessoa usando a plataforma e por isso não aparece no diagrama.
+
+\begin{figure}[p]
+\centering
+\caption{Diagrama de casos de uso da plataforma.}
+\label{fig:casos-de-uso}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=4.6cm,minimum height=.9cm}]
+\draw[thick] (2.6,1.4) rectangle (16.4,-16.0);
+\node[font=\small\bfseries] at (9.5,.95) {Plataforma educacional web};
+% Coluna da esquerda: acesso e ambiente de desenvolvimento.
+\node[uc] (ucCad)  at (6,0.0)   {Cadastrar-se};
+\node[uc] (ucAut)  at (6,-1.5)  {Autenticar-se};
+\node[uc] (ucPer)  at (6,-3.0)  {Gerenciar perfil};
+\node[uc] (ucLing) at (6,-4.5)  {Criar e gerenciar\\linguagens personalizadas};
+\node[uc] (ucCom)  at (6,-6.0)  {Compartilhar e importar\\linguagens da comunidade};
+\node[uc] (ucAtiv) at (6,-7.5)  {Ativar linguagem\\no editor};
+\node[uc] (ucEdit) at (6,-9.0)  {Editar código na IDE};
+\node[uc] (ucArq)  at (6,-10.5) {Gerenciar arquivos\\do projeto};
+\node[uc] (ucExec) at (6,-12.0) {Executar programa\\no terminal};
+\node[uc] (ucTok)  at (6,-13.5) {Inspecionar \textit{tokens} e\\código intermediário};
+\node[uc] (ucDep)  at (6,-15.0) {Depurar execução\\passo a passo};
+% Coluna da direita: participação e gestão pedagógica.
+\node[uc] (ucIng)  at (13,0.0)   {Ingressar em turma};
+\node[uc] (ucCons) at (13,-1.5)  {Consultar listas\\e exercícios};
+\node[uc] (ucSub)  at (13,-3.0)  {Submeter solução\\de exercício};
+\node[uc] (ucVer)  at (13,-4.5)  {Consultar veredito\\e histórico};
+\node[uc] (ucTur)  at (13,-6.0)  {Gerenciar turmas};
+\node[uc] (ucMem)  at (13,-7.5)  {Gerenciar membros\\da turma};
+\node[uc] (ucEx)   at (13,-9.0)  {Gerenciar exercícios\\e casos de teste};
+\node[uc] (ucVinc) at (13,-10.5) {Vincular linguagem\\a exercício ou lista};
+\node[uc] (ucLis)  at (13,-12.0) {Gerenciar listas\\de exercícios};
+\node[uc] (ucPub)  at (13,-13.5) {Publicar lista\\para a turma};
+\node[uc] (ucAva)  at (13,-15.0) {Acompanhar e avaliar\\submissões};
+% Atores: visitante e usuario autenticado a esquerda; aluno e professor,
+% especializacoes do usuario autenticado, a direita.
+\pic at (0,-4.0) {ator}; \node[font=\small] at (0,-5.65) {Visitante};
+\pic at (0,-11.8) {ator}; \node[font=\small,align=center] at (0,-13.75) {Usuário\\autenticado};
+\pic at (19.8,-1.8) {ator}; \node[font=\small] at (19.8,-3.45) {Aluno};
+\pic at (18.2,-10.1) {ator}; \node[font=\small] at (18.2,-11.75) {Professor};
+% Generalizacao: aluno e professor herdam do usuario autenticado. As duas
+% linhas contornam o diagrama por baixo e se juntam antes da seta.
+\draw[heranca] (19.8,-3.85) -- (19.8,-17.0) -- (0,-17.0) -- (0,-14.5);
+\draw[heranca] (18.2,-12.15) -- (18.2,-17.0) -- (0,-17.0) -- (0,-14.5);
+% As ligacoes partem de alturas ligeiramente diferentes junto a cada ator,
+% para nao se sobreporem.
+\begin{scope}[on background layer]
+\foreach \d/\o in {ucCad/0.8,ucAut/0.6,ucLing/0.4,ucAtiv/0.2,ucEdit/0,ucArq/-0.2,ucExec/-0.4,ucTok/-0.6,ucDep/-0.8}
+  \draw[liga] (0.35,{-4.4+\o}) -- (\d);
+\foreach \d/\o in {ucPer/0.8,ucLing/0.6,ucCom/0.4,ucAtiv/0.2,ucEdit/0,ucArq/-0.2,ucExec/-0.4,ucTok/-0.6,ucDep/-0.8}
+  \draw[liga] (0.35,{-12.2+\o}) -- (\d);
+\foreach \d/\o in {ucIng/0.45,ucCons/0.15,ucSub/-0.15,ucVer/-0.45}
+  \draw[liga] (19.45,{-2.2+\o}) -- (\d);
+\foreach \d/\o in {ucTur/0.75,ucMem/0.5,ucEx/0.25,ucVinc/0,ucLis/-0.25,ucPub/-0.5,ucAva/-0.75}
+  \draw[liga] (17.85,{-10.5+\o}) -- (\d);
+\end{scope}
+\end{tikzpicture}}
+\legend{Fonte: elaborado pelo autor.}
+\end{figure}
+\FloatBarrier
+
+\section{Modelagem da Arquitetura da Plataforma}
+\label{sec:arquitetura-plataforma}
+
+A organização da plataforma foi concebida sob a ótica da Separação de Responsabilidades defendida por \citeonline{martin_clean}, dividindo o projeto em três responsabilidades principais: o pacote \texttt{compiler}, responsável pelo núcleo do interpretador; o pacote \texttt{ide}, responsável pela camada de apresentação e por toda a interação com o usuário; e o serviço de \textit{back-end}, responsável pela persistência das entidades de domínio do Ambiente Virtual de Aprendizagem. Os pacotes \texttt{compiler} e \texttt{ide} são versionados em um único repositório no formato \textit{monorepo}, viabilizando o consumo direto do compilador como dependência local da IDE, sem qualquer empacotamento intermediário e sem comunicação remota entre as duas camadas. Esse consumo elimina a requisição remota na análise interativa e permite compartilhar a implementação entre navegador e servidor; não foi medida a redução de latência.
+
+O \textit{front-end} foi implementado com o \textit{framework} Next.js, em sua arquitetura de \textit{Pages Router} e sobre o \textit{Node.js Runtime} padrão, e sobre a biblioteca React 19, utilizando TypeScript em todo o código-fonte para verificar tipos durante o desenvolvimento. Nenhuma rota declara \texttt{runtime = 'edge'}, de modo que o \textit{Edge Runtime} do Next.js não é utilizado neste projeto; as rotas de validação de submissões precisam de acesso pleno às APIs do Node.js. A estilização foi conduzida com Tailwind CSS em sua quarta versão, complementada por componentes das bibliotecas \textit{shadcn/ui} e \textit{Radix UI}, que fornecem primitivas de semântica e interação, sem garantir a acessibilidade da composição final \cite{radixaccess2026}. O gerenciamento de estado assíncrono foi delegado à biblioteca \textit{TanStack React Query}, responsável pela orquestração de cache, sincronização e revalidação dos dados consumidos das rotas HTTP, enquanto a validação de formulários foi modelada com a biblioteca \textit{Zod}, integrada ao \textit{React Hook Form}.
+
+A camada de \textit{back-end} foi implementada em Python sobre o \textit{framework} FastAPI, escolhido pelas características de alto desempenho, validação automática via \textit{Pydantic} e geração automatizada de documentação OpenAPI discutidas por \citeonline{fastapi2026}. A persistência foi sustentada pelo ORM SQLAlchemy assíncrono, com versionamento de \textit{schema} via Alembic, isolando o modelo de dados das regras de negócio em conformidade com os princípios de Arquitetura Limpa apresentados por \citeonline{martin_clean}. Essa separação mantém o modelo de persistência confinado a uma camada própria, de modo que o núcleo de compilação e a interface web não dependam diretamente do banco de dados nem de suas particularidades. Não se trata de minimizar a importância da persistência, mas de restringir seu alcance: mudanças no esquema ou no mecanismo de armazenamento não devem propagar-se para as regras de tradução nem para a camada de apresentação.
+
+O fluxo geral da Figura~\ref{fig:arquitetura-plataforma} distingue dois ambientes de execução. No navegador, os \textit{hooks} \texttt{useLexerAnalyse} e \texttt{useIntermediatorCode} e o terminal instanciam o núcleo diretamente para analisar, traduzir e executar o programa do editor. No servidor Node.js do Next.js, a rota \texttt{/api/submissions/validate} reutiliza as mesmas classes para avaliar soluções de exercícios. O serviço FastAPI fornece autenticação e recursos persistentes. Após o carregamento da aplicação, os recursos locais não exigem uma chamada a esse serviço para cada análise; isso não equivale a garantir o carregamento inicial da plataforma sem conexão.
+
+\begin{figure}[htbp]
+    \centering
+    \caption[Arquitetura da plataforma.]{Arquitetura da plataforma: camadas, módulos internos e fluxos de comunicação.}
+    \label{fig:arquitetura-plataforma}
+    \resizebox{\linewidth}{!}{\input{Figuras/arquitetura-atual.tex}}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+A organização interna do código da IDE seguiu a topologia clássica de aplicações Next.js, com diretórios dedicados para páginas (\texttt{pages}), componentes reutilizáveis (\texttt{components}), \textit{contexts} de estado global (\texttt{contexts}), \textit{hooks} personalizados (\texttt{hooks}), entidades de domínio (\texttt{entities}), bibliotecas de apoio (\texttt{lib}) e composições de tela (\texttt{views}). Essa segmentação é um primeiro passo na direção da coesão funcional discutida por \citeonline{silveira2012}: a organização em diretórios, isoladamente, não a garante, mas torna explícita a responsabilidade atribuída a cada módulo e facilita que ela seja preservada ao longo da evolução do código, favorecendo a legibilidade e a testabilidade do sistema.
+
+Cabe explicitar quais padrões de projeto foram efetivamente empregados nessa organização. Na camada de apresentação, adota-se o padrão \textit{Provider} da biblioteca React: cada preocupação transversal da aplicação (autenticação, editor, customização da linguagem, terminal, tema, notificações e erros de execução) é isolada em um \textit{context} próprio, sob o diretório \texttt{contexts}, que expõe estado e operações aos componentes descendentes sem exigir a propagação manual de propriedades. Os \textit{hooks} personalizados, por sua vez, operam como fachadas sobre esses \textit{contexts} e sobre o pacote \texttt{compiler}, oferecendo aos componentes uma interface reduzida e estável, independente da forma como o núcleo de tradução é instanciado. A organização interna do núcleo de tradução é detalhada no trabalho complementar; neste texto, o foco recai nos contratos consumidos pelos componentes da IDE.
+
+\section{Modelo de Dados}
+\label{sec:modelo-dados}
+
+As atividades, os dados dos alunos e as linguagens personalizadas ficam em um banco de dados relacional PostgreSQL, acessado apenas pelo serviço de \textit{back-end}. As tabelas são definidas pelos modelos do ORM SQLAlchemy, e o esquema é versionado por migrações do Alembic. A Figura~\ref{fig:esquema-banco} mostra as onze tabelas de domínio e as referências entre elas. Para que o diagrama caiba na página, cada tabela exibe só a chave primária, as chaves estrangeiras e os campos únicos; os demais atributos aparecem resumidos na última linha e são descritos a seguir.
+
+\begin{figure}[htbp]
+    \centering
+    \caption{Tabelas e referências do esquema lógico da plataforma.}
+    \label{fig:esquema-banco}
+    \input{Figuras/esquema-banco-atual.tex}
+    \legend{Fonte: elaborado pelo autor a partir dos modelos SQLAlchemy do \textit{back-end}.}
+\end{figure}
+\FloatBarrier
+
+Os dados de acesso e dos alunos ficam nas tabelas \texttt{organizations}, \texttt{users}, \texttt{classes} e \texttt{class\_members}. Todos os usuários estão na mesma tabela e se distinguem pelo campo \texttt{role}, cujos valores são \texttt{ADMIN}, \texttt{TEACHER}, \texttt{STUDENT}, \texttt{COMMUNITY} e \texttt{SYSTEM}; a correspondência desses papéis com os atores do diagrama de casos de uso foi apresentada na Seção~\ref{sec:casos-de-uso}. A tabela de usuários guarda ainda nome, e-mail, o resumo criptográfico da senha, foto e biografia, e o vínculo com uma organização é opcional. A turma referencia uma organização e o professor responsável e tem um código de acesso único, que o aluno informa para ingressar nela. O ingresso é registrado em \texttt{class\_members}, cuja chave primária combina turma e aluno.
+
+As personalizações ficam na tabela \texttt{languages}. Cada linguagem tem um proprietário, nome, descrição e a configuração completa em um campo JSON, com as palavras-chave, os operadores, os literais booleanos, os delimitadores, o terminador de instrução e os modos escolhidos no assistente. A tabela registra também se a linguagem foi publicada no catálogo da comunidade e, quando ela foi importada de outra, a linguagem de origem, no campo \texttt{cloned\_from\_id}. O campo \texttt{active\_language\_id} da tabela de usuários aponta para a linguagem ativa de cada usuário autenticado. Um mesmo usuário não pode ter duas linguagens com o mesmo nome. A customização em uso no editor e os arquivos do sistema de arquivos virtual ficam no armazenamento local do navegador, e por isso o visitante consegue usar a personalização sem conta.
+
+As atividades são distribuídas entre \texttt{exercises}, \texttt{test\_cases}, \texttt{exercise\_lists} e \texttt{exercise\_list\_items}. Exercícios e listas pertencem a um professor e têm uma política de linguagem, aberta (\texttt{OPEN}) ou travada (\texttt{LOCKED}); uma restrição de verificação exige que a linguagem obrigatória, \texttt{locked\_language\_id}, esteja preenchida exatamente quando a política é \texttt{LOCKED}. Os casos de teste pertencem a um exercício e guardam a entrada e a saída esperada. Os itens de lista associam exercícios a listas, com peso na nota e ordem de apresentação.
+
+A publicação de uma lista para uma turma é registrada em \texttt{class\_exercise\_lists}, com prazo, nota total e quantidade mínima de exercícios. A tabela \texttt{submissions} registra cada tentativa do aluno: referencia o exercício, a lista, a turma e o estudante e guarda uma cópia do código e da configuração da linguagem no momento do envio, nos campos \texttt{code\_snapshot} e \texttt{language\_snapshot}. Essas cópias preservam o contexto da tentativa mesmo que o aluno altere depois o código ou a linguagem. A submissão guarda também o estado, a pontuação, o comentário do professor, a data de envio e o resultado de cada caso de teste, em uma lista JSON. O dicionário de dados completo, com todos os atributos, está no texto complementar de Victor de Souza Vilela da Silva.

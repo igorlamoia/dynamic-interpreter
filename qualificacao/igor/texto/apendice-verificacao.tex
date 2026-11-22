@@ -1,0 +1,56 @@
+\chapter[APÊNDICE D -- REGISTROS DE EXECUÇÃO DOS TESTES]{{\centering APÊNDICE D \textendash{} REGISTROS DE EXECUÇÃO DOS TESTES}}  \label{ap:verificacao}
+
+Este apêndice resume os dois registros de execução dos testes da plataforma citados no Capítulo~\ref{cap:testes}. Os registros completos, em formato JSON, estão no repositório do projeto (Apêndice~\ref{ap:repositorio}), nos arquivos \path{qualificacao/igor/verificacao/testes-2026-09-19.json} e \path{qualificacao/igor/verificacao/testes-2026-10-19.json}. As duas execuções foram locais e não representam execuções remotas do GitHub Actions.
+
+\begin{table}[htbp]
+\centering
+\caption{Resumo dos registros de execução dos testes.}
+\label{tab:ap-verificacao}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{6.4cm}|p{3.4cm}|p{3.4cm}|}
+\hline
+\textbf{Item} & \textbf{19 de setembro} & \textbf{19 de outubro} \\\hline
+Data & 19/09/2026 & 19/10/2026 \\\hline
+Revisão do código & \texttt{3ffae01} & \texttt{04adff2} \\\hline
+Node.js & 25.2.1 & 25.2.1 \\\hline
+Vitest & 4.0.18 & 4.0.18 \\\hline
+Playwright & 1.63.0 & não usado \\\hline
+Testes da IDE aprovados & 274 & 312 \\\hline
+Arquivos de teste da IDE aprovados & 54 & 60 \\\hline
+Testes da IDE com falha & não registrado & 0 \\\hline
+Arquivos de teste excluídos da execução & 8 & 8 \\\hline
+Casos E2E aprovados & 31 de 31 & não executado \\\hline
+Casos E2E com falha, ignorados ou intermitentes & 0, 0 e 0 & não executado \\\hline
+Duração da suíte E2E & 23,7 s & -- \\\hline
+Verificação de tipos do pacote E2E & sem erros & -- \\\hline
+\end{tabular}
+\legend{Fonte: registros de verificação do projeto (2026).}
+\end{table}
+
+Na execução de 19 de setembro, os serviços Docker já estavam ativos e as imagens não foram reconstruídas. A suíte de ponta a ponta rodou com a variável de integração contínua ativa, com dois processos de execução e com a opção que faz a execução falhar diante de testes intermitentes. Todos os casos passaram na primeira tentativa. Uma tentativa anterior foi interrompida porque o executável do Chromium sem interface gráfica não estava instalado: 28 casos falharam antes da abertura do navegador e os 3 casos que usam só a API passaram. Depois da instalação do navegador, a suíte foi repetida por inteiro, com as 31 aprovações registradas. Em 19 de outubro, só os testes unitários e de integração da IDE foram executados, porque o pacote E2E depende dos serviços em execução; o último registro dele é o de setembro.
+
+A Tabela~\ref{tab:ap-casos-e2e} agrupa os 31 casos de ponta a ponta de 19 de setembro pelo arquivo de teste.
+
+\begin{table}[htbp]
+\centering
+\caption{Casos de ponta a ponta aprovados em 19 de setembro de 2026, por arquivo.}
+\label{tab:ap-casos-e2e}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{3.6cm}|c|p{8.6cm}|}
+\hline
+\textbf{Arquivo} & \textbf{Casos} & \textbf{Títulos dos casos, como registrados} \\\hline
+\path{auth.e2e.ts} & 4 & login com credencial do seed chega ao dashboard \newline senha errada mostra erro e mantem o usuario no login \newline registro de aluno novo chega ao dashboard \newline rota protegida sem sessao redireciona para o login \\\hline
+\path{custom-language.e2e.ts} & 3 & o catalogo comunitario lista as 5 linguagens oficiais do seed \newline importar uma linguagem do catalogo a leva para /languages, e o backend concorda \newline ativar a linguagem importada remapeia o lexer usado por / \\\hline
+\path{fixtures.e2e.ts} & 3 & cria professor e aluno isolados por execução \newline monta turma, exercicio, lista e publicacao pela API \newline cookie injetado autentica o dashboard sem passar pelo login \\\hline
+\path{grading.e2e.ts} & 2 & professor atribui nota e feedback, e a correcao persiste \newline a nota atribuida pelo professor chega ao aluno no exercicio \\\hline
+\path{ide-compiler.e2e.ts} & 4 & escrever codigo no Monaco e executar produz a saida esperada no terminal \newline o painel de \textit{tokens} lista os \textit{tokens} do programa \newline o codigo intermediario mostra temporarios ou labels gerados \newline um erro de sintaxe e reportado em vez de passar silenciosamente \\\hline
+\path{language-creator.e2e.ts} & 3 & criar uma linguagem pelo wizard salva no acervo da conta \newline editar uma linguagem pelo wizard atualiza a existente em vez de criar outra \newline salvar com um nome que ja existe na conta mostra o erro e nao cria duplicata \\\hline
+\path{languages.e2e.ts} & 4 & duplicar uma linguagem deixa as duas no acervo \newline excluir uma linguagem pede confirmacao e some com ela \newline usuario da comunidade publica e despublica sua linguagem no acervo \newline o botao de publicar nao existe para quem nao e da comunidade \\\hline
+\path{lms-flow.e2e.ts} & 3 & aluno entra na turma pela UI usando o codigo de acesso \newline submissao com codigo correto mostra os test cases passando e o badge ``Enviado'' \newline submissao com erro mostra os erros e nao marca como enviado \\\hline
+\path{smoke.e2e.ts} & 2 & o backend responde no /health \newline a landing renderiza o shell do IDE \\\hline
+\path{teacher-flow.e2e.ts} & 3 & professor cria turma pela UI e o codigo gerado serve para o aluno entrar \newline professor cria exercicio com caso de teste pela UI e ele aparece no catalogo \newline professor monta a lista, adiciona exercicio e publica; o aluno passa a ver a lista \\\hline
+\end{tabular}
+\legend{Fonte: registro de verificação de 19 de setembro de 2026.}
+\end{table}

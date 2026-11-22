@@ -44,6 +44,12 @@ Dispon{\'\i}vel em: \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.
 Dispon{\'\i}vel em: \url{https://judge.beecrowd.com/en/faqs/about/problems}.
   Acesso em: 12 set. 2026.}
 
+\bibitem[Booch, Rumbaugh e Jacobson 2006]{booch2006uml}
+\abntrefinfo{Booch, Rumbaugh e Jacobson}{BOOCH; RUMBAUGH; JACOBSON}{2006}
+{BOOCH, G.; RUMBAUGH, J.; JACOBSON, I. \textbf{UML: Guia do Usuário}. 2. ed.
+  Rio de Janeiro: Elsevier, 2006. Tradução de Fábio Freitas da Silva e
+  Cristina de Amorim Machado.}
+
 \bibitem[Brooke 1996]{brooke1996}
 \abntrefinfo{Brooke}{BROOKE}{1996}
 {BROOKE, J. Sus: a quick and dirty usability scale. In:  JORDAN, P.~W.; THOMAS,
@@ -126,6 +132,13 @@ Dispon{\'\i}vel em: \url{https://playwright.dev/docs/test-retries}. Acesso em:
 Dispon{\'\i}vel em: \url{https://playwright.dev/docs/api/class-testconfig}.
   Acesso em: 19 set. 2026.}
 
+\bibitem[Nielsen e Landauer 1993]{nielsen1993}
+\abntrefinfo{Nielsen e Landauer}{NIELSEN; LANDAUER}{1993}
+{NIELSEN, J.; LANDAUER, T.~K. A mathematical model of the finding of usability
+  problems. In:  \textbf{Proceedings of the INTERACT '93 and CHI '93 Conference
+  on Human Factors in Computing Systems (INTERCHI '93)}. Amsterdam: ACM, 1993.
+  p. 206--213.}
+
 \bibitem[Norman e Nielsen 1998]{normannielsen1998}
 \abntrefinfo{Norman e Nielsen}{NORMAN; NIELSEN}{1998}
 {NORMAN, D.; NIELSEN, J. \textbf{The Definition of User Experience (UX)}. 1998.
@@ -143,53 +156,11 @@ ISBN 978-0990582939.}
 {PRICE, A. M.~A.; TOSCANI, S.~S. \textbf{Implementa{\c{c}}{\~a}o de Linguagens
   de Programa{\c{c}}{\~a}o: Compiladores}. Porto Alegre: Sagra Luzzatto, 2001.}
 
-\bibitem[Queiroz 2026]{queiroz2026verificacaooutubro}
-\abntrefinfo{Queiroz}{QUEIROZ}{2026a}
-{QUEIROZ, I.~L. \textbf{Registro de verificação local dos testes da IDE: 19
-  de outubro de 2026}. 2026.
-Dispon{\'\i}vel em:
-  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/igor/verificacao/testes-2026-10-19.json}.
-  Acesso em: 19 out. 2026.}
-
-\bibitem[Queiroz 2026]{queiroz2026verificacaotestes}
-\abntrefinfo{Queiroz}{QUEIROZ}{2026b}
-{QUEIROZ, I.~L. \textbf{Registro de verificação local dos testes da IDE e do
-  pacote E2E: 19 de setembro de 2026}. 2026.
-Dispon{\'\i}vel em:
-  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/igor/verificacao/testes-2026-09-19.json}.
-  Acesso em: 19 set. 2026.}
-
-\bibitem[Queiroz 2026]{queiroz2026avaliacao}
-\abntrefinfo{Queiroz}{QUEIROZ}{2026c}
-{QUEIROZ, I.~L. \textbf{Resumo das respostas dos formulários de avaliação da
-  plataforma: novembro de 2026}. 2026.
-Dispon{\'\i}vel em:
-  \url{https://github.com/igorlamoia/dynamic-interpreter/blob/escrita-tcc/qualificacao/verificacao/avaliacao-2026-11/resumo.json}.
-  Acesso em: 10 nov. 2026.}
-
-\bibitem[Queiroz e Silva 2026]{projeto2026ci}
-\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026a}
-{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter: fluxo de
-  integração contínua e implantação}. 2026.
-Dispon{\'\i}vel em:
-  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/.github/workflows/deploy.yml}.
-  Acesso em: 19 set. 2026.}
-
-\bibitem[Queiroz e Silva 2026]{projeto2026frontend}
-\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026b}
-{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter:
-  implementação e testes da IDE}. 2026.
-Dispon{\'\i}vel em:
-  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/packages/ide}.
-  Acesso em: 19 set. 2026.}
-
-\bibitem[Queiroz e Silva 2026]{projeto2026e2e}
-\abntrefinfo{Queiroz e Silva}{QUEIROZ; SILVA}{2026c}
-{QUEIROZ, I.~L.; SILVA, V. d. S. V.~d. \textbf{Dynamic Interpreter: suíte de
-  testes E2E}. 2026.
-Dispon{\'\i}vel em:
-  \url{https://github.com/igorlamoia/dynamic-interpreter/tree/3ffae0101cf1c6aacc85dfbadce4edf123a4ad4c/packages/e2e}.
-  Acesso em: 19 set. 2026.}
+\bibitem[Prodanov e Freitas 2013]{prodanov2013}
+\abntrefinfo{Prodanov e Freitas}{PRODANOV; FREITAS}{2013}
+{PRODANOV, C.~C.; FREITAS, E.~C. de. \textbf{Metodologia do Trabalho
+  Científico: Métodos e Técnicas da Pesquisa e do Trabalho Acadêmico}. 2.
+  ed. Novo Hamburgo: Feevale, 2013.}
 
 \bibitem[QUORUM 2025]{quorum2025}
 \abntrefinfo{QUORUM}{QUORUM}{2025}
@@ -244,6 +215,11 @@ Dispon{\'\i}vel em:
   software: uma vis{\~a}o sobre a plataforma Java}. S{\~a}o Paulo: Casa do
   C{\'o}digo, 2012.}
 
+\bibitem[Sommerville 2018]{sommerville2018}
+\abntrefinfo{Sommerville}{SOMMERVILLE}{2018}
+{SOMMERVILLE, I. \textbf{Engenharia de Software}. 10. ed. São Paulo: Pearson
+  Education do Brasil, 2018.}
+
 \bibitem[Souza, Batista e Barbosa 2016]{souza2016}
 \abntrefinfo{Souza, Batista e Barbosa}{SOUZA; BATISTA; BARBOSA}{2016}
 {SOUZA, D.~M.; BATISTA, M. H. d.~S.; BARBOSA, E.~F. Problemas e dificuldades no
@@ -257,6 +233,11 @@ Dispon{\'\i}vel em:
 {STEFIK, A.; SIEBERT, S. An empirical investigation into programming language
   syntax.
 \textbf{ACM Transactions on Computing Education}, ACM, v.~13, n.~4, 2013.}
+
+\bibitem[Sweller 1988]{sweller1988}
+\abntrefinfo{Sweller}{SWELLER}{1988}
+{SWELLER, J. Cognitive load during problem solving: effects on learning.
+\textbf{Cognitive Science}, v.~12, n.~2, p. 257--285, 1988.}
 
 \bibitem[Ueyama 2020]{ueyama2020}
 \abntrefinfo{Ueyama}{UEYAMA}{2020}

@@ -1,0 +1,119 @@
+
+Este capítulo situa a plataforma desenvolvida neste trabalho no conjunto de soluções tecnológicas voltadas ao ensino introdutório de programação. Embora o objetivo do projeto seja apoiar a aprendizagem de programação, e não o ensino de construção de compiladores, a plataforma é uma IDE acoplada a um interpretador de gramática configurável e, por isso, fica na fronteira entre dois grupos de ferramentas: os ambientes voltados à iniciação em programação e os projetos didáticos de construção de compiladores e de analisadores léxicos e sintáticos, cujas decisões técnicas e pedagógicas dialogam com o núcleo de tradução da plataforma. São examinadas cinco iniciativas, organizadas nas duas seções seguintes conforme o grupo a que pertencem. Para cada uma, o texto descreve as escolhas de interface, os recursos pedagógicos e as estratégias de interação com o estudante. A última seção compara os recursos de cada grupo com os da plataforma proposta.
+
+A seleção é intencional, não sistemática: inclui ambientes de iniciação com interface ou avaliação de exercícios e projetos de construção de tradutores com documentação técnica disponível. Portugol e Quorum permitem discutir vocabulário e acessibilidade; Beecrowd, o ciclo de submissão; Laila, a edição de gramáticas em uma interface web; e \textit{chibicc}, a implementação incremental. As comparações valem apenas para esse conjunto e não demonstram ineditismo frente a todas as ferramentas existentes.
+
+\section{Ambientes Voltados à Iniciação em Programação}
+
+Reúnem-se aqui as ferramentas cujo público-alvo é o estudante em primeiro contato com a programação e cujo propósito declarado é reduzir o atrito desse contato inicial.
+
+\subsection{Portugol Studio e Portugol Webstudio}
+
+Criado pelo Laboratório de Inovação Tecnológica na Educação (LITE) da Universidade do Vale do Itajaí (UNIVALI), o Portugol Studio é um ambiente de desenvolvimento integrado de código aberto, originalmente para instalação local. A tela reproduz a organização de uma IDE profissional, com editor central, painel de saída e área de inspeção, de modo que a familiaridade adquirida pelo estudante possa ser transferida a ferramentas de mercado \cite{univali2026}. O Portugol Webstudio é outro projeto, inspirado no Portugol Studio, que oferece uma IDE \textit{online} para Portugol, com execução no navegador \cite{webstudio2026}.
+
+O principal recurso pedagógico do Portugol Studio é a própria linguagem, com construções sintáticas inspiradas em C e PHP e palavras-chave traduzidas para o português brasileiro, o que evita que o aprendiz lide com dois idiomas ao mesmo tempo durante o estudo das estruturas básicas de controle de fluxo e de dados. A esse núcleo somam-se um depurador com execução passo a passo, um inspetor de variáveis sincronizado com a linha em execução e uma árvore que representa a estrutura sintática do código produzido. Com esses recursos, o estudante acompanha linha a linha a alteração dos valores em memória, o que aproxima a execução mental do algoritmo de sua execução efetiva. O suporte a bibliotecas gráficas e sonoras amplia essa forma de interação ao permitir projetos como pequenos jogos, cuja saída visível dá retorno imediato sobre o efeito do código escrito \cite{univali2026}.
+
+\subsection{Quorum: Linguagem de Programação Baseada em Evidências}
+
+O ecossistema Quorum disponibiliza o Quorum Studio, IDE concebida desde o início para operar com leitores de tela. O ambiente funciona em modo \textit{offline}, com geração de \textit{bytecode} para a máquina virtual Java, e também no navegador, o que permite adotá-lo em contextos com restrições de instalação \cite{quorum2025,ladner2019}.
+
+O traço distintivo do projeto é submeter as decisões de sintaxe e de semântica a verificação empírica, em vez de herdá-las por imitação ou familiaridade histórica. Os experimentos de \citeonline{stefik2013} compararam linguagens de mercado a uma linguagem de controle cujas palavras-chave foram geradas aleatoriamente, recurso que isolou o efeito da forma sintática sobre o desempenho de novatos. Os resultados mostram que escolhas sintáticas podem afetar o desempenho de iniciantes, sem autorizar a generalização de que toda substituição de símbolo por palavra reduza erros \cite{stefik2013}. Na interação, a acessibilidade orienta o projeto, e o ecossistema estende o resultado dos programas a saídas em áudio, gráficos e robótica, de modo que o estudante possa perceber o efeito do programa sem depender só da leitura visual de texto \cite{quorum2025,ladner2019}.
+
+\subsection{Beecrowd: Prática de Algoritmos e Avaliação Automatizada}
+
+Antes denominada URI Online Judge, a Beecrowd é uma plataforma inteiramente web, organizada em torno de um catálogo de problemas navegável por tema e por nível de dificuldade. O fluxo considerado nesta comparação é a submissão de código a um juiz de problemas, com retorno de veredito; a documentação consultada orienta a preparação de entradas e saídas e a interpretação dos resultados \cite{beecrowd2026faq}.
+
+O acervo contempla milhares de problemas, desde estruturas básicas de seleção e repetição até tópicos como grafos e programação dinâmica, e admite submissões em diversas linguagens de mercado, incluindo C++, Python, Java e JavaScript. A graduação de dificuldade é o principal recurso didático, porque permite ao estudante progredir por incrementos e ao professor selecionar conjuntos coerentes com o momento da disciplina. A interação se dá em um ciclo curto de submissão e retorno: o estudante lê o enunciado, redige uma solução e a envia ao sistema, que a executa contra um conjunto fechado de casos de teste e devolve um veredito como ``\textit{Accepted}'', ``\textit{Wrong Answer}'' ou ``\textit{Presentation Error}''. Esse retorno informa se a solução passou, mas não localiza o erro no código. Combinado a elementos de gamificação, como \textit{rankings} públicos, fóruns e contagem de submissões aceitas, o ciclo tende a manter o estudante em prática ativa \cite{beecrowd2026faq}.
+
+\section{Projetos Didáticos de Construção de Compiladores}
+
+Reúnem-se aqui as iniciativas voltadas ao ensino da construção de tradutores. Embora se dirijam a um público mais avançado, suas decisões técnicas e pedagógicas dialogam com o núcleo de tradução da plataforma proposta.
+
+\subsection{Laila: Gerador de Analisadores Léxicos e Sintáticos \textit{Online}}
+
+A Laila oferece um ambiente de desenvolvimento executado no navegador, construído em JavaScript com o \textit{framework} VueJS e apoiado na biblioteca CodeMirror, responsável pelo destaque de sintaxe e pela sinalização \textit{inline} de inconsistências. O \textit{back-end} é uma API REST (\textit{Representational State Transfer}) em Python que coordena a execução dos geradores FLEX e Bison no servidor. Essa escolha responde a um problema concreto da disciplina: a instalação coordenada desses geradores junto a uma versão compatível do GCC (\textit{GNU Compiler Collection}) consome parte significativa da carga horária de laboratório, sobretudo em sistemas operacionais que não derivam do Linux \cite{ladgelson2021}.
+
+Com a ferramenta, o estudante especifica gramáticas, redige analisadores léxicos e sintáticos e executa os experimentos sem dependência local, e o tempo de aula se concentra no objeto de estudo em vez da configuração do ambiente. O servidor captura comportamentos anômalos, como laços infinitos ou erros de compilação, e devolve os diagnósticos ao cliente, de modo que a interação se organiza em um ciclo curto entre edição, submissão e retorno do resultado. O estudo relatado reúne 17 respostas de alunos e ex-alunos da disciplina de Compiladores do Instituto Federal do Ceará (IFCE), Campus Aracati, com percepções favoráveis sobre o uso da ferramenta; esses relatos não constituem uma medida controlada de ganho de aprendizagem \cite{ladgelson2021}.
+
+\subsection{\textit{chibicc}: Abordagem Incremental para o Ensino de Compiladores}
+
+O \textit{chibicc} é o caso mais distante das demais ferramentas quanto à interface, pois não tem interface própria. Trata-se de um repositório de código-fonte, cujo uso pressupõe editor, cadeia de compilação e sistema de controle de versão já instalados e dominados pelo estudante, e toda a mediação recai sobre o histórico de \textit{commits} do projeto \cite{ueyama2020}.
+
+Seu traço pedagógico mais relevante é a organização incremental. Em vez de expor o aprendiz, desde o princípio, a uma arquitetura completa com múltiplos passes, o projeto propõe uma trajetória em que cada etapa adiciona uma única capacidade gramatical ou semântica ao compilador. O ponto de partida é um tradutor que reconhece apenas um número como entrada válida; sobre essa base são integrados, em iterações sucessivas, expressões, declarações, controle de fluxo, ponteiros, estruturas e os demais elementos do C11, nome da revisão de 2011 do padrão internacional da linguagem C (ISO/IEC 9899:2011). Apesar do enfoque didático, o resultado cobre parte expressiva dessa especificação e compila, sem adaptações, projetos como o sistema de controle de versão Git e o gerenciador de banco de dados SQLite \cite{ueyama2020}. A interação consiste na leitura do código de cada etapa e em sua reimplementação pelo estudante, que verifica o próprio progresso executando manualmente a suíte de testes do projeto. Essa estratégia favorece a observação direta da relação entre escolhas de implementação e comportamento do compilador, mas transfere ao aprendiz a regulação do próprio ritmo \cite{ueyama2020}.
+
+\section{Análise Crítica e o Diferencial da Solução Proposta}
+\label{sec:comparativo}
+
+As Tabelas~\ref{tab:comparativo-iniciacao} e~\ref{tab:comparativo-compiladores} comparam, recurso por recurso, as ferramentas de cada grupo com a plataforma proposta. As informações vêm das descrições das seções anteriores; ``não descrito'' indica um recurso que as fontes consultadas não mencionam.
+
+\begin{table}[htbp]
+\centering
+\caption{Recursos das ferramentas de iniciação em programação e da plataforma proposta.}
+\label{tab:comparativo-iniciacao}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{\dimexpr.165\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.205\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.205\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.205\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.205\linewidth-2\tabcolsep\relax}|}
+\hline
+\textbf{Recurso} & \textbf{Portugol Studio e Webstudio} & \textbf{Quorum} & \textbf{Beecrowd} & \textbf{Plataforma proposta} \\
+\hline
+IDE própria & Sim & Sim (Quorum Studio) & Não descrito; foco no catálogo e nas submissões & Sim \\
+\hline
+Versão local instalável & Sim (Portugol Studio) & Sim (modo \textit{offline}) & Não & Não; aplicação web \\
+\hline
+Versão no navegador & Sim (Portugol Webstudio) & Sim & Sim & Sim \\
+\hline
+Vocabulário dos comandos & Fixo, em português & Fixo, definido com base em evidências; operadores por palavras & Fixo, das linguagens de mercado aceitas & Definido pelo estudante ou fixado pelo professor no exercício \\
+\hline
+Personalização da sintaxe pelo estudante & Não & Não & Não & Sim: palavras-chave, delimitadores de bloco, operadores, literais booleanos e terminador \\
+\hline
+Depuração passo a passo & Sim, com inspetor de variáveis & Não descrito & Não & Sim \\
+\hline
+Exposição de etapas da tradução & Árvore sintática & Não descrito & Não & \textit{Tokens} e código intermediário \\
+\hline
+Avaliação automática de exercícios & Não descrito & Não descrito & Sim, com veredito que não localiza o erro & Sim, com resultado por caso de teste \\
+\hline
+Acessibilidade & Não descrito & IDE concebida para leitores de tela & Não descrito & Critérios selecionados das WCAG~2.2 verificados \\
+\hline
+Retorno ao estudante & Execução acompanhada linha a linha; saídas gráficas e sonoras & Saídas em áudio, gráficos e robótica & Veredito; \textit{rankings} e fóruns & Terminal, marcadores no editor e erros no vocabulário escolhido \\
+\hline
+Apoio ao professor & Não descrito & Não descrito & Acervo graduado por tema e dificuldade & Turmas, listas, exercícios e acompanhamento das submissões \\
+\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Diante das ferramentas de iniciação, o diferencial da plataforma é permitir que o vocabulário e parte das convenções sintáticas da linguagem sejam definidos pelo próprio estudante, ou fixados pelo professor em um exercício, recurso que nenhuma das três oferece. A plataforma também reúne em um mesmo ambiente no navegador recursos que, no conjunto comparado, aparecem em ferramentas diferentes: depuração passo a passo, como no Portugol Studio; avaliação automática de exercícios, como no Beecrowd, com o resultado de cada caso de teste; e a exibição dos \textit{tokens} e do código intermediário. As limitações aparecem na mesma tabela. A plataforma não tem versão instalável, ao contrário do Portugol Studio e do Quorum, não oferece saídas gráficas, sonoras ou robóticas, e sua acessibilidade foi verificada em um recorte de critérios das WCAG, enquanto o Quorum Studio foi concebido desde o início para leitores de tela.
+
+\begin{table}[htbp]
+\centering
+\caption{Recursos dos projetos de construção de compiladores e da plataforma proposta.}
+\label{tab:comparativo-compiladores}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{\dimexpr.19\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.265\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.265\linewidth-2\tabcolsep\relax}|>{\raggedright\arraybackslash}p{\dimexpr.265\linewidth-2\tabcolsep\relax}|}
+\hline
+\textbf{Recurso} & \textbf{Laila} & \textbf{\textit{chibicc}} & \textbf{Plataforma proposta} \\
+\hline
+Público & Estudantes da disciplina de Compiladores & Estudantes de construção de compiladores & Iniciantes em programação \\
+\hline
+Interface própria & IDE web com VueJS e CodeMirror & Não; repositório de código-fonte & IDE web com editor, terminal e sistema de arquivos \\
+\hline
+Uso sem instalação local & Sim, no navegador & Não; exige editor, cadeia de compilação e controle de versão & Sim, no navegador \\
+\hline
+Onde a tradução é executada & Servidor, por uma API REST que aciona FLEX e Bison & Máquina do estudante & Navegador; servidor apenas na validação de submissões \\
+\hline
+Como a linguagem é alterada & Escrita de especificações léxicas e sintáticas & Modificação do código do compilador & Assistente que combina alternativas já suportadas pelo núcleo \\
+\hline
+Conhecimento exigido para alterar a linguagem & Gramáticas formais e uso de FLEX e Bison & Linguagem C e implementação de compiladores & Escolha de palavras e modos no assistente \\
+\hline
+Organização pedagógica & Ciclo curto entre edição, submissão e retorno & Trajetória incremental, uma capacidade por etapa & Personalização seguida de edição, análise e execução \\
+\hline
+Retorno ao estudante & Destaque de sintaxe; diagnóstico \textit{inline}; captura de laços infinitos e erros de compilação & Suíte de testes executada manualmente & \textit{Tokens}, código intermediário, terminal e marcadores de erro no editor \\
+\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Diante dos projetos de construção de compiladores, a plataforma se distingue pelo público e pela forma de alterar a linguagem. Laila e \textit{chibicc} pressupõem um estudante que aprende a construir tradutores e que escreve especificações formais ou modifica o código do compilador. Na plataforma proposta, o iniciante altera a linguagem por meio de um assistente, sem escrever produções gramaticais, e a análise e a execução ocorrem no navegador, sem a instalação exigida pelo \textit{chibicc} e sem o envio do código a um servidor feito pela Laila. A limitação correspondente é o alcance da personalização: o assistente só combina alternativas já implementadas no núcleo e não permite acrescentar produções gramaticais nem mudar a semântica das operações, possibilidades que Laila e \textit{chibicc} oferecem a quem domina esses conhecimentos.
