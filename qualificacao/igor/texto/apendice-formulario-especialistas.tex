@@ -72,7 +72,48 @@ O bloco termina com uma pergunta de múltipla escolha sobre o momento de uma dis
 
 \section{Avaliação dos Recursos}
 
-Antes deste bloco, o formulário mostra o mesmo programa em duas versões: uma na configuração padrão, com \texttt{int}, \texttt{for}, \texttt{if} e delimitadores simbólicos, e outra personalizada, com \texttt{numero\_inteiro}, \texttt{para}, \texttt{se}, operadores escritos por extenso e os delimitadores \texttt{inicio} e \texttt{fim}. Cada linha do bloco tem também a opção ``não usei''.
+A descrição deste bloco diz: ``Para lembrar: na plataforma, o mesmo programa pode ser escrito com a configuração padrão ou com uma configuração personalizada, como no exemplo''. Em seguida vem o mesmo programa em duas versões, como texto simples, sem imagem nem realce de cores. Ele soma os números pares maiores que 2 até \texttt{n}, escreve o total e o devolve. As duas versões estão transcritas a seguir, com o recuo do formulário.
+
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{Configuração padrão}
+\small
+\begin{verbatim}
+int soma(int n) {
+  int total = 0;
+  for (int i = 1; i <= n; i = i + 1) {
+    if (i % 2 == 0 && i > 2) {
+      total = total + i;
+    }
+  }
+  print(total);
+  return total;
+}
+\end{verbatim}
+
+\textbf{Configuração personalizada}
+\small
+\begin{verbatim}
+numero_inteiro soma(numero_inteiro n)
+inicio
+  numero_inteiro total = 0
+  para (numero_inteiro i = 1; i menor_igual n; i = i + 1)
+  inicio
+    se (i % 2 igual 0 e i maior 2)
+    inicio
+      total = total + i
+    fim
+  fim
+  escreva(total)
+  retorne total
+fim
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+As duas versões têm as mesmas instruções, na mesma ordem. Na personalizada, o tipo \texttt{int} passa a \texttt{numero\_inteiro}; \texttt{for}, \texttt{if}, \texttt{print} e \texttt{return} passam a \texttt{para}, \texttt{se}, \texttt{escreva} e \texttt{retorne}; os operadores \texttt{<=}, \texttt{==}, \texttt{\&\&} e \texttt{>} são escritos \texttt{menor\_igual}, \texttt{igual}, \texttt{e} e \texttt{maior}; as chaves dão lugar a \texttt{inicio} e \texttt{fim}; e as instruções não terminam em ponto e vírgula. Por isso a versão personalizada ocupa mais linhas: cada \texttt{inicio} fica em uma linha própria, enquanto a chave de abertura fica no fim da linha anterior. O operador \texttt{\%}, os parênteses, os nomes das variáveis e os números são os mesmos.
+
+Cada linha do bloco tem também a opção ``não usei''.
 
 \begin{enumerate}
     \item Criar ou ajustar uma linguagem no assistente foi simples.

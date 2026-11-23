@@ -126,19 +126,19 @@
 \contentsline {section}{\numberline {E.3}Uso em Sala (Só para Quem Leciona)}{147}{section.386}%
 \contentsline {section}{\numberline {E.4}Como a Plataforma Foi Usada}{148}{section.396}%
 \contentsline {section}{\numberline {E.5}Avaliação dos Recursos}{149}{section.401}%
-\contentsline {section}{\numberline {E.6}Facilidade de Uso (SUS)}{150}{section.412}%
-\contentsline {section}{\numberline {E.7}Impressão Geral (UEQ-S)}{150}{section.423}%
-\contentsline {section}{\numberline {E.8}Potencial Pedagógico}{151}{section.432}%
-\contentsline {section}{\numberline {E.9}Riscos e Limitações}{152}{section.441}%
-\contentsline {section}{\numberline {E.10}Qualidade Técnica}{152}{section.445}%
-\contentsline {section}{\numberline {E.11}Utilidade e Intenção de Uso (TAM)}{152}{section.451}%
-\contentsline {section}{\numberline {E.12}Comentários Abertos}{153}{section.458}%
+\contentsline {section}{\numberline {E.6}Facilidade de Uso (SUS)}{151}{section.412}%
+\contentsline {section}{\numberline {E.7}Impressão Geral (UEQ-S)}{152}{section.423}%
+\contentsline {section}{\numberline {E.8}Potencial Pedagógico}{152}{section.432}%
+\contentsline {section}{\numberline {E.9}Riscos e Limitações}{153}{section.441}%
+\contentsline {section}{\numberline {E.10}Qualidade Técnica}{153}{section.445}%
+\contentsline {section}{\numberline {E.11}Utilidade e Intenção de Uso (TAM)}{154}{section.451}%
+\contentsline {section}{\numberline {E.12}Comentários Abertos}{154}{section.458}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {F}APÊNDICE F -- FORMULÁRIO DA SESSÃO COM ESTUDANTES}{154}{appendix.464}%
-\contentsline {section}{\numberline {F.1}Termo de Assentimento}{154}{section.465}%
-\contentsline {section}{\numberline {F.2}Sobre o Estudante}{154}{section.466}%
-\contentsline {section}{\numberline {F.3}Sobre a Demonstração}{154}{section.471}%
+\contentsline {appendix}{\chapternumberline {F}APÊNDICE F -- FORMULÁRIO DA SESSÃO COM ESTUDANTES}{155}{appendix.464}%
+\contentsline {section}{\numberline {F.1}Termo de Assentimento}{155}{section.465}%
+\contentsline {section}{\numberline {F.2}Sobre o Estudante}{155}{section.466}%
+\contentsline {section}{\numberline {F.3}Sobre a Demonstração}{155}{section.471}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {G}APÊNDICE G -- RESUMO DAS RESPOSTAS AOS FORMULÁRIOS}{156}{appendix.478}%
-\contentsline {section}{\numberline {G.1}Formulário dos Especialistas}{156}{section.479}%
-\contentsline {section}{\numberline {G.2}Formulário da Sessão com Estudantes}{156}{section.485}%
+\contentsline {appendix}{\chapternumberline {G}APÊNDICE G -- RESUMO DAS RESPOSTAS AOS FORMULÁRIOS}{157}{appendix.478}%
+\contentsline {section}{\numberline {G.1}Formulário dos Especialistas}{157}{section.479}%
+\contentsline {section}{\numberline {G.2}Formulário da Sessão com Estudantes}{157}{section.485}%

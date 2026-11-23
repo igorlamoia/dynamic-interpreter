@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1795460834.11108 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795461438.65619 0
+["bibtex TCC_Template"] 1795463207.24982 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795463224.77907 0
   "./referencias.bib" 1795460832.11535 13428 a7c49be1c5e47f29241d0a38fd3c6b49 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1795461438.44587 138511 61cb8f0c04c64462028da76f52b85a2f "pdflatex"
+  "TCC_Template.aux" 1795463224.65105 138512 0391aacc44739e9143610dbe670008e4 "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1795461436.20858 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795461438.65649 0
+["pdflatex"] 1795463223.06648 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795463224.77937 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -320,15 +320,15 @@
   "Figuras/compiler.png" 1795387669.83626 120073 4fb3dea68f0f6ee0b4e73dd30857813d ""
   "Figuras/esquema-banco-atual.tex" 1795389175.9989 9711 11fc12efbddc22e036747581c2847ff0 ""
   "Figuras/lex.png" 1795387669.83715 12923 ad1c33bc299a1871597b2a25efd6eaef ""
-  "TCC_Template.aux" 1795461438.44587 138511 61cb8f0c04c64462028da76f52b85a2f "pdflatex"
-  "TCC_Template.bbl" 1795460834.12077 13234 ab7ed14a7e6cb1108f69b4dd2ddc620a "bibtex TCC_Template"
-  "TCC_Template.lof" 1795461438.45831 8667 6b2148f5e892605890827baa7ad53d65 "pdflatex"
-  "TCC_Template.lot" 1795461438.45916 4507 5baee4be0856dc312b093ccee524f0ca "pdflatex"
+  "TCC_Template.aux" 1795463224.65105 138512 0391aacc44739e9143610dbe670008e4 "pdflatex"
+  "TCC_Template.bbl" 1795463207.26109 13234 ab7ed14a7e6cb1108f69b4dd2ddc620a "bibtex TCC_Template"
+  "TCC_Template.lof" 1795463224.66432 8667 6b2148f5e892605890827baa7ad53d65 "pdflatex"
+  "TCC_Template.lot" 1795463224.66432 4507 714af7df1bfe01e0b6b55b52167c345b "pdflatex"
   "TCC_Template.tex" 1795393234.23042 22869 c2ce99933c261ba6773bccd336c0824d ""
-  "TCC_Template.toc" 1795461438.45916 14131 29000630cd4f62df79aee3dad662fea8 "pdflatex"
+  "TCC_Template.toc" 1795463224.66432 14131 ed3d9d46906e1dde34e2a8e4e67df5c7 "pdflatex"
   "configcefetmglpd.cls" 1795393710.91752 32163 318502f20279f12efc2b927bd04112e2 ""
   "texto/apendice-cronograma.tex" 1795389137.45563 2751 3a190b1b3eb19e4b00a5ce19d1da486e ""
-  "texto/apendice-formulario-especialistas.tex" 1795389310.60326 11007 9e8e29d6e844afc8a6a37c5faf458b37 ""
+  "texto/apendice-formulario-especialistas.tex" 1795463222.98597 12553 5b0dce7d21a4c84d44cad7454c5ebd75 ""
   "texto/apendice-formulario-estudantes.tex" 1795393229.5438 4069 64dfa13b037157d641258b830c9b8076 ""
   "texto/apendice-repositorio.tex" 1795389310.60309 3170 0a5d42054ed1667b301f64cf8cea66b3 ""
   "texto/apendice-respostas.tex" 1795389310.6034 11130 076262ba98cc8195a1287d9c6d5c9a7c ""
@@ -340,7 +340,7 @@
   "texto/metodologia.tex" 1795389170.42111 11529 169070342df7c9cc2297015dcb410c30 ""
   "texto/modelagem.tex" 1795389338.60488 15758 80ce3de88ac535709a7dcc72123d107d ""
   "texto/proposta.tex" 1795389124.48934 10751 525e9eedd936d20a2b357b523a8e213d ""
-  "texto/protocolo-avaliacao.tex" 1795458613.11837 21879 725309dc641d2ceb0bb3afc47d7df450 ""
+  "texto/protocolo-avaliacao.tex" 1795463205.25147 21988 a9f31c720236ad44eaa0d7dd8ce1e5ca ""
   "texto/referencial.tex" 1795461435.8313 27480 5df036f07abf2bb1d4ff9f04e9af7d1b ""
   "texto/resultados-avaliacao.tex" 1795458613.1191 42867 fad6a53a700141a256969b023fce1058 ""
   "texto/testes-e2e.tex" 1795389026.75314 6952 3f608ee6938a6f1e130c1186b72fb0b0 ""
