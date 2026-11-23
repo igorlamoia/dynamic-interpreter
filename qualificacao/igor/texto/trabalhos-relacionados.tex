@@ -9,13 +9,39 @@ Reúnem-se aqui as ferramentas cujo público-alvo é o estudante em primeiro con
 
 \subsection{Portugol Studio e Portugol Webstudio}
 
-Criado pelo Laboratório de Inovação Tecnológica na Educação (LITE) da Universidade do Vale do Itajaí (UNIVALI), o Portugol Studio é um ambiente de desenvolvimento integrado de código aberto, originalmente para instalação local. A tela reproduz a organização de uma IDE profissional, com editor central, painel de saída e área de inspeção, de modo que a familiaridade adquirida pelo estudante possa ser transferida a ferramentas de mercado \cite{univali2026}. O Portugol Webstudio é outro projeto, inspirado no Portugol Studio, que oferece uma IDE \textit{online} para Portugol, com execução no navegador \cite{webstudio2026}.
+Criado pelo Laboratório de Inovação Tecnológica na Educação (LITE) da Universidade do Vale do Itajaí (UNIVALI), o Portugol Studio é um ambiente de desenvolvimento integrado de código aberto, originalmente para instalação local. A tela reproduz a organização de uma IDE profissional, com editor central, painel de saída e área de inspeção, de modo que a familiaridade adquirida pelo estudante possa ser transferida a ferramentas de mercado \cite{univali2026}. O Portugol Webstudio é outro projeto, inspirado no Portugol Studio, que oferece uma IDE \textit{online} para Portugol, com execução no navegador \cite{webstudio2026}. A Figura~\ref{fig:portugol-studio} reproduz a imagem de divulgação do Portugol Studio, e a Figura~\ref{fig:portugol-webstudio} mostra um exemplo aberto no editor do Portugol Webstudio.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.3\textheight,keepaspectratio]{Ferramentas/portugol-studio.png}
+    \caption{Portugol Studio em imagem de divulgação do projeto.}
+    \label{fig:portugol-studio}
+    \legend{Fonte: \citeonline{univali2026}.}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.3\textheight,keepaspectratio]{Ferramentas/portugol-webstudio.png}
+    \caption{Exemplo ``Lendo Valores'' aberto no editor do Portugol Webstudio.}
+    \label{fig:portugol-webstudio}
+    \legend{Fonte: captura de tela feita pelo autor em \url{https://portugol.dev}, em 22 nov. 2026.}
+\end{figure}
+
 
 O principal recurso pedagógico do Portugol Studio é a própria linguagem, com construções sintáticas inspiradas em C e PHP e palavras-chave traduzidas para o português brasileiro, o que evita que o aprendiz lide com dois idiomas ao mesmo tempo durante o estudo das estruturas básicas de controle de fluxo e de dados. A esse núcleo somam-se um depurador com execução passo a passo, um inspetor de variáveis sincronizado com a linha em execução e uma árvore que representa a estrutura sintática do código produzido. Com esses recursos, o estudante acompanha linha a linha a alteração dos valores em memória, o que aproxima a execução mental do algoritmo de sua execução efetiva. O suporte a bibliotecas gráficas e sonoras amplia essa forma de interação ao permitir projetos como pequenos jogos, cuja saída visível dá retorno imediato sobre o efeito do código escrito \cite{univali2026}.
 
 \subsection{Quorum: Linguagem de Programação Baseada em Evidências}
 
-O ecossistema Quorum disponibiliza o Quorum Studio, IDE concebida desde o início para operar com leitores de tela. O ambiente funciona em modo \textit{offline}, com geração de \textit{bytecode} para a máquina virtual Java, e também no navegador, o que permite adotá-lo em contextos com restrições de instalação \cite{quorum2025,ladner2019}.
+O ecossistema Quorum disponibiliza o Quorum Studio, IDE concebida desde o início para operar com leitores de tela. O ambiente funciona em modo \textit{offline}, com geração de \textit{bytecode} para a máquina virtual Java, e também no navegador, o que permite adotá-lo em contextos com restrições de instalação \cite{quorum2025,ladner2019}. A Figura~\ref{fig:quorum} mostra uma das atividades práticas do site da linguagem, com o editor em blocos.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.3\textheight,keepaspectratio]{Ferramentas/quorum.png}
+    \caption{Atividade prática no site da linguagem Quorum, com o editor em blocos.}
+    \label{fig:quorum}
+    \legend{Fonte: captura de tela feita pelo autor a partir de \citeonline{quorum2025}, em 22 nov. 2026.}
+\end{figure}
+
 
 O traço distintivo do projeto é submeter as decisões de sintaxe e de semântica a verificação empírica, em vez de herdá-las por imitação ou familiaridade histórica. Os experimentos de \citeonline{stefik2013} compararam linguagens de mercado a uma linguagem de controle cujas palavras-chave foram geradas aleatoriamente, recurso que isolou o efeito da forma sintática sobre o desempenho de novatos. Os resultados mostram que escolhas sintáticas podem afetar o desempenho de iniciantes, sem autorizar a generalização de que toda substituição de símbolo por palavra reduza erros \cite{stefik2013}. Na interação, a acessibilidade orienta o projeto, e o ecossistema estende o resultado dos programas a saídas em áudio, gráficos e robótica, de modo que o estudante possa perceber o efeito do programa sem depender só da leitura visual de texto \cite{quorum2025,ladner2019}.
 
@@ -37,7 +63,16 @@ Com a ferramenta, o estudante especifica gramáticas, redige analisadores léxic
 
 \subsection{\textit{chibicc}: Abordagem Incremental para o Ensino de Compiladores}
 
-O \textit{chibicc} é o caso mais distante das demais ferramentas quanto à interface, pois não tem interface própria. Trata-se de um repositório de código-fonte, cujo uso pressupõe editor, cadeia de compilação e sistema de controle de versão já instalados e dominados pelo estudante, e toda a mediação recai sobre o histórico de \textit{commits} do projeto \cite{ueyama2020}.
+O \textit{chibicc} é o caso mais distante das demais ferramentas quanto à interface, pois não tem interface própria. Trata-se de um repositório de código-fonte, cujo uso pressupõe editor, cadeia de compilação e sistema de controle de versão já instalados e dominados pelo estudante, e toda a mediação recai sobre o histórico de \textit{commits} do projeto \cite{ueyama2020}. A Figura~\ref{fig:chibicc} mostra o repositório, com os arquivos do compilador organizados por fase.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.3\textheight,keepaspectratio]{Ferramentas/chibicc.png}
+    \caption{Repositório do \textit{chibicc}.}
+    \label{fig:chibicc}
+    \legend{Fonte: captura de tela feita pelo autor a partir de \citeonline{ueyama2020}, em 22 nov. 2026.}
+\end{figure}
+
 
 Seu traço pedagógico mais relevante é a organização incremental. Em vez de expor o aprendiz, desde o princípio, a uma arquitetura completa com múltiplos passes, o projeto propõe uma trajetória em que cada etapa adiciona uma única capacidade gramatical ou semântica ao compilador. O ponto de partida é um tradutor que reconhece apenas um número como entrada válida; sobre essa base são integrados, em iterações sucessivas, expressões, declarações, controle de fluxo, ponteiros, estruturas e os demais elementos do C11, nome da revisão de 2011 do padrão internacional da linguagem C (ISO/IEC 9899:2011). Apesar do enfoque didático, o resultado cobre parte expressiva dessa especificação e compila, sem adaptações, projetos como o sistema de controle de versão Git e o gerenciador de banco de dados SQLite \cite{ueyama2020}. A interação consiste na leitura do código de cada etapa e em sua reimplementação pelo estudante, que verifica o próprio progresso executando manualmente a suíte de testes do projeto. Essa estratégia favorece a observação direta da relação entre escolhas de implementação e comportamento do compilador, mas transfere ao aprendiz a regulação do próprio ritmo \cite{ueyama2020}.
 

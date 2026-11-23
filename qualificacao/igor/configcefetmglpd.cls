@@ -758,8 +758,8 @@
     \hspace{.45\textwidth}
     \begin{minipage}{.5\textwidth}
               \hyphenchar\font=-1 \sloppy
-              Trabalho de conclusão de curso apresentado ao Curso de Engenharia de Computação do Centro Federal de Educação 
-              Tecnológica de Minas Gerais, do Campus Leopoldina, como parte do requisito para obtenção do título de Bacharel em Engenharia de Computação.
+              Trabalho de conclusão de curso apresentado ao Curso de Engenharia de Computação da Universidade Federal de Ciência e Inovação 
+              de Minas Gerais, do Campus Leopoldina, como parte do requisito para obtenção do título de Bacharel em Engenharia de Computação.
     \end{minipage}%
 \end{center}
 \begin{center} Banca Examinadora: \end{center}
@@ -826,7 +826,7 @@ ciente dos:
 
 Por ser verdade, e por ter ciência do referido artigo, firmo a presente declaração, isentando 
 o(a) professor(a) orientador(a) \MakeUppercase{\textbf{\printaorientador}}
-\IfNonempty{\printacoorientador}{, o(a) professor(a) coorientador(a) \MakeUppercase{\textbf{\printacoorientador}}}, os membros da banca examinadora e o Centro Federal de Educação Tecnológica de Minas Gerais, 
+\IfNonempty{\printacoorientador}{, o(a) professor(a) coorientador(a) \MakeUppercase{\textbf{\printacoorientador}}}, os membros da banca examinadora e a Universidade Federal de Ciência e Inovação de Minas Gerais, 
 Campus Leopoldina, de qualquer responsabilidade.
 
 \begin{center}

@@ -483,7 +483,7 @@ A Figura~\ref{fig:pagina-sobre} mostra a parte inicial da página, com o título
 \section{Apresentação das Telas da Plataforma}
 \label{sec:telas-plataforma}
 
-Esta seção apresenta as telas da plataforma na ordem dos requisitos funcionais da Tabela~\ref{tab:requisitos-funcionais}. Cada subseção reúne as telas de um conjunto de requisitos, indicado no título: acesso à plataforma (RF01), personalização da linguagem (RF03 a RF06), turmas (RF15) e exercícios, listas e submissões (RF16 a RF20). As telas ligadas aos demais requisitos já apareceram nas seções anteriores: a IDE, com o editor, o explorador de arquivos, o terminal e os \textit{tokens} (RF09 a RF12), nas Figuras~\ref{fig:ide-execucao} e~\ref{fig:ide-analise-lexica}; a resolução de exercício com linguagem obrigatória e o resultado dos casos de teste (RF17 e RF19), na Figura~\ref{fig:aluno-resultado}; e a correção pelo professor (RF20), nas Figuras~\ref{fig:correcao-avaliacao} e~\ref{fig:correcao-ide}. Os requisitos RF02, RF07, RF08, RF13 e RF14 não têm captura neste capítulo. Parte das capturas desta seção foi feita em etapas anteriores do desenvolvimento e registra os fluxos, sem reproduzir toda a aparência da versão atual.
+Esta seção apresenta as telas da plataforma na ordem dos requisitos funcionais da Tabela~\ref{tab:requisitos-funcionais}. Cada subseção reúne as telas de um conjunto de requisitos, indicado no título: acesso à plataforma e perfil (RF01 e RF02), personalização da linguagem (RF03 a RF06), linguagens salvas e catálogo da comunidade (RF07 e RF08), depuração e mensagens de erro (RF13 e RF14), turmas (RF15) e exercícios, listas e submissões (RF16 a RF20). As telas ligadas aos demais requisitos já apareceram nas seções anteriores: a IDE, com o editor, o explorador de arquivos, o terminal e os \textit{tokens} (RF09 a RF12), nas Figuras~\ref{fig:ide-execucao} e~\ref{fig:ide-analise-lexica}; a resolução de exercício com linguagem obrigatória e o resultado dos casos de teste (RF17 e RF19), na Figura~\ref{fig:aluno-resultado}; e a correção pelo professor (RF20), nas Figuras~\ref{fig:correcao-avaliacao} e~\ref{fig:correcao-ide}. Parte das capturas desta seção foi feita em etapas anteriores do desenvolvimento e registra os fluxos, sem reproduzir toda a aparência da versão atual.
 
 \subsection{Acesso à plataforma e identidade visual (RF01)}
 
@@ -504,6 +504,18 @@ A Figura~\ref{fig:home-dark} mostra a mesma página no tema escuro. Como observa
     \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{home_page_dark.png}
     \caption{Página inicial da plataforma no tema escuro.}
     \label{fig:home-dark}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+\subsection{Perfil do usuário (RF02)}
+
+Depois da autenticação, o nome e o papel do usuário ficam no canto superior direito de todas as páginas. Ao abri-los, o menu dá acesso ao painel e à saída da conta (Figura~\ref{fig:menu-perfil}). A interface mostra os dados do perfil, mas não tem uma tela para editá-los: a alteração de nome, foto e biografia existe no serviço de dados, pela rota \texttt{PATCH /users/\{id\}}, e ainda não foi levada para a IDE. O RF02 está, portanto, atendido na consulta e só parcialmente na edição.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Perfil/menu_perfil.png}
+    \caption{Menu do usuário autenticado, com nome, papel e acesso ao painel.}
+    \label{fig:menu-perfil}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -611,6 +623,50 @@ Ao término do assistente, é exibida a pré-visualização consolidada da lingu
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
+\subsection{Linguagens salvas e catálogo da comunidade (RF07 e RF08)}
+
+As linguagens que o usuário cria ou importa ficam salvas na conta e aparecem na tela ``Minhas Linguagens'', cada uma em um cartão com o nome, a descrição, o resumo das escolhas de tipagem, arranjos, blocos e terminador e as ações de editar, marcar, duplicar e excluir (Figura~\ref{fig:minhas-linguagens}). Na captura, a linguagem ``Minerês (cópia)'' foi importada do catálogo da comunidade.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Linguagens/minhas_linguagens.png}
+    \caption{Tela ``Minhas Linguagens'', com uma linguagem salva na conta do aluno.}
+    \label{fig:minhas-linguagens}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+O catálogo da comunidade reúne as linguagens publicadas por outros usuários e as linguagens oficiais da plataforma. Ele permite buscar por nome ou descrição, filtrar pelo modelo de tipagem, pelos blocos, pelos arranjos e pelo terminador, ver o resumo de cada linguagem e importá-la. A importação cria uma cópia privada e editável no acervo de quem importou (Figura~\ref{fig:comunidade}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Linguagens/comunidade.png}
+    \caption{Catálogo de linguagens da comunidade, com filtros e importação.}
+    \label{fig:comunidade}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+\subsection{Depuração e mensagens de erro (RF13 e RF14)}
+
+A depuração passo a passo fica no painel lateral da IDE. O usuário marca pontos de parada pela margem do editor e inicia a sessão; a execução para no ponto marcado, a linha em processamento fica destacada e o painel mostra as variáveis com seus valores e tipos e a pilha de chamadas. Os botões do painel continuam a execução, avançam uma instrução, entram e saem de chamadas, reiniciam e encerram a sessão (Figura~\ref{fig:depuracao}). Na captura, a execução está parada no ponto da linha 6, dentro do laço, com \texttt{soma} igual a 0 e \texttt{i} igual a 1.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{IDE/depuracao.png}
+    \caption{Depuração passo a passo, com a execução parada em um ponto de parada e as variáveis no painel lateral.}
+    \label{fig:depuracao}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+Quando o programa tem um erro, a mensagem aparece no editor, sob a linha em que o problema foi encontrado, e também em uma notificação. Na Figura~\ref{fig:erro-sintaxe}, falta o ponto e vírgula depois de \texttt{total = 10}, e a mensagem indica a linha e a coluna, o que era esperado (``final de instrução'') e o que foi encontrado, com a classe do \textit{token} e o lexema escrito. A classe aparece pelo nome canônico (``palavra reservada print'') e o lexema, pela palavra digitada; com uma linguagem personalizada, a mensagem mostra a palavra do usuário apenas no lexema, de modo que o RF14 é atendido em parte.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{IDE/erro_sintaxe.png}
+    \caption{Mensagem de erro sintático exibida no editor e em notificação.}
+    \label{fig:erro-sintaxe}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
 \subsection{Gestão e consulta de turmas (RF15)}
 
 O painel do professor mostra as turmas sob sua responsabilidade, cada uma com a descrição, o código de acesso e o número de exercícios, e tem o botão para criar uma nova turma. Pelo menu lateral, o professor chega também aos seus exercícios e às suas listas. A Figura~\ref{fig:painel-professor} mostra esse painel.
@@ -650,6 +706,16 @@ Do lado do aluno, o painel ``Minhas Turmas'' mostra as turmas em que o estudante
     \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Aluno/painel_aluno.png}
     \caption{Painel principal do aluno, com as turmas e a entrada em nova turma.}
     \label{fig:painel-aluno}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+Ao abrir uma turma, o aluno vê a mesma organização em abas da tela do professor. Na aba ``Todos da Turma'' aparecem o professor responsável, os colegas matriculados com o número de exercícios concluídos por cada um e os totais da turma (Figura~\ref{fig:aluno-turma}); a aba ``Listas'' mostra as listas publicadas, apresentadas mais adiante na Figura~\ref{fig:aluno-listas}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Aluno/detail_turma.png}
+    \caption{Detalhe de uma turma visto pelo aluno.}
+    \label{fig:aluno-turma}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -735,4 +801,13 @@ Depois de publicada, a lista aparece para o aluno na tela da turma. Cada lista m
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-Ao abrir um exercício da lista, o aluno chega à área de resolução da Figura~\ref{fig:aluno-resultado}, onde envia o programa e recebe o resultado da avaliação automatizada descrita na Seção~\ref{sec:sistema-correcao}. As submissões recebidas aparecem para o professor no detalhe da lista e são corrigidas na tela das Figuras~\ref{fig:correcao-avaliacao} e~\ref{fig:correcao-ide}.
+Ao abrir um exercício da lista, o aluno chega à área de resolução da Figura~\ref{fig:aluno-resultado}, onde envia o programa e recebe o resultado da avaliação automatizada descrita na Seção~\ref{sec:sistema-correcao}. As submissões recebidas aparecem para o professor no detalhe da lista, em uma tabela com o aluno, o exercício, a data de envio, a situação, a nota e o botão para corrigir (Figura~\ref{fig:prof-submissoes}). A correção é feita na tela das Figuras~\ref{fig:correcao-avaliacao} e~\ref{fig:correcao-ide}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.34\textheight,keepaspectratio]{Professor/Listas/submissoes.png}
+    \caption{Submissões recebidas no detalhe de uma lista, na visão do professor.}
+    \label{fig:prof-submissoes}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
