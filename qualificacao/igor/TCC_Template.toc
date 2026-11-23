@@ -102,7 +102,7 @@
 \contentsline {section}{\numberline {9.7}Respostas Abertas}{126}{section.356}%
 \contentsline {section}{\numberline {9.8}Sessão com Estudantes}{128}{section.357}%
 \contentsline {section}{\numberline {9.9}Relação com Trabalhos Anteriores}{129}{section.360}%
-\contentsline {section}{\numberline {9.10}Síntese e Confronto com os Objetivos}{131}{section.361}%
+\contentsline {section}{\numberline {9.10}Síntese e Confronto com os Objetivos}{130}{section.361}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {10}CONSIDERAÇÕES FINAIS}{133}{chapter.362}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
