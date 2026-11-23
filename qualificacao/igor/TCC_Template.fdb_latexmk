@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1795458623.28535 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795458624.82648 0
-  "./referencias.bib" 1795458613.11965 13312 8c196f4423cdf8a26fe87ec905bb850f ""
+["bibtex TCC_Template"] 1795460834.11108 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795460835.81588 0
+  "./referencias.bib" 1795460832.11535 13428 a7c49be1c5e47f29241d0a38fd3c6b49 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1795458624.70672 138092 d8688db17edc424eb15a5e9dfa6db8d1 "pdflatex"
+  "TCC_Template.aux" 1795460835.68307 138511 61cb8f0c04c64462028da76f52b85a2f "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1795458623.29799 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795458624.82676 0
+["pdflatex"] 1795460834.12483 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795460835.81617 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -280,6 +280,7 @@
   "Figuras//Etapas/etapa6_1.png" 1795387669.81959 404687 f5d1b4282a7bc8a02850d4ed0e770a15 ""
   "Figuras//Etapas/etapa6_2.png" 1795387669.8205 382459 f215c88ef9faf1ff07ae0155bcec650a ""
   "Figuras//Etapas/etapa6_3.png" 1795387669.82101 385695 0b3231ed77387f546696bbca496dddfb ""
+  "Figuras//Ferramentas/beecrowd.png" 1795459353.60617 242585 e6f77b8cc6f4ceb7bbd3dc78306041e0 ""
   "Figuras//Ferramentas/chibicc.png" 1795393674.00243 147632 6e3205f3838f7b1c7e6f0aeee545581d ""
   "Figuras//Ferramentas/portugol-studio.png" 1795393674.00076 454669 4c262721ef927b3891b6456d233d2318 ""
   "Figuras//Ferramentas/portugol-webstudio.png" 1795393674.00208 165701 19e3653430286f58940349983ff51f89 ""
@@ -319,12 +320,12 @@
   "Figuras/compiler.png" 1795387669.83626 120073 4fb3dea68f0f6ee0b4e73dd30857813d ""
   "Figuras/esquema-banco-atual.tex" 1795389175.9989 9711 11fc12efbddc22e036747581c2847ff0 ""
   "Figuras/lex.png" 1795387669.83715 12923 ad1c33bc299a1871597b2a25efd6eaef ""
-  "TCC_Template.aux" 1795458624.70672 138092 d8688db17edc424eb15a5e9dfa6db8d1 "pdflatex"
-  "TCC_Template.bbl" 1795458623.29369 13132 12a62ef46e01c61a4401509d0eea2f85 "bibtex TCC_Template"
-  "TCC_Template.lof" 1795458624.71872 8531 264895359ed8d291962d56169e2f510d "pdflatex"
-  "TCC_Template.lot" 1795458624.71872 4507 26f4bbfb9fe0e2c0a57992b4fc317dc7 "pdflatex"
+  "TCC_Template.aux" 1795460835.68307 138511 61cb8f0c04c64462028da76f52b85a2f "pdflatex"
+  "TCC_Template.bbl" 1795460834.12077 13234 ab7ed14a7e6cb1108f69b4dd2ddc620a "bibtex TCC_Template"
+  "TCC_Template.lof" 1795460835.69591 8667 6b2148f5e892605890827baa7ad53d65 "pdflatex"
+  "TCC_Template.lot" 1795460835.69724 4507 5baee4be0856dc312b093ccee524f0ca "pdflatex"
   "TCC_Template.tex" 1795393234.23042 22869 c2ce99933c261ba6773bccd336c0824d ""
-  "TCC_Template.toc" 1795458624.71872 14131 48d4eb734a02d6baf1f098379c176f1e "pdflatex"
+  "TCC_Template.toc" 1795460835.69724 14131 29000630cd4f62df79aee3dad662fea8 "pdflatex"
   "configcefetmglpd.cls" 1795393710.91752 32163 318502f20279f12efc2b927bd04112e2 ""
   "texto/apendice-cronograma.tex" 1795389137.45563 2751 3a190b1b3eb19e4b00a5ce19d1da486e ""
   "texto/apendice-formulario-especialistas.tex" 1795389310.60326 11007 9e8e29d6e844afc8a6a37c5faf458b37 ""
@@ -344,7 +345,7 @@
   "texto/resultados-avaliacao.tex" 1795458613.1191 42867 fad6a53a700141a256969b023fce1058 ""
   "texto/testes-e2e.tex" 1795389026.75314 6952 3f608ee6938a6f1e130c1186b72fb0b0 ""
   "texto/testes.tex" 1795389060.42779 7039 550803b59e2a0b61f5e5ade10362086d ""
-  "texto/trabalhos-relacionados.tex" 1795393674.00948 18539 320da00e456343b393b1a4fb2185d036 ""
+  "texto/trabalhos-relacionados.tex" 1795459362.61857 19005 3b6818a273419a70efa788aef3edc91e ""
   "texto/verificacao-interface.tex" 1795389082.45517 7068 bab01b5170b6a5c5f0897c0eeeb4fc5c ""
   (generated)
   "TCC_Template.aux"

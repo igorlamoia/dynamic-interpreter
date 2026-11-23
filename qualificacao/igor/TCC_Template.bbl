@@ -1,6 +1,7 @@
 \providecommand{\abntreprintinfo}[1]{%
  \citeonline{#1}}
 \setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\noopsort}[1]{}
 \providecommand{\abntrefinfo}[3]{}
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
@@ -102,33 +103,33 @@ Dispon{\'\i}vel em:
 {MARTIN, R.~C. \textbf{Arquitetura Limpa: O Guia do Artes{\~a}o para Estrutura
   e Design de Software}. Rio de Janeiro: Alta Books, 2019.}
 
-\bibitem[{Microsoft} 2026]{playwright2026practices}
+\bibitem[{Microsoft} 2026]{playwright2026intro}
 \abntrefinfo{{Microsoft}}{{Microsoft}}{2026a}
-{{Microsoft}. \textbf{Playwright: Best Practices}. 2026.
+{{Microsoft}. \textbf{{\noopsort{1}}Playwright: Installation}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/intro}. Acesso em: 19 set.
+  2026.}
+
+\bibitem[{Microsoft} 2026]{playwright2026practices}
+\abntrefinfo{{Microsoft}}{{Microsoft}}{2026b}
+{{Microsoft}. \textbf{{\noopsort{2}}Playwright: Best Practices}. 2026.
 Dispon{\'\i}vel em: \url{https://playwright.dev/docs/best-practices}. Acesso
   em: 19 set. 2026.}
 
 \bibitem[{Microsoft} 2026]{playwright2026ci}
-\abntrefinfo{{Microsoft}}{{Microsoft}}{2026b}
-{{Microsoft}. \textbf{Playwright: Continuous Integration}. 2026.
-Dispon{\'\i}vel em: \url{https://playwright.dev/docs/ci}. Acesso em: 19 set.
-  2026.}
-
-\bibitem[{Microsoft} 2026]{playwright2026intro}
 \abntrefinfo{{Microsoft}}{{Microsoft}}{2026c}
-{{Microsoft}. \textbf{Playwright: Installation}. 2026.
-Dispon{\'\i}vel em: \url{https://playwright.dev/docs/intro}. Acesso em: 19 set.
+{{Microsoft}. \textbf{{\noopsort{3}}Playwright: Continuous Integration}. 2026.
+Dispon{\'\i}vel em: \url{https://playwright.dev/docs/ci}. Acesso em: 19 set.
   2026.}
 
 \bibitem[{Microsoft} 2026]{playwright2026retries}
 \abntrefinfo{{Microsoft}}{{Microsoft}}{2026d}
-{{Microsoft}. \textbf{Playwright: Retries}. 2026.
+{{Microsoft}. \textbf{{\noopsort{4}}Playwright: Retries}. 2026.
 Dispon{\'\i}vel em: \url{https://playwright.dev/docs/test-retries}. Acesso em:
   19 set. 2026.}
 
 \bibitem[{Microsoft} 2026]{playwright2026config}
 \abntrefinfo{{Microsoft}}{{Microsoft}}{2026e}
-{{Microsoft}. \textbf{Playwright: TestConfig}. 2026.
+{{Microsoft}. \textbf{{\noopsort{5}}Playwright: TestConfig}. 2026.
 Dispon{\'\i}vel em: \url{https://playwright.dev/docs/api/class-testconfig}.
   Acesso em: 19 set. 2026.}
 
