@@ -726,7 +726,7 @@
 
  \begin{minipage}[c]{13cm}
  \begin{flushleft}
-\footnotesize Elaboração da ficha catalográfica pela bibliotecária Luzia Adriana Damasceno, CRB 6º 2305 / CEFET-MG campus Leopoldina.
+\footnotesize Elaboração da ficha catalográfica pela bibliotecária Luzia Adriana Damasceno, CRB 6º 2305 / UFCI-MG, Campus Leopoldina.
  \end{flushleft}
 
  \end{minipage}
