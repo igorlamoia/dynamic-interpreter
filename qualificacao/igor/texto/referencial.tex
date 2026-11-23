@@ -16,7 +16,7 @@ Um compilador é um programa cuja função é ler um código-fonte, escrito em u
     \label{fig:fluxo_compilador}
     \includegraphics[width=0.8\textwidth]{Figuras/compiler.png}
 
-    \legend{Fonte: \citeonline{alcantara2024}.}
+    \legend{Fonte: adaptada de \citeonline{alcantara2024}.}
 \end{figure}
 
 Cada etapa é dividida em fases, e cada fase converte o programa de um nível de abstração para outro. A análise reúne as fases léxica, sintática e semântica; a síntese reúne a geração de código intermediário, a otimização desse código e a geração do código-alvo. Na prática, fases vizinhas podem ser agrupadas em passagens (\textit{passes}) sobre o código \cite{aho1995,cooper2012}. A fronteira entre \textit{front-end} e \textit{back-end} também favorece a portabilidade, porque um mesmo \textit{front-end} pode ser combinado com geradores de código para diferentes plataformas de \textit{hardware} \cite{aho1995,cooper2012}.
