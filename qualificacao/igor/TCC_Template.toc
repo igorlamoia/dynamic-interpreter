@@ -44,8 +44,8 @@
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {6}MODELAGEM}{48}{chapter.55}%
 \contentsline {section}{\numberline {6.1}Diagrama de Casos de Uso}{48}{section.56}%
-\contentsline {section}{\numberline {6.2}Modelagem da Arquitetura da Plataforma}{50}{section.58}%
-\contentsline {section}{\numberline {6.3}Modelo de Dados}{51}{section.60}%
+\contentsline {section}{\numberline {6.2}Modelagem da Arquitetura da Plataforma}{49}{section.58}%
+\contentsline {section}{\numberline {6.3}Modelo de Dados}{52}{section.60}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {7}DESENVOLVIMENTO DA SOLUÇÃO}{55}{chapter.62}%
 \contentsline {section}{\numberline {7.1}Interpretador}{55}{section.63}%

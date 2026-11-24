@@ -2,11 +2,10 @@
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Arquitetura de um compilador moderno.\relax }}{18}{figure.caption.16}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Exemplificação de agrupamento de caracteres em lexemas.\relax }}{20}{figure.caption.19}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Ciclo de Desenvolvimento Guiado por Testes (TDD).\relax }}{31}{figure.caption.33}%
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Casos de uso: acesso e ambiente de desenvolvimento.\relax }}{46}{figure.caption.48}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Casos de uso: participação e gestão pedagógica.\relax }}{47}{figure.caption.49}%
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura e locais de execução do núcleo na plataforma.\relax }}{55}{figure.caption.56}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Tabelas e referências do esquema lógico da plataforma.\relax }}{56}{figure.caption.58}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Função \texttt {validateOperatorWordMap}, que valida a configuração dos operadores escritos como palavras.\relax }}{63}{figure.caption.62}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Função \texttt {validateBooleanLiteralMap}, que valida a configuração dos literais booleanos.\relax }}{64}{figure.caption.63}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Função \texttt {validateBlockDelimiters}, que valida a configuração dos delimitadores de bloco.\relax }}{64}{figure.caption.64}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Função \texttt {validateStatementTerminatorLexeme}, que valida a configuração do terminador de instrução.\relax }}{65}{figure.caption.65}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Diagrama de casos de uso da plataforma.\relax }}{46}{figure.caption.48}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Arquitetura e locais de execução do núcleo na plataforma.\relax }}{54}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Tabelas e referências do esquema lógico da plataforma.\relax }}{55}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Função \texttt {validateOperatorWordMap}, que valida a configuração dos operadores escritos como palavras.\relax }}{62}{figure.caption.61}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Função \texttt {validateBooleanLiteralMap}, que valida a configuração dos literais booleanos.\relax }}{63}{figure.caption.62}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Função \texttt {validateBlockDelimiters}, que valida a configuração dos delimitadores de bloco.\relax }}{63}{figure.caption.63}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Função \texttt {validateStatementTerminatorLexeme}, que valida a configuração do terminador de instrução.\relax }}{64}{figure.caption.64}%

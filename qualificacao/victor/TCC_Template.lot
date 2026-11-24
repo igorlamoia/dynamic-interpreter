@@ -1,29 +1,29 @@
 \babel@toc {brazil}{}\relax 
 \contentsline {table}{\numberline {2.1}{\ignorespaces Comparativo entre as ferramentas analisadas e a plataforma proposta, segundo os três eixos de análise.}}{43}{table.46}%
-\contentsline {table}{\numberline {3.1}{\ignorespaces Requisitos funcionais da plataforma.\relax }}{48}{table.caption.50}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Requisitos não funcionais da plataforma.\relax }}{49}{table.caption.51}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Cronograma de desenvolvimento do trabalho de conclusão de curso.\relax }}{50}{table.caption.52}%
-\contentsline {table}{\numberline {4.1}{\ignorespaces Elementos da linguagem passíveis de redefinição pelo usuário.\relax }}{62}{table.caption.61}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Analisadores especializados (\textit {scanners}) despachados pela \texttt {LexerScannerFactory}.\relax }}{67}{table.caption.68}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Exemplos de seleção de dados nas respostas do back-end.\relax }}{74}{table.caption.75}%
-\contentsline {table}{\numberline {5.1}{\ignorespaces Distribuição dos testes executados no back-end.\relax }}{81}{table.caption.116}%
-\contentsline {table}{\numberline {5.2}{\ignorespaces Blocos do formulário dos especialistas, procedência e número de itens.\relax }}{83}{table.caption.121}%
-\contentsline {table}{\numberline {5.3}{\ignorespaces Atividades declaradas pelos respondentes do painel e elementos da linguagem que personalizaram (respostas múltiplas, oito respondentes).\relax }}{89}{table.caption.127}%
-\contentsline {table}{\numberline {5.4}{\ignorespaces Itens sobre o núcleo de tradução (escala de 1 a 5; ``não sei'' ou ``não usei'' contados à parte).\relax }}{90}{table.caption.129}%
-\contentsline {table}{\numberline {5.5}{\ignorespaces Blocos de potencial pedagógico e de utilidade e intenção de uso (escala de 1 a 5; ``não sei'' contado à parte).\relax }}{95}{table.caption.134}%
-\contentsline {table}{\numberline {5.6}{\ignorespaces Itens de risco (escala de 1 a 5, em que concordar aponta um problema).\relax }}{96}{table.caption.136}%
-\contentsline {table}{\numberline {5.7}{\ignorespaces Afirmações do formulário da sessão com estudantes (escala de 1 a 5; dezoito respostas).\relax }}{100}{table.caption.141}%
-\contentsline {table}{\numberline {5.8}{\ignorespaces Versão do programa considerada mais fácil de entender, por experiência declarada com programação.\relax }}{100}{table.caption.142}%
-\contentsline {table}{\numberline {B.1}{\ignorespaces Grupos de recursos da API da plataforma.\relax }}{116}{table.caption.155}%
-\contentsline {table}{\numberline {C.1}{\ignorespaces Distribuição dos casos de teste por camada do compilador.\relax }}{117}{table.caption.157}%
-\contentsline {table}{\numberline {E.1}{\ignorespaces Caminhos do repositório citados no texto.\relax }}{125}{table.caption.182}%
-\contentsline {table}{\numberline {E.2}{\ignorespaces Revisões do código citadas no texto.\relax }}{125}{table.caption.183}%
-\contentsline {table}{\numberline {H.1}{\ignorespaces Perfil dos respondentes do formulário dos especialistas (oito respondentes).\relax }}{138}{table.caption.290}%
-\contentsline {table}{\numberline {H.2}{\ignorespaces Itens do SUS (escala de 1 a 5) e escore final; desvio padrão do escore: 16,5.\relax }}{139}{table.caption.291}%
-\contentsline {table}{\numberline {H.3}{\ignorespaces Pares do UEQ-S em valores brutos (escala de 1 a 7).\relax }}{139}{table.caption.292}%
-\contentsline {table}{\numberline {H.4}{\ignorespaces Bloco de qualidade técnica (escala de 1 a 5; ``não sei'' contado à parte).\relax }}{139}{table.caption.293}%
-\contentsline {table}{\numberline {H.5}{\ignorespaces Perguntas de múltipla escolha do formulário dos especialistas.\relax }}{140}{table.caption.294}%
-\contentsline {table}{\numberline {H.6}{\ignorespaces Bloco de avaliação dos recursos (escala de 1 a 5; ``não usei'' contado à parte).\relax }}{140}{table.caption.295}%
-\contentsline {table}{\numberline {H.7}{\ignorespaces Bloco de uso em sala, respondido por quem leciona (escala de 1 a 5; ``não se aplica'' contado à parte).\relax }}{141}{table.caption.296}%
-\contentsline {table}{\numberline {H.8}{\ignorespaces Perfil dos estudantes (dezoito respondentes).\relax }}{141}{table.caption.298}%
-\contentsline {table}{\numberline {H.9}{\ignorespaces Número de estudantes em cada ponto da escala, de 1 (discordo totalmente) a 5 (concordo totalmente).\relax }}{142}{table.caption.299}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Requisitos funcionais da plataforma.\relax }}{47}{table.caption.49}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Requisitos não funcionais da plataforma.\relax }}{48}{table.caption.50}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Cronograma de desenvolvimento do trabalho de conclusão de curso.\relax }}{48}{table.caption.51}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Elementos da linguagem passíveis de redefinição pelo usuário.\relax }}{61}{table.caption.60}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Analisadores especializados (\textit {scanners}) despachados pela \texttt {LexerScannerFactory}.\relax }}{66}{table.caption.67}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Exemplos de seleção de dados nas respostas do back-end.\relax }}{73}{table.caption.74}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Distribuição dos testes executados no back-end.\relax }}{80}{table.caption.115}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Blocos do formulário dos especialistas, procedência e número de itens.\relax }}{82}{table.caption.120}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces Atividades declaradas pelos respondentes do painel e elementos da linguagem que personalizaram (respostas múltiplas, oito respondentes).\relax }}{88}{table.caption.126}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces Itens sobre o núcleo de tradução (escala de 1 a 5; ``não sei'' ou ``não usei'' contados à parte).\relax }}{89}{table.caption.128}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces Blocos de potencial pedagógico e de utilidade e intenção de uso (escala de 1 a 5; ``não sei'' contado à parte).\relax }}{94}{table.caption.133}%
+\contentsline {table}{\numberline {5.6}{\ignorespaces Itens de risco (escala de 1 a 5, em que concordar aponta um problema).\relax }}{95}{table.caption.135}%
+\contentsline {table}{\numberline {5.7}{\ignorespaces Afirmações do formulário da sessão com estudantes (escala de 1 a 5; dezoito respostas).\relax }}{99}{table.caption.140}%
+\contentsline {table}{\numberline {5.8}{\ignorespaces Versão do programa considerada mais fácil de entender, por experiência declarada com programação.\relax }}{99}{table.caption.141}%
+\contentsline {table}{\numberline {B.1}{\ignorespaces Grupos de recursos da API da plataforma.\relax }}{115}{table.caption.154}%
+\contentsline {table}{\numberline {C.1}{\ignorespaces Distribuição dos casos de teste por camada do compilador.\relax }}{116}{table.caption.156}%
+\contentsline {table}{\numberline {E.1}{\ignorespaces Caminhos do repositório citados no texto.\relax }}{124}{table.caption.181}%
+\contentsline {table}{\numberline {E.2}{\ignorespaces Revisões do código citadas no texto.\relax }}{124}{table.caption.182}%
+\contentsline {table}{\numberline {H.1}{\ignorespaces Perfil dos respondentes do formulário dos especialistas (oito respondentes).\relax }}{137}{table.caption.289}%
+\contentsline {table}{\numberline {H.2}{\ignorespaces Itens do SUS (escala de 1 a 5) e escore final; desvio padrão do escore: 16,5.\relax }}{138}{table.caption.290}%
+\contentsline {table}{\numberline {H.3}{\ignorespaces Pares do UEQ-S em valores brutos (escala de 1 a 7).\relax }}{138}{table.caption.291}%
+\contentsline {table}{\numberline {H.4}{\ignorespaces Bloco de qualidade técnica (escala de 1 a 5; ``não sei'' contado à parte).\relax }}{138}{table.caption.292}%
+\contentsline {table}{\numberline {H.5}{\ignorespaces Perguntas de múltipla escolha do formulário dos especialistas.\relax }}{139}{table.caption.293}%
+\contentsline {table}{\numberline {H.6}{\ignorespaces Bloco de avaliação dos recursos (escala de 1 a 5; ``não usei'' contado à parte).\relax }}{139}{table.caption.294}%
+\contentsline {table}{\numberline {H.7}{\ignorespaces Bloco de uso em sala, respondido por quem leciona (escala de 1 a 5; ``não se aplica'' contado à parte).\relax }}{140}{table.caption.295}%
+\contentsline {table}{\numberline {H.8}{\ignorespaces Perfil dos estudantes (dezoito respondentes).\relax }}{140}{table.caption.297}%
+\contentsline {table}{\numberline {H.9}{\ignorespaces Número de estudantes em cada ponto da escala, de 1 (discordo totalmente) a 5 (concordo totalmente).\relax }}{141}{table.caption.298}%

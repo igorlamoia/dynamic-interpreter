@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1795553422.08857 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795553423.67079 0
+["bibtex TCC_Template"] 1795554427.29725 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795554428.89039 0
   "./referencias.bib" 1795547113.37552 13979 00ef83fa2f3b06f1b7072f4a2e153c13 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1795553423.54707 143437 7aa9ea2b058a4e8f1f99e326f37c83c8 "pdflatex"
+  "TCC_Template.aux" 1795554428.76556 143438 7d3994e5c125b8e5b8af95e495871efe "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1795553422.1008 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795553423.67108 0
+["pdflatex"] 1795554427.31081 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795554428.89067 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -320,12 +320,12 @@
   "Figuras/compiler.png" 1795387669.83626 120073 4fb3dea68f0f6ee0b4e73dd30857813d ""
   "Figuras/esquema-banco-atual.tex" 1795389175.9989 9711 11fc12efbddc22e036747581c2847ff0 ""
   "Figuras/lex.png" 1795387669.83715 12923 ad1c33bc299a1871597b2a25efd6eaef ""
-  "TCC_Template.aux" 1795553423.54707 143437 7aa9ea2b058a4e8f1f99e326f37c83c8 "pdflatex"
-  "TCC_Template.bbl" 1795553422.09704 13279 f1ead3f509ff301e59fa33aa4e3ff404 "bibtex TCC_Template"
-  "TCC_Template.lof" 1795553423.55907 8654 d3cad5cc4d7e4f0c1a4a913fda2c7307 "pdflatex"
-  "TCC_Template.lot" 1795553423.55907 4509 b9a11b79afd2b27dbf1ab3a586c568b4 "pdflatex"
+  "TCC_Template.aux" 1795554428.76556 143438 7d3994e5c125b8e5b8af95e495871efe "pdflatex"
+  "TCC_Template.bbl" 1795554427.30554 13279 f1ead3f509ff301e59fa33aa4e3ff404 "bibtex TCC_Template"
+  "TCC_Template.lof" 1795554428.77756 8654 d8790571ee46a6510f2f20ebe1c36fce "pdflatex"
+  "TCC_Template.lot" 1795554428.77756 4509 b9a11b79afd2b27dbf1ab3a586c568b4 "pdflatex"
   "TCC_Template.tex" 1795552789.42566 22652 9c3f199e78a1b887fe8a0c503ae8e16f ""
-  "TCC_Template.toc" 1795553423.56007 14399 dae4f866f1d22b75af0a1851c49691fb "pdflatex"
+  "TCC_Template.toc" 1795554428.77756 14399 1ab2e391dd4348a5bac586194e479483 "pdflatex"
   "configcefetmglpd.cls" 1795476026.98293 32163 96818b5cba0cf820280bbe56c00051f0 ""
   "texto/apendice-cronograma.tex" 1795389137.45563 2751 3a190b1b3eb19e4b00a5ce19d1da486e ""
   "texto/apendice-formulario-especialistas.tex" 1795552929.70159 13478 4f95fc176bd97351393f328f24bdc4f3 ""
@@ -341,7 +341,7 @@
   "texto/desenvolvimento.tex" 1795547165.93264 75256 d235a33eadc3d3c80bd380d72b4770eb ""
   "texto/introducao.tex" 1795552789.42601 9048 3817e0604cc94070e6643dde3c12c377 ""
   "texto/metodologia.tex" 1795553420.43296 12475 3f90c038cef22ebd41925ca7b7f10e8b ""
-  "texto/modelagem.tex" 1795547165.93217 15627 5f472f86798898264f8bec13c7264227 ""
+  "texto/modelagem.tex" 1795554425.63723 16236 ef11a6ca79aec951773500439c0454a6 ""
   "texto/proposta.tex" 1795389124.48934 10751 525e9eedd936d20a2b357b523a8e213d ""
   "texto/referencial.tex" 1795549843.67516 27243 1a3b5db6d9ad944b13d7a9dcb034a64a ""
   "texto/testes-e2e.tex" 1795552789.42515 6519 13e96bbd14322138d87306a9adc750d6 ""

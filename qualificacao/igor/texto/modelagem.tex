@@ -10,59 +10,66 @@ A Figura~\ref{fig:casos-de-uso} apresenta o diagrama da plataforma, com todos os
 
 Os atores correspondem aos papéis gravados no banco de dados (Seção~\ref{sec:modelo-dados}) da seguinte forma. O papel \texttt{STUDENT} corresponde ao Aluno. Os papéis \texttt{TEACHER} e \texttt{ADMIN} correspondem ao Professor, porque a interface oferece ao administrador os mesmos recursos pedagógicos do professor. O papel \texttt{COMMUNITY} corresponde ao Usuário autenticado que não participa de turmas. O papel \texttt{SYSTEM} é interno, não representa uma pessoa usando a plataforma e por isso não aparece no diagrama.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
 \centering
 \caption{Diagrama de casos de uso da plataforma.}
 \label{fig:casos-de-uso}
 \resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=4.6cm,minimum height=.9cm}]
-\draw[thick] (2.6,1.4) rectangle (16.4,-16.0);
-\node[font=\small\bfseries] at (9.5,.95) {Plataforma educacional web};
-% Coluna da esquerda: acesso e ambiente de desenvolvimento.
-\node[uc] (ucCad)  at (6,0.0)   {Cadastrar-se};
-\node[uc] (ucAut)  at (6,-1.5)  {Autenticar-se};
-\node[uc] (ucPer)  at (6,-3.0)  {Gerenciar perfil};
-\node[uc] (ucLing) at (6,-4.5)  {Criar e gerenciar\\linguagens personalizadas};
-\node[uc] (ucCom)  at (6,-6.0)  {Compartilhar e importar\\linguagens da comunidade};
-\node[uc] (ucAtiv) at (6,-7.5)  {Ativar linguagem\\no editor};
-\node[uc] (ucEdit) at (6,-9.0)  {Editar código na IDE};
-\node[uc] (ucArq)  at (6,-10.5) {Gerenciar arquivos\\do projeto};
-\node[uc] (ucExec) at (6,-12.0) {Executar programa\\no terminal};
-\node[uc] (ucTok)  at (6,-13.5) {Inspecionar \textit{tokens} e\\código intermediário};
-\node[uc] (ucDep)  at (6,-15.0) {Depurar execução\\passo a passo};
-% Coluna da direita: participação e gestão pedagógica.
-\node[uc] (ucIng)  at (13,0.0)   {Ingressar em turma};
-\node[uc] (ucCons) at (13,-1.5)  {Consultar listas\\e exercícios};
-\node[uc] (ucSub)  at (13,-3.0)  {Submeter solução\\de exercício};
-\node[uc] (ucVer)  at (13,-4.5)  {Consultar veredito\\e histórico};
-\node[uc] (ucTur)  at (13,-6.0)  {Gerenciar turmas};
-\node[uc] (ucMem)  at (13,-7.5)  {Gerenciar membros\\da turma};
-\node[uc] (ucEx)   at (13,-9.0)  {Gerenciar exercícios\\e casos de teste};
-\node[uc] (ucVinc) at (13,-10.5) {Vincular linguagem\\a exercício ou lista};
-\node[uc] (ucLis)  at (13,-12.0) {Gerenciar listas\\de exercícios};
-\node[uc] (ucPub)  at (13,-13.5) {Publicar lista\\para a turma};
-\node[uc] (ucAva)  at (13,-15.0) {Acompanhar e avaliar\\submissões};
-% Atores: visitante e usuario autenticado a esquerda; aluno e professor,
-% especializacoes do usuario autenticado, a direita.
-\pic at (0,-4.0) {ator}; \node[font=\small] at (0,-5.65) {Visitante};
-\pic at (0,-11.8) {ator}; \node[font=\small,align=center] at (0,-13.75) {Usuário\\autenticado};
-\pic at (19.8,-1.8) {ator}; \node[font=\small] at (19.8,-3.45) {Aluno};
-\pic at (18.2,-10.1) {ator}; \node[font=\small] at (18.2,-11.75) {Professor};
-% Generalizacao: aluno e professor herdam do usuario autenticado. As duas
-% linhas contornam o diagrama por baixo e se juntam antes da seta.
-\draw[heranca] (19.8,-3.85) -- (19.8,-17.0) -- (0,-17.0) -- (0,-14.5);
-\draw[heranca] (18.2,-12.15) -- (18.2,-17.0) -- (0,-17.0) -- (0,-14.5);
-% As ligacoes partem de alturas ligeiramente diferentes junto a cada ator,
-% para nao se sobreporem.
+\begin{tikzpicture}[x=1cm,y=1cm,uc/.append style={font=\footnotesize,minimum width=3.6cm,minimum height=.9cm}]
+% Fronteira do sistema.
+\draw[thick] (2.9,1.3) rectangle (18.3,-11.8);
+\node[font=\small\bfseries] at (10.6,.85) {Plataforma educacional web};
+% Lado esquerdo: casos de uso do Visitante e do Usuário autenticado, em duas
+% colunas intercaladas, para que as ligações passem entre as elipses.
+\node[uc] (ucCad)  at (5.0,0.0)   {Cadastrar-se};
+\node[uc] (ucAut)  at (8.4,-1.1)  {Autenticar-se};
+\node[uc] (ucLing) at (5.0,-2.2)  {Criar e gerenciar\\linguagens personalizadas};
+\node[uc] (ucAtiv) at (8.4,-3.3)  {Ativar linguagem\\no editor};
+\node[uc] (ucEdit) at (5.0,-4.4)  {Editar código na IDE};
+\node[uc] (ucArq)  at (8.4,-5.5)  {Gerenciar arquivos\\do projeto};
+\node[uc] (ucExec) at (5.0,-6.6)  {Executar programa\\no terminal};
+\node[uc] (ucTok)  at (8.4,-7.7)  {Inspecionar \textit{tokens} e\\código intermediário};
+\node[uc] (ucDep)  at (5.0,-8.8)  {Depurar execução\\passo a passo};
+\node[uc] (ucPer)  at (8.4,-9.9)  {Gerenciar perfil};
+\node[uc] (ucCom)  at (5.0,-11.0) {Compartilhar e importar\\linguagens da comunidade};
+% Lado direito: casos de uso do Aluno (acima) e do Professor (abaixo).
+\node[uc] (ucIng)  at (16.2,0.0)   {Ingressar em turma};
+\node[uc] (ucCons) at (12.8,-1.1)  {Consultar listas\\e exercícios};
+\node[uc] (ucSub)  at (16.2,-2.2)  {Submeter solução\\de exercício};
+\node[uc] (ucVer)  at (12.8,-3.3)  {Consultar veredito\\e histórico};
+\node[uc] (ucTur)  at (16.2,-4.4)  {Gerenciar turmas};
+\node[uc] (ucMem)  at (12.8,-5.5)  {Gerenciar membros\\da turma};
+\node[uc] (ucEx)   at (16.2,-6.6)  {Gerenciar exercícios\\e casos de teste};
+\node[uc] (ucVinc) at (12.8,-7.7)  {Vincular linguagem\\a exercício ou lista};
+\node[uc] (ucLis)  at (16.2,-8.8)  {Gerenciar listas\\de exercícios};
+\node[uc] (ucPub)  at (12.8,-9.9)  {Publicar lista\\para a turma};
+\node[uc] (ucAva)  at (16.2,-11.0) {Acompanhar e avaliar\\submissões};
+% Atores.
+\pic at (0.8,-1.6) {ator}; \node[font=\small] at (0.8,-3.25) {Visitante};
+\pic at (0.8,-7.9) {ator}; \node[font=\small,align=center] at (0.8,-9.85) {Usuário\\autenticado};
+\pic at (21.0,-0.6) {ator}; \node[font=\small] at (21.0,-2.25) {Aluno};
+\pic at (19.9,-6.9) {ator}; \node[font=\small] at (19.9,-8.55) {Professor};
+% Nota (comentário UML), ligada ao ator Visitante por linha tracejada.
+\node[font=\footnotesize,text width=5.4cm,align=left,inner sep=5pt] (nota) at (2.6,2.75)
+  {O acesso pelo ator Visitante não exige \textit{login}. Para os demais atores, todas as operações exigem \textit{login}.};
+\draw (nota.south west) -- (nota.south east) -- ([yshift=-7pt]nota.north east)
+      -- ([xshift=-7pt]nota.north east) -- (nota.north west) -- cycle;
+\draw ([xshift=-7pt]nota.north east) -- ([xshift=-7pt,yshift=-7pt]nota.north east) -- ([yshift=-7pt]nota.north east);
+\coordinate (vx) at (0.8,0);
+\draw[dashed] (nota.south -| vx) -- (0.8,-1.38);
+% Generalização: Aluno e Professor herdam do Usuário autenticado.
+\draw[heranca] (21.0,-2.65) -- (21.0,-12.6) -- (0.8,-12.6) -- (0.8,-10.55);
+\draw[heranca] (19.9,-8.95) -- (19.9,-12.6) -- (0.8,-12.6) -- (0.8,-10.55);
+% Associações: partem de alturas ligeiramente diferentes junto a cada ator.
 \begin{scope}[on background layer]
 \foreach \d/\o in {ucCad/0.8,ucAut/0.6,ucLing/0.4,ucAtiv/0.2,ucEdit/0,ucArq/-0.2,ucExec/-0.4,ucTok/-0.6,ucDep/-0.8}
-  \draw[liga] (0.35,{-4.4+\o}) -- (\d);
-\foreach \d/\o in {ucPer/0.8,ucLing/0.6,ucCom/0.4,ucAtiv/0.2,ucEdit/0,ucArq/-0.2,ucExec/-0.4,ucTok/-0.6,ucDep/-0.8}
-  \draw[liga] (0.35,{-12.2+\o}) -- (\d);
+  \draw[liga] (1.15,{-2.0+\o}) -- (\d);
+\foreach \d/\o in {ucLing/0.8,ucAtiv/0.6,ucEdit/0.4,ucArq/0.2,ucExec/0,ucTok/-0.2,ucDep/-0.4,ucPer/-0.6,ucCom/-0.8}
+  \draw[liga] (1.15,{-8.3+\o}) -- (\d);
 \foreach \d/\o in {ucIng/0.45,ucCons/0.15,ucSub/-0.15,ucVer/-0.45}
-  \draw[liga] (19.45,{-2.2+\o}) -- (\d);
+  \draw[liga] (20.65,{-1.0+\o}) -- (\d);
 \foreach \d/\o in {ucTur/0.75,ucMem/0.5,ucEx/0.25,ucVinc/0,ucLis/-0.25,ucPub/-0.5,ucAva/-0.75}
-  \draw[liga] (17.85,{-10.5+\o}) -- (\d);
+  \draw[liga] (19.55,{-7.3+\o}) -- (\d);
 \end{scope}
 \end{tikzpicture}}
 \legend{Fonte: elaborado pelo autor.}

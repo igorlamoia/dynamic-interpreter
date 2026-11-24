@@ -39,88 +39,88 @@
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {3}SOLUÇÃO PROPOSTA}{45}{chapter.47}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{51}{chapter.53}%
-\contentsline {section}{\numberline {4.1}Uso de Ferramentas de Inteligência Artificial}{52}{section.54}%
-\contentsline {section}{\numberline {4.2}Modelagem da Arquitetura do Projeto}{53}{section.55}%
-\contentsline {subsection}{\numberline {{4.2}.1}Modelagem do Banco de Dados}{54}{subsection.57}%
-\contentsline {subsection}{\numberline {{4.2}.2}Especificação das Rotas da API}{58}{subsection.59}%
-\contentsline {section}{\numberline {4.3}Especificação da Linguagem e de seus Elementos Configuráveis}{60}{section.60}%
-\contentsline {section}{\numberline {4.4}Interpretador}{66}{section.66}%
-\contentsline {subsection}{\numberline {{4.4}.1}Análise Léxica}{66}{subsection.67}%
-\contentsline {subsection}{\numberline {{4.4}.2}Análise Sintática}{68}{subsection.69}%
-\contentsline {subsection}{\numberline {{4.4}.3}Análise Semântica}{69}{subsection.70}%
-\contentsline {subsection}{\numberline {{4.4}.4}Geração de Código Intermediário}{70}{subsection.71}%
-\contentsline {subsection}{\numberline {{4.4}.5}Interpretação e Tratamento de Erros em Tempo de Execução}{71}{subsection.72}%
-\contentsline {section}{\numberline {4.5}Integração entre a Plataforma e o Interpretador}{73}{section.73}%
-\contentsline {section}{\numberline {4.6}Contratos de Resposta e Controles do Back-end}{74}{section.74}%
-\contentsline {subsection}{\numberline {{4.6}.1}Limites dos controles examinados}{75}{subsection.76}%
+\contentsline {chapter}{\chapternumberline {4}METODOLOGIA}{50}{chapter.52}%
+\contentsline {section}{\numberline {4.1}Uso de Ferramentas de Inteligência Artificial}{51}{section.53}%
+\contentsline {section}{\numberline {4.2}Modelagem da Arquitetura do Projeto}{52}{section.54}%
+\contentsline {subsection}{\numberline {{4.2}.1}Modelagem do Banco de Dados}{53}{subsection.56}%
+\contentsline {subsection}{\numberline {{4.2}.2}Especificação das Rotas da API}{57}{subsection.58}%
+\contentsline {section}{\numberline {4.3}Especificação da Linguagem e de seus Elementos Configuráveis}{59}{section.59}%
+\contentsline {section}{\numberline {4.4}Interpretador}{65}{section.65}%
+\contentsline {subsection}{\numberline {{4.4}.1}Análise Léxica}{65}{subsection.66}%
+\contentsline {subsection}{\numberline {{4.4}.2}Análise Sintática}{67}{subsection.68}%
+\contentsline {subsection}{\numberline {{4.4}.3}Análise Semântica}{68}{subsection.69}%
+\contentsline {subsection}{\numberline {{4.4}.4}Geração de Código Intermediário}{69}{subsection.70}%
+\contentsline {subsection}{\numberline {{4.4}.5}Interpretação e Tratamento de Erros em Tempo de Execução}{70}{subsection.71}%
+\contentsline {section}{\numberline {4.5}Integração entre a Plataforma e o Interpretador}{72}{section.72}%
+\contentsline {section}{\numberline {4.6}Contratos de Resposta e Controles do Back-end}{73}{section.73}%
+\contentsline {subsection}{\numberline {{4.6}.1}Limites dos controles examinados}{74}{subsection.75}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}PLANEJAMENTO E REALIZAÇÃO DOS TESTES}{77}{chapter.77}%
-\contentsline {section}{\numberline {5.1}Planejamento dos testes}{77}{section.78}%
-\contentsline {section}{\numberline {5.2}Testes automatizados}{78}{section.79}%
-\contentsline {subsection}{\numberline {{5.2}.1}Testes do núcleo de tradução}{78}{subsection.80}%
-\contentsline {subsection}{\numberline {{5.2}.2}Testes do serviço FastAPI}{79}{subsection.103}%
-\contentsline {subsection}{\numberline {{5.2}.3}Resultados e alcance da verificação}{80}{subsection.115}%
-\contentsline {subsection}{\numberline {{5.2}.4}Testes no fluxo de integração contínua}{81}{subsection.117}%
-\contentsline {section}{\numberline {5.3}Teste de usabilidade com especialistas}{82}{section.118}%
-\contentsline {subsection}{\numberline {{5.3}.1}Quem responde e o que é possível concluir}{82}{subsection.119}%
-\contentsline {subsection}{\numberline {{5.3}.2}Composição do instrumento}{83}{subsection.120}%
-\contentsline {subsection}{\numberline {{5.3}.3}Itens sobre o núcleo de tradução}{84}{subsection.122}%
-\contentsline {subsection}{\numberline {{5.3}.4}Escalas usadas e cálculo dos escores}{85}{subsection.123}%
-\contentsline {subsection}{\numberline {{5.3}.5}Participantes, procedimento e questões éticas}{86}{subsection.124}%
-\contentsline {subsection}{\numberline {{5.3}.6}Leitura dos resultados}{87}{subsection.125}%
-\contentsline {subsection}{\numberline {{5.3}.7}Composição do painel}{88}{subsection.126}%
-\contentsline {subsection}{\numberline {{5.3}.8}Avaliação do núcleo de tradução}{89}{subsection.128}%
-\contentsline {subsection}{\numberline {{5.3}.9}Suficiência do subconjunto da linguagem}{91}{subsection.130}%
-\contentsline {subsection}{\numberline {{5.3}.10}Mensagens de erro com vocabulário personalizado}{92}{subsection.131}%
-\contentsline {subsection}{\numberline {{5.3}.11}Usabilidade (SUS) e experiência de uso (UEQ-S)}{93}{subsection.132}%
-\contentsline {subsection}{\numberline {{5.3}.12}Potencial pedagógico e intenção de uso}{94}{subsection.133}%
-\contentsline {subsection}{\numberline {{5.3}.13}Riscos e limitações apontados pelo painel}{96}{subsection.135}%
-\contentsline {subsection}{\numberline {{5.3}.14}Respostas abertas}{97}{subsection.137}%
-\contentsline {section}{\numberline {5.4}Comparação A/B com estudantes}{98}{section.138}%
-\contentsline {subsection}{\numberline {{5.4}.1}Formulário e procedimento}{98}{subsection.139}%
-\contentsline {subsection}{\numberline {{5.4}.2}Resultados da sessão}{99}{subsection.140}%
-\contentsline {section}{\numberline {5.5}Relação com trabalhos anteriores}{101}{section.143}%
-\contentsline {section}{\numberline {5.6}Limites de interpretação e continuidade}{102}{section.144}%
-\contentsline {section}{\numberline {5.7}Síntese e confronto com os objetivos}{103}{section.145}%
+\contentsline {chapter}{\chapternumberline {5}PLANEJAMENTO E REALIZAÇÃO DOS TESTES}{76}{chapter.76}%
+\contentsline {section}{\numberline {5.1}Planejamento dos testes}{76}{section.77}%
+\contentsline {section}{\numberline {5.2}Testes automatizados}{77}{section.78}%
+\contentsline {subsection}{\numberline {{5.2}.1}Testes do núcleo de tradução}{77}{subsection.79}%
+\contentsline {subsection}{\numberline {{5.2}.2}Testes do serviço FastAPI}{78}{subsection.102}%
+\contentsline {subsection}{\numberline {{5.2}.3}Resultados e alcance da verificação}{79}{subsection.114}%
+\contentsline {subsection}{\numberline {{5.2}.4}Testes no fluxo de integração contínua}{80}{subsection.116}%
+\contentsline {section}{\numberline {5.3}Teste de usabilidade com especialistas}{81}{section.117}%
+\contentsline {subsection}{\numberline {{5.3}.1}Quem responde e o que é possível concluir}{81}{subsection.118}%
+\contentsline {subsection}{\numberline {{5.3}.2}Composição do instrumento}{82}{subsection.119}%
+\contentsline {subsection}{\numberline {{5.3}.3}Itens sobre o núcleo de tradução}{83}{subsection.121}%
+\contentsline {subsection}{\numberline {{5.3}.4}Escalas usadas e cálculo dos escores}{84}{subsection.122}%
+\contentsline {subsection}{\numberline {{5.3}.5}Participantes, procedimento e questões éticas}{85}{subsection.123}%
+\contentsline {subsection}{\numberline {{5.3}.6}Leitura dos resultados}{86}{subsection.124}%
+\contentsline {subsection}{\numberline {{5.3}.7}Composição do painel}{87}{subsection.125}%
+\contentsline {subsection}{\numberline {{5.3}.8}Avaliação do núcleo de tradução}{88}{subsection.127}%
+\contentsline {subsection}{\numberline {{5.3}.9}Suficiência do subconjunto da linguagem}{90}{subsection.129}%
+\contentsline {subsection}{\numberline {{5.3}.10}Mensagens de erro com vocabulário personalizado}{91}{subsection.130}%
+\contentsline {subsection}{\numberline {{5.3}.11}Usabilidade (SUS) e experiência de uso (UEQ-S)}{92}{subsection.131}%
+\contentsline {subsection}{\numberline {{5.3}.12}Potencial pedagógico e intenção de uso}{93}{subsection.132}%
+\contentsline {subsection}{\numberline {{5.3}.13}Riscos e limitações apontados pelo painel}{95}{subsection.134}%
+\contentsline {subsection}{\numberline {{5.3}.14}Respostas abertas}{96}{subsection.136}%
+\contentsline {section}{\numberline {5.4}Comparação A/B com estudantes}{97}{section.137}%
+\contentsline {subsection}{\numberline {{5.4}.1}Formulário e procedimento}{97}{subsection.138}%
+\contentsline {subsection}{\numberline {{5.4}.2}Resultados da sessão}{98}{subsection.139}%
+\contentsline {section}{\numberline {5.5}Relação com trabalhos anteriores}{100}{section.142}%
+\contentsline {section}{\numberline {5.6}Limites de interpretação e continuidade}{101}{section.143}%
+\contentsline {section}{\numberline {5.7}Síntese e confronto com os objetivos}{102}{section.144}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{105}{chapter.146}%
+\contentsline {chapter}{\chapternumberline {6}CONSIDERAÇÕES FINAIS}{104}{chapter.145}%
 \setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{REFERÊNCIAS}{110}{chapter*.148}%
+\contentsline {chapter}{REFERÊNCIAS}{109}{chapter*.147}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{114}{appendix.149}%
-\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{114}{section.150}%
-\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{114}{section.151}%
-\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{114}{subsection.152}%
-\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{115}{subsection.153}%
+\contentsline {appendix}{\chapternumberline {A}APÊNDICE A -- PLANO DE TRABALHO: DIVISÃO DE RESPONSABILIDADES}{113}{appendix.148}%
+\contentsline {section}{\numberline {A.1}Atividades Desenvolvidas em Regime Colaborativo}{113}{section.149}%
+\contentsline {section}{\numberline {A.2}Eixos de Aprofundamento Individual}{113}{section.150}%
+\contentsline {subsection}{\numberline {{A.2}.1}Victor de Souza Vilela da Silva (esta monografia)}{113}{subsection.151}%
+\contentsline {subsection}{\numberline {{A.2}.2}Igor Lamoia Queiroz (documento complementar)}{114}{subsection.152}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {B}APÊNDICE B -- DOCUMENTAÇÃO DA API}{116}{appendix.154}%
+\contentsline {appendix}{\chapternumberline {B}APÊNDICE B -- DOCUMENTAÇÃO DA API}{115}{appendix.153}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {C}APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS}{117}{appendix.156}%
+\contentsline {appendix}{\chapternumberline {C}APÊNDICE C -- CASOS DE TESTE AUTOMATIZADOS}{116}{appendix.155}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {D}APÊNDICE D -- DICIONÁRIO DE DADOS}{118}{appendix.158}%
+\contentsline {appendix}{\chapternumberline {D}APÊNDICE D -- DICIONÁRIO DE DADOS}{117}{appendix.157}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {E}APÊNDICE E -- REPOSITÓRIO E REGISTROS DO PROJETO}{125}{appendix.181}%
+\contentsline {appendix}{\chapternumberline {E}APÊNDICE E -- REPOSITÓRIO E REGISTROS DO PROJETO}{124}{appendix.180}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {F}APÊNDICE F -- FORMULÁRIO DOS ESPECIALISTAS}{127}{appendix.184}%
-\contentsline {section}{\numberline {F.1}Termo de Consentimento}{127}{section.185}%
-\contentsline {section}{\numberline {F.2}Perfil Profissional}{127}{section.186}%
-\contentsline {section}{\numberline {F.3}Uso em Sala (Só para Quem Leciona)}{128}{section.191}%
-\contentsline {section}{\numberline {F.4}Como a Plataforma Foi Usada}{128}{section.202}%
-\contentsline {section}{\numberline {F.5}Avaliação dos Recursos}{129}{section.207}%
-\contentsline {section}{\numberline {F.6}Facilidade de Uso (SUS)}{131}{section.218}%
-\contentsline {section}{\numberline {F.7}Impressão Geral (UEQ-S)}{132}{section.229}%
-\contentsline {section}{\numberline {F.8}Potencial Pedagógico}{132}{section.238}%
-\contentsline {section}{\numberline {F.9}Riscos e Limitações}{133}{section.247}%
-\contentsline {section}{\numberline {F.10}Qualidade Técnica}{133}{section.251}%
-\contentsline {section}{\numberline {F.11}Utilidade e Intenção de Uso (TAM)}{134}{section.258}%
-\contentsline {section}{\numberline {F.12}Comentários Abertos}{134}{section.265}%
+\contentsline {appendix}{\chapternumberline {F}APÊNDICE F -- FORMULÁRIO DOS ESPECIALISTAS}{126}{appendix.183}%
+\contentsline {section}{\numberline {F.1}Termo de Consentimento}{126}{section.184}%
+\contentsline {section}{\numberline {F.2}Perfil Profissional}{126}{section.185}%
+\contentsline {section}{\numberline {F.3}Uso em Sala (Só para Quem Leciona)}{127}{section.190}%
+\contentsline {section}{\numberline {F.4}Como a Plataforma Foi Usada}{127}{section.201}%
+\contentsline {section}{\numberline {F.5}Avaliação dos Recursos}{128}{section.206}%
+\contentsline {section}{\numberline {F.6}Facilidade de Uso (SUS)}{130}{section.217}%
+\contentsline {section}{\numberline {F.7}Impressão Geral (UEQ-S)}{131}{section.228}%
+\contentsline {section}{\numberline {F.8}Potencial Pedagógico}{131}{section.237}%
+\contentsline {section}{\numberline {F.9}Riscos e Limitações}{132}{section.246}%
+\contentsline {section}{\numberline {F.10}Qualidade Técnica}{132}{section.250}%
+\contentsline {section}{\numberline {F.11}Utilidade e Intenção de Uso (TAM)}{133}{section.257}%
+\contentsline {section}{\numberline {F.12}Comentários Abertos}{133}{section.264}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {G}APÊNDICE G -- FORMULÁRIO DA SESSÃO COM ESTUDANTES}{135}{appendix.271}%
-\contentsline {section}{\numberline {G.1}Termo de Assentimento}{135}{section.272}%
-\contentsline {section}{\numberline {G.2}Sobre o Estudante}{135}{section.274}%
-\contentsline {section}{\numberline {G.3}Sobre a Demonstração}{135}{section.279}%
+\contentsline {appendix}{\chapternumberline {G}APÊNDICE G -- FORMULÁRIO DA SESSÃO COM ESTUDANTES}{134}{appendix.270}%
+\contentsline {section}{\numberline {G.1}Termo de Assentimento}{134}{section.271}%
+\contentsline {section}{\numberline {G.2}Sobre o Estudante}{134}{section.273}%
+\contentsline {section}{\numberline {G.3}Sobre a Demonstração}{134}{section.278}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {appendix}{\chapternumberline {H}APÊNDICE H -- RESUMO DAS RESPOSTAS AOS FORMULÁRIOS}{137}{appendix.288}%
-\contentsline {section}{\numberline {H.1}Formulário dos Especialistas}{137}{section.289}%
-\contentsline {section}{\numberline {H.2}Formulário da Sessão com Estudantes}{137}{section.297}%
+\contentsline {appendix}{\chapternumberline {H}APÊNDICE H -- RESUMO DAS RESPOSTAS AOS FORMULÁRIOS}{136}{appendix.287}%
+\contentsline {section}{\numberline {H.1}Formulário dos Especialistas}{136}{section.288}%
+\contentsline {section}{\numberline {H.2}Formulário da Sessão com Estudantes}{136}{section.296}%

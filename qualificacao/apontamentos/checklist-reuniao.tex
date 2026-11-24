@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{fontspec}
+\usepackage[brazil]{babel}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\definecolor{cinza}{gray}{0.45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{2pt}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{\small\color{cinza}\thepage}
+\fancyfoot[L]{\small\color{cinza}Checklist da reunião de orientação -- TCC II}
+\newlist{checklist}{itemize}{1}
+\setlist[checklist]{label=$\square$,leftmargin=1.6em,itemsep=3pt,topsep=2pt}
+\newcommand{\pg}[1]{\textbf{p.~#1}\ \ }
+\newcommand{\tm}[1]{\textbf{[#1]}\ \ }
+\begin{document}
+{\LARGE\bfseries Checklist da reunião de orientação}\\[4pt]
+{\large TCC II -- Igor Lamoia Queiroz e Victor de Souza Vilela da Silva}\\[8pt]
+Pontos que o orientador pediu para ajustar na reunião gravada em vídeo em 24 nov. 2026. Entre colchetes, o minuto do vídeo em que o ponto foi tratado. Os itens valem para os dois volumes sempre que houver trecho equivalente. Marque cada item depois de conferir o ajuste.
+
+\subsection*{Metodologia}
+\begin{checklist}
+  \item \tm{00:00}Classificar o trabalho como pesquisa aplicada e descrever o desenvolvimento do produto em um número definido de etapas: revisão bibliográfica, modelagem da solução, desenvolvimento, testes, manutenção e correção, e implantação.
+  \item \tm{01:18}Deixar claro que o XP é o método aplicado dentro da etapa de desenvolvimento, e não a metodologia do trabalho todo.
+  \item \tm{02:02}Representar o processo como iterativo, com o retorno das etapas de teste e correção para a de desenvolvimento, usando como referência o trabalho publicado indicado pelo orientador.
+  \item \tm{03:06}Deixar as etapas de modelagem, desenvolvimento e testes demarcadas com clareza, em seção própria ou dentro do capítulo de desenvolvimento.
+  \item \tm{35:22}Depois do esquema metodológico, detalhar cada etapa: o que foi feito, com quais ferramentas e onde houve uso de IA.
+\end{checklist}
+\subsection*{Uso de inteligência artificial}
+\begin{checklist}
+  \item \tm{04:12}Declarar no texto, com clareza, onde a IA foi usada, como ela atuou e o que é esforço dos autores, inclusive quando o uso foi apenas revisão textual ou ajuda para escrever uma seção.
+\end{checklist}
+\subsection*{Texto em geral}
+\begin{checklist}
+  \item \tm{10:39}Se o termo “especialistas” for mantido, definir o que se entende por especialista, para não haver interpretações diferentes.
+  \item \tm{11:13}Reduzir as repetições entre capítulos: em vários pontos a leitura dá a sensação de ler a mesma coisa de novo. O texto precisa ficar mais fluido.
+  \item \tm{11:49}Avaliar com o coorientador se o detalhamento sobre compiladores não está aprofundado além do necessário.
+  \item \tm{12:20}Retirar as referências ao próprio GitHub: o que foi produzido para o TCC deve aparecer como apêndice, e não como referência externa.
+  \item \tm{14:33}Fazer uma revisão geral final para que a estrutura descrita na introdução (Seção 1.3), o sumário e os capítulos digam a mesma coisa.
+  \item \tm{24:09}Evitar frases que negam o que o trabalho não faz ou não contempla: cada uma vira ponto de discussão para a banca.
+\end{checklist}
+\subsection*{Referencial teórico}
+\begin{checklist}
+  \item \tm{14:55}Confirmar se a Figura 2.1 é idêntica à de Alcantara ou adaptada, e deixar a legenda de acordo.
+  \item \tm{16:26}Evitar o formato em que quase todo parágrafo é uma citação: o texto dos autores deve dialogar com as referências, que embasam o que é dito.
+  \item \tm{18:58}Na Seção 2.1, anunciar antes da lista de etapas do compilador os autores que as fundamentam e retirar as citações repetidas em cada parágrafo; se possível, acrescentar uma ou duas obras de compiladores.
+  \item \tm{21:30}Especificar as siglas LR, SLR, YACC e demais na primeira aparição.
+  \item \tm{21:49}Não colocar exemplos no referencial teórico (como o de pseudo-assembly).
+  \item \tm{22:30}Conferir a ordem das letras nas referências de mesmo autor e ano.
+  \item \tm{22:56}Retirar a menção a App Router e Server Actions, que não foram usados.
+\end{checklist}
+\subsection*{Solução proposta e modelagem}
+\begin{checklist}
+  \item \tm{25:06}Renomear o capítulo “Proposta” para “Solução Proposta”.
+  \item \tm{25:45}Reorganizar o diagrama de casos de uso usando a largura da página, com os casos de uso intercalados, para que não ocupe uma página inteira.
+  \item \tm{27:15}Transformar os diagramas de casos de uso em um único diagrama.
+  \item \tm{27:35}Incluir no diagrama uma nota informando que o acesso pelo ator Visitante não exige login e que, para os demais atores, todas as operações exigem login.
+  \item \tm{28:22}No texto do Igor, mencionar o banco de dados: apresentar o diagrama e um parágrafo que remeta ao trabalho do Victor, onde o back-end é discutido.
+  \item \tm{33:14}No texto do Victor, explicar com qual ferramenta o modelo de tabelas foi feito e fundamentar a modelagem com um livro de banco de dados de peso (modelos conceitual, lógico e físico), sem se apoiar só no Heuser.
+\end{checklist}
+\subsection*{Desenvolvimento}
+\begin{checklist}
+  \item \tm{36:42}Padronizar o nome dos trechos de código: o texto diz “trecho de código” e a legenda diz “Listing”.
+  \item \tm{37:54}Apresentar as funcionalidades na ordem dos requisitos funcionais (RF01, RF02...), para mostrar que tudo o que está no diagrama foi especificado e depois apresentado.
+  \item \tm{39:10}Tratar as Figuras 4.5(a) e 4.5(b) como figuras distintas (4.5 e 4.6), já que são telas diferentes.
+\end{checklist}
+\subsection*{Testes e avaliação}
+\begin{checklist}
+  \item \tm{41:55}Criar uma seção só de testes, dividida em testes automatizados, teste de usabilidade (SUS) e teste comparativo A/B.
+  \item \tm{43:41}No teste comparativo A/B, deixar claro como ele foi feito e o que foi medido.
+  \item \tm{44:38}Colocar todas as questões dos questionários aplicados como apêndice, numeradas, e citá-las no texto pelo número (“conforme o Apêndice X, questão 3”).
+  \item \tm{45:35}Apresentar cada teste e, logo em seguida, a discussão do seu resultado.
+  \item \tm{46:22}Não manter “Resultados da Avaliação” como capítulo separado: a discussão dos resultados fica incorporada à seção de testes.
+\end{checklist}
+\subsection*{Considerações finais}
+\begin{checklist}
+  \item \tm{46:57}Escrever as considerações finais como texto único, sem subdivisões.
+\end{checklist}
+\end{document}

@@ -1,0 +1,216 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{fontspec}
+\usepackage[brazil]{babel}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\definecolor{cinza}{gray}{0.45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{2pt}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{\small\color{cinza}\thepage}
+\fancyfoot[L]{\small\color{cinza}Checklist de apontamentos do orientador -- TCC II}
+\newlist{checklist}{itemize}{1}
+\setlist[checklist]{label=$\square$,leftmargin=1.6em,itemsep=3pt,topsep=2pt}
+\newcommand{\pg}[1]{\textbf{p.~#1}\ \ }
+\newcommand{\tm}[1]{\textbf{[#1]}\ \ }
+\begin{document}
+{\LARGE\bfseries Checklist de apontamentos do orientador}\\[4pt]
+{\large TCC II -- Igor Lamoia Queiroz e Victor de Souza Vilela da Silva}\\[8pt]
+Este documento reúne os pontos de ajuste indicados pelo orientador em duas ocasiões:
+\begin{itemize}[leftmargin=1.2em,itemsep=0pt]
+  \item \textbf{Parte 1} -- correção escrita do texto do Igor (PDF corrigido de 20 nov. 2026). As páginas indicadas referem-se a esse PDF. Os itens valem também para o texto do Victor sempre que houver trecho equivalente.
+  \item \textbf{Parte 2} -- reunião de orientação gravada em vídeo (24 nov. 2026). Entre colchetes, o minuto do vídeo em que o ponto foi tratado.
+\end{itemize}
+Marque cada item depois de conferir o ajuste nos dois volumes.
+\section*{Parte 1 -- Correção escrita}
+\subsection*{Estrutura e organização dos capítulos}
+\begin{checklist}
+  \item \pg{1}As seções repetem as mesmas constatações; nas considerações finais os dados dos resultados aparecem de novo.
+  \item \pg{18}“E trabalhos relacionados”: colocar em um capítulo separado.
+  \item \pg{18--37}Seção 2.1 só tem citações, sem escrita do autor; o formato abre margem para questionar a contribuição do trabalho.
+  \item \pg{30}Reduzir as subseções de Engenharia de Software às que correspondem ao trabalho.
+  \item \pg{43}“PROPOSTA” $\rightarrow$ “Solução Proposta”; “se pretende”: não está pronto?
+  \item \pg{45, 53}Criar um capítulo para os modelos: DCU junto com a modelagem da arquitetura (4.1).
+  \item \pg{53--83}As partes em azul remetem ao desenvolvimento da plataforma: criar um capítulo específico.
+  \item \pg{99}Novo capítulo: “Etapa Planejamento e realização de Testes”.
+  \item \pg{51}Qualificar a metodologia conforme Prodanov: tipo de pesquisa e etapas, cada uma explicada depois. “Sugiro fortemente reescrever/reestruturar.”
+  \item \pg{53}Delimitar desde o início quais materiais e ferramentas são usados.
+  \item \pg{47--48}Macroetapas e “Integração, testes e avaliação”: levar para o capítulo de Metodologia.
+  \item \pg{129--132}Subseções 6.1 a 6.4 riscadas.
+  \item \pg{17, 34, 50}“Estrutura” $\rightarrow$ “Organização”; o resumo dos capítulos não confere com o sumário; conferir a Seção 4.1 citada e a frase final do Cap. 3.
+\end{checklist}
+\subsection*{Resumo}
+\begin{checklist}
+  \item \pg{6}O resumo não traz metodologia e apresenta valores de discussão de resultados. Ver Prodanov, p. 249.
+  \item \pg{6}“especialistas” $\rightarrow$ “professores especialistas ou da cadeira de programação”.
+  \item \pg{6}“ensino técnico” $\rightarrow$ “ensino médio técnico em informática, da UFCI no campus Leopoldina”.
+\end{checklist}
+\subsection*{Introdução}
+\begin{checklist}
+  \item \pg{14}“uma turma de” riscado.
+  \item \pg{14}“dinâmico” $\rightarrow$ “o termo dinâmico”, sem negrito.
+  \item \pg{15}“A Tabela 3.1 delimita essas possibilidades.”
+  \item \pg{15}Definir “carga cognitiva” na frase seguinte, com citação.
+  \item \pg{15}“(QUEIROZ, 2026c)” não é uma referência; incluir esses elementos como apêndices.
+  \item \pg{15}“opinião” $\rightarrow$ “percepção”.
+  \item \pg{15}A frase sobre o estudo de desempenho tira o estímulo à leitura.
+  \item \pg{15}Apresentação das ferramentas com mudança abrupta; citar “ferramentas: X, Y e Z” antes; usar “Já o” e “Por sua vez, o”.
+  \item \pg{16}“iniciante”: em quê?
+  \item \pg{16}“1.2.1”, “1.2.2 Objetivos Específicos” e “Os ... são:” riscados.
+\end{checklist}
+\subsection*{Referencial teórico e trabalhos relacionados}
+\begin{checklist}
+  \item \pg{18}“Esta seção percorre os” $\rightarrow$ “Os”; “são tratados nesta seção”.
+  \item \pg{26}O exemplo “A := X + $*$Z” em pseudo-assembly é necessário?
+  \item \pg{28}“a culminação” $\rightarrow$ “o auge”.
+  \item \pg{28--29}Parágrafo sobre ISA e formatos binários riscado: “entendo que não seja necessário”.
+  \item \pg{35}“HTTP”: não é HTTPS?
+  \item \pg{35}Qual o objetivo de dizer que não vai tratar App Router e Server Actions?
+  \item \pg{36}“A aparência visual, sozinha, não demonstra usabilidade nem aprendizagem”: qual a finalidade?
+  \item \pg{36}“Acessibilidade da interface”: é subseção ou título solto?
+  \item \pg{36}“Esses recursos estabelecem possibilidades de uso...”: lugar mais adequado é nas considerações.
+  \item \pg{37}Escrever em texto corrido a abordagem de cada ferramenta dos dois eixos; incluir uma imagem de cada ferramenta.
+  \item \pg{41}“C11”: o que é isso?
+  \item \pg{41}Dividir a Tabela 2.1 em duas (ferramentas de programação e de compilação), com recursos como IDE própria, versão local e versão no navegador; após cada tabela, um parágrafo com diferencial e limitação da solução.
+  \item \pg{41--42}Quebra de linha em “segundo os três eixos de análise”; apresentar a tabela em uma única página.
+  \item \pg{42}A frase sobre o instrumento da Seção 4.12 e os resultados no Capítulo 5 é necessária aqui?
+\end{checklist}
+\subsection*{Solução proposta e modelagem}
+\begin{checklist}
+  \item \pg{43--44}Reescrever o parágrafo que termina em “adotado” e três parágrafos da página 44.
+  \item \pg{43}“da proposta” $\rightarrow$ “proposto”.
+  \item \pg{44}“elaborado pelo autor, a partir de”: elaborado ou adaptado? Tem referência?
+  \item \pg{45}Incluir uma definição mínima, com referência, do que é e para que serve um diagrama de casos de uso.
+  \item \pg{45}Se o diagrama representa um único sistema, por que está dividido?
+  \item \pg{47}Descrever os papéis com a mesma nomenclatura dos atores do DCU.
+  \item \pg{49}“discutidas no referencial teórico,” riscado.
+  \item \pg{50}“Um estudo que meça o desempenho de estudantes permanece futuro”: levar para as considerações como trabalho futuro.
+  \item \pg{50}A frase de transição não condiz com o capítulo seguinte.
+\end{checklist}
+\subsection*{Desenvolvimento}
+\begin{checklist}
+  \item \pg{55}Se a imagem foi gerada por IA, é preciso deixar isso explícito.
+  \item \pg{58}O trecho com a média 4,57 do painel parece ser da discussão de resultados.
+  \item \pg{72}As atividades, dados de alunos e personalizações ficam em um banco de dados? Se sim, precisamos do modelo.
+  \item \pg{72}Frase estranha: “por caso ao aluno”.
+  \item \pg{73, 75, 76}Subfiguras (a) e (b): citar cada uma no texto ou tratar como imagens distintas; “por que não 4.5 e 4.6?”
+  \item \pg{77}“56 dos 180... 98 de 187”: o número de componentes foi ampliado?
+  \item \pg{83}Apresentar as interfaces conforme os casos de uso, na ordem dos RFs.
+  \item \pg{85}Página em branco.
+  \item \pg{85, 87, 88, 90, 97}Separar as imagens intercalando com o texto.
+  \item \pg{92}“Figura 4.6”: o número está correto?
+\end{checklist}
+\subsection*{Testes}
+\begin{checklist}
+  \item \pg{102}Apresentar em tópicos os casos aplicados e suas quantidades.
+  \item \pg{104}Qual foi o método ou métrica da verificação da interface? Descrever o ambiente, as instruções dadas, as intervenções e as observações usadas.
+\end{checklist}
+\subsection*{Avaliação (protocolo e resultados)}
+\begin{checklist}
+  \item \pg{105}“Três deles vêm de instrumentos já consolidados” e “Os instrumentos já conhecidos”: quais são?
+  \item \pg{105}Consentimento com “0” itens na tabela: é obrigatório.
+  \item \pg{105}“A tabela”: qual tabela?
+  \item \pg{106}Quais são os níveis possíveis de resposta?
+  \item \pg{108}“fica perto de 68 pontos”: colocar a faixa de aceitabilidade.
+  \item \pg{108}Qual foi o número de participantes?
+  \item \pg{109}Especificar o nome da métrica usada na comparação das duas versões.
+  \item \pg{109}“De cinco a oito pessoas já revelam a maior parte dos problemas”: temos referência?
+  \item \pg{110}UEQ-S: por que não seguiram o formato original do instrumento?
+  \item \pg{112}“doutorado ou titulação superior”: qualificar quantitativamente, sem subjetividade.
+\end{checklist}
+\subsection*{Questões éticas}
+\begin{checklist}
+  \item \pg{110}“Esse enquadramento foi feito pelos próprios autores, e os formulários não foram submetidos ao comitê...”: pode virar ponto de discussão; não daria destaque no texto.
+  \item \pg{110}“mas não traz um contato da equipe para dúvidas”: por quê?
+  \item \pg{110}Assentimento sem autorização de responsável: “outro ponto de discussão forte”.
+  \item \pg{110}“Uma nova coleta com estudantes será submetida antes ao comitê”: vai mesmo? Quando?
+  \item \pg{111}“Esse estudo deve ser submetido ao comitê”: se conheciam, por que não cumpriram os trâmites?
+\end{checklist}
+\subsection*{Referências, citações e apêndices}
+\begin{checklist}
+  \item \pg{15, 51, 58, 99--104, 112, 129--135}QUEIROZ 2026a/b/c e QUEIROZ; SILVA 2026a/b/c: “se não foi publicado não pode ser citado, colocar como apêndice” (cerca de 30 marcações).
+  \item \pg{15}Rever todas as referências aos apêndices, porque a ordem vai mudar.
+  \item \pg{48, 50}Tabela 3.4 (cronograma): levar para o apêndice.
+  \item \pg{105, 112}Formulário aplicado: colocar como apêndice e dizer que ele está lá.
+  \item \pg{124}As versões A e B diferem só no idioma? Se há diferença visual, mostrar as imagens; alternativa: apêndice com as duas versões.
+  \item \pg{136}SOUZA; BATISTA; BARBOSA não foi citado no texto.
+  \item \pg{33}Microsoft 2026c aparece antes da 2026a: as letras seguem a ordem de aparição.
+  \item \pg{35}“(Vercel, 2026b; Vercel, 2026a)”: inverter a ordem.
+  \item \pg{19}“Alcantara (2024)”: referenciar como na Figura 2.2.
+\end{checklist}
+\subsection*{Termos, siglas e padronização}
+\begin{checklist}
+  \item \pg{1, 2, 4, 14, 108, 123}“Centro Federal de Educação Tecnológica de Minas Gerais” / “CEFET-MG” $\rightarrow$ UFCI. “Unidade” $\rightarrow$ “Campus”. Padronizar em todo o texto.
+  \item \pg{23, 24, 32, 109}Especificar todas as siglas na primeira aparição: LR, SLR, LALR, YACC, E2E, SUS.
+  \item \pg{57--101}“Listing 4.x” não segue o termo usado no texto (9 ocorrências).
+  \item \pg{62}“variable function” e “variavel funcao”: padronizar o termo ou dizer que são equivalentes.
+  \item \pg{18, 108, 111, 122}Acentuação marcada em “traduzi-lo”, “abri-lo”, “corrigi-las” e “corrigi-lo”.
+\end{checklist}
+\newpage
+\section*{Parte 2 -- Reunião de orientação (vídeo)}
+\subsection*{Metodologia}
+\begin{checklist}
+  \item \tm{00:00}Classificar o trabalho como pesquisa aplicada e descrever o desenvolvimento do produto em um número definido de etapas: revisão bibliográfica, modelagem da solução, desenvolvimento, testes, manutenção e correção, e implantação.
+  \item \tm{01:18}Deixar claro que o XP é o método aplicado dentro da etapa de desenvolvimento, e não a metodologia do trabalho todo.
+  \item \tm{02:02}Representar o processo como iterativo, com o retorno das etapas de teste e correção para a de desenvolvimento, usando como referência o trabalho publicado indicado pelo orientador.
+  \item \tm{03:06}Deixar as etapas de modelagem, desenvolvimento e testes demarcadas com clareza, em seção própria ou dentro do capítulo de desenvolvimento.
+  \item \tm{35:22}Depois do esquema metodológico, detalhar cada etapa: o que foi feito, com quais ferramentas e onde houve uso de IA.
+\end{checklist}
+\subsection*{Uso de inteligência artificial}
+\begin{checklist}
+  \item \tm{04:12}Declarar no texto, com clareza, onde a IA foi usada, como ela atuou e o que é esforço dos autores, inclusive quando o uso foi apenas revisão textual ou ajuda para escrever uma seção.
+\end{checklist}
+\subsection*{Texto em geral}
+\begin{checklist}
+  \item \tm{10:39}Se o termo “especialistas” for mantido, definir o que se entende por especialista, para não haver interpretações diferentes.
+  \item \tm{11:13}Reduzir as repetições entre capítulos: em vários pontos a leitura dá a sensação de ler a mesma coisa de novo. O texto precisa ficar mais fluido.
+  \item \tm{11:49}Avaliar com o coorientador se o detalhamento sobre compiladores não está aprofundado além do necessário.
+  \item \tm{12:20}Retirar as referências ao próprio GitHub: o que foi produzido para o TCC deve aparecer como apêndice, e não como referência externa.
+  \item \tm{14:33}Fazer uma revisão geral final para que a estrutura descrita na introdução (Seção 1.3), o sumário e os capítulos digam a mesma coisa.
+  \item \tm{24:09}Evitar frases que negam o que o trabalho não faz ou não contempla: cada uma vira ponto de discussão para a banca.
+\end{checklist}
+\subsection*{Referencial teórico}
+\begin{checklist}
+  \item \tm{14:55}Confirmar se a Figura 2.1 é idêntica à de Alcantara ou adaptada, e deixar a legenda de acordo.
+  \item \tm{16:26}Evitar o formato em que quase todo parágrafo é uma citação: o texto dos autores deve dialogar com as referências, que embasam o que é dito.
+  \item \tm{18:58}Na Seção 2.1, anunciar antes da lista de etapas do compilador os autores que as fundamentam e retirar as citações repetidas em cada parágrafo; se possível, acrescentar uma ou duas obras de compiladores.
+  \item \tm{21:30}Especificar as siglas LR, SLR, YACC e demais na primeira aparição.
+  \item \tm{21:49}Não colocar exemplos no referencial teórico (como o de pseudo-assembly).
+  \item \tm{22:30}Conferir a ordem das letras nas referências de mesmo autor e ano.
+  \item \tm{22:56}Retirar a menção a App Router e Server Actions, que não foram usados.
+\end{checklist}
+\subsection*{Solução proposta e modelagem}
+\begin{checklist}
+  \item \tm{25:06}Renomear o capítulo “Proposta” para “Solução Proposta”.
+  \item \tm{25:45}Reorganizar o diagrama de casos de uso usando a largura da página, com os casos de uso intercalados, para que não ocupe uma página inteira.
+  \item \tm{27:15}Transformar os diagramas de casos de uso em um único diagrama.
+  \item \tm{27:35}Incluir no diagrama uma nota informando que o acesso pelo ator Visitante não exige login e que, para os demais atores, todas as operações exigem login.
+  \item \tm{28:22}No texto do Igor, mencionar o banco de dados: apresentar o diagrama e um parágrafo que remeta ao trabalho do Victor, onde o back-end é discutido.
+  \item \tm{33:14}No texto do Victor, explicar com qual ferramenta o modelo de tabelas foi feito e fundamentar a modelagem com um livro de banco de dados de peso (modelos conceitual, lógico e físico), sem se apoiar só no Heuser.
+\end{checklist}
+\subsection*{Desenvolvimento}
+\begin{checklist}
+  \item \tm{36:42}Padronizar o nome dos trechos de código: o texto diz “trecho de código” e a legenda diz “Listing”.
+  \item \tm{37:54}Apresentar as funcionalidades na ordem dos requisitos funcionais (RF01, RF02...), para mostrar que tudo o que está no diagrama foi especificado e depois apresentado.
+  \item \tm{39:10}Tratar as Figuras 4.5(a) e 4.5(b) como figuras distintas (4.5 e 4.6), já que são telas diferentes.
+\end{checklist}
+\subsection*{Testes e avaliação}
+\begin{checklist}
+  \item \tm{41:55}Criar uma seção só de testes, dividida em testes automatizados, teste de usabilidade (SUS) e teste comparativo A/B.
+  \item \tm{43:41}No teste comparativo A/B, deixar claro como ele foi feito e o que foi medido.
+  \item \tm{44:38}Colocar todas as questões dos questionários aplicados como apêndice, numeradas, e citá-las no texto pelo número (“conforme o Apêndice X, questão 3”).
+  \item \tm{45:35}Apresentar cada teste e, logo em seguida, a discussão do seu resultado.
+  \item \tm{46:22}Não manter “Resultados da Avaliação” como capítulo separado: a discussão dos resultados fica incorporada à seção de testes.
+\end{checklist}
+\subsection*{Considerações finais}
+\begin{checklist}
+  \item \tm{46:57}Escrever as considerações finais como texto único, sem subdivisões.
+\end{checklist}
+\end{document}
