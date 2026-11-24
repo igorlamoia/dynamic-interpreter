@@ -30,9 +30,13 @@ A revisão de 16 de setembro de 2026 registrou 139 aprovações em 28 arquivos s
 
 A preparação do ambiente de testes passou a incluir uma implementação de armazenamento em memória quando o armazenamento global não fornece as operações esperadas, além de substitutos para APIs de rolagem e consulta de mídia ausentes no ambiente simulado. A nova execução não exigiu o ajuste manual de armazenamento registrado na revisão anterior. Esses substitutos viabilizam os testes dos componentes, mas não reproduzem o cálculo de layout de um navegador real.
 
-Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-storage} apresenta um recorte de dois casos que verificam a persistência da customização, construção sobre a qual repousa a continuidade da linguagem escolhida pelo usuário entre recarregamentos da página. Os auxiliares e algumas asserções foram omitidos para abreviar a listagem; o arquivo original contém a verificação completa. O primeiro caso verifica a normalização do nome da linguagem em uma chave de armazenamento; o segundo, que a gravação permite recuperar a linguagem pelo identificador.
+Para tornar concreta essa estratégia, a Figura~\ref{lst:teste-storage} apresenta um recorte de dois casos que verificam a persistência da customização, construção sobre a qual repousa a continuidade da linguagem escolhida pelo usuário entre recarregamentos da página. Os auxiliares e algumas asserções foram omitidos para abreviar a listagem; o arquivo original contém a verificação completa. O primeiro caso verifica a normalização do nome da linguagem em uma chave de armazenamento; o segundo, que a gravação permite recuperar a linguagem pelo identificador.
 
-\begin{lstlisting}[language=typescript, caption={Casos de teste da persistência da linguagem personalizada (\texttt{keyword-language-storage.spec.ts}).}, label={lst:teste-storage}, captionpos=b]
+\begin{figure}[htbp]
+\centering
+\caption{Casos de teste da persistência da linguagem personalizada (\texttt{keyword-language-storage.spec.ts}).}
+\label{lst:teste-storage}
+\begin{lstlisting}[language=typescript]
 describe("keyword-language-storage", () => {
   beforeEach(() => { localStorage.clear(); });
 
@@ -53,6 +57,8 @@ describe("keyword-language-storage", () => {
   });
 });
 \end{lstlisting}
+\legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
 
 \input{texto/testes-e2e}

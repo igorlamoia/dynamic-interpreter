@@ -7,9 +7,13 @@ O ambiente emprega SQLite em memória e sessões assíncronas do SQLAlchemy. Uma
 
 Entre os casos relacionados à segurança estão o cadastro com retorno dos dados do usuário sem senha, a recusa de credenciais inválidas, a restrição de acesso à submissão de outro aluno e a impossibilidade de um aluno atribuir notas. Também há verificações de ausência de propriedades nas respostas resumidas: os testes de apresentação de linguagens conferem a omissão da configuração completa, enquanto os testes do histórico do exercício verificam que códigos enviados e submissões de colegas não sejam expostos naquele retorno (Apêndice~\ref{ap:repositorio}).
 
-O Trecho de Código~\ref{lst:resumo-submissao} reproduz parte de um caso existente. A preparação da turma, dos alunos e das submissões foi omitida da listagem e está disponível no arquivo original. A asserção do estado HTTP precede a inspeção do conteúdo, de modo que uma resposta de erro sem os campos verificados não seja confundida com um resultado correto (Apêndice~\ref{ap:repositorio}).
+A Figura~\ref{lst:resumo-submissao} reproduz parte de um caso existente. A preparação da turma, dos alunos e das submissões foi omitida da listagem e está disponível no arquivo original. A asserção do estado HTTP precede a inspeção do conteúdo, de modo que uma resposta de erro sem os campos verificados não seja confundida com um resultado correto (Apêndice~\ref{ap:repositorio}).
 
-\begin{lstlisting}[language=Python, caption={Recorte do teste que verifica a ausência de código no histórico resumido do exercício.}, label={lst:resumo-submissao}, captionpos=b]
+\begin{figure}[htbp]
+\centering
+\caption{Recorte do teste que verifica a ausência de código no histórico resumido do exercício.}
+\label{lst:resumo-submissao}
+\begin{lstlisting}[language=Python]
 response = await async_client.get(
     f"/exercises/{exercise.id}?listId={exercise_list.id}",
     headers={"Authorization": f"Bearer {token}"},
@@ -20,6 +24,8 @@ for submission in response.json()["submissions"]:
     assert "codeSnapshot" not in submission
 assert "alice-v1" not in response.text
 \end{lstlisting}
+\legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
 \subsection{Resultados e alcance da verificação}
 \label{subsec:resultados-testes-backend}

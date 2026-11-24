@@ -25,9 +25,13 @@ A verificação automatizada das fases do compilador utiliza, na versão do repo
 
 A adoção do TDD discutida por \citeonline{aniche2012} mostrou-se particularmente útil em construções como o terminador de instrução configurável e o modo de blocos por indentação, em que pequenas alterações na lógica do \textit{lexer} poderiam quebrar inadvertidamente programas que antes compilavam corretamente. O ciclo iterativo do TDD, composto pelas etapas de escrita do teste, implementação mínima e refatoração, conforme ilustra a Figura \ref{fig:ciclo_tdd}, é a referência metodológica. Em conformidade com a pirâmide de testes apresentada na Seção~\ref{subsec:testes-tdd}, a maior parte da suíte concentra-se no nível unitário, garantindo execuções rápidas e \textit{feedback} imediato, enquanto os testes de gramática operam como testes de integração internos ao compilador, verificando o comportamento agregado das fases léxica, sintática e de geração de código intermediário.
 
-Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-aliases} reproduz um dos casos que verificam a aplicação de um mapeamento configurável de operadores no analisador léxico. O teste instancia o \texttt{Lexer} com um mapeamento que substitui os operadores lógicos por palavras e verifica que os \textit{tokens} produzidos carregam exatamente os mesmos identificadores de tipo que seriam gerados pelos símbolos canônicos. Essa equivalência é o que garante que as fases seguintes do compilador permaneçam indiferentes à personalização escolhida pelo usuário.
+Para tornar concreta essa estratégia, a Figura~\ref{lst:teste-aliases} reproduz um dos casos que verificam a aplicação de um mapeamento configurável de operadores no analisador léxico. O teste instancia o \texttt{Lexer} com um mapeamento que substitui os operadores lógicos por palavras e verifica que os \textit{tokens} produzidos carregam exatamente os mesmos identificadores de tipo que seriam gerados pelos símbolos canônicos. Essa equivalência é o que garante que as fases seguintes do compilador permaneçam indiferentes à personalização escolhida pelo usuário.
 
-\begin{lstlisting}[language=typescript, caption={Caso de teste da equivalência entre operadores simbólicos e operadores em forma de palavra (\texttt{operator-word-aliases.spec.ts}).}, label={lst:teste-aliases}, captionpos=b]
+\begin{figure}[htbp]
+\centering
+\caption{Caso de teste da equivalência entre operadores simbólicos e operadores em forma de palavra (\texttt{operator-word-aliases.spec.ts}).}
+\label{lst:teste-aliases}
+\begin{lstlisting}[language=typescript]
 describe("operator word aliases", () => {
   it("tokenizes logical aliases with the same token IDs as symbols",
      () => {
@@ -49,6 +53,8 @@ describe("operator word aliases", () => {
   });
 });
 \end{lstlisting}
+\legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
 
 Na verificação local de 19 de outubro de 2026, a suíte do núcleo aprovou 243 testes em 22 arquivos (Apêndice~\ref{ap:repositorio}). Em 19 de setembro eram 224 testes em 21 arquivos (Apêndice~\ref{ap:repositorio}). Os casos acrescentados cobrem incremento e decremento, declarações múltiplas com inicializador no fim da lista, leitura de variáveis não declaradas, o limite de passos, delimitadores informados como símbolos, literais numéricos no fim do código-fonte e o resumo de regras em \texttt{language-rules.spec.ts}. Os casos incluem também igualdade comum e estrita, ternários aninhados com execução somente do ramo selecionado, avisos de conversão e rejeição de atribuições e retornos incompatíveis. O Apêndice~\ref{ap:testes} apresenta a distribuição e o comando utilizado.

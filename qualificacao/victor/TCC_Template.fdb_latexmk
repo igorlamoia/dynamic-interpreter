@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1795554879.52267 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795554880.70372 0
+["bibtex TCC_Template"] 1795558252.17654 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795558253.37573 0
   "./referencias.bib" 1795554877.04494 19606 ca31e5250557da34cac66f8e32d3f570 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1795554880.59501 115899 b6ef05e41a5e66ff48b408525a03a6ea "pdflatex"
+  "TCC_Template.aux" 1795558253.26582 116120 1a52777ec8fc6f814dc37f73978cc900 "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1795554879.5354 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795554880.70398 0
+["pdflatex"] 1795558252.18952 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795558253.37599 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -277,19 +277,19 @@
   "Figuras/validateBooleanLiteralMap.png" 1795387669.89628 691463 91357b0118ec47d60a28ee23c17fe916 ""
   "Figuras/validateOperatorWordMap.png" 1795387669.89742 574760 0e589371d19c4fe55edfc41c0c182685 ""
   "Figuras/validateStatementTerminatorLexeme.png" 1795387669.89832 361468 cc046c10a12f4e3b9b1fe218dbf8516e ""
-  "TCC_Template.aux" 1795554880.59501 115899 b6ef05e41a5e66ff48b408525a03a6ea "pdflatex"
-  "TCC_Template.bbl" 1795554879.53099 17430 75b4ee5c1f9b0a31e99046de6de92fe3 "bibtex TCC_Template"
-  "TCC_Template.lof" 1795554880.60601 1634 49841bebcbc8ef1d02721922fdc327a6 "pdflatex"
-  "TCC_Template.lot" 1795554880.60601 4549 5850b6a5b671684fa3a990868ae6bab6 "pdflatex"
-  "TCC_Template.tex" 1795553202.48759 21663 adcbebc1917a9d754123389b0d9ad90d ""
-  "TCC_Template.toc" 1795554880.60601 12467 d8cb37ff047b3e41f3b2a37595f6b05c "pdflatex"
+  "TCC_Template.aux" 1795558253.26582 116120 1a52777ec8fc6f814dc37f73978cc900 "pdflatex"
+  "TCC_Template.bbl" 1795558252.18633 17430 75b4ee5c1f9b0a31e99046de6de92fe3 "bibtex TCC_Template"
+  "TCC_Template.lof" 1795558253.27564 2038 3873580f9aa54eeffe29448e69489ae9 "pdflatex"
+  "TCC_Template.lot" 1795558253.277 4549 17e7777a9cbd22c6a083ae533587df24 "pdflatex"
+  "TCC_Template.tex" 1795558246.09295 21500 afc712f4fa3e2f3fe07d3bf86d179bfa ""
+  "TCC_Template.toc" 1795558253.277 12467 301df0bf5aed1b4b437057f13b27810b "pdflatex"
   "configcefetmglpd.cls" 1795476031.11434 32155 8345d430c1f5f0783d4efe136011fdb4 ""
   "texto/apendice-formulario-especialistas.tex" 1795553082.73369 13602 1ba846ef6c638c7fc7eee119025ab9bf ""
   "texto/apendice-formulario-estudantes.tex" 1795553082.73375 4374 98da41d94b03f6bac7833b82bdf8094f ""
   "texto/apendice-repositorio.tex" 1795553082.7338 3209 c9050090eeff7d70901f5c41fba23044 ""
   "texto/apendice-respostas.tex" 1795553082.73378 14392 24f4f84560c3148e61958a941140ab7e ""
   "texto/apendice.tex" 1795553091.93159 9474 23de0b1d01ccd4e5e7d062cbad5d75b1 ""
-  "texto/avaliacao-especialistas.tex" 1795553105.3757 44453 0e420d412480e7a478e4d7b998fce730 ""
+  "texto/avaliacao-especialistas.tex" 1795558215.63627 44442 b8ca191421e7d11244cab0c3c8634d3c ""
   "texto/avaliacao-estudantes.tex" 1795553105.37583 9549 066a983d9ac2f3b052ff87cfd19fdb5d ""
   "texto/avaliacao-sintese.tex" 1795553030.30699 8198 9c83d5daa72de07e803e0b535948fe03 ""
   "texto/consideracoes.tex" 1795553179.05728 11661 0154f31a4679b2a09f1fcf2bb5947430 ""
@@ -300,8 +300,8 @@
   "texto/metodologia.tex" 1795553420.43315 55031 6cd6d5e3d9582908be4dd77f7c5bc66d ""
   "texto/proposta.tex" 1795554872.67101 16317 7b47d6a32c8485a43a9d9547c2dc1348 ""
   "texto/referencial.tex" 1795549983.82052 66350 926f8dcfbba046914c315a8d8b65ee3b ""
-  "texto/testes-backend.tex" 1795553240.22817 6852 a44582d9dec3c31681f8a371b25513e4 ""
-  "texto/testes.tex" 1795553420.43333 7284 7c42d70c8c189714acf8d3d971ff70e5 ""
+  "texto/testes-backend.tex" 1795558246.09312 6908 5b63fd33c548fc309d5b3f8da34e3b00 ""
+  "texto/testes.tex" 1795558246.09306 7340 dd3c7d664db5f094c5274da7d10e8216 ""
   (generated)
   "TCC_Template.aux"
   "TCC_Template.lof"
