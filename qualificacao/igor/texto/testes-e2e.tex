@@ -5,7 +5,7 @@ As integrações de 18 de setembro de 2026 acrescentaram o pacote \texttt{packag
 
 O ambiente de integração utiliza o front-end Next.js, o serviço FastAPI e o PostgreSQL definidos na composição Docker local. As rotinas de preparação (\textit{fixtures}) criam contas e dados pela API, com identificadores aleatórios, e podem autenticar o navegador mediante inserção do cookie de sessão. Os casos específicos de autenticação verificam o formulário de entrada e o cadastro pela interface; os demais podem iniciar com uma sessão preparada. Portanto, nem todo caso repete a jornada desde o login, e dois testes de preparação e um de saúde do serviço verificam diretamente a API.
 
-Os 31 casos estão agrupados abaixo pela finalidade, com a quantidade de cada grupo e os comportamentos que verificam. As quantidades contam cenários implementados e não são uma porcentagem de cobertura dos requisitos, do código ou das combinações possíveis de interação.
+Os 31 casos estão agrupados abaixo pela finalidade, com a quantidade de cada grupo e os comportamentos que verificam.
 
 \begin{itemize}
     \item Autenticação, 4 casos: login válido, senha incorreta, cadastro e proteção de rota.
@@ -27,7 +27,7 @@ Os testes utilizam localizadores por papel e nome, além de identificadores expl
 \section{Integração contínua e diagnóstico de falhas}
 \label{subsec:ci-plataforma}
 
-O fluxo versionado no GitHub Actions executa testes em solicitações de integração e em envios à branch \texttt{main}. O job \texttt{unit} executa Vitest no compilador e na IDE, além de pytest no back-end. O job \texttt{e2e} instala o Chromium, constrói e inicia os serviços locais, aguarda suas respostas e executa o Playwright. O job de implantação depende da aprovação de ambos e só é acionado por envio à \texttt{main}. Essa configuração estabelece uma condição para o deploy automatizado; o arquivo do fluxo, que está no repositório do projeto (Apêndice~\ref{ap:repositorio}), não demonstra que as regras de proteção da branch obriguem a aprovação antes de qualquer merge.
+O fluxo versionado no GitHub Actions executa testes em solicitações de integração e em envios à branch \texttt{main}. O job \texttt{unit} executa Vitest no compilador e na IDE, além de pytest no back-end. O job \texttt{e2e} instala o Chromium, constrói e inicia os serviços locais, aguarda suas respostas e executa o Playwright. O job de implantação depende da aprovação de ambos e só é acionado por envio à \texttt{main}. Essa configuração estabelece uma condição para o deploy automatizado; o arquivo do fluxo está no repositório do projeto (Apêndice~\ref{ap:repositorio}).
 
 No CI, a configuração utiliza dois processos de execução, permite duas novas tentativas após uma falha e ativa \texttt{failOnFlakyTests}. O Playwright classifica como intermitente (\textit{flaky}) o caso que falha inicialmente e passa em uma nova tentativa; a opção adotada faz essa condição reprovar a execução. As repetições, portanto, auxiliam o diagnóstico sem converter a instabilidade em aprovação. São configurados rastros de execução na primeira repetição, capturas de tela em falhas e retenção de vídeos de falhas; o workflow disponibiliza os relatórios e resultados por sete dias \cite{playwright2026retries,playwright2026config}.
 
@@ -36,6 +36,6 @@ As mesmas integrações incluem correções relacionadas aos fluxos exercitados:
 \section{Resultado da execução local}
 \label{subsec:resultado-e2e}
 
-Em 19 de setembro de 2026, os 31 casos foram aprovados na primeira tentativa de cada caso, sem falhas, ocorrências intermitentes ou casos ignorados, em aproximadamente 24 segundos. A execução utilizou Node.js 25.2.1, Playwright 1.63.0 e as opções de CI da configuração versionada, com dois processos, contra os serviços Docker locais já ativos. O relatório estruturado registra os arquivos, cenários e resultados (Apêndice~\ref{ap:verificacao}). Também foi aprovada a verificação de tipos do pacote E2E. Esses resultados são locais e não constituem evidência de uma execução específica do GitHub Actions nem de uma reconstrução das imagens dos serviços nesta revisão.
+Em 19 de setembro de 2026, os 31 casos foram aprovados na primeira tentativa de cada caso, sem falhas, ocorrências intermitentes ou casos ignorados, em aproximadamente 24 segundos. A execução utilizou Node.js 25.2.1, Playwright 1.63.0 e as opções de CI da configuração versionada, com dois processos, contra os serviços Docker locais já ativos. O relatório estruturado registra os arquivos, cenários e resultados (Apêndice~\ref{ap:verificacao}). Também foi aprovada a verificação de tipos do pacote E2E.
 
 Antes dessa execução completa, uma tentativa foi interrompida pela ausência do executável Chromium esperado pelo Playwright: os 28 casos que precisavam do navegador falharam na inicialização e os três casos diretos de API passaram. Após instalar o navegador, a suíte foi repetida integralmente e produziu os resultados acima. O registro distingue, assim, uma falha de preparação do ambiente dos comportamentos funcionais exercitados na execução concluída.

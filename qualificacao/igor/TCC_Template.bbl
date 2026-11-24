@@ -28,6 +28,11 @@ Dispon{\'\i}vel em: \url{https://frankalcantara.com/lf/11-tabelaSimbolos.html}.
 {ANICHE, M. \textbf{Test-Driven Development: Teste e Design no Mundo Real}.
   S{\~a}o Paulo: Casa do C{\'o}digo, 2012.}
 
+\bibitem[Appel e Palsberg 2002]{appel2002}
+\abntrefinfo{Appel e Palsberg}{APPEL; PALSBERG}{2002}
+{APPEL, A.~W.; PALSBERG, J. \textbf{Modern Compiler Implementation in Java}. 2.
+  ed. Cambridge: Cambridge University Press, 2002.}
+
 \bibitem[Bangor, Kortum e Miller 2009]{bangor2009}
 \abntrefinfo{Bangor, Kortum e Miller}{BANGOR; KORTUM; MILLER}{2009}
 {BANGOR, A.; KORTUM, P.; MILLER, J. Determining what individual sus scores
@@ -79,6 +84,11 @@ Dispon{\'\i}vel em: \url{https://fastapi.tiangolo.com/}. Acesso em: 12 set.
 {GADELHA, D. \textbf{Portugol Webstudio: IDE online para o Portugol}. 2026.
 Dispon{\'\i}vel em: \url{https://github.com/dgadelha/Portugol-Webstudio}.
   Acesso em: 12 set. 2026.}
+
+\bibitem[Grune et al. 2012]{grune2012}
+\abntrefinfo{Grune et al.}{GRUNE et al.}{2012}
+{GRUNE, D.; REEUWIJK, K. van; BAL, H.~E.; JACOBS, C. J.~H.; LANGENDOEN, K.
+  \textbf{Modern Compiler Design}. 2. ed. New York: Springer, 2012.}
 
 \bibitem[Ladner 2019]{ladner2019}
 \abntrefinfo{Ladner}{LADNER}{2019}

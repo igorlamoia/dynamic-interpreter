@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex TCC_Template"] 1795476012.06451 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795476032.54937 0
-  "./referencias.bib" 1795475999.27407 18312 adf64abe6d059e1f030bfedd17b1356a ""
+["bibtex TCC_Template"] 1795549985.28647 "TCC_Template.aux" "TCC_Template.bbl" "TCC_Template" 1795549986.66765 0
+  "./referencias.bib" 1795549937.52353 18863 312cc00b78f4376f9d1bbac9360c5e50 ""
   "/usr/share/texlive/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1543183680 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "TCC_Template.aux" 1795476032.42553 94777 7c42438c1dd145c14e7b05e3ae37fa9e "pdflatex"
+  "TCC_Template.aux" 1795549986.54445 96037 146f72a41027c174bae83ed2803d9600 "pdflatex"
   (generated)
   "TCC_Template.bbl"
   "TCC_Template.blg"
   (rewritten before read)
-["pdflatex"] 1795476031.179 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795476032.5497 0
+["pdflatex"] 1795549985.30201 "TCC_Template.tex" "TCC_Template.pdf" "TCC_Template" 1795549986.66788 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1775001600 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1136768653 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8t.tfm" 1136768653 1384 87406e4336af44af883a035f17f319d9 ""
@@ -277,12 +277,12 @@
   "Figuras/validateBooleanLiteralMap.png" 1795387669.89628 691463 91357b0118ec47d60a28ee23c17fe916 ""
   "Figuras/validateOperatorWordMap.png" 1795387669.89742 574760 0e589371d19c4fe55edfc41c0c182685 ""
   "Figuras/validateStatementTerminatorLexeme.png" 1795387669.89832 361468 cc046c10a12f4e3b9b1fe218dbf8516e ""
-  "TCC_Template.aux" 1795476032.42553 94777 7c42438c1dd145c14e7b05e3ae37fa9e "pdflatex"
-  "TCC_Template.bbl" 1795476012.07413 18657 95510c1ebc9cab4c35e660f453307a53 "bibtex TCC_Template"
-  "TCC_Template.lof" 1795476032.43653 1174 19ac8aa0125db1b2d1561fa7313bec4b "pdflatex"
-  "TCC_Template.lot" 1795476032.43653 2809 080a6f29937163d6f8a835ebe88418a1 "pdflatex"
+  "TCC_Template.aux" 1795549986.54445 96037 146f72a41027c174bae83ed2803d9600 "pdflatex"
+  "TCC_Template.bbl" 1795549985.29643 19118 71bb7012bd322f5f00a8386dabb5520b "bibtex TCC_Template"
+  "TCC_Template.lof" 1795549986.55545 1174 df29bba454fd960f0edae6866f78c29b "pdflatex"
+  "TCC_Template.lot" 1795549986.55545 2809 61168991f00d0e74f55944fd86684848 "pdflatex"
   "TCC_Template.tex" 1795475999.27328 21304 c25467980b5e2d39666ae1d8c6b5f7e0 ""
-  "TCC_Template.toc" 1795476032.43653 10091 205f10a54516b4219bac32a9b9e8f72c "pdflatex"
+  "TCC_Template.toc" 1795549986.55545 10197 dcd4cee48684753189ff5bc242ff0d87 "pdflatex"
   "configcefetmglpd.cls" 1795476031.11434 32155 8345d430c1f5f0783d4efe136011fdb4 ""
   "texto/apendice.tex" 1795475999.27351 9482 40eeadcb041d2792e2cf82077012439c ""
   "texto/consideracoes.tex" 1795474926.13611 11878 476a72ac26509893c7e17d8a099c9a69 ""
@@ -290,10 +290,10 @@
   "texto/dicionario-dados.tex" 1795387669.92561 18701 791ec33d1d203b16919e01896b96722b ""
   "texto/fundamentos-backend.tex" 1795387669.92564 4570 eaa7e3c7fb5e950aaf3910ee5e184c83 ""
   "texto/introducao.tex" 1795475999.27342 8877 fb463874133e56e05bd8862da8ba0696 ""
-  "texto/metodologia.tex" 1795387669.92577 58072 5c0181842b4d08d88d720d3aa18154c4 ""
+  "texto/metodologia.tex" 1795549928.68635 59086 d52bfd4ac23bf079671691bbaaadba2f ""
   "texto/proposta.tex" 1795387669.92582 15961 8351e3464759692cd6292dc3af4cb2b2 ""
-  "texto/protocolo-avaliacao.tex" 1795475999.27382 17998 bc2156e0517f74f4e80bc7cba1526e80 ""
-  "texto/referencial.tex" 1795387669.92595 65073 94ed9d440a68caf7695538aa0b0e8cf5 ""
+  "texto/protocolo-avaliacao.tex" 1795547120.65868 18172 86488d2a8d9c9213dde8f2ccef6eaf17 ""
+  "texto/referencial.tex" 1795549983.82052 66350 926f8dcfbba046914c315a8d8b65ee3b ""
   "texto/resultados-avaliacao.tex" 1795475999.27407 42235 0d1b2234a03dbee894b5ae6409068ece ""
   "texto/testes-backend.tex" 1795387669.92608 6886 b3f88fb73efcd8709e1d69a76c6753d9 ""
   (generated)

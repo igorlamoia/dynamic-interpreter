@@ -93,7 +93,7 @@ export const WIZARD_STEPS = [
 ] as const;
 \end{lstlisting}
 
-A cada alteração proposta pelo usuário, o componente \texttt{preview-builder} produz, em tempo real, um trecho de código exemplificativo que reflete a customização corrente, oferecendo uma visualização imediata do impacto das mudanças sobre a aparência dos programas. O Trecho de Código~\ref{lst:preview-builder} ilustra a função \texttt{buildDelimiterSnippet}, responsável por interpolar, em um molde fixo, as palavras-chave e os delimitadores efetivamente escolhidos pelo usuário, produzindo um trecho ilustrativo com a configuração corrente. Essa pré-visualização não executa a análise sintática do trecho gerado e, portanto, não comprova que o exemplo seja um programa completo aceito pelo núcleo.
+A cada alteração proposta pelo usuário, o componente \texttt{preview-builder} produz, em tempo real, um trecho de código exemplificativo que reflete a customização corrente, oferecendo uma visualização imediata do impacto das mudanças sobre a aparência dos programas. O Trecho de Código~\ref{lst:preview-builder} ilustra a função \texttt{buildDelimiterSnippet}, responsável por interpolar, em um molde fixo, as palavras-chave e os delimitadores efetivamente escolhidos pelo usuário, produzindo um trecho ilustrativo com a configuração corrente.
 
 \begin{lstlisting}[language=typescript, caption={Função \texttt{buildDelimiterSnippet}, que gera o \textit{preview} dinâmico exibido durante a personalização.}, label={lst:preview-builder}, captionpos=b]
 export function buildDelimiterSnippet(
@@ -208,7 +208,7 @@ O gerenciamento do editor foi encapsulado no \texttt{EditorContext}, que abriga 
 
 A persistência local dos arquivos do usuário foi modelada pelo \textit{hook} \texttt{useFileSystem}, que implementa um sistema de arquivos virtual sustentado pelo \textit{localStorage} do navegador. Essa abordagem permite que múltiplos arquivos sejam criados, renomeados, removidos e alternados sem qualquer dependência de servidor remoto, permitindo trabalhar com documentos locais após o carregamento da aplicação, sem comprovar funcionamento integral \textit{offline}. O \textit{hook} \texttt{useEditorWithFileSystem} combina o estado do editor com o sistema de arquivos virtual, garantindo a sincronização bidirecional entre o conteúdo exibido no Monaco e o conteúdo persistido localmente. Complementarmente, os \textit{hooks} \texttt{useExplorer} e \texttt{useSearch} oferecem, no painel lateral, navegação por estrutura de arquivos e busca textual sobre todos os arquivos do projeto, replicando as funcionalidades essenciais de uma IDE profissional.
 
-O painel lateral da IDE, implementado em \texttt{SidebarPanel}, reúne as visões de arquivos, busca, linguagem e depuração em uma composição cuja largura pode ser ajustada por arraste. O componente mantém a largura durante sua montagem e aplica um limite mínimo conforme a largura da janela. O ajuste usa eventos de ponteiro; sua presença não demonstra uma operação equivalente por teclado. A revisão também adotou cores derivadas do tema em formulários, painéis e tabelas, cujos resultados de contraste no recorte testado são apresentados na Seção~\ref{subsec:verificacao-interface}.
+O painel lateral da IDE, implementado em \texttt{SidebarPanel}, reúne as visões de arquivos, busca, linguagem e depuração em uma composição cuja largura pode ser ajustada por arraste. O componente mantém a largura durante sua montagem e aplica um limite mínimo conforme a largura da janela. O ajuste usa eventos de ponteiro. A revisão também adotou cores derivadas do tema em formulários, painéis e tabelas, cujos resultados de contraste no recorte testado são apresentados na Seção~\ref{subsec:verificacao-interface}.
 
 A Figura~\ref{fig:ide-execucao} mostra a IDE na área de resolução de exercícios, com a linguagem Didática em Português ativa. No painel da IDE, à esquerda fica o explorador do sistema de arquivos virtual; ao centro, o editor com o arquivo \texttt{main.?}, em que \texttt{numero\_inteiro}, \texttt{leia}, \texttt{se} e \texttt{inicio} recebem o destaque de palavra reservada; abaixo, o terminal com uma execução do programa. As capturas desta seção e das seguintes foram feitas em 20 de outubro de 2026, na execução local da plataforma, com as contas de demonstração do \textit{seed} e uma lista criada para o registro, travada na linguagem predefinida Didática em Português.
 
@@ -304,7 +304,7 @@ A plataforma incorpora um subsistema de avaliação automatizada relacionado ao 
 
 Entre as entidades persistidas estão \texttt{User}, \texttt{Class}, \texttt{Exercise}, \texttt{ExerciseList}, \texttt{Submission} e \texttt{Language}. A linguagem armazena a configuração do vocabulário e das variantes gramaticais; não se resume à imagem utilizada como identificação visual. Exercícios e listas podem definir uma política aberta ou vincular uma linguagem obrigatória, e a submissão registra uma cópia da configuração utilizada. O FastAPI e o SQLAlchemy mantêm esses registros, enquanto o \textit{TanStack React Query} gerencia consultas e atualização de dados na interface.
 
-Na avaliação automática, a rota Next.js recebe código e configuração, normaliza as opções, executa a análise e gera as instruções intermediárias uma vez. Em seguida, consulta os casos de teste, executa cada caso com entrada simulada, coleta a saída e a compara à esperada após normalização de quebras de linha e remoção de espaços finais. A resposta reúne os vereditos; fora do modo de simulação, o resultado é encaminhado ao FastAPI para registro. A limitação temporal implementada por uma promessa concorrente não constitui isolamento de processo nem demonstra contenção de todo programa que bloqueie a execução.
+Na avaliação automática, a rota Next.js recebe código e configuração, normaliza as opções, executa a análise e gera as instruções intermediárias uma vez. Em seguida, consulta os casos de teste, executa cada caso com entrada simulada, coleta a saída e a compara à esperada após normalização de quebras de linha e remoção de espaços finais. A resposta reúne os vereditos; fora do modo de simulação, o resultado é encaminhado ao FastAPI para registro.
 
 \subsection{Autoria de exercícios e acompanhamento de turmas}
 
@@ -314,7 +314,7 @@ A listagem de turmas passou a devolver, além dos dados da turma, um resumo do p
 
 \subsection{Resolução de exercícios e linguagem obrigatória}
 
-A área de resolução foi decomposta em componentes de cabeçalho, instruções, navegação da lista, painel de submissão e composição da IDE, no diretório \texttt{components/exercise-workspace}. O editor recebe um escopo de armazenamento por exercício e pode iniciar com o código da última submissão disponível. O cabeçalho distingue envio e reenvio, apresenta a nota existente e, quando há uma publicação com prazo vencido, substitui o botão de envio por uma indicação de prazo encerrado. Essa regra de interface não substitui a validação no serviço.
+A área de resolução foi decomposta em componentes de cabeçalho, instruções, navegação da lista, painel de submissão e composição da IDE, no diretório \texttt{components/exercise-workspace}. O editor recebe um escopo de armazenamento por exercício e pode iniciar com o código da última submissão disponível. O cabeçalho distingue envio e reenvio, apresenta a nota existente e, quando há uma publicação com prazo vencido, substitui o botão de envio por uma indicação de prazo encerrado.
 
 O painel de submissão separa erros de tradução, avisos e resultados dos casos de teste, incluindo quantos passaram e o total executado. A navegação lateral permite alternar entre os itens de uma lista e indicar as submissões disponíveis nesse contexto. Esses recursos dão continuidade ao trabalho no exercício, sem alterar a divisão entre execução local e avaliação no servidor.
 
@@ -362,10 +362,10 @@ Abaixo desse painel, a IDE abre com o código do aluno e com o destaque da lingu
 
 A acessibilidade foi examinada por inspeção de componentes e por uma verificação técnica delimitada, apresentada na Seção~\ref{subsec:verificacao-interface}. O módulo \texttt{ui/dialog.tsx} encapsula as primitivas de diálogo, título e descrição do Radix. O componente \texttt{WizardStepper} usa botões nativos e mantém os nomes das etapas com a classe \texttt{sr-only} quando os rótulos deixam de ser visíveis em telas estreitas. Entretanto, a indicação de etapa ativa nesse componente é visual, sem atributo \texttt{aria-current}. Essas evidências mostram recursos e lacunas da implementação; não permitem declarar conformidade global com WAI-ARIA ou WCAG.
 
-A adaptação visual usa utilidades responsivas do Tailwind CSS. No assistente, abaixo do limite \texttt{lg}, a lista de etapas assume disposição horizontal, os botões tornam-se circulares e o cartão da linguagem-base é ocultado. Acima desse limite, as etapas ficam na lateral. O \textit{hook} \texttt{useBreakpoint} também disponibiliza consultas por largura, mas não é o único mecanismo de adaptação da aplicação. Na IDE, a composição usa \texttt{flex-col} e \texttt{sm:flex-row} para reorganizar os painéis. A organização visual deve ser verificada em cada fluxo, pois a existência dessas classes não demonstra, isoladamente, ausência de cortes ou de rolagem indevida.
+A adaptação visual usa utilidades responsivas do Tailwind CSS. No assistente, abaixo do limite \texttt{lg}, a lista de etapas assume disposição horizontal, os botões tornam-se circulares e o cartão da linguagem-base é ocultado. Acima desse limite, as etapas ficam na lateral. O \textit{hook} \texttt{useBreakpoint} também disponibiliza consultas por largura. Na IDE, a composição usa \texttt{flex-col} e \texttt{sm:flex-row} para reorganizar os painéis.
 
 
-Os temas claro e escuro são administrados pelo \texttt{ThemeContext}, que aplica a classe \texttt{dark} e persiste a preferência no navegador, com alternância dos temas do Monaco. As Figuras~\ref{fig:home-light} e \ref{fig:home-dark} ilustram essa escolha; a aparência de uma captura não substitui a medição de contraste. As notificações são centralizadas no \texttt{ToastContext}.
+Os temas claro e escuro são administrados pelo \texttt{ThemeContext}, que aplica a classe \texttt{dark} e persiste a preferência no navegador, com alternância dos temas do Monaco. As Figuras~\ref{fig:home-light} e \ref{fig:home-dark} ilustram essa escolha. As notificações são centralizadas no \texttt{ToastContext}.
 
 \subsection{Internacionalização da interface}
 \label{subsec:internacionalizacao}
@@ -378,7 +378,7 @@ Dois conteúdos didáticos acompanham o idioma escolhido. O primeiro são os arq
 
 A cobertura, porém, é parcial. Os componentes foram contados como os arquivos \texttt{.tsx} de \texttt{components}, \texttt{views} e \texttt{pages} que importam \texttt{i18n}. Na revisão de 22 de setembro, 56 dos 180 componentes da interface usavam o mecanismo de tradução. Na versão de 19 de outubro, contados da mesma forma, são 98 de 187. O total de componentes aumentou de 180 para 187 porque a interface ganhou sete arquivos entre as duas versões, e nenhum foi removido: os dois componentes dos tutoriais, a página Sobre, o diálogo de regras do compilador e o painel da IDE na correção de submissões, descritos na Seção~\ref{sec:orientacao-usuario} e na Subseção~\ref{subsec:correcao-professor}, e dois componentes visuais de \texttt{components/ui}. Nesse intervalo passaram a ser traduzidos as listas e o catálogo de exercícios, as telas de submissão e de linguagens, o cadastro e a entrada no sistema. Continuam com cadeias fixas a área de resolução de exercícios, o aviso de linguagem obrigatória e o painel de resultados dos casos de teste. Em \texttt{components/exercise-workspace}, por exemplo, a mensagem ``Submissão enviada com sucesso!'' ainda está escrita em português no código. Boa parte dos 89 componentes restantes não exibe texto ao usuário, como as primitivas de \texttt{components/ui} e os fundos animados, de modo que a contagem não mede diretamente quanto texto falta traduzir. O requisito RNF03 ainda não pode ser considerado cumprido.
 
-O \texttt{AuthContext} recupera o perfil autenticado e o utilitário \texttt{auth-cookies} mantém o token em um \textit{cookie} acessível por JavaScript. A interface distingue os papéis administrador, professor, aluno e comunidade, e o modelo de dados inclui ainda um papel interno de sistema. A restrição visual de páginas não substitui as verificações de autorização no serviço. Esta revisão descreve a implementação e não constitui auditoria de segurança.
+O \texttt{AuthContext} recupera o perfil autenticado e o utilitário \texttt{auth-cookies} mantém o token em um \textit{cookie} acessível por JavaScript. A interface distingue os papéis administrador, professor, aluno e comunidade, e o modelo de dados inclui ainda um papel interno de sistema.
 
 \section{Recursos de Orientação ao Usuário}
 \label{sec:orientacao-usuario}
@@ -434,7 +434,7 @@ O quarto e último passo aponta para o rodapé com os botões de navegação do 
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-Ao terminar ou pular um roteiro, a conclusão é gravada no armazenamento local do navegador, em uma chave com o prefixo \texttt{di:tutorial:}. Na versão examinada, esse registro não é lido em nenhum outro ponto da interface, de modo que concluir um tutorial não muda o que o usuário vê depois.
+Ao terminar ou pular um roteiro, a conclusão é gravada no armazenamento local do navegador, em uma chave com o prefixo \texttt{di:tutorial:}.
 
 \subsection{Exemplo da linguagem e regras do compilador}
 \label{subsec:regras-compilador}
@@ -497,7 +497,7 @@ A página inicial apresenta a identidade visual da plataforma e é a porta de en
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
-A Figura~\ref{fig:home-dark} mostra a mesma página no tema escuro. Como observado na Seção~\ref{sec:acessibilidade-responsividade}, a aparência de uma captura não substitui a medição de contraste.
+A Figura~\ref{fig:home-dark} mostra a mesma página no tema escuro.
 
 \begin{figure}[H]
     \centering
