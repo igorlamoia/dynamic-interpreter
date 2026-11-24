@@ -1,13 +1,127 @@
-Este capítulo analisa os dados dos dois formulários descritos na Seção~\ref{sec:protocolo-avaliacao}. O formulário dos especialistas recebeu oito respostas entre 1º e 9 de novembro de 2026. O formulário da sessão com estudantes recebeu dezoito respostas em 3 de novembro de 2026. Todos os números vêm do resumo das respostas, gerado por um \textit{script} a partir das planilhas de respostas e apresentado no Apêndice~\ref{ap:respostas}.
+\section{Teste de usabilidade com especialistas}
+\label{sec:protocolo-avaliacao}\label{sec:avaliacao-especialistas}
 
-As seções, a ordem e os critérios de leitura foram definidos na revisão anterior deste texto, antes da coleta, e foram mantidos. Se essa definição fosse feita depois de ver os dados, seria possível escolher o recorte que deixasse a plataforma em melhor situação. Há um acréscimo em relação ao que estava definido: a Seção~\ref{sec:resultado-estudantes}, sobre a sessão com estudantes, que não constava do protocolo original. Os critérios de cálculo dos escores estão na Seção~\ref{sec:protocolo-avaliacao} e não são repetidos aqui.
+O teste de usabilidade foi feito com um formulário respondido por um painel de especialistas, chamado aqui de formulário dos especialistas. O formulário é compartilhado com o texto do coautor: foi enviado ao mesmo grupo de respondentes, e cada trabalho analisa os itens que interessam ao seu tema. Aqui interessam os itens sobre a interface, o assistente de personalização e os fluxos do ambiente virtual de aprendizagem. O formulário foi aplicado entre 1º e 9 de novembro de 2026, recebeu oito respostas e está reproduzido no Apêndice~\ref{ap:formulario-especialistas}. As primeiras subseções descrevem o instrumento e o procedimento; as seguintes apresentam os resultados de cada bloco, já com a discussão. O resumo agregado das respostas está no Apêndice~\ref{ap:respostas}.
 
-As convenções de leitura são as mesmas em todo o capítulo. Com oito respondentes, o texto usa contagens, médias e medianas, sem porcentagens. Nas afirmações em escala de 1 a 5, as respostas ``não usei'', ``não sei'' e ``não se aplica'' ficam fora da média e são contadas à parte. Nenhuma resposta foi excluída. Quando é preciso apontar um respondente, ele é indicado por R1 a R8, na ordem de chegada das respostas.
+\subsection{Quem responde e o que é possível concluir}
 
-\section{Composição do Painel}
+A avaliação principal foi feita por um painel de especialistas, formado por professores e profissionais de computação. Neste trabalho, considera-se especialista quem atua ou já atuou com programação, como docente de disciplinas da área ou como profissional de desenvolvimento de software. Não é um estudo com os alunos, que são o público-alvo da plataforma. Pediu-se ao respondente que avaliasse se a ferramenta é adequada para um aluno em primeiro contato com programação, e não que relatasse a própria experiência de aprendizagem.
+
+Essa escolha limita o que o trabalho pode afirmar, e por isso ela é explicada antes da descrição do instrumento. Com um painel de especialistas é possível dizer que profissionais da área acham plausível que a personalização da sintaxe reduza a barreira sintática. Não é possível dizer que ela reduz. A pergunta feita na introdução continua sem resposta empírica, e respondê-la exige medir o desempenho de estudantes, como descrito na Seção~\ref{subsec:limites-interpretacao}. A sessão com estudantes não muda esse limite, porque também colheu opinião.
+
+Em troca, o painel dá acesso a avaliações que um aluno iniciante não teria como fazer: se o subconjunto da linguagem é adequado a uma disciplina introdutória, como a plataforma se compara às ferramentas discutidas no Capítulo~\ref{cap:trabalhos-relacionados} e quais riscos pedagógicos a proposta traz. Há ainda um motivo ligado ao tema deste trabalho. Personalizar a linguagem é uma tarefa de autoria: alguém precisa decidir quais palavras substituem quais e verificar se o vocabulário final faz sentido. Na escola, quem costuma fazer isso é o professor, que prepara o ambiente antes da aula. Perguntar a professores se o assistente é claro e se o trabalho de preparação compensa é, portanto, perguntar a quem de fato usa essa parte da plataforma.
+
+\subsection{Composição do instrumento}
+
+O formulário é respondido pelo próprio participante, foi distribuído pela internet e foi criado por um programa, para que sua estrutura possa ser gerada de novo sempre que necessário. A Tabela~\ref{tab:blocos-pa01} mostra os blocos na ordem em que aparecem. Três deles vêm de instrumentos já consolidados na literatura de avaliação de interfaces, e os outros nove foram escritos para este projeto. O primeiro é a \textit{System Usability Scale} (SUS), de \citeonline{brooke1996}, que mede a facilidade de uso percebida com dez afirmações e resume as respostas em um escore de 0 a 100. O segundo é a versão curta do \textit{User Experience Questionnaire} (UEQ-S), de \citeonline{schrepp2017}, que avalia a impressão geral sobre o produto por meio de pares de adjetivos opostos. O terceiro vem do \textit{Technology Acceptance Model} (TAM), de \citeonline{davis1989}, cujas afirmações tratam da utilidade percebida e da intenção de uso. O funcionamento e o cálculo de cada um estão na Subseção~\ref{subsec:escalas-escores}.
+
+\begin{table}[htbp]
+\centering
+\caption{Blocos do formulário dos especialistas, procedência e número de itens.}
+\label{tab:blocos-pa01}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{5.2cm}|p{4.6cm}|c|}
+\hline
+\textbf{Bloco} & \textbf{Procedência} & \textbf{Itens} \\\hline
+Termo de consentimento (texto de leitura, sem item de marcação) & Elaborado para o projeto & -- \\\hline
+Perfil profissional & Elaborado para o projeto & 4 \\\hline
+Uso em sala (condicional) & Elaborado para o projeto & 10 \\\hline
+Como a plataforma foi usada & Elaborado para o projeto & 4 \\\hline
+Avaliação dos recursos & Elaborado para o projeto & 10 \\\hline
+Facilidade de uso & SUS \cite{brooke1996} & 10 \\\hline
+Impressão geral & UEQ-S \cite{schrepp2017} & 8 \\\hline
+Potencial pedagógico & Elaborado para o projeto & 8 \\\hline
+Riscos e limitações & Elaborado para o projeto & 3 \\\hline
+Qualidade técnica & Elaborado para o projeto & 6 \\\hline
+Utilidade e intenção de uso & TAM \cite{davis1989} & 6 \\\hline
+Comentários abertos & Elaborado para o projeto & 5 \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+A Tabela~\ref{tab:blocos-pa01} corresponde ao formulário aplicado, cujo texto completo está no Apêndice~\ref{ap:formulario-especialistas}. Em relação à versão descrita na revisão anterior deste texto, duas afirmações mudaram de bloco e passaram a ser respondidas só por quem leciona: a que trata de alunos da mesma turma com sintaxes diferentes, antes no bloco de riscos, e a que pergunta se o subconjunto da linguagem é suficiente para uma disciplina introdutória, antes no bloco de qualidade técnica. Com isso o bloco de uso em sala passou de oito para dez itens, o de riscos ficou com três afirmações e o de qualidade técnica com cinco afirmações e uma pergunta de múltipla escolha sobre as construções que fizeram falta.
+
+O SUS, o UEQ-S e o TAM foram usados porque têm valores de referência publicados. Com eles é possível comparar o resultado obtido com o de outros produtos já avaliados, em vez de apenas descrever a opinião dos respondentes. Os blocos próprios foram escritos porque nenhum instrumento pronto pergunta sobre o que esta plataforma propõe. Antes do bloco de avaliação dos recursos, o formulário mostra o mesmo programa em duas versões: uma na configuração padrão, com \texttt{int}, \texttt{for}, \texttt{if} e delimitadores simbólicos, e outra personalizada, com \texttt{numero\_inteiro}, \texttt{para}, \texttt{se}, operadores escritos por extenso, os delimitadores \texttt{inicio} e \texttt{fim} e nenhum ponto e vírgula. As duas versões estão transcritas no Apêndice~\ref{ap:formulario-especialistas}. Assim o respondente avalia algo concreto, e não uma ideia abstrata de personalização.
+
+\subsection{Itens sobre a interface e a personalização}
+
+No bloco de avaliação dos recursos, cada afirmação é respondida em uma escala de concordância de cinco pontos, de 1 (discordo totalmente) a 5 (concordo totalmente), e cada linha tem também a opção ``não usei'', o que separa quem discorda de quem não chegou a experimentar o recurso. As afirmações são:
+
+\begin{itemize}
+    \item criar ou ajustar uma linguagem no assistente foi simples;
+    \item ficou claro em que etapa o usuário estava;
+    \item o exemplo de código ajudou a entender o efeito de cada alteração;
+    \item escrever programas com a linguagem configurada foi confortável;
+    \item as mensagens de erro ajudaram a identificar o que corrigir;
+    \item resolver e enviar exercícios foi simples;
+    \item importar uma linguagem do acervo da comunidade foi simples.
+\end{itemize}
+ O bloco termina com três itens sobre a utilidade da tabela de \textit{tokens}, do código intermediário e da execução passo a passo.
+
+Os três primeiros itens correspondem a decisões de interface descritas na Seção~\ref{sec:customizacao-dinamica}: dividir a personalização em etapas, indicar em qual delas o usuário está e mostrar uma pré-visualização do código. Esses itens verificam escolhas que foram adotadas como hipótese durante o desenvolvimento. O bloco de qualidade técnica traz mais duas afirmações sobre o assistente: se ele é compreensível para quem não tem formação em compiladores e se a validação prévia impede configurações de linguagem inválidas. Nesse bloco, a opção fora da escala é ``não sei''.
+
+Quem declara que leciona, ou já lecionou, disciplina que envolva programação responde a um bloco extra sobre o ambiente virtual de aprendizagem, com a opção ``não se aplica'' em cada linha. Ele pergunta:
+
+\begin{itemize}
+    \item se foi simples criar uma turma e receber alunos pelo código de acesso;
+    \item se foi simples criar um exercício com casos de teste;
+    \item se travar uma linguagem em um exercício ajuda a planejar as aulas;
+    \item se a correção automática ajuda a acompanhar a turma;
+    \item se o respondente usaria a plataforma em uma disciplina introdutória de programação;
+    \item se o respondente conseguiria preparar uma aula sem apoio técnico;
+    \item se o trabalho de preparar a linguagem compensa o ganho em sala;
+    \item se alunos de uma mesma turma usando sintaxes diferentes dificultariam o trabalho do professor;
+    \item se o subconjunto da linguagem é suficiente para uma disciplina introdutória.
+\end{itemize}
+ A penúltima afirmação é um item de risco e é lida como tal. Uma questão de múltipla escolha pergunta em que momento de uma disciplina introdutória a plataforma seria mais útil, e uma das alternativas diz que não há espaço para ela na disciplina. Essa alternativa foi mantida de propósito, pelo mesmo motivo que justifica o bloco de riscos.
+
+O bloco de potencial pedagógico, respondido em terceira pessoa, transforma em afirmações as premissas que sustentam a plataforma:
+
+\begin{itemize}
+    \item deixar o aluno definir as palavras-chave tende a reduzir a barreira sintática no primeiro contato;
+    \item usar palavras em português no lugar de termos em inglês facilita entender o código;
+    \item a personalização tende a reduzir os erros de sintaxe de iniciantes;
+    \item mostrar os erros no vocabulário escolhido pelo próprio aluno facilita a correção;
+    \item o conjunto de elementos configuráveis é adequado ao propósito da ferramenta.
+\end{itemize}
+ Os outros três itens do bloco perguntam se expor a tabela de \textit{tokens}, o código intermediário e a execução passo a passo tem valor didático para quem está aprendendo.
+
+\subsection{Escalas usadas e cálculo dos escores}
+\label{subsec:escalas-escores}
+
+Os blocos em escala usam dois formatos de resposta. O SUS e os blocos de uso em sala, avaliação dos recursos, potencial pedagógico, riscos, qualidade técnica e utilidade e intenção de uso pedem o grau de concordância com cada afirmação em cinco pontos, em que 1 corresponde a ``discordo totalmente'', 3 ao ponto neutro e 5 a ``concordo totalmente''. Nos blocos elaborados para o projeto há também uma opção fora da escala, que não entra nas médias: ``não se aplica'' no uso em sala, ``não usei'' na avaliação dos recursos e ``não sei'' nos blocos de potencial pedagógico, de riscos e de qualidade técnica. O UEQ-S usa sete pontos entre dois adjetivos opostos. As perguntas de perfil, as de uso da plataforma, a do momento da disciplina e a das construções que fizeram falta são de múltipla escolha. O último bloco tem quatro questões abertas e um item de múltipla escolha em que o respondente diz se autoriza a citação das suas respostas sem identificação.
+
+A facilidade de uso usa a escala de \citeonline{brooke1996}, com dez afirmações que alternam entre positivas e negativas. Essa alternância faz parte do instrumento e não deve ser corrigida. Para calcular o escore, subtrai-se 1 do valor marcado nos itens ímpares, subtrai-se de 5 o valor marcado nos itens pares, somam-se os resultados e multiplica-se o total por 2,5. O resultado vai de 0 a 100 e não é uma porcentagem. Nos estudos reunidos por \citeonline{sauro2012}, a média dos escores fica perto de 68 pontos. Para interpretar o escore, \citeonline{bangor2009} propõem faixas de aceitabilidade: abaixo de 50 pontos o resultado é considerado inaceitável, de 50 a 70 fica na faixa marginal e acima de 70 é considerado aceitável. A impressão geral usa a versão curta do questionário de \citeonline{schrepp2017}, com oito pares de adjetivos opostos em sete pontos; subtrai-se 4 do valor bruto e separam-se a dimensão pragmática e a hedônica. Como no instrumento original, o termo negativo de cada par fica sempre à esquerda e o positivo à direita, e os quatro itens pragmáticos vêm antes dos quatro hedônicos \cite{schrepp2023handbook}. A orientação fixa é própria da versão curta: na versão completa, de 26 itens, metade dos pares começa pelo termo positivo. A utilidade e a intenção de uso vêm do modelo de \citeonline{davis1989}, adaptado ao público de professores.
+
+O bloco de riscos funciona ao contrário dos outros: nele, concordar significa apontar um problema. As afirmações são:
+
+\begin{itemize}
+    \item aprender em uma sintaxe personalizada pode dificultar a migração para uma linguagem de mercado;
+    \item a liberdade de personalizar pode desviar a atenção do raciocínio algorítmico;
+    \item o tempo gasto configurando a linguagem não compensa o ganho obtido.
+\end{itemize}
+ Os escores desse bloco são relatados separadamente e não podem ser somados aos do bloco de potencial pedagógico, porque as duas medidas apontam em sentidos opostos e uma anularia a outra. A mesma regra vale para a afirmação sobre sintaxes diferentes na mesma turma, que está no bloco de uso em sala. O bloco foi incluído de propósito: se o questionário trouxesse apenas afirmações favoráveis, a aprovação obtida diria muito pouco.
+
+\subsection{Participantes, procedimento e questões éticas}
+
+Os participantes do painel foram convidados diretamente e não são identificados. O formulário registra titulação, área de atuação, ferramentas de ensino que a pessoa já conhece e tempo de experiência com programação. Em uma avaliação feita por especialistas, esses dados fazem parte do resultado e são apresentados junto com os escores. Dois itens pedem que o respondente marque o que fez na plataforma e o que chegou a personalizar. Com isso é possível saber se uma avaliação negativa veio de quem usou o assistente até o fim ou de quem nem chegou a abri-lo.
+
+Sobre o número de participantes: no modelo de \citeonline{nielsen1993}, cada novo participante revela uma parte menor de problemas ainda não encontrados, e por isso um grupo pequeno, de cinco a oito pessoas, já revela a maior parte dos problemas de usabilidade e basta para analisar as respostas abertas. Para apresentar o escore SUS com intervalo de confiança são necessários vinte respondentes ou mais. O painel teve oito, e por isso o resultado é apresentado como indicativo, sem afirmar que existe diferença entre subgrupos. Esse critério estava fixado antes da coleta. O painel é também uma amostra de conveniência, formada por convite.
+
+Os dois formulários foram aplicados como pesquisa de opinião com participantes não identificados e não passaram pelo comitê de ética da instituição. O formulário dos especialistas abre com um termo de consentimento, apresentado como texto de leitura, sem item de marcação, e por isso as respostas desse formulário não trazem registro individual de consentimento. No formulário dos estudantes, o termo de assentimento é um item de resposta obrigatória, e as dezoito respostas trazem a opção ``Li e quero participar''. A sessão com estudantes envolveu menores de idade: nove tinham até 15 anos e nove tinham 16 ou 17. O formulário registra o assentimento do aluno, mas não a autorização de um responsável. Essas lacunas no registro do consentimento entram como limitação do estudo no Capítulo~\ref{cap:consideracoes}.
+
+\subsection{Leitura dos resultados}
+\label{subsec:leitura-resultados}
+
+Os números apresentados a seguir vêm do resumo das respostas, gerado por um \textit{script} a partir das planilhas de respostas (Apêndice~\ref{ap:respostas}). Os blocos de análise, a ordem e os critérios de leitura foram definidos antes da coleta e foram mantidos; defini-los depois de ver os dados permitiria escolher o recorte mais favorável à plataforma. Os critérios de cálculo dos escores estão na Subseção~\ref{subsec:escalas-escores}.
+
+As convenções de leitura valem para todas as subseções de resultados. Com oito respondentes, o texto usa contagens, médias e medianas, sem porcentagens. Nas afirmações em escala de 1 a 5, as respostas ``não usei'', ``não sei'' e ``não se aplica'' ficam fora da média e são contadas à parte. Nenhuma resposta foi excluída. Quando é preciso apontar um respondente, ele é indicado por R1 a R8, na ordem de chegada das respostas.
+
+\subsection{Composição do painel}
 \label{sec:resultado-painel}
 
-Os oito respondentes foram convidados diretamente e não são identificados. Pela maior titulação declarada, três têm doutorado (a alternativa do formulário era ``doutorado ou superior''), dois têm graduação e três têm ensino médio, sem curso superior concluído. Cinco atuam como profissionais de desenvolvimento de software e três são professores do ensino superior, dois dos quais também lecionam no ensino técnico. Quatro lecionam ou já lecionaram disciplina que envolva programação: os três professores e um dos profissionais de desenvolvimento. Dois trabalham com programação há menos de 2 anos, três de 2 a 5 anos, dois de 6 a 10 anos e um há mais de 10 anos.
+Esta subseção usa as questões de perfil (\ref{qE:perfil-ini} a \ref{qE:perfil-fim}) e de uso da plataforma (\ref{qE:uso-ini} a \ref{qE:uso-fim}) do Apêndice~\ref{ap:formulario-especialistas}. Os oito respondentes foram convidados diretamente e não são identificados. Pela maior titulação declarada, três têm doutorado (a alternativa do formulário era ``doutorado ou superior''), dois têm graduação e três têm ensino médio, sem curso superior concluído. Cinco atuam como profissionais de desenvolvimento de software e três são professores do ensino superior, dois dos quais também lecionam no ensino técnico. Quatro lecionam ou já lecionaram disciplina que envolva programação: os três professores e um dos profissionais de desenvolvimento. Dois trabalham com programação há menos de 2 anos, três de 2 a 5 anos, dois de 6 a 10 anos e um há mais de 10 anos.
 
 Sobre as ferramentas de ensino já conhecidas, cinco citaram o Portugol Studio ou o Portugol Webstudio, quatro citaram Scratch, Blockly ou similar, três citaram Beecrowd, URI ou outro juiz \textit{online}, dois citaram o VisuAlg, dois citaram Thonny, Python Tutor ou outro visualizador de execução, e um não conhecia nenhuma delas. A maior parte do painel, portanto, conhecia ao menos uma das ferramentas comparadas no Capítulo~\ref{cap:trabalhos-relacionados}.
 
@@ -51,10 +165,10 @@ A segunda é o padrão de R2, que marcou o mesmo valor em todos os itens de cada
 
 A terceira é a relação entre o que foi avaliado e o que foi usado. Em vários itens o número de notas é maior que o número de pessoas que declararam ter usado o recurso. Um dos dois respondentes que marcaram não ter personalizado nada marcou também três elementos personalizados, e a resposta foi mantida como veio.
 
-\section{Assistente de Personalização da Linguagem}
+\subsection{Assistente de personalização da linguagem}
 \label{sec:resultado-assistente}
 
-A Tabela~\ref{tab:resultado-recursos} traz os dez itens do bloco de avaliação dos recursos. Os três primeiros tratam do assistente. Nenhum item do bloco recebeu nota abaixo de 3.
+Esta subseção trata das questões de avaliação dos recursos (\ref{qE:recursos-ini} a \ref{qE:recursos-fim}) e dos itens de qualidade técnica sobre o assistente (\ref{qE:qual-ini} a \ref{qE:qual-fim}) do Apêndice~\ref{ap:formulario-especialistas}. A Tabela~\ref{tab:resultado-recursos} traz os dez itens do bloco de avaliação dos recursos. Os três primeiros tratam do assistente. Nenhum item do bloco recebeu nota abaixo de 3.
 
 \begin{table}[htbp]
 \centering
@@ -89,10 +203,10 @@ Duas afirmações do bloco de qualidade técnica também tratam do assistente. A
 
 Os itens em escala avaliam o que acontece dentro do assistente. Uma resposta aberta, discutida na Seção~\ref{sec:resultado-abertas}, aponta um problema anterior a ele: a dificuldade de encontrar o botão que o abre.
 
-\section{Uso do Ambiente Virtual de Aprendizagem}
+\subsection{Uso do ambiente virtual de aprendizagem}
 \label{sec:resultado-ava}
 
-O bloco de uso em sala foi respondido pelos quatro respondentes que lecionam ou já lecionaram. A Tabela~\ref{tab:resultado-ava} traz as nove afirmações. Com três ou quatro notas por linha, cada resposta pesa muito na média, e por isso as notas individuais são citadas no texto.
+Esta subseção trata do bloco de uso em sala, respondido só por quem leciona (questões \ref{qE:sala-ini} a \ref{qE:sala-fim} do Apêndice~\ref{ap:formulario-especialistas}). O bloco de uso em sala foi respondido pelos quatro respondentes que lecionam ou já lecionaram. A Tabela~\ref{tab:resultado-ava} traz as nove afirmações. Com três ou quatro notas por linha, cada resposta pesa muito na média, e por isso as notas individuais são citadas no texto.
 
 \begin{table}[htbp]
 \centering
@@ -124,10 +238,10 @@ A pergunta sobre o momento da disciplina em que a plataforma seria mais útil ap
 
 Duas ressalvas pesam nesse bloco. Três dos quatro respondentes usaram a plataforma por menos de 15 minutos, e o quarto é R2, que marcou 3 em todas as linhas. Além disso, no painel inteiro só dois respondentes declararam ter entrado em uma turma ou criado uma, e um deles não leciona. As notas sobre criar turma e criar exercício vêm, em parte, de quem não percorreu esses fluxos. No bloco de recursos, que todos responderam, resolver e submeter exercícios teve média 4,29 entre sete respondentes, e três declararam ter resolvido e submetido um exercício.
 
-\section{Usabilidade e Experiência de Uso}
+\subsection{Usabilidade (SUS) e experiência de uso (UEQ-S)}
 \label{sec:resultado-usabilidade}
 
-O escore SUS médio do painel foi 75,6, com mediana 76,25, desvio padrão 16,5, mínimo 50,0 e máximo 95,0. A média fica acima da média de referência de 68 pontos \cite{sauro2012} e acima de 70, valor a partir do qual \citeonline{bangor2009} tratam o resultado como aceitável. Cinco respondentes ficaram acima de 68 e três ficaram abaixo. Com oito respondentes, o resultado é indicativo: não se calcula intervalo de confiança e não se comparam subgrupos, conforme o critério fixado no protocolo. A ressalva sobre a redação em português dos itens, registrada na Subseção~\ref{subsec:limites-interpretacao}, também vale para essa comparação.
+Esta subseção trata do SUS (questões \ref{qE:sus-ini} a \ref{qE:sus-fim}) e do UEQ-S (questões \ref{qE:ueq-ini} a \ref{qE:ueq-fim}) do Apêndice~\ref{ap:formulario-especialistas}. O escore SUS médio do painel foi 75,6, com mediana 76,25, desvio padrão 16,5, mínimo 50,0 e máximo 95,0. A média fica acima da média de referência de 68 pontos \cite{sauro2012} e acima de 70, valor a partir do qual \citeonline{bangor2009} tratam o resultado como aceitável. Cinco respondentes ficaram acima de 68 e três ficaram abaixo. Com oito respondentes, o resultado é indicativo: não se calcula intervalo de confiança e não se comparam subgrupos, conforme o critério fixado no protocolo. A ressalva sobre a redação em português dos itens, registrada na Seção~\ref{subsec:limites-interpretacao}, também vale para essa comparação.
 
 O escore 50,0 é o de R2, que marcou 3 nos dez itens. Sem essa resposta a média seria 79,3. O valor é informado para que o leitor veja o peso desse padrão; a média relatada continua sendo a dos oito.
 
@@ -139,10 +253,10 @@ Em respondentes isolados as dimensões se afastam: em um deles a pragmática fic
 
 Os valores do UEQ-S pedem cautela. Com oito respondentes, as médias servem só como indicação, e R2 marcou 6 nos oito pares, o que dá 2,00 nas duas dimensões.
 
-\section{Potencial Pedagógico e Intenção de Uso}
+\subsection{Potencial pedagógico e intenção de uso}
 \label{sec:resultado-pedagogico}
 
-A Tabela~\ref{tab:resultado-pedagogico} reúne o bloco de potencial pedagógico e o bloco de utilidade e intenção de uso. Os dois foram respondidos pelos oito participantes. O que eles registram é a opinião de professores e profissionais sobre o que tende a acontecer com um iniciante, e não uma medida feita com iniciantes.
+Esta subseção trata do bloco de potencial pedagógico (questões \ref{qE:ped-ini} a \ref{qE:ped-fim}) e do bloco de utilidade e intenção de uso, adaptado do TAM (questões \ref{qE:tam-ini} a \ref{qE:tam-fim}), do Apêndice~\ref{ap:formulario-especialistas}. A Tabela~\ref{tab:resultado-pedagogico} reúne o bloco de potencial pedagógico e o bloco de utilidade e intenção de uso. Os dois foram respondidos pelos oito participantes. O que eles registram é a opinião de professores e profissionais sobre o que tende a acontecer com um iniciante, e não uma medida feita com iniciantes.
 
 \begin{table}[htbp]
 \centering
@@ -181,10 +295,10 @@ No bloco de utilidade e intenção de uso, a afirmação mais aceita foi a de qu
 
 Há uma diferença entre a intenção de uso declarada pelo painel inteiro e a declarada por quem leciona. Recomendar a plataforma a um colega teve média 4,25 entre os oito. Usá-la em uma disciplina introdutória teve média 3,00 entre os quatro que lecionam. São perguntas diferentes, feitas a grupos diferentes, e não cabe comparação estatística entre elas, mas a recomendação genérica foi mais alta que a disposição de adotar.
 
-\section{Riscos e Objeções Levantados pelo Painel}
+\subsection{Riscos e objeções levantados pelo painel}
 \label{sec:resultado-riscos}
 
-Nos itens desta seção, concordar significa apontar um problema. Eles são relatados separadamente e não entram em nenhuma média junto com o bloco de potencial pedagógico. A Tabela~\ref{tab:resultado-riscos} traz as três afirmações do bloco de riscos e a afirmação de risco do bloco de uso em sala, respondida só por quem leciona.
+Esta subseção trata do bloco de riscos (questões \ref{qE:riscos-ini} a \ref{qE:riscos-fim} do Apêndice~\ref{ap:formulario-especialistas}) e da afirmação de risco do bloco de uso em sala (questão \ref{qE:sala-risco}). Nos itens desta seção, concordar significa apontar um problema. Eles são relatados separadamente e não entram em nenhuma média junto com o bloco de potencial pedagógico. A Tabela~\ref{tab:resultado-riscos} traz as três afirmações do bloco de riscos e a afirmação de risco do bloco de uso em sala, respondida só por quem leciona.
 
 \begin{table}[htbp]
 \centering
@@ -211,10 +325,10 @@ O risco de o tempo de configuração não compensar foi o menos aceito: seis dis
 
 A afirmação sobre alunos da mesma turma com sintaxes diferentes foi respondida por três professores, com notas 3, 4 e 5. Nenhum discordou. Essa é a objeção a que a implementação responde de forma mais direta: o travamento de linguagem por exercício e por lista faz com que toda a turma resolva a atividade na mesma sintaxe, e os mesmos professores deram média 4,50 à utilidade desse travamento. Nas atividades em modo livre o problema continua. Nelas, a página de correção abre a submissão com a linguagem do aluno, como descrito na Subseção~\ref{subsec:correcao-professor}, o que permite ler o código como ele foi escrito, mas não elimina o trabalho de lidar com várias sintaxes.
 
-\section{Respostas Abertas}
+\subsection{Respostas abertas}
 \label{sec:resultado-abertas}
 
-O formulário tem quatro questões abertas e um item de autorização de citação. Sete respondentes autorizaram a citação sem identificação e um não autorizou. Cinco escreveram em pelo menos uma das questões, todos entre os que autorizaram. As respostas são poucas e curtas, e são relatadas aqui uma a uma.
+Esta subseção trata das questões abertas \ref{qE:abertas-ini} a \ref{qE:abertas-fim} do Apêndice~\ref{ap:formulario-especialistas}. O formulário tem quatro questões abertas e um item de autorização de citação. Sete respondentes autorizaram a citação sem identificação e um não autorizou. Cinco escreveram em pelo menos uma das questões, todos entre os que autorizaram. As respostas são poucas e curtas, e são relatadas aqui uma a uma.
 
 Sobre o que funcionou melhor, houve quatro respostas. Duas apontam o assistente: ``configuração da linguagem'' e ``criação da linguagem''. Uma aponta os recursos de turma: ``criação de lista e acesso à lista criada''. A quarta fala da ``facilidade de utilização'' e da ``possibilidade de visualizar e compreender o funcionamento dos comandos de maneira dinâmica''.
 
@@ -228,85 +342,3 @@ Sobre as mensagens de erro, um respondente sugeriu ``mensagens de erro mais desc
 
 Sobre o que mudariam, além do pedido de um botão mais visível, um respondente propôs ampliar os recursos interativos, ``com mais exemplos práticos, exercícios progressivos e desafios''.
 
-\section{Sessão com Estudantes}
-\label{sec:resultado-estudantes}
-
-Esta seção não estava prevista quando a estrutura do capítulo foi definida. Ela relata o segundo formulário, descrito na Subseção~\ref{subsec:formulario-estudantes}, aplicado em 3 de novembro de 2026 a uma turma do 1º ano do ensino médio técnico em Informática da UFCI-MG, Campus Leopoldina, depois de uma demonstração da plataforma feita pelos autores e de um período em que os alunos também a usaram. Houve dezoito respostas, todas com o termo de assentimento marcado. Nove alunos tinham até 15 anos e nove tinham 16 ou 17. Nove disseram já ter programado um pouco, oito disseram programar com frequência e um disse nunca ter programado. Quase ninguém, portanto, era iniciante absoluto.
-
-A Tabela~\ref{tab:resultado-estudantes} traz as seis afirmações. Todas tiveram média entre 4,00 e 4,33.
-
-\begin{table}[htbp]
-\centering
-\caption{Afirmações do formulário da sessão com estudantes (escala de 1 a 5; dezoito respostas).}
-\label{tab:resultado-estudantes}
-\footnotesize
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|p{6.3cm}|c|c|c|c|c|}
-\hline
-\textbf{Afirmação} & \textbf{Média} & \textbf{Mediana} & \textbf{Concordam} & \textbf{Neutros} & \textbf{Discordam} \\\hline
-Entendi para que serve a plataforma & 4,33 & 4,5 & 17 & 0 & 1 \\\hline
-Um programa escrito com palavras em português é mais fácil de entender do que um escrito com palavras em inglês & 4,00 & 4 & 11 & 6 & 1 \\\hline
-Poder escolher as palavras da linguagem ajudaria quem está começando a programar & 4,17 & 4 & 14 & 3 & 1 \\\hline
-Ver como a plataforma separa o programa em partes (os \textit{tokens}) ajuda a entender como o computador lê o código & 4,17 & 4 & 15 & 1 & 2 \\\hline
-Eu gostaria de usar essa plataforma nas aulas de programação & 4,17 & 4 & 15 & 3 & 0 \\\hline
-A demonstração aumentou meu interesse em aprender programação & 4,17 & 4 & 16 & 0 & 2 \\\hline
-\end{tabular}
-\legend{Fonte: dados da pesquisa (2026).}
-\end{table}
-
-Dezessete dos dezoito alunos disseram ter entendido para que serve a plataforma, e quinze disseram que gostariam de usá-la nas aulas; nesse item ninguém discordou. A afirmação de que um programa em português é mais fácil de entender do que um em inglês teve a menor média e o maior número de neutros: onze concordaram, seis ficaram no ponto neutro e um discordou. Esse é o item mais próximo da premissa da plataforma, e um terço da turma não tomou posição sobre ele.
-
-O formulário também mostrou duas versões de um programa que lê um número e escreve se ele é par ou ímpar: a Versão A, na sintaxe padrão em inglês, e a Versão B, personalizada em português. As duas têm as mesmas instruções e a mesma disposição e diferem nas palavras reservadas, no operador de igualdade e nos delimitadores de bloco; o texto de ambas está no Apêndice~\ref{ap:formulario-estudantes}. A Tabela~\ref{tab:resultado-versoes} separa as respostas pela experiência declarada. Onze alunos acharam a Versão B mais fácil de entender, quatro acharam as duas igualmente fáceis, dois preferiram a Versão A e um achou as duas igualmente difíceis.
-
-\begin{table}[htbp]
-\centering
-\caption{Versão do programa considerada mais fácil de entender, por experiência declarada com programação.}
-\label{tab:resultado-versoes}
-\footnotesize
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|p{4.3cm}|c|c|c|c|c|}
-\hline
-\textbf{Experiência} & \textbf{Versão B} & \textbf{Igualmente fáceis} & \textbf{Versão A} & \textbf{Igualmente difíceis} & \textbf{Total} \\\hline
-Programa com frequência & 6 & 2 & 0 & 0 & 8 \\\hline
-Já programou um pouco & 5 & 2 & 2 & 0 & 9 \\\hline
-Nunca programou & 0 & 0 & 0 & 1 & 1 \\\hline
-\textbf{Total} & 11 & 4 & 2 & 1 & 18 \\\hline
-\end{tabular}
-\legend{Fonte: dados da pesquisa (2026).}
-\end{table}
-
-A preferência pela versão em português apareceu nos dois grupos com experiência, e os dois alunos que preferiram a versão em inglês estão entre os que já tinham programado um pouco. O único aluno que nunca tinha programado, justamente o perfil para o qual a plataforma foi pensada, achou as duas versões igualmente difíceis e discordou de três das seis afirmações, entre elas a de ter entendido para que serve a plataforma. Uma única resposta não sustenta conclusão, mas ela vai em sentido contrário ao das demais e fica registrada.
-
-O campo de comentário livre recebeu duas respostas: uma elogiou a plataforma e a outra pediu o acréscimo de outra linguagem. O formulário não tem item de autorização de citação, e por isso os comentários não são transcritos.
-
-Pelos limites descritos na Subseção~\ref{subsec:limites-interpretacao}, essas respostas servem como indício de aceitação e de preferência declarada pela versão em português e não mostram redução da barreira sintática nem aprendizagem. O registro do assentimento e a falta de autorização dos responsáveis estão descritos na Seção~\ref{sec:protocolo-avaliacao} e retomados nas limitações do Capítulo~\ref{cap:consideracoes}.
-
-\section{Relação com Trabalhos Anteriores}
-\label{sec:resultado-literatura}
-
-Esta seção compara os resultados com as ferramentas e os estudos do Capítulo~\ref{cap:trabalhos-relacionados}. A comparação tem um limite de origem: aqui há opinião e preferência declarada, enquanto parte dos trabalhos citados mediu desempenho.
-
-A preferência dos estudantes pela versão em português e a concordância do painel com a afirmação de que palavras em português facilitam a compreensão, com média 4,38, vão na direção da escolha feita pelo Portugol Studio, que traduz as palavras-chave para que o iniciante não precise lidar com dois idiomas ao mesmo tempo \cite{univali2026}. Os dados não alcançam uma diferença de desenho entre as duas propostas. No Portugol o vocabulário em português é fixo; na plataforma ele é escolhido por quem usa. O formulário dos estudantes comparou uma versão em inglês com uma em português definida pelos autores e, por isso, não informa o efeito de o próprio aluno escolher as palavras.
-
-\citeonline{stefik2013} compararam o desempenho de novatos em linguagens consolidadas com o obtido em uma linguagem de controle de palavras-chave aleatórias e encontraram efeito da forma sintática sobre o desempenho. Os dados desta avaliação são de outro tipo, porque não houve tarefa nem contagem de erros. Eles não confirmam nem contrariam aquele resultado, e a comparação depende do estudo de desempenho previsto no Capítulo~\ref{cap:consideracoes}.
-
-Cinco dos oito especialistas conheciam o Portugol Studio ou o Portugol Webstudio, e mesmo assim a afirmação de que a plataforma oferece algo que as ferramentas conhecidas não oferecem teve média 4,62. O formulário não pergunta qual seria esse diferencial. A execução passo a passo, item de maior valor didático no painel, com média 4,75, também existe no Portugol Studio, que tem depurador e inspetor de variáveis \cite{univali2026}. O que a plataforma acrescenta é a configuração do vocabulário pelo assistente e a exibição das fases da tradução. O assistente foi bem avaliado, mas um respondente teve dificuldade para encontrar o botão de criar linguagem, e as fases da tradução foram pouco visitadas: dois especialistas declararam ter visto a tabela de \textit{tokens} e quatro, o código intermediário.
-
-A correção automática pelos casos de teste, com média 4,50 entre os que lecionam, segue o ciclo de submissão e veredito de juízes \textit{online} como o Beecrowd \cite{beecrowd2026faq}. A diferença é que os casos são executados com a configuração de linguagem do aluno, como descrito na Seção~\ref{sec:sistema-correcao}. Por fim, a preocupação com a passagem para ferramentas de mercado, que dividiu o painel no item de migração, também orienta o Portugol Studio, cuja tela reproduz a organização de uma IDE profissional para que a familiaridade seja transferível \cite{univali2026}. Lá a preocupação recai sobre a interface; aqui o painel a levantou sobre a sintaxe.
-
-\section{Síntese e Confronto com os Objetivos}
-\label{sec:resultado-sintese}
-
-Esta seção retoma os objetivos específicos da introdução e diz, para cada um, o que a avaliação sustenta e o que continua sem verificação.
-
-O primeiro objetivo era especificar os elementos configuráveis da linguagem. O painel considerou o conjunto adequado ao propósito da ferramenta, com média 4,57 entre sete respondentes e nenhuma nota abaixo de 4. A pergunta sobre construções que fizeram falta teve sete respondentes, porque R4 a deixou em branco. Cinco marcaram não ter sentido falta de nada relevante para o ensino introdutório, dois marcaram registros ou estruturas compostas, e modularização em vários arquivos, orientação a objetos e manipulação de cadeias mais rica tiveram uma marcação cada. R7 marcou ao mesmo tempo a primeira alternativa, registros e orientação a objetos, e a resposta foi mantida como veio. Entre os que lecionam, dois dos três que responderam consideraram o subconjunto suficiente para uma disciplina introdutória. A especificação não foi contestada, e as ausências apontadas coincidem com as limitações já declaradas no Capítulo~\ref{cap:consideracoes}.
-
-O segundo objetivo era projetar e implementar a IDE com o assistente, a edição, a execução e o retorno ao usuário. O escore SUS de 75,6, indicativo, e as médias entre 4,00 e 4,57 nos itens do assistente sustentam que o painel conseguiu usar a interface e não contestou as decisões de dividir a personalização em etapas, indicar a etapa corrente e mostrar a pré-visualização. Dois achados vão no outro sentido. O acesso ao assistente falhou para pelo menos um respondente, que não encontrou com facilidade o botão de criar linguagem, e um professor terminou a visita sem ter aberto o assistente. Além disso, na dimensão pragmática do UEQ-S, os pares complicada ou fácil e confusa ou clara tiveram as menores médias, e o item do SUS ``achei a plataforma fácil de usar'' ficou em 3,75. Metade do painel usou a plataforma por menos de 15 minutos, e isso vale tanto para as notas altas quanto para as baixas.
-
-O terceiro objetivo era integrar a IDE ao interpretador. Os respondentes escreveram e executaram programas, viram o código intermediário e usaram a execução passo a passo, e avaliaram a ferramenta como rápida e estável, com média 4,88. A afirmação de que o código intermediário exibido corresponde ao que o programa executa teve média 4,83 entre seis respondentes. Trata-se de percepção de uso. A verificação da integração está nos testes descritos no Capítulo~\ref{cap:testes}.
-
-O quarto objetivo era disponibilizar a plataforma em ambiente \textit{web}, com os fluxos de uso concluídos e com atenção a acessibilidade e responsividade. A avaliação mostra que respondentes externos ao projeto percorreram os fluxos de personalização, execução e submissão. Os fluxos de turma foram pouco exercitados: dois respondentes declararam ter entrado em uma turma ou criado uma. O formulário não tem itens de acessibilidade, e esse requisito continua no estado descrito na Seção~\ref{sec:acessibilidade-responsividade}.
-
-O quinto objetivo era propor um protocolo de avaliação. O protocolo foi proposto e aplicado, com oito respondentes, e a ele se somou a sessão com dezoito estudantes. A aplicação mostrou limites do próprio instrumento: os itens do bloco de uso em sala foram respondidos por quem pouco usou os recursos de turma.
-
-Quanto à hipótese pedagógica, vale a distinção da Subseção~\ref{subsec:limites-interpretacao}. O que foi coletado é opinião. A maioria do painel considera plausível que a personalização reduza a barreira sintática, com média 3,88, e um respondente discorda das três premissas. Onze de dezoito estudantes acharam a versão em português mais fácil de entender, depois de uma demonstração e de um período de uso, sem tarefa medida. Nenhum desses dados prova a redução da barreira nem aprendizagem. Do lado desfavorável, a intenção de adotar a plataforma em uma disciplina introdutória ficou em 3,00 entre os quatro que lecionam, um professor não vê espaço para ela na disciplina, o painel se dividiu sobre o risco de migração para uma linguagem de mercado e três de sete respondentes concordam que a personalização pode desviar a atenção do raciocínio algorítmico. Esses pontos têm o mesmo peso dos resultados favoráveis e orientam os encaminhamentos do Capítulo~\ref{cap:consideracoes}.

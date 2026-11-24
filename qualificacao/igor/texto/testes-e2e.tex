@@ -1,4 +1,4 @@
-\section{Testes de ponta a ponta da interface}
+\subsection{Testes de ponta a ponta da interface}
 \label{subsec:e2e-plataforma}
 
 As integrações de 18 de setembro de 2026 acrescentaram o pacote \texttt{packages/e2e} e ampliaram os cenários automatizados dos fluxos educacionais e de gestão de linguagens. A revisão documental de 19 de setembro examinou esse código na versão \texttt{3ffae01}, que incorpora os merges \texttt{9b1e506} e \texttt{c9b8178} (Apêndice~\ref{ap:repositorio}). A implementação utiliza Playwright Test, cuja versão fixada no arquivo de dependências é 1.63.0. O pacote reúne 31 casos em dez arquivos e configura somente o Chromium, com perfil de computador, idioma português do Brasil e fuso de São Paulo \cite{playwright2026intro}.
@@ -24,7 +24,7 @@ Somados, os grupos dão os 31 casos do pacote. Os cinco casos dos dois últimos 
 
 Os testes utilizam localizadores por papel e nome, além de identificadores explícitos para editor, terminal e resultados de submissão. O auxiliar do Monaco aguarda sua montagem por até 45 segundos e insere o programa diretamente no modelo do editor; a execução e a inspeção dos resultados prosseguem pela interface. Esse procedimento delimita a evidência: verifica a integração com o programa preparado, mas não simula sua digitação caractere a caractere. Nos testes de correção, recarregar a página e conferir novamente nota e comentário verifica a recuperação dos dados persistidos, além da mensagem imediata de sucesso \cite{playwright2026practices}.
 
-\section{Integração contínua e diagnóstico de falhas}
+\subsection{Integração contínua e diagnóstico de falhas}
 \label{subsec:ci-plataforma}
 
 O fluxo versionado no GitHub Actions executa testes em solicitações de integração e em envios à branch \texttt{main}. O job \texttt{unit} executa Vitest no compilador e na IDE, além de pytest no back-end. O job \texttt{e2e} instala o Chromium, constrói e inicia os serviços locais, aguarda suas respostas e executa o Playwright. O job de implantação depende da aprovação de ambos e só é acionado por envio à \texttt{main}. Essa configuração estabelece uma condição para o deploy automatizado; o arquivo do fluxo está no repositório do projeto (Apêndice~\ref{ap:repositorio}).
@@ -33,7 +33,7 @@ No CI, a configuração utiliza dois processos de execução, permite duas novas
 
 As mesmas integrações incluem correções relacionadas aos fluxos exercitados: a resolução de endereço interno do serviço no código de servidor do Next.js passou a ser compartilhada pela edição de linguagens e validação de submissões; o componente de formulário passou a transferir identificação e atributos de acessibilidade ao controle filho por meio de \texttt{Slot}. Esses registros documentam alterações concretas no front-end, sem equivaler a uma nova auditoria completa de acessibilidade.
 
-\section{Resultado da execução local}
+\subsection{Resultado da execução local}
 \label{subsec:resultado-e2e}
 
 Em 19 de setembro de 2026, os 31 casos foram aprovados na primeira tentativa de cada caso, sem falhas, ocorrências intermitentes ou casos ignorados, em aproximadamente 24 segundos. A execução utilizou Node.js 25.2.1, Playwright 1.63.0 e as opções de CI da configuração versionada, com dois processos, contra os serviços Docker locais já ativos. O relatório estruturado registra os arquivos, cenários e resultados (Apêndice~\ref{ap:verificacao}). Também foi aprovada a verificação de tipos do pacote E2E.

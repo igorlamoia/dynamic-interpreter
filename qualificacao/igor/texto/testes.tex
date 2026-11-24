@@ -1,4 +1,4 @@
-Este capítulo apresenta como a plataforma foi testada. A Seção~\ref{sec:planejamento-testes} descreve o planejamento: o que se decidiu testar, em quais níveis e com quais ferramentas. As seções seguintes relatam a realização dos testes. A Seção~\ref{sec:testes-unitarios} trata dos testes unitários e de integração da IDE, a Seção~\ref{subsec:e2e-plataforma} dos testes de ponta a ponta, a Seção~\ref{subsec:ci-plataforma} da integração contínua e a Seção~\ref{subsec:resultado-e2e} do resultado da execução local desses testes. A Seção~\ref{subsec:verificacao-interface} descreve a verificação técnica de acessibilidade e responsividade do assistente de personalização. A avaliação da plataforma pelo painel de especialistas não faz parte deste capítulo: seu protocolo está na Seção~\ref{sec:protocolo-avaliacao} e seus resultados, no Capítulo~\ref{cap:resultados}.
+Este capítulo apresenta como a plataforma foi testada e avaliada. A Seção~\ref{sec:planejamento-testes} descreve o planejamento: o que se decidiu testar, em quais níveis e com quais instrumentos. A Seção~\ref{sec:testes-automatizados} relata os testes automatizados: unitários e de integração, de ponta a ponta, a integração contínua e a verificação técnica do assistente. A Seção~\ref{sec:avaliacao-especialistas} trata do teste de usabilidade com o painel de especialistas, e a Seção~\ref{sec:avaliacao-estudantes}, da comparação entre duas versões de um programa feita com uma turma de estudantes. Em cada seção, o resultado de cada teste é discutido logo depois de apresentado. As Seções~\ref{sec:resultado-literatura}, \ref{subsec:limites-interpretacao} e~\ref{sec:resultado-sintese} relacionam os resultados aos trabalhos anteriores, delimitam o que eles permitem concluir e os confrontam com os objetivos.
 
 As descrições de código deste capítulo referem-se ao repositório do projeto, apresentado no Apêndice~\ref{ap:repositorio}. As contagens de testes aprovados vêm dos registros de execução reunidos no Apêndice~\ref{ap:verificacao}.
 
@@ -10,15 +10,20 @@ O planejamento seguiu a pirâmide de testes apresentada na Subseção~\ref{subse
 \begin{itemize}
     \item Testes unitários: verificam funções e módulos da IDE e do compilador sem interface, como a configuração da linguagem, a validação das personalizações e a persistência no armazenamento local. Usam o \textit{framework} Vitest e ficam, em geral, em arquivos com sufixo \texttt{.spec.ts} ao lado dos módulos que verificam; alguns ficam em diretórios \texttt{\_\_tests\_\_}.
     \item Testes de integração de componentes: verificam componentes React da IDE em conjunto com seus \textit{contexts} e \textit{hooks}, como os componentes do assistente, a depuração e as submissões. Também usam Vitest, com o \textit{jsdom} simulando o ambiente do navegador, e ficam em arquivos com sufixo \texttt{.spec.tsx} próximos aos componentes.
-    \item Testes de ponta a ponta (E2E, do inglês \textit{end-to-end}): verificam fluxos completos no navegador, com o front-end, o serviço FastAPI e o banco PostgreSQL em execução. Usam o Playwright Test com o Chromium e ficam no pacote \texttt{packages/e2e}.
+    \item Testes de ponta a ponta (E2E, do inglês \textit{end-to-end}): verificam fluxos completos no navegador, com o front-end, o serviço FastAPI e o banco PostgreSQL em execução. Usam o Playwright Test com o Chromium e ficam no pacote \texttt{packages/e2e}. Foram escritos com o auxílio do Claude Code, conforme a Subseção~\ref{subsec:uso-ia}.
     \item Verificação técnica da interface: verifica, na primeira etapa do assistente de personalização, a navegação por teclado, a adaptação a larguras de computador e de celular e as regras de acessibilidade que uma ferramenta automática consegue avaliar. Usa o Playwright para conduzir o navegador e o axe-core para a análise.
+    \item Teste de usabilidade com especialistas: verifica a percepção de professores e profissionais de computação sobre a interface, o assistente de personalização e os recursos de turma, por meio de um formulário com escalas consolidadas, o SUS, o UEQ-S e o TAM, e de blocos escritos para o projeto. Está na Seção~\ref{sec:avaliacao-especialistas}.
+    \item Comparação A/B com estudantes: verifica qual de duas versões do mesmo programa, uma na sintaxe padrão e outra personalizada em português, os alunos de uma turma declaram entender com mais facilidade. Está na Seção~\ref{sec:avaliacao-estudantes}.
 \end{itemize}
 
 Os testes unitários, de integração e E2E também foram planejados para rodar na integração contínua do GitHub Actions, que executa ainda os testes do back-end com pytest. A implantação automatizada só ocorre se esses testes forem aprovados. O critério de aprovação, em todos os níveis, é o resultado das asserções de cada caso; na integração contínua, um caso E2E que só passa depois de repetido também reprova a execução, como detalha a Seção~\ref{subsec:ci-plataforma}.
 
-O planejamento não incluiu uma meta de cobertura de código, e nenhum dos níveis mede essa cobertura. Os testes oferecem evidência do comportamento que cobrem e apoio à detecção de regressões. A presença de uma suíte, por si só, não comprova que o ciclo de escrever o teste antes da implementação tenha sido seguido em todos os incrementos.
+\section{Testes automatizados}
+\label{sec:testes-automatizados}
 
-\section{Testes unitários e de integração}
+Os testes automatizados verificam o código da IDE e do compilador nos três níveis do planejamento e rodam também na integração contínua. A verificação técnica do assistente usa as mesmas ferramentas de automação do navegador e fecha esta seção.
+
+\subsection{Testes unitários e de integração}
 \label{sec:testes-unitarios}
 
 A revisão de 16 de setembro de 2026 registrou 139 aprovações em 28 arquivos selecionados pelo comando de testes da IDE, além de seis verificações executadas separadamente. Após os merges, a configuração passou a descobrir arquivos \texttt{.spec.ts} e \texttt{.spec.tsx} em toda a árvore de fontes, mantendo oito exclusões explícitas de testes do assistente ainda pendentes de atualização. Em 19 de setembro de 2026, a execução local do comando \texttt{npm test} do pacote aprovou 274 testes em 54 arquivos. Em 19 de outubro, o mesmo comando aprovou 312 testes em 60 arquivos, sem falhas, com as mesmas oito exclusões (Apêndice~\ref{ap:verificacao}). Entre os arquivos novos estão os testes do menu da IDE, do painel de linguagem, dos arquivos iniciais e do cartão de turma do professor. A ampliação documenta o conjunto executado, sem representar a execução dos arquivos excluídos ou uma medição de cobertura total. O pacote E2E não foi executado na revisão de outubro, porque depende dos serviços em execução; o resultado mais recente dele é o de 19 de setembro, descrito na Seção~\ref{subsec:resultado-e2e}.
@@ -55,3 +60,9 @@ describe("keyword-language-storage", () => {
 
 
 \input{texto/verificacao-interface}
+
+\input{texto/avaliacao-especialistas}
+
+\input{texto/avaliacao-estudantes}
+
+\input{texto/avaliacao-sintese}

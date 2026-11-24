@@ -1,7 +1,7 @@
 
 Este capítulo descreve a abordagem metodológica adotada para o desenvolvimento do interpretador dinâmico proposto, detalhando a arquitetura geral do sistema, as decisões de projeto que sustentam cada fase do compilador implementado e os mecanismos de integração com a plataforma web. A condução do trabalho seguiu as etapas previstas no cronograma do projeto, contemplando, na revisão para a segunda fase do Trabalho de Conclusão de Curso, a revisão bibliográfica, a especificação do escopo da linguagem e de seus elementos configuráveis, a modelagem da arquitetura do interpretador, a implementação das análises léxica e sintática, a geração e a execução do código intermediário e a integração entre o núcleo do compilador e o ambiente web.
 
-A descrição da implementação foi conferida inicialmente em 16 de setembro de 2026, na revisão \texttt{b4372bf}. Em 19 de setembro, a análise foi ampliada para a revisão \texttt{e0a012b}, contemplando os testes do serviço Python, os contratos de resposta, os controles de acesso e o fluxo de integração contínua. Os resultados locais da nova execução são identificados nas seções de testes; as capturas anteriores conservam seu caráter histórico \cite{projeto2026backend,projeto2026backendtestes,projeto2026workflow,silva2026verificacaobackend}.
+A descrição da implementação foi conferida inicialmente em 16 de setembro de 2026, na revisão \texttt{b4372bf}. Em 19 de setembro, a análise foi ampliada para a revisão \texttt{e0a012b}, contemplando os testes do serviço Python, os contratos de resposta, os controles de acesso e o fluxo de integração contínua. Os resultados locais da nova execução são identificados nas seções de testes; as capturas anteriores conservam seu caráter histórico (Apêndice~\ref{ap:repositorio}).
 
 A construção do sistema foi conduzida de forma incremental e iterativa, orientada pelas práticas técnicas do \textit{Extreme Programming} discutidas na Seção~\ref{subsec:xp}. Convém explicitar de que modo essas práticas foram efetivamente instanciadas em uma equipe de dois integrantes, uma vez que o método foi adotado de forma parcial e deliberada. Não se estabeleceram ciclos de duração fixa: o trabalho partiu de um conjunto mínimo de requisitos e avançou por acréscimos funcionais, e sempre que uma melhoria não prevista se mostrava pertinente durante a implementação, ela era incorporada naquele momento, em vez de ser postergada para um planejamento posterior. Essa incorporação contínua da mudança, e não a cadência fixa de entregas, é o traço do método que efetivamente governou o projeto \cite{beck2004,wildt2015}.
 
@@ -9,12 +9,12 @@ Quanto à divisão de trabalho, este TCC concentra a atuação de Victor no núc
 
 O restante deste capítulo está organizado da seguinte maneira. A Seção~\ref{sec:modelagem-arquitetura} descreve a modelagem da arquitetura do projeto; a Seção~\ref{sec:especificacao-linguagem} especifica a linguagem e seus elementos configuráveis; a Seção~\ref{sec:metodologia-interpretador} detalha o núcleo do interpretador, fase a fase; a Seção~\ref{sec:integracao-plataforma} trata da integração entre o núcleo e a plataforma web; a Seção~\ref{sec:contratos-seguranca-backend} apresenta os contratos de resposta e os controles do back-end; e a Seção~\ref{sec:metodologia-testes} expõe a estratégia de testes automatizados.
 
-No ciclo de desenvolvimento guiado por testes tomado como referência, a escrita do teste precede a implementação da funcionalidade: primeiro se especifica o comportamento esperado em um teste que falha, depois se implementa o código necessário para fazê-lo passar e, por fim, se refatora preservando a aprovação da suíte. A integração de uma etapa à seguinte é uma verificação adicional, não o que caracteriza o TDD, conforme a prática consolidada por \citeonline{aniche2012} e \citeonline{martin_coder}. Os testes permitem verificar regressões nas configurações da linguagem; sua presença no repositório não comprova, isoladamente, a ordem entre teste, implementação e refatoração em cada incremento.
+No ciclo de desenvolvimento guiado por testes tomado como referência, a escrita do teste precede a implementação da funcionalidade: primeiro se especifica o comportamento esperado em um teste que falha, depois se implementa o código necessário para fazê-lo passar e, por fim, se refatora preservando a aprovação da suíte. A integração de uma etapa à seguinte é uma verificação adicional, não o que caracteriza o TDD, conforme a prática consolidada por \citeonline{aniche2012} e \citeonline{martin_coder}. Os testes permitem verificar regressões nas configurações da linguagem.
 
 \section{Uso de Ferramentas de Inteligência Artificial}
 \label{sec:uso-ia}
 
-Durante a programação, o autor usou o GitHub Copilot, integrado ao Visual Studio Code, como recurso de autocompletar. O autor digitava o código, e a ferramenta sugeria a continuação da linha ou do bloco; cada sugestão era aceita, alterada ou descartada pelo autor. O autor modelou as tabelas do banco de dados no DataGrip e depois usou uma ferramenta de inteligência artificial para revisar essa modelagem. A arquitetura do núcleo de tradução e do serviço de \textit{back-end} foi definida pelos autores.
+Durante a programação, o autor usou o GitHub Copilot, integrado ao Visual Studio Code, como recurso de autocompletar. O autor digitava o código, e a ferramenta sugeria a continuação da linha ou do bloco; cada sugestão era aceita, alterada ou descartada pelo autor. Os testes do serviço de \textit{back-end}, escritos com pytest, e os testes de ponta a ponta, escritos com Playwright, foram desenvolvidos com o auxílio do Claude Code, assistente de programação da Anthropic, a partir das orientações dos autores, que revisaram e executaram esses testes. O autor modelou as tabelas do banco de dados no DataGrip e depois usou uma ferramenta de inteligência artificial para revisar essa modelagem. A arquitetura do núcleo de tradução e do serviço de \textit{back-end} foi definida pelos autores.
 
 Na redação, os autores escreveram a versão inicial dos capítulos e usaram um assistente de inteligência artificial (Claude, da Anthropic) para revisar o português. Na fase final, o mesmo assistente também reescreveu trechos e redigiu parágrafos a partir das correções indicadas pelo orientador e pelo revisor. Os autores revisaram todo o texto produzido ou alterado dessa forma e respondem pelo seu conteúdo.
 
@@ -40,7 +40,9 @@ O servidor Next.js reutiliza as mesmas classes na rota \texttt{POST /api/submiss
 \subsection{Modelagem do Banco de Dados}
 \label{subsec:modelagem-banco}
 
-A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes de \texttt{backend/app/models}. A Figura~\ref{fig:esquema-banco} apresenta as onze tabelas de domínio em notação de pé de galinha: cada tabela lista suas colunas de chave, e cada linha liga uma chave estrangeira à tabela referenciada, com a cardinalidade marcada nas extremidades. O Apêndice~\ref{ap:dicionario-dados} completa a figura com os 82 atributos, seus tipos, nulabilidade, chaves, restrições e índices extraídos dos metadados SQLAlchemy. Essa documentação descreve a versão do código-fonte examinada em 19 de outubro de 2026; não constitui uma inspeção de um banco de produção.
+Na literatura de banco de dados, o projeto costuma passar por três níveis: o modelo conceitual, que descreve as entidades e os relacionamentos do domínio sem depender do sistema gerenciador; o modelo lógico, que traduz esse modelo em tabelas, chaves e restrições; e o modelo físico, que define como o esquema é implementado em um sistema gerenciador específico \cite{elmasri2016,heuser2009}. Neste trabalho, a modelagem partiu do nível lógico, prática comum no desenvolvimento de sistemas: o autor definiu as tabelas, as chaves e as referências entre elas no DataGrip, ferramenta de banco de dados da JetBrains, que gera o \textit{script} SQL correspondente. A Figura~\ref{fig:esquema-banco} apresenta esse modelo lógico, e o Apêndice~\ref{ap:dicionario-dados} detalha os atributos.
+
+A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes de \texttt{backend/app/models}. A Figura~\ref{fig:esquema-banco} apresenta as onze tabelas de domínio em notação de pé de galinha: cada tabela lista suas colunas de chave, e cada linha liga uma chave estrangeira à tabela referenciada, com a cardinalidade marcada nas extremidades. O Apêndice~\ref{ap:dicionario-dados} completa a figura com os 82 atributos, seus tipos, nulabilidade, chaves, restrições e índices extraídos dos metadados SQLAlchemy. Essa documentação descreve a versão do código-fonte examinada em 19 de outubro de 2026.
 
 \begin{figure}[p]
     \centering
@@ -51,7 +53,7 @@ A persistência utiliza PostgreSQL e um esquema relacional mapeado pelas classes
 \end{figure}
 \FloatBarrier
 
-O eixo de acesso reúne \texttt{organizations}, \texttt{users}, \texttt{classes} e \texttt{class\_members}. Os usuários compartilham uma tabela e são diferenciados pelo campo \texttt{role}, cujos valores no modelo são \texttt{ADMIN}, \texttt{TEACHER}, \texttt{STUDENT}, \texttt{COMMUNITY} e \texttt{SYSTEM}. O vínculo de um usuário com uma organização é opcional no esquema atual. A turma referencia uma organização e um professor; a associação entre aluno e turma é registrada por uma chave primária composta em \texttt{class\_members}. A existência dessas referências, por si só, não demonstra isolamento de acesso entre organizações, que depende também das regras dos serviços.
+O eixo de acesso reúne \texttt{organizations}, \texttt{users}, \texttt{classes} e \texttt{class\_members}. Os usuários compartilham uma tabela e são diferenciados pelo campo \texttt{role}, cujos valores no modelo são \texttt{ADMIN}, \texttt{TEACHER}, \texttt{STUDENT}, \texttt{COMMUNITY} e \texttt{SYSTEM}. O vínculo de um usuário com uma organização é opcional no esquema atual. A turma referencia uma organização e um professor; a associação entre aluno e turma é registrada por uma chave primária composta em \texttt{class\_members}.
 
 A tabela \texttt{languages} registra as linguagens configuradas: proprietário, nome, descrição, configuração em JSONB, dados de imagem, identificador de predefinição e informações de publicação. O campo \texttt{cloned\_from\_id} referencia uma linguagem de origem quando há clonagem, e \texttt{users.active\_language\_id} indica a linguagem ativa do usuário. O par proprietário e nome é único. Esses vínculos permitem documentar a persistência da personalização, ausente no esquema apresentado na qualificação.
 
@@ -95,7 +97,7 @@ A configuração foi motivada pela investigação de escolhas sintáticas no ens
 
 O tipo \texttt{GrammarConfig}, recebido por \texttt{TokenIterator}, reúne quatro seleções: terminadores obrigatórios ou opcionais no fim da linha; blocos delimitados ou por indentação; modo com declaração explícita de tipo ou modo sem essa declaração; e arranjos fixos ou dinâmicos. Essas opções selecionam alternativas já codificadas no analisador e nos descritores semânticos. A palavra dinâmico no título não equivale especificamente ao modo de tipagem: refere-se ao recebimento dessa configuração para um novo processamento, sem a geração de um analisador arbitrário pelo usuário.
 
-No modo sem declaração explícita de tipo, as palavras canônicas são \texttt{variable} e \texttt{function}; \texttt{variavel} e \texttt{funcao} passam a ser exemplos de personalização. A IDE migra as chaves antigas das configurações armazenadas para os nomes atuais. O léxico admite \texttt{ç} e \texttt{Ç} em identificadores e nomes configuráveis, além das letras latinas sem acento e do sublinhado, com dígitos permitidos após o primeiro caractere. Esse conjunto não representa suporte irrestrito a Unicode.
+No modo sem declaração explícita de tipo, as palavras canônicas são \texttt{variable} e \texttt{function}; \texttt{variavel} e \texttt{funcao} passam a ser exemplos de personalização. A IDE migra as chaves antigas das configurações armazenadas para os nomes atuais. O léxico admite \texttt{ç} e \texttt{Ç} em identificadores e nomes configuráveis, além das letras latinas sem acento e do sublinhado, com dígitos permitidos após o primeiro caractere.
 
 A IDE disponibiliza quatro configurações prontas: Portugol, Python-like, C-like e Ruby-like. Portugol, a opção inicial na ausência de configuração salva aplicável, utiliza tipos explícitos, arranjos fixos, blocos \texttt{inicio}/\texttt{fim} e ponto e vírgula obrigatório. C-like combina os mesmos modos com chaves; Python-like combina indentação, declarações sem tipo explícito, arranjos dinâmicos e terminador opcional no fim da linha; Ruby-like utiliza os três últimos modos com blocos \texttt{do}/\texttt{end}. Esses nomes indicam combinações suportadas pelo núcleo, sem compatibilidade integral com Python, C ou Ruby. Os padrões da IDE também não devem ser confundidos com os valores padrão de \texttt{GrammarConfig} quando o núcleo é instanciado diretamente.
 
@@ -133,43 +135,39 @@ O pacote \texttt{compiler} passou a incluir, em \texttt{language-rules.ts}, um r
 \end{table}
 
 
-A validação prévia da configuração é tratada por funções utilitárias dedicadas, como \texttt{validateOperator}\allowbreak\texttt{WordMap}, \texttt{validateBoolean}\allowbreak\texttt{LiteralMap}, \texttt{validateBlock}\allowbreak\texttt{Delimiters} e \texttt{validateStatement}\allowbreak\texttt{TerminatorLexeme}. Cada uma dessas funções verifica restrições léxicas elementares antes do início da análise, impedindo, por exemplo, que palavras-chave personalizadas colidam com identificadores válidos ou que delimitadores de bloco contenham caracteres inválidos. Essa estratégia preventiva atende aos princípios de detecção precoce de erros discutidos por \citeonline{cooper2012}, transformando inconsistências de configuração em mensagens claras antes mesmo da leitura do código-fonte. A Figura \ref{fig:validate-functions} apresenta a implementação das quatro funções de validação.
+A validação prévia da configuração é tratada por funções utilitárias dedicadas, como \texttt{validateOperator}\allowbreak\texttt{WordMap}, \texttt{validateBoolean}\allowbreak\texttt{LiteralMap}, \texttt{validateBlock}\allowbreak\texttt{Delimiters} e \texttt{validateStatement}\allowbreak\texttt{TerminatorLexeme}. Cada uma dessas funções verifica restrições léxicas elementares antes do início da análise, impedindo, por exemplo, que palavras-chave personalizadas colidam com identificadores válidos ou que delimitadores de bloco contenham caracteres inválidos. Essa estratégia preventiva atende aos princípios de detecção precoce de erros discutidos por \citeonline{cooper2012}, transformando inconsistências de configuração em mensagens claras antes mesmo da leitura do código-fonte. As Figuras~\ref{fig:validate-operator-word-map} a~\ref{fig:validate-statement-terminator} apresentam a implementação das quatro funções de validação.
 
 Depois da revisão de setembro, \texttt{validateBlockDelimiters} deixou de exigir que os delimitadores tenham forma de identificador. A função recusa agora apenas delimitadores com espaços, iguais entre si ou coincidentes com palavras reservadas. A mudança foi necessária para a predefinição livre do assistente, que informa as próprias chaves como delimitadores, e a Figura~\ref{fig:validate-block-delimiter} mostra a versão anterior da função. A validação, porém, passou a aceitar mais do que o analisador léxico reconhece. Em um teste manual com \texttt{<:} e \texttt{:>}, a configuração foi aceita, mas o \textit{scanner} de símbolos separou cada delimitador em dois \textit{tokens}, \texttt{<} e \texttt{:}, e o bloco não foi identificado. Na versão examinada, funcionam as chaves e os delimitadores com forma de identificador, como \texttt{inicio} e \texttt{fim}.
 
-\begin{figure}[p]
+\begin{figure}[htbp]
     \centering
-    \caption{Funções de validação prévia da configuração léxica da linguagem.}
-    \label{fig:validate-functions}
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.27\textheight,keepaspectratio]{Figuras/validateOperatorWordMap.png}
-        \caption{\texttt{validateOperator}\allowbreak\texttt{WordMap}}
-        \label{fig:validate-operator-word-map}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.27\textheight,keepaspectratio]{Figuras/validateBooleanLiteralMap.png}
-        \caption{\texttt{validateBoolean}\allowbreak\texttt{LiteralMap}}
-        \label{fig:validate-boolean-literal-map}
-    \end{subfigure}
+    \caption{Função \texttt{validateOperatorWordMap}, que valida a configuração dos operadores escritos como palavras.}
+    \label{fig:validate-operator-word-map}
+    \includegraphics[width=0.75\textwidth,height=0.38\textheight,keepaspectratio]{Figuras/validateOperatorWordMap.png}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
-    \vspace{0.8em}
+\begin{figure}[htbp]
+    \centering
+    \caption{Função \texttt{validateBooleanLiteralMap}, que valida a configuração dos literais booleanos.}
+    \label{fig:validate-boolean-literal-map}
+    \includegraphics[width=0.75\textwidth,height=0.38\textheight,keepaspectratio]{Figuras/validateBooleanLiteralMap.png}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.27\textheight,keepaspectratio]{Figuras/validateBlockDelimiter.png}
-        \caption{\texttt{validateBlock}\allowbreak\texttt{Delimiters}}
-        \label{fig:validate-block-delimiter}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth,height=0.27\textheight,keepaspectratio]{Figuras/validateStatementTerminatorLexeme.png}
-        \caption{\texttt{validateStatement}\allowbreak\texttt{TerminatorLexeme}}
-        \label{fig:validate-statement-terminator}
-    \end{subfigure}
+\begin{figure}[htbp]
+    \centering
+    \caption{Função \texttt{validateBlockDelimiters}, que valida a configuração dos delimitadores de bloco.}
+    \label{fig:validate-block-delimiter}
+    \includegraphics[width=0.75\textwidth,height=0.38\textheight,keepaspectratio]{Figuras/validateBlockDelimiter.png}
+    \legend{Fonte: elaborado pelo autor.}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \caption{Função \texttt{validateStatementTerminatorLexeme}, que valida a configuração do terminador de instrução.}
+    \label{fig:validate-statement-terminator}
+    \includegraphics[width=0.75\textwidth,height=0.38\textheight,keepaspectratio]{Figuras/validateStatementTerminatorLexeme.png}
     \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -282,44 +280,3 @@ A persistência de exercícios, turmas e submissões foi mantida em um serviço 
 Nos exercícios com linguagem obrigatória, a interface aplica temporariamente a configuração efetiva resolvida pela API, com precedência do exercício sobre a lista e sobre a seleção livre. A sobreposição bloqueia a seleção de outra linguagem e preserva a configuração pessoal para restauração. O servidor de validação continua recebendo o código e a configuração pelo contrato de submissão; o bloqueio do seletor é um comportamento da interface, não uma demonstração de validação de todas as restrições no servidor.
 
 \input{texto/contratos-seguranca-backend}
-
-\section{Estratégia de Testes Automatizados}
-\label{sec:metodologia-testes}
-
-\subsection{Testes do núcleo de tradução}
-
-A verificação automatizada das fases do compilador utiliza, na versão do repositório descrita neste texto, o \textit{framework} Vitest. Sua adoção pode ser conferida no arquivo \texttt{packages/compiler/package.json}, que declara a dependência e o comando \texttt{test}, e nas importações de \texttt{describe}, \texttt{it} e \texttt{expect} dos arquivos de teste. A suíte está organizada no diretório \texttt{packages/}\allowbreak\texttt{compiler}\allowbreak\texttt{/src/tests} e estruturada de modo a refletir a topologia interna do projeto. Os testes foram subdivididos em três camadas: testes de \textit{tokens}, que verificam a estabilidade dos identificadores numéricos e dos agrupamentos por categoria; testes de \textit{lexer}, que exercitam cada \textit{scanner} especializado em isolamento, abrangendo comentários, literais numéricos, cadeias com escapes, terminadores configuráveis, delimitadores de bloco, operadores em forma de palavra e geração de \textit{tokens} de indentação; e testes de gramática, que validam a aceitação ou rejeição de programas inteiros sob distintas configurações de tipagem, modos de bloco e variantes do comando \texttt{switch}.
-
-A adoção do TDD discutida por \citeonline{aniche2012} mostrou-se particularmente útil em construções como o terminador de instrução configurável e o modo de blocos por indentação, em que pequenas alterações na lógica do \textit{lexer} poderiam quebrar inadvertidamente programas que antes compilavam corretamente. O ciclo iterativo do TDD, composto pelas etapas de escrita do teste, implementação mínima e refatoração, conforme ilustra a Figura \ref{fig:ciclo_tdd}, é a referência metodológica; a inspeção dos arquivos de teste não demonstra sua aplicação sistemática a cada funcionalidade. Em conformidade com a pirâmide de testes apresentada na Seção~\ref{subsec:testes-tdd}, a maior parte da suíte concentra-se no nível unitário, garantindo execuções rápidas e \textit{feedback} imediato, enquanto os testes de gramática operam como testes de integração internos ao compilador, verificando o comportamento agregado das fases léxica, sintática e de geração de código intermediário.
-
-Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-aliases} reproduz um dos casos que verificam a aplicação de um mapeamento configurável de operadores no analisador léxico. O teste instancia o \texttt{Lexer} com um mapeamento que substitui os operadores lógicos por palavras e verifica que os \textit{tokens} produzidos carregam exatamente os mesmos identificadores de tipo que seriam gerados pelos símbolos canônicos. Essa equivalência é o que garante que as fases seguintes do compilador permaneçam indiferentes à personalização escolhida pelo usuário.
-
-\begin{lstlisting}[language=typescript, caption={Caso de teste da equivalência entre operadores simbólicos e operadores em forma de palavra (\texttt{operator-word-aliases.spec.ts}).}, label={lst:teste-aliases}, captionpos=b]
-describe("operator word aliases", () => {
-  it("tokenizes logical aliases with the same token IDs as symbols",
-     () => {
-    const lexer = new Lexer("if a and not b {}", {
-      operatorWordMap: {
-        logical_and: "and",
-        logical_not: "not",
-      },
-    });
-
-    const tokens = lexer.scanTokens();
-
-    expect(tokens.map((token) => token.type)).toEqual(
-      expect.arrayContaining([
-        TOKENS.LOGICALS.logical_and,
-        TOKENS.LOGICALS.logical_not,
-      ]),
-    );
-  });
-});
-\end{lstlisting}
-
-
-Na verificação local de 19 de outubro de 2026, a suíte do núcleo aprovou 243 testes em 22 arquivos \cite{silva2026verificacaooutubro}. Em 19 de setembro eram 224 testes em 21 arquivos \cite{silva2026verificacaobackend}. Os casos acrescentados cobrem incremento e decremento, declarações múltiplas com inicializador no fim da lista, leitura de variáveis não declaradas, o limite de passos, delimitadores informados como símbolos, literais numéricos no fim do código-fonte e o resumo de regras em \texttt{language-rules.spec.ts}. Os casos incluem também igualdade comum e estrita, ternários aninhados com execução somente do ramo selecionado, avisos de conversão e rejeição de atribuições e retornos incompatíveis. O Apêndice~\ref{ap:testes} apresenta a distribuição e o comando utilizado. Os resultados documentam os comportamentos cobertos, sem constituir prova de correção de todos os programas aceitos.
-
-\input{texto/testes-backend}
-
-\input{texto/protocolo-avaliacao}

@@ -1,5 +1,5 @@
 
-Este capítulo classifica a pesquisa, apresenta os materiais e as ferramentas utilizados e descreve as etapas em que o trabalho foi organizado. Cada etapa é detalhada em um capítulo posterior, indicado na Seção~\ref{sec:etapas-pesquisa}. A Seção~\ref{sec:conducao-desenvolvimento} descreve como o desenvolvimento foi conduzido pela dupla, e a Seção~\ref{sec:protocolo-avaliacao}, ao final do capítulo, apresenta os instrumentos usados na avaliação da plataforma.
+Este capítulo classifica a pesquisa, apresenta os materiais e as ferramentas utilizados e descreve as etapas em que o trabalho foi organizado. Cada etapa é detalhada em um capítulo posterior, indicado na Seção~\ref{sec:etapas-pesquisa}. A Seção~\ref{sec:conducao-desenvolvimento} descreve como o desenvolvimento foi conduzido pela dupla.
 
 \section{Classificação da Pesquisa}
 \label{sec:classificacao-pesquisa}
@@ -49,7 +49,7 @@ A Tabela~\ref{tab:materiais-ferramentas} reúne os materiais e as ferramentas us
 \subsection{Uso de ferramentas de inteligência artificial}
 \label{subsec:uso-ia}
 
-Durante a programação, o autor usou o GitHub Copilot, integrado ao Visual Studio Code, como recurso de autocompletar. O autor digitava o código, e a ferramenta sugeria a continuação da linha ou do bloco; cada sugestão era aceita, alterada ou descartada pelo autor. A arquitetura, as decisões de interface e a integração com o núcleo de tradução foram definidas pelos autores.
+Durante a programação, o autor usou o GitHub Copilot, integrado ao Visual Studio Code, como recurso de autocompletar. O autor digitava o código, e a ferramenta sugeria a continuação da linha ou do bloco; cada sugestão era aceita, alterada ou descartada pelo autor. Os testes do serviço de \textit{back-end}, escritos com pytest, e os testes de ponta a ponta, escritos com Playwright, foram desenvolvidos com o auxílio do Claude Code, assistente de programação da Anthropic, a partir das orientações dos autores, que revisaram e executaram esses testes. A arquitetura, as decisões de interface e a integração com o núcleo de tradução foram definidas pelos autores.
 
 Na redação, os autores escreveram a versão inicial dos capítulos e usaram um assistente de inteligência artificial (Claude, da Anthropic) para revisar o português. Na fase final, o mesmo assistente também reescreveu trechos e redigiu parágrafos a partir das correções indicadas pelo orientador e pelo revisor. Os autores revisaram todo o texto produzido ou alterado dessa forma e respondem pelo seu conteúdo.
 
@@ -64,7 +64,7 @@ Conforme definido na pré-proposta, o trabalho foi organizado em seis macroetapa
     \item \textbf{Desenvolvimento da plataforma:} implementação da aplicação web, com os fluxos de edição, navegação, personalização, autenticação e uso educacional da IDE, descrita no Capítulo~\ref{cap:desenvolvimento};
     \item \textbf{Implementação da análise dinâmica léxica e sintática:} integração entre o código escrito na IDE e as fases de reconhecimento de \textit{tokens} e validação sintática com as regras configuradas pelo usuário, descrita nas Seções~\ref{sec:customizacao-dinamica} e~\ref{sec:execucao-analises};
     \item \textbf{Geração e interpretação do código intermediário:} execução do código intermediário no ambiente da IDE, com retorno de avisos, erros e resultados ao usuário, descrita na Seção~\ref{sec:terminal-feedback};
-    \item \textbf{Integração, testes e avaliação:} execução dos testes técnicos, descritos no Capítulo~\ref{cap:testes}; elaboração dos instrumentos de avaliação, descritos na Seção~\ref{sec:protocolo-avaliacao}; e aplicação deles a um painel de especialistas e a uma turma de estudantes, com os resultados no Capítulo~\ref{cap:resultados}. A documentação acompanhou as etapas técnicas e terminou na redação dos resultados e das limitações, no Capítulo~\ref{cap:consideracoes}.
+    \item \textbf{Integração, testes e avaliação:} execução dos testes automatizados, elaboração dos instrumentos de avaliação e aplicação deles a um painel de especialistas e a uma turma de estudantes, descritas no Capítulo~\ref{cap:testes} junto com os resultados. A documentação acompanhou as etapas técnicas e terminou na redação dos resultados e das limitações, no Capítulo~\ref{cap:consideracoes}.
 \end{itemize}
 
 O TCC~I concentrou a revisão bibliográfica, a arquitetura e a integração inicial entre a IDE e o núcleo de tradução. O TCC~II concluiu a implementação e realizou os testes e a avaliação com especialistas e com uma turma de estudantes. A distribuição das atividades ao longo dos doze meses está no cronograma do Apêndice~\ref{ap:cronograma}.
@@ -83,4 +83,3 @@ Como uma IDE web tem muitas telas, componentes interativos e estados compartilha
 A descrição da implementação apresentada nos capítulos seguintes foi conferida no código do repositório do projeto (Apêndice~\ref{ap:repositorio}), em revisões identificadas. A primeira conferência ocorreu em 16 de setembro de 2026, na revisão \texttt{b4372bf}. Em 19 de setembro, a análise foi atualizada para a revisão \texttt{3ffae01}, que incorporou os testes de ponta a ponta do front-end e o fluxo de integração contínua; os resultados dessa execução de testes estão no Capítulo~\ref{cap:testes}. As verificações de interface e as capturas anteriores conservam suas datas e seu escopo original. Em 19 de outubro, a descrição foi conferida de novo na revisão \texttt{04adff2}, que trouxe os tutoriais guiados, a página Sobre, o diálogo de regras do compilador e a correção de submissões dentro da IDE (Apêndice~\ref{ap:verificacao}).
 
 
-\input{texto/protocolo-avaliacao}

@@ -265,7 +265,7 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
 %\aplicaresumo
 
 
-\noindent O ensino introdutório de programação envolve a aprendizagem de conceitos algorítmicos e de convenções de escrita da linguagem. O projeto do qual este trabalho faz parte propõe uma plataforma educacional composta por uma IDE web e um núcleo de tradução e execução configurável. A plataforma organiza-se em dois eixos complementares: a interface e a experiência de uso, tratadas no documento complementar, e o núcleo, objeto deste trabalho. O objetivo deste documento é projetar, implementar e integrar esse núcleo, contemplando análise léxica, sintática e semântica, geração de código intermediário e execução por um interpretador. O qualificativo dinâmico refere-se à aplicação de configurações de vocabulário e à seleção de variantes predefinidas de blocos, terminadores, tipagem e arranjos a cada novo processamento do código. O usuário não acrescenta produções gramaticais arbitrárias nem altera a semântica das operações durante uma execução. Os procedimentos compreendem revisão de literatura, modelagem da arquitetura e implementação incremental com testes automatizados. A solução permite inspecionar os tokens e as instruções intermediárias e executar programas no navegador, além de reutilizar o núcleo no servidor para a avaliação automática de exercícios. O diferencial técnico está em reunir configuração da linguagem, inspeção da tradução e execução em uma IDE. A plataforma foi avaliada por oito professores especialistas ou da cadeira de programação e por dezoito estudantes de uma turma do ensino médio técnico em informática da UFCI-MG, Campus Leopoldina. No painel, a correspondência entre o código intermediário exibido e a execução teve média 4,83, em escala de 1 a 5, entre seis respondentes, e a clareza das mensagens de erro teve 4,71; um respondente pediu mensagens que sugiram a correção. Onze estudantes acharam mais fácil de entender a versão do programa em português. São opiniões e preferências declaradas, e a contribuição pedagógica permanece como hipótese.
+\noindent Este trabalho tem como objetivo projetar, implementar e integrar o núcleo de tradução e execução de uma plataforma educacional web, no qual o próprio usuário define o vocabulário e as variantes da linguagem usada no ensino introdutório de programação. O projeto foi desenvolvido em coautoria: o texto complementar trata da IDE e da interface, e este documento trata do núcleo, com as análises léxica, sintática e semântica, a geração de código intermediário e a execução por um interpretador, e do serviço de \textit{back-end}. Quanto à metodologia, trata-se de uma pesquisa aplicada, de abordagem qualitativa e quantitativa, com objetivos exploratórios e descritivos. Os procedimentos foram a pesquisa bibliográfica, o desenvolvimento do artefato, com especificação da linguagem, modelagem da arquitetura e do banco de dados, implementação incremental e testes automatizados, e um levantamento por questionário. O questionário principal foi respondido por professores especialistas ou da cadeira de programação; um formulário mais curto foi aplicado a estudantes do ensino médio técnico em informática da UFCI-MG, Campus Leopoldina, depois de uma demonstração da plataforma. Como resultado, o núcleo aplica a cada análise o vocabulário e as variantes escolhidos pelo usuário, expõe os \textit{tokens} e as instruções intermediárias que serão executadas e é reutilizado no servidor para corrigir exercícios. O painel considerou que o código intermediário exibido corresponde à execução e que as mensagens de erro são claras, pediu mensagens que sugiram a correção e, em sua maioria, não sentiu falta de construções na linguagem para o ensino introdutório. A maioria dos estudantes declarou achar mais fácil de entender a versão de um programa escrita em português. Conclui-se que o núcleo torna viável investigar a personalização da sintaxe no ensino de programação; os dados coletados registram a percepção dos participantes, e um estudo que meça o desempenho de estudantes fica como trabalho futuro.
 
 % Escrever o resumo do TCC. Este é um item obrigatório de acordo com a NBR 14724 \cite{bib:abnt14724}. 
 % Quanto a sua extensão os resumos devem ter de 150 a 500 palavras. 
@@ -290,7 +290,7 @@ A todos que, de alguma forma, contribuíram para esta conquista, meu muito obrig
     \textbf{ABSTRACT} 
 \end{center} 
 
-Introductory programming education involves learning both algorithmic concepts and language conventions. The broader project proposes an educational platform consisting of a web IDE and a configurable translation and execution core. The platform has two complementary scopes: the interface and user experience, addressed in the companion document, and the core, addressed in this work. This document aims to design, implement, and integrate the core, covering lexical, syntactic, and semantic analysis, intermediate code generation, and execution by an interpreter. The term dynamic refers to applying vocabulary configurations and selecting predefined variants of blocks, statement terminators, typing, and arrays for each new processing of source code. Users cannot introduce arbitrary grammar productions or change the semantics of operations during program execution. The procedures comprise a literature review, architectural modeling, and incremental implementation with automated tests. The solution supports token and intermediate instruction inspection and program execution in the browser, while also reusing the core on the server for automated exercise assessment. Its technical contribution is the combination of language configuration, translation inspection, and execution within an IDE. The platform was evaluated by eight expert teachers or teachers of programming courses and by eighteen students from a technical high school computer science class at UFCI-MG, Leopoldina Campus. On the panel, the correspondence between the displayed intermediate code and the actual execution averaged 4.83 on a 1 to 5 scale among six respondents, and the clarity of error messages averaged 4.71; one respondent asked for messages that suggest a fix. Eleven students found the Portuguese version of the program easier to understand. These are opinions and stated preferences, and the pedagogical contribution remains a hypothesis.
+This work aims to design, implement, and integrate the translation and execution core of a web educational platform, in which users define the vocabulary and the variants of the language used in introductory programming education. The project was developed jointly: the companion document addresses the IDE and the interface, whereas this document addresses the core, comprising lexical, syntactic, and semantic analysis, intermediate code generation, and execution by an interpreter, and the back-end service. Methodologically, this is applied research with a qualitative and quantitative approach and exploratory and descriptive objectives. The procedures were a literature review, the development of the artifact, comprising language specification, architecture and database modeling, incremental implementation, and automated tests, and a questionnaire survey. The main questionnaire was answered by expert teachers or teachers of programming courses; a shorter form was given to students of the technical high school program in computer science at UFCI-MG, Leopoldina Campus, after a demonstration of the platform. As a result, the core applies the vocabulary and variants chosen by the user at each analysis, exposes the tokens and the intermediate instructions that will be executed, and is reused on the server to grade exercises. The panel considered that the displayed intermediate code matches the execution and that the error messages are clear, asked for messages that suggest a fix, and mostly did not miss any language construct for introductory courses. Most students stated that the Portuguese version of a program was easier to understand. The core makes it feasible to investigate syntax customization in programming education; the data collected record the participants' perceptions, and a study that measures student performance remains future work.
 
 \noindent
 \textbf{Keywords:} Dynamic Interpreter; Introductory Programming Education; Language-Oriented Programming; Interactive Programming Environment; Teaching-Learning.%Finalizadas por ponto e aplicaializadas por letra maiuscula.
@@ -349,21 +349,23 @@ Introductory programming education involves learning both algorithmic concepts a
 \textual %Não alterar
 
 
+\renewcommand{\lstlistingname}{Trecho de Código}
+
 \chapter{INTRODUÇÃO}
 \input{texto/introducao}
 
 \chapter{REFERENCIAL TEÓRICO E TRABALHOS RELACIONADOS} \label{cap:referencial}
 \input{texto/referencial}
 
-\chapter{PROPOSTA} \label{cap:proposta}
+\chapter{SOLUÇÃO PROPOSTA} \label{cap:proposta}
 \input{texto/proposta}
 
 \chapter{METODOLOGIA} \label{cap:modelagem}
 \input{texto/metodologia}
 
 
-\chapter{RESULTADOS DA AVALIAÇÃO} \label{cap:resultados}
-\input{texto/resultados-avaliacao}
+\chapter{PLANEJAMENTO E REALIZAÇÃO DOS TESTES} \label{cap:testes}
+\input{texto/testes}
 
 
 \chapter{CONSIDERAÇÕES FINAIS} \label{cap:consideracoes}
@@ -376,7 +378,11 @@ Introductory programming education involves learning both algorithmic concepts a
 \bibliography{referencias.bib}
 
 \appendix
-\input{texto/apendice}
+\input{texto/apendice}                        % A a D
+\input{texto/apendice-repositorio}             % E: repositório e registros (ap:repositorio)
+\input{texto/apendice-formulario-especialistas} % F: formulário dos especialistas
+\input{texto/apendice-formulario-estudantes}  % G: formulário dos estudantes
+\input{texto/apendice-respostas}              % H: resumo das respostas (ap:respostas)
 
 %%% ---
 \end{document}

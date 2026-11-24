@@ -1,0 +1,62 @@
+Este capítulo apresenta como a solução foi testada e avaliada. A Seção~\ref{sec:planejamento-testes} descreve o planejamento. A Seção~\ref{sec:testes-automatizados} relata os testes automatizados do núcleo de tradução e do serviço de \textit{back-end} e sua execução na integração contínua. A Seção~\ref{sec:avaliacao-especialistas} trata do teste de usabilidade com o painel de especialistas, e a Seção~\ref{sec:avaliacao-estudantes}, da comparação entre duas versões de um programa feita com uma turma de estudantes. Em cada seção, o resultado de cada teste é discutido logo depois de apresentado. As Seções~\ref{sec:resultado-literatura}, \ref{subsec:limites-interpretacao} e~\ref{sec:resultado-sintese} relacionam os resultados aos trabalhos anteriores, delimitam o que eles permitem concluir e os confrontam com os objetivos.
+
+\section{Planejamento dos testes}
+\label{sec:planejamento-testes}
+
+O planejamento seguiu a pirâmide de testes apresentada na Subseção~\ref{subsec:testes-tdd}: muitos testes pequenos e rápidos na base e menos testes nos níveis que exercitam o sistema inteiro. Cada nível ficou com um objeto e uma ferramenta:
+
+\begin{itemize}
+    \item Testes do núcleo de tradução: verificam os \textit{tokens}, cada \textit{scanner} do analisador léxico e a aceitação ou rejeição de programas inteiros pela gramática, sob diferentes configurações da linguagem. Usam o Vitest e estão na Subseção~\ref{subsec:testes-nucleo}.
+    \item Testes do serviço de \textit{back-end}: verificam as rotas do FastAPI, os contratos de resposta e as regras de acesso, com um banco de dados de teste. Usam o pytest e estão na Subseção~\ref{subsec:testes-backend}. Foram escritos com o auxílio do Claude Code, conforme a Seção~\ref{sec:uso-ia}.
+    \item Integração contínua: as suítes rodam no GitHub Actions, e a implantação só ocorre se forem aprovadas (Subseção~\ref{subsec:ci-backend}).
+    \item Teste de usabilidade com especialistas: verifica a percepção de professores e profissionais de computação sobre o núcleo de tradução e a plataforma, por meio de um formulário com escalas consolidadas, o SUS, o UEQ-S e o TAM, e de blocos escritos para o projeto. Está na Seção~\ref{sec:avaliacao-especialistas}.
+    \item Comparação A/B com estudantes: verifica qual de duas versões do mesmo programa, uma na sintaxe padrão e outra personalizada em português, os alunos de uma turma declaram entender com mais facilidade. Está na Seção~\ref{sec:avaliacao-estudantes}.
+\end{itemize}
+
+\section{Testes automatizados}
+\label{sec:metodologia-testes}\label{sec:testes-automatizados}
+
+Os testes automatizados verificam o núcleo de tradução e o serviço de \textit{back-end} e rodam também na integração contínua.
+
+\subsection{Testes do núcleo de tradução}
+\label{subsec:testes-nucleo}
+
+A verificação automatizada das fases do compilador utiliza, na versão do repositório descrita neste texto, o \textit{framework} Vitest. Sua adoção pode ser conferida no arquivo \texttt{packages/compiler/package.json}, que declara a dependência e o comando \texttt{test}, e nas importações de \texttt{describe}, \texttt{it} e \texttt{expect} dos arquivos de teste. A suíte está organizada no diretório \texttt{packages/}\allowbreak\texttt{compiler}\allowbreak\texttt{/src/tests} e estruturada de modo a refletir a topologia interna do projeto. Os testes foram subdivididos em três camadas: testes de \textit{tokens}, que verificam a estabilidade dos identificadores numéricos e dos agrupamentos por categoria; testes de \textit{lexer}, que exercitam cada \textit{scanner} especializado em isolamento, abrangendo comentários, literais numéricos, cadeias com escapes, terminadores configuráveis, delimitadores de bloco, operadores em forma de palavra e geração de \textit{tokens} de indentação; e testes de gramática, que validam a aceitação ou rejeição de programas inteiros sob distintas configurações de tipagem, modos de bloco e variantes do comando \texttt{switch}.
+
+A adoção do TDD discutida por \citeonline{aniche2012} mostrou-se particularmente útil em construções como o terminador de instrução configurável e o modo de blocos por indentação, em que pequenas alterações na lógica do \textit{lexer} poderiam quebrar inadvertidamente programas que antes compilavam corretamente. O ciclo iterativo do TDD, composto pelas etapas de escrita do teste, implementação mínima e refatoração, conforme ilustra a Figura \ref{fig:ciclo_tdd}, é a referência metodológica. Em conformidade com a pirâmide de testes apresentada na Seção~\ref{subsec:testes-tdd}, a maior parte da suíte concentra-se no nível unitário, garantindo execuções rápidas e \textit{feedback} imediato, enquanto os testes de gramática operam como testes de integração internos ao compilador, verificando o comportamento agregado das fases léxica, sintática e de geração de código intermediário.
+
+Para tornar concreta essa estratégia, o Trecho de Código~\ref{lst:teste-aliases} reproduz um dos casos que verificam a aplicação de um mapeamento configurável de operadores no analisador léxico. O teste instancia o \texttt{Lexer} com um mapeamento que substitui os operadores lógicos por palavras e verifica que os \textit{tokens} produzidos carregam exatamente os mesmos identificadores de tipo que seriam gerados pelos símbolos canônicos. Essa equivalência é o que garante que as fases seguintes do compilador permaneçam indiferentes à personalização escolhida pelo usuário.
+
+\begin{lstlisting}[language=typescript, caption={Caso de teste da equivalência entre operadores simbólicos e operadores em forma de palavra (\texttt{operator-word-aliases.spec.ts}).}, label={lst:teste-aliases}, captionpos=b]
+describe("operator word aliases", () => {
+  it("tokenizes logical aliases with the same token IDs as symbols",
+     () => {
+    const lexer = new Lexer("if a and not b {}", {
+      operatorWordMap: {
+        logical_and: "and",
+        logical_not: "not",
+      },
+    });
+
+    const tokens = lexer.scanTokens();
+
+    expect(tokens.map((token) => token.type)).toEqual(
+      expect.arrayContaining([
+        TOKENS.LOGICALS.logical_and,
+        TOKENS.LOGICALS.logical_not,
+      ]),
+    );
+  });
+});
+\end{lstlisting}
+
+
+Na verificação local de 19 de outubro de 2026, a suíte do núcleo aprovou 243 testes em 22 arquivos (Apêndice~\ref{ap:repositorio}). Em 19 de setembro eram 224 testes em 21 arquivos (Apêndice~\ref{ap:repositorio}). Os casos acrescentados cobrem incremento e decremento, declarações múltiplas com inicializador no fim da lista, leitura de variáveis não declaradas, o limite de passos, delimitadores informados como símbolos, literais numéricos no fim do código-fonte e o resumo de regras em \texttt{language-rules.spec.ts}. Os casos incluem também igualdade comum e estrita, ternários aninhados com execução somente do ramo selecionado, avisos de conversão e rejeição de atribuições e retornos incompatíveis. O Apêndice~\ref{ap:testes} apresenta a distribuição e o comando utilizado.
+
+\input{texto/testes-backend}
+
+\input{texto/avaliacao-especialistas}
+
+\input{texto/avaliacao-estudantes}
+
+\input{texto/avaliacao-sintese}

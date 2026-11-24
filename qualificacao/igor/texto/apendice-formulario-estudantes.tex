@@ -2,35 +2,41 @@
 
 Este apêndice reproduz o formulário aplicado à turma do ensino médio técnico em Informática da UFCI-MG, Campus Leopoldina, em 3 de novembro de 2026, descrito na Subseção~\ref{subsec:formulario-estudantes}. O formulário tem o título ``Opinião sobre a demonstração do Interpretador Dinâmico'', não coleta e-mail, nome nem outro identificador e pede a idade em faixas.
 
+As questões são numeradas na ordem em que aparecem, de \ref{qF:termo} a \ref{qF:comentario}.
+
 \section{Termo de Assentimento}
 
-A primeira pergunta é o termo de assentimento, de resposta obrigatória, com as alternativas ``Li e quero participar'' e ``Não quero participar''. Quem escolhe a segunda alternativa vai direto para o envio, sem responder às demais perguntas.
+\begin{questoes}{qF}
+    \item\label{qF:termo} Termo de assentimento, de resposta obrigatória, com as alternativas ``Li e quero participar'' e ``Não quero participar''. Quem escolhe a segunda alternativa vai direto para o envio, sem responder às demais perguntas.
+\end{questoes}
 
 \section{Sobre o Estudante}
 
 Todas as perguntas desta parte são de resposta única e obrigatória.
 
-\begin{enumerate}
-    \item Qual é a sua idade? Alternativas: até 15 anos; 16 ou 17 anos; 18 anos ou mais.
+\begin{questoes}{qF}
+    \item\label{qF:perfil-ini} Qual é a sua idade? Alternativas: até 15 anos; 16 ou 17 anos; 18 anos ou mais.
     \item Qual é o seu curso técnico? Alternativas: Informática; Eletrônica; Mecatrônica; outro curso técnico.
     \item Em que ano você está? Alternativas: 1º ano; 2º ano; 3º ano; 4º ano.
-    \item Você já programou antes? Alternativas: nunca programei; já programei um pouco (em aulas, cursos ou tutoriais); programo com frequência.
-\end{enumerate}
+    \item\label{qF:perfil-fim} Você já programou antes? Alternativas: nunca programei; já programei um pouco (em aulas, cursos ou tutoriais); programo com frequência.
+\end{questoes}
 
 \section{Sobre a Demonstração}
 
 A instrução desta parte é: ``Marque o quanto você concorda com cada frase. Não existe resposta certa ou errada.'' As seis frases formam uma grade com a escala ``discordo totalmente'', ``discordo'', ``não concordo nem discordo'', ``concordo'' e ``concordo totalmente'', convertida para os valores de 1 a 5 na análise.
 
-\begin{enumerate}
-    \item Entendi para que serve a plataforma.
+\begin{questoes}{qF}
+    \item\label{qF:demo-ini} Entendi para que serve a plataforma.
     \item Um programa escrito com palavras em português é mais fácil de entender do que um escrito com palavras em inglês.
     \item Poder escolher as palavras da linguagem ajudaria quem está começando a programar.
     \item Ver como a plataforma separa o programa em partes (os \textit{tokens}) ajuda a entender como o computador lê o código.
     \item Eu gostaria de usar essa plataforma nas aulas de programação.
-    \item A demonstração aumentou meu interesse em aprender programação.
-\end{enumerate}
+    \item\label{qF:demo-fim} A demonstração aumentou meu interesse em aprender programação.
+\end{questoes}
 
-Em seguida vem a pergunta de comparação: ``As duas versões abaixo fazem a mesma coisa: leem um número e escrevem se ele é par ou ímpar. Qual delas você acha mais fácil de entender?''. As alternativas são ``Versão A'', ``Versão B'', ``As duas são igualmente fáceis'' e ``As duas são igualmente difíceis''. As duas versões aparecem como texto simples no corpo da pergunta, sem imagem nem realce de cores, e estão transcritas a seguir.
+\begin{questoes}{qF}
+    \item\label{qF:comparacao} Pergunta de comparação: ``As duas versões abaixo fazem a mesma coisa: leem um número e escrevem se ele é par ou ímpar. Qual delas você acha mais fácil de entender?''. As alternativas são ``Versão A'', ``Versão B'', ``As duas são igualmente fáceis'' e ``As duas são igualmente difíceis''. As duas versões aparecem como texto simples no corpo da pergunta, sem imagem nem realce de cores, e estão transcritas a seguir.
+\end{questoes}
 
 \begin{center}
 \begin{minipage}[t]{0.42\textwidth}
@@ -64,4 +70,6 @@ fim
 
 As duas versões têm as mesmas sete linhas, na mesma ordem e com o mesmo recuo. Na Versão B, o tipo \texttt{int} passa a \texttt{numero\_inteiro}, \texttt{scan} e \texttt{print} passam a \texttt{leia} e \texttt{escreva}, \texttt{if} e \texttt{else} passam a \texttt{se} e \texttt{senao}, o operador \texttt{==} é escrito \texttt{igual} e as chaves dão lugar a \texttt{inicio} e \texttt{fim}. O operador \texttt{\%}, os parênteses, o ponto e vírgula e as mensagens ``PAR'' e ``IMPAR'' são os mesmos.
 
-O formulário termina com um campo opcional de resposta livre: ``Quer comentar algo? O que você mudaria ou acrescentaria na plataforma?'', com a orientação de não escrever o nome nem informações que identifiquem o aluno.
+\begin{questoes}{qF}
+    \item\label{qF:comentario} Campo opcional de resposta livre: ``Quer comentar algo? O que você mudaria ou acrescentaria na plataforma?'', com a orientação de não escrever o nome nem informações que identifiquem o aluno.
+\end{questoes}

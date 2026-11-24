@@ -1,15 +1,15 @@
-\section{Verificação técnica do assistente}
+\subsection{Verificação técnica do assistente}
 \label{subsec:verificacao-interface}
 
 A verificação técnica examinou a primeira etapa do assistente de personalização com três perguntas: se a etapa pode ser percorrida por teclado, se o leiaute se adapta a larguras de computador e de celular sem rolagem horizontal e quais problemas de acessibilidade uma ferramenta automática encontra nessa tela. Foi uma inspeção automatizada, sem participantes. Nenhuma pessoa usou a interface durante a verificação, de modo que não houve instruções a usuários, intervenções nem observação de uso; os dados vêm apenas das medições feitas pelo \textit{script} descrito a seguir.
 
-\subsection{Ferramentas e ambiente}
+\subsubsection{Ferramentas e ambiente}
 
 A verificação foi feita por um \textit{script} em Node.js, \texttt{verificar-interface.cjs}, que conduz o navegador pelo Playwright e executa a análise de acessibilidade com o axe-core por meio do pacote \texttt{@axe-core/playwright}. As versões registradas foram Node.js 25.2.1, Playwright 1.63.0, axe-core 4.13.0 e Chromium 153.0.8010.12, este executado sem interface gráfica (\textit{headless}). A aplicação rodou localmente, no servidor de desenvolvimento do Next.js, e a rota examinada foi \texttt{/language-creator}, aberta sem autenticação e sem consulta a contas.
 
 O \textit{script} combina dois temas, claro e escuro, com duas janelas, de 1440 por 1000 e de 390 por 844 pixels CSS, o que dá quatro cenários. Em todos eles, o navegador recebe a preferência por movimento reduzido, e o portal de ferramentas de desenvolvimento do Next.js é ocultado e excluído da análise, porque não faz parte da aplicação. A verificação foi executada pela primeira vez em 12 de setembro de 2026 e repetida em 16 de setembro, sobre a versão \texttt{b4372bf}, com o mesmo procedimento e as mesmas versões das ferramentas. Os resultados apresentados nesta seção são os da execução de 16 de setembro.
 
-\subsection{Roteiro e critérios}
+\subsubsection{Roteiro e critérios}
 
 Em cada cenário, o \textit{script} segue o mesmo roteiro:
 
@@ -24,7 +24,7 @@ Em cada cenário, o \textit{script} segue o mesmo roteiro:
 
 Os critérios de aprovação estão no próprio \textit{script}. A rota deve responder com o código 200, a primeira etapa deve ser alcançada por Tab dentro do limite e as duas transições por Enter devem mudar o título da etapa ativa; se uma dessas condições falha, a execução é interrompida. Para o leiaute, a ausência de rolagem horizontal é verificada pela igualdade entre a largura de rolagem do documento e a largura da janela. As ocorrências do axe não têm critério de aprovação: o relatório guarda, para cada cenário, as violações por regra, os elementos afetados e os itens que a ferramenta classificou como inconclusivos.
 
-\subsection{Resultados}
+\subsubsection{Resultados}
 
 A verificação abrangeu a etapa inicial do assistente e a navegação para a etapa de entrada e saída; não incluiu contas, turmas, submissões nem uso de leitor de tela. Nos quatro cenários, cinco acionamentos de Tab alcançaram o botão da primeira etapa, e Tab seguido de Enter ativou a segunda etapa. A lista de etapas apresentou direção vertical em 1440 pixels e horizontal em 390 pixels. A largura de rolagem do documento coincidiu com a largura da janela nos dois tamanhos. Esses resultados caracterizam o estado testado, não todos os componentes e estados da plataforma.
 

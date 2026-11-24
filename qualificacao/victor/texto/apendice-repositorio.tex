@@ -1,0 +1,48 @@
+\chapter[APÊNDICE E -- REPOSITÓRIO E REGISTROS DO PROJETO]{{\centering APÊNDICE E \textendash{} REPOSITÓRIO E REGISTROS DO PROJETO}}  \label{ap:repositorio}
+
+O código do núcleo de tradução, do serviço de \textit{back-end}, os testes e os registros de verificação citados neste trabalho estão no repositório público do projeto, mantido pelos dois autores no GitHub:
+
+\begin{center}
+\url{https://github.com/igorlamoia/dynamic-interpreter}
+\end{center}
+
+A Tabela~\ref{tab:ap-repositorio-caminhos} indica os caminhos citados no texto, e a Tabela~\ref{tab:ap-repositorio-revisoes}, as revisões do código que serviram de base às descrições e às execuções de testes. Uma revisão é identificada pelo seu código no histórico do Git; o texto usa os sete primeiros caracteres, e a tabela traz o código completo.
+
+\begin{table}[htbp]
+\centering
+\caption{Caminhos do repositório citados no texto.}
+\label{tab:ap-repositorio-caminhos}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{6.4cm}|p{7.6cm}|}
+\hline
+\textbf{Caminho} & \textbf{Conteúdo} \\\hline
+\path{packages/compiler} & Núcleo de tradução e execução e seus testes \\\hline
+\path{backend/app} & Serviço de \textit{back-end} em FastAPI: modelos, rotas, serviços e contratos de resposta \\\hline
+\path{backend/tests} & Testes do serviço de \textit{back-end} com pytest \\\hline
+\path{.github/workflows/deploy.yml} & Fluxo de integração contínua e implantação no GitHub Actions \\\hline
+\path{qualificacao/victor/verificacao/testes-backend-2026-09-19.json} & Registro da execução local dos testes do núcleo e do \textit{back-end} em 19 de setembro de 2026 \\\hline
+\path{qualificacao/victor/verificacao/testes-2026-10-19.json} & Registro da execução local dos testes do núcleo e do \textit{back-end} em 19 de outubro de 2026 \\\hline
+\path{qualificacao/verificacao/avaliacao-2026-11/resumo.json} & Resumo agregado das respostas aos formulários de avaliação (Apêndice~\ref{ap:respostas}) \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Os caminhos da pasta \path{qualificacao} estão na ramificação \texttt{escrita-tcc}, usada na redação deste trabalho.
+
+\begin{table}[htbp]
+\centering
+\caption{Revisões do código citadas no texto.}
+\label{tab:ap-repositorio-revisoes}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|p{6.6cm}|p{5.2cm}|}
+\hline
+\textbf{Data} & \textbf{Revisão} & \textbf{Uso no texto} \\\hline
+16/09/2026 & \texttt{b4372bf60218e61437d32af26d5f04a4595e7e22} & Primeira conferência da descrição da implementação \\\hline
+19/09/2026 & \texttt{e0a012bb833fa829e6e694bc2f5b99fdff4863a0} & Descrição do serviço de \textit{back-end}, dos contratos de resposta, dos controles de acesso e do fluxo de integração contínua \\\hline
+\end{tabular}
+\legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Os arquivos de uma revisão podem ser consultados pelo endereço do repositório seguido de \path{/tree/} e do código da revisão. Por exemplo, o serviço de \textit{back-end} na revisão de 19 de setembro está em \url{https://github.com/igorlamoia/dynamic-interpreter/tree/e0a012bb833fa829e6e694bc2f5b99fdff4863a0/backend/app}.

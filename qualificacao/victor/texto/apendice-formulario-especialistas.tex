@@ -1,0 +1,245 @@
+\chapter[APÊNDICE F -- FORMULÁRIO DOS ESPECIALISTAS]{{\centering APÊNDICE F \textendash{} FORMULÁRIO DOS ESPECIALISTAS}}  \label{ap:formulario-especialistas}
+\newcounter{qE}\newcounter{qF}
+\newenvironment{questoes}[1]{\def\qcounter{#1}\renewcommand{\theenumi}{Q\arabic{enumi}}\renewcommand{\labelenumi}{\theenumi.}\begin{enumerate}\setcounter{enumi}{\value{#1}}}{\setcounter{\qcounter}{\value{enumi}}\end{enumerate}}
+
+Este apêndice reproduz o formulário dos especialistas, descrito na Seção~\ref{sec:protocolo-avaliacao}, na ordem em que os blocos aparecem para o respondente. O texto das afirmações e das alternativas é o registrado no resumo das respostas (Apêndice~\ref{ap:respostas}). Nas perguntas de múltipla escolha cujas alternativas não formam uma série completa, como titulação e atuação, o resumo guarda apenas as alternativas marcadas por algum respondente, e são essas que aparecem aqui.
+
+As questões são numeradas na ordem em que aparecem, de \ref{qE:perfil-ini} a \ref{qE:abertas-fim}, e o texto do trabalho as cita por esse número. Salvo indicação em contrário, as afirmações são respondidas em escala de concordância de cinco pontos, de 1 (discordo totalmente) a 5 (concordo totalmente), com o ponto 3 como neutro.
+
+\section{Termo de Consentimento}
+
+O formulário abre com o termo de consentimento, apresentado como texto de leitura, sem item de marcação.
+
+\section{Perfil Profissional}
+
+\begin{questoes}{qE}
+    \item\label{qE:perfil-ini} Maior titulação, com resposta única. Alternativas marcadas: ensino médio; graduação; doutorado ou superior.
+    \item Atuação, com mais de uma marcação. Alternativas marcadas: profissional de desenvolvimento de software; professor(a) do ensino superior; professor(a) do ensino técnico.
+    \item Ferramentas de ensino de programação já conhecidas, com mais de uma marcação: Portugol Studio ou Portugol Webstudio; Scratch, Blockly ou similar; Beecrowd, URI ou outro juiz \textit{online}; VisuAlg; Thonny, Python Tutor ou outro visualizador de execução; nenhuma das anteriores.
+    \item\label{qE:perfil-fim} Se leciona ou já lecionou disciplina que envolva programação: ``sim, leciono ou já lecionei'' ou ``não''. Quem responde ``sim'' passa pelo bloco de uso em sala.
+\end{questoes}
+
+\section{Uso em Sala (Só para Quem Leciona)}
+
+Cada linha tem também a opção ``não se aplica''.
+
+\begin{questoes}{qE}
+    \item\label{qE:sala-ini} Criar uma turma e receber alunos pelo código de acesso foi simples.
+    \item Criar um exercício com casos de teste foi simples.
+    \item Travar uma linguagem específica em um exercício é útil para planejar as aulas.
+    \item A correção automática pelos casos de teste é útil para acompanhar a turma.
+    \item Eu usaria esta plataforma em uma disciplina introdutória de programação.
+    \item Eu conseguiria preparar uma aula com a plataforma sem apoio técnico externo.
+    \item O esforço de preparar a linguagem antes da aula compensa o ganho em sala.
+    \item\label{qE:sala-risco} Alunos de uma mesma turma usando sintaxes diferentes dificultaria o trabalho do professor.
+    \item\label{qE:subconjunto} O subconjunto da linguagem (tipos, condicionais, repetição, arranjos, funções e E/S) é suficiente para uma disciplina introdutória.
+\end{questoes}
+
+\begin{questoes}{qE}
+    \item\label{qE:sala-fim} Pergunta de múltipla escolha sobre o momento de uma disciplina introdutória em que a plataforma seria mais útil. Alternativas marcadas: antes da linguagem oficial da disciplina, como preparação; em paralelo à linguagem oficial, como apoio; não vejo espaço para ela na disciplina.
+\end{questoes}
+
+\section{Como a Plataforma Foi Usada}
+
+\begin{questoes}{qE}
+    \item\label{qE:uso-ini} Tempo de trabalho com programação: menos de 2 anos; de 2 a 5 anos; de 6 a 10 anos; mais de 10 anos.
+    \item Tempo de uso da plataforma: menos de 15 minutos; de 15 a 30 minutos; de 30 a 60 minutos; mais de 1 hora.
+    \item O que fez na plataforma, com mais de uma marcação:
+
+    \begin{itemize}
+        \item Criei ou editei uma linguagem no assistente;
+        \item Escrevi e executei um programa;
+        \item Vi o código intermediário;
+        \item Usei a execução passo a passo;
+        \item Resolvi e submeti um exercício;
+        \item Vi a tabela de \textit{tokens};
+        \item Entrei em uma turma ou criei uma turma;
+        \item Importei uma linguagem da comunidade.
+    \end{itemize}
+
+    \item\label{qE:uso-fim} O que personalizou na linguagem, com mais de uma marcação:
+
+    \begin{itemize}
+        \item Palavras dos tipos (ex.: int $\rightarrow$ \texttt{numero\_inteiro});
+        \item Modo de tipagem (com ou sem tipo);
+        \item Entrada e saída (ex.: print $\rightarrow$ escreva);
+        \item Operadores em palavra (ex.: \&\& $\rightarrow$ e);
+        \item Controle de fluxo (ex.: if $\rightarrow$ se);
+        \item Literais booleanos;
+        \item Usei um \textit{preset} pronto, sem alterar;
+        \item Delimitadores de bloco ou indentação;
+        \item Não personalizei nada;
+        \item Terminador de instrução (ponto e vírgula).
+    \end{itemize}
+\end{questoes}
+
+
+\section{Avaliação dos Recursos}
+
+A descrição deste bloco diz: ``Para lembrar: na plataforma, o mesmo programa pode ser escrito com a configuração padrão ou com uma configuração personalizada, como no exemplo''. Em seguida vem o mesmo programa em duas versões, como texto simples, sem imagem nem realce de cores. Ele soma os números pares maiores que 2 até \texttt{n}, escreve o total e o devolve. As duas versões estão transcritas a seguir, com o recuo do formulário.
+
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\textbf{Configuração padrão}
+\small
+\begin{verbatim}
+int soma(int n) {
+  int total = 0;
+  for (int i = 1; i <= n; i = i + 1) {
+    if (i % 2 == 0 && i > 2) {
+      total = total + i;
+    }
+  }
+  print(total);
+  return total;
+}
+\end{verbatim}
+
+\textbf{Configuração personalizada}
+\small
+\begin{verbatim}
+numero_inteiro soma(numero_inteiro n)
+inicio
+  numero_inteiro total = 0
+  para (numero_inteiro i = 1; i menor_igual n; i = i + 1)
+  inicio
+    se (i % 2 igual 0 e i maior 2)
+    inicio
+      total = total + i
+    fim
+  fim
+  escreva(total)
+  retorne total
+fim
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+As duas versões têm as mesmas instruções, na mesma ordem. Na personalizada, o tipo \texttt{int} passa a \texttt{numero\_inteiro}; \texttt{for}, \texttt{if}, \texttt{print} e \texttt{return} passam a \texttt{para}, \texttt{se}, \texttt{escreva} e \texttt{retorne}; os operadores \texttt{<=}, \texttt{==}, \texttt{\&\&} e \texttt{>} são escritos \texttt{menor\_igual}, \texttt{igual}, \texttt{e} e \texttt{maior}; as chaves dão lugar a \texttt{inicio} e \texttt{fim}; e as instruções não terminam em ponto e vírgula. Por isso a versão personalizada ocupa mais linhas: cada \texttt{inicio} fica em uma linha própria, enquanto a chave de abertura fica no fim da linha anterior. O operador \texttt{\%}, os parênteses, os nomes das variáveis e os números são os mesmos.
+
+Cada linha do bloco tem também a opção ``não usei''.
+
+\begin{questoes}{qE}
+    \item\label{qE:recursos-ini} Criar ou ajustar uma linguagem no assistente foi simples.
+    \item No assistente, ficou claro em que etapa eu estava.
+    \item O exemplo de código do assistente ajudou a entender o efeito de cada alteração.
+    \item Escrever programas com a linguagem configurada foi confortável.
+    \item\label{qE:msg-recursos} As mensagens de erro ajudaram a identificar o que corrigir.
+    \item\label{qE:fases-ini} A tabela de \textit{tokens} é útil para entender como a plataforma lê o código.
+    \item O código intermediário é útil para entender o que o programa faz.
+    \item\label{qE:fases-fim} A execução passo a passo é útil para acompanhar o programa.
+    \item Resolver e submeter exercícios foi simples.
+    \item\label{qE:recursos-fim} Importar uma linguagem da comunidade foi simples.
+\end{questoes}
+
+
+\section{Facilidade de Uso (SUS)}
+
+Itens da \textit{System Usability Scale} \cite{brooke1996}, na ordem original, alternando afirmações positivas e negativas.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:sus-ini} Acho que gostaria de usar esta plataforma com frequência.
+    \item Considerei a plataforma mais complexa do que precisava ser.
+    \item Achei a plataforma fácil de usar.
+    \item Acho que precisaria da ajuda de uma pessoa com conhecimento técnico para usar esta plataforma.
+    \item Considerei que as várias funções da plataforma estavam bem integradas.
+    \item Achei que havia muita inconsistência nesta plataforma.
+    \item Imagino que a maioria das pessoas aprenderia a usar esta plataforma rapidamente.
+    \item Achei a plataforma muito complicada de usar.
+    \item Senti-me confiante ao usar a plataforma.
+    \item\label{qE:sus-fim} Precisei aprender muitas coisas antes de conseguir usar esta plataforma.
+\end{questoes}
+
+
+\section{Impressão Geral (UEQ-S)}
+
+Pares de adjetivos da versão curta do \textit{User Experience Questionnaire} \cite{schrepp2017}, respondidos em escala de sete pontos, de 1 a 7, entre o adjetivo da esquerda e o da direita.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:ueq-ini} A plataforma atrapalhou ou apoiou o que você queria fazer?
+    \item A plataforma é complicada ou fácil de usar?
+    \item A plataforma é ineficiente ou eficiente?
+    \item A plataforma é confusa ou clara?
+    \item A plataforma é entediante ou empolgante?
+    \item A plataforma é desinteressante ou interessante?
+    \item A plataforma é convencional ou inventiva?
+    \item\label{qE:ueq-fim} A plataforma é comum ou inovadora?
+\end{questoes}
+
+
+\section{Potencial Pedagógico}
+
+Cada linha tem também a opção ``não sei''.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:ped-ini} Permitir que o aluno defina as palavras-chave tende a reduzir a barreira sintática no primeiro contato.
+    \item Usar palavras em português no lugar de termos em inglês facilita a compreensão do que o código faz.
+    \item A personalização tende a reduzir a frequência de erros de sintaxe cometidos por iniciantes.
+    \item\label{qE:msg-ped} Relatar os erros no vocabulário escolhido pelo próprio aluno facilita a correção do código.
+    \item Expor a tabela de \textit{tokens} tem valor didático para quem está aprendendo.
+    \item Expor o código intermediário tem valor didático para quem está aprendendo.
+    \item A execução passo a passo tem valor didático para quem está aprendendo.
+    \item\label{qE:ped-fim} O conjunto de elementos configuráveis é adequado ao propósito da ferramenta.
+\end{questoes}
+
+
+\section{Riscos e Limitações}
+
+Neste bloco, concordar significa apontar um problema. Cada linha tem também a opção ``não sei''.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:riscos-ini} Aprender em uma sintaxe personalizada pode dificultar a migração posterior para uma linguagem de mercado.
+    \item A liberdade de personalizar pode desviar a atenção do aluno do raciocínio algorítmico.
+    \item\label{qE:riscos-fim} O tempo gasto configurando a linguagem não compensa o ganho obtido.
+\end{questoes}
+
+
+\section{Qualidade Técnica}
+
+Cada linha tem também a opção ``não sei''.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:qual-ini} As mensagens de erro são claras e indicam o que precisa ser corrigido.
+    \item A ferramenta respondeu de forma rápida e estável durante o uso.
+    \item O assistente de criação de linguagem é compreensível para quem não tem formação em compiladores.
+    \item A validação prévia impede adequadamente configurações de linguagem inválidas.
+    \item O código intermediário exibido corresponde ao que o programa realmente executa.
+\end{questoes}
+
+\begin{questoes}{qE}
+    \item\label{qE:qual-fim} Pergunta de múltipla escolha, com mais de uma marcação, sobre as construções da linguagem que fizeram falta. Alternativas marcadas: não senti falta de nada relevante para o ensino introdutório; registros ou estruturas compostas; modularização em vários arquivos; orientação a objetos; manipulação de cadeias mais rica.
+\end{questoes}
+
+
+\section{Utilidade e Intenção de Uso (TAM)}
+
+Afirmações adaptadas do modelo de \citeonline{davis1989} ao público de professores.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:tam-ini} Esta plataforma é útil para quem está começando a programar.
+    \item Esta plataforma ajudaria alunos iniciantes a aprender lógica de programação mais rápido.
+    \item Comparada às ferramentas que eu conheço, esta plataforma oferece algo que elas não oferecem.
+    \item Recomendaria esta plataforma a um colega da área.
+    \item Vejo a plataforma como complemento, e não como substituto, à linguagem oficial da disciplina.
+    \item\label{qE:tam-fim} Indicaria esta plataforma a alguém que está começando a programar.
+\end{questoes}
+
+
+\section{Comentários Abertos}
+
+Quatro perguntas de resposta livre e um item sobre a citação das respostas.
+
+
+\begin{questoes}{qE}
+    \item\label{qE:abertas-ini} O que funcionou melhor na plataforma?
+    \item Em que ponto você teve dificuldade ou ficou perdido(a)?
+    \item\label{qE:msg-aberta} Alguma mensagem de erro foi confusa? Se lembrar, descreva.
+    \item Se pudesse mudar uma única coisa na plataforma, qual seria?
+    \item\label{qE:abertas-fim} Autoriza a citação das suas respostas abertas, sem identificação? Alternativas: ``Sim, autorizo a citação sem identificação''; ``Não autorizo''.
+\end{questoes}
