@@ -1,0 +1,36 @@
+/* Design-sync stylesheet input: the IDE's real globals.css (tokens, theme,
+   keyframes) compiled by Tailwind v4. Sources: the whole IDE app (auto-detected
+   from packages/ide), the authored previews, and a safelist of layout/token
+   utilities the Claude Design agent uses for its own glue markup. */
+@import "../src/styles/globals.css";
+@source "./previews";
+
+/* layout */
+@source inline("{flex,inline-flex,grid,inline-grid,block,inline-block,hidden,contents,flex-col,flex-row,flex-wrap,flex-1,flex-none,shrink-0,grow,relative,absolute,fixed,sticky,inset-0,top-0,right-0,bottom-0,left-0,truncate,overflow-hidden,overflow-auto,overflow-x-auto,overflow-y-auto,font-mono,font-sans,uppercase,underline,italic,whitespace-nowrap,break-words,sr-only,select-none,cursor-pointer,transition,transition-colors,transition-all,antialiased}");
+@source inline("{items,self}-{start,center,end,stretch,baseline}");
+@source inline("justify-{start,center,end,between,around,evenly}");
+@source inline("{md:,lg:,}grid-cols-{1,2,3,4,5,6,12}");
+@source inline("{md:,lg:,}col-span-{1,2,3,4,5,6,full}");
+@source inline("{md:,lg:,}{flex-row,flex-col,hidden,flex,grid,block}");
+@source inline("z-{0,10,20,30,40,50}");
+/* spacing */
+@source inline("{gap,gap-x,gap-y,p,px,py,pt,pb,pl,pr,m,mx,my,mt,mb,ml,mr,space-y,space-x}-{0,0.5,1,1.5,2,2.5,3,4,5,6,8,10,12,16,20,24}");
+@source inline("{mx,ml,mr}-auto");
+@source inline("{-space-x-2,-space-x-3,-space-y-2}");
+/* sizing */
+@source inline("{w,h,size}-{0,1,2,3,4,5,6,8,10,12,16,20,24,32,40,48,56,64,72,80,96,full,auto,fit,screen}");
+@source inline("{min-h,min-w}-{0,full,screen}");
+@source inline("max-w-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl,full,prose}");
+/* type */
+@source inline("{md:,}text-{xs,sm,base,lg,xl,2xl,3xl,4xl,5xl,6xl}");
+@source inline("text-{left,center,right}");
+@source inline("font-{light,normal,medium,semibold,bold,extrabold}");
+@source inline("{tracking-tight,tracking-wide,tracking-wider,leading-none,leading-tight,leading-snug,leading-normal,leading-relaxed}");
+/* design tokens (globals.css :root / .dark) */
+@source inline("{hover:,dark:,}{bg,text,border,ring,fill,stroke}-{background,foreground,card,card-foreground,popover,popover-foreground,primary,primary-foreground,secondary,secondary-foreground,muted,muted-foreground,accent,accent-foreground,destructive,destructive-foreground,border,input,ring,chart-1,chart-2,chart-3,chart-4,chart-5}");
+@source inline("{hover:,}{bg,text,border}-{primary,secondary,muted,accent,destructive,foreground,background,card}/{5,10,20,30,40,50,60,70,80,90}");
+/* shape */
+@source inline("rounded-{none,sm,md,lg,xl,2xl,3xl,full}");
+@source inline("{border,border-0,border-2,border-t,border-b,border-l,border-r,border-dashed,divide-y,divide-x}");
+@source inline("shadow-{none,sm,md,lg,xl,2xl}");
+@source inline("{opacity}-{0,50,60,70,80,90,100}");

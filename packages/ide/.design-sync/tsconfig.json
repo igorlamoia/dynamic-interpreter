@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../src/*"],
+      "@ts-compilator-for-java/compiler/*": ["../../compiler/src/*"],
+      "shiki": ["./shims/shiki.ts"]
+    }
+  }
+}
